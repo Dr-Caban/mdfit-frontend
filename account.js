@@ -1836,6 +1836,16 @@
   // ---- Featured programs: visible to every member (free + paid) on three surfaces so patients who don't know
   // where to start always see Dr. Jared's guided plans. Primary audience is people in pain / unsure what to do,
   // so these pre-made programs are the main conversion lever.
+  // Program posters are ~2.5 MB PNGs; serve the WebP size that fits the slot (scripts/program-images.py makes them).
+  // If a web copy is missing, fall back to the original instead of dropping the image.
+  const progImg = (src, cls, sizes) => {
+    const m = /^\/?assets\/programs\/([\w-]+)\.png$/.exec(src || "");
+    const c = cls ? ` class="${cls}"` : "";
+    if (!m) return `<img${c} src="${esc(src)}" alt="" loading="lazy" decoding="async" onerror="this.remove()">`;
+    const at = (w) => `assets/programs/web/${m[1]}-${w}.webp`;
+    return `<img${c} src="${at(640)}" srcset="${at(192)} 192w, ${at(640)} 640w, ${at(1200)} 1200w" sizes="${sizes}" alt="" loading="lazy" decoding="async"`
+      + ` onerror="if(this.srcset){this.removeAttribute('srcset');this.src='${m[0]}'}else this.remove()">`;
+  };
   function renderFeaturedPrograms() {
     if (!C || !C.programs || !C.programs.length) {
       ["#featured-progs", "#hero-progs", "#profile-progs"].forEach((s) => { const el = $(s); if (el) el.hidden = true; });
@@ -1858,12 +1868,12 @@
       sb.hidden = false;
       $("#featured-prog-list").innerHTML = sidebar.map((p) => `
         <li><button type="button" class="fp-item" data-fp="${esc(p.id)}">
-          ${p.image ? `<img src="${esc(p.image)}" alt="" loading="lazy" onerror="this.remove()">` : `<span class="fp-ic ${esc((p.category || "").toLowerCase().split(" ")[0])}"></span>`}
+          ${p.image ? progImg(p.image, "", "44px") : `<span class="fp-ic ${esc((p.category || "").toLowerCase().split(" ")[0])}"></span>`}
           <span class="fp-body"><b>${esc(p.title)}</b><span class="muted small">${p.weeks} wks · ${esc(p.level || "all levels")}${p.category ? " · " + esc(p.category) : ""}</span></span>
         </button></li>`).join("");
     }
     const bigCard = (p) => `<button type="button" class="hp-card" data-fp="${esc(p.id)}">
-      ${p.image ? `<img class="hp-img" src="${esc(p.image)}" alt="" loading="lazy" onerror="this.remove()">` : `<span class="hp-ic ${esc((p.category || "").toLowerCase().split(" ")[0])}"></span>`}
+      ${p.image ? progImg(p.image, "hp-img", "(max-width: 820px) 64px, 320px") : `<span class="hp-ic ${esc((p.category || "").toLowerCase().split(" ")[0])}"></span>`}
       <span class="hp-cat">${esc(p.category || "Program")}</span>
       <b>${esc(p.title)}</b>
       <span class="muted small hp-meta">${p.weeks} weeks · ${esc(p.level || "all levels")}${p.days && p.days.length ? ` · ${p.days.length} days/wk` : ""}</span>
@@ -1936,7 +1946,7 @@
     $("#prog-grid").innerHTML = list.map((p) => {
       const sessions = p.weeks * p.days.length, done = p.days.reduce((n, _, i) => n + doneCount(p, i), 0);
       return `<button type="button" class="prog-card${p.image ? " prog-card-img" : ""}" data-prog="${p.id}">
-        ${p.image ? `<img class="pc-img" src="${esc(p.image)}" alt="" loading="lazy" onerror="this.remove()">` : ""}
+        ${p.image ? progImg(p.image, "pc-img", "(max-width: 700px) 100vw, 50vw") : ""}
         <span class="pc-cat">${esc(p.category)}</span>${p.locked ? lockBadge : ""}
         <b>${esc(p.title)}</b><p>${esc(p.summary)}</p>
         <span class="pc-meta">${p.weeks} weeks · ${p.days.length} days/week · ${esc(p.level[0].toUpperCase() + p.level.slice(1))} · ${esc((Gen.LOCATIONS.find((l) => l.id === p.location) || {}).label || "")}</span>
@@ -1950,7 +1960,7 @@
   function renderProgram(p) {
     const wk = (i) => Math.min(p.weeks, doneCount(p, i) + 1);
     $("#prog-detail").innerHTML = `<button type="button" class="link-sm back-link" data-goto="programs">‹ All programs</button>
-      <div class="card prog-head${p.image ? " prog-head-img" : ""}">${p.image ? `<img class="ph-img" src="${esc(p.image)}" alt="" loading="lazy" onerror="this.remove()">` : ""}<span class="pc-cat">${esc(p.category)}</span>${p.locked ? lockBadge : ""}<h2>${esc(p.title)}</h2><p>${esc(p.summary)}</p>
+      <div class="card prog-head${p.image ? " prog-head-img" : ""}">${p.image ? progImg(p.image, "ph-img", "(max-width: 520px) 100vw, 480px") : ""}<span class="pc-cat">${esc(p.category)}</span>${p.locked ? lockBadge : ""}<h2>${esc(p.title)}</h2><p>${esc(p.summary)}</p>
         <p class="muted small">${p.weeks} weeks · ${p.days.length} sessions a week · ${esc(p.level)} · ${esc((Gen.LOCATIONS.find((l) => l.id === p.location) || {}).label || "")}</p>
         ${p.notes ? `<p class="prog-notes">${esc(p.notes)}</p>` : ""}</div>
       ${p.days.map((d, i) => { const w = progDayWorkout(p, i); return `<div class="card prog-day">
@@ -2169,12 +2179,9 @@
     if (!r) return;
     $("#chip-lv").textContent = `Lv ${r.level}`;
     $("#chip-xp").textContent = `${r.xp.toLocaleString()} XP`;
-    // Gemstone rank: header chip + big rank card in Progress view + streak-repair UI on home
+    // Gemstone rank card in the Progress view
     if (r.rank) {
       const cur = r.rank.current, next = r.rank.next;
-      $("#rc-gem").innerHTML = GEM_ICON(cur.color, 16);
-      $("#rc-name").textContent = cur.name;
-      $("#rc-name").style.color = cur.color === "#1a1a1a" ? "#eee" : cur.color;
       if ($("#rk-gem")) {
         $("#rk-gem").innerHTML = GEM_ICON(cur.color, 48);
         $("#rk-name").textContent = cur.name;

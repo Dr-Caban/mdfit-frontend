@@ -383,6 +383,10 @@ dialog .book-when { margin: -6px 0 4px; }
   .pm-toggle { display: grid; grid-template-columns: 1fr 1fr; margin-bottom: 10px; border: 1.5px solid rgba(255,255,255,.25); border-radius: 12px; overflow: hidden; }
   .pm-toggle button { border: 0; background: none; color: #fff; padding: 10px; font: 700 15px var(--body); cursor: pointer; }
   .pm-toggle button[aria-pressed="true"] { background: var(--accent); color: var(--ink); }
+  /* Fit the whole figure between the sticky header and the Call/Book bar: the zoomed figure is 2.0634x as tall as
+     it is wide, so cap the width at (visible height - header, toggle and bar) / 2.0634 */
+  .pm-viewport { width: min(100%, max(220px, calc((100vh - 210px) * .4846))); margin-inline: auto; }
+  @supports (height: 100svh) { .pm-viewport { width: min(100%, max(220px, calc((100svh - 210px) * .4846))); } }
   .pm-stage { width: 227.3%; }
   .pm-stage[data-pmside="front"] { transform: translateX(-2.1%); }
   .pm-stage[data-pmside="back"] { transform: translateX(-54.6%); }

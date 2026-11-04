@@ -289,7 +289,7 @@ svg { fill: currentColor; }
 .stack-form label { display: grid; gap: 6px; font-size: 14px; font-weight: 600; color: var(--navy); }
 .stack-form .btn-gold { justify-self: start; }
 .tbl { width: 100%; border-collapse: collapse; font-size: 14px; }
-.tbl th, .tbl td { text-align: left; padding: 9px 6px; border-bottom: 1px solid var(--line); }
+.tbl th, .tbl td { text-align: left; padding: 9px 6px; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; word-break: break-word; }
 .tbl th { color: var(--muted); font-weight: 600; }
 .tbl button { background: none; border: 0; color: var(--err); cursor: pointer; font-size: 13px; }
 .chart { position: relative; }
@@ -488,14 +488,14 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
 .cal-nav { display: flex; align-items: center; gap: 4px; color: var(--navy); }
 .cal-nav b { min-width: 130px; text-align: center; font: 700 15px var(--display); }
 .cal-nav .icon-btn { width: 34px; height: 34px; }
-.cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.cal { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
 .cal-h { text-align: center; font-size: 11px; font-weight: 700; color: var(--muted); padding-bottom: 4px; }
 .cal-d { aspect-ratio: 1; border: 0; border-radius: 10px; background: var(--card-2); color: var(--navy); cursor: pointer; display: grid; grid-template-rows: 1fr auto; justify-items: center; padding: 5px 2px 6px; font-weight: 600; font-size: 14px; }
 .cal-d:hover { background: var(--gold-soft); }
 .cal-d.has-workout { background: var(--accent-soft); }
 .cal-d.today { box-shadow: inset 0 0 0 2px var(--navy); }
 .cal-d.picked { background: var(--navy); color: #fff; }
-.cal-d em { display: flex; gap: 3px; height: 7px; }
+.cal-d em { display: flex; gap: 3px; height: 7px; max-width: 100%; overflow: hidden; }
 .cal-d em i, .cal-legend i { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
 .k-workout { background: var(--accent); } .k-visit { background: var(--navy); box-shadow: 0 0 0 1px #fff; } .k-pain { background: var(--gold); }
 .cal-d.picked .k-visit { background: #fff; }
@@ -920,17 +920,9 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
    banners were pushing text below the fold — compact wider ratios + cap heights so patients
    can scroll straight down without skipping content. */
 .prog-card-img { padding-top: 0; overflow: hidden; }
-.pc-img { aspect-ratio: 16/9; object-fit: cover; display: block; background: linear-gradient(135deg, #10233b, #0A1A2E); width: calc(100% + 32px); max-width: none; margin: 0 -16px 10px; }
-.prog-head-img { padding-top: 0; overflow: hidden; }
-.ph-img { aspect-ratio: 16/6; object-fit: cover; display: block; background: linear-gradient(135deg, #10233b, #0A1A2E); width: calc(100% + 36px); max-width: none; margin: 0 -18px 12px; }
-@media (max-width: 820px) {
-  .pc-img { aspect-ratio: 3/1; max-height: 120px; }
-  .ph-img { aspect-ratio: 4/1; max-height: 140px; }
-}
-@media (max-width: 480px) {
-  .pc-img { aspect-ratio: 4/1; max-height: 90px; }
-  .ph-img { aspect-ratio: 5/1; max-height: 110px; }
-}
+.pc-img { aspect-ratio: 1/1; object-fit: cover; display: block; background: linear-gradient(135deg, #10233b, #0A1A2E); width: calc(100% + 32px); max-width: none; margin: 0 -16px 10px; }
+.prog-head-img { overflow: hidden; }
+.ph-img { aspect-ratio: 1/1; object-fit: cover; display: block; background: linear-gradient(135deg, #10233b, #0A1A2E); width: min(100%, 480px); margin: 0 auto 14px; border-radius: 12px; }
 /* Member Profile: Help us improve card */
 .fb-tabs { display: flex; gap: 6px; background: var(--card-2); padding: 4px; border-radius: 10px; margin: 10px 0; }
 .fb-tab { flex: 1; border: 0; background: none; padding: 8px 10px; border-radius: 8px; font: 600 13.5px var(--body); color: var(--muted); cursor: pointer; }

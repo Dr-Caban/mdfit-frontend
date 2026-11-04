@@ -178,8 +178,8 @@
 .hp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
 .hp-card { position: relative; display: flex; flex-direction: column; gap: 4px; padding: 10px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); color: inherit; text-align: left; cursor: pointer; transition: transform .15s, border-color .15s, background .15s; overflow: hidden; }
 .hp-card:hover { transform: translateY(-2px); border-color: var(--gold); background: var(--gold-soft); }
-.hp-card .hp-img { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 8px; margin-bottom: 6px; }
-.hp-card .hp-ic { width: 100%; aspect-ratio: 16/9; border-radius: 8px; margin-bottom: 6px; background: linear-gradient(135deg, rgba(60,120,200,.3), rgba(30,60,120,.4)); }
+.hp-card .hp-img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 8px; margin-bottom: 6px; }
+.hp-card .hp-ic { width: 100%; aspect-ratio: 1/1; border-radius: 8px; margin-bottom: 6px; background: linear-gradient(135deg, rgba(60,120,200,.3), rgba(30,60,120,.4)); }
 .hp-card .hp-ic.sport { background: linear-gradient(135deg, rgba(90,180,120,.3), rgba(30,100,60,.4)); }
 .hp-card .hp-ic.mobility { background: linear-gradient(135deg, rgba(180,120,60,.3), rgba(100,60,30,.4)); }
 .hp-card .hp-ic.strength { background: linear-gradient(135deg, rgba(220,80,80,.3), rgba(120,30,30,.4)); }
@@ -206,12 +206,6 @@
   .hp-card .hp-go { grid-column: 3; grid-row: 1 / span 3; margin: 0; padding: 0; font-size: 0; }
   .hp-card .hp-go::after { content: "›"; font-size: 22px; font-weight: 400; color: var(--accent-text); }
 }
-
-/* Gemstone rank chip in header */
-.rank-chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border: 1px solid rgba(255,231,168,.3); border-radius: 999px; background: rgba(0,0,0,.25); color: inherit; cursor: pointer; font-size: 13px; margin-right: 6px; transition: border-color .15s, background .15s; }
-.rank-chip:hover { border-color: rgba(255,231,168,.7); background: rgba(0,0,0,.4); }
-.rank-chip .rc-gem { display: inline-flex; align-items: center; }
-.rank-chip b { font-weight: 600; }
 
 /* Gemstone rank card in Progress view */
 .rank-card { display: flex; flex-direction: column; gap: 12px; }
