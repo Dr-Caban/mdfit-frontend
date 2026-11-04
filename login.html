@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Log In | MD Fit</title>
+  <meta name="description" content="Log in to your MD Fit account to see your appointments, your plan from Dr. Jared and your progress.">
+  <meta name="theme-color" content="#0A1A2E">
+  <link rel="icon" href="assets/icon-64.png" type="image/png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="assets/app-icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=b4a2a475">
+  <link rel="stylesheet" href="account.css?v=d9b9bad4">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body class="auth-page">
+  <main class="auth-wrap">
+    <a href="/" class="brand auth-brand"><img class="brand-logo" src="assets/logo.webp" alt="MD Fit" width="160" height="160"><span class="brand-text"><span class="brand-sub">Physical Rehab &amp; Fitness</span></span></a>
+
+    <div class="auth-card">
+      <div class="auth-tabs" role="tablist">
+        <button type="button" role="tab" data-mode="login" aria-selected="true">Log in</button>
+        <button type="button" role="tab" data-mode="signup" aria-selected="false">Create account</button>
+      </div>
+
+      <form id="login-form" class="form auth-form" data-panel="login" novalidate>
+        <h1>Welcome back</h1>
+        <div id="google-btn-login" class="google-signin-wrap" hidden></div>
+        <div class="auth-divider" id="auth-divider-login" hidden><span>or</span></div>
+        <label>Full name<input name="name" maxlength="100" autocomplete="name" placeholder="Required for new accounts"></label>
+        <label>Email<input name="email" type="email" required autocomplete="username"></label>
+        <label>Password<input name="password" type="password" required minlength="8" autocomplete="current-password"></label>
+        <button class="btn btn-lg btn-block" type="submit">Log in</button>
+        <button type="button" class="link-btn" data-mode="forgot">Forgot password?</button>
+        <p class="form-msg" role="status"></p>
+      </form>
+
+      <form id="signup-form" class="form auth-form" data-panel="signup" novalidate hidden>
+        <h1>Create your account</h1>
+        <p class="muted">See your appointments, your plan from Dr. Jared, and track your progress.</p>
+        <div id="google-btn-signup" class="google-signin-wrap" hidden></div>
+        <div class="auth-divider" id="auth-divider-signup" hidden><span>or</span></div>
+        <label>Full name<input name="name" required minlength="2" maxlength="100" autocomplete="name"></label>
+        <label>Email<input name="email" type="email" required autocomplete="email"></label>
+        <label>Mobile phone<input name="phone" type="tel" maxlength="30" autocomplete="tel"></label>
+        <label>Password (8+ characters)<input name="password" type="password" required minlength="8" autocomplete="new-password"></label>
+        <label>Referral code <span class="muted">(optional)</span><input name="referralCode" maxlength="20" placeholder="e.g. JARE1A2B3C" autocomplete="off"></label>
+        <input name="company" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <p class="fine">By creating an account you agree to the <a href="/terms">Terms</a> and <a href="/privacy-policy">Privacy Policy</a>.</p>
+        <button class="btn btn-lg btn-block" type="submit">Create account</button>
+        <p class="fine">Already booked with us? Use the same email and your appointments show up automatically.</p>
+        <p class="form-msg" role="status"></p>
+      </form>
+
+      <form id="forgot-form" class="form auth-form" data-panel="forgot" novalidate hidden>
+        <h1>Reset your password</h1>
+        <p class="muted">Enter your account email and we'll send you a 6-digit code. Signed up with Google? Use this to set a password too.</p>
+        <label>Email<input name="identifier" type="email" required autocomplete="email" placeholder="you@email.com"></label>
+        <button class="btn btn-lg btn-block" type="submit">Send code</button>
+        <button type="button" class="link-btn" data-mode="login">Back to log in</button>
+        <p class="form-msg" role="status"></p>
+      </form>
+
+      <form id="code-form" class="form auth-form" data-panel="code" novalidate hidden>
+        <h1>Enter your code</h1>
+        <p class="muted" id="code-hint">Check your email for a 6-digit code.</p>
+        <label>Code<input name="code" type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required autocomplete="one-time-code" placeholder="000000" style="text-align:center;font-size:24px;letter-spacing:6px"></label>
+        <button class="btn btn-lg btn-block" type="submit">Verify</button>
+        <button type="button" class="link-btn" data-mode="forgot">Resend code</button>
+        <p class="form-msg" role="status"></p>
+      </form>
+
+      <form id="reset-form" class="form auth-form" data-panel="reset" novalidate hidden>
+        <h1>Choose a new password</h1>
+        <label>New password (8+ characters)<input name="password" type="password" required minlength="8" autocomplete="new-password"></label>
+        <button class="btn btn-lg btn-block" type="submit">Save and log in</button>
+        <p class="form-msg" role="status"></p>
+      </form>
+    </div>
+    <p class="auth-foot"><a href="/">← Back to mymdfit.com</a> · <a href="/book">Book an appointment</a><br><a href="/privacy-policy">Privacy</a> · <a href="/terms">Terms</a></p>
+  </main>
+
+  <script src="config.js?v=73fb174c"></script>
+  <script src="analytics.js?v=871c86ba" defer></script>
+  <script src="common.js?v=33a373b2"></script>
+  <script>
+    (() => {
+      const { $, $$, api, auth, wire } = window.MDFit;
+      const q = new URLSearchParams(location.search);
+      // Same-site paths only, optionally with an app deep link like /account#pain/muscle/ql
+      const next = /^\/[a-z]*(#[a-z0-9/-]*)?$/.test(q.get("next") || "") ? q.get("next") : "/account";
+      if (auth.get() && !q.get("reset")) { location.replace(next); return; }
+
+      let resetEmail = "";
+      let resetToken = "";
+
+      function mode(m) {
+        $$(".auth-tabs [data-mode]").forEach((b) => b.setAttribute("aria-selected", b.dataset.mode === m));
+        $(".auth-tabs").hidden = m === "reset" || m === "forgot" || m === "code";
+        $$("[data-panel]").forEach((f) => (f.hidden = f.dataset.panel !== m));
+        const first = $(`[data-panel="${m}"] input:not(.hp)`);
+        if (first) first.focus();
+      }
+      document.addEventListener("click", (e) => { const b = e.target.closest("[data-mode]"); if (b) mode(b.dataset.mode); });
+      const done = (sess) => { auth.set(sess); location.replace(next); return { message: "Logged in. Loading your account…" }; };
+
+      const ref = q.get("ref") || "";
+      wire($("#login-form"), async (d) => done(await api("/api/clients/login", d)), { reset: false });
+      wire($("#signup-form"), async (d) => done(await api("/api/clients/signup", { ...d, referralCode: ref || undefined })), { reset: false });
+      wire($("#forgot-form"), async (d) => {
+        resetEmail = d.identifier;
+        const r = await api("/api/clients/forgot", { identifier: d.identifier });
+        const h = $("#code-hint"); if (h) h.textContent = r.message || "Check for a 6-digit code.";
+        mode("code");
+        return r;
+      });
+      wire($("#code-form"), async (d) => {
+        const r = await api("/api/clients/verify-code", { identifier: resetEmail, code: d.code });
+        resetToken = r.resetToken;
+        mode("reset");
+        return { message: "Code verified. Choose a new password." };
+      });
+      wire($("#reset-form"), async (d) => done(await api("/api/clients/reset", { ...d, token: resetToken || q.get("reset") })), { reset: false });
+
+      if (ref) { const ri = $("#signup-form [name=referralCode]"); if (ri) ri.value = ref; }
+
+      if (q.get("reset")) { auth.clear(); resetToken = q.get("reset"); mode("reset"); }
+      else if (q.get("signup") !== null || ref) mode("signup");
+
+      // Google Sign-In
+      api("/api/app/config", null, "GET").then((cfg) => {
+        if (!cfg.googleClientId) return;
+        const s = document.createElement("script");
+        s.src = "https://accounts.google.com/gsi/client";
+        s.async = true;
+        s.onload = () => {
+          google.accounts.id.initialize({
+            client_id: cfg.googleClientId,
+            callback: async (resp) => {
+              try {
+                const refInput = $("#signup-form [name=referralCode]");
+                const body = { credential: resp.credential };
+                if (refInput && refInput.value) body.referralCode = refInput.value;
+                done(await api("/api/clients/google", body));
+              } catch (e) {
+                const msg = $("[data-panel]:not([hidden]) .form-msg");
+                if (msg) { msg.className = "form-msg err"; msg.textContent = e.message || "Google sign-in failed."; }
+              }
+            }
+          });
+          ["google-btn-login", "google-btn-signup"].forEach((id) => {
+            const el = document.getElementById(id);
+            if (el) { el.hidden = false; google.accounts.id.renderButton(el, { theme: "outline", size: "large", width: 320, text: "continue_with" }); }
+          });
+          ["auth-divider-login", "auth-divider-signup"].forEach((id) => { const el = document.getElementById(id); if (el) el.hidden = false; });
+        };
+        document.head.appendChild(s);
+      }).catch(() => {});
+    })();
+  </script>
+<script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>

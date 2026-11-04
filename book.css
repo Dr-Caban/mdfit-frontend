@@ -1,0 +1,42 @@
+/* Standalone booking page (/book). Builds on styles.css. */
+.book-page { background: var(--cream); }
+.book-nav { display: flex; align-items: center; gap: 16px; }
+.book-nav .nav-phone { text-decoration: none; font-weight: 600; color: var(--accent-bright); font-size: 15px; }
+
+.book-layout { display: grid; grid-template-columns: 360px 1fr; gap: 28px; align-items: start; padding: 32px 0 48px; }
+.book-info { position: sticky; top: 92px; }
+.book-info-inner { background: var(--ink); color: #fff; border-radius: 20px; padding: 30px 28px;
+  background-image: radial-gradient(500px 300px at 100% 0%, rgba(122,175,215,.14), transparent 60%); }
+.book-info .eyebrow { color: var(--accent-bright); }
+.book-info h1 { font: 700 30px/1.15 var(--display); letter-spacing: -.01em; margin: 0 0 10px; }
+.book-cred { color: var(--gold); font-weight: 600; font-size: 14px; margin: 0; }
+.book-info .rating { margin-top: 16px; font-size: 14px; }
+.book-facts { list-style: none; padding: 0; margin: 22px 0; display: grid; gap: 12px; font-size: 15px; }
+.book-facts li { display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; }
+.book-facts svg { width: 20px; height: 20px; fill: none; stroke: var(--gold); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; margin-top: 1px; }
+.book-facts a { color: #fff; }
+.expect { border-top: 1px solid rgba(255,255,255,.12); padding-top: 18px; margin-bottom: 16px; }
+.expect h2 { font: 700 15px/1.15 var(--display); letter-spacing: -.01em; margin: 0 0 10px; }
+.expect ol { margin: 0; padding-left: 18px; display: grid; gap: 8px; font-size: 14px; color: rgba(255,255,255,.8); }
+.expect b { color: #fff; }
+.book-info .fine { color: rgba(255,255,255,.6); }
+
+.book-main .booker { grid-template-columns: 1fr; gap: 16px; }
+.book-main .booker-form { grid-column: auto; }
+.book-main .booked { grid-column: auto; }
+
+.book-foot { padding: 0 0 40px; color: var(--muted); font-size: 12.5px; display: grid; gap: 4px; }
+.book-foot p { margin: 0; }
+
+@media (max-width: 960px) {
+  .book-layout { grid-template-columns: 1fr; padding-top: 16px; gap: 16px; }
+  .book-info { position: static; }
+  .book-info-inner { padding: 22px 20px; }
+  .book-info h1 { font-size: 32px; }
+  .expect, .book-info .fine { display: none; }
+  .book-facts { margin: 16px 0 0; }
+}
+@media (max-width: 600px) {
+  .hide-sm { display: none; }
+}
+.book-account { color: #fff; text-decoration: none; font-weight: 600; font-size: 15px; }

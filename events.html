@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Events | MD Fit Sarasota</title>
+  <meta name="description" content="Upcoming workshops, community days and events with Dr. Jared Caban at MD Fit in Sarasota, FL. Free bodywork days, movement workshops and more.">
+  <link rel="canonical" href="https://www.mymdfit.com/events">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="MD Fit Events | Sarasota Physical Rehabilitation">
+  <meta property="og:description" content="Workshops, community days and seminars with Dr. Jared Caban.">
+  <meta name="theme-color" content="#0A1A2E">
+  <link rel="icon" href="assets/icon-64.png" type="image/png">
+  <link rel="apple-touch-icon" href="assets/logo.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=b4a2a475">
+  <style>
+    .events-hero { text-align: center; padding: 80px 0 40px; }
+    .events-hero h1 { font: 700 clamp(32px,5vw,48px)/1.1 var(--display); color: var(--heading); margin: 0 0 12px; }
+    .events-hero p { color: var(--muted); font-size: 18px; max-width: 520px; margin: 0 auto; }
+    .events-grid { display: grid; gap: 24px; max-width: 800px; margin: 0 auto; padding: 0 0 80px; }
+    .event-card { background: var(--paper); border-radius: 16px; padding: 28px 32px; position: relative; overflow: hidden; }
+    .event-card::before { content: ""; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--accent); }
+    .event-date { font: 700 13px/1 var(--body); text-transform: uppercase; letter-spacing: 1px; color: var(--accent-text); margin: 0 0 8px; }
+    .event-title { font: 700 22px/1.25 var(--display); color: var(--heading); margin: 0 0 6px; }
+    .event-meta { display: flex; flex-wrap: wrap; gap: 12px 20px; margin: 8px 0 0; font-size: 14px; color: var(--muted); }
+    .event-meta span { display: flex; align-items: center; gap: 5px; }
+    .event-meta svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; }
+    .event-desc { margin: 12px 0 0; line-height: 1.6; color: var(--body-color); }
+    .event-tags { display: flex; gap: 8px; margin: 14px 0 0; }
+    .event-tag { display: inline-block; font: 600 12px/1 var(--body); padding: 5px 10px; border-radius: 100px; }
+    .event-tag.free { background: #d4edda; color: #155724; }
+    .event-tag.upcoming { background: #e8f0fe; color: #1a56db; }
+    .event-tag.past { background: #f0f0f0; color: #666; }
+    .event-link { display: inline-block; margin-top: 14px; }
+    .no-events { text-align: center; padding: 60px 20px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a href="/" class="brand" aria-label="MD Fit home">
+        <img class="brand-logo" src="assets/logo.webp" alt="MD Fit" width="160" height="160"><span class="brand-text"><span class="brand-sub">Physical Rehab &amp; Fitness</span></span>
+      </a>
+      <nav class="nav-links" aria-label="Main">
+        <a href="/#method">Method</a>
+        <a href="/#services">Services</a>
+        <a href="/book" class="btn btn-sm">Book now</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="events-hero">
+      <h1>Upcoming Events</h1>
+      <p>Workshops, community days and seminars with Dr. Jared Caban. Many are free — just show up.</p>
+    </div>
+    <div class="events-grid" id="events-grid">
+      <p class="no-events">Loading events…</p>
+    </div>
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap foot-inner">
+      <p>&copy; <span id="year"></span> MD Fit LLC &middot; <a href="/">mymdfit.com</a> &middot; <a href="/privacy-policy">Privacy</a> &middot; <a href="/terms">Terms</a></p>
+      <p class="tm-notice">MD Fit&trade; and the MD Fit logo are trademarks of MD Fit LLC. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="config.js?v=73fb174c"></script>
+  <script src="analytics.js?v=871c86ba" defer></script>
+  <script src="common.js?v=33a373b2"></script>
+  <script>
+    (() => {
+      const { $, api } = window.MDFit;
+      const el = (tag) => document.createElement(tag);
+      document.getElementById("year").textContent = new Date().getFullYear();
+      const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      function fmtDate(d) {
+        const [y, m, dd] = d.split("-");
+        return `${months[Number(m) - 1]} ${Number(dd)}, ${y}`;
+      }
+      function esc(s) { const d = el("span"); d.textContent = s; return d.innerHTML; }
+      api("/api/content", null, "GET").then((data) => {
+        const grid = document.getElementById("events-grid");
+        const events = (data.events || []).sort((a, b) => a.date.localeCompare(b.date));
+        if (!events.length) { grid.innerHTML = `<p class="no-events">No events scheduled right now. Check back soon.</p>`; return; }
+        const today = new Date().toISOString().slice(0, 10);
+        grid.innerHTML = events.map((e) => {
+          const past = e.date < today;
+          return `<div class="event-card">
+            <p class="event-date">${esc(fmtDate(e.date))}</p>
+            <h2 class="event-title">${esc(e.title)}</h2>
+            <div class="event-meta">
+              ${e.time ? `<span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>${esc(e.time)}</span>` : ""}
+              ${e.location ? `<span><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>${esc(e.location)}</span>` : ""}
+            </div>
+            ${e.description ? `<p class="event-desc">${esc(e.description)}</p>` : ""}
+            <div class="event-tags">
+              ${e.free ? `<span class="event-tag free">Free</span>` : ""}
+              <span class="event-tag ${past ? "past" : "upcoming"}">${past ? "Past" : "Upcoming"}</span>
+            </div>
+            ${e.link ? `<a class="btn btn-sm event-link" href="${esc(e.link)}" target="_blank" rel="noopener">RSVP / Details</a>` : ""}
+          </div>`;
+        }).join("");
+      }).catch(() => {
+        document.getElementById("events-grid").innerHTML = `<p class="no-events">Events couldn't be loaded right now. Try again later.</p>`;
+      });
+    })();
+  </script>
+<script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>

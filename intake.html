@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Massage Intake | MD Fit</title>
+  <link rel="icon" href="assets/icon-64.png" type="image/png">
+  <link rel="apple-touch-icon" href="assets/logo.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=b4a2a475">
+  <style>
+    body { background: var(--cream); }
+    .in-top { background: var(--ink); padding: 14px 0; }
+    .in-top .brand-logo { height: 52px; width: auto; }
+    .in-wrap { width: min(680px, 100% - 32px); margin: 28px auto 60px; }
+    .in-wrap h1 { font: 700 clamp(26px, 5vw, 34px)/1.15 var(--display); color: var(--heading); margin: 0 0 6px; }
+    .in-when { color: var(--accent-text); font-weight: 600; margin: 0 0 6px; }
+    .in-lock { display: flex; gap: 8px; align-items: center; font-size: 13.5px; color: var(--muted); margin: 0 0 22px; }
+    .in-form { display: grid; gap: 18px; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; }
+    .in-form fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: 8px; }
+    .in-form legend, .in-form label > span { font-weight: 700; color: var(--heading); font-size: 15px; margin-bottom: 4px; }
+    .in-form label { display: grid; gap: 6px; }
+    .in-form textarea, .in-form input[type=text], .in-form input[type=tel] { font: inherit; padding: 11px 12px; border: 1px solid var(--line); border-radius: 10px; background: #fff; width: 100%; }
+    .in-form textarea { min-height: 84px; resize: vertical; }
+    .in-checks { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px 14px; }
+    .in-checks label, .in-radios label { display: flex; gap: 8px; align-items: flex-start; font-weight: 500; }
+    .in-radios { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+    .in-hint { font-size: 13px; color: var(--muted); margin: 0; }
+    .in-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .in-consent { background: var(--accent-soft); border-radius: 12px; padding: 14px 16px; font-size: 14px; }
+    .in-done { text-align: center; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 32px 22px; }
+    @media (max-width: 560px) { .in-row { grid-template-columns: 1fr; } .in-form { padding: 16px; } }
+  </style>
+</head>
+<body>
+  <header class="in-top"><div class="wrap"><a href="/" class="brand"><img class="brand-logo" src="assets/logo.webp" alt="MD Fit" width="160" height="160"></a></div></header>
+  <main class="in-wrap">
+    <h1>Medical massage intake</h1>
+    <p class="in-when" id="when"></p>
+    <p class="in-lock"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5zm-3 8V7a3 3 0 0 1 6 0v3z"/></svg>Private and encrypted. Only Dr. Jared sees your answers. About 3 minutes.</p>
+
+    <form class="in-form" id="form" novalidate hidden>
+      <label><span>Where would you like us to focus?</span><textarea name="focus" required maxlength="600" placeholder="e.g. right shoulder and upper back, tight after desk work"></textarea></label>
+      <fieldset><legend>Pain right now (optional)</legend>
+        <label class="slider"><span class="in-hint">0 = none, 10 = worst <output id="pain-out">–</output></span><input type="range" name="painLevel" min="0" max="10" value="0" data-untouched></label>
+      </fieldset>
+      <fieldset><legend>Pressure you prefer</legend><div class="in-radios" id="pressure"></div></fieldset>
+      <label><span>Goals for this massage (optional)</span><textarea name="goals" maxlength="600" placeholder="Relief, recovery after training, better range of motion…"></textarea></label>
+      <fieldset><legend>Do any of these apply to you?</legend><p class="in-hint">Some change how we treat you. Check all that apply.</p><div class="in-checks" id="conditions"></div></fieldset>
+      <label><span>Medications (optional)</span><textarea name="medications" maxlength="600" placeholder="Especially blood thinners, steroids or pain medication"></textarea></label>
+      <label><span>Allergies (optional)</span><input type="text" name="allergies" maxlength="300" placeholder="Oils, lotions, nuts, latex…"></label>
+      <label><span>Anything else we should know? (optional)</span><textarea name="other" maxlength="1000"></textarea></label>
+      <div class="in-row">
+        <label><span>Emergency contact (optional)</span><input type="text" name="emergencyName" maxlength="80" autocomplete="off"></label>
+        <label><span>Their phone</span><input type="tel" name="emergencyPhone" maxlength="30" autocomplete="off"></label>
+      </div>
+      <div class="in-consent">
+        <label><span style="display:flex;gap:10px;align-items:flex-start;font-weight:500"><input type="checkbox" name="consent" required> I confirm this information is accurate, and I consent to medical massage at MD Fit. I'll tell my therapist about any discomfort or change in my health.</span></label>
+      </div>
+      <label><span>Type your full name to sign</span><input type="text" name="signature" required maxlength="80" autocomplete="name"></label>
+      <button class="btn btn-lg" type="submit">Submit intake</button>
+      <p class="form-msg" role="status"></p>
+    </form>
+    <div class="in-done" id="done" hidden>
+      <h2 style="font:700 24px var(--display);color:var(--heading);margin:0 0 8px">Thank you, you're all set.</h2>
+      <p class="muted">Dr. Jared will review this before your massage. See you soon.</p>
+      <a class="btn btn-line" href="/">Back to MD Fit</a>
+    </div>
+    <p class="form-msg err" id="bad" hidden></p>
+  </main>
+  <script src="config.js?v=73fb174c"></script>
+  <script src="analytics.js?v=871c86ba" defer></script>
+  <script>
+    (() => {
+      const API = window.MDFIT_CONFIG.apiUrl.replace(/\/+$/, "");
+      const q = new URLSearchParams(location.search), id = q.get("id"), token = q.get("token");
+      const $ = (s) => document.querySelector(s), esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+      const bad = (m) => { $("#bad").hidden = false; $("#bad").textContent = m; };
+      if (!/^[a-f0-9]{12}$/.test(id || "") || !token) return bad("This intake link is incomplete. Please use the link in your booking email, or call 941-313-0562.");
+      const url = `${API}/api/appointments/${id}/intake`;
+      fetch(`${url}?token=${encodeURIComponent(token)}`).then(async (r) => {
+        const d = await r.json().catch(() => ({}));
+        if (!r.ok) throw new Error(d.error || "This intake link isn't valid.");
+        const t = d.time.split(":").map(Number), when = new Date(d.date + "T12:00:00Z").toLocaleDateString("en-US", { timeZone: "UTC", weekday: "long", month: "long", day: "numeric" });
+        $("#when").textContent = `${d.typeName} · ${when} at ${((t[0] + 11) % 12) + 1}:${String(t[1]).padStart(2, "0")} ${t[0] < 12 ? "AM" : "PM"}`;
+        if (d.done) { $("#done").hidden = false; $("#done h2").textContent = `Thanks ${d.name}, we have your intake.`; $("#done p").textContent = "Need to change something? You can submit it again below."; }
+        $("#pressure").innerHTML = d.pressure.map((p, i) => `<label><input type="radio" name="pressure" value="${esc(p)}" ${p === "Not sure" ? "checked" : ""}> ${esc(p)}</label>`).join("");
+        $("#conditions").innerHTML = d.conditions.map((c) => `<label><input type="checkbox" name="conditions" value="${esc(c)}"> ${esc(c)}</label>`).join("");
+        $("#form").hidden = false;
+      }).catch((e) => bad(e.message + " Please call 941-313-0562."));
+
+      const range = $("[name=painLevel]");
+      range.addEventListener("input", () => { delete range.dataset.untouched; $("#pain-out").textContent = range.value + "/10"; });
+      $("#form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const f = e.target, msg = $(".form-msg", f), btn = $("button[type=submit]", f);
+        if (!f.elements.focus.value.trim()) { msg.className = "form-msg err"; msg.textContent = "Tell us where you'd like us to focus."; f.elements.focus.focus(); return; }
+        if (!f.consent.checked) { msg.className = "form-msg err"; msg.textContent = "Please check the consent box."; return; }
+        if (f.signature.value.trim().length < 2) { msg.className = "form-msg err"; msg.textContent = "Type your full name to sign."; f.signature.focus(); return; }
+        const body = { token, focus: f.elements.focus.value, goals: f.goals.value, medications: f.medications.value, allergies: f.allergies.value, other: f.other.value,
+          emergencyName: f.emergencyName.value, emergencyPhone: f.emergencyPhone.value, signature: f.signature.value, consent: true,
+          pressure: (f.querySelector("[name=pressure]:checked") || {}).value, conditions: [...f.querySelectorAll("[name=conditions]:checked")].map((i) => i.value),
+          painLevel: range.dataset.untouched !== undefined ? null : Number(range.value) };
+        btn.disabled = true; msg.className = "form-msg"; msg.textContent = "Sending securely…";
+        try {
+          const r = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+          const d = await r.json().catch(() => ({}));
+          if (!r.ok) throw new Error(d.error || "Couldn't send. Please try again.");
+          f.hidden = true; $("#done").hidden = false; $("#done h2").textContent = "Thank you, you're all set."; $("#done p").textContent = "Dr. Jared will review this before your massage. See you soon.";
+          scrollTo(0, 0);
+        } catch (err) { btn.disabled = false; msg.className = "form-msg err"; msg.textContent = err.message; }
+      });
+    })();
+  </script>
+<script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>

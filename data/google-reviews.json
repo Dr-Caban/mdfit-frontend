@@ -1,0 +1,17 @@
+{
+  "fetchedAt": "2026-11-03T14:30:00.000Z",
+  "source": "google",
+  "name": "MD Fit",
+  "rating": 5,
+  "count": 89,
+  "url": "https://maps.google.com/?cid=18426672193642042879",
+  "reviews": [
+    {
+      "author": "Chris & Emily Villafane",
+      "authorUrl": "https://www.google.com/maps/contrib/101199771277694715733/reviews",
+      "rating": 5,
+      "text": "Jared is amazing. He has been helping my husband since May and the improvement is notable. My husband has been doing PT for years for very bad back pain and nothing has helped. Jared is very detailed and pays attention to what is actually happening with his body, he gives the exercises and treatments adequately for his condition.",
+      "when": "a few weeks ago"
+    }
+  ]
+}

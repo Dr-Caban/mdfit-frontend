@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>MD Fit Admin</title>
+  <link rel="icon" href="assets/icon-64.png" type="image/png">
+  <link rel="apple-touch-icon" href="assets/logo.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=b4a2a475">
+  <link rel="stylesheet" href="admin.css?v=926bd021">
+</head>
+<body class="admin">
+  <section id="login" class="login">
+    <form id="login-form" class="form" novalidate>
+      <a href="/" class="brand dark"><img class="brand-logo" src="assets/logo.webp" alt="MD Fit" width="160" height="160"><span class="brand-text"><span class="brand-sub">Physical Rehab &amp; Fitness</span></span></a>
+      <h1>Admin</h1>
+      <label>Email<input name="email" type="email" required autocomplete="username"></label>
+      <label>Password<input name="password" type="password" required autocomplete="current-password"></label>
+      <label id="code-row" hidden>Code from your email<input name="code" inputmode="numeric" autocomplete="one-time-code" placeholder="6-digit code from your email"></label>
+      <button class="btn" type="submit">Log in</button>
+      <p class="form-msg" role="status"></p>
+    </form>
+  </section>
+
+  <div id="app" hidden>
+    <header class="nav">
+      <div class="wrap nav-inner">
+        <a href="/" class="brand"><img class="brand-logo" src="assets/logo.webp" alt="MD Fit" width="160" height="160"><span class="brand-text"><span class="brand-sub">Admin</span></span></a>
+        <nav class="tabs" role="tablist">
+          <button data-tab="dash" aria-selected="true">Dashboard</button>
+          <button data-tab="appts">Appointments</button>
+          <button data-tab="clients">Clients</button>
+          <button data-tab="leads">Leads</button>
+          <button data-tab="classes">Classes</button>
+          <button data-tab="bookings">Bookings</button>
+          <button data-tab="subs">Subscribers</button>
+          <button data-tab="messages">Messages <span class="pill pending" id="admin-msg-count" hidden></span></button>
+          <button data-tab="reviews">Reviews</button>
+          <button data-tab="feedback">Feedback <span class="pill pending" id="admin-fb-count" hidden></span></button>
+          <button data-tab="members">Members</button>
+          <button data-tab="content">Content</button>
+          <button data-tab="hours">Booking</button>
+          <button data-tab="analytics">Analytics</button>
+          <button data-tab="audit">Audit</button>
+          <button data-tab="settings">Settings</button>
+          <button id="logout" class="link">Log out</button>
+        </nav>
+      </div>
+    </header>
+
+    <div class="rt-toasts" id="rt-toasts"></div>
+    <main class="wrap panel-wrap">
+      <p id="toast" class="toast" role="status" hidden></p>
+
+      <section data-panel="dash">
+        <p class="banner" id="email-banner" hidden>Email notifications are off. Add <code>RESEND_API_KEY</code> and <code>NOTIFY_FROM</code> in Railway to get an email for every booking and request.</p>
+        <div class="online-bar" id="online-bar">
+          <span class="online-dot"></span>
+          <span id="online-text">Connecting…</span>
+        </div>
+        <div class="share-card">
+          <div><b>Your booking link</b><span class="muted">Put it in your Instagram bio, Google Business Profile ("Appointment link") and text messages.</span></div>
+          <div class="share-row"><input id="book-link" readonly><button class="btn btn-sm" id="copy-link" type="button">Copy</button></div>
+          <div class="share-more muted">Phone consult only: <code id="call-link"></code></div>
+        </div>
+        <div class="stats"></div>
+        <h2>Today</h2>
+        <div class="table-wrap"><table id="today"></table></div>
+        <h2>Coming up</h2>
+        <div class="table-wrap"><table id="next-appts"></table></div>
+        <h2>Classes this week</h2>
+        <div class="table-wrap"><table id="upcoming"></table></div>
+      </section>
+
+      <section data-panel="appts" hidden>
+        <div class="bar">
+          <label class="check"><input type="checkbox" id="appts-all"> Show past &amp; cancelled</label>
+          <button class="btn btn-sm btn-line" data-csv="/api/admin/appointments.csv">Download CSV</button>
+        </div>
+        <div id="appts-list" class="stack"></div>
+      </section>
+
+      <section data-panel="hours" hidden>
+        <form id="cal-form" class="form cal-admin" novalidate>
+          <h2>Booking system</h2>
+          <div class="provider">
+            <label class="radio"><input type="radio" name="provider" value="builtin"> <span><b>MD Fit built-in</b><small>Uses the hours and appointment types below.</small></span></label>
+            <label class="radio"><input type="radio" name="provider" value="cal"> <span><b>Cal.com</b><small>Embeds your Cal.com calendar on /book and the homepage.</small></span></label>
+          </div>
+          <div class="cal-fields">
+            <div class="cal-status" id="cal-status"><span class="muted">Checking Cal.com…</span></div>
+            <div class="grid2">
+              <label>Cal.com username (blank = from API key)<input name="calUsername" placeholder="mdfit"></label>
+              <label>Event types to show, in order (blank = all)<input name="calEventSlugs" placeholder="initial-evaluation, phone-consult"></label>
+            </div>
+            <div class="bar">
+              <button class="btn btn-sm btn-line" type="button" id="cal-test">Test connection</button>
+              <button class="btn btn-sm btn-line" type="button" id="cal-sync">Sync Cal bookings now</button>
+            </div>
+            <p class="muted fine">Webhook for instant updates: Cal.com → Settings → Developer → Webhooks → Subscriber URL <code id="cal-hook"></code>, same secret as <code>CAL_WEBHOOK_SECRET</code> in Railway, events: Booking created, rescheduled, cancelled.</p>
+          </div>
+          <button class="btn" type="submit">Save booking system</button>
+          <p class="form-msg" role="status"></p>
+        </form>
+        <form id="sync-form" class="form" novalidate>
+          <h2>Calendar sync</h2>
+          <p class="muted">Times you're busy in Google Calendar or SimplePractice can't be booked here, and every website booking is added to your Google Calendar.</p>
+          <div class="cal-status" id="sync-status"><span class="muted">Checking…</span></div>
+          <label>SimplePractice calendar link<input name="icsUrl" placeholder="Paste the link from SimplePractice → Settings → Calendar → Calendar sync"></label>
+          <div class="row-actions"><button class="btn btn-sm" type="submit">Save link</button><button class="btn btn-sm btn-line" type="button" id="sync-test">Test sync now</button></div>
+          <p class="form-msg" role="status"></p>
+        </form>
+
+        <form id="hours-form" class="form" novalidate>
+          <h2>Booking hours</h2>
+          <p class="muted">When clients can book 1-on-1 appointments online. Leave a day empty to close it. Split shifts: <code>09:00-12:00, 13:00-17:00</code></p>
+          <div class="grid2" id="hours-days"></div>
+          <div class="grid4">
+            <label>Start times every<select name="slotStepMin"><option value="15">15 min</option><option value="20">20 min</option><option value="30">30 min</option><option value="60">60 min</option></select></label>
+            <label>Minimum notice (hours)<input name="minNoticeHours" type="number" min="0" max="168"></label>
+            <label>Book up to (days ahead)<input name="daysAhead" type="number" min="1" max="90"></label>
+          </div>
+          <label>Closed dates (holidays, vacation), one per line as YYYY-MM-DD<textarea name="blockedDates" rows="4" placeholder="2026-12-25"></textarea></label>
+          <h2>Appointment types</h2>
+          <p class="muted">One per line: <code>id | Name | minutes | description</code>. Keep ids stable once people have booked.</p>
+          <textarea name="appointmentTypes" rows="5"></textarea>
+          <button class="btn" type="submit">Save hours</button>
+          <p class="form-msg" role="status"></p>
+        </form>
+      </section>
+
+      <section data-panel="clients" hidden>
+        <div id="clients-list">
+          <div class="bar"><input id="client-search" type="search" placeholder="Search name, email or phone" aria-label="Search clients"></div>
+          <div class="table-wrap"><table id="clients-table"></table></div>
+        </div>
+        <div id="client-detail" hidden></div>
+      </section>
+
+      <section data-panel="leads" hidden>
+        <div class="bar">
+          <select id="lead-filter">
+            <option value="">All leads</option>
+            <option value="new">New</option><option value="contacted">Contacted</option>
+            <option value="booked">Booked</option><option value="client">Client</option><option value="closed">Closed</option>
+          </select>
+          <button class="btn btn-sm btn-line" data-csv="/api/admin/leads.csv">Download CSV</button>
+        </div>
+        <div id="leads-list" class="stack"></div>
+      </section>
+
+      <section data-panel="classes" hidden>
+        <form id="class-form" class="form inline-form" novalidate>
+          <h2>Add a weekly class</h2>
+          <div class="grid4">
+            <label>Name<input name="title" required maxlength="80"></label>
+            <label>Day<select name="day"></select></label>
+            <label>Start<input name="time" type="time" required value="06:00"></label>
+            <label>Minutes<input name="durationMin" type="number" min="15" max="240" value="60"></label>
+            <label>Capacity<input name="capacity" type="number" min="1" max="100" value="10"></label>
+            <label>Coach<input name="coach" maxlength="80"></label>
+            <label>Location<input name="location" maxlength="120"></label>
+          </div>
+          <label>Description<input name="description" maxlength="500"></label>
+          <button class="btn btn-sm" type="submit">Add class</button>
+          <p class="form-msg" role="status"></p>
+        </form>
+        <div class="table-wrap"><table id="classes-table"></table></div>
+      </section>
+
+      <section data-panel="bookings" hidden>
+        <div class="bar"><label class="check"><input type="checkbox" id="bookings-all"> Include past</label></div>
+        <div class="table-wrap"><table id="bookings-table"></table></div>
+      </section>
+
+      <section data-panel="messages" hidden>
+        <div class="msg-admin">
+          <div class="msg-threads" id="msg-threads"></div>
+          <div class="msg-thread" id="msg-thread"><p class="muted">Pick a conversation.</p></div>
+        </div>
+      </section>
+
+      <section data-panel="audit" hidden>
+        <p class="muted">Every login, every look at a patient's record, and every change, in a tamper-proof ledger. Each entry is hash-chained to the one before and signed (Ed25519), so editing, deleting or reordering anything is detected.</p>
+        <div class="bar"><button class="btn btn-sm" id="audit-verify" type="button">Verify chain</button>
+          <select id="audit-filter"><option value="">All events</option><option value="auth.">Logins</option><option value="admin.view">Admin viewed records</option><option value="admin.change">Admin changes</option><option value="client.">Client activity</option><option value="payments">Payments</option></select></div>
+        <div id="audit-status"></div>
+        <details class="audit-key"><summary>Check an anchor from your email</summary>
+          <div class="row-actions"><input id="anchor-seq" placeholder="Entry #" inputmode="numeric" style="width:110px"><input id="anchor-head" placeholder="Hash from the email" style="flex:1;min-width:240px"><button class="btn btn-sm" type="button" id="anchor-check">Check</button><button class="btn btn-sm btn-line" type="button" id="anchor-now">Send an anchor now</button></div>
+          <p class="muted small">Every night the newest ledger hash is emailed to you. If anyone ever rewrote the log, an old email's hash won't match.</p>
+        </details>
+        <div class="table-wrap"><table id="audit-table"></table></div>
+        <details class="audit-key"><summary>Public verification key</summary><pre id="audit-pub"></pre></details>
+      </section>
+
+      <section data-panel="reviews" hidden>
+        <p class="muted">Reviews left on the website. Everyone who leaves one gets a free 30-minute plan review code, whatever their rating. Approve a review to show it on the homepage (only if they agreed).</p>
+        <div id="reviews-list" class="stack"></div>
+      </section>
+
+      <section data-panel="feedback" hidden>
+        <p class="muted">Bug reports and suggestions from members, from Account → Profile → Help us improve. Mark as working or resolved; delete spam.</p>
+        <div class="bar">
+          <select id="fb-filter-kind"><option value="">All kinds</option><option value="bug">Bugs</option><option value="suggestion">Suggestions</option></select>
+          <select id="fb-filter-status"><option value="">All statuses</option><option value="new">New</option><option value="working">Working</option><option value="resolved">Resolved</option></select>
+        </div>
+        <div id="feedback-list" class="stack"></div>
+      </section>
+
+            <section data-panel="members" hidden>
+        <p class="muted">Membership requests and members. Turn a membership on after payment; set "paid through" so it locks again if they stop paying. Schedule 1-on-1 requests here (paste a Google Meet or Zoom link).</p>
+        <div id="members-list" class="stack"></div>
+      </section>
+
+      <section data-panel="content" hidden>
+        <form id="content-form" class="form" novalidate>
+          <h2>Monthly live Q&amp;A</h2>
+          <div class="grid2">
+            <label>Title<input name="live_title" maxlength="120"></label>
+            <label>Date<input name="live_date" type="date"></label>
+            <label>Start time<input name="live_time" type="time"></label>
+            <label>Length (minutes)<input name="live_minutes" type="number" min="15" max="240"></label>
+            <label>Join link (Google Meet, Zoom, YouTube Live)<input name="live_joinUrl" placeholder="https://meet.google.com/…"></label>
+            <label>Who can join<select name="live_access"><option value="free">Everyone with an account</option><option value="member">Members</option><option value="premium">Premium only</option></select></label>
+          </div>
+          <label>Notes shown to members<textarea name="live_notes" rows="2" maxlength="1000"></textarea></label>
+          <p class="muted">Past recordings, one per line: <code>Title | YYYY-MM-DD | https://link</code></p>
+          <textarea name="live_recordings" rows="3"></textarea>
+
+          <h2>Lectures</h2>
+          <p class="muted">YouTube, Vimeo and Google Drive links play inside the app. "Download" can be a Drive or Dropbox link to a PDF or video file.</p>
+          <div class="rows" id="rows-lectures"></div><button class="btn btn-sm btn-line" type="button" data-add="lectures">+ Add a lecture</button>
+
+          <h2>Health tips</h2>
+          <div class="rows" id="rows-recommendations"></div><button class="btn btn-sm btn-line" type="button" data-add="recommendations">+ Add a tip</button>
+
+          <h2>Membership tiers</h2>
+          <p class="muted">Tiers with 1-on-1 sessions count as Premium (unlock premium content and the session request form).</p>
+          <div class="rows" id="rows-tiers"></div><button class="btn btn-sm btn-line" type="button" data-add="tiers">+ Add a tier</button>
+
+          <h2>Premade programs</h2>
+          <p class="muted">Days, one per line: <code>Name | focus (upper, lower, full, core, mobility) | minutes (15/20/30/45/60/90) | rounds</code>. Change the seed number to get a different mix of exercises.</p>
+          <div class="rows" id="rows-programs"></div><button class="btn btn-sm btn-line" type="button" data-add="programs">+ Add a program</button>
+
+          <h2>Events</h2>
+          <p class="muted">Upcoming workshops, community days and seminars. They show on the <a href="/events" target="_blank">/events</a> page.</p>
+          <div class="rows" id="rows-events"></div><button class="btn btn-sm btn-line" type="button" data-add="events">+ Add an event</button>
+
+          <h2>Pain tracks</h2>
+          <p class="muted">Each track shows up on the body map for the muscles you pick. Pattern images and videos are Google Drive links (or file ids). Levels: a line with no <code>|</code> starts a level; each video is <code>Video name | Drive link</code>. Leave the link blank to show "Video coming soon".</p>
+          <div class="rows" id="rows-tracks"></div>
+          <div class="row-actions"><button class="btn btn-sm btn-line" type="button" data-add="tracks">+ Add a pain track</button>
+            <button class="btn btn-sm btn-line" type="button" id="tracks-reset">Reset to Dr. Jared's original tracks</button></div>
+
+          <button class="btn" type="submit">Save content</button>
+          <p class="form-msg" role="status"></p>
+        </form>
+      </section>
+
+      <section data-panel="subs" hidden>
+        <div class="bar"><button class="btn btn-sm btn-line" data-csv="/api/admin/subscribers.csv">Download CSV</button></div>
+        <div class="table-wrap"><table id="subs-table"></table></div>
+      </section>
+
+      <section data-panel="analytics" hidden>
+        <h2>Site analytics <small class="muted">(last 30 days)</small></h2>
+        <div class="stats" id="analytics-stats"></div>
+        <div class="grid2" id="analytics-grid">
+          <div>
+            <h3>Daily traffic</h3>
+            <div class="table-wrap"><table id="analytics-days"></table></div>
+          </div>
+          <div>
+            <h3>Top pages</h3>
+            <div class="table-wrap"><table id="analytics-pages"></table></div>
+            <h3 style="margin-top:18px">Top referrers</h3>
+            <div class="table-wrap"><table id="analytics-refs"></table></div>
+          </div>
+        </div>
+        <h3 style="margin-top:22px">Who's visiting <select id="an-range" style="margin-left:8px"><option value="7">Last 7 days</option><option value="30" selected>Last 30 days</option><option value="90">Last 90 days</option></select></h3>
+        <div class="an-mix" id="an-mix"></div>
+        <p class="muted" style="margin-top:14px">Device, source and location tracking started on Nov 3, 2026. Earlier days only have page views. Speed and more detail: <a href="https://vercel.com" target="_blank" rel="noopener">Vercel Dashboard</a> → mdfit-srq → Analytics.</p>
+
+        <h3 style="margin-top:28px">In-app search <select id="sa-range" style="margin-left:8px"><option value="7">Last 7 days</option><option value="30" selected>Last 30 days</option><option value="90">Last 90 days</option></select></h3>
+        <div class="stats" id="sa-stats"></div>
+        <div class="grid2">
+          <div><h4>Top queries</h4><div class="table-wrap"><table id="sa-top"></table></div></div>
+          <div><h4>Zero-result or abandoned</h4><p class="muted small">High impressions, low CTR. Fix: add synonyms, write a page, or re-tag an existing one.</p><div class="table-wrap"><table id="sa-zero"></table></div></div>
+        </div>
+        <div class="grid2">
+          <div><h4>Best CTR</h4><div class="table-wrap"><table id="sa-best"></table></div></div>
+          <div><h4>Worst CTR</h4><div class="table-wrap"><table id="sa-worst"></table></div></div>
+        </div>
+      </section>
+
+      <section data-panel="settings" hidden>
+        <form id="settings-form" class="form" novalidate>
+          <h2>Security</h2>
+          <div id="mfa-box" class="mfa-box"><span class="muted">Checking…</span></div>
+          <h2>Business</h2>
+          <div class="grid2">
+            <label>Name<input name="business.name" maxlength="60"></label>
+            <label>Tagline<input name="business.tagline" maxlength="160"></label>
+            <label>Phone<input name="business.phone" maxlength="30"></label>
+            <label>Email<input name="business.email" type="email"></label>
+            <label>Address<input name="business.address" maxlength="200"></label>
+            <label>Hours<input name="business.hours" maxlength="300" placeholder="Mon-Fri 5am-8pm · Sat 7am-12pm"></label>
+            <label>Google Maps link<input name="business.mapsUrl" placeholder="https://maps.google.com/…"></label>
+            <label>Instagram link<input name="business.instagram" placeholder="https://instagram.com/…"></label>
+            <label>Facebook link<input name="business.facebook" placeholder="https://facebook.com/…"></label>
+            <label>TikTok link<input name="business.tiktok" placeholder="https://tiktok.com/@…"></label>
+            <label>Programs note<input name="business.bookingNote" maxlength="300"></label>
+          </div>
+          <h2>Reviews badge</h2>
+          <div class="grid4">
+            <label>Rating<input name="rating.score" maxlength="3" placeholder="4.9"></label>
+            <label>Review count<input name="rating.count" type="number" min="0"></label>
+            <label>Source<input name="rating.source" maxlength="40" placeholder="Google"></label>
+            <label>Reviews link<input name="rating.url" placeholder="https://…"></label>
+          </div>
+          <h2>Dr. Jared</h2>
+          <div class="grid2">
+            <label>Name<input name="coach.name" maxlength="80"></label>
+            <label>Title<input name="coach.title" maxlength="80"></label>
+            <label>Photo link<input name="coach.photoUrl" placeholder="https://…/coach.jpg"></label>
+          </div>
+          <label>Bio (blank line between paragraphs)<textarea name="coach.bio" rows="5" maxlength="3000"></textarea></label>
+          <h2>Services &amp; pricing</h2>
+          <p class="muted">Hourly rates shown on the website pricing section. Tick “Protocol” for services sold in multi-visit plans (Gold, Silver, monthly).</p>
+          <div id="svc-rows" class="svc-rows"></div>
+          <button class="btn btn-sm btn-line" type="button" id="svc-add">+ Add a service</button>
+          <h2>Protocol payment plans</h2>
+          <div class="grid2 plan-grid">
+            <label>Gold: % off when paid in full<input name="plan_gold" type="number" min="0" max="50"></label>
+            <label>Silver: % off<input name="plan_silver" type="number" min="0" max="50"></label>
+            <label>Silver: number of monthly payments<input name="plan_silverPayments" type="number" min="2" max="12"></label>
+            <label>12-month plan: % added<input name="plan_ext12" type="number" min="0" max="50"></label>
+            <label>24-month plan: % added<input name="plan_ext24" type="number" min="0" max="50"></label>
+            <label>Protocol sizes (visits, comma separated)<input name="plan_packageSizes" placeholder="6, 12, 24"></label>
+            <label>Money-back guarantee from (visits)<input name="plan_guaranteeMin" type="number" min="1" max="100"></label>
+          </div>
+          <h2>Testimonials</h2>
+          <p class="muted">One per line: <code>Name | Quote</code></p>
+          <textarea name="testimonials" rows="5"></textarea>
+          <button class="btn" type="submit">Save settings</button>
+          <p class="form-msg" role="status"></p>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script src="config.js?v=73fb174c"></script>
+  <script src="analytics.js?v=871c86ba" defer></script>
+  <script src="realtime.js?v=b6d56265"></script>
+  <script src="painmuscles.js?v=74e3b348"></script>
+  <script src="paintracks.js?v=a4fc10a4"></script>
+  <script src="admin.js?v=406e373c"></script>
+<script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>

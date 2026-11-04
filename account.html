@@ -1,0 +1,702 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>MD Fit</title>
+  <meta name="theme-color" content="#0A1A2E">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="MD Fit">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="assets/icon-64.png" type="image/png">
+  <link rel="apple-touch-icon" href="assets/app-icon-192.png">
+  <link rel="preconnect" href="https://drive.usercontent.google.com" crossorigin>
+  <link rel="preconnect" href="https://drive.google.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="app/app.css?v=a55fe1f5">
+  <link rel="stylesheet" href="account.css?v=8515689b">
+  <link rel="stylesheet" href="guides.css?v=0d6cdb39">
+</head>
+<body class="mdapp">
+  <div class="app">
+
+    <!-- ================= HOME ================= -->
+    <section class="view" id="view-home" data-view="home">
+      <header class="app-top">
+        <img class="app-logo" src="assets/logo.webp" alt="MD Fit" width="160" height="160">
+        <button type="button" class="icon-btn bell" id="bell" aria-label="Notifications">
+          <svg viewBox="0 0 24 24"><path d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22zm7-6V11a7 7 0 0 0-5.5-6.84V3.5a1.5 1.5 0 0 0-3 0v.66A7 7 0 0 0 5 11v5l-2 2v1h18v-1z"/></svg>
+          <span class="dot" hidden></span>
+          <span class="bell-count" hidden></span>
+        </button>
+      </header>
+      <div class="notes-panel" id="notes" hidden></div>
+      <div class="hello-row"><p class="hello">Welcome back</p>
+        <button type="button" class="rank-chip" data-goto="progress" id="rank-chip" title="Your gemstone rank"><span class="rc-gem" id="rc-gem"></span><b id="rc-name">Peridot</b></button>
+        <button type="button" class="xp-chip" data-goto="progress" id="xp-chip"><b id="chip-lv">Lv 1</b><span id="chip-xp">0 XP</span></button>
+      </div>
+      <h1 class="name" id="hello-name">&nbsp;</h1>
+
+      <div class="qsearch">
+        <svg class="qsearch-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 2a8 8 0 1 1-5.3 14l-3.6 3.6-1.4-1.4L3.3 14.7A8 8 0 0 1 10 2zm0 2a6 6 0 1 0 0 12 6 6 0 0 0 0-12z"/></svg>
+        <input type="search" id="qsearch" placeholder="What hurts? Search exercises, pain, programs, articles" aria-label="Search MD Fit" autocomplete="off">
+        <button type="button" class="qsearch-x" id="qsearch-x" aria-label="Clear" hidden>&times;</button>
+      </div>
+      <div class="qsearch-results" id="qsearch-results" hidden></div>
+
+      <div class="home-grid"><div class="col-main">
+      <div class="streak card gold-edge">
+        <div class="streak-top">
+          <svg class="flame" viewBox="0 0 24 24"><path d="M13.5 1.5s.8 2.7.8 4.6c0 1.9-1.2 3.4-3.1 3.4-1.9 0-3.3-1.5-3.3-3.4l.03-.33C5.9 8 4.7 11.1 4.7 14.4 4.7 18.6 8 22 12 22s7.3-3.4 7.3-7.6c0-5.1-2.4-9.6-5.8-12.9zM11.7 19c-1.6 0-2.9-1.3-2.9-2.9 0-1.5 1-2.6 2.6-2.9 1.6-.3 3.3-1.1 4.2-2.4.4 1.2.6 2.5.6 3.8 0 2.4-2 4.4-4.5 4.4z"/></svg>
+          <div><b id="streak-n">0</b><span>day streak</span></div>
+          <button type="button" class="repair-chip" id="repair-chip" hidden title="Streak repairs"><svg viewBox="0 0 24 24"><path d="M7 2 5.6 3.4l5.3 5.3-.7.7-5.3-5.3L3.4 5.6l5.3 5.3-.7.7-3.5-3.5-1.4 1.4 3.5 3.5-.7.7-1.4-1.4L3 13.6l6.3 6.3a3.5 3.5 0 0 0 5-5l10-10L22.9 3.4l-9.2 9.2-.7-.7 9.2-9.2L20.8 1.3 11.6 10.5l-.7-.7L20.1.6 18.7-.8z"/></svg><b id="repair-n">0</b></button>
+        </div>
+        <ol class="week" id="week"></ol>
+        <div class="repair-note" id="repair-note" hidden></div>
+      </div>
+
+      <div class="tiles">
+        <div class="tile card"><svg viewBox="0 0 24 24" class="ic gold"><path d="M19 4h-2V2H7v2H5a2 2 0 0 0-2 2v1a5 5 0 0 0 4.4 4.96A5 5 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5 5 0 0 0 3.6-3.94A5 5 0 0 0 21 7V6a2 2 0 0 0-2-2zM5 7V6h2v3.8A3 3 0 0 1 5 7zm14 0a3 3 0 0 1-2 2.8V6h2z"/></svg><b id="best-n">0</b><span>Best Streak</span></div>
+        <div class="tile card"><svg viewBox="0 0 24 24" class="ic blue"><path d="M13.5 5.5a2 2 0 1 0-2-2 2 2 0 0 0 2 2zM9.8 8.9 7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3A7.3 7.3 0 0 0 19 13v-2a5.2 5.2 0 0 1-4.5-2.5l-1-1.6a2 2 0 0 0-1.7-1 2 2 0 0 0-.8.2L6 8.3V13h2V9.6z"/></svg><b id="workouts-n">0</b><span>Workouts</span></div>
+        <div class="tile card"><svg viewBox="0 0 24 24" class="ic green"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm4.2 14.2L11 13V7h1.5v5.2l4.5 2.7z"/></svg><b id="hours-n">0.0</b><span>Hours</span></div>
+      </div>
+
+      <div class="card today" id="today-card">
+        <div class="today-head"><span class="label blue">Today's workout</span><span class="ready">Ready</span></div>
+        <div class="today-body">
+          <div class="today-icon"><svg viewBox="0 0 24 24"><path d="M12 5.5a2 2 0 1 0-2-2 2 2 0 0 0 2 2zM21 9h-2V7h-2v2H7V7H5v2H3v2h2v2h2v-2h3l-2 10h2l2-6 2 6h2l-2-10h3v2h2v-2h2z"/></svg></div>
+          <div><b id="today-title">Loading…</b><span id="today-meta"></span></div>
+        </div>
+        <button type="button" class="btn-blue" id="start-today"><svg viewBox="0 0 24 24"><path d="M7 4v16l13-8z"/></svg> Start Workout</button>
+        <button type="button" class="link" data-goto="generate">Change workout</button>
+      </div>
+
+      <div class="card hero-progs" id="hero-progs">
+        <div class="hero-progs-head">
+          <div>
+            <span class="label accent">Dr. Jared's Programs</span>
+            <h2 class="hp-title">Not sure where to start?</h2>
+            <p class="muted small hp-sub">Guided multi-week plans Dr. Jared built for the most common things we see: knee pain, back pain, plantar fasciitis, golf, pickleball, marathon, mobility, and more. Pick one and follow along.</p>
+          </div>
+          <button type="button" class="btn-blue sm" data-goto="programs">Browse all programs</button>
+        </div>
+        <div class="hp-grid" id="hero-prog-grid"></div>
+      </div>
+
+      <h2 class="section-title">Quick actions</h2>
+      <div class="quick">
+        <button type="button" class="card q" data-goto="generate"><svg viewBox="0 0 24 24" class="ic blue"><path d="M3 17v2h6v-2zM3 5v2h10V5zm10 16v-2h8v-2h-8v-2h-2v6zM7 9v2H3v2h4v2h2V9zm14 4v-2H11v2zm-6-4h2V7h4V5h-4V3h-2z"/></svg><b>Generate Workout</b><span>Custom routine</span></button>
+        <button type="button" class="card q" data-goto="pain"><svg viewBox="0 0 24 24" class="ic orange"><path d="M12 2a2 2 0 1 1-2 2 2 2 0 0 1 2-2zm-3 20v-7H7.5V9a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v6H15v7z"/></svg><b>Pain Tool</b><span>Find relief</span></button>
+        <button type="button" class="card q" data-goto="videos"><svg viewBox="0 0 24 24" class="ic purple"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M10 8.5v7l6-3.5z" fill="#fff"/></svg><b>Video Library</b><span id="lib-count">Exercises</span></button>
+        <a class="card q" href="/book"><svg viewBox="0 0 24 24" class="ic green"><path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 16H5V9h14zM7 11h2v2H7zm4 0h2v2h-2zm4 0h2v2h-2zm-8 4h2v2H7zm4 0h2v2h-2z"/></svg><b>Book a Visit</b><span>See Dr. Jared</span></a>
+      </div>
+
+      </div><div class="col-side">
+      <div class="card featured-progs" id="featured-progs">
+        <div class="card-head"><span class="label accent">Dr. Jared's Programs</span><button type="button" class="link-sm" data-goto="programs">See all</button></div>
+        <p class="muted small fp-intro">Multi-week plans — rehab, sport performance, mobility and strength. Start free.</p>
+        <ul class="fp-list" id="featured-prog-list"></ul>
+        <button type="button" class="btn-outline-light sm fp-cta" data-goto="programs">Browse all programs <svg viewBox="0 0 24 24"><path d="M8.6 16.6 10 18l6-6-6-6-1.4 1.4 4.6 4.6z"/></svg></button>
+      </div>
+      <div class="card" id="home-programs" hidden>
+        <div class="card-head"><span class="label accent">My programs</span><button type="button" class="link-sm" data-goto="generate">See all</button></div>
+        <ul class="programs" id="home-program-list"></ul>
+      </div>
+      <div class="card plan" id="plan-card" hidden>
+        <div class="card-head"><span class="label accent">From Dr. Jared</span><span class="muted small" id="plan-date"></span></div>
+        <div id="plan"></div>
+      </div>
+
+      <div class="card list-card">
+        <div class="card-head"><span class="label">Upcoming events</span><a class="link-sm" href="/book">Book</a></div>
+        <ul class="events" id="events"><li class="muted small">Loading…</li></ul>
+      </div>
+
+      <div class="card list-card">
+        <div class="card-head"><span class="label">Recent activity</span></div>
+        <ul class="activity" id="activity"></ul>
+      </div>
+
+      <div class="card install install-card">
+        <div class="card-head"><span class="label accent">Get the app</span></div>
+        <p class="small install-text"></p>
+        <div class="install-steps-wrap" hidden><ol class="install-steps small"></ol></div>
+        <button type="button" class="btn-blue install-btn"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:8px" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Install MD Fit</button>
+      </div>
+      </div></div>
+    </section>
+
+    <!-- ================= GENERATE ================= -->
+    <section class="view" id="view-generate" data-view="generate" hidden>
+      <header class="hero">
+        <div><h1>Workout <em>Generator</em></h1><p>Customize every detail. Create a workout that fits you.</p></div>
+        <p class="hero-tag">Any goal<br>Any environment<br>Any level<br><b>Your workout</b></p>
+      </header>
+      <p class="free-badge" id="free-badge" hidden></p>
+      <button type="button" class="intro-btn" data-intro="generator"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> How it works with Dr. Jared</button>
+      <div class="card" id="my-programs" hidden>
+        <div class="card-head"><span class="label accent">My programs</span><span class="muted small" id="program-count"></span></div>
+        <ul class="programs" id="program-list"></ul>
+      </div>
+      <div class="gen-layout">
+        <div class="gen-steps" id="steps"></div>
+        <aside class="gen-side">
+          <div class="summary">
+            <h2><svg viewBox="0 0 24 24"><path d="M19 3h-4.2A3 3 0 0 0 12 1a3 3 0 0 0-2.8 2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-7 0a1 1 0 1 1-1 1 1 1 0 0 1 1-1zm2 14H7v-2h7zm3-4H7v-2h10zm0-4H7V7h10z"/></svg>Workout summary</h2>
+            <dl id="summary"></dl>
+            <button type="button" class="btn-accent" id="generate">Generate workout <svg viewBox="0 0 24 24"><path d="M8.6 16.6 10 18l6-6-6-6-1.4 1.4 4.6 4.6z"/></svg></button>
+            <button type="button" class="btn-outline-light" id="randomize"><svg viewBox="0 0 24 24"><path d="M10.6 9.2 5.4 4 4 5.4l5.2 5.2zM14.5 4l2 2L4 18.6 5.4 20 18 7.5l2 2V4zm.3 9.4-1.4 1.4 3.1 3.1-2 2H20v-5.5l-2 2z"/></svg> Randomize settings</button>
+          </div>
+          <div class="addons">
+            <h3>Optional add-ons</h3>
+            <p>Include extra elements in your workout.</p>
+            <ul id="addons"></ul>
+          </div>
+        </aside>
+      </div>
+      <div id="generated" hidden>
+        <div class="card gen-card">
+          <div class="today-head"><span class="label accent" id="gen-title"></span><button type="button" class="link-sm" id="shuffle">Shuffle exercises</button></div>
+          <p class="muted small" id="gen-meta"></p>
+          <ol class="ex-list" id="gen-list"></ol>
+          <div class="row2"><button type="button" class="btn-ghost" id="save-program"><svg viewBox="0 0 24 24"><path d="M17 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7zm-5 16a3 3 0 1 1 3-3 3 3 0 0 1-3 3zm3-10H5V5h10z"/></svg> Save to My Programs</button></div>
+          <button type="button" class="btn-blue" id="start-gen"><svg viewBox="0 0 24 24"><path d="M7 4v16l13-8z"/></svg> Start workout</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= VIDEOS ================= -->
+    <section class="view" id="view-videos" data-view="videos" hidden>
+      <header class="hero">
+        <div><h1>Video <em>Library</em></h1><p><span id="vid-count"></span> exercises coached by Dr. Jared</p></div>
+      </header>
+      <button type="button" class="intro-btn" data-intro="library"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> Start here: how to use the library</button>
+      <div class="vid-filters">
+      <div class="seg kind-seg" id="vid-kind" role="tablist" aria-label="Exercise or rehab">
+        <button type="button" data-kind="Exercise" aria-selected="true">Exercise</button>
+        <button type="button" data-kind="Rehab" aria-selected="false">Rehab</button>
+        <button type="button" data-kind="All" aria-selected="false">All</button>
+      </div>
+      <p class="muted small kind-note" id="vid-kind-note">Strength training and specialty movements for building fitness.</p>
+      <div class="seg loc-seg" id="vid-locs" role="tablist" aria-label="Where you train"></div>
+      <input type="search" id="vid-search" class="search" placeholder="Search exercises" aria-label="Search exercises">
+      <div class="chips" id="vid-cats" role="tablist" aria-label="Category"></div>
+      <div class="vid-org">
+        <div class="seg" id="vid-by" role="tablist" aria-label="Organize by">
+          <button type="button" data-by="joint" aria-selected="true">By joint</button>
+          <button type="button" data-by="muscle" aria-selected="false">By muscle</button>
+        </div>
+        <select id="vid-region" class="select" aria-label="Jump to"></select>
+      </div>
+      </div>
+      <div class="vgrid" id="vgrid"></div>
+      <p class="muted small center" id="vid-empty" hidden>No exercises match. Try another filter.</p>
+    </section>
+
+    <!-- ================= PROGRAMS ================= -->
+    <section class="view" id="view-programs" data-view="programs" hidden>
+      <header class="hero">
+        <div><h1>Premade <em>Programs</em></h1><p>Multi-week plans from Dr. Jared. Same sessions each week so you can see your progress.</p></div>
+      </header>
+      <div class="chips" id="prog-cats" role="tablist" aria-label="Program type"></div>
+      <div class="prog-grid" id="prog-grid"></div>
+      <div id="prog-detail" hidden></div>
+    </section>
+
+    <!-- ================= LEARN: lectures + live Q&A ================= -->
+    <section class="view" id="view-learn" data-view="learn" hidden>
+      <header class="hero">
+        <div><h1>Learn &amp; <em>Live</em></h1><p>Lectures on health, wellness, hormones and inflammation, plus a monthly live Q&amp;A with Dr. Jared.</p></div>
+      </header>
+      <div class="card live-card" id="live-card"></div>
+      <div class="card-head lect-head"><span class="label accent">Lectures</span></div>
+      <div class="chips" id="lect-topics" role="tablist" aria-label="Topic"></div>
+      <div class="lect-grid" id="lect-grid"></div>
+      <div class="card-head lect-head"><span class="label accent">Dr. Jared's pain guides</span></div>
+      <div class="guide-library app-guides" id="learn-guides"></div>
+    </section>
+
+    <!-- ================= MEMBERSHIP / PREMIUM ================= -->
+    <section class="view" id="view-premium" data-view="premium" hidden>
+      <header class="hero">
+        <div><h1>Membership &amp; <em>1-on-1</em></h1><p>Unlock every program, the lecture library and live Q&amp;A, or work with Dr. Jared directly.</p></div>
+      </header>
+      <div id="my-membership"></div>
+      <div id="my-payments" class="my-payments"></div>
+      <div class="tier-grid" id="tier-grid"></div>
+      <div class="card" id="meetings-card" hidden>
+        <div class="card-head"><span class="label accent">Your 1-on-1 sessions</span><span class="muted small" id="meet-left"></span></div>
+        <form id="meet-form" class="nums-form" novalidate>
+          <label class="full">What do you want to work on?<textarea name="topic" rows="2" maxlength="500" required placeholder="e.g. Build my next 4 weeks around my shoulder"></textarea></label>
+          <label class="full">Times that work for you<input name="times" maxlength="300" required placeholder="e.g. Tue or Thu after 5pm"></label>
+          <button class="btn-gold sm" type="submit">Request a session</button><span class="nums-msg small"></span>
+        </form>
+        <ul class="meet-list" id="meet-list"></ul>
+      </div>
+    </section>
+
+    <!-- ================= MESSAGES ================= -->
+    <section class="view" id="view-messages" data-view="messages" hidden>
+      <!-- Inbox: conversations list (Messenger style) -->
+      <div class="messenger" id="inbox">
+        <header class="msgr-head"><span class="msgr-ic"><svg viewBox="0 0 24 24"><path d="M12 3C6.5 3 2 6.9 2 11.6c0 2.5 1.3 4.8 3.4 6.4L5 22l4.3-2.3c.9.2 1.8.3 2.7.3 5.5 0 10-3.9 10-8.6S17.5 3 12 3zm-4 9.6a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4zm4 0a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4zm4 0a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4z"/></svg></span><h1>Messenger</h1>
+          <button type="button" class="msgr-new" id="msgr-new" aria-label="New message to Dr. Jared"><svg viewBox="0 0 24 24"><path d="M3 17.3V21h3.7l11-11-3.7-3.7zM20.7 7a1 1 0 0 0 0-1.4l-2.3-2.3a1 1 0 0 0-1.4 0l-1.8 1.8 3.7 3.7z"/></svg></button></header>
+        <div class="convos" id="convos"></div>
+      </div>
+      <!-- One conversation -->
+      <div class="messenger" id="thread" hidden>
+        <header class="msgr-head thread-head">
+          <button type="button" class="msgr-back" id="msgr-back" aria-label="Back to conversations"><svg viewBox="0 0 24 24"><path d="M15.4 7.4 14 6l-6 6 6 6 1.4-1.4-4.6-4.6z"/></svg></button>
+          <span class="av av-dr"><img src="assets/logo.webp" alt=""></span>
+          <div class="thread-who"><b>Dr. Jared Caban</b><small id="thread-sub">MD, MSc · usually replies within a day</small></div>
+        </header>
+        <div class="card msg-gate" id="msg-gate" hidden>
+          <h3>Messaging is part of membership</h3>
+          <p class="muted">Members can message Dr. Jared directly with questions about their pain, programs and progress.</p>
+          <button type="button" class="btn-gold sm" data-goto="premium">See memberships</button>
+        </div>
+        <div class="chat" id="chat">
+          <div class="chat-list" id="chat-list" aria-live="polite"></div>
+          <form class="chat-form" id="chat-form" novalidate>
+            <textarea name="body" rows="1" maxlength="2000" placeholder="Message Dr. Jared…" aria-label="Your message"></textarea>
+            <button class="send-btn" type="submit" aria-label="Send"><svg viewBox="0 0 24 24"><path d="M2 21 23 12 2 3v7l15 2-15 2z"/></svg></button>
+          </form>
+          <p class="muted tiny chat-fine">For emergencies call 911. Dr. Jared replies as soon as he can.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= HEALTH TIPS ================= -->
+    <section class="view" id="view-tips" data-view="tips" hidden>
+      <header class="hero">
+        <div><h1>Health <em>Tips</em></h1><p>Dr. Jared's protocols — tap any card to view full size.</p></div>
+      </header>
+      <div class="chips" id="tip-areas" role="tablist" aria-label="Area"></div>
+      <div class="tip-grid" id="tips"></div>
+      <dialog class="tip-lightbox" id="tip-lightbox"><button class="tip-lb-close" aria-label="Close">&times;</button><img id="tip-lb-img" alt=""><p id="tip-lb-cap"></p></dialog>
+    </section>
+
+    <!-- ================= PAIN TOOL ================= -->
+    <section class="view" id="view-pain" data-view="pain" hidden>
+      <header class="hero">
+        <div><h1>Pain <em>Tool</em></h1><p>Tap the area that hurts to start your protocol.</p></div>
+      </header>
+
+      <div class="painmap app-painmap" data-painmap="app">
+        <div class="painmap-figure">
+          <div class="pm-toggle" role="tablist" aria-label="Body view">
+            <button type="button" data-pmview="front" aria-pressed="true">Front</button>
+            <button type="button" data-pmview="back" aria-pressed="false">Back</button>
+          </div>
+          <div class="pm-viewport"><div class="pm-stage" data-pmside="front">
+            <img class="pm-figures" src="assets/pain/body-figures.webp" alt="Front and back anatomy" width="1182" height="1073">
+            <div class="hotspots"></div>
+          </div></div>
+        </div>
+      </div>
+
+      <div id="muscle-report" hidden></div>
+      <p class="fine center" style="margin:8px 16px 0;opacity:.55">Educational only, not a diagnosis.</p>
+    </section>
+
+    <!-- ================= PROGRESS ================= -->
+    <section class="view" id="view-progress" data-view="progress" hidden>
+      <header class="hero">
+        <div><h1>Your <em>Progress</em></h1><p>Every rep, every visit, every win. Saved to your account.</p></div>
+      </header>
+      <div class="progress-grid">
+        <div class="col-main">
+          <div class="card level-card" id="level-card">
+            <div class="level-top">
+              <div class="level-badge"><small>Level</small><b id="lv-n">1</b></div>
+              <div class="level-info"><b id="lv-title">Starter</b><span id="lv-xp">0 XP</span>
+                <div class="xpbar" role="progressbar" aria-label="Progress to next level" aria-valuemin="0" aria-valuemax="100" id="lv-bar-wrap"><i id="lv-bar"></i></div>
+                <small id="lv-next"></small></div>
+              <div class="goal-ring" id="goal-ring" aria-label="Today's goal"></div>
+            </div>
+            <div class="xp-week" id="xp-week"></div>
+          </div>
+          <div class="card rank-card" id="rank-card">
+            <div class="card-head"><span class="label accent">Gemstone Rank</span><small class="muted" id="rank-sub">Lifetime achievement — permanent, never resets</small></div>
+            <div class="rank-top">
+              <div class="rank-current"><span class="rk-gem" id="rk-gem"></span><div><b id="rk-name">Peridot</b><small class="muted" id="rk-xp"></small></div></div>
+              <div class="rank-next" id="rank-next"></div>
+            </div>
+            <div class="xpbar rk-bar" role="progressbar" aria-label="Progress to next rank" id="rk-bar-wrap"><i id="rk-bar"></i></div>
+            <ol class="rank-ladder" id="rank-ladder"></ol>
+            <small class="muted rk-foot" id="rk-foot"></small>
+          </div>
+          <div class="card">
+            <div class="card-head"><span class="label accent">Calendar</span>
+              <div class="cal-nav"><button type="button" class="icon-btn" id="cal-prev" aria-label="Previous month"><svg viewBox="0 0 24 24"><path d="M15.4 7.4 14 6l-6 6 6 6 1.4-1.4-4.6-4.6z"/></svg></button><b id="cal-title"></b><button type="button" class="icon-btn" id="cal-next" aria-label="Next month"><svg viewBox="0 0 24 24"><path d="M8.6 16.6 10 18l6-6-6-6-1.4 1.4 4.6 4.6z"/></svg></button></div>
+            </div>
+            <div class="cal" id="cal"></div>
+            <ul class="cal-legend"><li><i class="k-workout"></i>Workout</li><li><i class="k-visit"></i>Visit</li><li><i class="k-pain"></i>Pain log</li></ul>
+            <div class="cal-day" id="cal-day"></div>
+          </div>
+          <div class="card checkin" id="checkin">
+            <div class="card-head"><span class="label accent">Today</span><span class="muted small" id="ci-when"></span></div>
+            <form id="ci-form" novalidate>
+              <div class="ci-row">
+                <span class="ci-label">Weigh-in</span>
+                <div class="stepper">
+                  <button type="button" data-step="-0.5" aria-label="Decrease weight">−</button>
+                  <input name="weight" type="number" step="0.1" inputmode="decimal" placeholder="—" aria-label="Weight in pounds">
+                  <button type="button" data-step="0.5" aria-label="Increase weight">+</button>
+                  <span class="ci-unit">lb</span>
+                </div>
+                <span class="ci-hint small muted" id="ci-weight-hint"></span>
+              </div>
+              <div class="ci-row">
+                <span class="ci-label">How'd you sleep?</span>
+                <div class="chips" id="ci-sleep" role="radiogroup" aria-label="Hours of sleep">
+                  <button type="button" data-h="5">≤5h</button><button type="button" data-h="6">6h</button><button type="button" data-h="7">7h</button><button type="button" data-h="8">8h</button><button type="button" data-h="9">9h+</button>
+                </div>
+              </div>
+              <button class="btn-blue ci-save" type="submit">Done</button>
+              <p class="ci-msg small" aria-live="polite"></p>
+            </form>
+            <div class="ci-done" hidden>
+              <p class="ci-done-title">✓ Nice, you're logged for today</p>
+              <p class="small" id="ci-summary"></p>
+              <button type="button" class="link ci-edit">Edit</button>
+            </div>
+          </div>
+          <div class="card perf-card" id="perf-card">
+            <div class="card-head"><span class="label accent">Performance</span><span class="muted small perf-sub">Body weight · workouts</span></div>
+            <div class="vitals" id="vitals"></div>
+            <details class="vitals-add dev-only"><summary>Add watch / ring numbers</summary>
+              <form id="vitals-form" class="nums-form" novalidate>
+                <div class="nums-grid">
+                  <label class="dev-only">Resting heart rate<input name="restingHr" type="number" inputmode="numeric" placeholder="bpm"></label>
+                  <label class="dev-only">HRV<input name="hrv" type="number" inputmode="numeric" placeholder="ms"></label>
+                  <label class="dev-only">VO2 max<input name="vo2max" type="number" step="0.1" inputmode="decimal" placeholder="ml/kg/min"></label>
+                </div>
+                <button class="btn-gold sm" type="submit">Save</button><span class="nums-msg small"></span>
+                <p class="small muted dev-only">Copy these from your watch or ring (Apple Health, Garmin, Whoop, Oura, Fitbit).</p>
+              </form>
+            </details>
+            <h3 class="perf-h">Compare workouts</h3>
+            <div class="cmp-pick"><label>This session<select id="cmp-a" class="select"></select></label><label>Compared with<select id="cmp-b" class="select"></select></label></div>
+            <div id="cmp-table" class="cmp-table"></div>
+            <details class="vitals-add" id="cmp-edit-wrap"><summary>Edit this session</summary><div id="cmp-edit"></div></details>
+          </div>
+        </div>
+        <div class="col-side">
+          <div class="card">
+        <div class="card-head"><span class="label accent">Pain tracker</span><select id="chart-area" class="select sm" aria-label="Area"></select></div>
+        <div class="chart" id="chart"></div>
+        <form id="pain-form" class="mini-form" novalidate>
+          <select name="area" class="select" aria-label="Where"></select>
+          <label class="slider"><span>Pain now <output>5</output>/10</span><input type="range" name="level" min="0" max="10" value="5"></label>
+          <input name="note" class="input" maxlength="500" placeholder="Note (optional)">
+          <button class="btn-gold sm" type="submit">Log it</button>
+          <p class="form-msg" role="status"></p>
+        </form>
+        <details class="sub"><summary>All entries (<span id="entry-count">0</span>)</summary><table class="tbl" id="entries"></table></details>
+      </div>
+
+          <div class="card board" id="board">
+            <div class="card-head"><span class="label accent">Leaderboard</span>
+              <div class="seg" role="tablist"><button type="button" data-period="week" aria-selected="true">This week</button><button type="button" data-period="all" aria-selected="false">All time</button></div>
+            </div>
+            <div class="leagues" role="tablist">
+              <button type="button" data-league="pro" aria-selected="true"><span>🏅</span>Pro League</button>
+              <button type="button" data-league="olympic" aria-selected="false"><span>🏆</span>Olympic League</button>
+            </div>
+            <p class="small muted board-sub" id="board-sub">Log anything to earn XP and climb the ranks.</p>
+            <ol class="board-list" id="board-list"></ol>
+            <p class="board-me small" id="board-me"></p>
+            <label class="board-hide small"><input type="checkbox" id="board-hide"> Hide me from the leaderboard</label>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><span class="label accent">Badges</span><span class="muted small" id="badge-count"></span></div>
+            <ul class="badges" id="badges"></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PROFILE ================= -->
+    <section class="view" id="view-profile" data-view="profile" hidden>
+      <div class="profile-head">
+        <div class="avatar" id="avatar">?</div>
+        <div><h1 class="name sm" id="p-name"></h1><p class="muted small" id="p-email"></p></div>
+      </div>
+
+      <div class="profile-grid">
+      <div class="card hero-progs" id="profile-progs">
+        <div class="hero-progs-head">
+          <div>
+            <span class="label accent">Dr. Jared's Programs</span>
+            <h2 class="hp-title">Guided plans, built by Dr. Jared</h2>
+            <p class="muted small hp-sub">Rehab, sport, mobility and strength programs you can start today. Multi-week structure so you know what to do and how to progress.</p>
+          </div>
+          <button type="button" class="btn-blue sm" data-goto="programs">See all programs</button>
+        </div>
+        <div class="hp-grid" id="profile-prog-grid"></div>
+      </div>
+
+      <div class="card list-card">
+        <div class="card-head"><span class="label">My appointments</span><button type="button" class="btn-blue sm" id="p-book-open">Book an evaluation</button></div>
+        <ul class="events" id="p-appts"></ul>
+        <details class="sub"><summary>Visit history</summary><ul class="events" id="p-history"></ul></details>
+      </div>
+
+      <div class="card list-card">
+        <div class="card-head"><span class="label">Workout history</span></div>
+        <ul class="activity" id="p-workouts"></ul>
+      </div>
+
+      <div class="card phone-nudge" id="phone-nudge" hidden>
+        <div><b>Add your phone number</b><p class="small">So Dr. Jared's team can reach you about visits and your plan.</p></div>
+        <form id="phone-nudge-form" novalidate>
+          <div class="phone-nudge-row">
+            <input name="phone" class="input" type="tel" inputmode="tel" maxlength="30" autocomplete="tel" placeholder="941-555-0100" aria-label="Mobile phone">
+            <button class="btn-gold sm" type="submit">Save</button>
+          </div>
+          <p class="form-msg small" role="status"></p>
+        </form>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="label">Profile</span></div>
+        <form id="profile-form" class="stack-form" novalidate>
+          <label>Name<input name="name" class="input" required minlength="2" maxlength="100" autocomplete="name"></label>
+          <label>Email<input name="email" class="input" disabled></label>
+          <label>Mobile phone<input name="phone" class="input" type="tel" maxlength="30" autocomplete="tel"></label>
+          <button class="btn-gold sm" type="submit">Save</button>
+          <p class="form-msg" role="status"></p>
+        </form>
+        <details class="sub" id="pw-details"><summary id="pw-summary">Change password</summary>
+          <p class="small muted" id="pw-intro" hidden>You signed in with Google, so there's no password yet. Set one to also log in with your email.</p>
+          <form id="password-form" class="stack-form" novalidate>
+            <label id="pw-current">Current password<input name="current" class="input" type="password" autocomplete="current-password"></label>
+            <p class="small"><button type="button" class="link" id="pw-send-code">Email me a code instead</button> <span class="muted small" id="pw-code-msg"></span></p>
+            <div id="pw-code-row" hidden>
+              <label>6-digit code<input name="code" class="input" type="text" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="000000"></label>
+            </div>
+            <label>New password (8+ characters)<input name="password" class="input" type="password" required minlength="8" autocomplete="new-password"></label>
+            <button class="btn-gold sm" type="submit" id="pw-submit">Change password</button>
+            <p class="form-msg" role="status"></p>
+          </form>
+        </details>
+      </div>
+
+      <div class="card referral-card">
+        <div class="card-head"><span class="label accent">Refer a friend</span></div>
+        <p class="small">Share your code. When someone signs up with it, <b>you get 1 free month</b> of membership credit.</p>
+        <div class="referral-row">
+          <code class="referral-code" id="referral-code"></code>
+          <button type="button" class="btn-gold sm" id="copy-referral">Copy code</button>
+          <button type="button" class="btn-ghost sm" id="share-referral">Share link</button>
+        </div>
+        <p class="form-msg small" id="referral-msg" role="status"></p>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="label accent">Help us improve</span></div>
+        <p class="small muted" id="fb-intro">Found a bug? Have an idea for a feature? Dr. Jared reads every one.</p>
+        <div class="fb-tabs" role="tablist" aria-label="Feedback kind">
+          <button type="button" role="tab" class="fb-tab" data-fb-kind="bug" aria-selected="true">Report a bug</button>
+          <button type="button" role="tab" class="fb-tab" data-fb-kind="suggestion" aria-selected="false">Suggest a feature</button>
+        </div>
+        <form id="fb-form" class="stack-form" novalidate>
+          <input type="hidden" name="kind" value="bug">
+          <label><span id="fb-title-label">What went wrong, in one line?</span><input name="title" class="input" required minlength="2" maxlength="100" autocomplete="off"></label>
+          <label><span id="fb-body-label">Details (what you did, what happened, what you expected)</span><textarea name="body" class="input" required minlength="2" maxlength="4000" rows="4"></textarea></label>
+          <button class="btn-gold sm" type="submit">Send</button>
+          <p class="form-msg" role="status"></p>
+        </form>
+        <details class="sub" id="fb-mine-wrap"><summary>What I've sent (<span id="fb-count">0</span>)</summary><ul class="activity" id="fb-mine"></ul></details>
+      </div>
+
+      <div class="card" id="referral-card">
+        <div class="card-head"><span class="label accent">Refer a friend</span></div>
+        <p class="small">Share your code — when someone signs up with it, <strong>you get 1 free month</strong> of membership credit.</p>
+        <div class="referral-code-row">
+          <code class="referral-code" id="ref-code">—</code>
+          <button type="button" class="btn-gold sm" id="copy-ref">Copy</button>
+        </div>
+        <p class="small muted" id="ref-stats"></p>
+        <div class="referral-share" id="ref-share">
+          <button type="button" class="btn-blue sm" id="share-ref">Share link</button>
+        </div>
+      </div>
+
+      <div class="card install install-card">
+        <div class="card-head"><span class="label accent">Get the app</span></div>
+        <p class="small install-text"></p>
+        <div class="install-steps-wrap" hidden><ol class="install-steps small"></ol></div>
+        <button type="button" class="btn-blue install-btn"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:8px" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Install MD Fit</button>
+      </div>
+      </div>
+
+      <div class="profile-links">
+        <a href="/">mymdfit.com</a><a href="tel:+19413130562">Call 941-313-0562</a><a href="/privacy-policy">Privacy</a><a href="/terms">Terms</a>
+        <button type="button" class="link danger" id="logout">Log out</button>
+      </div>
+      <p class="muted tiny center">Guides and tracking are educational and don't replace an in-person evaluation. In an emergency, call 911.</p>
+    </section>
+  </div>
+
+  <nav class="tabbar" aria-label="App">
+    <a class="side-brand" href="/"><img src="assets/logo.webp" alt="" width="48" height="48"><span><b>MD Fit</b><small>Physical Rehabilitation &amp; Fitness</small></span></a>
+    <button type="button" data-tab="home" aria-current="page"><svg viewBox="0 0 24 24"><path d="M12 3 2 12h3v8h5v-6h4v6h5v-8h3z"/></svg><span class="short">Home</span><span class="long">Dashboard</span></button>
+    <button type="button" data-tab="generate"><svg viewBox="0 0 24 24"><path d="M3 17v2h6v-2zM3 5v2h10V5zm10 16v-2h8v-2h-8v-2h-2v6zM7 9v2H3v2h4v2h2V9zm14 4v-2H11v2zm-6-4h2V7h4V5h-4V3h-2z"/></svg><span class="short">Workout</span><span class="long">Workout Generator</span></button>
+    <button type="button" data-tab="programs" class="ov"><svg viewBox="0 0 24 24"><path d="M19 3h-4.2A3 3 0 0 0 12 1a3 3 0 0 0-2.8 2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-7 0a1 1 0 1 1-1 1 1 1 0 0 1 1-1zm-2 14-4-4 1.4-1.4 2.6 2.6 6.6-6.6L18 9z"/></svg><span class="short">Programs</span><span class="long">Programs</span></button>
+    <button type="button" data-tab="videos"><svg viewBox="0 0 24 24"><path d="M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm6 3.5v7l6-3.5z"/></svg><span class="short">Videos</span><span class="long">Video Library</span></button>
+    <button type="button" data-tab="pain"><svg viewBox="0 0 24 24"><path d="M12 2a2 2 0 1 1-2 2 2 2 0 0 1 2-2zm-3 20v-7H7.5V9a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v6H15v7z"/></svg><span class="short">Pain</span><span class="long">Pain Tool</span></button>
+    <button type="button" data-tab="learn" class="ov"><svg viewBox="0 0 24 24"><path d="M12 3 1 9l11 6 9-4.9V17h2V9zM5 13.2v4L12 21l7-3.8v-4L12 17z"/></svg><span class="short">Learn</span><span class="long">Lectures &amp; Live Q&amp;A</span></button>
+    <button type="button" data-tab="progress"><svg viewBox="0 0 24 24"><path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z"/></svg><span class="short">Progress</span><span class="long">Progress Tracking</span></button>
+    <button type="button" data-tab="premium" class="ov"><svg viewBox="0 0 24 24"><path d="M5 16 3 5l5.5 5L12 4l3.5 6L21 5l-2 11zm14 3a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-1h14z"/></svg><span class="short">Membership</span><span class="long">Membership &amp; 1-on-1</span></button>
+    <button type="button" data-tab="messages" class="ov"><svg viewBox="0 0 24 24"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM6 9h12v2H6zm8 5H6v-2h8zm4-6H6V6h12z"/></svg><span class="short">Messages</span><span class="long">Message Dr. Jared</span><i class="tab-badge" id="msg-badge" hidden></i></button>
+    <button type="button" data-tab="tips" class="ov"><svg viewBox="0 0 24 24"><path d="M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9zm3-19a7 7 0 0 0-4 12.7V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.3A7 7 0 0 0 12 2z"/></svg><span class="short">Tips</span><span class="long">Health Tips</span></button>
+    <button type="button" data-tab="profile"><svg viewBox="0 0 24 24"><path d="M12 12a4.5 4.5 0 1 0-4.5-4.5A4.5 4.5 0 0 0 12 12zm0 2c-3.3 0-9 1.7-9 5v2h18v-2c0-3.3-5.7-5-9-5z"/></svg><span class="short">Profile</span><span class="long">My Profile</span></button>
+    <button type="button" class="more-btn" id="more-btn" aria-haspopup="dialog"><svg viewBox="0 0 24 24"><path d="M6 10a2 2 0 1 0 2 2 2 2 0 0 0-2-2zm6 0a2 2 0 1 0 2 2 2 2 0 0 0-2-2zm6 0a2 2 0 1 0 2 2 2 2 0 0 0-2-2z"/></svg><span class="short">More</span></button>
+    <div class="side-foot"><p class="side-tag">Move better<br>Feel stronger<br>Live more</p><a class="side-book" href="/book">Book a visit</a><a href="tel:+19413130562">941-313-0562</a></div>
+  </nav>
+
+  <dialog class="sheet paywall" id="paywall" aria-label="Become a member">
+    <div class="sheet-head"><b>Unlock everything</b><button type="button" class="icon-btn" data-close aria-label="Close"><svg viewBox="0 0 24 24"><path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/></svg></button></div>
+    <p class="pw-reason" id="pw-reason"></p>
+    <ul class="pw-perks"><li>Unlimited workouts and custom plans</li><li>Every premade program</li><li>Lectures and the monthly live Q&amp;A</li><li>Message Dr. Jared directly</li></ul>
+    <p class="muted small">The pain tools, pain tracks and guides stay free for everyone.</p>
+    <p class="pw-price" id="pw-price"></p>
+    <form id="pw-form" class="pw-review nums-form" novalidate>
+      <p class="pw-offer"><b>Get 30% off your first month:</b> leave a quick, honest review. Any rating counts.</p>
+      <div class="stars-pick"><input type="radio" name="pwrating" id="pwr-5" value="5"><label for="pwr-5" title="5 stars">★</label><input type="radio" name="pwrating" id="pwr-4" value="4"><label for="pwr-4" title="4 stars">★</label><input type="radio" name="pwrating" id="pwr-3" value="3"><label for="pwr-3" title="3 stars">★</label><input type="radio" name="pwrating" id="pwr-2" value="2"><label for="pwr-2" title="2 stars">★</label><input type="radio" name="pwrating" id="pwr-1" value="1"><label for="pwr-1" title="1 stars">★</label></div>
+      <label class="full">Your review<textarea name="text" rows="3" maxlength="2000" required minlength="10" placeholder="How has MD Fit helped so far?"></textarea></label>
+      <label class="pw-pub"><input type="checkbox" name="publish" checked> OK to show my review and first name on the website</label>
+      <button class="btn-gold sm" type="submit">Send review &amp; get 30% off</button><span class="nums-msg small"></span>
+    </form>
+    <div id="pw-have" class="pw-have" hidden><p>Your code <b id="pw-code"></b> gives you <b>30% off your first month</b>.</p></div>
+    <button type="button" class="btn-blue" id="pw-subscribe">See memberships</button>
+  </dialog>
+
+  <dialog class="sheet more-sheet" id="more-sheet" aria-label="More">
+    <div class="sheet-head"><b>More</b><button type="button" class="icon-btn" data-close aria-label="Close"><svg viewBox="0 0 24 24"><path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/></svg></button></div>
+    <div class="more-list" id="more-list"></div>
+  </dialog>
+
+  <dialog class="sheet" id="lecture-dialog">
+    <div class="sheet-head"><b id="lec-title"></b><button type="button" class="icon-btn" data-close aria-label="Close"><svg viewBox="0 0 24 24"><path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/></svg></button></div>
+    <div class="frame"><iframe id="lec-frame" title="Lecture" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>
+    <p class="muted small" id="lec-meta"></p>
+  </dialog>
+
+  <!-- Workout player -->
+  <div class="player" id="player" hidden role="dialog" aria-modal="true" aria-label="Workout">
+    <header class="player-top">
+      <button type="button" class="icon-btn" id="p-close" aria-label="End workout"><svg viewBox="0 0 24 24"><path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/></svg></button>
+      <div class="player-progress"><span id="p-step"></span><div class="bar"><i id="p-bar"></i></div></div>
+      <span class="timer" id="p-timer">0:00</span>
+    </header>
+    <div class="p-opts" id="p-opts" role="group" aria-label="Player options">
+      <button type="button" data-opt="breaks" aria-pressed="true">Breaks</button>
+      <button type="button" data-opt="sound" aria-pressed="false">Sound</button>
+      <button type="button" id="p-hr" class="p-hr" hidden>♥ Connect heart rate</button>
+    </div>
+    <div class="frame p-frame" id="p-vwrap" hidden><video id="p-video" playsinline webkit-playsinline muted autoplay preload="auto"></video><button type="button" class="p-fs" id="p-fs" aria-label="Full screen video"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button></div>
+    <div class="player-body" id="p-body"></div>
+    <footer class="player-foot">
+      <button type="button" class="btn-ghost" id="p-prev">Back</button>
+      <button type="button" class="btn-ghost" id="p-pause">Pause</button>
+      <button type="button" class="btn-gold" id="p-next">Next</button>
+    </footer>
+  </div>
+
+  <dialog class="sheet" id="book-dialog">
+    <div class="sheet-head"><b>Book a visit</b><button type="button" class="icon-btn" data-close aria-label="Close"><svg viewBox="0 0 24 24"><path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/></svg></button></div>
+    <div class="book-flow" id="book-flow">
+      <div class="book-step" data-step="type">
+        <p class="small muted">Pick what you need. Dr. Jared will confirm by email.</p>
+        <div class="book-types" id="book-types"></div>
+      </div>
+      <div class="book-step" data-step="when" hidden>
+        <p class="small"><b id="book-type-label"></b> <button type="button" class="link" id="book-back">Change</button></p>
+        <div class="book-dates" id="book-dates"></div>
+        <div class="book-times" id="book-times"></div>
+      </div>
+      <div class="book-step" data-step="confirm" hidden>
+        <p class="small"><b id="book-summary"></b></p>
+        <label class="small">Anything Dr. Jared should know? (optional)<textarea id="book-note" rows="3" maxlength="400" placeholder="Where it hurts, how long, goals…"></textarea></label>
+        <button type="button" class="btn-blue" id="book-confirm">Confirm booking</button>
+        <p class="form-msg small" id="book-msg" role="status"></p>
+      </div>
+      <div class="book-step" data-step="done" hidden>
+        <p class="ci-done-title">✓ You're booked</p>
+        <p class="small" id="book-done-info"></p>
+        <button type="button" class="btn-blue" id="book-close-done">Done</button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog class="sheet" id="video-dialog">
+    <div class="sheet-head"><b id="vd-title"></b><button type="button" class="icon-btn" data-close aria-label="Close"><svg viewBox="0 0 24 24"><path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/></svg></button></div>
+    <div class="frame" id="vd-box"><iframe id="vd-frame" title="Exercise video" allow="autoplay; fullscreen" allowfullscreen hidden></iframe></div>
+    <p class="muted small" id="vd-meta"></p>
+  </dialog>
+
+
+<div class="a2hs" id="a2hs" hidden role="dialog" aria-modal="true" aria-labelledby="a2hs-title">
+  <div class="a2hs-sheet">
+    <button type="button" class="a2hs-x" aria-label="Close"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <img src="assets/app-icon-192.png" alt="" class="a2hs-icon" width="56" height="56">
+    <h3 id="a2hs-title">Add MD Fit to your Home Screen</h3>
+    <ol class="a2hs-steps">
+      <li><span class="a2hs-n">1</span><span>Tap <b class="a2hs-key">⋯</b> in Safari's bottom bar <span class="muted">(or the <b>Share</b> icon if you see it)</span></span></li>
+      <li><span class="a2hs-n">2</span><span>Tap <b class="a2hs-key"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M8 7l4-4 4 4M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1"/></svg> Share</b></span></li>
+      <li><span class="a2hs-n">3</span><span>Scroll down, tap <b class="a2hs-key"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8v8M8 12h8"/></svg> Add to Home Screen</b>, then <b>Add</b></span></li>
+    </ol>
+    <p class="a2hs-tip small">MD Fit then opens full-screen like an app.</p>
+  </div>
+  <div class="a2hs-arrow" aria-hidden="true">↓</div>
+</div>
+  <div class="ms" id="ms" hidden role="dialog" aria-modal="true" aria-labelledby="ms-title">
+    <div class="ms-rays" aria-hidden="true"></div>
+    <div class="ms-body">
+      <div class="ms-coin" aria-hidden="true"><div class="ms-coin-face" id="ms-face"></div></div>
+      <p class="ms-kicker" id="ms-kicker">Milestone unlocked</p>
+      <h2 id="ms-title"></h2>
+      <p class="ms-desc" id="ms-desc"></p>
+      <div class="ms-xp" id="ms-xp"></div>
+      <button type="button" class="ms-go" id="ms-go">Continue</button>
+    </div>
+  </div>
+  <div class="ms ms-lb" id="ms-lb" hidden role="dialog" aria-modal="true" aria-labelledby="ms-lb-title">
+    <div class="ms-body">
+      <p class="ms-kicker" id="ms-lb-league"></p>
+      <h2 id="ms-lb-title"></h2>
+      <ol class="board-list ms-lb-list" id="ms-lb-list"></ol>
+      <button type="button" class="ms-go" id="ms-lb-go">Continue</button>
+    </div>
+  </div>
+  <div class="toast" id="toast" hidden></div>
+  <div class="notifs" id="notifs" aria-live="polite"></div>
+
+  <script src="config.js?v=73fb174c"></script>
+  <script src="analytics.js?v=871c86ba" defer></script>
+  <script src="realtime.js?v=b6d56265"></script>
+  <script src="common.js?v=33a373b2"></script>
+  <script src="search.js?v=c2d8a6de" defer></script>
+  <script src="app/exercises.js?v=13bcd350"></script>
+  <script src="app/library.js?v=4e053a85"></script>
+  <script src="app/generator.js?v=3009bd34"></script>
+  <script src="painmuscles.js?v=74e3b348"></script>
+  <script src="painpatterns.js?v=eefa906e"></script>
+  <script src="paintracks.js?v=a4fc10a4"></script>
+  <script src="painmap.js?v=7cde1557"></script>
+  <script src="musclereports.js?v=cd9ced26"></script>
+  <script src="guides.js?v=aaa4ac68"></script>
+  <script src="stripe-checkout.js?v=0b68bde3"></script>
+  <script src="account.js?v=e7806abb"></script>
+<script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Book an Appointment | MD Fit Sarasota</title>
+  <meta name="description" content="Book an evaluation, rehab session or free phone consult with Dr. Jared Caban at MD Fit, 3214 Clark Road, Sarasota. See live availability and confirm in under a minute.">
+  <link rel="canonical" href="https://www.mymdfit.com/book">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Book with MD Fit | Physical Rehabilitation & Fitness">
+  <meta property="og:description" content="Live availability. Confirm in under a minute.">
+  <meta name="theme-color" content="#0A1A2E">
+  <link rel="icon" href="assets/icon-64.png" type="image/png">
+  <link rel="apple-touch-icon" href="assets/logo.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=b4a2a475">
+  <link rel="stylesheet" href="book.css?v=a462994e">
+</head>
+<body class="book-page">
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a href="/" class="brand" aria-label="MD Fit home">
+        <img class="brand-logo" src="assets/logo.webp" alt="MD Fit" width="160" height="160"><span class="brand-text"><span class="brand-sub">Physical Rehab &amp; Fitness</span></span>
+      </a>
+      <div class="book-nav">
+        <a href="tel:+19413130562" class="nav-phone" data-phone-link><span class="hide-sm">Questions? </span><span data-bind="business.phone">941-313-0562</span></a>
+        <a href="/login" class="book-account" data-account-link>Log in</a>
+        <a href="/" class="btn btn-ghost btn-sm hide-sm">Main site</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap book-layout">
+    <aside class="book-info">
+      <div class="book-info-inner">
+        <p class="eyebrow">Book online</p>
+        <h1>Book with <span data-bind="coach.name">Dr. Jared Caban</span></h1>
+        <p class="book-cred" data-bind="coach.title">MD, MSc · Certified Clinical Exercise Physiologist</p>
+        <a class="rating" id="rating" href="/#reviews" hidden>
+          <span class="stars" aria-hidden="true">★★★★★</span>
+          <span><strong data-bind="rating.score"></strong> from <strong data-bind="rating.count"></strong> reviews</span>
+        </a>
+        <ul class="book-facts">
+          <li>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+            <span><a data-maps target="_blank" rel="noopener" data-bind="business.address">3214 Clark Road, Sarasota, FL 34231</a></span>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            <span data-bind="business.hours">Mon–Fri, 9 AM – 5 PM</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>
+            <a href="tel:+19413130562" data-phone-link data-bind="business.phone">941-313-0562</a>
+          </li>
+        </ul>
+        <div class="expect">
+          <h2>What to expect</h2>
+          <ol>
+            <li><b>Assess.</b> Pain and movement evaluation: posture, gait, flexibility and muscle balance.</li>
+            <li><b>Treat.</b> Hands-on work and movement correction on day one.</li>
+            <li><b>Plan.</b> You leave knowing exactly what we're fixing and how.</li>
+          </ol>
+        </div>
+        <p class="fine">Free to cancel online with the link in your confirmation. Bring surgical notes or imaging reports if you have them.</p>
+      </div>
+    </aside>
+
+    <section class="book-main" aria-label="Book an appointment">
+      <div class="booker" aria-live="polite"><div class="booker-step"><p class="muted">Loading availability…</p></div></div>
+    </section>
+  </main>
+
+  <footer class="book-foot wrap">
+    <p>MD Fit provides rehabilitation-focused exercise, manual therapy and fitness services. Information on this site is not medical advice. In an emergency, call 911.</p>
+    <p>&copy; <span id="year"></span> MD Fit LLC · <a href="/">mymdfit.com</a> · <a href="/privacy-policy">Privacy</a> · <a href="/terms">Terms</a></p>
+    <p class="tm-notice">MD Fit&trade; and the MD Fit logo are trademarks of MD Fit LLC. All rights reserved.</p>
+  </footer>
+
+  <script src="config.js?v=73fb174c"></script>
+  <script src="analytics.js?v=871c86ba" defer></script>
+  <script src="realtime.js?v=b6d56265"></script>
+  <script src="common.js?v=33a373b2"></script>
+  <script src="booking.js?v=4d1ccca3"></script>
+  <script>
+    (() => {
+      const { $, $$, get, telHref, loadSite, mountBooker } = window.MDFit;
+      $("#year").textContent = new Date().getFullYear();
+      // Deep links: /book?type=call opens the phone consult, /book?type=session a follow-up
+      const params = new URLSearchParams(location.search);
+      loadSite().then((data) => {
+        const s = data.settings, b = s.business;
+        $$("[data-bind]").forEach((el) => { const v = get(s, el.dataset.bind); if (v !== undefined && v !== "") el.textContent = v; });
+        if (b.phone) $$("[data-phone-link]").forEach((a) => (a.href = telHref(b.phone)));
+        $$("[data-maps]").forEach((a) => (a.href = b.mapsUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(b.address)}`));
+        $("#rating").hidden = !(s.rating.score && s.rating.count);
+        window.MDFit.loadGoogleReviews().then((g) => g && window.MDFit.applyGoogleRating(g));
+        mountBooker($(".booker"), data, {
+          type: params.get("type"),
+          onTypeChange: (t) => history.replaceState(null, "", `?type=${encodeURIComponent(t.id)}`),
+          onBooked: (a) => { if (a.provider !== "cal") window.scrollTo({ top: 0, behavior: "smooth" }); }
+        });
+      }).catch(() => {
+        $(".booker").innerHTML = `<div class="booker-step"><h2 class="step-title">Online booking is unavailable right now</h2><p>Call <a href="tel:+19413130562">941-313-0562</a> and we'll get you scheduled.</p></div>`;
+      });
+    })();
+    if (window.MDFitRT) MDFitRT.connect({ namespace: "/public" });
+  </script>
+<script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>

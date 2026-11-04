@@ -1,0 +1,41 @@
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: OAI-SearchBot
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: Amazonbot
+Disallow: /
+
+User-agent: *
+Disallow: /account
+Disallow: /admin
+Disallow: /api/
+Disallow: /login
+Disallow: /cancel
+Disallow: /intake
+Disallow: /data/
+Allow: /
+
+Sitemap: https://www.mymdfit.com/sitemap.xml
