@@ -19,6 +19,8 @@ jobs:
         with:
           repository: Dr-Caban/mdfit-backend
           path: _backend
+          # Once mdfit-backend is private, add a repo secret BACKEND_REPO_TOKEN (read-only Contents on mdfit-backend)
+          token: ${{ secrets.BACKEND_REPO_TOKEN || github.token }}
       - uses: actions/setup-node@v4
         with:
           node-version: 22
