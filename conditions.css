@@ -26,7 +26,7 @@
 .cd-fine { font-size: 12px; }
 .cd-guide-cta { text-align: center; padding: 10px 16px 40px; font-family: Montserrat, sans-serif; }
 @media (max-width: 560px) { .cd-links { columns: 1; } }
-.cd-page .gd-nav { background: #0A1A2E; padding: 10px 16px; display: flex; align-items: center; }
+.cd-page .gd-nav { background: #0A1A2E; padding: 10px 16px; display: flex; flex-wrap: wrap; row-gap: 8px; align-items: center; }
 .cd-page .gd-nav a { color: #fff; text-decoration: none; font: 700 15px Montserrat, sans-serif; }
 .cd-page .gd-nav a:first-child { display: flex; align-items: center; gap: 8px; margin-right: auto; }
 .cd-page .gd-nav a:last-child { background: #7AAFD7; color: #0A1A2E; padding: 8px 14px; border-radius: 10px; }

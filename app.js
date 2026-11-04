@@ -160,5 +160,4 @@
     $(".booker").innerHTML = `<div class="booker-step"><p>Online booking is unavailable right now. Call <a href="tel:+19413130562">941-313-0562</a> and we'll get you scheduled.</p></div>`;
     $("#reviews").hidden = true;
   });
-  loadSchedule();
 })();

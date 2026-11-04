@@ -15,7 +15,7 @@
 .legal-toc ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
 .legal-toc a { color: var(--text); text-decoration: none; }
 .legal-toc a:hover { color: var(--accent-text); }
-.legal-doc { max-width: 720px; }
+.legal-doc { max-width: 720px; overflow-wrap: break-word; }
 .legal-doc section { padding-bottom: 8px; }
 .legal-doc h2 { font: 700 22px/1.3 var(--display); color: var(--heading); margin: 32px 0 10px; scroll-margin-top: 20px; }
 .legal-doc section:first-child h2 { margin-top: 0; }
@@ -36,7 +36,7 @@
 .legal-foot .wrap { display: flex; flex-wrap: wrap; gap: 10px 22px; justify-content: space-between; }
 .legal-foot a { color: var(--accent-bright); }
 @media (max-width: 860px) {
-  .legal-body { grid-template-columns: 1fr; gap: 24px; padding-top: 28px; }
+  .legal-body { grid-template-columns: minmax(0, 1fr); gap: 24px; padding-top: 28px; }
   .legal-toc { position: static; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; }
   .legal-top nav { gap: 14px; font-size: 13px; }
 }

@@ -1,0 +1,25 @@
+# After a push to main, checks that mymdfit.com actually serves the new commit (x-mdfit-build header). Fails when
+# the domain is attached to a Vercel project that isn't deploying this repo. See scripts/check-live-build.js.
+name: Live site is current
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  live-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/check-live-build.js
+        env:
+          SITE: https://mymdfit.com
+          EXPECTED_SHA: ${{ github.sha }}
+          WAIT_MINUTES: "6"

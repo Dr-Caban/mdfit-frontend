@@ -1,0 +1,34 @@
+# Fails a push if any page or account screen is wider than a 320/390/768px screen, if a program image outgrows its
+# card, if a page throws, or if HTML links a missing CSS/JS file. Runs the API from Dr-Caban/mdfit-backend so the
+# account screens load real data. See scripts/layout-check.js.
+name: Mobile layout
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  layout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      NODE_ENV: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: Dr-Caban/mdfit-backend
+          path: _backend
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: _backend/package-lock.json
+      - run: npm ci
+        working-directory: _backend
+      - run: npm install --no-save --no-package-lock playwright@1.63.0 && npx playwright install --with-deps chromium
+        working-directory: scripts
+      - run: node layout-check.js
+        working-directory: scripts
+        env:
+          BACKEND_DIR: ../_backend
