@@ -46,9 +46,30 @@ def thumb_crop(size, box):
     side = min(max(side, min(w, h) * 0.38), min(w, h))
     cx = (x0 + x1) / 2
     top = (y0 + y1) / 2 - side / 2 if sh <= side else y0 - side * 0.04  # whole person if they fit, else from the head down
-    left = min(max(cx - side / 2, 0), w - side)
-    top = min(max(top, 0), h - side)
+    left = cx - side / 2                   # may run past the edge: the person is centred, and the gap is filled by crop_padded
+    top = min(max(top, -side * 0.08), h - side)
     return (int(left), int(top), int(left + side), int(top + side))
+
+
+def crop_padded(im, box):
+    """Crop a box that may extend past the image; the missing strip is a mirror of the blurred background, so the
+    person stays centred instead of being pushed to one side when they stand at the poster's edge."""
+    x0, y0, x1, y1 = box
+    w, h = im.size
+    pad = max(0, -x0, -y0, x1 - w, y1 - h)
+    if not pad:
+        return im.crop(box)
+    # Fill from the opposite side of the poster (pure blurred background, not a mirror of the person's own edge),
+    # then soften the fill and feather the seam so nothing reads as a hard line.
+    a = np.asarray(im)
+    padded = Image.fromarray(np.pad(a, ((pad, pad), (pad, pad), (0, 0)), mode="wrap"))
+    soft = padded.filter(ImageFilter.GaussianBlur(max(12, pad // 6)))
+    mask = Image.new("L", padded.size, 255)
+    inner = Image.new("L", (w, h), 0)
+    mask.paste(inner, (pad, pad))
+    mask = mask.filter(ImageFilter.GaussianBlur(max(10, pad // 8)))   # feathered boundary between poster and fill
+    out = Image.composite(soft, padded, mask)
+    return out.crop((x0 + pad, y0 + pad, x1 + pad, y1 + pad))
 
 
 def stale(dest, src):
@@ -71,7 +92,7 @@ for png in sorted(SRC.glob("*.png")):
         for w in THUMB_WIDTHS:
             dest = OUT / f"{png.stem}-thumb-{w}.webp"
             if stale(dest, png):
-                im.crop(crop).resize((w, w), Image.LANCZOS).save(dest, "WEBP", quality=QUALITY[w], method=6)
+                crop_padded(im, crop).resize((w, w), Image.LANCZOS).save(dest, "WEBP", quality=QUALITY[w], method=6)
                 written.append(dest)
         if PREVIEW:
             dbg = im.copy()
@@ -81,7 +102,7 @@ for png in sorted(SRC.glob("*.png")):
             dbg.thumbnail((260, 260))
             tile = Image.new("RGB", (260, 440), "white")
             tile.paste(dbg, (0, 0))
-            tile.paste(im.crop(crop).resize((160, 160), Image.LANCZOS), (50, 270))
+            tile.paste(crop_padded(im, crop).resize((160, 160), Image.LANCZOS), (50, 270))
             ImageDraw.Draw(tile).text((4, 430), png.stem, fill="black")
             tiles.append(tile)
     print(f"{png.name}: subject {box} thumb crop {crop}; wrote {len(written)} file(s)")
