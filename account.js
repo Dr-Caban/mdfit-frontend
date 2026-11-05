@@ -1893,7 +1893,7 @@
         </button></li>`).join("");
     }
     const bigCard = (p) => `<button type="button" class="hp-card" data-fp="${esc(p.id)}">
-      ${p.image ? progPoster(p, "hp-img", "(max-width: 820px) 64px, 320px", { media: "(max-width: 820px)", sizes: "64px" }) : `<span class="hp-ic ${esc((p.category || "").toLowerCase().split(" ")[0])}"></span>`}
+      ${p.image ? progPoster(p, "hp-img", "(max-width: 820px) 88px, 320px", { media: "(max-width: 820px)", sizes: "88px" }) : `<span class="hp-ic ${esc((p.category || "").toLowerCase().split(" ")[0])}"></span>`}
       <span class="hp-cat">${esc(p.category || "Program")}</span>
       <b>${esc(p.title)}</b>
       <span class="muted small hp-meta">${p.weeks} weeks · ${esc(p.level || "all levels")}${p.days && p.days.length ? ` · ${p.days.length} days/wk` : ""}</span>

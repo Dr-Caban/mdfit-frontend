@@ -196,8 +196,8 @@
      Breakpoint set to 820px so iPads in portrait and large-DPR Android phones all get the compact layout. */
   .hp-grid { grid-template-columns: 1fr; gap: 8px; }
   /* Grid row: thumbnail | category, title and details stacked | chevron */
-  .hp-card { display: grid; grid-template-columns: 64px minmax(0, 1fr) 14px; column-gap: 12px; row-gap: 2px; align-items: center; padding: 8px 10px 8px 8px; }
-  .hp-card .hp-img, .hp-card .hp-ic { grid-column: 1; grid-row: 1 / span 3; width: 64px; height: 64px; aspect-ratio: 1/1; border-radius: 8px; margin: 0; }
+  .hp-card { display: grid; grid-template-columns: 88px minmax(0, 1fr) 14px; column-gap: 12px; row-gap: 2px; align-items: center; padding: 8px 10px 8px 8px; }
+  .hp-card .hp-img, .hp-card .hp-ic { grid-column: 1; grid-row: 1 / span 3; width: 88px; height: 88px; aspect-ratio: 1/1; border-radius: 8px; margin: 0; }
   .hp-card .hp-cat, .hp-card b, .hp-card .hp-meta { grid-column: 2; min-width: 0; overflow-wrap: anywhere; }
   .hp-card .hp-cat { font-size: 9px; align-self: end; }
   .hp-card b { font-size: 14px; }
