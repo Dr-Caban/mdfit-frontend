@@ -4,10 +4,7 @@
 
   $("#year").textContent = new Date().getFullYear();
 
-  // ---- Mobile menu
-  const menuBtn = $(".menu-btn"), menu = $("#menu");
-  menuBtn.addEventListener("click", () => menuBtn.setAttribute("aria-expanded", menu.classList.toggle("open")));
-  $$("#menu a").forEach((a) => a.addEventListener("click", () => { menu.classList.remove("open"); menuBtn.setAttribute("aria-expanded", false); }));
+  // Mobile menu: handled only by /site-header.js (a second handler here made one tap open and close it).
 
   // ---- Body-area chips (hero quick start + intake form)
   const renderAreas = (areas) => $$("[data-areas]").forEach((box) => (box.innerHTML = areaChips(areas)));
