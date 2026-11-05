@@ -79,6 +79,7 @@
   let rtWired = false; // live-update handlers are registered once; logging in again only reconnects
   function show() {
     $("#login").hidden = true; $("#app").hidden = false; openTab(current);
+    pollBadges(); // unread messages / open feedback counts right away, not a minute after logging in
     if (hasNotify && Notification.permission === "default") { try { Promise.resolve(Notification.requestPermission()).catch(() => {}); } catch {} }
     if (window.MDFitRT) {
       MDFitRT.connect({ namespace: "/admin", token });
@@ -90,7 +91,7 @@
         if (ev.type === "booking" || ev.type === "booking_cancelled") { if (current === "bookings") run(loadBookings)(); }
         if (ev.type === "lead") { if (current === "leads") run(loadLeads)(); }
         if (ev.type === "subscribe") { if (current === "subs") run(loadSubs)(); }
-        if (ev.type === "feedback" || ev.type === "bug_report" || ev.type === "suggestion") { if (current === "feedback") run(loadFeedback)(); }
+        if (ev.type === "feedback" || ev.type === "bug_report" || ev.type === "suggestion") { if (current === "feedback") run(loadFeedback)(); pollBadges(); }
       });
       MDFitRT.on("new_message", () => {
         if (current === "messages") run(loadThreads)();
