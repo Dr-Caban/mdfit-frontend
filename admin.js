@@ -493,7 +493,34 @@
 
   // ---- Messages from members
   let openThread = null;
+  // Recent group messages: who read them, how many email notices went out, and a reminder button for the rest
+  async function loadBroadcasts() {
+    const box = $("#bc-recent"); if (!box) return;
+    let list = [];
+    try { list = await api("GET", "/api/admin/messages/broadcasts"); } catch { box.hidden = true; return; }
+    box.hidden = !list.length;
+    box.innerHTML = list.length ? `<h4>Recent group messages</h4>` + list.slice(0, 5).map((g) => {
+      const unread = g.recipients - g.read;
+      return `<div class="bc-row" data-bid="${esc(g.broadcastId)}">
+        <div class="bc-info"><p>${esc(g.preview)}${g.preview.length >= 120 ? "…" : ""}</p>
+          <small class="muted">${when(g.at)} · ${g.recipients} people · ${g.read} read · ${g.sending ? "emails going out now…" : `${g.emailed} emailed`}</small></div>
+        ${unread && !g.sending ? `<button type="button" class="mini" data-remind>Email reminder to ${unread} who haven't read it</button>` : ""}
+      </div>`;
+    }).join("") : "";
+    if (list.some((g) => g.sending)) setTimeout(() => { if (current === "messages") loadBroadcasts(); }, 4000);
+  }
+  $("#bc-recent").addEventListener("click", run(async (e) => {
+    const b = e.target.closest("[data-remind]"); if (!b) return;
+    const row = b.closest("[data-bid]");
+    if (!confirm(b.textContent.replace("Email reminder to", "Email a reminder to") + "?")) return;
+    b.disabled = true; b.textContent = "Sending…";
+    try {
+      const r = await api("POST", `/api/admin/messages/broadcast/${encodeURIComponent(row.dataset.bid)}/remind`, {});
+      toast(r.failed ? `Reminder sent to ${r.sent}; ${r.failed} couldn't be emailed (bad address).` : `Reminder emailed to ${r.sent} ${r.sent === 1 ? "person" : "people"}.`);
+    } finally { loadBroadcasts(); }
+  }));
   async function loadThreads() {
+    loadBroadcasts();
     const d = await api("GET", "/api/admin/messages");
     const c = $("#admin-msg-count"); c.hidden = !d.unread; c.textContent = d.unread;
     $("#msg-threads").innerHTML = d.threads.length ? d.threads.map((t) => `

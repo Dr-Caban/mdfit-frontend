@@ -208,3 +208,10 @@ code { background: var(--paper-2); padding: 1px 6px; border-radius: 4px; font-si
 .an-bar i { display: block; height: 100%; background: #7AAFD7; border-radius: 999px; }
 .an-row b { text-align: right; font-variant-numeric: tabular-nums; }
 .an-row small { color: #6b6a6e; text-align: right; font-variant-numeric: tabular-nums; }
+/* Recent group messages (Messages tab) */
+.bc-recent { border: 1px solid #e4ded1; border-radius: 12px; background: #fff; padding: 10px 14px; margin: 0 0 14px; display: grid; gap: 8px; }
+.bc-recent h4 { margin: 2px 0; font-size: 14px; }
+.bc-row { display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; border-top: 1px solid #f0ece3; padding-top: 8px; }
+.bc-row:first-of-type { border-top: 0; padding-top: 0; }
+.bc-info { min-width: 0; flex: 1 1 260px; }
+.bc-info p { margin: 0 0 2px; overflow-wrap: anywhere; }
