@@ -511,6 +511,79 @@
     }));
   }
   $("#msg-threads").addEventListener("click", (e) => { const r = e.target.closest("[data-cid]"); if (r) { showThread(r.dataset.cid).then(loadThreads); } });
+
+  // ---- One message to many: everyone, all members, one tier, or picked people. Each lands in that person's own thread.
+  $("#bc-open").addEventListener("click", run(async () => {
+    openThread = null; $$("#msg-threads .msg-row").forEach((r) => r.classList.remove("on"));
+    const [people, c] = await Promise.all([api("GET", "/api/admin/clients"), contentCache ? contentCache : api("GET", "/api/admin/content")]);
+    contentCache = c;
+    const tiers = c.tiers || [], tierName = (id) => (tiers.find((t) => t.id === id) || {}).name || id;
+    const picked = new Set();
+    const box = $("#msg-thread");
+    box.innerHTML = `<form class="bc-form" id="bc-form">
+      <div class="item-head"><b>New message to many</b> <span class="muted small">Each person gets it in their own private thread and can reply to you as usual.</span></div>
+      <fieldset class="bc-to"><legend>Send to</legend>
+        <label class="check"><input type="radio" name="to" value="all" checked> Everyone with an account</label>
+        <label class="check"><input type="radio" name="to" value="members"> All active members</label>
+        <label class="check"><input type="radio" name="to" value="tier"${tiers.length ? "" : " disabled"}> One membership tier
+          <select name="tier">${tiers.map((t) => `<option value="${esc(t.id)}">${esc(t.name)}</option>`).join("")}</select></label>
+        <label class="check"><input type="radio" name="to" value="selected"> People I pick</label>
+      </fieldset>
+      <div class="bc-pick" id="bc-pick" hidden>
+        <div class="row-actions"><input type="search" id="bc-search" placeholder="Search name or email" style="flex:1;min-width:180px">
+          <button class="mini" type="button" id="bc-all">Select shown</button><button class="mini" type="button" id="bc-none">Clear</button></div>
+        <div class="bc-list" id="bc-list"></div>
+      </div>
+      <textarea name="body" rows="5" maxlength="2000" placeholder="Write your message…" required></textarea>
+      <label class="check"><input type="checkbox" name="email" checked> Also email them that they have a new message (the email never includes the message itself)</label>
+      <div class="row-actions"><button class="btn btn-sm" type="submit" id="bc-send">Send</button><span class="muted small" id="bc-count"></span></div>
+    </form>`;
+    const f = $("#bc-form");
+    const audience = () => {
+      const to = f.to.value;
+      if (to === "all") return people;
+      if (to === "members") return people.filter((p) => p.membership);
+      if (to === "tier") return people.filter((p) => p.membership && p.membership.tier === f.tier.value);
+      return people.filter((p) => picked.has(p.id));
+    };
+    const shown = () => { const q = $("#bc-search").value.trim().toLowerCase(); return people.filter((p) => !q || `${p.name} ${p.email}`.toLowerCase().includes(q)); };
+    const renderList = () => {
+      const list = shown();
+      $("#bc-list").innerHTML = list.length ? list.map((p) => `<label class="check bc-person"><input type="checkbox" value="${esc(p.id)}"${picked.has(p.id) ? " checked" : ""}>
+        <span><b>${esc(p.name)}</b> <span class="muted small">${esc(p.email)}</span>${p.membership ? ` <span class="pill approved">${esc(tierName(p.membership.tier))}</span>` : ""}</span></label>`).join("")
+        : `<p class="muted small">Nobody matches.</p>`;
+    };
+    const update = () => {
+      $("#bc-pick").hidden = f.to.value !== "selected";
+      const n = audience().length;
+      $("#bc-count").textContent = n ? `${n} ${n === 1 ? "person" : "people"} will get this.` : f.to.value === "selected" ? "Pick at least one person." : "Nobody matches this choice yet.";
+      $("#bc-send").textContent = n ? `Send to ${n}` : "Send";
+      $("#bc-send").disabled = !n;
+    };
+    f.addEventListener("change", (e) => {
+      if (e.target.matches("#bc-list input")) { e.target.checked ? picked.add(e.target.value) : picked.delete(e.target.value); }
+      if (e.target.name === "tier") f.querySelector('input[value="tier"]').checked = true;
+      update();
+    });
+    $("#bc-search").addEventListener("input", renderList);
+    $("#bc-all").addEventListener("click", () => { shown().forEach((p) => picked.add(p.id)); renderList(); update(); });
+    $("#bc-none").addEventListener("click", () => { picked.clear(); renderList(); update(); });
+    f.addEventListener("submit", run(async (e) => {
+      e.preventDefault();
+      const body = f.body.value.trim(), n = audience().length; if (!body || !n) return;
+      const to = f.to.value;
+      const who = to === "all" ? "everyone with an account" : to === "members" ? "all active members" : to === "tier" ? `${tierName(f.tier.value)} members` : "the people you picked";
+      if (!confirm(`Send this message to ${n} ${n === 1 ? "person" : "people"} (${who})?`)) return;
+      $("#bc-send").disabled = true;
+      try {
+        const r = await api("POST", "/api/admin/messages/broadcast", { to, tier: f.tier.value, clientIds: [...picked], body, email: f.email.checked });
+        toast(`Sent to ${r.sent} ${r.sent === 1 ? "person" : "people"}.${r.emailing ? " Email notices are going out now." : ""}`);
+        box.innerHTML = `<p class="muted">Sent. Pick a conversation to see replies.</p>`;
+        loadThreads();
+      } finally { const b = $("#bc-send"); if (b) b.disabled = false; }
+    }));
+    renderList(); update(); f.body.focus();
+  }));
   function pollBadges() {
     if (!token) return;
     api("GET", "/api/admin/messages").then((d) => { const c = $("#admin-msg-count"); c.hidden = !d.unread; c.textContent = d.unread; }).catch(() => {});
