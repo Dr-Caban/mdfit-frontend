@@ -295,7 +295,7 @@
             </div>
             <label>Your review<textarea name="text" rows="4" required minlength="10" maxlength="2000" placeholder="What brought you in, and how do you feel now?"></textarea></label>
             <label class="check"><input type="checkbox" name="publish" checked> You can show my review and first name on this website</label>
-            <input name="company" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <input name="mdfit_hp" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
             <button class="btn btn-lg" type="submit">Send my review &amp; get 30% off</button>
             <p class="form-msg" role="status"></p>
             <p class="fine lr-google" hidden>Also on Google? <a target="_blank" rel="noopener">Review us on Google</a>. Thank you either way.</p>
@@ -350,7 +350,7 @@
           <label>Email<input name="email" type="email" required maxlength="254" autocomplete="email"></label>
           <label>Anything else? (optional)<textarea name="message" rows="3" maxlength="2000"></textarea></label>
           <label>How did you hear about us? (optional)<input name="referral" maxlength="120"></label>
-          <label class="hp" aria-hidden="true">Company<input name="company" tabindex="-1" autocomplete="off"></label>
+          <label class="hp" aria-hidden="true">Leave this empty<input name="mdfit_hp" tabindex="-1" autocomplete="off"></label>
           <button class="btn btn-lg" type="submit">Send to Dr. Jared</button>
           <p class="form-msg" role="status"></p>
         </form>
@@ -365,7 +365,7 @@
           <h2 class="h2">On Clark Road, Sarasota.</h2>
           <ul class="visit-list">
             <li><span>Address</span><a data-maps target="_blank" rel="noopener" data-bind="business.address">3214 Clark Road, Sarasota, FL 34231</a></li>
-            <li><span>Hours</span><b data-bind="business.hours">Mon–Fri, 9 AM – 5 PM</b></li>
+            <li><span>Hours</span><b data-bind="business.hours">Mon–Fri, 8 AM – 4 PM</b></li>
             <li><span>Phone</span><a data-phone-link href="tel:+19413130562" data-bind="business.phone">941-313-0562</a></li>
             <li class="email-row" hidden><span>Email</span><a data-email-link></a></li>
           </ul>
@@ -395,7 +395,7 @@
         <label for="news-email">Mobility tips, class openings and recovery advice. No spam.</label>
         <div class="news-row">
           <input id="news-email" name="email" type="email" placeholder="you@email.com" required autocomplete="email">
-          <input name="company" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <input name="mdfit_hp" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
           <button class="btn btn-sm" type="submit">Join</button>
         </div>
         <p class="form-msg" role="status"></p>
@@ -419,25 +419,25 @@
       <label>Name<input name="name" required minlength="2" maxlength="100" autocomplete="name"></label>
       <label>Email<input name="email" type="email" required autocomplete="email"></label>
       <label>Phone (optional)<input name="phone" type="tel" maxlength="30" autocomplete="tel"></label>
-      <input name="company" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <input name="mdfit_hp" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
       <button class="btn" type="submit">Reserve my spot</button>
       <p class="form-msg" role="status"></p>
     </form>
   </dialog>
 
-  <script src="config.js?v=1f2d97b9"></script>
+  <script src="config.js?v=aac711e3"></script>
   <script src="analytics.js?v=871c86ba" defer></script>
-  <script src="realtime.js?v=b6d56265"></script>
-  <script src="common.js?v=33a373b2"></script>
-  <script src="booking.js?v=4d1ccca3"></script>
+  <script src="realtime.js?v=17a9f858"></script>
+  <script src="common.js?v=27e14d99"></script>
+  <script src="booking.js?v=b59e53bc"></script>
   <script src="stripe-checkout.js?v=0b68bde3"></script>
-  <script src="pricing.js?v=03505708"></script>
-  <script src="app.js?v=76e08f3a"></script>
+  <script src="pricing.js?v=9ba79e5b"></script>
+  <script src="app.js?v=2debae65"></script>
   <script src="painmuscles.js?v=74e3b348"></script>
   <script src="painpatterns.js?v=eefa906e"></script>
   <script src="paintracks.js?v=a4fc10a4"></script>
   <script src="guides.js?v=aaa4ac68"></script>
-  <script src="painmap.js?v=7cde1557"></script>
+  <script src="painmap.js?v=52dd4372"></script>
 <script>if(window.MDFitRT)MDFitRT.connect({namespace:"/public"});</script>
 <script defer src="/_vercel/insights/script.js"></script>
 </body>

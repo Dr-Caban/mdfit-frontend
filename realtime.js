@@ -22,7 +22,7 @@
 
   window.MDFitRT = {
     connect: function (opts) {
-      var apiUrl = (window.MDFIT_CONFIG || {}).apiUrl;
+      var cfg = window.MDFIT_CONFIG || {}, apiUrl = cfg.realtimeUrl || cfg.apiUrl;
       if (!apiUrl) return Promise.resolve(null);
       apiUrl = apiUrl.replace(/\/+$/, "");
       var ns = opts.namespace || "/";

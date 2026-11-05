@@ -91,7 +91,8 @@
     return Math.max(1, Math.round(secs / 60));
   }
   // Picking a length sets a sensible circuit for it; clients can still change exercises, rounds and rest
-  const PRESETS = { 15: [4, 3, 15, 30], 20: [5, 3, 15, 45], 30: [6, 4, 15, 60], 45: [8, 5, 15, 45], 60: [8, 6, 20, 60], 90: [10, 7, 20, 90] };
+  // 25 isn't offered in the builder, but Dr. Jared's programs use 25-minute days (e.g. Marathon Prep).
+  const PRESETS = { 15: [4, 3, 15, 30], 20: [5, 3, 15, 45], 25: [5, 4, 15, 45], 30: [6, 4, 15, 60], 45: [8, 5, 15, 45], 60: [8, 6, 20, 60], 90: [10, 7, 20, 90] };
   function presetFor(length) {
     const [perRound, rounds, restEx, restRound] = PRESETS[length] || PRESETS[45];
     return { perRound, rounds, restEx, restRound };

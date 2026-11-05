@@ -55,7 +55,8 @@
           if (isApp) { const t = c.dataset.track; sheet.close(); sheet.remove(); sheet = null; setTimeout(() => { location.hash = "pain/track/" + t; }, 60); return; }
           else TK.open(c.dataset.track, { startLabel: "Do this track in the free MD Fit app →", onStart: (t) => { location.href = `/account#pain/track/${t.id}`; } });
         }
-        if (e.target.closest("a[href^='#']")) sheet.close();
+        // In the app, "Book an evaluation" is a data-action button: the app's own handler opens booking
+        if (e.target.closest("a[href^='#'], [data-action]")) sheet.close();
       });
       sheet.addEventListener("close", () => $$(".pm-region", root).forEach((b) => b.setAttribute("aria-pressed", "false")));
       return sheet;
@@ -75,7 +76,7 @@
         ${tracks.length ? `<div class="pm-choices pm-choices--clean">${tracks.map((t) => `<button type="button" class="pm-choice pm-choice--img-only ${PP && PP.has(t.id) && PP.PATTERNS[t.id].length > 1 ? "two" : ""}" data-track="${t.id}">
             ${PP && PP.has(t.id) ? PP.html(t.id, "") : `<div class="pp"><img src="${TK.img(t.img[0], 800)}" alt="" referrerpolicy="no-referrer"></div>`}
           </button>`).join("")}</div>` : `<p class="muted">We don't have a self-guided track for this area yet. Dr. Jared can find the source in one visit.</p>`}
-        <div class="pm-none"><span>None of these look right?</span><a href="${isApp ? "#book" : "/book"}" class="btn btn-sm">Book an evaluation</a></div>`;
+        <div class="pm-none"><span>None of these look right?</span>${isApp ? `<button type="button" class="btn btn-sm" data-action="book">Book an evaluation</button>` : `<a href="/book" class="btn btn-sm">Book an evaluation</a>`}</div>`;
       if (!d.open) d.showModal();
       $(".pm-sheet-body", d).scrollTop = 0;
     }

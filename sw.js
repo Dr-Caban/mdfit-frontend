@@ -1,6 +1,6 @@
 // Minimal service worker so MD Fit installs as an app. Caches the app shell; API calls always go to the network.
-const CACHE = "mdfit-6f1009d114";
-const SHELL = ["/account", "/app/app.css", "/account.js", "/app/exercises.js", "/app/generator.js", "/common.js", "/config.js", "/assets/logo.webp"];
+const CACHE = "mdfit-2b5878ccd9";
+const SHELL = ["/account","/nozoom.js","/app/app.css","/account.css","/guides.css","/config.js","/analytics.js","/realtime.js","/common.js","/search.js","/app/exercises.js","/app/library.js","/app/generator.js","/painmuscles.js","/painpatterns.js","/paintracks.js","/painmap.js","/musclereports.js","/guides.js","/stripe-checkout.js","/account.js","/assets/logo.webp"];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));

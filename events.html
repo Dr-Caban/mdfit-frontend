@@ -80,9 +80,9 @@
     </div>
   </footer>
 
-  <script src="config.js?v=1f2d97b9"></script>
+  <script src="config.js?v=aac711e3"></script>
   <script src="analytics.js?v=871c86ba" defer></script>
-  <script src="common.js?v=33a373b2"></script>
+  <script src="common.js?v=27e14d99"></script>
   <script>
     (() => {
       const { $, api } = window.MDFit;
@@ -98,7 +98,8 @@
         const grid = document.getElementById("events-grid");
         const events = (data.events || []).sort((a, b) => a.date.localeCompare(b.date));
         if (!events.length) { grid.innerHTML = `<p class="no-events">No events scheduled right now. Check back soon.</p>`; return; }
-        const today = new Date().toISOString().slice(0, 10);
+        // Sarasota date, not UTC (after 7-8 PM Eastern the UTC date is already tomorrow, which marked tonight's events "Past")
+        const today = window.MDFit && window.MDFit.todayInTz ? window.MDFit.todayInTz() : new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York" }).format(new Date());
         grid.innerHTML = events.map((e) => {
           const past = e.date < today;
           return `<div class="event-card">

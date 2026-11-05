@@ -5,8 +5,8 @@
 // The first run also swaps out the older per-section headers (home .nav, .gd-nav, .legal-top, .in-top).
 const fs = require("fs"), path = require("path");
 const root = path.join(__dirname, "..");
-// App and admin screens have their own chrome (bottom tab bar, admin tabs), so they keep it.
-const SKIP = new Set(["account.html", "admin.html", "login.html", "cancel.html"]);
+// The member app and the admin portal have their own chrome (bottom tab bar, admin tabs), so they keep it.
+const SKIP = new Set(["account.html", "admin.html"]);
 
 const LINKS = [
   { href: "/conditions/", text: "Conditions", section: "conditions" },

@@ -21,5 +21,10 @@ const all = [];
 (function walk(d) { for (const f of fs.readdirSync(d, { withFileTypes: true })) { const p = path.join(d, f.name); if (f.isDirectory()) { if (!/^[._]|^(node_modules|scripts)$/.test(f.name)) walk(p); } else if (/\.(css|js|html)$/.test(f.name) && f.name !== "sw.js") all.push(p); } })(root);
 const build = crypto.createHash("sha1").update(all.sort().map((f) => fs.readFileSync(f)).join("")).digest("hex").slice(0, 10);
 const swPath = path.join(root, "sw.js"), sw = fs.readFileSync(swPath, "utf8");
-const swOut = sw.replace(/const CACHE = "[^"]*";/, `const CACHE = "mdfit-${build}";`);
+// The offline app shell is every local script and stylesheet account.html loads (so the installed app opens offline).
+const appHtml = fs.readFileSync(path.join(root, "account.html"), "utf8");
+const shell = ["/account", ...new Set([...appHtml.matchAll(/(?:src|href)="(\/?[\w./-]+\.(?:css|js))(?:\?v=\w+)?"/g)]
+  .map((m) => "/" + m[1].replace(/^\//, "")).filter((f) => !f.startsWith("/_vercel/") && fs.existsSync(path.join(root, f)))), "/assets/logo.webp"];
+const swOut = sw.replace(/const CACHE = "[^"]*";/, `const CACHE = "mdfit-${build}";`)
+  .replace(/const SHELL = \[[^\]]*\];/, `const SHELL = ${JSON.stringify(shell)};`);
 if (swOut !== sw) { fs.writeFileSync(swPath, swOut); console.log("sw cache", build); }

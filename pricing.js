@@ -27,9 +27,17 @@
   }
 
   let payOn = false, pub = "";
-  let mountArgs = null;
+  let mountArgs = null, cfgAsked = false, listeners = null;
+  // Opens Stripe's embedded checkout; if it can't load (blocked script, bad session), close the dialog and say so.
+  async function openCheckout(clientSecret) {
+    try { await window.MDFitStripe.open({ clientSecret, publishableKey: pub }); }
+    catch (err) { try { window.MDFitStripe.close(); } catch {} throw new Error("Secure checkout couldn't load. Check your connection or ad blocker and try again, or call 941-313-0562."); }
+  }
   function mount(root, settings) {
     mountArgs = { root, settings };
+    // A re-mount replaces the old click handler instead of stacking another (one tap = one checkout).
+    if (listeners) listeners.abort();
+    listeners = new AbortController();
     const services = settings.services || [], p = settings.plans;
     if (!root || !services.length || !p) return;
     const proto = services.filter((s) => s.protocol);
@@ -96,7 +104,6 @@
             <p class="opt-per">${esc(o.per)}</p>
             ${o.save > 0 ? `<p class="opt-save">You save ${money(o.save)}</p>` : ""}
             ${q.guarantee && o.id !== "payg" ? `<p class="opt-g">✓ Money-back guarantee</p>` : ""}
-            <p class="opt-credit">Earn up to ${money(q.credit(o.total))} back</p>
             ${payOn ? `<button type="button" class="opt-buy" data-buy="${o.id}">Start this plan</button>` : ""}
           </div>`).join("")}
         </div>
@@ -110,7 +117,7 @@
         buy.disabled = true; buy.textContent = "Opening secure checkout…";
         try {
           const r = await M.apiAuth("POST", "/api/me/checkout/protocol", { service: state.svc, sessions: state.n, plan: buy.dataset.buy, ui: "embedded" });
-          window.MDFitStripe.open({ clientSecret: r.clientSecret, publishableKey: pub });
+          await openCheckout(r.clientSecret);
         } catch (err) { alert(err.message); }
         buy.disabled = false; buy.textContent = "Start this plan";
         return;
@@ -122,15 +129,18 @@
         pay.disabled = true;
         try {
           const r = await M.apiAuth("POST", "/api/me/checkout/service", { service: pay.dataset.payService, ui: "embedded" });
-          window.MDFitStripe.open({ clientSecret: r.clientSecret, publishableKey: pub });
+          await openCheckout(r.clientSecret);
         } catch (err) { alert(err.message); }
         pay.disabled = false;
         return;
       }
       const b = e.target.closest(".chips button"); if (!b) return;
       const k = b.parentElement.dataset.k; state[k] = k === "n" ? Number(b.dataset.v) : b.dataset.v; draw();
-    });
+    }, { signal: listeners.signal });
     draw();
+    // Ask once whether online payments are on; if so, re-mount once to show the Pay buttons (never loops).
+    if (cfgAsked) return;
+    cfgAsked = true;
     const cfgUrl = (window.MDFIT_CONFIG || {}).apiUrl;
     if (cfgUrl) fetch(cfgUrl + "/api/app/config").then((r) => r.json()).then((c) => {
       pub = c.stripePublishableKey || "";

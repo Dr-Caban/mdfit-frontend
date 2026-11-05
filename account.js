@@ -2,7 +2,8 @@
 (() => {
   const { $, $$, esc, auth, apiAuth, api, wire, fmtDate, fmtTime, todayInTz, addDays, zonedToUtc, icsStamp, AREAS, loadSite } = window.MDFit;
   if (!auth.get()) { location.replace("/login?next=" + encodeURIComponent("/account" + location.hash)); return; }
-  if (window.MDFitRT) { MDFitRT.connect({ namespace: "/member", token: auth.get().token }); MDFitRT.on("new_message", () => { const pollUnread = () => window.MDFit.apiAuth("GET", "/api/me/messages/unread-count").then((r) => { const b = document.querySelector("#msg-badge"); if (b) { b.hidden = !r.unread; b.textContent = r.unread > 9 ? "9+" : r.unread; } }).catch(() => {}); pollUnread(); }); }
+  // Live updates; the new_message handler is registered once, with the Messages code below.
+  if (window.MDFitRT) MDFitRT.connect({ namespace: "/member", token: auth.get().token });
   const EX = window.MDFIT_EXERCISES || [], INTROS = window.MDFIT_INTROS || {}, Gen = window.MDFitGen;
 
   const ADDRESS = "3214 Clark Road, Sarasota, FL 34231";
@@ -319,7 +320,8 @@
       visit: '<path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 16H5V9h14z"/>'
     };
     const ago = (iso) => {
-      const d = iso.slice(0, 10), t = todayInTz();
+      // A timestamp is UTC: convert it to the clinic's date, or a 9 PM workout shows as tomorrow
+      const d = String(iso).length > 10 ? todayInTz(new Date(iso)) : String(iso), t = todayInTz();
       return d === t ? "Today" : d === addDays(t, -1) ? "Yesterday" : shortDate(d);
     };
     const html = items.map((x) => `<li class="act"><span class="check"><svg viewBox="0 0 24 24">${ICON[x.icon]}</svg></span>
@@ -1110,10 +1112,11 @@
     $$("#book-flow .book-step").forEach((s) => { s.hidden = s.dataset.step !== "type"; });
     if (!bookState.types) {
       const site = await window.MDFit.loadSite().catch(() => null);
-      bookState.types = (site && site.services ? site.services : []).filter((s) => s.id && s.name);
+      // The bookable types are the scheduler's appointment types (the same list as the /book page).
+      bookState.types = ((site && site.settings && site.settings.appointmentTypes) || []).filter((t) => t.id && t.name);
     }
     $("#book-types").innerHTML = bookState.types.map((t) => `<button type="button" class="book-type" data-type="${esc(t.id)}">
-      <b>${esc(t.name)}</b><span class="muted small">${esc(t.unit || "")}${t.rate ? " · " + fmtMoney(t.rate) : ""}</span>
+      <b>${esc(t.name)}</b><span class="muted small">${t.minutes ? esc(t.minutes) + " min" : ""}${t.remote ? " · Video" : ""}</span>
       <p class="small">${esc(t.description || "")}</p></button>`).join("") || `<p class="muted small">Booking is unavailable right now. Call 941-313-0562.</p>`;
     bookDlg.showModal();
   }
@@ -1136,7 +1139,7 @@
   $("#book-types").addEventListener("click", async (e) => {
     const b = e.target.closest("[data-type]"); if (!b) return;
     bookState.type = bookState.types.find((t) => t.id === b.dataset.type);
-    $("#book-type-label").textContent = `${bookState.type.name}${bookState.type.unit ? " · " + bookState.type.unit : ""}`;
+    $("#book-type-label").textContent = `${bookState.type.name}${bookState.type.minutes ? " · " + bookState.type.minutes + " min" : ""}`;
     $$("#book-flow .book-step").forEach((s) => { s.hidden = s.dataset.step !== "when"; });
     $("#book-dates").innerHTML = `<p class="muted small">Loading times…</p>`;
     try { await loadSlots(); } catch (err) { $("#book-dates").innerHTML = `<p class="muted small">Couldn't load times: ${esc(err.message)}</p>`; }
@@ -1148,11 +1151,15 @@
     bookState.time = b.dataset.time;
     $("#book-summary").textContent = `${bookState.type.name} · ${fmtDay(bookState.date)} at ${fmtTime(bookState.time)}`;
     $$("#book-flow .book-step").forEach((s) => { s.hidden = s.dataset.step !== "confirm"; });
+    // A phone number is required to book; Google sign-in accounts may not have one yet
+    $("#book-phone-row").hidden = !!client.phone;
   });
   $("#book-confirm").addEventListener("click", async () => {
     const btn = $("#book-confirm"), msg = $("#book-msg"); msg.textContent = ""; btn.disabled = true;
     try {
-      const payload = { typeId: bookState.type.id, date: bookState.date, time: bookState.time, name: client.name, email: client.email, phone: client.phone || "", note: $("#book-note").value.trim().slice(0, 400) };
+      const phone = client.phone || $("#book-phone").value.trim();
+      if (!phone) { $("#book-phone").focus(); throw new Error("Add a phone number so Dr. Jared can reach you about the visit."); }
+      const payload = { typeId: bookState.type.id, date: bookState.date, time: bookState.time, name: client.name, email: client.email, phone, notes: $("#book-note").value.trim().slice(0, 400) };
       const r = await apiAuth("POST", "/api/appointments", payload);
       $("#book-done-info").textContent = `${bookState.type.name} on ${fmtDay(bookState.date)} at ${fmtTime(bookState.time)}. We'll email you a reminder.`;
       $$("#book-flow .book-step").forEach((s) => { s.hidden = s.dataset.step !== "done"; });
@@ -1381,6 +1388,8 @@
   }
   function exitFs() { const d = document; if (d.fullscreenElement || d.webkitFullscreenElement) (d.exitFullscreen || d.webkitExitFullscreen || d.msExitFullscreen || (() => {})).call(d); }
   function closePlayer() {
+    // Clear "#pain/track/<id>" so picking the same track again changes the hash and starts it
+    if (/^#pain\/track\//.test(location.hash)) history.replaceState(null, "", "#pain");
     exitPlayerFs();
     clearInterval(P.tick);
     const v = $("#p-video"); if (v) { v.pause(); v.removeAttribute("src"); v.load(); v.onended = null; v.onerror = null; }
@@ -1778,7 +1787,7 @@
   $("#chat-form textarea").addEventListener("input", (e) => growTA(e.target));
   function setBadge(n) { const b = $("#msg-badge"); b.hidden = !n; b.textContent = n > 9 ? "9+" : n; $("#more-btn").classList.toggle("has-badge", !!n); const ml = $('#more-list [data-goto="messages"]'); if (ml) ml.dataset.badge = n || ""; }
   const pollUnread = () => apiAuth("GET", "/api/me/messages/unread-count").then((r) => { setBadge(r.unread); notifyMessages(r.unread); renderNotes(); }).catch(() => {});
-  if (window.MDFitRT) MDFitRT.on("new_message", () => pollUnread());
+  if (window.MDFitRT) MDFitRT.on("new_message", () => { if (inThread) loadMessages(false); else pollUnread(); });
   setInterval(() => { if (!document.hidden && $("#view-messages").hidden) pollUnread(); }, 60000);
   $("#chat-form").addEventListener("submit", async (e) => {
     e.preventDefault(); const f = e.target, body = f.body.value.trim(); if (!body) return;

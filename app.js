@@ -132,7 +132,8 @@
     if (!f.reportValidity()) return;
     const btn = $("button[type=submit]", f); btn.disabled = true;
     try {
-      const out = await api("/api/feedback", { name: f.name.value, email: f.email.value, rating, text: f.text.value, publish: f.publish.checked, company: f.company.value });
+      const out = await api("/api/feedback", { name: f.name.value, email: f.email.value, rating, text: f.text.value, publish: f.publish.checked, mdfit_hp: f.mdfit_hp.value });
+      if (!out || !out.rewardCode) throw new Error("We couldn't save your review. Please try again.");
       f.hidden = true;
       const done = $(".lr-done"); done.hidden = false;
       $(".lr-code", done).textContent = out.rewardCode;

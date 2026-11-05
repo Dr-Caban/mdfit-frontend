@@ -70,15 +70,20 @@
     el.innerHTML = `<span class="rt-icon">${icon || "🔔"}</span><span>${esc(text)}</span>`;
     box.appendChild(el);
     setTimeout(() => { el.classList.add("fade-out"); setTimeout(() => el.remove(), 300); }, 5000);
-    if (Notification.permission === "granted") { try { new Notification("MD Fit", { body: text, icon: "/assets/icon-64.png" }); } catch {} }
+    if (hasNotify && Notification.permission === "granted") { try { new Notification("MD Fit", { body: text, icon: "/assets/icon-64.png" }); } catch {} }
   }
   const TOAST_ICONS = { appointment: "📅", appointment_cancelled: "❌", lead: "🎯", booking: "🏋️", message: "💬", subscribe: "📧", bug_report: "🐛", suggestion: "💡", feedback: "⭐" };
 
+  // iPhone Safari (outside an installed app) has no Notification API; touching it would throw and stop live updates.
+  const hasNotify = typeof window.Notification !== "undefined";
+  let rtWired = false; // live-update handlers are registered once; logging in again only reconnects
   function show() {
     $("#login").hidden = true; $("#app").hidden = false; openTab(current);
-    if (Notification.permission === "default") Notification.requestPermission().catch(() => {});
+    if (hasNotify && Notification.permission === "default") { try { Promise.resolve(Notification.requestPermission()).catch(() => {}); } catch {} }
     if (window.MDFitRT) {
       MDFitRT.connect({ namespace: "/admin", token });
+      if (rtWired) return;
+      rtWired = true;
       MDFitRT.on("activity", (ev) => {
         if (current === "dash") run(loadDash)();
         if (ev.type === "appointment" || ev.type === "appointment_cancelled") { if (current === "appts") run(loadAppts)(); }
@@ -248,7 +253,9 @@
     hf.daysAhead.value = sch.daysAhead;
     hf.blockedDates.value = sch.blockedDates.join("\n");
     hf.appointmentTypes.value = s.appointmentTypes.map((t) => [t.id, t.name, t.minutes, t.description].join(" | ")).join("\n");
+    origApptTypes = s.appointmentTypes;
   }
+  let origApptTypes = []; // keeps fields the text box doesn't show (e.g. remote = telehealth) when saving
   hf.addEventListener("submit", run(async (e) => {
     e.preventDefault();
     const msg = $(".form-msg", hf);
@@ -261,7 +268,7 @@
       }));
       const appointmentTypes = hf.appointmentTypes.value.split("\n").map((x) => x.trim()).filter(Boolean).map((line) => {
         const [id = "", name = "", minutes = "", description = ""] = line.split("|").map((x) => x.trim());
-        return { id, name, minutes: Number(minutes), description };
+        return { ...(origApptTypes.find((t) => t.id === id) || {}), id, name, minutes: Number(minutes), description };
       });
       await api("PUT", "/api/admin/settings", {
         scheduling: {
@@ -422,7 +429,9 @@
     else if (e.target.matches("[data-cap]")) {
       const n = prompt("New capacity:", c.capacity);
       if (n === null) return;
-      await api("PUT", `/api/admin/classes/${c.id}`, { capacity: Number(n) });
+      const cap = Number(String(n).trim());
+      if (!Number.isInteger(cap) || cap < 1 || cap > 100) throw new Error("Capacity must be a whole number from 1 to 100.");
+      await api("PUT", `/api/admin/classes/${c.id}`, { capacity: cap });
     } else if (e.target.matches("[data-del]")) {
       if (!confirm(`Delete "${c.title}" and all its bookings?`)) return;
       await api("DELETE", `/api/admin/classes/${c.id}`);
@@ -493,9 +502,14 @@
       : `<p class="muted">No messages yet. Members can message you from the app.</p>`;
     if (openThread) showThread(openThread);
   }
+  // Unsent replies, per member: a re-render (new message or reaction arriving) must not wipe what you're typing.
+  const drafts = new Map();
   async function showThread(cid) {
     openThread = cid;
     const d = await api("GET", `/api/admin/messages/${cid}`);
+    const old = $("#msg-reply textarea");
+    if (old && old.dataset.cid) drafts.set(old.dataset.cid, old.value);
+    const hadFocus = old && document.activeElement === old && old.dataset.cid === cid;
     $("#msg-thread").innerHTML = `<div class="item-head"><b>${esc(d.client.name)}</b> <span class="muted">${esc(d.client.email)} ${esc(d.client.phone || "")}</span> ${d.client.member ? `<span class="pill approved">${esc(d.client.tier)}</span>` : `<span class="pill hidden">not a member</span>`}</div>
       <div class="msg-log">${d.messages.map((m) => `<div class="mb ${m.from}" data-mid="${esc(m.id)}"><p>${esc(m.body).replace(/\n/g, "<br>")}</p><small>${m.from === "doctor" ? "You" : esc(d.client.name.split(" ")[0])} · ${when(m.at)}</small>${[m.reactions?.client, m.reactions?.doctor].filter(Boolean).length ? `<div class="reacts">${[m.reactions.client, m.reactions.doctor].filter(Boolean).map((x) => `<b>${x}</b>`).join("")}</div>` : ""}<div class="react-row">${["👍", "❤️", "😂", "🙏", "💪", "😮"].map((x) => `<button type="button" data-emoji="${x}" class="${m.reactions?.doctor === x ? "on" : ""}">${x}</button>`).join("")}</div></div>`).join("")}</div>
       <form class="msg-reply" id="msg-reply"><textarea name="body" rows="3" maxlength="2000" placeholder="Reply to ${esc(d.client.name.split(" ")[0])}…"></textarea><button class="btn btn-sm" type="submit">Send reply</button></form>`;
@@ -505,12 +519,19 @@
       await api("POST", `/api/admin/messages/${cid}/${encodeURIComponent(mb.dataset.mid)}/react`, { emoji: btn.dataset.emoji }); showThread(cid);
     }));
     $$("#msg-threads .msg-row").forEach((r) => r.classList.toggle("on", r.dataset.cid === cid));
+    const ta = $("#msg-reply textarea"); ta.dataset.cid = cid; ta.value = drafts.get(cid) || "";
+    ta.addEventListener("input", () => drafts.set(cid, ta.value));
+    if (hadFocus) { ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }
     $("#msg-reply").addEventListener("submit", run(async (e) => {
       e.preventDefault(); const body = e.target.body.value.trim(); if (!body) return;
-      await api("POST", `/api/admin/messages/${cid}`, { body }); toast("Sent. They'll get an email that you replied."); showThread(cid);
+      const btn = $("button[type=submit]", e.target); if (btn.disabled) return;
+      btn.disabled = true; // one tap = one message (and one email)
+      try { await api("POST", `/api/admin/messages/${cid}`, { body }); } finally { btn.disabled = false; }
+      drafts.delete(cid); ta.value = "";
+      toast("Sent. They'll get an email that you replied."); showThread(cid);
     }));
   }
-  $("#msg-threads").addEventListener("click", (e) => { const r = e.target.closest("[data-cid]"); if (r) { showThread(r.dataset.cid).then(loadThreads); } });
+  $("#msg-threads").addEventListener("click", run(async (e) => { const r = e.target.closest("[data-cid]"); if (r) { await showThread(r.dataset.cid); await loadThreads(); } }));
 
   // ---- One message to many: everyone, all members, one tier, or picked people. Each lands in that person's own thread.
   $("#bc-open").addEventListener("click", run(async () => {
@@ -640,8 +661,8 @@
     const st = e.target.closest("[data-st]"); if (!st) return;
     await api("PATCH", `/api/admin/feedback-reports/${card.dataset.id}`, { status: st.dataset.st }); toast("Updated."); loadFeedback();
   }));
-  $("#fb-filter-kind").addEventListener("change", loadFeedback);
-  $("#fb-filter-status").addEventListener("change", loadFeedback);
+  $("#fb-filter-kind").addEventListener("change", run(loadFeedback));
+  $("#fb-filter-status").addEventListener("change", run(loadFeedback));
   // Feedback badge polling now handled by pollBadges()
 
   // ---- Members: requests, tiers, 1-on-1 scheduling
@@ -693,7 +714,7 @@
       <label class="wide">Link (optional)<input data-f="link" value="${esc(x.link)}"></label>` },
     tiers: { blank: { id: "", name: "", price: 0, meetings: 0, meetingMinutes: 45, perks: [] }, html: (x) => `
       <label>Name<input data-f="name" value="${esc(x.name)}" maxlength="60"></label>
-      <label>Price per month ($)<input data-f="price" type="number" min="0" value="${x.price}"></label>
+      <label>Price per month ($)<input data-f="price" type="number" min="0" step="0.01" value="${x.price}"></label>
       <label>1-on-1 sessions per month<input data-f="meetings" type="number" min="0" max="31" value="${x.meetings}"></label>
       <label>Session length (min)<input data-f="meetingMinutes" type="number" min="0" max="180" value="${x.meetingMinutes}"></label>
       <label class="wide">Perks, one per line<textarea data-f="perks" rows="3">${esc(x.perks.join("\n"))}</textarea></label>` },
@@ -738,15 +759,19 @@
     await api("PUT", "/api/admin/content", { tracks: [] }); toast("Pain tracks reset."); loadContent();
   }));
   const slugify = (x) => x.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40) || "item";
+  // Each row keeps its full original item, so fields the editor doesn't show (a program's exercise lists, rest
+  // times, image and sport; a recommendation's image) survive a save instead of being silently dropped.
+  const rowOrig = new WeakMap();
   function addRow(kind, x, c) {
-    const row = document.createElement("div"); row.className = "crow"; row.dataset.id = x.id || ""; row.dataset.extra = JSON.stringify(kind === "programs" ? { days: x.days } : {});
+    const row = document.createElement("div"); row.className = "crow"; row.dataset.id = x.id || ""; rowOrig.set(row, x);
     row.innerHTML = `<div class="crow-grid">${FIELDS[kind].html(x, c)}</div><button type="button" class="link svc-del" data-del-row>Remove</button>`;
     $("#rows-" + kind).append(row);
   }
   async function loadContent() {
     const c = await api("GET", "/api/admin/content");
     c.topics = ["Health", "Wellness", "Hormones", "Inflammation", "Pain science", "Nutrition", "Sleep & recovery"];
-    c.categories = ["Hypertrophy", "Strength", "Anti-inflammatory", "Weight loss", "Mobility", "Rehabilitation", "Desk & posture", "Performance"];
+    c.categories = ["Hypertrophy", "Strength", "Anti-inflammatory", "Weight loss", "Mobility", "Rehabilitation", "Desk & posture", "Performance", "Sport Performance"];
+    c.programs.forEach((p) => { if (p.category && !c.categories.includes(p.category)) c.categories.push(p.category); });
     contentCache = c;
     ["title", "date", "time", "minutes", "joinUrl", "access", "notes"].forEach((k) => (ctf["live_" + k].value = c.live[k] ?? ""));
     ctf.live_recordings.value = c.live.recordings.map((r) => [r.title, r.date, r.url].join(" | ")).join("\n");
@@ -761,6 +786,7 @@
   function readRows(kind) {
     const used = new Set();
     return $$("#rows-" + kind + " .crow").map((r) => {
+      const orig = rowOrig.get(r) || {};
       const o = {}; $$("[data-f]", r).forEach((el) => (o[el.dataset.f] = el.type === "checkbox" ? el.checked : el.type === "number" ? Number(el.value) : el.value.trim()));
       const base = o.title || o.name || "item"; let id = r.dataset.id || slugify(base), n = 2; while (used.has(id)) id = slugify(base) + "-" + n++; used.add(id); o.id = id;
       if (kind === "tiers") o.perks = o.perks.split("\n").map((x) => x.trim()).filter(Boolean);
@@ -775,11 +801,17 @@
         });
         o.levels = levels;
       }
-      if (kind === "programs") o.days = o.days.split("\n").map((x) => x.trim()).filter(Boolean).map((line) => {
-        const [name, goal = "full", length = "30", rounds = ""] = line.split("|").map((y) => y.trim());
-        return { name, goal, length: Number(length), ...(rounds ? { rounds: Number(rounds) } : {}) };
-      });
-      return o;
+      if (kind === "programs") {
+        // Each line is "name | focus | minutes | rounds". Keep each day's exercise list and rest times by matching
+        // the original day by name (else by position) and laying the edited fields over it.
+        const origDays = orig.days || [];
+        o.days = o.days.split("\n").map((x) => x.trim()).filter(Boolean).map((line, i) => {
+          const [name, goal = "full", length = "30", rounds = ""] = line.split("|").map((y) => y.trim());
+          const { rounds: oldRounds, ...od } = origDays.find((d) => d.name === name) || origDays[i] || {};
+          return { ...od, name, goal, length: Number(length), ...(rounds ? { rounds: Number(rounds) } : {}) };
+        });
+      }
+      return { ...orig, ...o };
     });
   }
   ctf.addEventListener("submit", run(async (e) => {
@@ -828,8 +860,8 @@
     $("#analytics-stats").innerHTML = `
       <div class="stat"><b>${s.todayViews}</b><small>Views today</small></div>
       <div class="stat"><b>${s.todayUnique}</b><small>Visitors today</small></div>
-      <div class="stat"><b>${s.totalViews}</b><small>Views (30d)</small></div>
-      <div class="stat"><b>${s.totalUnique}</b><small>Visitors (30d)</small></div>`;
+      <div class="stat"><b>${s.totalViews}</b><small>Views (${d.rangeDays || 30}d)</small></div>
+      <div class="stat"><b>${s.totalUnique}</b><small>Visitors (${d.rangeDays || 30}d)</small></div>`;
     $("#analytics-days").innerHTML = `<thead><tr><th>Date</th><th>Views</th><th>Visitors</th></tr></thead><tbody>${
       d.days.map((r) => `<tr><td>${esc(r.date)}</td><td>${r.views}</td><td>${r.unique}</td></tr>`).join("") || "<tr><td colspan=3 class='muted'>No data yet</td></tr>"
     }</tbody>`;
@@ -882,16 +914,18 @@
     row.className = "svc-row";
     row.innerHTML = `
       <label>Name<input data-f="name" maxlength="60" required></label>
-      <label>Rate ($/hr)<input data-f="rate" type="number" min="0" max="10000"></label>
+      <label>Rate ($)<input data-f="rate" type="number" min="0" max="10000"></label>
       <label class="check"><input type="checkbox" data-f="protocol"> Protocol</label>
       <label class="svc-desc">Description<input data-f="description" maxlength="300"></label>
       <button type="button" class="link svc-del" aria-label="Remove service">Remove</button>`;
     row.dataset.id = v.id;
+    svcOrig.set(row, v); // keeps unit, withEval (plan includes the evaluation) and remote (telehealth) on save
     $("[data-f=name]", row).value = v.name; $("[data-f=rate]", row).value = v.rate;
     $("[data-f=protocol]", row).checked = v.protocol; $("[data-f=description]", row).value = v.description;
     $(".svc-del", row).addEventListener("click", () => row.remove());
     $("#svc-rows").append(row);
   }
+  const svcOrig = new WeakMap();
   $("#svc-add").addEventListener("click", () => addSvc());
   const slug = (x) => x.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 30) || "service";
   sf.addEventListener("submit", run(async (e) => {
@@ -905,7 +939,7 @@
     body.services = $$(".svc-row", sf).map((r) => {
       const name = $("[data-f=name]", r).value.trim();
       let id = r.dataset.id || slug(name), n = 2; while (used.has(id)) id = slug(name) + "-" + n++; used.add(id);
-      return { id, name, rate: Number($("[data-f=rate]", r).value || 0), unit: "hour", protocol: $("[data-f=protocol]", r).checked, description: $("[data-f=description]", r).value.trim() };
+      return { unit: "visit", ...(svcOrig.get(r) || {}), id, name, rate: Number($("[data-f=rate]", r).value || 0), protocol: $("[data-f=protocol]", r).checked, description: $("[data-f=description]", r).value.trim() };
     });
     const num = (k) => Number(sf["plan_" + k].value);
     body.plans = {

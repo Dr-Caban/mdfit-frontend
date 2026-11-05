@@ -50,7 +50,7 @@
           </label>
         </details>
         <label>Anything else? (optional)<textarea name="notes" rows="2" maxlength="1000" placeholder="e.g. right knee, ACL repair in August"></textarea></label>
-        <input name="company" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <input name="mdfit_hp" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
         <button class="btn btn-lg" type="submit">Confirm booking</button>
         <p class="fine">Free to cancel online. You'll get a confirmation right away.</p>
         <p class="form-msg" role="status"></p>
@@ -160,10 +160,18 @@
       if (pain.dataset.untouched !== undefined) delete data.painLevel;
       try {
         const out = await api("/api/appointments", { ...data, typeId: state.type.id, date: state.date, time: state.time, ...(opts.reward && state.type.id === opts.reward.type.id ? { rewardCode: opts.reward.code } : {}) });
+        if (!out || !out.appointment) throw new Error("We couldn't confirm that booking. Please call 941-313-0562 and we'll get you scheduled.");
         showBooked(out.appointment);
         return null;
       } catch (err) {
-        if (err.status === 409) { state.time = null; load(); }
+        if (err.status === 409) {
+          // Someone else just took the time: reload the times and say so above them (the form itself gets hidden)
+          state.time = null;
+          Promise.resolve(load()).then(() => {
+            const n = document.createElement("p"); n.className = "form-msg err"; n.setAttribute("role", "alert"); n.textContent = err.message;
+            $(".slots", root).prepend(n);
+          });
+        }
         throw err;
       }
     });

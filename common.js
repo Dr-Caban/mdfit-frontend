@@ -19,7 +19,8 @@
   // Dates are YYYY-MM-DD in the clinic's time zone, times HH:MM
   const fmtTime = (t) => { const [h, m] = t.split(":").map(Number); return `${((h + 11) % 12) + 1}:${String(m).padStart(2, "0")} ${h < 12 ? "AM" : "PM"}`; };
   const fmtDate = (d, opts) => new Date(d + "T12:00:00Z").toLocaleDateString("en-US", { timeZone: "UTC", ...opts });
-  const todayInTz = () => new Intl.DateTimeFormat("en-CA", { timeZone: TZ }).format(new Date());
+  // Clinic-time-zone date (YYYY-MM-DD) for now, or for a given moment
+  const todayInTz = (at = new Date()) => new Intl.DateTimeFormat("en-CA", { timeZone: TZ }).format(at);
   const addDays = (d, n) => new Date(Date.parse(d + "T12:00:00Z") + n * 864e5).toISOString().slice(0, 10);
   // Wall-clock time in TZ -> UTC Date
   function zonedToUtc(date, time) {
