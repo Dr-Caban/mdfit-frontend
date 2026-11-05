@@ -215,3 +215,6 @@ code { background: var(--paper-2); padding: 1px 6px; border-radius: 4px; font-si
 .bc-row:first-of-type { border-top: 0; padding-top: 0; }
 .bc-info { min-width: 0; flex: 1 1 260px; }
 .bc-info p { margin: 0 0 2px; overflow-wrap: anywhere; }
+/* Email delivery (Analytics) */
+.email-log { display: grid; gap: 10px; }
+.email-log .stat.bad b, .email-log b.err { color: var(--err); }

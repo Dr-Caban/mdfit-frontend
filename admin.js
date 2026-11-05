@@ -882,7 +882,20 @@
     if (e.target.id === "mfa-off") { await api("POST", "/api/admin/mfa/disable", { password: $("#mfa-pass").value }); toast("Two-step login turned off."); loadMfa(); }
   }));
 
+  // Email delivery: who gets your alerts, sent/failed per day (last 14 days) and the latest failures
+  async function loadEmailLog() {
+    const box = $("#email-log"); if (!box) return;
+    let d;
+    try { d = await api("GET", "/api/admin/email-log"); } catch (err) { box.innerHTML = `<p class="muted">Couldn't load email delivery: ${esc(err.message)}</p>`; return; }
+    if (!d.enabled) { box.innerHTML = `<p class="banner">Email is off. Add <code>RESEND_API_KEY</code> and <code>NOTIFY_FROM</code> in Railway.</p>`; return; }
+    const days = d.days.slice(0, 14), sent = days.reduce((a, x) => a + x.sent, 0), failed = days.reduce((a, x) => a + x.failed, 0);
+    box.innerHTML = `<p class="muted small">Your alerts (feedback, bookings, messages, group-message reports) go to: <b>${d.alertsTo.map(esc).join(", ") || "nobody yet"}</b></p>
+      <div class="stats"><div class="stat"><b>${sent}</b><small>Emails sent (14d)</small></div><div class="stat${failed ? " bad" : ""}"><b>${failed}</b><small>Failed (14d)</small></div></div>
+      ${days.length ? `<div class="table-wrap"><table><thead><tr><th>Date</th><th>Sent</th><th>Failed</th></tr></thead><tbody>${days.map((x) => `<tr><td>${esc(x.date)}</td><td>${x.sent}</td><td>${x.failed ? `<b class="err">${x.failed}</b>` : 0}</td></tr>`).join("")}</tbody></table></div>` : `<p class="muted">No emails sent yet.</p>`}
+      ${d.failures.length ? `<details class="audit-key"><summary>Latest failures (${d.failures.length})</summary><div class="table-wrap"><table><thead><tr><th>When</th><th>To</th><th>Subject</th><th>Error</th></tr></thead><tbody>${d.failures.map((f) => `<tr><td>${when(f.at)}</td><td>${esc(f.to)}</td><td>${esc(f.subject)}</td><td>${esc(f.error)}</td></tr>`).join("")}</tbody></table></div></details>` : ""}`;
+  }
   async function loadAnalytics() {
+    loadEmailLog();
     const d = await api("GET", `/api/admin/analytics?days=${($("#an-range") || {}).value || 30}`);
     const s = d.summary;
     $("#analytics-stats").innerHTML = `
