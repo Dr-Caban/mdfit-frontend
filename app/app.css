@@ -32,6 +32,13 @@ body { min-height: 100vh; }
    makes phones zoom the whole app out to fit it. */
 img, video, canvas, iframe { max-width: 100%; }
 html, body { overflow-x: clip; }
+/* Guard rail: a long word with no spaces (a pasted link, a name, a workout title) wraps instead of pushing past the
+   screen or its card. Only breaks a word when it would not fit. */
+body { overflow-wrap: anywhere; }
+/* ...but a button label never splits mid-word ("St / ar / t"): the button keeps its words and the text beside it gives
+   way. Card buttons hold long titles, so they keep wrapping anywhere. */
+button, .btn, [role="tab"] { overflow-wrap: normal; word-break: normal; }
+.prog-card, .hp-card, .fp-item { overflow-wrap: anywhere; }
 button, input, select { font: inherit; color: inherit; }
 a { color: inherit; }
 h1, h2, h3 { color: var(--heading); }
@@ -138,7 +145,7 @@ svg { fill: currentColor; }
 .ev-info .spots.ok { color: var(--ok); }
 .ev-act { background: var(--accent); border: 0; color: var(--navy); font-weight: 700; font-size: 13px; cursor: pointer; padding: 8px 12px; border-radius: 10px; }
 .ev-act.danger { background: none; color: var(--err); }
-.act { display: grid; grid-template-columns: 42px 1fr auto; gap: 12px; align-items: center; }
+.act { display: grid; grid-template-columns: 42px minmax(0, 1fr) auto; gap: 12px; align-items: center; }
 .act .check { width: 42px; height: 42px; border-radius: 50%; background: var(--accent-soft); display: grid; place-items: center; color: var(--accent-text); }
 .act .check svg { width: 21px; height: 21px; }
 .act b { display: block; font-size: 15px; color: var(--navy); }
@@ -754,6 +761,8 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
 .prog-head h2 { font: 700 24px/1.2 var(--display); color: var(--navy); margin: 6px 0; }
 .prog-notes { background: var(--gold-soft); border-radius: 10px; padding: 10px 12px; font-size: 14px; margin: 8px 0 0; }
 .prog-day .pd-top { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
+.prog-day .pd-top > div { flex: 1; min-width: 0; }
+.prog-day .pd-top > button { flex: none; }
 .prog-day h3 { font: 700 18px/1.2 var(--display); color: var(--navy); margin: 4px 0; }
 .pd-ex { margin: 8px 0 0; padding-left: 20px; display: grid; gap: 4px; font-size: 14px; }
 .pd-ex span { color: var(--accent-text); font-weight: 700; font-size: 13px; margin-left: 6px; }
@@ -1177,3 +1186,20 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
 .more-sep { height: 1px; background: var(--line); margin: 8px 0; }
 .more-top { background: var(--card-2); border: 1px solid var(--line); border-radius: 12px; padding: 14px; font-weight: 700; }
 .more-top svg { color: var(--accent); }
+
+/* Program photo + HTML poster text (MD Fit type and colors). The wrapper (.prog-poster) carries the size class
+   (.pc-img / .ph-img / .hp-img); the photo fills it. */
+.prog-poster { position: relative; display: block; overflow: hidden; container-type: inline-size; background: linear-gradient(135deg, #10233b, #0A1A2E); }
+.prog-poster > img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: 100%; object-fit: cover; display: block; margin: 0; border-radius: 0; }
+.pp-text { position: absolute; left: 0; right: 0; bottom: 0; display: grid; gap: .45em; justify-items: start; padding: 7cqi 7cqi 7.5cqi;
+  font-size: clamp(9px, 3.6cqi, 16px); color: #fff; text-align: left; text-shadow: 0 1px 12px rgba(6, 14, 26, .55);
+  background: linear-gradient(to top, rgba(6, 14, 26, .78), rgba(6, 14, 26, .45) 60%, rgba(6, 14, 26, 0)); }
+.pp-brand { font: 700 1em/1.2 var(--body); letter-spacing: .18em; text-transform: uppercase; color: var(--gold); max-width: 100%; }
+.pp-brand i { font-style: normal; color: #fff; }
+.pp-title { font: 700 clamp(15px, 8.4cqi, 40px)/1.1 var(--display); color: #fff; max-width: 100%; overflow-wrap: anywhere; }
+.pp-badge { font: 800 .9em/1 var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--navy); background: var(--accent-bright); padding: .55em .8em; border-radius: 999px; }
+@container (max-width: 159px) { .pp-text { display: none; } }
+/* The poster shows the category and title, so image cards don't repeat them visibly (screen readers still get them) */
+.prog-card-img > .pc-cat, .prog-card-img > b, .prog-head-img > h2, .prog-head-img > .pc-cat,
+.hp-card:has(> .prog-poster) > .hp-cat, .hp-card:has(> .prog-poster) > b { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (max-width: 820px) { .hp-card:has(> .prog-poster) > .hp-cat, .hp-card:has(> .prog-poster) > b { position: static; width: auto; height: auto; overflow: visible; clip: auto; white-space: normal; } }

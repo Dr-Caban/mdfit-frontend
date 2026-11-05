@@ -1846,6 +1846,12 @@
     return `<img${c} src="${at(640)}" srcset="${at(192)} 192w, ${at(640)} 640w, ${at(1200)} 1200w" sizes="${sizes}" alt="" loading="lazy" decoding="async"`
       + ` onerror="if(this.srcset){this.removeAttribute('srcset');this.src='${m[0]}'}else this.remove()">`;
   };
+  // Program photo with the poster text drawn in HTML on top (the photos carry no text of their own). The text is
+  // aria-hidden because the card repeats the title for screen readers; it hides itself when the photo is too small.
+  const progPoster = (p, cls, sizes) => `<span class="prog-poster ${cls}">${progImg(p.image, "", sizes)}<span class="pp-text" aria-hidden="true">`
+    + `<span class="pp-brand"><i>MD</i> FIT${p.category ? " · " + esc(p.category) : ""}</span>`
+    + `<span class="pp-title">${esc(String(p.title || "").replace(/^\s*\d+\s*-?\s*weeks?\s*/i, "") || p.title)}</span>`
+    + (p.weeks ? `<span class="pp-badge">${esc(p.weeks)}-week program</span>` : "") + `</span></span>`;
   function renderFeaturedPrograms() {
     if (!C || !C.programs || !C.programs.length) {
       ["#featured-progs", "#hero-progs", "#profile-progs"].forEach((s) => { const el = $(s); if (el) el.hidden = true; });
@@ -1873,7 +1879,7 @@
         </button></li>`).join("");
     }
     const bigCard = (p) => `<button type="button" class="hp-card" data-fp="${esc(p.id)}">
-      ${p.image ? progImg(p.image, "hp-img", "(max-width: 820px) 64px, 320px") : `<span class="hp-ic ${esc((p.category || "").toLowerCase().split(" ")[0])}"></span>`}
+      ${p.image ? progPoster(p, "hp-img", "(max-width: 820px) 64px, 320px") : `<span class="hp-ic ${esc((p.category || "").toLowerCase().split(" ")[0])}"></span>`}
       <span class="hp-cat">${esc(p.category || "Program")}</span>
       <b>${esc(p.title)}</b>
       <span class="muted small hp-meta">${p.weeks} weeks · ${esc(p.level || "all levels")}${p.days && p.days.length ? ` · ${p.days.length} days/wk` : ""}</span>
@@ -1946,7 +1952,7 @@
     $("#prog-grid").innerHTML = list.map((p) => {
       const sessions = p.weeks * p.days.length, done = p.days.reduce((n, _, i) => n + doneCount(p, i), 0);
       return `<button type="button" class="prog-card${p.image ? " prog-card-img" : ""}" data-prog="${p.id}">
-        ${p.image ? progImg(p.image, "pc-img", "(max-width: 700px) 100vw, 50vw") : ""}
+        ${p.image ? progPoster(p, "pc-img", "(max-width: 700px) 100vw, 50vw") : ""}
         <span class="pc-cat">${esc(p.category)}</span>${p.locked ? lockBadge : ""}
         <b>${esc(p.title)}</b><p>${esc(p.summary)}</p>
         <span class="pc-meta">${p.weeks} weeks · ${p.days.length} days/week · ${esc(p.level[0].toUpperCase() + p.level.slice(1))} · ${esc((Gen.LOCATIONS.find((l) => l.id === p.location) || {}).label || "")}</span>
@@ -1960,7 +1966,7 @@
   function renderProgram(p) {
     const wk = (i) => Math.min(p.weeks, doneCount(p, i) + 1);
     $("#prog-detail").innerHTML = `<button type="button" class="link-sm back-link" data-goto="programs">‹ All programs</button>
-      <div class="card prog-head${p.image ? " prog-head-img" : ""}">${p.image ? progImg(p.image, "ph-img", "(max-width: 520px) 100vw, 480px") : ""}<span class="pc-cat">${esc(p.category)}</span>${p.locked ? lockBadge : ""}<h2>${esc(p.title)}</h2><p>${esc(p.summary)}</p>
+      <div class="card prog-head${p.image ? " prog-head-img" : ""}">${p.image ? progPoster(p, "ph-img", "(max-width: 520px) 100vw, 480px") : ""}<span class="pc-cat">${esc(p.category)}</span>${p.locked ? lockBadge : ""}<h2>${esc(p.title)}</h2><p>${esc(p.summary)}</p>
         <p class="muted small">${p.weeks} weeks · ${p.days.length} sessions a week · ${esc(p.level)} · ${esc((Gen.LOCATIONS.find((l) => l.id === p.location) || {}).label || "")}</p>
         ${p.notes ? `<p class="prog-notes">${esc(p.notes)}</p>` : ""}</div>
       ${p.days.map((d, i) => { const w = progDayWorkout(p, i); return `<div class="card prog-day">

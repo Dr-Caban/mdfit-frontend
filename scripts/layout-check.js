@@ -1,6 +1,6 @@
-// Mobile layout guard. Serves this site and runs the API locally, then loads every HTML page at 320/390/768px and
-// every account screen (with a seeded client) at 320/375/390/430/768px. Fails if anything is wider than the screen,
-// pokes out of its card, a program image outgrows its card or most of the screen, a page throws, or an HTML page
+// Mobile layout guard. Serves this site and runs the API locally, then loads every HTML page at phone, tablet and desktop widths and
+// every account screen (with a seeded hostile-input client) at 320-2560px. Fails if anything is wider than the screen,
+// pokes out of its card, a program image outgrows its card or most of the screen, a page throws, user text runs as HTML, or an HTML page
 // links a CSS/JS file that doesn't exist. Account screens are checked again with account.css blocked, so the layout
 // must hold even if a stylesheet fails to load.
 //   BACKEND_DIR=../mdfit-backend node scripts/layout-check.js   (a checkout of Dr-Caban/mdfit-backend with `npm ci`,
@@ -10,8 +10,9 @@ const { chromium } = require("playwright");
 
 const WEB_DIR = path.join(__dirname, ".."), API = "http://localhost:3000", WEB_PORT = 8080;
 const BACKEND_DIR = path.resolve(process.env.BACKEND_DIR || path.join(WEB_DIR, "..", "mdfit-backend"));
-const PAGE_WIDTHS = [[320, 568], [390, 844], [768, 1024]];
-const APP_WIDTHS = [[320, 568], [375, 667], [390, 844], [430, 932], [768, 1024]];
+// 1366-2560px also covers desktop users zooming the browser out (zooming out = a wider screen)
+const PAGE_WIDTHS = [[320, 568], [390, 844], [768, 1024], [1366, 900], [2560, 1440]];
+const APP_WIDTHS = [[320, 568], [375, 667], [390, 844], [430, 932], [768, 1024], [1366, 900], [2560, 1440]];
 const VIEWS = ["home", "generate", "videos", "programs", "programs:first", "learn", "premium", "messages", "tips", "pain", "progress", "profile"];
 const failures = [];
 const fail = (where, msg) => failures.push(`${where}: ${msg}`);
@@ -60,15 +61,16 @@ async function startApi(dataDir) {
   proc.kill(); throw new Error("API did not start from " + BACKEND_DIR);
 }
 
-// A client with a long name and some history, so lists and long text are on screen
+// A client whose name, notes and workout carry HTML and unbreakable words: none of it may run as HTML or push past
+// a card (user text is escaped and long words wrap)
 async function seedClient() {
   const post = async (url, body, token) => (await fetch(API + url, { method: "POST", body: JSON.stringify(body),
     headers: { "content-type": "application/json", "user-agent": "Mozilla/5.0 Safari", ...(token ? { authorization: "Bearer " + token } : {}) } })).json();
-  const sess = await post("/api/clients/login", { name: "Christopher Montgomery-Wellington", email: "layout-check@example.com", password: "layout-check-123" });
+  const sess = await post("/api/clients/login", { name: "<img src=x onerror=window.__pwn=1><b>Bold</b>\"> Supercalifragilisticexpialidocious_Wellington_Smith", email: "layout-check@example.com", password: "layout-check-123" });
   if (!sess.token) throw new Error("couldn't log in a test client: " + JSON.stringify(sess));
-  await post("/api/me/pain", { area: "Lower back", level: 6, note: "Sharp pain after sitting through a long drive; better after the mobility routine. https://example.com/a-very-long-link-without-spaces-to-check-wrapping" }, sess.token);
+  await post("/api/me/pain", { area: "Lower back", level: 6, note: "</textarea><script>window.__pwn=1</script><img src=x onerror=window.__pwn=1> Sharp pain after sitting through a long drive; better after the mobility routine. https://example.com/a-very-long-link-without-spaces-to-check-wrapping" }, sess.token);
   await post("/api/me/pain", { area: "Elbow / wrist / hand", level: 3, note: "" }, sess.token);
-  await post("/api/me/workouts", { title: "Full Body Strength and Conditioning Session", goal: "Strength", minutes: 47, exercises: 8 }, sess.token);
+  await post("/api/me/workouts", { title: "<img src=x onerror=window.__pwn=1>Workout_with_a_very_long_name_and_no_spaces_at_all_anywhere", goal: "Strength", minutes: 47, exercises: 8 }, sess.token);
   return sess;
 }
 
@@ -108,6 +110,18 @@ function measure() {
     const b = img.getBoundingClientRect();
     if (b.height > vh * 0.6) out.push(`${name(img)} is ${Math.round(b.height)}px tall on a ${vh}px screen`);
   }
+  // Button, tab and nav labels must not split a word across lines ("St / ar / t")
+  for (const el of document.querySelectorAll("button, .btn, [role=tab], nav a")) {
+    if (!shown(el) || el.closest(".prog-card, .hp-card, .fp-item")) continue;
+    const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    for (let t = walker.nextNode(); t; t = walker.nextNode()) {
+      for (const m of t.data.matchAll(/\S{2,25}/g)) {
+        const r = document.createRange(); r.setStart(t, m.index); r.setEnd(t, m.index + m[0].length);
+        const tops = new Set([...r.getClientRects()].filter((b) => b.width).map((b) => Math.round(b.top)));
+        if (tops.size > 1) out.push(`${name(el)} splits the word "${m[0]}" across lines`);
+      }
+    }
+  }
   return [...new Set(out)].slice(0, 25);
 }
 
@@ -120,7 +134,7 @@ function measure() {
   try {
     const sess = await seedClient();
     const check = async ([w, h], routes, views, { blockAccountCss = false } = {}) => {
-      const ctx = await browser.newContext({ viewport: { width: w, height: h }, isMobile: true, hasTouch: true });
+      const ctx = await browser.newContext({ viewport: { width: w, height: h }, ...(w < 1024 ? { isMobile: true, hasTouch: true } : {}), serviceWorkers: "block" });
       await ctx.addInitScript((s) => { try { localStorage.setItem("mdfit_client", s); } catch {} }, JSON.stringify(sess));
       const tag = `${w}px${blockAccountCss ? " without account.css" : ""}`;
       const page = await ctx.newPage();
@@ -128,7 +142,7 @@ function measure() {
       page.on("pageerror", (e) => errors.push(e.message));
       if (blockAccountCss) await page.route(/account\.css/, (r) => r.abort());
       const report = async (where) => {
-        for (const m of await page.evaluate(measure)) fail(`${where} at ${tag}`, m);
+        for (const m of await page.evaluate(measure)) fail(`${where} at ${tag}`, m); if (await page.evaluate(() => window.__pwn || document.querySelector("b")?.textContent === "Bold")) fail(`${where} at ${tag}`, "INJECTED HTML RAN");
         errors.forEach((e) => fail(`${where} at ${tag}`, "page error: " + e)); errors = [];
       };
       for (const r of routes) {
