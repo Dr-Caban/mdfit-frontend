@@ -1190,7 +1190,8 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
 /* Program photo + HTML poster text (MD Fit type and colors). The wrapper (.prog-poster) carries the size class
    (.pc-img / .ph-img / .hp-img); the photo fills it. */
 .prog-poster { position: relative; display: block; overflow: hidden; container-type: inline-size; background: linear-gradient(135deg, #10233b, #0A1A2E); }
-.prog-poster > img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: 100%; object-fit: cover; display: block; margin: 0; border-radius: 0; }
+.prog-poster picture, .fp-item picture { display: contents; }
+.prog-poster img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: 100%; object-fit: cover; display: block; margin: 0; border-radius: 0; }
 .pp-text { position: absolute; left: 0; right: 0; bottom: 0; display: grid; gap: .45em; justify-items: start; padding: 7cqi 7cqi 7.5cqi;
   font-size: clamp(9px, 3.6cqi, 16px); color: #fff; text-align: left; text-shadow: 0 1px 12px rgba(6, 14, 26, .55);
   background: linear-gradient(to top, rgba(6, 14, 26, .78), rgba(6, 14, 26, .45) 60%, rgba(6, 14, 26, 0)); }

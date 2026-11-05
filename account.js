@@ -1847,17 +1847,22 @@
   // so these pre-made programs are the main conversion lever.
   // Program posters are ~2.5 MB PNGs; serve the WebP size that fits the slot (scripts/program-images.py makes them).
   // If a web copy is missing, fall back to the original instead of dropping the image.
-  const progImg = (src, cls, sizes) => {
+  const progImg = (src, cls, sizes, thumb) => {
     const m = /^\/?assets\/programs\/([\w-]+)\.png$/.exec(src || "");
     const c = cls ? ` class="${cls}"` : "";
     if (!m) return `<img${c} src="${esc(src)}" alt="" loading="lazy" decoding="async" onerror="this.remove()">`;
-    const at = (w) => `assets/programs/web/${m[1]}-${w}.webp`;
-    return `<img${c} src="${at(640)}" srcset="${at(192)} 192w, ${at(640)} 640w, ${at(1200)} 1200w" sizes="${sizes}" alt="" loading="lazy" decoding="async"`
-      + ` onerror="if(this.srcset){this.removeAttribute('srcset');this.src='${m[0]}'}else this.remove()">`;
+    const at = (w) => `assets/programs/web/${m[1]}-${w}.webp`, th = (w) => `assets/programs/web/${m[1]}-thumb-${w}.webp`;
+    // Fallbacks, in order: drop the thumb <source>s, then the srcset (use the PNG), then the image itself
+    const img = `<img${c} src="${at(640)}" srcset="${at(192)} 192w, ${at(640)} 640w, ${at(1200)} 1200w" sizes="${sizes}" alt="" loading="lazy" decoding="async"`
+      + ` onerror="var p=this.parentNode;if(p&&p.tagName==='PICTURE'&&p.querySelector('source')){p.querySelectorAll('source').forEach(function(s){s.remove()})}else if(this.srcset){this.removeAttribute('srcset');this.src='${m[0]}'}else this.remove()">`;
+    if (!thumb) return img;
+    // Small thumbnails use the square crop of the person (scripts/program-images.py), not the whole poster shrunk down:
+    // thumb = { sizes } always, or { media, sizes } only when the media query matches (e.g. phones)
+    return `<picture><source${thumb.media ? ` media="${thumb.media}"` : ""} srcset="${th(192)} 192w, ${th(384)} 384w" sizes="${thumb.sizes}">${img}</picture>`;
   };
   // Program photo with the poster text drawn in HTML on top (the photos carry no text of their own). The text is
   // aria-hidden because the card repeats the title for screen readers; it hides itself when the photo is too small.
-  const progPoster = (p, cls, sizes) => `<span class="prog-poster ${cls}">${progImg(p.image, "", sizes)}<span class="pp-text" aria-hidden="true">`
+  const progPoster = (p, cls, sizes, thumb) => `<span class="prog-poster ${cls}">${progImg(p.image, "", sizes, thumb)}<span class="pp-text" aria-hidden="true">`
     + `<span class="pp-brand"><i>MD</i> FIT${p.category ? " · " + esc(p.category) : ""}</span>`
     + `<span class="pp-title">${esc(String(p.title || "").replace(/^\s*\d+\s*-?\s*weeks?\s*/i, "") || p.title)}</span>`
     + (p.weeks ? `<span class="pp-badge">${esc(p.weeks)}-week program</span>` : "") + `</span></span>`;
@@ -1883,12 +1888,12 @@
       sb.hidden = false;
       $("#featured-prog-list").innerHTML = sidebar.map((p) => `
         <li><button type="button" class="fp-item" data-fp="${esc(p.id)}">
-          ${p.image ? progImg(p.image, "", "44px") : `<span class="fp-ic ${esc((p.category || "").toLowerCase().split(" ")[0])}"></span>`}
+          ${p.image ? progImg(p.image, "", "44px", { sizes: "44px" }) : `<span class="fp-ic ${esc((p.category || "").toLowerCase().split(" ")[0])}"></span>`}
           <span class="fp-body"><b>${esc(p.title)}</b><span class="muted small">${p.weeks} wks · ${esc(p.level || "all levels")}${p.category ? " · " + esc(p.category) : ""}</span></span>
         </button></li>`).join("");
     }
     const bigCard = (p) => `<button type="button" class="hp-card" data-fp="${esc(p.id)}">
-      ${p.image ? progPoster(p, "hp-img", "(max-width: 820px) 64px, 320px") : `<span class="hp-ic ${esc((p.category || "").toLowerCase().split(" ")[0])}"></span>`}
+      ${p.image ? progPoster(p, "hp-img", "(max-width: 820px) 64px, 320px", { media: "(max-width: 820px)", sizes: "64px" }) : `<span class="hp-ic ${esc((p.category || "").toLowerCase().split(" ")[0])}"></span>`}
       <span class="hp-cat">${esc(p.category || "Program")}</span>
       <b>${esc(p.title)}</b>
       <span class="muted small hp-meta">${p.weeks} weeks · ${esc(p.level || "all levels")}${p.days && p.days.length ? ` · ${p.days.length} days/wk` : ""}</span>
