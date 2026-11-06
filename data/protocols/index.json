@@ -1,25 +1,41 @@
 {
- "version": "93fd066e09",
+ "version": "1693e1a30d",
  "ids": [
+  "golf-advanced",
+  "golf-intermediate",
+  "golf",
   "golfers-elbow-4",
   "hip-6",
   "knee-6",
   "low-back-6",
+  "marathon-extension",
   "mobility-12",
+  "pickleball-advanced",
+  "pickleball-intermediate",
+  "pickleball",
   "plantar-4",
   "posterior-chain-6",
   "shoulder-6",
+  "ski-advanced",
   "tennis-elbow-4"
  ],
  "weeks": {
+  "golf-advanced": 6,
+  "golf-intermediate": 6,
+  "golf": 5,
   "golfers-elbow-4": 4,
   "hip-6": 6,
   "knee-6": 6,
   "low-back-6": 13,
+  "marathon-extension": 13,
   "mobility-12": 8,
+  "pickleball-advanced": 5,
+  "pickleball-intermediate": 6,
+  "pickleball": 6,
   "plantar-4": 4,
   "posterior-chain-6": 3,
   "shoulder-6": 6,
+  "ski-advanced": 8,
   "tennis-elbow-4": 4
  }
 }

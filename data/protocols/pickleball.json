@@ -1,0 +1,3774 @@
+{
+  "id": "pickleball",
+  "title": "PICKLEBALL BEGINNER PROTOCOL",
+  "tagline": "MOVE BETTER. PLAY LONGER. LOWER INJURY RISK.",
+  "goal": "Learn the movement patterns. Build mobility, stability and control. Play with less pain and more confidence.",
+  "principles": [
+    {
+      "title": "Glutes engaged at all times",
+      "text": ""
+    },
+    {
+      "title": "Shoulders down (in your pockets)",
+      "text": ""
+    },
+    {
+      "title": "Control the movement",
+      "text": ""
+    },
+    {
+      "title": "Quality over quantity",
+      "text": ""
+    },
+    {
+      "title": "Stay balanced and athletic",
+      "text": ""
+    },
+    {
+      "title": "Move pain-free",
+      "text": ""
+    }
+  ],
+  "dailyBasics": [],
+  "progression": {
+    "overview": [
+      {
+        "week": "1",
+        "title": "Movement Foundations",
+        "focus": "Learn the basics and build control."
+      },
+      {
+        "week": "2",
+        "title": "Stability & Control",
+        "focus": "Improve balance and single-leg control."
+      },
+      {
+        "week": "3",
+        "title": "Strength Development",
+        "focus": "Build lower-body and core strength."
+      },
+      {
+        "week": "4",
+        "title": "Movement Integration",
+        "focus": "Combine strength, balance and movement."
+      },
+      {
+        "week": "5",
+        "title": "Power & Endurance",
+        "focus": "Increase speed and repeated movement ability."
+      },
+      {
+        "week": "6",
+        "title": "Confidence & Play",
+        "focus": "Put it all together for consistent, pain-free play."
+      }
+    ],
+    "guidelines": [],
+    "expect": [
+      "Build a strong foundation",
+      "Improve mobility and stability",
+      "Learn proper movement patterns",
+      "Reduce injury risk",
+      "Play with more confidence"
+    ],
+    "remember": "",
+    "callouts": [],
+    "footer": ""
+  },
+  "weeks": [
+    {
+      "key": "1",
+      "label": "Week 1",
+      "driveId": "15IKzUBuS9R1fnhzdTj2eIUcKLFNzN4l6",
+      "focus": "MOVEMENT QUALITY, STABILITY, CONTROL",
+      "notes": "BEGINNER PICKLEBALL PROTOCOL\nWEEK 1\n3 WORKOUTS PER WEEK\n30-45 MINUTES EACH\nFOCUS: MOVEMENT QUALITY, STABILITY, CONTROL\n\nPICKLEBALL PERFORMANCE PROTOCOL\nMOVE BETTER. PLAY LONGER. LOWER INJURY RISK.\nMOBILITY • STABILITY • STRENGTH • POWER • ENDURANCE • COURT CONFIDENCE",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "ANKLE CIRCLES",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Full range of motion.",
+            "Keep knee relaxed.",
+            "Control the movement."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "20 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: FOUNDATION & LOWER BODY CONTROL (30-40 MIN)",
+          "workoutNote": "Mobility, stability and fundamental strength for better movement on the court."
+        },
+        {
+          "n": 2,
+          "name": "KNEE CIRCLES",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Small to large circles.",
+            "Keep hip stable.",
+            "Stand tall."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "15 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: FOUNDATION & LOWER BODY CONTROL (30-40 MIN)"
+        },
+        {
+          "n": 3,
+          "name": "GLUTE BRIDGE",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Engage glutes.",
+            "Keep ribs down.",
+            "Drive through heels."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "15",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: FOUNDATION & LOWER BODY CONTROL (30-40 MIN)"
+        },
+        {
+          "n": 4,
+          "name": "SPLIT SQUAT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Knee tracks over toes.",
+            "Glutes engaged.",
+            "Torso tall, shoulders down."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: FOUNDATION & LOWER BODY CONTROL (30-40 MIN)"
+        },
+        {
+          "n": 5,
+          "name": "LATERAL STEP DOWN",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Control the movement.",
+            "Keep knee aligned.",
+            "Soft landing, glutes on."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: FOUNDATION & LOWER BODY CONTROL (30-40 MIN)"
+        },
+        {
+          "n": 6,
+          "name": "FARMER CARRY",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Shoulders down.",
+            "Core braced.",
+            "Glutes engaged.",
+            "Walk tall and controlled."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "40 ft each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: FOUNDATION & LOWER BODY CONTROL (30-40 MIN)"
+        },
+        {
+          "n": 1,
+          "name": "SHOULDER SET",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Shoulders down.",
+            "Squeeze shoulder blades.",
+            "Keep neck relaxed."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "20 scapular retractions",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY, CORE & POSTURE (30-40 MIN)",
+          "workoutNote": "Build upper body strength, core stability and posture for better control and less strain."
+        },
+        {
+          "n": 2,
+          "name": "BANDED ROW",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Shoulders down.",
+            "Lats engaged.",
+            "Elbows close.",
+            "Control the return."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "15",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY, CORE & POSTURE (30-40 MIN)"
+        },
+        {
+          "n": 3,
+          "name": "INCLINE PUSH-UP",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep shoulders down.",
+            "Core braced.",
+            "Full range of motion."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY, CORE & POSTURE (30-40 MIN)"
+        },
+        {
+          "n": 4,
+          "name": "DEAD BUG",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Ribs down.",
+            "Low back on ground.",
+            "Slow and controlled."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY, CORE & POSTURE (30-40 MIN)"
+        },
+        {
+          "n": 5,
+          "name": "SIDE PLANK",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Glutes engaged.",
+            "Hips level.",
+            "Keep shoulders down."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "20 s each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY, CORE & POSTURE (30-40 MIN)"
+        },
+        {
+          "n": 6,
+          "name": "PALL OF PRESS",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Core braced.",
+            "Resist rotation.",
+            "Keep shoulders down.",
+            "Move slowly."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY, CORE & POSTURE (30-40 MIN)"
+        },
+        {
+          "n": 1,
+          "name": "ANKLE CIRCLES (DYNAMIC)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Full range of motion.",
+            "Smooth and controlled.",
+            "Keep knee relaxed."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "20 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT & COURT READINESS (30-40 MIN)",
+          "workoutNote": "Combine mobility, stability and light power with pickleball-specific movement patterns."
+        },
+        {
+          "n": 2,
+          "name": "KNEE CIRCLES (DYNAMIC)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Small to large circles.",
+            "Maintain balance.",
+            "Keep hip stable."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "15 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT & COURT READINESS (30-40 MIN)"
+        },
+        {
+          "n": 3,
+          "name": "LATERAL LUNGE",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Sit hips back.",
+            "Knee over toes.",
+            "Glutes engaged.",
+            "Keep shoulders down."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT & COURT READINESS (30-40 MIN)"
+        },
+        {
+          "n": 4,
+          "name": "FORWARD/ BACKWARD LUNGE",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Control the movement.",
+            "Keep knee aligned.",
+            "Glutes on, torso tall."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT & COURT READINESS (30-40 MIN)"
+        },
+        {
+          "n": 5,
+          "name": "LATERAL SHUFFLE",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Stay low.",
+            "Short, controlled steps.",
+            "Glutes engaged.",
+            "Shoulders down."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "20 ft each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT & COURT READINESS (30-40 MIN)"
+        },
+        {
+          "n": 6,
+          "name": "SPLIT STEP + SHADOW VOLLEY",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Light on your feet.",
+            "Split step and recover.",
+            "Keep shoulders down.",
+            "Short, controlled movements."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "30 s",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT & COURT READINESS (30-40 MIN)"
+        },
+        {
+          "n": 1,
+          "name": "Ankle Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "PRE-WORKOUT WARM-UP (5-8 MIN)"
+        },
+        {
+          "n": 2,
+          "name": "Knee Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "PRE-WORKOUT WARM-UP (5-8 MIN)"
+        },
+        {
+          "n": 3,
+          "name": "Hip Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "PRE-WORKOUT WARM-UP (5-8 MIN)"
+        },
+        {
+          "n": 4,
+          "name": "Arm Swings",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "PRE-WORKOUT WARM-UP (5-8 MIN)"
+        },
+        {
+          "n": 5,
+          "name": "Torso Rotations",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "PRE-WORKOUT WARM-UP (5-8 MIN)"
+        },
+        {
+          "n": 1,
+          "name": "Light Walking",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2-5 minutes"
+            }
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "POST-WORKOUT RECOVERY (5-10 MIN)"
+        },
+        {
+          "n": 2,
+          "name": "Gentle Stretching",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(hips, quads, glutes, shoulders)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "POST-WORKOUT RECOVERY (5-10 MIN)"
+        },
+        {
+          "n": 3,
+          "name": "Deep Breathing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2 minutes"
+            }
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "POST-WORKOUT RECOVERY (5-10 MIN)"
+        },
+        {
+          "n": 4,
+          "name": "Optional: Ice Bath or Sauna",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(as available)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "POST-WORKOUT RECOVERY (5-10 MIN)"
+        }
+      ],
+      "editorNotes": "Labels removed: \"Header:\", \"Sheet header:\" (text kept in notes; \"|\" and \"/\" separators turned into line breaks).\nThis sheet has the Beginner / Intermediate / Advanced overview strip (see sourceNotes) instead of the 6-week progression strip. Workout time boxes read \"30-40 MIN\" and the workout tables have no column headings."
+    },
+    {
+      "key": "2",
+      "label": "Week 2",
+      "driveId": "19HNsDJKQvMG3kTLc31dXKmrYQql4wO7J",
+      "focus": "STABILITY, CONTROL, AND BUILDING STRENGTH",
+      "notes": "WEEK 2\nPICKLEBALL BEGINNER PROTOCOL\n3 WORKOUTS THIS WEEK\n30-45 MINUTES EACH\nFOCUS: STABILITY, CONTROL, AND BUILDING STRENGTH\n\nMOVE BETTER. PLAY LONGER. LOWER INJURY RISK.",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "ANKLE CIRCLES",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Full range of motion.",
+            "Keep knee relaxed.",
+            "Control the movement."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "20 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER BODY STABILITY & COURT CONTROL (30-40 MINUTES)",
+          "workoutNote": "Build stability, strength and balance for better movement on the court."
+        },
+        {
+          "n": 2,
+          "name": "KNEE CIRCLES",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Small to large circles.",
+            "Keep hip stable.",
+            "Stand tall."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "15 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER BODY STABILITY & COURT CONTROL (30-40 MINUTES)"
+        },
+        {
+          "n": 3,
+          "name": "GLUTE BRIDGE (HOLD)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Engage glutes.",
+            "Keep ribs down.",
+            "Drive through heels."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "15 (3 s hold)",
+            "tempo": "",
+            "hold": "3 s hold",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER BODY STABILITY & COURT CONTROL (30-40 MINUTES)"
+        },
+        {
+          "n": 4,
+          "name": "SPLIT SQUAT (ASSISTED IF NEEDED)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Knee tracks over toes.",
+            "Glutes engaged.",
+            "Torso tall, shoulders down."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER BODY STABILITY & COURT CONTROL (30-40 MINUTES)"
+        },
+        {
+          "n": 5,
+          "name": "LATERAL BAND WALK",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Feet parallel.",
+            "Stay low, control.",
+            "Glutes on, shoulders down."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER BODY STABILITY & COURT CONTROL (30-40 MINUTES)"
+        },
+        {
+          "n": 6,
+          "name": "FARMER CARRY",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Tall posture.",
+            "Shoulders down.",
+            "Core engaged.",
+            "Walk with control."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "40 ft each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER BODY STABILITY & COURT CONTROL (30-40 MINUTES)"
+        },
+        {
+          "n": 1,
+          "name": "BANDED EXTERNAL ROTATION",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Elbow pinned.",
+            "Shoulders down.",
+            "Slow and controlled."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "15 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY STABILITY & CORE CONTROL (30-40 MINUTES)",
+          "workoutNote": "Build upper body strength, core stability and posture for better control and less strain."
+        },
+        {
+          "n": 2,
+          "name": "SEATED CABLE ROW (or Band Row)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Shoulders down.",
+            "Drive elbows back.",
+            "Squeeze shoulder blades.",
+            "Keep core engaged."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "15",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY STABILITY & CORE CONTROL (30-40 MINUTES)"
+        },
+        {
+          "n": 3,
+          "name": "INCLINE PUSH-UP",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep shoulders down.",
+            "Core braced.",
+            "Full range of motion."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY STABILITY & CORE CONTROL (30-40 MINUTES)"
+        },
+        {
+          "n": 4,
+          "name": "DEAD BUG",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Ribs down.",
+            "Low back on ground.",
+            "Slow and controlled."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY STABILITY & CORE CONTROL (30-40 MINUTES)"
+        },
+        {
+          "n": 5,
+          "name": "SIDE PLANK (KNEES)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Glutes engaged.",
+            "Hips level.",
+            "Keep shoulders down."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "20 s each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY STABILITY & CORE CONTROL (30-40 MINUTES)"
+        },
+        {
+          "n": 6,
+          "name": "PALLOF PRESS (ANTI-ROTATION)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Core braced.",
+            "Resist rotation.",
+            "Keep shoulders down.",
+            "Move slowly."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY STABILITY & CORE CONTROL (30-40 MINUTES)"
+        },
+        {
+          "n": 1,
+          "name": "ANKLE CIRCLES (DYNAMIC)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Full range of motion.",
+            "Smooth and controlled.",
+            "Keep knee relaxed."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "20 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT, AGILITY & COURT READINESS (30-40 MINUTES)",
+          "workoutNote": "Combine mobility, strength and light agility for real-court movement patterns."
+        },
+        {
+          "n": 2,
+          "name": "KNEE CIRCLES (DYNAMIC)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Small to large circles.",
+            "Maintain balance.",
+            "Keep hip stable."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "15 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT, AGILITY & COURT READINESS (30-40 MINUTES)"
+        },
+        {
+          "n": 3,
+          "name": "LATERAL LUNGE",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Sit hips back.",
+            "Knee over toes.",
+            "Glutes engaged.",
+            "Keep shoulders down."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT, AGILITY & COURT READINESS (30-40 MINUTES)"
+        },
+        {
+          "n": 4,
+          "name": "FORWARD / BACKWARD LUNGE",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Control the movement.",
+            "Keep knee aligned.",
+            "Glutes on, torso tall."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT, AGILITY & COURT READINESS (30-40 MINUTES)"
+        },
+        {
+          "n": 5,
+          "name": "LATERAL SHUFFLE (LOW & CONTROLLED)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Stay low.",
+            "Short, controlled steps.",
+            "Glutes engaged.",
+            "Shoulders down."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "20 ft each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT, AGILITY & COURT READINESS (30-40 MINUTES)"
+        },
+        {
+          "n": 6,
+          "name": "SPLIT STEP + SHADOW VOLLEY",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Light on your feet.",
+            "Split step and recover.",
+            "Keep shoulders down.",
+            "Smooth movements."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "30 s",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT, AGILITY & COURT READINESS (30-40 MINUTES)"
+        },
+        {
+          "n": 1,
+          "name": "Ankle Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "PRE-WORKOUT WARM-UP (5-8 MIN)"
+        },
+        {
+          "n": 2,
+          "name": "Knee Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "PRE-WORKOUT WARM-UP (5-8 MIN)"
+        },
+        {
+          "n": 3,
+          "name": "Hip Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "PRE-WORKOUT WARM-UP (5-8 MIN)"
+        },
+        {
+          "n": 4,
+          "name": "Arm Swings",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "PRE-WORKOUT WARM-UP (5-8 MIN)"
+        },
+        {
+          "n": 5,
+          "name": "Torso Rotations",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "PRE-WORKOUT WARM-UP (5-8 MIN)"
+        },
+        {
+          "n": 1,
+          "name": "Light Walking",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2-5 minutes"
+            }
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "POST-WORKOUT RECOVERY (5-10 MIN)"
+        },
+        {
+          "n": 2,
+          "name": "Gentle Stretching",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(hips, quads, glutes, shoulders)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "POST-WORKOUT RECOVERY (5-10 MIN)"
+        },
+        {
+          "n": 3,
+          "name": "Deep Breathing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2 minutes"
+            }
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "POST-WORKOUT RECOVERY (5-10 MIN)"
+        },
+        {
+          "n": 4,
+          "name": "Optional: Ice Bath or Sauna",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(as available)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "POST-WORKOUT RECOVERY (5-10 MIN)"
+        }
+      ],
+      "editorNotes": "Labels removed: \"Header:\", \"Sheet header:\" (text kept in notes; \"|\" separators turned into line breaks).\nSheet header reads \"PICKLEBALL BEGINNER PROTOCOL / MOVE BETTER. PLAY LONGER. LOWER INJURY RISK.\"; the title repeats the header band, so only the tagline line is added to notes.\n6-week progression strip with week 2 (Stability & Control) highlighted."
+    },
+    {
+      "key": "3",
+      "label": "Week 3",
+      "driveId": "1B_-9k4NbtDjYOjOi2neY9acNHp5xsnw4",
+      "focus": "BUILDING STRENGTH, CONTROL & MOVEMENT CAPACITY",
+      "notes": "WEEK 3\nPICKLEBALL BEGINNER PROTOCOL\n3 WORKOUTS THIS WEEK\n30-45 MINUTES EACH\nFOCUS: BUILDING STRENGTH, CONTROL & MOVEMENT CAPACITY",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "ANKLE CIRCLES (WEIGHT BEARING)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Full range of motion.",
+            "Keep knee relaxed.",
+            "Control the movement."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "20 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER BODY STRENGTH & SINGLE-LEG CONTROL (30-40 MINUTES)",
+          "workoutNote": "Build strength, stability and control for better movement on the court."
+        },
+        {
+          "n": 2,
+          "name": "KNEE CIRCLES (WEIGHT BEARING)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Small to large circles.",
+            "Keep hip stable.",
+            "Stand tall."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "15 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER BODY STRENGTH & SINGLE-LEG CONTROL (30-40 MINUTES)"
+        },
+        {
+          "n": 3,
+          "name": "SPLIT SQUAT (ASSISTED IF NEEDED)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Knee tracks over toes.",
+            "Glutes engaged.",
+            "Torso tall, shoulders down."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER BODY STRENGTH & SINGLE-LEG CONTROL (30-40 MINUTES)"
+        },
+        {
+          "n": 4,
+          "name": "LATERAL STEP DOWN (6-8\" BOX)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Slow and controlled.",
+            "Keep knee aligned.",
+            "Soft landing, glutes on."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER BODY STRENGTH & SINGLE-LEG CONTROL (30-40 MINUTES)"
+        },
+        {
+          "n": 5,
+          "name": "GLUTE BRIDGE (SINGLE LEG)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Engage glutes.",
+            "Keep ribs down.",
+            "Drive through heel."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER BODY STRENGTH & SINGLE-LEG CONTROL (30-40 MINUTES)"
+        },
+        {
+          "n": 6,
+          "name": "FARMER CARRY",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Tall posture.",
+            "Shoulders down.",
+            "Core engaged.",
+            "Walk with control."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "40 ft each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER BODY STRENGTH & SINGLE-LEG CONTROL (30-40 MINUTES)"
+        },
+        {
+          "n": 1,
+          "name": "SHOULDER SET & SCAPULAR RETRACTION",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Shoulders down.",
+            "Squeeze shoulder blades.",
+            "Keep neck relaxed."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "20",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY STRENGTH, CORE & POSTURE (30-40 MINUTES)",
+          "workoutNote": "Develop upper body strength, core stability and posture for better control."
+        },
+        {
+          "n": 2,
+          "name": "BANDED ROW (NEUTRAL)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Lead with the elbows.",
+            "Shoulders down.",
+            "Keep core engaged."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "15",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY STRENGTH, CORE & POSTURE (30-40 MINUTES)"
+        },
+        {
+          "n": 3,
+          "name": "INCLINE PUSH-UP",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep shoulders down.",
+            "Core braced.",
+            "Full range of motion."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10-12",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY STRENGTH, CORE & POSTURE (30-40 MINUTES)"
+        },
+        {
+          "n": 4,
+          "name": "DEAD BUG (WITH REACH)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Ribs down.",
+            "Low back on ground.",
+            "Slow and controlled."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY STRENGTH, CORE & POSTURE (30-40 MINUTES)"
+        },
+        {
+          "n": 5,
+          "name": "SIDE PLANK (KNEES OR FEET)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Glutes engaged.",
+            "Hips level.",
+            "Keep shoulders down."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "20 s each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY STRENGTH, CORE & POSTURE (30-40 MINUTES)"
+        },
+        {
+          "n": 6,
+          "name": "PALLOF PRESS (ANTI-ROTATION)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Core braced.",
+            "Resist rotation.",
+            "Keep shoulders down.",
+            "Move slowly."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY STRENGTH, CORE & POSTURE (30-40 MINUTES)"
+        },
+        {
+          "n": 1,
+          "name": "ANKLE CIRCLES (DYNAMIC)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Full range of motion.",
+            "Smooth and controlled.",
+            "Keep knee relaxed."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "20 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT, AGILITY & COURT READINESS (30-40 MINUTES)",
+          "workoutNote": "Combine strength, stability and light plyometrics for real-court movement."
+        },
+        {
+          "n": 2,
+          "name": "KNEE CIRCLES (DYNAMIC)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Small to large circles.",
+            "Maintain balance.",
+            "Keep hip stable."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "15 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT, AGILITY & COURT READINESS (30-40 MINUTES)"
+        },
+        {
+          "n": 3,
+          "name": "LATERAL LUNGE (TO BOX OR BENCH)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Sit hips back.",
+            "Knee over toes.",
+            "Glutes engaged.",
+            "Keep shoulders down."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT, AGILITY & COURT READINESS (30-40 MINUTES)"
+        },
+        {
+          "n": 4,
+          "name": "FORWARD / BACKWARD LUNGE (WALKING)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Control the movement.",
+            "Keep knee aligned.",
+            "Glutes on, torso tall."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT, AGILITY & COURT READINESS (30-40 MINUTES)"
+        },
+        {
+          "n": 5,
+          "name": "LATERAL SHUFFLE (WITH STOP)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Stay low.",
+            "Short, controlled steps.",
+            "Glutes engaged.",
+            "Shoulders down."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "20 ft each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT, AGILITY & COURT READINESS (30-40 MINUTES)"
+        },
+        {
+          "n": 6,
+          "name": "SPLIT STEP + SHADOW VOLLEY",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Light on your feet.",
+            "Split step and recover.",
+            "Keep shoulders down.",
+            "Smooth movements."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "30 s",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT, AGILITY & COURT READINESS (30-40 MINUTES)"
+        },
+        {
+          "n": 1,
+          "name": "Ankle Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "PRE-WORKOUT WARM-UP (5-8 MIN)"
+        },
+        {
+          "n": 2,
+          "name": "Knee Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "PRE-WORKOUT WARM-UP (5-8 MIN)"
+        },
+        {
+          "n": 3,
+          "name": "Hip Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "PRE-WORKOUT WARM-UP (5-8 MIN)"
+        },
+        {
+          "n": 4,
+          "name": "Arm Swings",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "PRE-WORKOUT WARM-UP (5-8 MIN)"
+        },
+        {
+          "n": 5,
+          "name": "Torso Rotations",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "PRE-WORKOUT WARM-UP (5-8 MIN)"
+        },
+        {
+          "n": 1,
+          "name": "Light Walking",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2-5 minutes"
+            }
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "POST-WORKOUT RECOVERY (5-10 MIN)"
+        },
+        {
+          "n": 2,
+          "name": "Gentle Stretching",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(hips, quads, glutes, shoulders)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "POST-WORKOUT RECOVERY (5-10 MIN)"
+        },
+        {
+          "n": 3,
+          "name": "Deep Breathing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2 minutes"
+            }
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "POST-WORKOUT RECOVERY (5-10 MIN)"
+        },
+        {
+          "n": 4,
+          "name": "Optional: Ice Bath or Sauna",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(as available)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "POST-WORKOUT RECOVERY (5-10 MIN)"
+        }
+      ],
+      "editorNotes": "Labels removed: \"Header:\" (text kept in notes; \"|\" separators turned into line breaks).\n6-week progression strip with week 3 (Strength Development) highlighted."
+    },
+    {
+      "key": "4",
+      "label": "Week 4",
+      "driveId": "1qkDcgPJiWOX06S-PFWT-ErHTfOcAapOA",
+      "focus": "MOVEMENT INTEGRATION, SINGLE-LEG CONTROL & ON-COURT READINESS",
+      "notes": "WEEK 4\nPICKLEBALL BEGINNER PROTOCOL\n3 WORKOUTS THIS WEEK\n30-45 MINUTES EACH\nFOCUS: MOVEMENT INTEGRATION, SINGLE-LEG CONTROL & ON-COURT READINESS",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "ANKLE CIRCLES (DYNAMIC)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Full range of motion.",
+            "Smooth and controlled.",
+            "Keep knee relaxed."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "20 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER BODY POWER & SINGLE-LEG STABILITY (30-40 MINUTES)",
+          "workoutNote": "Build lower-body strength, stability, and controlled power for court movement."
+        },
+        {
+          "n": 2,
+          "name": "KNEE CIRCLES (DYNAMIC)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Small to large circles.",
+            "Keep hip stable.",
+            "Stand tall."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "15 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER BODY POWER & SINGLE-LEG STABILITY (30-40 MINUTES)"
+        },
+        {
+          "n": 3,
+          "name": "SPLIT SQUAT (HOLD + PULSE)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Knee over toes.",
+            "Glutes engaged.",
+            "Hold 2-3 s at bottom.",
+            "Stay tall."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER BODY POWER & SINGLE-LEG STABILITY (30-40 MINUTES)"
+        },
+        {
+          "n": 4,
+          "name": "LATERAL LUNGE TO STICK",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Sit hips back.",
+            "Keep knee aligned.",
+            "Glutes engaged.",
+            "Keep shoulders down."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER BODY POWER & SINGLE-LEG STABILITY (30-40 MINUTES)"
+        },
+        {
+          "n": 5,
+          "name": "STEP-UP (8-12\" BOX)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive through heel.",
+            "Control the down phase.",
+            "Tall posture."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER BODY POWER & SINGLE-LEG STABILITY (30-40 MINUTES)"
+        },
+        {
+          "n": 6,
+          "name": "FARMER CARRY",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Shoulders down.",
+            "Core braced.",
+            "Glutes engaged.",
+            "Walk tall and controlled."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "40 ft each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER BODY POWER & SINGLE-LEG STABILITY (30-40 MINUTES)"
+        },
+        {
+          "n": 1,
+          "name": "BANDED EXTERNAL ROTATION",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep shoulders down.",
+            "Elbows at side.",
+            "Squeeze shoulder blades.",
+            "Control the return."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "15 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY CONTROL, CORE & ROTATIONAL STABILITY (30-40 MINUTES)",
+          "workoutNote": "Build upper-body control, core stability, and rotation for better shot consistency."
+        },
+        {
+          "n": 2,
+          "name": "SEATED CABLE ROW (or Band Row)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Shoulders down.",
+            "Drive elbows back.",
+            "Keep core engaged."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "15",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY CONTROL, CORE & ROTATIONAL STABILITY (30-40 MINUTES)"
+        },
+        {
+          "n": 3,
+          "name": "INCLINE PUSH-UP",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep shoulders down.",
+            "Core braced.",
+            "Full range of motion."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY CONTROL, CORE & ROTATIONAL STABILITY (30-40 MINUTES)"
+        },
+        {
+          "n": 4,
+          "name": "DEAD BUG (ARM + LEG REACH)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Ribs down.",
+            "Low back on ground.",
+            "Slow and controlled."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY CONTROL, CORE & ROTATIONAL STABILITY (30-40 MINUTES)"
+        },
+        {
+          "n": 5,
+          "name": "SIDE PLANK (WITH REACH)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Glutes engaged.",
+            "Hips level.",
+            "Keep shoulders down.",
+            "Reach under and up."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "20 s each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY CONTROL, CORE & ROTATIONAL STABILITY (30-40 MINUTES)"
+        },
+        {
+          "n": 6,
+          "name": "ROTATIONAL MEDICINE BALL THROW (TO WALL OR PARTNER)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hips lead.",
+            "Keep core braced.",
+            "Control the rotation.",
+            "Explode and reset."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY CONTROL, CORE & ROTATIONAL STABILITY (30-40 MINUTES)"
+        },
+        {
+          "n": 1,
+          "name": "ANKLE CIRCLES (WARM-UP)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Full range of motion.",
+            "Smooth and controlled.",
+            "Keep knee relaxed."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "20 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT FLOW, AGILITY & COURT TRANSFER (30-40 MINUTES)",
+          "workoutNote": "Combine strength, stability and light agllity into pickleball-specific movement patterns."
+        },
+        {
+          "n": 2,
+          "name": "KNEE CIRCLES (WARM-UP)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Small to large circles.",
+            "Maintain balance.",
+            "Keep hip stable."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "15 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT FLOW, AGILITY & COURT TRANSFER (30-40 MINUTES)"
+        },
+        {
+          "n": 3,
+          "name": "LATERAL SHUFFLE (5-10 YD)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Stay low.",
+            "Short, controlled steps.",
+            "Glutes engaged.",
+            "Shoulders down."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "20 ft each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT FLOW, AGILITY & COURT TRANSFER (30-40 MINUTES)"
+        },
+        {
+          "n": 4,
+          "name": "FORWARD / BACKWARD LUNGE (CONTINUOUS)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Control the movement.",
+            "Keep knee aligned.",
+            "Glutes on, torso tall."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT FLOW, AGILITY & COURT TRANSFER (30-40 MINUTES)"
+        },
+        {
+          "n": 5,
+          "name": "CROSSOVER STEP (TO CONE)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Stay low and controlled.",
+            "Keep knee aligned.",
+            "Glutes engaged.",
+            "Shoulders down."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT FLOW, AGILITY & COURT TRANSFER (30-40 MINUTES)"
+        },
+        {
+          "n": 6,
+          "name": "SHADOW VOLLEY FOOTWORK (3-POINT)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Split step, move forward, back and laterally.",
+            "Light on feet.",
+            "Maintain posture."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "30 s",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT FLOW, AGILITY & COURT TRANSFER (30-40 MINUTES)"
+        },
+        {
+          "n": 1,
+          "name": "Ankle Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "PRE-WORKOUT WARM-UP (5-8 MIN)"
+        },
+        {
+          "n": 2,
+          "name": "Knee Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "PRE-WORKOUT WARM-UP (5-8 MIN)"
+        },
+        {
+          "n": 3,
+          "name": "Hip Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "PRE-WORKOUT WARM-UP (5-8 MIN)"
+        },
+        {
+          "n": 4,
+          "name": "Arm Swings",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "PRE-WORKOUT WARM-UP (5-8 MIN)"
+        },
+        {
+          "n": 5,
+          "name": "Torso Rotations",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "PRE-WORKOUT WARM-UP (5-8 MIN)"
+        },
+        {
+          "n": 1,
+          "name": "Light Walking",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2-5 minutes"
+            }
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "POST-WORKOUT RECOVERY (5-10 MIN)"
+        },
+        {
+          "n": 2,
+          "name": "Gentle Stretching",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(hips, quads, glutes, shoulders)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "POST-WORKOUT RECOVERY (5-10 MIN)"
+        },
+        {
+          "n": 3,
+          "name": "Deep Breathing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2 minutes"
+            }
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "POST-WORKOUT RECOVERY (5-10 MIN)"
+        },
+        {
+          "n": 4,
+          "name": "Optional: Ice Bath or Sauna",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(as available)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "POST-WORKOUT RECOVERY (5-10 MIN)"
+        }
+      ],
+      "editorNotes": "Labels removed: \"Header:\" (text kept in notes; \"|\" separators turned into line breaks).\n6-week progression strip with week 4 (Movement Integration) highlighted."
+    },
+    {
+      "key": "5",
+      "label": "Week 5",
+      "driveId": "1FSdI4brsW5cUvgQVTXjR5mHq81P_diSb",
+      "focus": "POWER, ENDURANCE, AND REPEATED MOVEMENT CONTROL",
+      "notes": "WEEK 5\nPICKLEBALL BEGINNER PROTOCOL\n3 WORKOUTS THIS WEEK\n30-45 MINUTES EACH\nFOCUS: POWER, ENDURANCE, AND REPEATED MOVEMENT CONTROL",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "ANKLE CIRCLES (DYNAMIC)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Full range of motion.",
+            "Smooth and controlled.",
+            "Keep knee relaxed."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "20 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER BODY POWER & SINGLE-LEG ENDURANCE (30-40 MINUTES)",
+          "workoutNote": "Develop lower-body strength, power and control for repeated court movement."
+        },
+        {
+          "n": 2,
+          "name": "KNEE CIRCLES (DYNAMIC)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Small to large circles.",
+            "Keep hip stable.",
+            "Stand tall."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "15 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER BODY POWER & SINGLE-LEG ENDURANCE (30-40 MINUTES)"
+        },
+        {
+          "n": 3,
+          "name": "SPLIT SQUAT TO STEP-UP",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive through heel.",
+            "Glutes engaged.",
+            "Control the down phase.",
+            "Keep knee aligned."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER BODY POWER & SINGLE-LEG ENDURANCE (30-40 MINUTES)"
+        },
+        {
+          "n": 4,
+          "name": "LATERAL LUNGE TO BALANCE",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Sit hips back.",
+            "Glutes engaged.",
+            "Hold balance 2-3 s.",
+            "Keep shoulders down."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER BODY POWER & SINGLE-LEG ENDURANCE (30-40 MINUTES)"
+        },
+        {
+          "n": 5,
+          "name": "SINGLE-LEG RDL (WEIGHTED)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hinge at hip.",
+            "Keep spine neutral.",
+            "Glutes engaged.",
+            "Control the movement."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER BODY POWER & SINGLE-LEG ENDURANCE (30-40 MINUTES)"
+        },
+        {
+          "n": 6,
+          "name": "FARMER CARRY (FARTHER DISTANCE)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Tall posture.",
+            "Shoulders down.",
+            "Core braced.",
+            "Glutes engaged."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "40 ft each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER BODY POWER & SINGLE-LEG ENDURANCE (30-40 MINUTES)"
+        },
+        {
+          "n": 1,
+          "name": "SHOULDER SET & SCAPULAR RETRACTION",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Shoulders down.",
+            "Squeeze shoulder blades.",
+            "Keep neck relaxed."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "20",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY STABILITY, PUSH-PULL & CORE (30-40 MINUTES)",
+          "workoutNote": "Build upper-body strength, core control and posture for better shot control."
+        },
+        {
+          "n": 2,
+          "name": "BANDED ROW (NEUTRAL GRIP)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Lead with elbows.",
+            "Shoulders down.",
+            "Keep core engaged."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "15",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY STABILITY, PUSH-PULL & CORE (30-40 MINUTES)"
+        },
+        {
+          "n": 3,
+          "name": "INCLINE PUSH-UP",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep shoulders down.",
+            "Core braced.",
+            "Full range of motion."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY STABILITY, PUSH-PULL & CORE (30-40 MINUTES)"
+        },
+        {
+          "n": 4,
+          "name": "HALF-KNEELING CABLE PRESS (ANTI-ROTATION)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hips square.",
+            "Resist rotation.",
+            "Keep core tight.",
+            "Shoulders down."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY STABILITY, PUSH-PULL & CORE (30-40 MINUTES)"
+        },
+        {
+          "n": 5,
+          "name": "SIDE PLANK (WITH HIP LIFT)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Glutes engaged.",
+            "Hips level.",
+            "Keep shoulders down.",
+            "Controlled movement."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY STABILITY, PUSH-PULL & CORE (30-40 MINUTES)"
+        },
+        {
+          "n": 6,
+          "name": "DEAD BUG (WITH BALL REACH)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Ribs down.",
+            "Low back on ground.",
+            "Slow and controlled."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY STABILITY, PUSH-PULL & CORE (30-40 MINUTES)"
+        },
+        {
+          "n": 1,
+          "name": "ANKLE CIRCLES (WARM-UP)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Full range of motion.",
+            "Smooth and controlled.",
+            "Keep knee relaxed."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "20 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT SPEED, AGILITY & COURT TRANSFER (30-40 MINUTES)",
+          "workoutNote": "Develop movement speed, change of direction and endurance for real-court play."
+        },
+        {
+          "n": 2,
+          "name": "KNEE CIRCLES (WARM-UP)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Small to large circles.",
+            "Maintain balance.",
+            "Keep hip stable."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "15 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT SPEED, AGILITY & COURT TRANSFER (30-40 MINUTES)"
+        },
+        {
+          "n": 3,
+          "name": "LATERAL SHUFFLE (5-10 YD)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Stay low.",
+            "Short, controlled steps.",
+            "Glutes engaged.",
+            "Shoulders down."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "20 yd each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT SPEED, AGILITY & COURT TRANSFER (30-40 MINUTES)"
+        },
+        {
+          "n": 4,
+          "name": "FORWARD / BACKWARD RUN (5-10 YD)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Quick feet.",
+            "Stay low and balanced.",
+            "Control deceleration.",
+            "Glutes engaged."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "20 yd each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT SPEED, AGILITY & COURT TRANSFER (30-40 MINUTES)"
+        },
+        {
+          "n": 5,
+          "name": "CROSSOVER STEP (TO CONE)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode laterally.",
+            "Keep knee aligned.",
+            "Glutes engaged.",
+            "Shoulders down."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT SPEED, AGILITY & COURT TRANSFER (30-40 MINUTES)"
+        },
+        {
+          "n": 6,
+          "name": "SHADOW VOLLEY WITH SPLIT STEP (3-POINT)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Light on feet.",
+            "Split step before move.",
+            "Keep shoulders down.",
+            "Maintain posture."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "30 s",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT SPEED, AGILITY & COURT TRANSFER (30-40 MINUTES)"
+        },
+        {
+          "n": 1,
+          "name": "Ankle Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "PRE-WORKOUT WARM-UP (5-8 MIN)"
+        },
+        {
+          "n": 2,
+          "name": "Knee Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "PRE-WORKOUT WARM-UP (5-8 MIN)"
+        },
+        {
+          "n": 3,
+          "name": "Hip Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "PRE-WORKOUT WARM-UP (5-8 MIN)"
+        },
+        {
+          "n": 4,
+          "name": "Arm Swings",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "PRE-WORKOUT WARM-UP (5-8 MIN)"
+        },
+        {
+          "n": 5,
+          "name": "Torso Rotations",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "PRE-WORKOUT WARM-UP (5-8 MIN)"
+        },
+        {
+          "n": 1,
+          "name": "Light Walking",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2-5 minutes"
+            }
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "POST-WORKOUT RECOVERY (5-10 MIN)"
+        },
+        {
+          "n": 2,
+          "name": "Gentle Stretching",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(hips, quads, glutes, shoulders)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "POST-WORKOUT RECOVERY (5-10 MIN)"
+        },
+        {
+          "n": 3,
+          "name": "Deep Breathing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2 minutes"
+            }
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "POST-WORKOUT RECOVERY (5-10 MIN)"
+        },
+        {
+          "n": 4,
+          "name": "Optional: Ice Bath or Sauna",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(as available)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "POST-WORKOUT RECOVERY (5-10 MIN)"
+        }
+      ],
+      "editorNotes": "Labels removed: \"Header:\" (text kept in notes; \"|\" separators turned into line breaks).\n6-week progression strip with week 5 (Power & Endurance) highlighted."
+    },
+    {
+      "key": "6",
+      "label": "Week 6",
+      "driveId": "10QMVoE2_TesuYO_Hq0yHl_NXc5JA8q7Z",
+      "focus": "FULL INTEGRATION, COURT READINESS & CONSISTENCY",
+      "notes": "WEEK 6\nPICKLEBALL BEGINNER PROTOCOL\n3 WORKOUTS THIS WEEK\n30-45 MINUTES EACH\nFOCUS: FULL INTEGRATION, COURT READINESS & CONSISTENCY\n\nMOBILITY • STABILITY • STRENGTH • POWER • ENDURANCE • COURT CONFIDENCE",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "ANKLE CIRCLES (DYNAMIC + LOAD)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Full range of motion.",
+            "Controlled and smooth.",
+            "Keep knee relaxed."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "20 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER BODY POWER, STABILITY & ENDURANCE (30-40 MINUTES)",
+          "workoutNote": "Build durable legs, hips and core for longer, stronger play."
+        },
+        {
+          "n": 2,
+          "name": "KNEE CIRCLES (DYNAMIC + LOAD)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Small to large circles.",
+            "Keep hip stable.",
+            "Stand tall."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "15 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER BODY POWER, STABILITY & ENDURANCE (30-40 MINUTES)"
+        },
+        {
+          "n": 3,
+          "name": "SPLIT SQUAT (JUMP OPTION)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Knee over toes.",
+            "Glutes engaged.",
+            "Add light jump if ready.",
+            "Soft landing."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER BODY POWER, STABILITY & ENDURANCE (30-40 MINUTES)"
+        },
+        {
+          "n": 4,
+          "name": "LATERAL LUNGE TO BALANCE",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Sit hips back.",
+            "Glutes engaged.",
+            "Hold balance 2-3 s.",
+            "Keep shoulders down."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER BODY POWER, STABILITY & ENDURANCE (30-40 MINUTES)"
+        },
+        {
+          "n": 5,
+          "name": "STEP-UP + KNEE DRIVE (12-16\" BOX)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive through heel.",
+            "Control the descent.",
+            "Tall posture.",
+            "Glutes engaged."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER BODY POWER, STABILITY & ENDURANCE (30-40 MINUTES)"
+        },
+        {
+          "n": 6,
+          "name": "FARMER CARRY (HEAVIER)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Tall posture.",
+            "Shoulders down.",
+            "Core braced.",
+            "Glutes engaged."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "40 ft each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER BODY POWER, STABILITY & ENDURANCE (30-40 MINUTES)"
+        },
+        {
+          "n": 1,
+          "name": "SHOULDER SET & SCAPULAR RETRACTION",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Shoulders down.",
+            "Squeeze shoulder blades.",
+            "Keep neck relaxed."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "20",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY STRENGTH, CONTROL & ROTATIONAL POWER (30-40 MINUTES)",
+          "workoutNote": "Build upper body strength and rotational control for better shot mechanics."
+        },
+        {
+          "n": 2,
+          "name": "BANDED ROW (NEUTRAL GRIP)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Lead with elbows.",
+            "Shoulders down.",
+            "Squeeze and control.",
+            "Keep core engaged."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "15",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY STRENGTH, CONTROL & ROTATIONAL POWER (30-40 MINUTES)"
+        },
+        {
+          "n": 3,
+          "name": "INCLINE PUSH-UP",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep shoulders down.",
+            "Core braced.",
+            "Full range of motion."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY STRENGTH, CONTROL & ROTATIONAL POWER (30-40 MINUTES)"
+        },
+        {
+          "n": 4,
+          "name": "HALF-KNEELING CABLE PRESS (ANTI-ROTATION)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hips square.",
+            "Resist rotation.",
+            "Control the movement.",
+            "Keep shoulders down."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY STRENGTH, CONTROL & ROTATIONAL POWER (30-40 MINUTES)"
+        },
+        {
+          "n": 5,
+          "name": "ROTATIONAL MEDICINE BALL THROW (TO WALL OR PARTNER)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Use hips.",
+            "Keep shoulders down.",
+            "Explode and recover.",
+            "Stay in control."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY STRENGTH, CONTROL & ROTATIONAL POWER (30-40 MINUTES)"
+        },
+        {
+          "n": 6,
+          "name": "DEAD BUG (WITH REACH)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Ribs down.",
+            "Low back on ground.",
+            "Full control.",
+            "Slow and intentional."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER BODY STRENGTH, CONTROL & ROTATIONAL POWER (30-40 MINUTES)"
+        },
+        {
+          "n": 1,
+          "name": "ANKLE CIRCLES (WARM-UP)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Full range of motion.",
+            "Smooth and controlled.",
+            "Keep knee relaxed."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "20 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT SPEED, AGILITY & COURT READINESS (30-40 MINUTES)",
+          "workoutNote": "Integrate strength, mobility and agility into pickleball-specific patterns."
+        },
+        {
+          "n": 2,
+          "name": "KNEE CIRCLES (WARM-UP)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Small to large circles.",
+            "Maintain balance.",
+            "Keep hip stable."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "15 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT SPEED, AGILITY & COURT READINESS (30-40 MINUTES)"
+        },
+        {
+          "n": 3,
+          "name": "LATERAL SHUFFLE + STOP",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Stay low.",
+            "Short, controlled steps.",
+            "Glutes engaged.",
+            "Shoulders down."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "20 yd each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT SPEED, AGILITY & COURT READINESS (30-40 MINUTES)"
+        },
+        {
+          "n": 4,
+          "name": "FORWARD / BACKWARD RUN + PLANT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Control deceleration.",
+            "Knee aligned.",
+            "Glutes on.",
+            "Stay balanced."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "20 yd each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT SPEED, AGILITY & COURT READINESS (30-40 MINUTES)"
+        },
+        {
+          "n": 5,
+          "name": "CROSSOVER STEP TO CONE",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode laterally.",
+            "Keep knee aligned.",
+            "Glutes engaged.",
+            "Stay low and controlled."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT SPEED, AGILITY & COURT READINESS (30-40 MINUTES)"
+        },
+        {
+          "n": 6,
+          "name": "SHADOW VOLLEY FOOTWORK (3-POINT)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Light on feet.",
+            "Split step, move, recover.",
+            "Keep shoulders down.",
+            "Maintain posture."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "30 s",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: MOVEMENT SPEED, AGILITY & COURT READINESS (30-40 MINUTES)"
+        },
+        {
+          "n": 1,
+          "name": "Ankle Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "PRE-WORKOUT WARM-UP (5-8 MIN)"
+        },
+        {
+          "n": 2,
+          "name": "Knee Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "PRE-WORKOUT WARM-UP (5-8 MIN)"
+        },
+        {
+          "n": 3,
+          "name": "Hip Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "PRE-WORKOUT WARM-UP (5-8 MIN)"
+        },
+        {
+          "n": 4,
+          "name": "Arm Swings",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "PRE-WORKOUT WARM-UP (5-8 MIN)"
+        },
+        {
+          "n": 5,
+          "name": "Torso Rotations",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "PRE-WORKOUT WARM-UP (5-8 MIN)"
+        },
+        {
+          "n": 1,
+          "name": "Light Walking",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2-5 minutes"
+            }
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "POST-WORKOUT RECOVERY (5-10 MIN)"
+        },
+        {
+          "n": 2,
+          "name": "Gentle Stretching",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(hips, quads, glutes, shoulders)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "POST-WORKOUT RECOVERY (5-10 MIN)"
+        },
+        {
+          "n": 3,
+          "name": "Deep Breathing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2 minutes"
+            }
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "POST-WORKOUT RECOVERY (5-10 MIN)"
+        },
+        {
+          "n": 4,
+          "name": "Optional: Ice Bath or Sauna",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(as available)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "POST-WORKOUT RECOVERY (5-10 MIN)"
+        }
+      ],
+      "editorNotes": "Labels removed: \"Header:\" (text kept in notes; \"|\" separators turned into line breaks).\n6-week progression strip with week 6 (Confidence & Play) highlighted.\nSheet header also carries the line \"MOBILITY • STABILITY • STRENGTH • POWER • ENDURANCE • COURT CONFIDENCE\". (line kept in notes)"
+    }
+  ],
+  "uncertain": [
+    "Week 1 Workout B #6 is printed 'PALL OF PRESS' (weeks 2-3 print 'PALLOF PRESS'); kept as printed.",
+    "Week 4 Workout C subtitle prints 'light agllity' (typo for 'agility'); kept as printed.",
+    "Week 1 Workout C #6 last cue 'Short, controlled movements.' sits on the table's bottom edge and is partly clipped; read as shown.",
+    "Week 4 Workout C #3 'LATERAL SHUFFLE (5-10 YD)' is dosed '4 × 20 ft each direction' (name in yards, dosage in feet); kept as printed.",
+    "Week 2 Workout A #3 Glute Bridge '3 × 15 (3 s hold)': reps kept as '15 (3 s hold)' and also put '3 s hold' in dosage.hold.",
+    "Inch marks on box heights ('6-8\" BOX', '8-12\" BOX', '12-16\" BOX') printed as typographic quotes; written as ASCII double quote.",
+    "Week headers say '30-45 MINUTES EACH' while every workout time box says 30-40; both kept as printed.",
+    "Post-workout recovery items are not numbered on the sheet; n is assigned 1-4 in sheet order."
+  ],
+  "sourceNotes": "Read 6 sheets (weeks 1-6), each 1536x1024, downloaded from Google Drive thumbnails at w2400 and cropped/upscaled 2x per workout table. No missing or duplicate sheets. Week 1 sheet is titled 'PICKLEBALL PERFORMANCE PROTOCOL' (band: 'BEGINNER PICKLEBALL PROTOCOL | WEEK 1'); weeks 2-6 are titled 'PICKLEBALL BEGINNER PROTOCOL'. Week 1 overview strip 'Pickleball Performance Protocol': BEGINNER (Weeks 1-6): Learn the movement patterns. Build mobility, stability and control. Play with less pain and more confidence. | INTERMEDIATE (Weeks 1-6): Increase strength, speed and endurance. Add directional power and court-specific movements. Improve consistency and reaction control. | ADVANCED (Weeks 1-6): Maximize power, speed and agility. Develop high-level movement patterns. Perform, compete and stay resilient long term. Top-left box on every sheet: 'BEGINNER 6-WEEK PROGRAM' with bullets Build a strong foundation / Improve mobility and stability / Learn proper movement patterns / Reduce injury risk / Play with more confidence (recorded in progression.expect). The 6-week progression strip (progression.overview) appears on weeks 2-6 only. KEY CUES (EVERY WORKOUT) recorded as principles. PRE-WORKOUT WARM-UP (5-8 MIN) and POST-WORKOUT RECOVERY (5-10 MIN) are identical on all six sheets and are included as exercise groups in every week. Each workout is a table with columns # / EXERCISE / SETS × REPS / CUES (week 1 has no column headings); no how-to, captions or pro tips on these sheets."
+}

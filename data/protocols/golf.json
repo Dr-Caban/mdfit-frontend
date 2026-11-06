@@ -1,0 +1,2019 @@
+{
+  "id": "golf",
+  "title": "6-WEEK BEGINNER GOLF PROTOCOL",
+  "tagline": "IMPROVE MOBILITY. BUILD BETTER MOVEMENT. DEVELOP A STRONGER SWING.",
+  "goal": "",
+  "principles": [],
+  "dailyBasics": [],
+  "progression": {
+    "overview": [
+      {
+        "week": "1",
+        "title": "FOUNDATIONS",
+        "focus": "Establish mobility, posture and movement control."
+      },
+      {
+        "week": "2",
+        "title": "BUILD MOVEMENT RANGE",
+        "focus": "Improve active mobility, refine control, and connect mobility to golf mechanics."
+      },
+      {
+        "week": "3",
+        "title": "BUILD ROTATIONAL STABILITY",
+        "focus": "Integrate mobility with strength and coordination. Develop control through rotation, balance and sequencing."
+      },
+      {
+        "week": "5",
+        "title": "INTEGRATE MOVEMENT & SWING",
+        "focus": "Combine mobility, strength and control. Begin to connect movement patterns to a repeatable golf swing with smooth sequencing."
+      },
+      {
+        "week": "6",
+        "title": "CONFIDENCE & CONSISTENCY",
+        "focus": "Bring it all together. Combine mobility, strength and sequencing to perform a repeatable, efficient golf swing with control."
+      }
+    ],
+    "guidelines": [],
+    "expect": [],
+    "remember": "",
+    "callouts": [
+      "MOBILITY FIRST. FORM ALWAYS."
+    ],
+    "footer": "3 WORKOUTS • 20-30 MINUTES EACH • MOBILITY FIRST. FORM ALWAYS. • BEGINNER GOLF PROTOCOL"
+  },
+  "weeks": [
+    {
+      "key": "1",
+      "label": "Week 1",
+      "driveId": "124pop4E5ePVGI9bKoJQU5flobNZX34r8",
+      "focus": "FOUNDATIONS: Establish mobility, posture and movement control.",
+      "notes": "WEEK 1\nFOUNDATIONS\nEstablish mobility, posture and movement control.\n\nWORKOUT A FOCUS:\n- Hip mobility and glute engagement\n- Neutral spine and proper golf posture\n- Controlled movement through a comfortable range\n- Quality over speed\n\nWORKOUT B FOCUS:\n- Thoracic spine mobility\n- Shoulder control and posture\n- Upper-body rotation and stability\n- Maintain a relaxed, athletic upper body\n\nWORKOUT C FOCUS:\n- Glute activation and hip stability\n- Lower-body mobility and balance\n- Control through full range of motion\n- Proper weight transfer and stance awareness\n\nWEEK 1\n3 WORKOUTS\n20-30 MINUTES EACH\nMOBILITY FIRST. FORM ALWAYS.\nBEGINNER GOLF PROTOCOL",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "90/90 Hip Switch",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Move smoothly through your available range."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: HIP MOBILITY FOUNDATIONS (20-30 MINUTES)",
+          "workoutNote": "Improve hip mobility, glute engagement and posture."
+        },
+        {
+          "n": 2,
+          "name": "Couch Stretch with Glute Engagement",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep ribs down and gently squeeze the glute."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "30 sec each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: HIP MOBILITY FOUNDATIONS (20-30 MINUTES)"
+        },
+        {
+          "n": 3,
+          "name": "Standing Hip Dip",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep torso tall and control the pelvis."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: HIP MOBILITY FOUNDATIONS (20-30 MINUTES)"
+        },
+        {
+          "n": 4,
+          "name": "TRX Squat",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Sit hips back, keep knees aligned, maintain posture."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "12",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: HIP MOBILITY FOUNDATIONS (20-30 MINUTES)"
+        },
+        {
+          "n": 5,
+          "name": "Golf Address Posture Hold",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Neutral spine, soft knees, relaxed shoulders."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "20 sec",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: HIP MOBILITY FOUNDATIONS (20-30 MINUTES)"
+        },
+        {
+          "n": 6,
+          "name": "Glute RDL",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hinge at the hips, keep a flat back, feel the glutes."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "10",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: HIP MOBILITY FOUNDATIONS (20-30 MINUTES)"
+        },
+        {
+          "n": 7,
+          "name": "Seated Thoracic Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Sit tall and rotate through the upper back, not the low back."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: THORACIC SPINE & SHOULDERS (20-30 MINUTES)",
+          "workoutNote": "Improve upper-back mobility and shoulder control."
+        },
+        {
+          "n": 8,
+          "name": "Walkout",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep knees soft and maintain a neutral spine."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "6",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: THORACIC SPINE & SHOULDERS (20-30 MINUTES)"
+        },
+        {
+          "n": 9,
+          "name": "Open Book Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep knees together and follow your hand with your eyes."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: THORACIC SPINE & SHOULDERS (20-30 MINUTES)"
+        },
+        {
+          "n": 10,
+          "name": "Front Crab Walk",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep hips lifted and move with control."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "20 ft",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: THORACIC SPINE & SHOULDERS (20-30 MINUTES)"
+        },
+        {
+          "n": 11,
+          "name": "Golf Club Across-Chest Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep lower body stable and rotate through the torso."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: THORACIC SPINE & SHOULDERS (20-30 MINUTES)"
+        },
+        {
+          "n": 12,
+          "name": "Shoulder-Down Scapular Retraction",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep shoulders down and squeeze your shoulder blades."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "12",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: THORACIC SPINE & SHOULDERS (20-30 MINUTES)"
+        },
+        {
+          "n": 13,
+          "name": "Single-Leg Glute Bridge",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Squeeze the glute and keep your hips level."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: LOWER-BODY CONTROL (20-30 MINUTES)",
+          "workoutNote": "Build balance, strength and movement quality."
+        },
+        {
+          "n": 14,
+          "name": "Assisted Cossack Squat",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep the heel down and move through a comfortable range."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: LOWER-BODY CONTROL (20-30 MINUTES)"
+        },
+        {
+          "n": 15,
+          "name": "Ankle Rocking Mobility",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep knee aligned over the toes."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: LOWER-BODY CONTROL (20-30 MINUTES)"
+        },
+        {
+          "n": 16,
+          "name": "Side Crab Walk",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep hips low and maintain tension."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "20 ft",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: LOWER-BODY CONTROL (20-30 MINUTES)"
+        },
+        {
+          "n": 17,
+          "name": "Golf Stance Weight Shift",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Shift pressure slowly from trail to lead foot without swaying."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: LOWER-BODY CONTROL (20-30 MINUTES)"
+        },
+        {
+          "n": 18,
+          "name": "Supported Single-Leg RDL",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hinge at the hips, keep a flat back, maintain balance."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: LOWER-BODY CONTROL (20-30 MINUTES)"
+        }
+      ],
+      "editorNotes": "Labels removed: \"Header:\", \"Footer:\" (text kept in notes; \"/\" and \"|\" separators turned into line breaks)."
+    },
+    {
+      "key": "2",
+      "label": "Week 2",
+      "driveId": "12QtuHxSSUepw5I486enjySAd15upmA8E",
+      "focus": "BUILD MOVEMENT RANGE: Improve active mobility, refine control, and connect mobility to golf mechanics.",
+      "notes": "WEEK 2\nBUILD MOVEMENT RANGE\nImprove active mobility, refine control, and connect mobility to golf mechanics.\n\nWORKOUT A FOCUS:\n- Increase hip internal/external rotation\n- Improve pelvic control\n- Activate glutes and lateral hip stabilizers\n- Build a stable base for the golf swing\n\nWORKOUT B FOCUS:\n- Improve thoracic spine mobility\n- Develop scapular control and shoulder stability\n- Maintain a relaxed upper body\n- Learn a controlled takeaawy position\n\nWORKOUT C FOCUS:\n- Improve single-leg stability and balance\n- Strengthen glutes and posterior chain\n- Enhance lower-body control in rotation\n- Connect movement to a stable, balanced backswing\n\nWEEK 2\n3 WORKOUTS\n20-30 MINUTES EACH\nMOBILITY FIRST. FORM ALWAYS.\nBEGINNER GOLF PROTOCOL",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "90/90 Hip Switch with Forward Lean",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep spine tall, move slowly, feel the hips rotate.",
+            "Use hands for support as needed."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: HIP MOBILITY & ROTATION (20-30 MINUTES)",
+          "workoutNote": "Increase hip internal/external rotation and pelvic control."
+        },
+        {
+          "n": 2,
+          "name": "Couch Stretch with Glute Engagement",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep ribs down, engage the glute, and drive the hip forward without arching."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "30 sec each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: HIP MOBILITY & ROTATION (20-30 MINUTES)"
+        },
+        {
+          "n": 3,
+          "name": "Standing Hip Dip",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep torso tall, control the pelvis, focus on the stance leg glute."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "12 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: HIP MOBILITY & ROTATION (20-30 MINUTES)"
+        },
+        {
+          "n": 4,
+          "name": "TFL Hip Drive (Rehab)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep pelvis level, move through a controlled range, feel the hip engage."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: HIP MOBILITY & ROTATION (20-30 MINUTES)"
+        },
+        {
+          "n": 5,
+          "name": "Sumo Squat",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep feet wide, knees out, sit back, maintain tall posture."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "10",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: HIP MOBILITY & ROTATION (20-30 MINUTES)"
+        },
+        {
+          "n": 6,
+          "name": "Side Crab Walk",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep hips low, toes forward, maintain tension in the glutes."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "20 ft each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: HIP MOBILITY & ROTATION (20-30 MINUTES)"
+        },
+        {
+          "n": 7,
+          "name": "Thoracic Extension (foam roller)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Support the head, extend over the roller and breathe.",
+            "Do not flare the ribs."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "8",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER-BODY MOBILITY & POSTURE (20-30 MINUTES)",
+          "workoutNote": "Enhance thoracic mobility, shoulder control, and address position."
+        },
+        {
+          "n": 8,
+          "name": "Walkout",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep legs straight, hips high, maintain core tension and good shoulder position."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "8",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER-BODY MOBILITY & POSTURE (20-30 MINUTES)"
+        },
+        {
+          "n": 9,
+          "name": "Quadruped Thread the Needle",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep hips square, rotate through the upper back, follow with your eyes."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER-BODY MOBILITY & POSTURE (20-30 MINUTES)"
+        },
+        {
+          "n": 10,
+          "name": "Open Book Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep knees together, follow the hand with your eyes, rotate through the thoracic spine."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER-BODY MOBILITY & POSTURE (20-30 MINUTES)"
+        },
+        {
+          "n": 11,
+          "name": "Shoulder-Down Scapular Retraction",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep shoulders down and back, engage the lats, avoid shrugging."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "12",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER-BODY MOBILITY & POSTURE (20-30 MINUTES)"
+        },
+        {
+          "n": 12,
+          "name": "Slow Golf Takeaway Drill",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep shoulders down, wrist set early, move the club back low and controlled."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UPPER-BODY MOBILITY & POSTURE (20-30 MINUTES)"
+        },
+        {
+          "n": 13,
+          "name": "Forward Lunge Hip Extension",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Step, keep torso tall, drive through the hip and squeeze the glute at the top."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: LOWER-BODY CONTROL & BALANCE (20-30 MINUTES)",
+          "workoutNote": "Build dynamic stability and connect movement to the golf swing."
+        },
+        {
+          "n": 14,
+          "name": "Single-Leg Glute Bridge",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep hips level, squeeze the glute, maintain core engagement."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "12 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: LOWER-BODY CONTROL & BALANCE (20-30 MINUTES)"
+        },
+        {
+          "n": 15,
+          "name": "Assisted Pistol Squat",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Use support as needed, keep knee aligned over the toes, control the movement."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: LOWER-BODY CONTROL & BALANCE (20-30 MINUTES)"
+        },
+        {
+          "n": 16,
+          "name": "Supported Single-Leg RDL",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hinge at the hips, keep a flat back, maintain balance."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: LOWER-BODY CONTROL & BALANCE (20-30 MINUTES)"
+        },
+        {
+          "n": 17,
+          "name": "Ankle Rocking Mobility",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep knee aligned over the toes, move through a full comfortable range."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "12 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: LOWER-BODY CONTROL & BALANCE (20-30 MINUTES)"
+        },
+        {
+          "n": 18,
+          "name": "Golf Backswing Rotation Drill",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep lower body stable, rotate through the hips and thoracic spine, maintain posture."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: LOWER-BODY CONTROL & BALANCE (20-30 MINUTES)"
+        }
+      ],
+      "editorNotes": "Labels removed: \"Header:\", \"Footer:\" (text kept in notes; \"/\" and \"|\" separators turned into line breaks)."
+    },
+    {
+      "key": "3",
+      "label": "Week 3",
+      "driveId": "1k2IMQ_15h_AW72Q3hWnAWLs6a2I_aZBG",
+      "focus": "BUILD ROTATIONAL STABILITY: Integrate mobility with strength and coordination. Develop control through rotation, balance and sequencing.",
+      "notes": "WEEK 3\nBUILD ROTATIONAL STABILITY\nIntegrate mobility with strength and coordination. Develop control through rotation, balance and sequencing.\n\nWORKOUT A FOCUS:\n- Hip internal/external rotation\n- Glute engagement and hip hinge\n- Pelvis and torso separation\n- Control through rotation\n\nWORKOUT B FOCUS:\n- Thoracic spine mobility\n- Shoulder control and scapular stability\n- Upper-body rotation with a stable lower body\n- Maintain a relaxed, athletic upper body\n\nWORKOUT C FOCUS:\n- Single-leg stability and balance\n- Lower-body strength and control\n- Dynamic rotation and sequencing\n- Transfer movement to a golf-specific pattern\n\nWEEK 3\n3 WORKOUTS\n20-30 MINUTES EACH\nMOBILITY FIRST. FORM ALWAYS.\nBEGINNER GOLF PROTOCOL",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "90/90 Hip Switch",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep torso tall, move slowly, feel hips rotate.",
+            "Control the range."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "12 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: HIP-TORSO CONNECTION (20-30 MINUTES)",
+          "workoutNote": "Develop rotational control and lower-body stability for a more efficient swing."
+        },
+        {
+          "n": 2,
+          "name": "Couch Stretch with Glute Engagement",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep ribs down, engage the glute, maintain upright torso."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "30 sec each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: HIP-TORSO CONNECTION (20-30 MINUTES)"
+        },
+        {
+          "n": 3,
+          "name": "Supported Single-Leg RDL",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hinge at the hips, keep a flat back, maintain balance.",
+            "Square hips."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: HIP-TORSO CONNECTION (20-30 MINUTES)"
+        },
+        {
+          "n": 4,
+          "name": "Golfer Switch Row",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Rotate through the hips, keep arms straight on the pull, shoulder down."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: HIP-TORSO CONNECTION (20-30 MINUTES)"
+        },
+        {
+          "n": 5,
+          "name": "Split-Stance Torso Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep lower body stable, rotate through the hips and thoracic spine."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: HIP-TORSO CONNECTION (20-30 MINUTES)"
+        },
+        {
+          "n": 6,
+          "name": "Golf Address Rotation Drill",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Maintain posture, slow controlled rotation through available range."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: HIP-TORSO CONNECTION (20-30 MINUTES)"
+        },
+        {
+          "n": 7,
+          "name": "Thoracic Extension (foam roller)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Support the head, gently extend over the roller, breathe and open the chest."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "10",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: THORACIC MOBILITY & SHOULDER CONTROL (20-30 MINUTES)",
+          "workoutNote": "Improve upper-body rotation and scapular stability for a smooth, connected swing."
+        },
+        {
+          "n": 8,
+          "name": "Open Book Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep hips stacked, follow the hand with your eyes, rotate through the thoracic spine."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "12 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: THORACIC MOBILITY & SHOULDER CONTROL (20-30 MINUTES)"
+        },
+        {
+          "n": 9,
+          "name": "Walkout",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep knees soft, maintain neutral spine, shoulders down."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "8",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: THORACIC MOBILITY & SHOULDER CONTROL (20-30 MINUTES)"
+        },
+        {
+          "n": 10,
+          "name": "Spider Kick",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep hips level, move slowly, maintain shoulder stability."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: THORACIC MOBILITY & SHOULDER CONTROL (20-30 MINUTES)"
+        },
+        {
+          "n": 11,
+          "name": "Shoulder-Down Scapular Retraction",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep shoulders down and back, squeeze the lats, avoid shrugging."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "15",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: THORACIC MOBILITY & SHOULDER CONTROL (20-30 MINUTES)"
+        },
+        {
+          "n": 12,
+          "name": "Light Cable Swing (high to low)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep lower body stable, initiate with the hips, finish with rotation, maintain posture."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: THORACIC MOBILITY & SHOULDER CONTROL (20-30 MINUTES)"
+        },
+        {
+          "n": 13,
+          "name": "Assisted Pistol Squat",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep knee aligned over the toes, control the movement, use support as needed."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: BALANCE, STABILITY & SEQUENCING (20-30 MINUTES)",
+          "workoutNote": "Combine lower-body strength, balance and rotational movement patterns."
+        },
+        {
+          "n": 14,
+          "name": "Glute RDL",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hinge at the hips, keep a flat back, feel the glutes."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "12",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: BALANCE, STABILITY & SEQUENCING (20-30 MINUTES)"
+        },
+        {
+          "n": 15,
+          "name": "Side Crab Walk",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep hips low, maintain tension in the glutes, toes forward."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "20 ft each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: BALANCE, STABILITY & SEQUENCING (20-30 MINUTES)"
+        },
+        {
+          "n": 16,
+          "name": "Forward Lunge Hip Extension",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Step, keep torso tall, drive through the hip and squeeze the glute at the top."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: BALANCE, STABILITY & SEQUENCING (20-30 MINUTES)"
+        },
+        {
+          "n": 17,
+          "name": "Standing Hip Dip",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep torso tall, control the pelvis, feel the stance leg glute."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "12 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: BALANCE, STABILITY & SEQUENCING (20-30 MINUTES)"
+        },
+        {
+          "n": 18,
+          "name": "Golf Backswing Rotation Drill",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep lower body stable, rotate through the hips and thoracic spine, maintain posture."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: BALANCE, STABILITY & SEQUENCING (20-30 MINUTES)"
+        }
+      ],
+      "editorNotes": "Labels removed: \"Header:\", \"Footer:\" (text kept in notes; \"/\" and \"|\" separators turned into line breaks)."
+    },
+    {
+      "key": "5",
+      "label": "Week 5",
+      "driveId": "1XuJ7Ep5c4_3_fCLaim4JJ3zSVG66xiH2",
+      "focus": "INTEGRATE MOVEMENT & SWING: Combine mobility, strength and control. Begin to connect movement patterns to a repeatable golf swing with smooth sequencing.",
+      "notes": "WEEK 5\nINTEGRATE MOVEMENT & SWING\nCombine mobility, strength and control. Begin to connect movement patterns to a repeatable golf swing with smooth sequencing.\n\nWORKOUT A FOCUS:\n- Increase hip and thoracic rotation\n- Build a stable, athletic posture\n- Learn to load into the backswing with control\n- Connect lower-body stability to upper-body movement\n\nWORKOUT B FOCUS:\n- Single-leg stability and balance\n- Dynamic hip control and glute engagement\n- Smooth weight transfer and transition\n- Build control through the impact position\n\nWORKOUT C FOCUS:\n- Full-body mobility and coordination\n- Connect upper and lower body\n- Develop a smooth, repeatable swing motion\n- Maintain balance and posture through the finish\n\nWEEK 5\n3 WORKOUTS\n20-30 MINUTES EACH\nMOBILITY FIRST. FORM ALWAYS.\nBEGINNER GOLF PROTOCOL",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "90/90 Hip Switch with Forward Lean",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep torso tall, move slowly, feel the hips rotate.",
+            "Control the range."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: ROTATIONAL MOBILITY & POWER POSITION (20-30 MINUTES)",
+          "workoutNote": "Increase rotational range and build a strong, stable base for the swing."
+        },
+        {
+          "n": 2,
+          "name": "Couch Stretch with Glute Engagement",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep ribs down, engage the glute, and drive the hip forward without arching."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "30 sec each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: ROTATIONAL MOBILITY & POWER POSITION (20-30 MINUTES)"
+        },
+        {
+          "n": 3,
+          "name": "Standing Hip Dip",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep torso tall, control the pelvis, feel the stance leg glute."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: ROTATIONAL MOBILITY & POWER POSITION (20-30 MINUTES)"
+        },
+        {
+          "n": 4,
+          "name": "Golfer Switch Row",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Rotate through the hips, keep arms straight on the pull, shoulders down."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: ROTATIONAL MOBILITY & POWER POSITION (20-30 MINUTES)"
+        },
+        {
+          "n": 5,
+          "name": "Light Cable Swing (High to Low)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Initiate with the hips, keep lower body stable, finish with rotation."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: ROTATIONAL MOBILITY & POWER POSITION (20-30 MINUTES)"
+        },
+        {
+          "n": 6,
+          "name": "Controlled Backswing Pause Drill",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Rotate to a comfortable backswing, pause, maintain posture and balance."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: ROTATIONAL MOBILITY & POWER POSITION (20-30 MINUTES)"
+        },
+        {
+          "n": 7,
+          "name": "Supported Single-Leg RDL",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hinge at the hips, keep a flat back, maintain balance."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: BALANCE, TRANSITION & LOWER-BODY CONTROL (20-30 MINUTES)",
+          "workoutNote": "Improve single-leg stability, weight transfer and dynamic control."
+        },
+        {
+          "n": 8,
+          "name": "Side Crab Walk",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep hips low, maintain tension in the glutes, toes forward."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "25 ft each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: BALANCE, TRANSITION & LOWER-BODY CONTROL (20-30 MINUTES)"
+        },
+        {
+          "n": 9,
+          "name": "Forward Lunge Hip Extension",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Step tall, drive through the hip and squeeze the glute at the top."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: BALANCE, TRANSITION & LOWER-BODY CONTROL (20-30 MINUTES)"
+        },
+        {
+          "n": 10,
+          "name": "Single-Leg Glute Bridge",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep hips level, squeeze the glute, maintain core engagement."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: BALANCE, TRANSITION & LOWER-BODY CONTROL (20-30 MINUTES)"
+        },
+        {
+          "n": 11,
+          "name": "Step-Through Golf Swing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Shift weight from trail to lead foot, rotate through the hips, maintain posture."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: BALANCE, TRANSITION & LOWER-BODY CONTROL (20-30 MINUTES)"
+        },
+        {
+          "n": 12,
+          "name": "Golf Stance Weight Shift",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep lower body stable, shift pressure smoothly from trail to lead foot."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: BALANCE, TRANSITION & LOWER-BODY CONTROL (20-30 MINUTES)"
+        },
+        {
+          "n": 13,
+          "name": "Open Book Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep knees together, follow the hand with your eyes, rotate through the thoracic spine."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: FULL-BODY INTEGRATION & SWING MECHANICS (20-30 MINUTES)",
+          "workoutNote": "Combine mobility, strength and sequencing into a controlled golf swing."
+        },
+        {
+          "n": 14,
+          "name": "Spider Kick",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep hips level, maintain shoulder stability, move slowly."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: FULL-BODY INTEGRATION & SWING MECHANICS (20-30 MINUTES)"
+        },
+        {
+          "n": 15,
+          "name": "TRX Squat",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Sit hips back, keep knees aligned, maintain posture."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: FULL-BODY INTEGRATION & SWING MECHANICS (20-30 MINUTES)"
+        },
+        {
+          "n": 16,
+          "name": "Overhead Pole Squat",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep arms overhead, maintain upright torso, squat through a comfortable range."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: FULL-BODY INTEGRATION & SWING MECHANICS (20-30 MINUTES)"
+        },
+        {
+          "n": 17,
+          "name": "Golf Club Rotation in Address",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Maintain posture, keep lower body stable, rotate through the torso."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: FULL-BODY INTEGRATION & SWING MECHANICS (20-30 MINUTES)"
+        },
+        {
+          "n": 18,
+          "name": "Controlled Three-Quarter Swing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Smooth tempo, maintain posture, finish with balanced follow-through."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: FULL-BODY INTEGRATION & SWING MECHANICS (20-30 MINUTES)"
+        }
+      ],
+      "editorNotes": "Labels removed: \"Header:\", \"Footer:\" (text kept in notes; \"/\" and \"|\" separators turned into line breaks)."
+    },
+    {
+      "key": "6",
+      "label": "Week 6",
+      "driveId": "1OXKl03ED9KHGf1tn-0MUgA2yB2xcaaxo",
+      "focus": "CONFIDENCE & CONSISTENCY: Bring it all together. Combine mobility, strength and sequencing to perform a repeatable, efficient golf swing with control.",
+      "notes": "WEEK 6\nCONFIDENCE & CONSISTENCY\nBring it all together. Combine mobility, strength and sequencing to perform a repeatable, efficient golf swing with control.\n\nWORKOUT A FOCUS:\n- Full-body mobility integration\n- Hip and thoracic rotation\n- Establish a smooth, controlled swing pattern\n- Build confidence in a complete movement sequence\n\nWORKOUT B FOCUS:\n- Single-leg strength and balance\n- Dynamic hip control and stability\n- Lateral and rotational movement patterns\n- Smooth weight transfer and transition\n\nWORKOUT C FOCUS:\n- Combine lower- and upper-body movement\n- Develop a smooth, repeatable swing motion\n- Improve rotational sequencing and coordination\n- Build confidence and consistency in the golf swing\n\nWEEK 6\n3 WORKOUTS\n20-30 MINUTES EACH\nMOBILITY FIRST. FORM ALWAYS.\nBEGINNER GOLF PROTOCOL",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "90/90 Hip Switch with Forward Lean",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep torso tall, move slowly, feel the hips rotate.",
+            "Control the range."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: FULL-BODY MOBILITY & SWING FLOW (20-30 MINUTES)",
+          "workoutNote": "Integrate full-body mobility with a controlled golf swing pattern."
+        },
+        {
+          "n": 2,
+          "name": "Couch Stretch with Glute Engagement",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep ribs down, engage the glute, drive the hip forward without arching."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "30 sec each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: FULL-BODY MOBILITY & SWING FLOW (20-30 MINUTES)"
+        },
+        {
+          "n": 3,
+          "name": "Walkout",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep hips high, core tight, control the movement, maintain"
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: FULL-BODY MOBILITY & SWING FLOW (20-30 MINUTES)"
+        },
+        {
+          "n": 4,
+          "name": "Overhead Pole Squat",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep arms overhead, torso upright, squat through a comfortable range."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: FULL-BODY MOBILITY & SWING FLOW (20-30 MINUTES)"
+        },
+        {
+          "n": 5,
+          "name": "Golfer Switch Row",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Rotate through the hips, keep arms straight on the pull, shoulders down."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: FULL-BODY MOBILITY & SWING FLOW (20-30 MINUTES)"
+        },
+        {
+          "n": 6,
+          "name": "Controlled Full Golf Swing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Smooth tempo, maintain posture, rotate through the hips and finish with a balanced follow-through."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: FULL-BODY MOBILITY & SWING FLOW (20-30 MINUTES)"
+        },
+        {
+          "n": 7,
+          "name": "Supported Single-Leg RDL",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hinge at the hips, keep a flat back, maintain balance, feel the glute and hamstring."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: ROTATIONAL STRENGTH & BALANCE (20-30 MINUTES)",
+          "workoutNote": "Develop rotational control, single-leg stability and dynamic movement."
+        },
+        {
+          "n": 8,
+          "name": "Assisted Pistol Squat",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep knee aligned over the toes, control the movement, use support as needed."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: ROTATIONAL STRENGTH & BALANCE (20-30 MINUTES)"
+        },
+        {
+          "n": 9,
+          "name": "Side Crab Walk",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep hips low, toes forward, maintain tension in the glutes."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "25 ft each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: ROTATIONAL STRENGTH & BALANCE (20-30 MINUTES)"
+        },
+        {
+          "n": 10,
+          "name": "Forward Lunge Hip Extension",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Step tall, drive through the hip and squeeze the glute at the top."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: ROTATIONAL STRENGTH & BALANCE (20-30 MINUTES)"
+        },
+        {
+          "n": 11,
+          "name": "Standing Hip Dip",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep torso tall, control the pelvis, feel the stance leg glute."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: ROTATIONAL STRENGTH & BALANCE (20-30 MINUTES)"
+        },
+        {
+          "n": 12,
+          "name": "Golf Stance Weight Shift and Pivot",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep lower body stable, shift pressure smoothly from trail to lead foot, maintain posture."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: ROTATIONAL STRENGTH & BALANCE (20-30 MINUTES)"
+        },
+        {
+          "n": 13,
+          "name": "Open Book Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep knees together, follow the hand with your eyes, rotate through the thoracic spine."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: SWING MECHANICS & CONTROL (20-30 MINUTES)",
+          "workoutNote": "Combine mobility, stability and sequencing into a repeatable, efficient swing."
+        },
+        {
+          "n": 14,
+          "name": "Spider Kick",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep hips low, maintain shoulder stability, move slowly and with control."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: SWING MECHANICS & CONTROL (20-30 MINUTES)"
+        },
+        {
+          "n": 15,
+          "name": "Light Cable Swing (High to Low)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Initiate with the hips, keep lower body stable, finish with rotation."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: SWING MECHANICS & CONTROL (20-30 MINUTES)"
+        },
+        {
+          "n": 16,
+          "name": "TRX Squat",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Sit hips back, keep knees aligned, maintain a tall torso."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: SWING MECHANICS & CONTROL (20-30 MINUTES)"
+        },
+        {
+          "n": 17,
+          "name": "Step-Through Golf Swing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Shift weight from trail to lead foot, rotate through the hips, maintain a balanced finish."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: SWING MECHANICS & CONTROL (20-30 MINUTES)"
+        },
+        {
+          "n": 18,
+          "name": "Controlled Three-Quarter Swing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Smooth tempo, maintain posture, rotate through the torso, finish with balance and control."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: SWING MECHANICS & CONTROL (20-30 MINUTES)"
+        }
+      ],
+      "editorNotes": "Labels removed: \"Header:\", \"Footer:\" (text kept in notes; \"/\" and \"|\" separators turned into line breaks)."
+    }
+  ],
+  "uncertain": [
+    "Week 4 sheet is missing from the Drive; weeks 1, 2, 3, 5, 6 only. No week 4 content was transcribed or inferred.",
+    "Week 6 Workout A #3 Walkout cue is printed 'Keep hips high, core tight, control the movement, maintain' - the sentence ends at 'maintain' with no object and no full stop. A 4x zoom shows the cell has room and nothing is clipped, so the sheet itself is incomplete. Kept as printed.",
+    "Week 2 Workout B FOCUS bullet prints 'Learn a controlled takeaawy position' (typo for 'takeaway'); kept as printed.",
+    "Week 3 Workout A #4 Golfer Switch Row cue prints 'shoulder down' (singular), while weeks 5 and 6 print 'shoulders down'; kept as printed.",
+    "Week 3 Workout B #5 cue prints 'squeeze the lats' (week 2 prints 'engage the lats'); kept as printed.",
+    "Week 3 Workout B #6 is printed 'Light Cable Swing (high to low)' in lower case; weeks 5 and 6 print '(High to Low)'. Kept as printed.",
+    "Time boxes print '20–30 MINUTES' with an en dash; written as '20-30' per the ASCII-hyphen rule.",
+    "No level goals box, KEY CUES, warm-up, recovery, or 6-week progression strip appears on any sheet; top-level goal/principles left empty. progression.overview is built from each sheet's top-right week box (title + description), not from a printed overview table."
+  ],
+  "sourceNotes": "Read 5 sheets (1536x1024 each) via Drive thumbnail at sz=w2400: week 1 (124pop4E5ePVGI9bKoJQU5flobNZX34r8), week 2 (12QtuHxSSUepw5I486enjySAd15upmA8E), week 3 (1k2IMQ_15h_AW72Q3hWnAWLs6a2I_aZBG), week 5 (1XuJ7Ep5c4_3_fCLaim4JJ3zSVG66xiH2), week 6 (1OXKl03ED9KHGf1tn-0MUgA2yB2xcaaxo). No week 4 sheet exists. Each sheet: header (MD FIT ONLINE, 6-WEEK BEGINNER GOLF PROTOCOL, tagline, week box), three workout tables A/B/C of 6 rows each (# / EXERCISE / SETS × REPS / CUES), a FOCUS box per workout (in week notes), and a footer strip. Week 1 uses a green colour scheme; weeks 2-6 blue. Cues split into one focus bullet per sentence. Sets × reps cells split into sets and reps (e.g. '2 × 30 sec each side' -> sets '2', reps '30 sec each side').",
+  "editorNotes": "progression.footer: The sheet prints \"|\" divider bars between these items; written as \"•\". Original: \"3 WORKOUTS | 20-30 MINUTES EACH | MOBILITY FIRST. FORM ALWAYS. | BEGINNER GOLF PROTOCOL\""
+}

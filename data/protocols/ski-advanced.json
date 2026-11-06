@@ -1,0 +1,6151 @@
+{
+  "id": "ski-advanced",
+  "title": "Advanced Ski Program",
+  "tagline": "Power • Single-Leg Dominance • Reactive Stability",
+  "goal": "Stronger ankles. More control. Less fatigue. Bigger days on snow.",
+  "principles": [
+    {
+      "title": "Explode, stick, and control.",
+      "text": ""
+    },
+    {
+      "title": "Knees track over toes.",
+      "text": ""
+    },
+    {
+      "title": "Keep hips level and stable.",
+      "text": ""
+    },
+    {
+      "title": "Land soft and quiet.",
+      "text": ""
+    },
+    {
+      "title": "Use your core, not your lower back.",
+      "text": ""
+    },
+    {
+      "title": "Full range of motion.",
+      "text": ""
+    },
+    {
+      "title": "Quality over quantity.",
+      "text": ""
+    },
+    {
+      "title": "Move with intent, not speed.",
+      "text": ""
+    }
+  ],
+  "dailyBasics": [
+    {
+      "title": "Stable Ankles",
+      "text": "Absorb terrain and stay in control."
+    },
+    {
+      "title": "Resilient Knees",
+      "text": "Handle turns and uneven terrain."
+    },
+    {
+      "title": "Powerful Hips",
+      "text": "Create stability and explosive movement."
+    },
+    {
+      "title": "Stronger Core",
+      "text": "Transfer force and stay balanced."
+    },
+    {
+      "title": "Ski-Ready Movement",
+      "text": "Confidence and endurance for the slopes."
+    }
+  ],
+  "progression": {
+    "overview": [
+      {
+        "week": "1",
+        "focus": "Week 1 introduces advanced movement patterns with single-leg power, explosive jumping, off-balance loading, and dynamic stability while maintaining essential ankle and knee mobility."
+      },
+      {
+        "week": "2",
+        "focus": "Week 2 increases intensity with more dynamic single-leg work, reactive landing and off-balance loads. Build explosive strength, control and resilience for the demands of the mountain."
+      },
+      {
+        "week": "3",
+        "focus": "Week 3 builds explosive strength, faster transition control, and off-balance power with more dynamic single-leg work, cable resistance, and multi-planar movement. You'll move more athletically and stay stable under load."
+      },
+      {
+        "week": "4",
+        "focus": "Week 4 builds higher force and complexity with off-balance loading, single-leg strength, and reactive power. You'll increase intensity, improve multi-planar control, and develop the ability to absorb and redirect force in unpredictable terrain."
+      },
+      {
+        "week": "5",
+        "focus": "Week 5 increases intensity with higher height jumps, more complex off-balance loads, unilateral plyometrics, and multi-directional control. You'll build power endurance and confidence in unpredictable terrain."
+      },
+      {
+        "week": "6",
+        "focus": "Week 6 focuses on high-intensity power, maximal single-leg control, complex movement patterns, and ski-specific endurance. You will move faster, react quicker, and stay stable in dynamic, unpredictable terrain."
+      },
+      {
+        "week": "7",
+        "focus": "Week 7 peaks your intensity with high-demand single-leg power, complex movement patterns, and ski-specific endurance. You'll move faster, react quicker, and build the resilience to handle variable terrain and longer days on the mountain."
+      },
+      {
+        "week": "8",
+        "focus": "Week 8 brings everything together. You'll peak with high-intensity, complex, ski-specific movement, full-body integration, and reactive power. You'll move more efficiently, stay more stable on longer, stronger days on the mountain."
+      }
+    ],
+    "guidelines": [],
+    "expect": [],
+    "remember": "",
+    "callouts": [
+      "Move better. Play longer.",
+      "8-Week Plan",
+      "GOSD – Glutes on. Shoulders down."
+    ],
+    "footer": "Stronger foundations. Bigger days on snow."
+  },
+  "weeks": [
+    {
+      "key": "1",
+      "label": "Week 1",
+      "driveId": "17eJdKVa7q7L8Ic9PfED_CfOtfk560u3w",
+      "focus": "Power • Single-Leg Dominance • Reactive Stability",
+      "notes": "Week 1 introduces advanced movement patterns with single-leg power, explosive jumping, off-balance loading, and dynamic stability while maintaining essential ankle and knee mobility.\n\nWEEK 1 SCHEDULE:\n\nMONDAY – Strength & Single-Leg Power\n\nTUESDAY – Explore & Develop:\n- Ski-specific movement exploration\n- Light strength or cardio\n- Mobility and balance\n- Technique work (e.g. hiking, lateral movement, cable play, or mobility flow)\n\nWEDNESDAY – Reactive Agility & Off-Balance Loading\n\nTHURSDAY – Explore & Develop:\n- Movement variety\n- Optional cardio or hike\n- Single-leg balance drills\n- Mobility and tissue work\n- Focus on quality movement (no prescribed sets/reps)\n\nFRIDAY – Explosive Total Body\n\nSATURDAY – Mountain Simulation:\n- 60-120 min hike or incline walk (Zone 2)\n- Uneven terrain\n- Longer duration\n- Mobility (daily)\n\nSUNDAY – Rest & Recovery:\n- Rest\n- Optional sauna or cold plunge\n- Prepare for next week",
+      "exercises": [
+        {
+          "n": 1,
+          "workout": "Monday – Strength & Single-Leg Power",
+          "name": "Single-Leg Box Jump (Low to Moderate Height)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode up",
+            "Stick the landing (3 sec)",
+            "Control and balance"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "workout": "Monday – Strength & Single-Leg Power",
+          "name": "Cable Reverse Lunge (Off-Balance Load)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Cable from side",
+            "Slow, controlled descent",
+            "Keep torso upright"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "workout": "Monday – Strength & Single-Leg Power",
+          "name": "Pistol Squat (Assisted if Needed)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Full depth",
+            "Keep knee over toes",
+            "Use support as needed"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "workout": "Monday – Strength & Single-Leg Power",
+          "name": "Single-Leg RDL (Weighted)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hips back, flat back",
+            "Slight knee bend",
+            "Control the descent"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "workout": "Monday – Strength & Single-Leg Power",
+          "name": "Lateral Step-Down (Off-Balance)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Use a weight or cable",
+            "Control the descent",
+            "Keep hip level"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 6,
+          "workout": "Monday – Strength & Single-Leg Power",
+          "name": "Cable Anti-Rotation Hold",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Athletic stance",
+            "Resist rotation",
+            "Keep core and hips stable"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "20-30 sec each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 7,
+          "workout": "Wednesday – Reactive Agility & Off-Balance",
+          "name": "Lateral Bound to Stick",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Max distance",
+            "Stick and hold 2-3 sec",
+            "Control and stabilize"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 8,
+          "workout": "Wednesday – Reactive Agility & Off-Balance",
+          "name": "Single-Leg Hop Series",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Forward hop",
+            "Lateral hop",
+            "Cross-over hop",
+            "Stick and hold"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 9,
+          "workout": "Wednesday – Reactive Agility & Off-Balance",
+          "name": "Depth Jump to Pistol",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Step off box (12-18\")",
+            "Land to pistol squat",
+            "Stick the landing"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 10,
+          "workout": "Wednesday – Reactive Agility & Off-Balance",
+          "name": "Skater Jump",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explosive lateral jump",
+            "Stick and stabilize",
+            "Keep knee over toes"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 11,
+          "workout": "Wednesday – Reactive Agility & Off-Balance",
+          "name": "Cable Rotational Lunge",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explosive rotation",
+            "Off-balance load",
+            "Keep core tight"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 12,
+          "workout": "Wednesday – Reactive Agility & Off-Balance",
+          "name": "Med Ball Lateral Throw",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Load, rotate, explode",
+            "Catch or chase the ball",
+            "Keep hips square"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 13,
+          "workout": "Friday – Explosive Total Body",
+          "name": "Single-Leg Broad Jump",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Max distance",
+            "Stick and stabilize",
+            "Reset each rep"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 14,
+          "workout": "Friday – Explosive Total Body",
+          "name": "Cable Ski Swing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "High to low, behind body",
+            "Rotate through hips",
+            "Explosive finish"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 15,
+          "workout": "Friday – Explosive Total Body",
+          "name": "Box Jump to Lateral Hop",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Jump up, stick",
+            "Hop off to the side",
+            "Control landing"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 16,
+          "workout": "Friday – Explosive Total Body",
+          "name": "Lateral Cable Lunge",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Cable pull from side",
+            "Sit into single-leg lunge",
+            "Keep knee over toes"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 17,
+          "workout": "Friday – Explosive Total Body",
+          "name": "Single-Leg Jump Down to Stick",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Jump down and stick",
+            "Absorb and stabilize",
+            "Hold 2-3 sec"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 18,
+          "workout": "Friday – Explosive Total Body",
+          "name": "Farmer Carry (Single-Leg)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hold weight opposite side",
+            "Keep hips level",
+            "Tall posture, controlled steps"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "40 yd each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 19,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Ankle Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Focus: keep knees in line, controlled movement, full range of motion • Breathe • Move with intent, not speed."
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "200 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 20,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Knee Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "200 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 21,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Hip CARs",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 22,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "World's Greatest Stretch",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75 sec each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 23,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Hamstring Sweep",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 24,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Glute Bridge",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 25,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Open Book Thoracic Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 26,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Scapular Slide + Reach",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 27,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Hydration",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Based on climate, activity level, and body needs."
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 28,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Nutrition",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Prioritize protein, whole foods, and electrolytes."
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 29,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Sleep",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "7-9 hours"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 30,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Cold Plunge",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(optional)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2-3 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 31,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Sauna",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(optional)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "10-20 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 32,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Light Walk",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "5-10 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 33,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Mobility",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "5-10 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 34,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Breathing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(Box or nasal)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2-5 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ],
+      "editorNotes": "\" | \" section separators, \"; \" day separators and \", \" item separators turned into line breaks and bullets.\nfocus: The sheet prints \"|\" divider bars between these items; written as \"•\". Original: \"Power | Single-Leg Dominance | Reactive Stability\""
+    },
+    {
+      "key": "2",
+      "label": "Week 2",
+      "driveId": "14aRh7DUfGToxbIaIPDSOWXiEZq_Nvz6e",
+      "focus": "Power • Single-Leg Dominance • Reactive Stability",
+      "notes": "Week 2 increases intensity with more dynamic single-leg work, reactive landing and off-balance loads. Build explosive strength, control and resilience for the demands of the mountain.\n\nWEEK 2 SCHEDULE (ADVANCED – 8 WEEK PROGRAM):\n\nMONDAY – Explosive Single-Leg Strength:\n- Lower body power\n- Single-leg strength\n- Reactive control\n- Off-balance loading\n- Core integration\n\nTUESDAY – Explore & Develop:\n- Ski-specific movement exploration\n- Light strength or cardio\n- Mobility and balance\n- Technique work (e.g. hiking, lateral movement, cable play, or mobility flow)\n\nWEDNESDAY – Reactive Agility & Off-Balance Loads:\n- Lateral power & change\n- of direction\n- Single-leg reactive work\n- Cable & rotational loads\n- Balance & coordination\n- Core stability\n\nTHURSDAY – Explore & Develop:\n- Movement variety\n- Optional cardio or hike\n- Single-leg balance drills\n- Mobility and tissue work\n- Focus on quality movement (no prescribed sets/reps)\n\nFRIDAY – Total Body Power:\n- Full-body power\n- Jumping & landing\n- Multi-directional movement\n- Strength-endurance\n- Core and grip\n\nSATURDAY – Mountain Simulation:\n- 60-120 min hike\n- or incline walk (Zone 2)\n- Uneven terrain\n- Longer duration\n- Mobility (daily)\n\nSUNDAY – Rest & Recovery:\n- Rest\n- Optional sauna or cold plunge\n- Mobility (light)\n- Prepare for next week",
+      "exercises": [
+        {
+          "n": 1,
+          "workout": "Monday – Explosive Single-Leg Strength",
+          "name": "Single-Leg Box Jump (Increased Height)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode up",
+            "Stick the landing (3 sec)",
+            "Control and stabilize"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "workout": "Monday – Explosive Single-Leg Strength",
+          "name": "Cable Reverse Lunge (Off-Balance Load)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Cable from side",
+            "Keep torso stable",
+            "Controlled descent"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "workout": "Monday – Explosive Single-Leg Strength",
+          "name": "Pistol Squat (To Box or Full Depth)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Full depth (or to box)",
+            "Keep knee over toes",
+            "Use support if needed"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "workout": "Monday – Explosive Single-Leg Strength",
+          "name": "Single-Leg RDL (Weighted)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hips back, flat back",
+            "Slight knee bend",
+            "Control the descent"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "workout": "Monday – Explosive Single-Leg Strength",
+          "name": "Lateral Step-Down (Off-Balance)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Use a weight or cable",
+            "Control the descent",
+            "Keep hip level"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 6,
+          "workout": "Monday – Explosive Single-Leg Strength",
+          "name": "Cable Anti-Rotation Hold",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Athletic stance",
+            "Resist rotation",
+            "Keep core and hips stable"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "20-30 sec each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 7,
+          "workout": "Wednesday – Reactive Agility & Off-Balance",
+          "name": "Lateral Skater Jumps",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Max distance",
+            "Stick and hold 2-3 sec",
+            "Control and balance"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 8,
+          "workout": "Wednesday – Reactive Agility & Off-Balance",
+          "name": "Single-Leg Hop & Stick (Forward)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode forward",
+            "Stick and hold 3 sec",
+            "Keep knee aligned"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 9,
+          "workout": "Wednesday – Reactive Agility & Off-Balance",
+          "name": "Depth Jump to Pistol",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Step off box (12-18\")",
+            "Land to pistol squat",
+            "Stick the landing"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 10,
+          "workout": "Wednesday – Reactive Agility & Off-Balance",
+          "name": "Lateral Bound to Stick",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explosive lateral bound",
+            "Stick and stabilize",
+            "Control knee and hip"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 11,
+          "workout": "Wednesday – Reactive Agility & Off-Balance",
+          "name": "Cable Rotational Lunge",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explosive rotation",
+            "Control and balance",
+            "Keep core tight"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 12,
+          "workout": "Wednesday – Reactive Agility & Off-Balance",
+          "name": "Med Ball Lateral Throw",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Load, rotate, explode",
+            "Catch or chase the ball",
+            "Keep hips square"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 13,
+          "workout": "Friday – Total Body Power",
+          "name": "Single-Leg Broad Jump",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Max distance",
+            "Stick and stabilize",
+            "Reset each rep"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 14,
+          "workout": "Friday – Total Body Power",
+          "name": "Cable Ski Swing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "High to low, behind body",
+            "Rotate through hips",
+            "Explosive finish"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 15,
+          "workout": "Friday – Total Body Power",
+          "name": "Box Jump to Lateral Hop",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Jump up, stick",
+            "Hop off to the side",
+            "Control landing"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 16,
+          "workout": "Friday – Total Body Power",
+          "name": "Cable Split Squat Jump",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explosive switch",
+            "Keep torso stable",
+            "Soft, controlled landing"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 17,
+          "workout": "Friday – Total Body Power",
+          "name": "Single-Leg Jump Down to Stick",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Jump down and stick",
+            "Absorb and stabilize",
+            "Hold 2-3 sec"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 18,
+          "workout": "Friday – Total Body Power",
+          "name": "Farmer Carry (Single-Leg)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hold weight opposite side",
+            "Keep hips level",
+            "Tall posture, controlled steps"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "40 yd each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 19,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Ankle Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Focus: keep knees in line, controlled movement, full range of motion • Breathe • Move with intent, not speed."
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "200 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 20,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Knee Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "200 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 21,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Hip CARs",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 22,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "World's Greatest Stretch",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75 sec each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 23,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Hamstring Sweep",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 24,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Glute Bridge",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 25,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Open Book Thoracic Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 26,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Scapular Slide + Reach",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 27,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Hydration",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Based on climate, activity level, and body needs."
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 28,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Nutrition",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Prioritize protein, whole foods, and electrolytes."
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 29,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Sleep",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "7-9 hours"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 30,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Cold Plunge",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(optional)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2-3 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 31,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Sauna",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(optional)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "10-20 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 32,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Light Walk",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "5-10 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 33,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Mobility",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "5-10 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 34,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Breathing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(Box or nasal)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2-5 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ],
+      "editorNotes": "\" | \" section separators, \"; \" day separators and \", \" item separators turned into line breaks and bullets.\nfocus: The sheet prints \"|\" divider bars between these items; written as \"•\". Original: \"Power | Single-Leg Dominance | Reactive Stability\""
+    },
+    {
+      "key": "3",
+      "label": "Week 3",
+      "driveId": "1o1V2SC1QqghfS5GF29ibeFtLomGwLJbd",
+      "focus": "Power • Single-Leg Dominance • Reactive Stability",
+      "notes": "Week 3 builds explosive strength, faster transition control, and off-balance power with more dynamic single-leg work, cable resistance, and multi-planar movement. You'll move more athletically and stay stable under load.\n\nWEEK 3 SCHEDULE (ADVANCED – 8 WEEK PROGRAM):\n\nMONDAY – Explosive Single-Leg Power & Control:\n- Higher intensity jumps\n- Single-leg strength\n- Off-balance loading\n- Landing control\n- Ankle/knee resilience\n\nTUESDAY – Explore & Develop:\n- Ski-specific movement exploration\n- Technique work\n- (e.g. cable, band, or hike)\n- Mobility and balance\n- Focus on qualityr movement (no prescribed sets/reps)\n\nWEDNESDAY – Reactive Agility & Off-Balance Loading:\n- Lateral and rotational power\n- Single-leg reactive work\n- Cable off-balance drills\n- Multi-directional jumps\n- Core stability\n\nTHURSDAY – Explore & Develop:\n- Movement variety\n- Optional cardio or hike\n- Single-leg balance drills\n- Mobility and tissue work\n- Focus on weak areas\n- Keep intensity moderate (no prescribed sets/reps)\n\nFRIDAY – Total Body Power & Ski-Specific Integration:\n- Full-body power\n- Lateral & rotational strength\n- Multi-directional movement\n- Endurance and control\n- Core and grip\n\nSATURDAY – Mountain Simulation:\n- 60-120 min hike or incline walk (Zone 2)\n- Uneven terrain\n- Longer duration\n- Mobility (daily)\n\nSUNDAY – Rest & Recovery:\n- Rest\n- Optional sauna or cold plunge\n- Mobility (light)\n- Prepare for next week",
+      "exercises": [
+        {
+          "n": 1,
+          "workout": "Monday – Explosive Single-Leg Power & Control",
+          "name": "Single-Leg Box Jump (Higher Box)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode up and stick",
+            "Control the landing",
+            "Full hip extension"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "workout": "Monday – Explosive Single-Leg Power & Control",
+          "name": "Off-Balance Reverse Lunge (Cable)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Cable from front",
+            "Step back and down",
+            "Keep torso stable",
+            "Drive up through front leg"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "workout": "Monday – Explosive Single-Leg Power & Control",
+          "name": "Pistol Squat to Box",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Controlled descent",
+            "Tap the box and return",
+            "Use support if needed",
+            "Keep knee over toes"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "workout": "Monday – Explosive Single-Leg Power & Control",
+          "name": "Lateral Bound to Stick",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Max distance",
+            "Stick the landing (2-3 sec)",
+            "Hips level and stable"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "workout": "Monday – Explosive Single-Leg Power & Control",
+          "name": "Single-Leg RDL (Weighted)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Dumbbell or kettlebell",
+            "Hips back, flat back",
+            "Control the descent"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 6,
+          "workout": "Monday – Explosive Single-Leg Power & Control",
+          "name": "Cable Anti-Rotation Hold",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Athletic stance",
+            "Resist rotation",
+            "Keep core braced"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "20-30 sec each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 7,
+          "workout": "Wednesday – Reactive Agility & Off-Balance",
+          "name": "Lateral Skater Jumps",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explosive lateral jump",
+            "Stick and hold 2-3 sec",
+            "Control and stabilize"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 8,
+          "workout": "Wednesday – Reactive Agility & Off-Balance",
+          "name": "Single-Leg Hop Series",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Forward hop",
+            "Lateral hop",
+            "Cross-over hop",
+            "Stick and hold"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 9,
+          "workout": "Wednesday – Reactive Agility & Off-Balance",
+          "name": "Depth Jump to Pistol",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Step off box (12-18\")",
+            "Land to pistol squat",
+            "Stick the landing"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 10,
+          "workout": "Wednesday – Reactive Agility & Off-Balance",
+          "name": "Cable Lateral Lunge (Off-Balance)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Cable from side",
+            "Explosive lateral step",
+            "Control return",
+            "Keep core engaged"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 11,
+          "workout": "Wednesday – Reactive Agility & Off-Balance",
+          "name": "Rotational Med Ball Throw",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode and rotate",
+            "Catch or chase the ball",
+            "Keep hips and core tight"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 12,
+          "workout": "Wednesday – Reactive Agility & Off-Balance",
+          "name": "Single-Leg Stability Reach",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Reach in multiple directions",
+            "Keep hips level",
+            "Soft knee, controlled balance"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 13,
+          "workout": "Friday – Total Body Power & Integration",
+          "name": "Single-Leg Broad Jump",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Max distance",
+            "Stick and stabilize",
+            "Reset each rep"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 14,
+          "workout": "Friday – Total Body Power & Integration",
+          "name": "Cable Ski Swing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "High to low, behind body",
+            "Rotate through hips",
+            "Explosive finish",
+            "Keep core tight"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 15,
+          "workout": "Friday – Total Body Power & Integration",
+          "name": "Box Jump to Lateral Hop",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Jump up, stick",
+            "Hop off to the side",
+            "Control landing"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 16,
+          "workout": "Friday – Total Body Power & Integration",
+          "name": "Cable Split Squat Jump",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explosive switch",
+            "Keep torso stable",
+            "Land softly, control knee"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 17,
+          "workout": "Friday – Total Body Power & Integration",
+          "name": "Single-Leg Jump Down to Stick",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Jump down and stick",
+            "Absorb and stabilize",
+            "Hold 2-3 sec"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 18,
+          "workout": "Friday – Total Body Power & Integration",
+          "name": "Farmer Carry (Single-Leg)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hold weight opposite side",
+            "Keep hips level",
+            "Tall posture, controlled steps"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "40 yd each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 19,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Ankle Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Focus: keep knees in line, controlled movement, full range of motion • Breathe • Move with intent, not speed."
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "200 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 20,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Knee Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "200 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 21,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Hip CARs",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 22,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "World's Greatest Stretch",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75 sec each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 23,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Hamstring Sweep",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 24,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Glute Bridge",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 25,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Open Book Thoracic Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 26,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Scapular Slide + Reach",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 27,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Hydration",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Based on climate, activity level, and body needs."
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 28,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Nutrition",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Prioritize protein, whole foods, and electrolytes."
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 29,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Sleep",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "7-9 hours"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 30,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Cold Plunge",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(optional)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2-3 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 31,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Sauna",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(optional)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "10-20 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 32,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Light Walk",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "5-10 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 33,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Mobility",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "5-10 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 34,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Breathing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(Box or nasal)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2-5 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ],
+      "editorNotes": "\" | \" section separators, \"; \" day separators and \", \" item separators turned into line breaks and bullets.\nKey Form Cues: on this sheet 'Full range of motion.' and 'Quality over quantity.' are printed overlapping each other (garbled); same eight cues otherwise.\nfocus: The sheet prints \"|\" divider bars between these items; written as \"•\". Original: \"Power | Single-Leg Dominance | Reactive Stability\""
+    },
+    {
+      "key": "4",
+      "label": "Week 4",
+      "driveId": "11Bc-xGiZRxgXu--A9Dto3c5NOa0HzlBn",
+      "focus": "Power • Single-Leg Dominance • Reactive Stability",
+      "notes": "Week 4 builds higher force and complexity with off-balance loading, single-leg strength, and reactive power. You'll increase intensity, improve multi-planar control, and develop the ability to absorb and redirect force in unpredictable terrain.\n\nWEEK 4 SCHEDULE (ADVANCED – 8 WEEK PROGRAM):\n\nMONDAY – Single-Leg Power & Lateral Control:\n- Lateral power\n- Single-leg strength\n- Reactive control\n- Off-balance loading\n- Landing mechanics\n\nTUESDAY – Explore & Develop:\n- Ski-specific movement exploration\n- Light strength or cardio\n- Mobility and balance\n- Technique work (e.g. hike, lateral movement, cable play, or mobility flow)\n\nWEDNESDAY – Reactive Agility & Off-Balance Loading:\n- Multi-directional jumps\n- Cable reactive work\n- Single-leg stability\n- Core integration\n- Change of direction\n\nTHURSDAY – Explore & Develop:\n- Movement variety\n- Optional cardio or hike\n- Single-leg balance drills\n- Mobility and tissue work\n- Focus on quality movement (no prescribed sets/reps)\n\nFRIDAY – Total Body Power & Ski-Specific Integration:\n- Combined power\n- Single-leg & multi-planar\n- Core and rotation\n- Endurance and control\n- Ski-specific patterns\n\nSATURDAY – Mountain Simulation:\n- 60-120 min hike or incline walk (Zone 2)\n- Uneven terrain\n- Longer duration\n- Mobility (daily)\n\nSUNDAY – Rest & Recovery:\n- Rest\n- Optional sauna or cold plunge\n- Mobility (light)\n- Prepare for next week\n\nKEY FORM CUES:\n- Keep knees in line with toes.\n- Explode, stick, and control.\n- Use your core, not your lower back.\n- Keep hips level and stable.\n- Land soft and quiet.\n- Control the eccentric (lowering).\n- Quality over quantity.\n- Move with intent, not speed.",
+      "exercises": [
+        {
+          "n": 1,
+          "workout": "Monday – Single-Leg Power & Lateral Control",
+          "name": "Single-Leg Box Jump (To Stick)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode up and stick",
+            "Control landing (3 sec)",
+            "Keep knee in line"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "workout": "Monday – Single-Leg Power & Lateral Control",
+          "name": "Lateral Bound to Stick",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Cover distance",
+            "Stick and hold (2-3 sec)",
+            "Soft landing"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "workout": "Monday – Single-Leg Power & Lateral Control",
+          "name": "Pistol Squat",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Controlled descent",
+            "Full depth",
+            "Use support if needed",
+            "Keep knee over toes"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "workout": "Monday – Single-Leg Power & Lateral Control",
+          "name": "Cable Lateral Lunge (Off-Balance Load)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Cable from side",
+            "Resist rotation",
+            "Keep torso upright"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "workout": "Monday – Single-Leg Power & Lateral Control",
+          "name": "Single-Leg RDL to Row",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hinge, reach, row",
+            "Keep hips level",
+            "Control the return"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 6,
+          "workout": "Monday – Single-Leg Power & Lateral Control",
+          "name": "Skater Jump to Box",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Lateral jump to single leg",
+            "Stick on box",
+            "Control landing",
+            "Use lower box if needed"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 7,
+          "workout": "Wednesday – Reactive Agility & Off-Balance",
+          "name": "Rotational Med Ball Throw (Off-Balance)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explosive rotation",
+            "Throw from staggered stance",
+            "Catch and reset"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 8,
+          "workout": "Wednesday – Reactive Agility & Off-Balance",
+          "name": "Single-Leg Hop Series",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Forward hop",
+            "Lateral hop",
+            "Diagonal hop",
+            "Stick and stabilize"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 9,
+          "workout": "Wednesday – Reactive Agility & Off-Balance",
+          "name": "Depth Jump to Pistol",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Step off box (12-18\")",
+            "Land to pistol squat",
+            "Stick the landing"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 10,
+          "workout": "Wednesday – Reactive Agility & Off-Balance",
+          "name": "Cable Rotational Step",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Step and rotate",
+            "Explosive finish",
+            "Keep core engaged"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 11,
+          "workout": "Wednesday – Reactive Agility & Off-Balance",
+          "name": "Lateral Bound to Contra Hop",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Lateral bound",
+            "Immediate opposite leg hop",
+            "Stick and hold"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 12,
+          "workout": "Wednesday – Reactive Agility & Off-Balance",
+          "name": "Single-Leg Stability Reach (3-Direction)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Reach forward, diagonal, lateral",
+            "Keep hips level",
+            "Soft knee, controlled balance"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 13,
+          "workout": "Friday – Total Body Power & Integration",
+          "name": "Cable Ski Swing (High to Low)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explosive rotation",
+            "Step through",
+            "Control finish"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 14,
+          "workout": "Friday – Total Body Power & Integration",
+          "name": "Single-Leg Broad Jump",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Max distance",
+            "Stick and stabilize",
+            "Reset each rep"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 15,
+          "workout": "Friday – Total Body Power & Integration",
+          "name": "Box Jump to Lateral Hop",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Jump up, stick",
+            "Hop off to the side",
+            "Control landing"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 16,
+          "workout": "Friday – Total Body Power & Integration",
+          "name": "Cable Split Squat Jump",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explosive switch",
+            "Keep torso stable",
+            "Soft, controlled landing"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 17,
+          "workout": "Friday – Total Body Power & Integration",
+          "name": "Med Ball Slam to Hop",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Slam and immediately hop",
+            "Absorb and stabilize",
+            "Keep core tight"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 18,
+          "workout": "Friday – Total Body Power & Integration",
+          "name": "Farmer Carry (Single-Leg)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hold weight opposite side",
+            "Keep hips level",
+            "Tall posture, controlled steps"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "40 yd each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 19,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Ankle Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Focus: keep knees in line, controlled movement, full range of motion • Breathe • Move with intent, not speed."
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "200 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 20,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Knee Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "200 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 21,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Hip CARs",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 22,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "World's Greatest Stretch",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75 sec each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 23,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Hamstring Sweep",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 24,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Glute Bridge",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 25,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Open Book Thoracic Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 26,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Scapular Slide + Reach",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 27,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Hydration",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Based on climate, activity level, and body needs."
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 28,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Nutrition",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Prioritize protein, whole foods, and electrolytes."
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 29,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Sleep",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "7-9 hours"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 30,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Cold Plunge",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(optional)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2-3 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 31,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Sauna",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(optional)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "10-20 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 32,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Light Walk",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "5-10 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 33,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Mobility",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "5-10 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 34,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Breathing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(Box or nasal)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2-5 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ],
+      "editorNotes": "\" | \" section separators, \"; \" day separators and \", \" item separators turned into line breaks and bullets.\nLabel \"KEY FORM CUES (this sheet):\" shortened to \"KEY FORM CUES:\".\nfocus: The sheet prints \"|\" divider bars between these items; written as \"•\". Original: \"Power | Single-Leg Dominance | Reactive Stability\""
+    },
+    {
+      "key": "5",
+      "label": "Week 5",
+      "driveId": "1X7wHRUaBXYUKju4yJLBFid_n9uVrrTZZ",
+      "focus": "Power • Single-Leg Dominance • Reactive Stability",
+      "notes": "Week 5 increases intensity with higher height jumps, more complex off-balance loads, unilateral plyometrics, and multi-directional control. You'll build power endurance and confidence in unpredictable terrain.\n\nWEEK 5 SCHEDULE (ADVANCED – 8 WEEK PROGRAM):\n\nMONDAY – Single-Leg Power & Reactive Strength:\n- Higher intensity jumps\n- Single-leg strength\n- Reactive control\n- Off-balance loading\n- Landing mechanics\n\nTUESDAY – Explore & Develop:\n- Ski-specific movement exploration\n- Light strength or cardio\n- Mobility and balance\n- Technique work (e.g. hike, lateral movement, cable play, or mobility flow)\n\nWEDNESDAY – Reactive Agility & Off-Balance Loading:\n- Multi-directional power\n- Single-leg reactive work\n- Cable & rotational loads\n- Balance & coordination\n- Core stability\n\nTHURSDAY – Explore & Develop:\n- Movement variety\n- Optional cardio or hike\n- Single-leg balance drills\n- Mobility and tissue work\n- Focus on weak areas (no prescribed sets/reps)\n\nFRIDAY – Total Body Power & Ski-Specific Integration:\n- Combined power\n- Single-leg & multi-planar\n- Core and rotation\n- Endurance and control\n- Ski-specific patterns\n\nSATURDAY – Mountain Simulation:\n- 60-120 min hike or incline walk (Zone 2)\n- Uneven terrain\n- Longer duration\n- Mobility (daily)\n\nSUNDAY – Rest & Recovery:\n- Rest\n- Optional sauna or cold plunge\n- Mobility (light)\n- Prepare for next week\n\nKEY FORM CUES:\n- Explode, stick, and control.\n- Keep knees in line with toes.\n- Keep hips level and stable.\n- Land soft and quiet.\n- Use your core, not your lower back.\n- Quality ovef quantity.\n- Move with intent, not speed.",
+      "exercises": [
+        {
+          "n": 1,
+          "workout": "Monday – Single-Leg Power & Reactive Strength",
+          "name": "Single-Leg Box Jump (Higher Height)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode up and stick",
+            "Control the landing (3 sec)",
+            "Add height from Week 4"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "workout": "Monday – Single-Leg Power & Reactive Strength",
+          "name": "Cable Reverse Lunge to Knee Drive (Off-Balance Load)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Cable from front",
+            "Drive up with knee high",
+            "Control return"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "workout": "Monday – Single-Leg Power & Reactive Strength",
+          "name": "Pistol Squat (To Box or Full Depth)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Controlled descent (3 sec)",
+            "Use support if needed",
+            "Keep knee over toes"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "workout": "Monday – Single-Leg Power & Reactive Strength",
+          "name": "Lateral Bound to Stick (Distance Focus)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode laterally",
+            "Stick and hold (2-3 sec)",
+            "Control knee and hip"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "workout": "Monday – Single-Leg Power & Reactive Strength",
+          "name": "Single-Leg RDL to Row (Rotational)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hinge, row, and rotate",
+            "Keep hips level",
+            "Control the return"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 6,
+          "workout": "Monday – Single-Leg Power & Reactive Strength",
+          "name": "Med Ball Slam (Single-Leg Stance)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode down",
+            "Maintain balance",
+            "Keep core tight"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 7,
+          "workout": "Wednesday – Reactive Agility & Off-Balance",
+          "name": "Lateral Skater Jump (To Box)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode lateral to box",
+            "Stick and hold (2-3 sec)",
+            "Control and stabilize"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 8,
+          "workout": "Wednesday – Reactive Agility & Off-Balance",
+          "name": "Single-Leg Hop Series (Forward → Lateral → Back)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Forward hop",
+            "Lateral hop",
+            "Backward hop",
+            "Stick and stabilize"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 9,
+          "workout": "Wednesday – Reactive Agility & Off-Balance",
+          "name": "Depth Jump to Pistol",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Step off box (12-24\")",
+            "Land to pistol squat",
+            "Stick the landing"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 10,
+          "workout": "Wednesday – Reactive Agility & Off-Balance",
+          "name": "Cable Lateral Lunge to Rotation (Off-Balance Load)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Lateral step",
+            "Rotate against cable",
+            "Keep core and knee stable"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 11,
+          "workout": "Wednesday – Reactive Agility & Off-Balance",
+          "name": "Single-Leg Perturbation Hold (Cable or Partner)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "External perturbations",
+            "Keep knee level",
+            "Stay tall and controlled"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "20-30 sec each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 12,
+          "workout": "Wednesday – Reactive Agility & Off-Balance",
+          "name": "Rotational Med Ball Throw (Off-Balance Stance)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Lateral or diagonal throw",
+            "Explode and catch/return",
+            "Maintain balance"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 13,
+          "workout": "Friday – Total Body Power & Integration",
+          "name": "Single-Leg Broad Jump",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Max distance",
+            "Stick and stabilize",
+            "Reset each rep"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 14,
+          "workout": "Friday – Total Body Power & Integration",
+          "name": "Cable Ski Swing (High to Low, Rotational)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explosive hip rotation",
+            "Step through",
+            "Control finish"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 15,
+          "workout": "Friday – Total Body Power & Integration",
+          "name": "Box Jump to Lateral Hop (Off-Balance)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Jump up, stick",
+            "Hop off to the side",
+            "Control landing"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 16,
+          "workout": "Friday – Total Body Power & Integration",
+          "name": "Cable Split Squat Jump (Rotational)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explosive switch",
+            "Rotate against cable",
+            "Soft, controlled landing"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 17,
+          "workout": "Friday – Total Body Power & Integration",
+          "name": "Single-Leg Jump Down to Stick",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Jump down and stick",
+            "Absorb and stabilize",
+            "Hold 2-3 sec"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 18,
+          "workout": "Friday – Total Body Power & Integration",
+          "name": "Farmer Carry (Single-Leg)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hold weight opposite side",
+            "Keep hips level",
+            "Tall posture, controlled steps"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "40 yd each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 19,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Ankle Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Focus: keep knees in line, controlled movement, full range of motion • Breathe • Move with intent, not speed."
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "200 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 20,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Knee Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "200 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 21,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Hip CARs",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 22,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "World's Greatest Stretch",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75 sec each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 23,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Hamstring Sweep",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 24,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Glute Bridge",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 25,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Open Book Thoracic Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 26,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Scapular Slide + Reach",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 27,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Hydration",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Based on climate, activity level, and body needs."
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 28,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Nutrition",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Prioritize protein, whole foods, and electrolytes."
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 29,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Sleep",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "7-9 hours"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 30,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Cold Plunge",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(optional)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2-3 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 31,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Sauna",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(optional)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "10-20 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 32,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Light Walk",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "5-10 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 33,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Mobility",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "5-10 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 34,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Breathing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(Box or nasal)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2-5 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ],
+      "editorNotes": "\" | \" section separators, \"; \" day separators and \", \" item separators turned into line breaks and bullets.\nLabel \"KEY FORM CUES (this sheet):\" shortened to \"KEY FORM CUES:\".\nfocus: The sheet prints \"|\" divider bars between these items; written as \"•\". Original: \"Power | Single-Leg Dominance | Reactive Stability\""
+    },
+    {
+      "key": "6",
+      "label": "Week 6",
+      "driveId": "1V2iI0IvLbunjXJ-d8hRtEuXzrfAIcbCq",
+      "focus": "Power • Single-Leg Dominance • Reactive Stability",
+      "notes": "Week 6 focuses on high-intensity power, maximal single-leg control, complex movement patterns, and ski-specific endurance. You will move faster, react quicker, and stay stable in dynamic, unpredictable terrain.\n\nWEEK 6 SCHEDULE (ADVANCED – 8 WEEK PROGRAM):\n\nMONDAY – High-Intensity Single-Leg Power:\n- Explosive single-leg work\n- Advanced reactive control\n- Lateral power\n- Unilateral strength\n- Core integatıon\n\nTUESDAY – Explore & Develop:\n- Ski-specific movement exploration\n- Light strength or cardio\n- Mobility and balance\n- Technique work (e.g. hike, lateral movement, cable play, or mobility flow)\n\nWEDNESDAY – Reactive Agility & Complex Loading:\n- Multi-planar power\n- Single-leg reactive work\n- Cable & rotational loads\n- Balance & deceleration\n- Coordination and control\n\nTHURSDAY – Explore & Develop:\n- Movement variety\n- Optional cardio or hike\n- Single-leg balance drills\n- Mobility and tissue work\n- Focus on weak areas (no prescribed sets/reps)\n\nFRIDAY – Total Body Power & Ski-Specific Integration:\n- Full-body power\n- Multi-directional movement\n- Endurance and control\n- Ski-specific patterns\n- Core and grip\n- Reactive stability\n\nSATURDAY – Mountain Simulation:\n- 60-120 min hike or incline walk (Zone 2)\n- Uneven terrain\n- Longer duration\n- Optional intervals\n\nSUNDAY – Rest & Recovery:\n- Rest\n- Optional sauna or cold plunge\n- Mobility (light)\n- Prepare for next week\n\nKEY FORM CUES:\n- Explode, stick, and control.\n- Keep knees in line with toes.\n- Keep hips level and stable.\n- Land soft and quiet.\n- Use your core, not your lower back.\n- Qualrig over quantity.\n- Move with intent, not speed.",
+      "exercises": [
+        {
+          "n": 1,
+          "workout": "Monday – High-Intensity Single-Leg Power",
+          "name": "Depth Jump to Single-Leg Stick (12-18\")",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Step off box and stick",
+            "Stick and hold 3 sec",
+            "Control landing"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "workout": "Monday – High-Intensity Single-Leg Power",
+          "name": "Cable Reverse Lunge Drive (Off-Balance)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Cable from side",
+            "Drive knee up powerfully",
+            "Control the return"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "workout": "Monday – High-Intensity Single-Leg Power",
+          "name": "Pistol Squat (Assisted if Needed)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Full depth",
+            "Controlled descent",
+            "Use support if needed"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "workout": "Monday – High-Intensity Single-Leg Power",
+          "name": "Lateral Step-Down (Rotational)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Use weight or cable",
+            "Rotate as you step down",
+            "Control the landing"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "workout": "Monday – High-Intensity Single-Leg Power",
+          "name": "Single-Leg RDL to Row (Weighted)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hinge, row, and balance",
+            "Keep hips level",
+            "Control the return"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 6,
+          "workout": "Monday – High-Intensity Single-Leg Power",
+          "name": "Lateral Bound Series",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Max distance",
+            "Stick and hold 2-3 sec",
+            "Explosive and controlled"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 7,
+          "workout": "Wednesday – Reactive Agility & Complex Loading",
+          "name": "Lateral Skater to Diagonal Bound",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Lateral skater → diagonal stick",
+            "Control and stabilize"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 8,
+          "workout": "Wednesday – Reactive Agility & Complex Loading",
+          "name": "Single-Leg Hop Complex",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Forward hop",
+            "Lateral hop",
+            "Cross-over hop",
+            "Stick and hold"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 9,
+          "workout": "Wednesday – Reactive Agility & Complex Loading",
+          "name": "Depth Jump to Lateral Hop",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Step off box (12-18\")",
+            "Explode laterally",
+            "Stick the landing"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 10,
+          "workout": "Wednesday – Reactive Agility & Complex Loading",
+          "name": "Cable Rotational Lunge to Press",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explosive rotation",
+            "Lunge and press",
+            "Keep core engaged"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 11,
+          "workout": "Wednesday – Reactive Agility & Complex Loading",
+          "name": "Slam to Lateral Stick (Med Ball)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Slams and immediately bound to the side",
+            "Absorb and stabilize"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 12,
+          "workout": "Wednesday – Reactive Agility & Complex Loading",
+          "name": "Single-Leg Stability Reach (3-Direction)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Reach forward, diagonal, lateral",
+            "Soft knee, controlled balance"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 13,
+          "workout": "Friday – Total Body Power & Ski Integration",
+          "name": "Single-Leg Broad Jump",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Max distance",
+            "Stick and stabilize",
+            "Reset each rep"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 14,
+          "workout": "Friday – Total Body Power & Ski Integration",
+          "name": "Cable Ski Swing (High to Low)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explosive hip rotation",
+            "Keep arms long",
+            "Control the finish"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 15,
+          "workout": "Friday – Total Body Power & Ski Integration",
+          "name": "Box Jump to Reverse Lunge (Alternating)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Jump up, step back",
+            "Keep torso stable",
+            "Control landing"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 16,
+          "workout": "Friday – Total Body Power & Ski Integration",
+          "name": "Cable Split Squat Jump",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explosive switch",
+            "Keep toes stable",
+            "Soft, controlled landing"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 17,
+          "workout": "Friday – Total Body Power & Ski Integration",
+          "name": "Med Ball Rotational Throw (Off-Balance)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode and throw",
+            "Catch or chase the ball",
+            "Keep hips square"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 18,
+          "workout": "Friday – Total Body Power & Ski Integration",
+          "name": "Farmer Carry (Single-Leg)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hold weight opposite side",
+            "Keep hips level",
+            "Tall posture, controlled steps"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "40 yd each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 19,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Ankle Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Focus: keep knees in line, controlled movement, full range of motion • Breathe • Move with intent, not speed."
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "200 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 20,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Knee Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "200 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 21,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Hip CARs",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 22,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "World's Greatest Stretch",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75 sec each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 23,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Hamstring Sweep",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 24,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Glute Bridge",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 25,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Open Book Thoracic Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 26,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Scapular Slide + Reach",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 27,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Hydration",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Based on climate, activity level, and body needs."
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 28,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Nutrition",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Prioritize protein, whole foods, and electrolytes."
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 29,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Sleep",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "7-9 hours"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 30,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Cold Plunge",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(optional)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2-3 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 31,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Sauna",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(optional)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "10-20 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 32,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Light Walk",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "5-10 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 33,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Mobility",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "5-10 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 34,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Breathing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(Box or nasal)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2-5 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ],
+      "editorNotes": "\" | \" section separators, \"; \" day separators and \", \" item separators turned into line breaks and bullets.\nLabel \"KEY FORM CUES (this sheet):\" shortened to \"KEY FORM CUES:\".\nfocus: The sheet prints \"|\" divider bars between these items; written as \"•\". Original: \"Power | Single-Leg Dominance | Reactive Stability\""
+    },
+    {
+      "key": "7",
+      "label": "Week 7",
+      "driveId": "18MaFPCZ5kd_ebfMLrRmzhH15ns0yXKJ8",
+      "focus": "Power • Single-Leg Dominance • Reactive Stability",
+      "notes": "Week 7 peaks your intensity with high-demand single-leg power, complex movement patterns, and ski-specific endurance. You'll move faster, react quicker, and build the resilience to handle variable terrain and longer days on the mountain.\n\nWEEK 7 SCHEDULE (ADVANCED – 8 WEEK PROGRAM):\n\nMONDAY – Explosive Power & Multi-Planar Control:\n- High-intensity single-leg\n- power\n- Multi-directional control\n- Reactive strength\n- Off-balance loading\n- Core integration\n\nTUESDAY – Explore & Develop:\n- Ski-specific movement exploration\n- Light strength or cardio\n- Mobility and balance\n- Technique work (e.g. hike, lateral movement, cable play, or mobility flow)\n\nWEDNESDAY – Reactive Agility & Complex Loading:\n- Reactive agility\n- Multi-planar power\n- Single-leg stability\n- Cable & rotational work\n- Balance & deceleration\n- Core stability\n\nTHURSDAY – Explore & Develop:\n- Movement variety\n- Optional cardio or hike\n- Single-leg balance drills\n- Mobility and tissue work\n- Focus on weak areas (no prescribed sets/reps)\n\nFRIDAY – Total Body Power & Ski-Specific Integration:\n- Full-body power\n- Multi-directional movement\n- Endurance and control\n- Ski-specific patterns\n- Core and grip\n- Reactive stability\n\nSATURDAY – Mountain Simulation:\n- 60-120 min hike or incline walk (Zone 2)\n- Uneven terrain\n- Longer duration\n- Mobility (daily)\n- Optional intervals\n\nSUNDAY – Rest & Recovery:\n- Rest\n- Optional sauna or cold plunge\n- Mobility (light)\n- Prepare for next week\n\nKEY FORM CUES:\n- Explode, stick, and control.\n- Keep knees in line with toes.\n- Keep hips level and stable.\n- Land soft and quiet.\n- Use your core, not your lower back.\n- Quality over quantity.\n- Move with intent, not speed.",
+      "exercises": [
+        {
+          "n": 1,
+          "workout": "Monday – Explosive Power & Multi-Planar Control",
+          "name": "Depth Jump to Lateral Stick",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Step off box and jump",
+            "Land and stick lateral",
+            "Control and stabilize"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "workout": "Monday – Explosive Power & Multi-Planar Control",
+          "name": "Cable Reverse Lunge to High Knee Drive",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Cable from front",
+            "Explode up with knee drive",
+            "Control the return"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "workout": "Monday – Explosive Power & Multi-Planar Control",
+          "name": "Lateral Pistol Squat (To Box)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Sit to box laterally",
+            "Full depth",
+            "Keep knee over toes"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "workout": "Monday – Explosive Power & Multi-Planar Control",
+          "name": "Single-Leg RDL Row (Rotational)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hinge, row, and rotate",
+            "Keep hips level",
+            "Control the return"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "workout": "Monday – Explosive Power & Multi-Planar Control",
+          "name": "Lateral Bound to Stick (Off-Balance)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode, stick and hold (2-3 sec)",
+            "Use small stick or pad",
+            "Control knee and hip"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 6,
+          "workout": "Monday – Explosive Power & Multi-Planar Control",
+          "name": "Med Ball Slam (Rotational)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode down and across",
+            "Keep core tight",
+            "Maintain balance"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 7,
+          "workout": "Wednesday – Reactive Agility & Complex Loading",
+          "name": "Lateral Skater Jumps (Overspeed)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explosive distance",
+            "Stick and hold (2-3 sec)",
+            "Control and stabilize"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 8,
+          "workout": "Wednesday – Reactive Agility & Complex Loading",
+          "name": "Single-Leg Hop to Rotate",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Forward hop",
+            "Land and rotate 90-180°",
+            "Stick and hold"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 9,
+          "workout": "Wednesday – Reactive Agility & Complex Loading",
+          "name": "Depth Jump to Pistol (Off-Balance)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Step off box (12-18\")",
+            "Land to pistol squat",
+            "Stick the landing"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 10,
+          "workout": "Wednesday – Reactive Agility & Complex Loading",
+          "name": "Cable Lateral Lunge to Press (Rotational)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Lateral step and load",
+            "Rotate and press",
+            "Keep core engaged"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 11,
+          "workout": "Wednesday – Reactive Agility & Complex Loading",
+          "name": "Single-Leg Perturbation Hold (Cable or Partner)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "External perturbations",
+            "Resist and stay stable",
+            "Keep knee over toes"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "20-30 sec each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 12,
+          "workout": "Wednesday – Reactive Agility & Complex Loading",
+          "name": "Rotational Med Ball Throw (Off-Balance)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode and throw",
+            "Catch or chase the ball",
+            "Keep hips square"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 13,
+          "workout": "Friday – Total Body Power & Ski Integration",
+          "name": "Single-Leg Broad Jump (For Distance)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Max distance",
+            "Stick and stabilize",
+            "Reset each rep"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 14,
+          "workout": "Friday – Total Body Power & Ski Integration",
+          "name": "Cable Ski Swing (High to Low)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explosive hip rotation",
+            "Step through",
+            "Control the finish"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 15,
+          "workout": "Friday – Total Body Power & Ski Integration",
+          "name": "Box Jump to Lateral Hop (Off-Balance)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Jump up, hop off to side",
+            "Stick and hold",
+            "Control landing"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 16,
+          "workout": "Friday – Total Body Power & Ski Integration",
+          "name": "Cable Split Squat Jump (Rotational)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explosive switch",
+            "Rotate against cable",
+            "Soft, controlled landing"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 17,
+          "workout": "Friday – Total Body Power & Ski Integration",
+          "name": "Farmer Carry (Single-Leg)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hold weight opposite side",
+            "Keep hips level",
+            "Tall posture, controlled steps"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "40 yd each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 18,
+          "workout": "Friday – Total Body Power & Ski Integration",
+          "name": "Lateral Bound to Contra Med Ball Catch",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode laterally",
+            "Catch and stabilize",
+            "Keep knee and hip aligned"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 19,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Ankle Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Focus: keep knees in line, controlled movement, full range of motion • Breathe • Move with intent, not speed."
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "200 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 20,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Knee Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "200 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 21,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Hip CARs",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 22,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "World's Greatest Stretch",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75 sec each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 23,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Hamstring Sweep",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 24,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Glute Bridge",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 25,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Open Book Thoracic Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 26,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Scapular Slide + Reach",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 27,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Hydration",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Based on climate, activity level, and body needs."
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 28,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Nutrition",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Prioritize protein, whole foods, and electrolytes."
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 29,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Sleep",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "7-9 hours"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 30,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Cold Plunge",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(optional)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2-3 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 31,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Sauna",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(optional)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "10-20 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 32,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Light Walk",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "5-10 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 33,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Mobility",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "5-10 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 34,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Breathing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(Box or nasal)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2-5 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ],
+      "editorNotes": "\" | \" section separators, \"; \" day separators and \", \" item separators turned into line breaks and bullets.\nLabel \"KEY FORM CUES (this sheet):\" shortened to \"KEY FORM CUES:\".\nfocus: The sheet prints \"|\" divider bars between these items; written as \"•\". Original: \"Power | Single-Leg Dominance | Reactive Stability\""
+    },
+    {
+      "key": "8",
+      "label": "Week 8",
+      "driveId": "1HEmZft2PjrXAObTD0VqxlLSXJ0B7CkQQ",
+      "focus": "Power • Single-Leg Dominance • Reactive Stability",
+      "notes": "Week 8 brings everything together. You'll peak with high-intensity, complex, ski-specific movement, full-body integration, and reactive power. You'll move more efficiently, stay more stable on longer, stronger days on the mountain.\n\nWEEK 8 SCHEDULE (ADVANCED – 8 WEEK PROGRAM):\n\nMONDAY – Peak Power & Reactive Control:\n- Maximal power output\n- Reactive stability\n- Multi-planar control\n- Ski-specific strength\n- Confidence under load\n\nTUESDAY – Explore & Develop:\n- Ski-specific movement exploration\n- Light strength or cardio\n- Mobility and balance\n- Technique work (e.g. hike, lateral movement, cable play, or mobility flow)\n\nWEDNESDAY – Reactive Agility & Complex Loading:\n- Multi-directional power\n- Single-leg reactive work\n- Cable & rotational loads\n- Balance & deceleration\n- Core stability\n\nTHURSDAY – Explore & Develop:\n- Movement variety\n- Optional cardio or hike\n- Single-leg balance drills\n- Mobility and tissue work\n- Focus on weak areas (no prescribed sets/reps)\n\nFRIDAY – Total Body Power & Ski-Specific Integration:\n- Full-body power\n- Multi-directional movement\n- Endurance and control\n- Ski-specific patterns\n- Core and stability\n\nSATURDAY – Mountain Simulation:\n- 60-120 min hike or incline walk (Zone 2)\n- Uneven terrain\n- Longer duration\n- Mobility (daily)\n\nSUNDAY – Rest & Recovery:\n- Rest\n- Optional sauna or cold plunge\n- Mobility (light)\n- Prepare for next season\n\nKEY FORM CUES:\n- Explode, stick, and control.\n- Keep knees in line with toes.\n- Keep hips level and stable.\n- Land soft and quiet.\n- Use your core, not your lower back.\n- Quality over quantity.\n- Move with intent, not speed.",
+      "exercises": [
+        {
+          "n": 1,
+          "workout": "Monday – Peak Power & Reactive Control",
+          "name": "Depth Jump to Stick",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Step off box (12-18\")",
+            "Land and stick 2-3 sec",
+            "Soft, controlled landing"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "workout": "Monday – Peak Power & Reactive Control",
+          "name": "Cable Reverse Lunge to High Knee Drive",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Cable from front",
+            "Explode up with knee drive",
+            "Control the return"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "workout": "Monday – Peak Power & Reactive Control",
+          "name": "Lateral Bound to Box",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode laterally",
+            "Stick the landing",
+            "Keep hips level"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "workout": "Monday – Peak Power & Reactive Control",
+          "name": "Single-Leg RDL to Row",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hinge, reach, row",
+            "Control balance",
+            "Keep hips square"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "workout": "Monday – Peak Power & Reactive Control",
+          "name": "Med Ball Rotational Slam (High to Low)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode down and across",
+            "Rotate through hips",
+            "Catch or chase the ball"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 6,
+          "workout": "Monday – Peak Power & Reactive Control",
+          "name": "Skater Jump Series",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Lateral jump, stick",
+            "Immediate opposite bound",
+            "Keep knee over toes"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 7,
+          "workout": "Wednesday – Reactive Agility & Complex Loading",
+          "name": "Lateral Skater to Diagonal Hop",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Lateral skater",
+            "Explode diagonally",
+            "Stick and stabilize"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 8,
+          "workout": "Wednesday – Reactive Agility & Complex Loading",
+          "name": "Single-Leg Hop to Rotate",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hop forward",
+            "Land and rotate 90-180°",
+            "Stick and hold"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 9,
+          "workout": "Wednesday – Reactive Agility & Complex Loading",
+          "name": "Depth Jump to Pistol",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Step off box (12-18\")",
+            "Land to pistol squat",
+            "Stick the landing"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 10,
+          "workout": "Wednesday – Reactive Agility & Complex Loading",
+          "name": "Cable Lateral Lunge to Press (Rotational)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Lateral step and load",
+            "Rotate and press",
+            "Keep core engaged"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 11,
+          "workout": "Wednesday – Reactive Agility & Complex Loading",
+          "name": "Single-Leg Perturbation Catch (Med Ball)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Partner or wall toss",
+            "React, catch, stabilize",
+            "Keep knee over toes"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "20-30 sec each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 12,
+          "workout": "Wednesday – Reactive Agility & Complex Loading",
+          "name": "Anti-Rotation Split Stance Hold (Cable)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Resist rotation",
+            "Tall posture",
+            "Brace and breathe"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "30 sec each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 13,
+          "workout": "Friday – Total Body Power & Ski Integration",
+          "name": "Single-Leg Broad Jump (For Distance)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Max distance",
+            "Stick and stabilize",
+            "Reset each rep"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 14,
+          "workout": "Friday – Total Body Power & Ski Integration",
+          "name": "Cable Ski Swing (High to Low)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explosive hip rotation",
+            "Step through",
+            "Control the finish"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 15,
+          "workout": "Friday – Total Body Power & Ski Integration",
+          "name": "Box Jump to Lateral Hop (Off-Balance)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Jump up, hop off to side",
+            "Stick and hold",
+            "Control landing"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 16,
+          "workout": "Friday – Total Body Power & Ski Integration",
+          "name": "Cable Split Squat Jump (Rotational)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explosive switch",
+            "Rotate against cable",
+            "Soft, controlled landing"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 17,
+          "workout": "Friday – Total Body Power & Ski Integration",
+          "name": "Farmer Carry (Single-Leg)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hold weight opposite side",
+            "Keep hips level",
+            "Tall posture, controlled steps"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "40 yd each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 18,
+          "workout": "Friday – Total Body Power & Ski Integration",
+          "name": "Lateral Med Ball Throw to Catch",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode and throw",
+            "Catch and stablize",
+            "Move with control"
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 19,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Ankle Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Focus: keep knees in line, controlled movement, full range of motion • Breathe • Move with intent, not speed."
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "200 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 20,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Knee Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "200 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 21,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Hip CARs",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 22,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "World's Greatest Stretch",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75 sec each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 23,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Hamstring Sweep",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 24,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Glute Bridge",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 25,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Open Book Thoracic Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 26,
+          "workout": "Daily Mobility Routine (Perform Every Day – 10-15 min)",
+          "name": "Scapular Slide + Reach",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "75",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 27,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Hydration",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Based on climate, activity level, and body needs."
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 28,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Nutrition",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Prioritize protein, whole foods, and electrolytes."
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 29,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Sleep",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "7-9 hours"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 30,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Cold Plunge",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(optional)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2-3 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 31,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Sauna",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(optional)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "10-20 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 32,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Light Walk",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "5-10 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 33,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Mobility",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "5-10 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 34,
+          "workout": "Recovery Focus (Daily)",
+          "name": "Breathing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(Box or nasal)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2-5 min"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ],
+      "editorNotes": "\" | \" section separators, \"; \" day separators and \", \" item separators turned into line breaks and bullets.\n[last line partly garbled on sheet] (after the intro paragraph)\nLabel \"KEY FORM CUES (this sheet):\" shortened to \"KEY FORM CUES:\".\nfocus: The sheet prints \"|\" divider bars between these items; written as \"•\". Original: \"Power | Single-Leg Dominance | Reactive Stability\""
+    }
+  ],
+  "uncertain": [
+    "Week 1 SUNDAY box: a garbled '(light)' is printed over 'Prepare for next week' (apparently a leftover of 'Mobility (light)', which weeks 2-8 list); recorded as 'Prepare for next week' without a Mobility (light) item.",
+    "Week 3 TUESDAY bullet reads 'Focus on qualityr movement (no prescribed sets/reps)' (sheet typo 'qualityr'); kept as printed.",
+    "Week 3 KEY FORM CUES: 'Full range of motion.' and 'Quality over quantity.' are printed overlapping each other; recorded as the week 1 wording.",
+    "Week 5 KEY FORM CUES reads 'Quality ovef quantity.' (sheet typo); kept as printed in week 5 notes.",
+    "Week 6 KEY FORM CUES reads roughly 'Qualrig over quantity.' with a garbled extra line under it; kept as printed in week 6 notes, exact garbled letters uncertain.",
+    "Week 6 MONDAY schedule bullet reads 'Core integatıon' (garbled 'Core integration'); kept as printed, exact letters uncertain.",
+    "Week 6 SATURDAY last bullet: 'Optional intervals' printed over another garbled word (probably 'Mobility (daily)'); only 'Optional intervals' recorded.",
+    "Week 7 schedule boxes have overlapping text: MONDAY 'Off-balance loading' over 'Core integration'; WEDNESDAY 'Cable & rotational work' over 'Balance & deceleration'; FRIDAY 'Core and grip' over 'Reactive stability'; SATURDAY 'Mobility (daily)' over 'Optional intervals'. Both items of each pair recorded.",
+    "Week 8 header intro: last line is garbled on the sheet ('...stay more stable on longer, stronger days on the mountain' is a best reading; 'longer' and 'on the mountain' are partly illegible).",
+    "Week 8 Friday row 6 cue 'Catch and stablize' (sheet typo, 'stabilize'); kept as printed.",
+    "Week 2 schedule: WEDNESDAY bullets 'Lateral power & change' / 'of direction' and SATURDAY '60-120 min hike' / 'or incline walk (Zone 2)' are printed as separate bullet lines; recorded as separate items as printed.",
+    "Week 6 Wednesday row 1 cue 'Lateral skater → diagonal stick' wraps onto a second line with a faint bullet; recorded as one cue.",
+    "Weekly FOCUS line 'POWER | SINGLE-LEG DOMINANCE | REACTIVE STABILITY' and all headings/exercise names are printed in ALL CAPS; recorded in title case. En dashes in ranges converted to ASCII hyphens; inch marks recorded as \".",
+    "Exercise sets × reps are printed as '4 x N ...' on the sheets; recorded as sets '4', reps as printed."
+  ],
+  "sourceNotes": "Read 8 sheets (weeks 1-8), each 1024x1536 portrait, from Drive thumbnails at w2400; all present, no duplicates. Layout per sheet: header (MD FIT Performance & Rehab, 'Move better. Play longer.', 'ADVANCED SKI PROGRAM', '8-WEEK PLAN | WEEK n', focus line 'POWER | SINGLE-LEG DOMINANCE | REACTIVE STABILITY', a week-specific intro paragraph, side box 'STRONGER ANKLES. MORE CONTROL. LESS FATIGUE. BIGGER DAYS ON SNOW.'), a 5-item benefits row (dailyBasics), WEEK n SCHEDULE (7 days; Monday/Wednesday/Friday are the three gym workouts, Tuesday/Thursday 'Explore & Develop', Saturday 'Mountain Simulation', Sunday 'Rest & Recovery'; recorded in each week's notes), DAILY MOBILITY ROUTINE (PERFORM EVERY DAY – 10-15 MIN) with 8 items and a focus line, three workout tables (Monday/Wednesday/Friday, 6 rows each, no time boxes), RECOVERY FOCUS (DAILY) with 8 items, KEY FORM CUES (week 1 version = top-level principles; weeks 4-8 print a different 7- or 8-item list, recorded in those weeks' notes), and footer 'STRONGER FOUNDATIONS. BIGGER DAYS ON SNOW.' plus 'GOSD – Glutes on. Shoulders down.' Week 1's schedule has no bullet lists under Monday/Wednesday/Friday and its heading is just 'WEEK 1 SCHEDULE'. Top-level 'goal' is the side box text (no explicit goals box on the sheets); progression.overview holds each week's intro paragraph. Mobility and recovery are identical on all 8 sheets and are repeated as exercises in each week.",
+  "editorNotes": "tagline: The sheet prints \"|\" divider bars between these items; written as \"•\". Original: \"Power | Single-Leg Dominance | Reactive Stability\"\nprogression.overview week 8: removed \"[last line partly garbled on sheet]\" from the end of the focus text."
+}

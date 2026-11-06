@@ -1,0 +1,3170 @@
+{
+  "id": "pickleball-advanced",
+  "title": "Pickleball Advanced Protocol",
+  "tagline": "Power. Speed. Reaction. Resilience. Next-Level Performance.",
+  "goal": "Build maximal strength and power • Improve acceleration and deceleration • Enhance rotational force and stability • Train reactive movement and lateral change • Develop muscular endurance for longer play • Maintain shoulder health and control",
+  "principles": [
+    {
+      "title": "Glutes engaged at all times",
+      "text": ""
+    },
+    {
+      "title": "Shoulders down (in your pockets)",
+      "text": ""
+    },
+    {
+      "title": "Control the movement",
+      "text": ""
+    },
+    {
+      "title": "Quality over quantity",
+      "text": ""
+    },
+    {
+      "title": "Stay balanced and athletic",
+      "text": ""
+    },
+    {
+      "title": "Move pain-free",
+      "text": ""
+    }
+  ],
+  "dailyBasics": [],
+  "progression": {
+    "overview": [],
+    "guidelines": [],
+    "expect": [],
+    "remember": "",
+    "callouts": [
+      "Move better. Play longer."
+    ],
+    "footer": ""
+  },
+  "weeks": [
+    {
+      "key": "1",
+      "label": "Week 1",
+      "driveId": "18aaq_RJyHUllJELE0WdibxYUC4PXYxJU",
+      "focus": "",
+      "notes": "ADVANCED GOALS WEEK 1:\n- Build maximal strength and power\n- Improve acceleration and deceleration\n- Enhance rotational force and stability\n- Train reactive movement and lateral change\n- Develop muscular endurance for longer play\n- Maintain shoulder health and control",
+      "exercises": [
+        {
+          "n": 1,
+          "workout": "Workout A: Lower Body Power, Lateral Stability & Rotation (45-60 min)",
+          "workoutNote": "Explosive lower body strength, change of direction and single-leg control.",
+          "name": "Trap Bar Deadlift",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hips back.",
+            "Neutral spine.",
+            "Explode up.",
+            "Full lockout."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "workout": "Workout A: Lower Body Power, Lateral Stability & Rotation (45-60 min)",
+          "name": "Lateral Skater Bound",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Stick landing.",
+            "Control deceleration.",
+            "Knee aligned.",
+            "Glutes engaged."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "workout": "Workout A: Lower Body Power, Lateral Stability & Rotation (45-60 min)",
+          "name": "Bulgarian Split Squat (Heavy)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive through heel.",
+            "Tall posture.",
+            "Hips square.",
+            "Glutes engaged."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "workout": "Workout A: Lower Body Power, Lateral Stability & Rotation (45-60 min)",
+          "name": "Cable Rotational Lunge Press",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hips and shoulders rotate together.",
+            "Control the return.",
+            "Full range of motion."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "workout": "Workout A: Lower Body Power, Lateral Stability & Rotation (45-60 min)",
+          "name": "Box Jump to Stick",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode up.",
+            "Soft, quiet landing.",
+            "Stick 2-3 seconds.",
+            "Knees aligned."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 6,
+          "workout": "Workout A: Lower Body Power, Lateral Stability & Rotation (45-60 min)",
+          "name": "Farmer Carry (Heavy)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Tall posture.",
+            "Shoulders down.",
+            "Core braced.",
+            "Controlled pace."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "40 ft each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 7,
+          "workout": "Workout B: Upper Body Strength, Power & Shoulder Control (45-60 min)",
+          "workoutNote": "Build upper body strength, rotational power and shoulder stability for forceful, controlled shots.",
+          "name": "Dumbbell Bench Press (Neutral Grip)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Shoulders down.",
+            "Core tight.",
+            "Full range.",
+            "Controlled tempo."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 8,
+          "workout": "Workout B: Upper Body Strength, Power & Shoulder Control (45-60 min)",
+          "name": "Single-Arm Cable Row (with Rotation)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Rotate through torso.",
+            "Keep ribs down.",
+            "Squeeze shoulder blade.",
+            "Control the return."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 9,
+          "workout": "Workout B: Upper Body Strength, Power & Shoulder Control (45-60 min)",
+          "name": "TRX Push-Up (Decline)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Core tight.",
+            "Shoulders down.",
+            "Full range of motion.",
+            "Controlled tempo."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 10,
+          "workout": "Workout B: Upper Body Strength, Power & Shoulder Control (45-60 min)",
+          "name": "Cable Woodchop (High to Low)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode through core.",
+            "Hips rotate.",
+            "Keep shoulders down.",
+            "Control the return."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 11,
+          "workout": "Workout B: Upper Body Strength, Power & Shoulder Control (45-60 min)",
+          "name": "Landmine Press (Anti-Rotation)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Glutes and core tight.",
+            "No trunk rotation.",
+            "Press at slight angle.",
+            "Controlled movement."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 12,
+          "workout": "Workout B: Upper Body Strength, Power & Shoulder Control (45-60 min)",
+          "name": "Prone Y-T Raise (on Bench)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Light weight.",
+            "Shoulders down.",
+            "Squeeze mid-back.",
+            "Slow and controlled."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12 each position",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 13,
+          "workout": "Workout C: Movement Speed, Agility & Court Integration (45-60 min)",
+          "workoutNote": "High-intensity, multi-directional training to improve reaction time and court performance.",
+          "name": "Lateral Shuffle + Reactive Cone Tap",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Stay low.",
+            "React to visual cue.",
+            "Quick feet.",
+            "Keep shoulders down."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "20 yd each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 14,
+          "workout": "Workout C: Movement Speed, Agility & Court Integration (45-60 min)",
+          "name": "Split Step to Sprint (Forward / Back / Lateral)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode off split step.",
+            "Fast acceleration.",
+            "Controlled stop.",
+            "Knee aligned."
+          ],
+          "dosage": {
+            "sets": "5",
+            "reps": "10 yd each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 15,
+          "workout": "Workout C: Movement Speed, Agility & Court Integration (45-60 min)",
+          "name": "Med Ball Rotational Slam (to Side)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Rotate hard.",
+            "Use hips and core.",
+            "Explode through ball.",
+            "Keep shoulders down."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 16,
+          "workout": "Workout C: Movement Speed, Agility & Court Integration (45-60 min)",
+          "name": "Lateral Hurdle Hops (Single Leg)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Controlled and quick.",
+            "Stick the landing.",
+            "Keep knee aligned.",
+            "Build elasticity."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 17,
+          "workout": "Workout C: Movement Speed, Agility & Court Integration (45-60 min)",
+          "name": "Crossover Lunge to Cone + Return",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode laterally.",
+            "Reach low and outside.",
+            "Keep knee aligned.",
+            "Stay low and controlled."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 18,
+          "workout": "Workout C: Movement Speed, Agility & Court Integration (45-60 min)",
+          "name": "Burpee to Lateral Shuffle",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Full body power.",
+            "Quick transition.",
+            "Stay low.",
+            "Controlled breathing."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 19,
+          "workout": "Pre-Workout Warm-Up (8-10 min)",
+          "name": "Ankle Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 20,
+          "workout": "Pre-Workout Warm-Up (8-10 min)",
+          "name": "Knee Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 21,
+          "workout": "Pre-Workout Warm-Up (8-10 min)",
+          "name": "Hip Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 22,
+          "workout": "Pre-Workout Warm-Up (8-10 min)",
+          "name": "Dynamic Lunge",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "5 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 23,
+          "workout": "Pre-Workout Warm-Up (8-10 min)",
+          "name": "Arm Swings",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 24,
+          "workout": "Post-Workout Recovery (5-10 min)",
+          "name": "Light Walking",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2-5 minutes"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 25,
+          "workout": "Post-Workout Recovery (5-10 min)",
+          "name": "Gentle Stretching",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(hips, quads, glutes, shoulders)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 26,
+          "workout": "Post-Workout Recovery (5-10 min)",
+          "name": "Deep Breathing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2 minutes"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 27,
+          "workout": "Post-Workout Recovery (5-10 min)",
+          "name": "Optional: Ice Bath or Sauna",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(as available)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ]
+    },
+    {
+      "key": "2",
+      "label": "Week 2",
+      "driveId": "14PH29Nn7_k13m2YBmIAuAT1PjfZIepEN",
+      "focus": "",
+      "notes": "ADVANCED GOALS WEEK 2:\n- Increase power and eccentric control\n- Improve lateral speed and change of direction\n- Enhance rotational strength and stability\n- Build reactive quickness and deceleration\n- Increase single-leg strength and resilience\n- Maintain shoulder and core control under load",
+      "exercises": [
+        {
+          "n": 1,
+          "workout": "Workout A: Lower Body Power, Single-Leg Stability & Deceleration (45-60 min)",
+          "workoutNote": "Develop explosive strength, control and single-leg resilience for court movement.",
+          "name": "Trap Bar Jump Shrug",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode up.",
+            "Full hip extension.",
+            "Soft landing.",
+            "Stay tall."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "workout": "Workout A: Lower Body Power, Single-Leg Stability & Deceleration (45-60 min)",
+          "name": "Reverse Lunge to Knee Drive (Rotation)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive through heel.",
+            "Rotate over front hip.",
+            "Glutes engaged.",
+            "Control return."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "workout": "Workout A: Lower Body Power, Single-Leg Stability & Deceleration (45-60 min)",
+          "name": "Lateral Bound to Stick",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode laterally.",
+            "Stick and stabilize.",
+            "Knee aligned.",
+            "Control deceleration."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "workout": "Workout A: Lower Body Power, Single-Leg Stability & Deceleration (45-60 min)",
+          "name": "Deficit Split Squat",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Full range.",
+            "Front knee over toes.",
+            "Glutes engaged.",
+            "Tall posture."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "workout": "Workout A: Lower Body Power, Single-Leg Stability & Deceleration (45-60 min)",
+          "name": "Single-Leg RDL with Row (DB or Cable)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hinge at hip.",
+            "Keep spine flat.",
+            "Row and control.",
+            "Stay balanced."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 6,
+          "workout": "Workout A: Lower Body Power, Single-Leg Stability & Deceleration (45-60 min)",
+          "name": "Heavy Farmer Carry",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Tall posture.",
+            "Shoulders down.",
+            "Core braced.",
+            "Controlled pace."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "40 ft each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 7,
+          "workout": "Workout B: Upper Body Strength, Rotational Power & Anti-Rotation (45-60 min)",
+          "workoutNote": "Build upper body power and rotational control for effective, consistent shots.",
+          "name": "Incline Dumbbell Press (Neutral Grip)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Shoulders down.",
+            "Core tight.",
+            "Full range.",
+            "Controlled tempo."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 8,
+          "workout": "Workout B: Upper Body Strength, Rotational Power & Anti-Rotation (45-60 min)",
+          "name": "1-Arm Cable Row with Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Rotate through torso.",
+            "Keep hips square.",
+            "Squeeze shoulder blade.",
+            "Controlled return."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 9,
+          "workout": "Workout B: Upper Body Strength, Rotational Power & Anti-Rotation (45-60 min)",
+          "name": "Push-Up to Shoulder Tap (Elevated if Needed)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep core tight.",
+            "Minimal hip sway.",
+            "Control the tap.",
+            "Stay stable."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 10,
+          "workout": "Workout B: Upper Body Strength, Rotational Power & Anti-Rotation (45-60 min)",
+          "name": "Cable Chest Press with Rotation (Anti-Rotation)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Press and resist rotation.",
+            "Ribs down.",
+            "Glutes engaged.",
+            "Controlled movement."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 11,
+          "workout": "Workout B: Upper Body Strength, Rotational Power & Anti-Rotation (45-60 min)",
+          "name": "TRX Y-T-W-Row (Complex)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Shoulders down.",
+            "Squeeze mid-back.",
+            "Control each position.",
+            "Full range."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each position",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 12,
+          "workout": "Workout B: Upper Body Strength, Rotational Power & Anti-Rotation (45-60 min)",
+          "name": "Pallof Press with Lateral Step",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Core tight.",
+            "Resist rotation.",
+            "Step and press.",
+            "Stay balanced."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 13,
+          "workout": "Workout C: Speed, Agility, Reaction & Full-Body Integration (45-60 min)",
+          "workoutNote": "Improve movement speed, change of direction and court-specific power.",
+          "name": "Lateral Shuffle + Reactive Ball Tap (or Cone)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Stay low.",
+            "React to visual cue.",
+            "Quick feet.",
+            "Keep shoulders down."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "20 yd each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 14,
+          "workout": "Workout C: Speed, Agility, Reaction & Full-Body Integration (45-60 min)",
+          "name": "Split Step to Sprint (Forward / Back / Lateral)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Quick transition.",
+            "Explode off split step.",
+            "Control deceleration.",
+            "Knee aligned."
+          ],
+          "dosage": {
+            "sets": "5",
+            "reps": "10 yd each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 15,
+          "workout": "Workout C: Speed, Agility, Reaction & Full-Body Integration (45-60 min)",
+          "name": "Med Ball Rotational Slam (to Side)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Rotate hard.",
+            "Use hips and core.",
+            "Explode through ball.",
+            "Keep shoulders down."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 16,
+          "workout": "Workout C: Speed, Agility, Reaction & Full-Body Integration (45-60 min)",
+          "name": "Lateral Hurdle Hops (Single Leg)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Fast and controlled.",
+            "Stick the landing.",
+            "Knee aligned.",
+            "Build elasticity."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 17,
+          "workout": "Workout C: Speed, Agility, Reaction & Full-Body Integration (45-60 min)",
+          "name": "Crossover Lunge to Cone + Return",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode laterally.",
+            "Reach low and outside.",
+            "Stay low and stable.",
+            "Control return."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 18,
+          "workout": "Workout C: Speed, Agility, Reaction & Full-Body Integration (45-60 min)",
+          "name": "Burpee to Lateral Shuffle to Vertical Jump",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Full body power.",
+            "Quick transition.",
+            "Explode up.",
+            "Land soft and controlled."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 19,
+          "workout": "Pre-Workout Warm-Up (8-10 min)",
+          "name": "Ankle Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 20,
+          "workout": "Pre-Workout Warm-Up (8-10 min)",
+          "name": "Knee Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 21,
+          "workout": "Pre-Workout Warm-Up (8-10 min)",
+          "name": "Hip Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 22,
+          "workout": "Pre-Workout Warm-Up (8-10 min)",
+          "name": "Dynamic Lunge",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "5 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 23,
+          "workout": "Pre-Workout Warm-Up (8-10 min)",
+          "name": "Arm Swings",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 24,
+          "workout": "Post-Workout Recovery (5-10 min)",
+          "name": "Light Walking",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2-5 minutes"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 25,
+          "workout": "Post-Workout Recovery (5-10 min)",
+          "name": "Gentle Stretching",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(hips, quads, glutes, shoulders)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 26,
+          "workout": "Post-Workout Recovery (5-10 min)",
+          "name": "Deep Breathing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2 minutes"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 27,
+          "workout": "Post-Workout Recovery (5-10 min)",
+          "name": "Optional: Ice Bath or Sauna",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(as available)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ],
+      "editorNotes": "KEY CUES box on this sheet prints the last cue as \"Move pain-freet\" (other sheets: \"Move pain-free\")."
+    },
+    {
+      "key": "3",
+      "label": "Week 3",
+      "driveId": "1PvXbS5ruE9CtO2CemHqvK-1B6vXG8wrM",
+      "focus": "",
+      "notes": "ADVANCED GOALS WEEK 3:\n- Increase power, speed and reactive strength\n- Develop rotational force and deceleration\n- Improve single-leg control under dynamic load\n- Enlidncecula-dirdctional movement & agility\n- Maintain shoulder and core control\n- Reduce injury risk with balanced movement",
+      "exercises": [
+        {
+          "n": 1,
+          "workout": "Workout A: Lower Body Power, Lateral Stability & Rotation (45-60 min)",
+          "workoutNote": "Build explosive lower body strength, lateral control and rotational power.",
+          "name": "Lateral Skater Bound to Stick",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode laterally.",
+            "Stick and control.",
+            "Knee aligned.",
+            "Hips low."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "workout": "Workout A: Lower Body Power, Lateral Stability & Rotation (45-60 min)",
+          "name": "DB Reverse Lunge to Knee Drive + Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive through heel.",
+            "Rotate over front hip.",
+            "Glutes engaged.",
+            "Controlled return."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "workout": "Workout A: Lower Body Power, Lateral Stability & Rotation (45-60 min)",
+          "name": "Bulgarian Split Squat (Heavy)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Tall torso.",
+            "Knee over toes.",
+            "Hips square.",
+            "Full range. Control."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "workout": "Workout A: Lower Body Power, Lateral Stability & Rotation (45-60 min)",
+          "name": "Landmine Rotational Lunge Press",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hips rotate first.",
+            "Press and control.",
+            "Ribs down.",
+            "Resist rotation back."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "workout": "Workout A: Lower Body Power, Lateral Stability & Rotation (45-60 min)",
+          "name": "Single-Leg RDL to Row (DB or Cable)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hinge at hip.",
+            "Keep spine flat.",
+            "Row with control.",
+            "Glutes and hamstrings."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 6,
+          "workout": "Workout A: Lower Body Power, Lateral Stability & Rotation (45-60 min)",
+          "name": "Heavy Farmer Carry",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Tall posture.",
+            "Shoulders down.",
+            "Core braced.",
+            "Controlled pace."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "40 ft each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 7,
+          "workout": "Workout B: Upper Body Strength, Rotational Power & Shoulder Control (45-60 min)",
+          "workoutNote": "Build upper body strength, rotational power and shoulder stability for pickleball strokes.",
+          "name": "Incline DB Press (Neutral Grip)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Shoulders down.",
+            "Core tight.",
+            "Full range.",
+            "Controlled tempo."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 8,
+          "workout": "Workout B: Upper Body Strength, Rotational Power & Shoulder Control (45-60 min)",
+          "name": "Single-Arm Cable Row with Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Rotate through torso.",
+            "Squeeze shoulder blade.",
+            "Keep hips square.",
+            "Controlled return."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 9,
+          "workout": "Workout B: Upper Body Strength, Rotational Power & Shoulder Control (45-60 min)",
+          "name": "TRX Push-Up to Shoulder Tap",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep core tight.",
+            "Minimal hip sway.",
+            "Control the tap.",
+            "Stay stable."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 10,
+          "workout": "Workout B: Upper Body Strength, Rotational Power & Shoulder Control (45-60 min)",
+          "name": "Cable Chest Press with Rotation (Anti-Rotation)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Press and resist rotation.",
+            "Ribs down.",
+            "Glutes engaged.",
+            "Control the return."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 11,
+          "workout": "Workout B: Upper Body Strength, Rotational Power & Shoulder Control (45-60 min)",
+          "name": "Face Pull to External Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Shoulders down.",
+            "Squeeze shoulder blades.",
+            "Rotate and pause.",
+            "Control the movement."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 12,
+          "workout": "Workout B: Upper Body Strength, Rotational Power & Shoulder Control (45-60 min)",
+          "name": "Renegade Row (DB)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hips level.",
+            "Keep core tight.",
+            "No trunk rotation.",
+            "Controlled tempo."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 13,
+          "workout": "Workout C: Speed, Agility, Reaction & Full-Body Integration (45-60 min)",
+          "workoutNote": "Combine power, speed and multi-directional movement for real-court performance.",
+          "name": "Lateral Shuffle + Reactive Cone Tap (3-Cone)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Stay low.",
+            "React to visual cue.",
+            "Quick feet.",
+            "Keep shoulders down."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "20 yd each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 14,
+          "workout": "Workout C: Speed, Agility, Reaction & Full-Body Integration (45-60 min)",
+          "name": "Split Step to Sprint + Backpedal (10-15 yd)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Quick transition.",
+            "Explode off split step.",
+            "Control deceleration.",
+            "Knee aligned."
+          ],
+          "dosage": {
+            "sets": "5",
+            "reps": "10 yd each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 15,
+          "workout": "Workout C: Speed, Agility, Reaction & Full-Body Integration (45-60 min)",
+          "name": "Med Ball Rotational Slam (to Side)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Rotate hard.",
+            "Use hips and core.",
+            "Explode through ball.",
+            "Keep shoulders down."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 16,
+          "workout": "Workout C: Speed, Agility, Reaction & Full-Body Integration (45-60 min)",
+          "name": "Lateral Hurdle Hops (Single Leg)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Controlled and quick.",
+            "Stick the landing.",
+            "Knee aligned.",
+            "Build elasticity."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 17,
+          "workout": "Workout C: Speed, Agility, Reaction & Full-Body Integration (45-60 min)",
+          "name": "Crossover Lunge to Cone Reach",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode laterally.",
+            "Reach low and outside.",
+            "Keep knee aligned.",
+            "Stay low and controlled."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 18,
+          "workout": "Workout C: Speed, Agility, Reaction & Full-Body Integration (45-60 min)",
+          "name": "Burpee to Lateral Shuffle (Over Line)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Full body power.",
+            "Quick transition.",
+            "Explode up and move.",
+            "Stay low and controlled."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 19,
+          "workout": "Pre-Workout Warm-Up (8-10 min)",
+          "name": "Ankle Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 20,
+          "workout": "Pre-Workout Warm-Up (8-10 min)",
+          "name": "Knee Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 21,
+          "workout": "Pre-Workout Warm-Up (8-10 min)",
+          "name": "Hip Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 22,
+          "workout": "Pre-Workout Warm-Up (8-10 min)",
+          "name": "Dynamic Lunge",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "5 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 23,
+          "workout": "Pre-Workout Warm-Up (8-10 min)",
+          "name": "Arm Swings",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 24,
+          "workout": "Post-Workout Recovery (5-10 min)",
+          "name": "Light Walking",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2-5 minutes"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 25,
+          "workout": "Post-Workout Recovery (5-10 min)",
+          "name": "Gentle Stretching",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(hips, quads, glutes, shoulders)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 26,
+          "workout": "Post-Workout Recovery (5-10 min)",
+          "name": "Deep Breathing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2 minutes"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 27,
+          "workout": "Post-Workout Recovery (5-10 min)",
+          "name": "Optional: Ice Bath or Sauna",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(as available)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ]
+    },
+    {
+      "key": "4",
+      "label": "Week 4",
+      "driveId": "1CT-_d0mXyiFOPR1k8sqxvOkdY0qsE8V6",
+      "focus": "",
+      "notes": "ADVANCED GOALS WEEK 4:\n- Maximize power and elastic strength\n- Improve deceleration and change of direction\n- Increase retational force and stability\n- Build single-leg strength and reactive control\n- Enhance multi-directional movement efficiency\n- Maintain shoulder and core control under fatigue",
+      "exercises": [
+        {
+          "n": 1,
+          "workout": "Workout A: Lower Body Power, Eccentric Control & Unilateral (50-60 min)",
+          "workoutNote": "Build maximal lower body strength, braking control and single-leg resilience.",
+          "name": "Trap Bar Deadlift (Heavy)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode up.",
+            "Hips back.",
+            "Neutral spine.",
+            "Full lockout. Control on the way down."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "workout": "Workout A: Lower Body Power, Eccentric Control & Unilateral (50-60 min)",
+          "name": "Lateral Lunge to Knee Drive (Rotational)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Sit and drive.",
+            "Control deceleration.",
+            "Knee aligned.",
+            "Hips square."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "workout": "Workout A: Lower Body Power, Eccentric Control & Unilateral (50-60 min)",
+          "name": "Bulgarian Split Squat (Heavy)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Tall torso.",
+            "Front knee over toes.",
+            "Hips level.",
+            "Full range. Control."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "workout": "Workout A: Lower Body Power, Eccentric Control & Unilateral (50-60 min)",
+          "name": "Step-Up to Balance + Press (Anti-Rotation)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive through heel.",
+            "Balance at top.",
+            "Keep hips level.",
+            "Resist rotation."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "workout": "Workout A: Lower Body Power, Eccentric Control & Unilateral (50-60 min)",
+          "name": "Single-Leg RDL (Heavy DB)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hinge at hip.",
+            "Keep spine flat.",
+            "Glutes and hamstrings.",
+            "Control both directions."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 6,
+          "workout": "Workout A: Lower Body Power, Eccentric Control & Unilateral (50-60 min)",
+          "name": "Lateral Bound to Stick",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode laterally.",
+            "Stick and stabilize.",
+            "Soft landing.",
+            "Knee aligned."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 7,
+          "workout": "Workout B: Upper Body Power, Rotation & Scapular Control (50-60 min)",
+          "workoutNote": "Build upper body power, rotational strength and shoulder stability for aggressive play.",
+          "name": "Incline Dumbbell Press (Neutral Grip)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Shoulders down.",
+            "Core tight.",
+            "Full range.",
+            "Explosive up, controlled down."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 8,
+          "workout": "Workout B: Upper Body Power, Rotation & Scapular Control (50-60 min)",
+          "name": "Single-Arm Cable Row with Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Rotate through torso.",
+            "Squeeze shoulder blade.",
+            "Keep hips stable.",
+            "Control the return."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 9,
+          "workout": "Workout B: Upper Body Power, Rotation & Scapular Control (50-60 min)",
+          "name": "Elevated Push-Up to Shoulder Tap",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep core tight.",
+            "Minimal hip sway.",
+            "Control the tap.",
+            "Stay stable."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 10,
+          "workout": "Workout B: Upper Body Power, Rotation & Scapular Control (50-60 min)",
+          "name": "Landmine Press (Rotational)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive and rotate.",
+            "Ribs down.",
+            "Glutes engaged.",
+            "Controlled movement."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 11,
+          "workout": "Workout B: Upper Body Power, Rotation & Scapular Control (50-60 min)",
+          "name": "TRX Y-T-W (Sequence)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Shoulders down.",
+            "Squeeze mid-back.",
+            "Pause and control.",
+            "Quality reps."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each position",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 12,
+          "workout": "Workout B: Upper Body Power, Rotation & Scapular Control (50-60 min)",
+          "name": "Med Ball Chest Pass + Rotational Slam (to Side)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode through core.",
+            "Rotate hard.",
+            "Use hips and legs.",
+            "Stay balanced."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 13,
+          "workout": "Workout C: Speed, Agility, Reaction & Full-Body Integration (50-60 min)",
+          "workoutNote": "High-intensity, multi-directional training to improve court quickness and endurance.",
+          "name": "Lateral Shuffle + Reactive Ball Tap (3-Cone)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Stay low.",
+            "React to visual cue.",
+            "Quick feet.",
+            "Keep shoulders down."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "20 yd each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 14,
+          "workout": "Workout C: Speed, Agility, Reaction & Full-Body Integration (50-60 min)",
+          "name": "Split Step to Sprint + Backpedal + Lateral Shuffle",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Quick transition.",
+            "Explode off split step.",
+            "Control deceleration.",
+            "Stay low and balanced."
+          ],
+          "dosage": {
+            "sets": "5",
+            "reps": "15 yd each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 15,
+          "workout": "Workout C: Speed, Agility, Reaction & Full-Body Integration (50-60 min)",
+          "name": "Med Ball Rotational Throw (to Side)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Rotate through hips.",
+            "Explode through ball.",
+            "Keep core tight.",
+            "Stay balanced."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 16,
+          "workout": "Workout C: Speed, Agility, Reaction & Full-Body Integration (50-60 min)",
+          "name": "Lateral Hurdle Hops (Single Leg)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Fast and controlled.",
+            "Stick the landing.",
+            "Knee aligned.",
+            "Build elasticity."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 17,
+          "workout": "Workout C: Speed, Agility, Reaction & Full-Body Integration (50-60 min)",
+          "name": "Crossover Lunge to Cone + Return",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode laterally.",
+            "Reach low and outside.",
+            "Keep knee aligned.",
+            "Stay low and controlled."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 18,
+          "workout": "Workout C: Speed, Agility, Reaction & Full-Body Integration (50-60 min)",
+          "name": "Burpee to Lateral Shuffle to Vertical Jump",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Full body power.",
+            "Quick transition.",
+            "Explode up.",
+            "Land soft and controlled."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 19,
+          "workout": "Pre-Workout Warm-Up (8-10 min)",
+          "name": "Ankle Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 20,
+          "workout": "Pre-Workout Warm-Up (8-10 min)",
+          "name": "Knee Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 21,
+          "workout": "Pre-Workout Warm-Up (8-10 min)",
+          "name": "Hip Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 22,
+          "workout": "Pre-Workout Warm-Up (8-10 min)",
+          "name": "Dynamic Lunge",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "5 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 23,
+          "workout": "Pre-Workout Warm-Up (8-10 min)",
+          "name": "Arm Swings",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 24,
+          "workout": "Post-Workout Recovery (5-10 min)",
+          "name": "Light Walking",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2-5 minutes"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 25,
+          "workout": "Post-Workout Recovery (5-10 min)",
+          "name": "Gentle Stretching",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(hips, quads, glutes, shoulders)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 26,
+          "workout": "Post-Workout Recovery (5-10 min)",
+          "name": "Deep Breathing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2 minutes"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 27,
+          "workout": "Post-Workout Recovery (5-10 min)",
+          "name": "Optional: Ice Bath or Sauna",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(as available)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ]
+    },
+    {
+      "key": "6",
+      "label": "Week 6",
+      "driveId": "118MAdKYcLmaNITAHCQW39uJM_iFkdz2q",
+      "focus": "",
+      "notes": "ADVANCED GOALS WEEK 6:\n- Peak power, speed and multi-directional control\n- Integrate all movement patterns under fatigue\n- Maintain shoulder and core control at high intensity\n- Efficient energy transfer and deceleration\n- Game-ready movement confidence\n- Transition to maintenance or next training cycle",
+      "exercises": [
+        {
+          "n": 1,
+          "workout": "Workout A: Lower Body Power, Full-Range Strength & Deceleration (50-60 min)",
+          "workoutNote": "Maximize lower body power, change of direction and landing control for peak performance.",
+          "name": "Lateral Skater Hop to Stick",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode laterally.",
+            "Stick and stabilize.",
+            "Knee aligned.",
+            "Control deceleration."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "workout": "Workout A: Lower Body Power, Full-Range Strength & Deceleration (50-60 min)",
+          "name": "Jump Lunge with Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode up.",
+            "Rotate over front hip.",
+            "Soft landing.",
+            "Hips square."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "workout": "Workout A: Lower Body Power, Full-Range Strength & Deceleration (50-60 min)",
+          "name": "Bulgarian Split Squat (Heavy)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Tall torso.",
+            "Front knee over toes.",
+            "Glutes engaged.",
+            "Full range."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "workout": "Workout A: Lower Body Power, Full-Range Strength & Deceleration (50-60 min)",
+          "name": "Single-Leg RDL to Row (Heavy DB)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hinge at hip.",
+            "Keep spine flat.",
+            "Row with control.",
+            "Glutes and hamstrings."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "workout": "Workout A: Lower Body Power, Full-Range Strength & Deceleration (50-60 min)",
+          "name": "Box Jump to Stick",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode up.",
+            "Soft, quiet landing.",
+            "Stick 2-3 seconds.",
+            "Knees aligned."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 6,
+          "workout": "Workout A: Lower Body Power, Full-Range Strength & Deceleration (50-60 min)",
+          "name": "Trap Bar Farmer Carry",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Tall posture.",
+            "Shoulders down.",
+            "Core braced.",
+            "Controlled pace."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "40 ft each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 7,
+          "workout": "Workout B: Upper Body Power, Rotation & Scapular Control (50-60 min)",
+          "workoutNote": "Build upper body power, rotational strength and shoulder stability for high-level play.",
+          "name": "Incline DB Press (Neutral Grip)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Shoulders down.",
+            "Core tight.",
+            "Full range.",
+            "Explosive up, controlled down."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 8,
+          "workout": "Workout B: Upper Body Power, Rotation & Scapular Control (50-60 min)",
+          "name": "Single-Arm Cable Row with Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Rotate through torso.",
+            "Squeeze shoulder blade.",
+            "Keep hips stable.",
+            "Control the return."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 9,
+          "workout": "Workout B: Upper Body Power, Rotation & Scapular Control (50-60 min)",
+          "name": "Push-Up to Shoulder Tap (Elevated if Needed)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep core tight.",
+            "Minimal hip sway.",
+            "Control the tap.",
+            "Stay stable."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 10,
+          "workout": "Workout B: Upper Body Power, Rotation & Scapular Control (50-60 min)",
+          "name": "Landmine Press with Step & Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive and rotate.",
+            "Ribs down.",
+            "Glutes engaged.",
+            "Controlled movement."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 11,
+          "workout": "Workout B: Upper Body Power, Rotation & Scapular Control (50-60 min)",
+          "name": "TRX High Row to External Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Squeeze mid-back.",
+            "Rotate and pause.",
+            "Keep shoulders down.",
+            "Quality reps."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 12,
+          "workout": "Workout B: Upper Body Power, Rotation & Scapular Control (50-60 min)",
+          "name": "Med Ball Rotational Throw (to Side)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode through core.",
+            "Rotate hard.",
+            "Use hips and legs.",
+            "Stay balanced."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 13,
+          "workout": "Workout C: Speed, Agility, Reaction & Full-Body Integration (50-60 min)",
+          "workoutNote": "Combine strength, speed and multi-directional movement for game-ready performance.",
+          "name": "Lateral Shuffle + Reactive Cone Tap (3-Cone)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Stay low.",
+            "React to visual cue.",
+            "Quick feet.",
+            "Keep shoulders down."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "20 yd each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 14,
+          "workout": "Workout C: Speed, Agility, Reaction & Full-Body Integration (50-60 min)",
+          "name": "Split Step to Sprint + Backpedal + Lateral Shuffle",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Quick transition.",
+            "Explode off split step.",
+            "Controlled stop.",
+            "Stay low and balanced."
+          ],
+          "dosage": {
+            "sets": "5",
+            "reps": "15 yd each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 15,
+          "workout": "Workout C: Speed, Agility, Reaction & Full-Body Integration (50-60 min)",
+          "name": "Med Ball Rotational Slam (to Side)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Rotate hard.",
+            "Use hips and core.",
+            "Explode through ball.",
+            "Keep shoulders down."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 16,
+          "workout": "Workout C: Speed, Agility, Reaction & Full-Body Integration (50-60 min)",
+          "name": "Lateral Hurdle Hops (Single Leg)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Fast and controlled.",
+            "Stick the landing.",
+            "Knee aligned.",
+            "Build elasticity."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 17,
+          "workout": "Workout C: Speed, Agility, Reaction & Full-Body Integration (50-60 min)",
+          "name": "Crossover Lunge to Cone Reach",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode laterally.",
+            "Reach low and outside.",
+            "Keep knee aligned.",
+            "Stay low and controlled."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 18,
+          "workout": "Workout C: Speed, Agility, Reaction & Full-Body Integration (50-60 min)",
+          "name": "Burpee to Lateral Shuffle to Vertical Jump",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Full body power.",
+            "Quick transition.",
+            "Explode up.",
+            "Land soft and controlled."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 19,
+          "workout": "Pre-Workout Warm-Up (8-10 min)",
+          "name": "Ankle Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 20,
+          "workout": "Pre-Workout Warm-Up (8-10 min)",
+          "name": "Knee Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 21,
+          "workout": "Pre-Workout Warm-Up (8-10 min)",
+          "name": "Hip Circles",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 22,
+          "workout": "Pre-Workout Warm-Up (8-10 min)",
+          "name": "Dynamic Lunge",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "5 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 23,
+          "workout": "Pre-Workout Warm-Up (8-10 min)",
+          "name": "Arm Swings",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 24,
+          "workout": "Post-Workout Recovery (5-10 min)",
+          "name": "Light Walking",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2-5 minutes"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 25,
+          "workout": "Post-Workout Recovery (5-10 min)",
+          "name": "Gentle Stretching",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(hips, quads, glutes, shoulders)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 26,
+          "workout": "Post-Workout Recovery (5-10 min)",
+          "name": "Deep Breathing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Time": "2 minutes"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 27,
+          "workout": "Post-Workout Recovery (5-10 min)",
+          "name": "Optional: Ice Bath or Sauna",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "(as available)"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ]
+    }
+  ],
+  "uncertain": [
+    "Week 5: no Week 5 sheet exists in the Drive; weeks 1, 2, 3, 4 and 6 only. Nothing has been invented for week 5.",
+    "Week 3 ADVANCED GOALS item 4 is garbled on the sheet itself (image-generation artefact): it reads roughly 'Enlidncecula-dirdctional movement & agility' (probably meant 'Enhance multi-directional movement & agility', cf. week 4). Recorded as printed; exact garbled letters uncertain.",
+    "Week 4 ADVANCED GOALS item 3 reads 'Increase retational force and stability' (sheet typo for 'rotational'); kept as printed.",
+    "Week 2 KEY CUES last item reads 'Move pain-freet' (stray 't', sheet typo); recorded in week 2 notes, top-level principles use 'Move pain-free' as on weeks 1, 3, 4 and 6.",
+    "Exercise names, workout headings and the time box are printed in ALL CAPS on the sheets (some with a lowercase 'to'/'To', e.g. 'LATERAL SKATER BOUND to STICK', 'REVERSE LUNGE To KNEE DRIVE'); recorded in title case with 'to' lowercase, matching the pickleball-intermediate file convention.",
+    "Week 1 Workout C row 6 'Burpee to Lateral Shuffle' is dosed '3 × 8 each side' on the sheet; recorded as printed.",
+    "Time boxes printed as '45–60 MINUTES' / '50–60 MINUTES' with an en dash; recorded as '(45-60 min)' / '(50-60 min)' with an ASCII hyphen, as for warm-up '(8–10 MIN)' and recovery '(5–10 MIN)'. Other ranges ('Stick 2–3 seconds', '2–5 minutes', '(10–15 yd)') likewise converted to ASCII hyphens."
+  ],
+  "sourceNotes": "Read 5 sheets (weeks 1, 2, 3, 4, 6), each 1536x1024 from Drive thumbnails at w2400; there is no Week 5 sheet in the Drive. Every sheet has the same layout: header (MD FIT Performance & Rehab, 'Move better. Play longer.', 'PICKLEBALL ADVANCED PROTOCOL', '6-WEEK PROGRAM | WEEK n', tagline 'POWER. SPEED. REACTION. RESILIENCE. NEXT-LEVEL PERFORMANCE.'), an 'ADVANCED GOALS WEEK n' box (different every week; each week's goals are in that week's notes, top-level 'goal' = week 1 goals), Workouts A/B/C with 6 rows each (time box 45-60 MINUTES in weeks 1-3, 50-60 MINUTES in weeks 4 and 6), PRE-WORKOUT WARM-UP (8-10 MIN) with 5 items, KEY CUES (EVERY WORKOUT) box (= top-level principles), and POST-WORKOUT RECOVERY (5-10 MIN) with 4 items. Warm-up, key cues and recovery are identical on all five sheets except the week 2 'pain-freet' typo. No weekly focus line, no 6-week progression strip and no footer text are printed, so week 'focus' and progression fields are empty; the sheets do not state how many workouts per week. Workout headings, time boxes and descriptions change from week to week and are recorded per exercise."
+}

@@ -1,0 +1,2410 @@
+{
+  "id": "golf-intermediate",
+  "title": "6-WEEK INTERMEDIATE GOLF PROGRAM",
+  "tagline": "MOBILITY. POWER. CONTROL. A MORE EFFICIENT SWING.",
+  "goal": "",
+  "principles": [],
+  "dailyBasics": [],
+  "progression": {
+    "overview": [
+      {
+        "week": "1",
+        "title": "Rotational Strength Foundations",
+        "focus": "Build controlled rotational loading and hip-torso separation."
+      },
+      {
+        "week": "2",
+        "title": "Unilateral Strength & Stability",
+        "focus": "Improve trail-leg loading and lead-leg control."
+      },
+      {
+        "week": "3",
+        "title": "Rotational Power Development",
+        "focus": "Convert strength into faster rotational movement."
+      },
+      {
+        "week": "4",
+        "title": "Ground Force & Athletic Movement",
+        "focus": "Develop coordinated force production."
+      },
+      {
+        "week": "5",
+        "title": "Speed & Power Integration",
+        "focus": "Combine strength, speed and sequencing."
+      },
+      {
+        "week": "6",
+        "title": "Performance & Repeatability",
+        "focus": "Express power with control and assess progress."
+      }
+    ],
+    "guidelines": [],
+    "expect": [],
+    "remember": "",
+    "callouts": [
+      "MOVE BETTER. PLAY BETTER."
+    ],
+    "footer": "INTERMEDIATE GOLF PROGRAM • 3 WORKOUTS PER WEEK • 30-35 MINUTES EACH • MOVE BETTER. PLAY BETTER."
+  },
+  "weeks": [
+    {
+      "key": "1",
+      "label": "Week 1",
+      "driveId": "1L68xrm3SLrD9EUBODCouwx4qG2UQcfmA",
+      "focus": "ROTATIONAL STRENGTH FOUNDATIONS: Establish controlled rotational loading, unilateral strength, and hip-torso separation.",
+      "notes": "WEEK 1\nROTATIONAL STRENGTH FOUNDATIONS\nEstablish controlled rotational loading, unilateral strength, and hip-torso separation.\n\nWORKOUT A FOCUS:\n- Hip hinge and lower-body strength\n- Rotational control and power foundation\n- Connect lower body to upper body\n- Build strength without losing mobility\n\nWORKOUT B FOCUS:\n- Single-leg strength and balance\n- Core stability and anti-rotation control\n- Dynamic stability for the golf swing\n- Maintain posture under load\n\nWORKOUT C FOCUS:\n- Rotational power and sequencing\n- Explosive lower-body movement\n- Connect strength to swing mechanics\n- Improve speed with control\n\nINTERMEDIATE GOLF PROGRAM\nWEEK 1 OF 6\n3 WORKOUTS PER WEEK\n30-35 MINUTES EACH\nMOVE BETTER. PLAY BETTER.",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "Glute RDL",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hinge at the hips, flat back, feel the glutes and hamstrings."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: HIP LOADING & ROTATIONAL STRENGTH (30-35 MINUTES)",
+          "workoutNote": "Build lower-body strength, rotational control and foundation power for the golf swing."
+        },
+        {
+          "n": 2,
+          "name": "Golfer Switch Row",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Rotate through the hips, keep arms straight on the pull, shoulders down."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: HIP LOADING & ROTATIONAL STRENGTH (30-35 MINUTES)"
+        },
+        {
+          "n": 3,
+          "name": "Light Cable Swing (High to Low)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Initiate with the hips, keep lower body stable, finish with rotation."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: HIP LOADING & ROTATIONAL STRENGTH (30-35 MINUTES)"
+        },
+        {
+          "n": 4,
+          "name": "Assisted Cossack Squat",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep foot flat, move through a comfortable range, maintain upright torso."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: HIP LOADING & ROTATIONAL STRENGTH (30-35 MINUTES)"
+        },
+        {
+          "n": 5,
+          "name": "Lateral Ball Throw (Rotational)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Load trail side, rotate and throw into the wall with the hips."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: HIP LOADING & ROTATIONAL STRENGTH (30-35 MINUTES)"
+        },
+        {
+          "n": 6,
+          "name": "Controlled Three-Quarter Swing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Smooth tempo, maintain posture, finish with balanced follow-through."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: HIP LOADING & ROTATIONAL STRENGTH (30-35 MINUTES)"
+        },
+        {
+          "n": 7,
+          "name": "Assisted Pistol Squat",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep knee aligned over toes, control the movement."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: UNILATERAL STRENGTH & CORE STABILITY (30-35 MINUTES)",
+          "workoutNote": "Improve single-leg strength, stability and core control to support a more powerful and consistent swing."
+        },
+        {
+          "n": 8,
+          "name": "Single-Leg Glute Bridge",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep hips level, squeeze the glute, maintain core engagement."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: UNILATERAL STRENGTH & CORE STABILITY (30-35 MINUTES)"
+        },
+        {
+          "n": 9,
+          "name": "TRX Squat",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Sit hips back, keep knees aligned, maintain a tall torso."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: UNILATERAL STRENGTH & CORE STABILITY (30-35 MINUTES)"
+        },
+        {
+          "n": 10,
+          "name": "Split Squat Rotation Press",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep lower body stable, rotate through the torso, resist unwanted movement."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: UNILATERAL STRENGTH & CORE STABILITY (30-35 MINUTES)"
+        },
+        {
+          "n": 11,
+          "name": "Side Crab Walk",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep hips low, maintain tension in the glutes, toes forward."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "20 ft each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: UNILATERAL STRENGTH & CORE STABILITY (30-35 MINUTES)"
+        },
+        {
+          "n": 12,
+          "name": "Pallof Press (Anti-Rotation)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep a tall posture, resist rotation, maintain a stable core."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: UNILATERAL STRENGTH & CORE STABILITY (30-35 MINUTES)"
+        },
+        {
+          "n": 13,
+          "name": "Medicine Ball Rotational Scoop",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Load into the trail leg, rotate through the hips, keep arms long."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: POWER & ROTATIONAL COORDINATION (30-35 MINUTES)",
+          "workoutNote": "Introduce dynamic movements to improve sequencing, speed and rotational power."
+        },
+        {
+          "n": 14,
+          "name": "Jump Switch Lunge",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Soft landing, maintain posture, power through the glutes."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: POWER & ROTATIONAL COORDINATION (30-35 MINUTES)"
+        },
+        {
+          "n": 15,
+          "name": "Overhead Pole Squat",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep arms overhead, maintain upright torso, squat through a comfortable range."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: POWER & ROTATIONAL COORDINATION (30-35 MINUTES)"
+        },
+        {
+          "n": 16,
+          "name": "Lateral Lunge to Knee Drive",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Push off the lead leg, control the knee drive, keep balance."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: POWER & ROTATIONAL COORDINATION (30-35 MINUTES)"
+        },
+        {
+          "n": 17,
+          "name": "Step-Through Golf Swing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Shift weight, rotate through the hips, maintain posture and balance."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: POWER & ROTATIONAL COORDINATION (30-35 MINUTES)"
+        },
+        {
+          "n": 18,
+          "name": "Golfer Snatch (Moderate Weight)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explosive hip rotation, keep the weight close, finish tall with a balanced position."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: POWER & ROTATIONAL COORDINATION (30-35 MINUTES)"
+        }
+      ],
+      "editorNotes": "Labels removed: \"Header:\", \"Footer:\" (text kept in notes; \"/\" and \"|\" separators turned into line breaks)."
+    },
+    {
+      "key": "2",
+      "label": "Week 2",
+      "driveId": "1FK_puUUprlKSeRNVvoTarG-EMQ-PrkV8",
+      "focus": "UNILATERAL STRENGTH & STABILITY: Improve trail-leg loading, lead-leg control, and the ability to resist unwanted rotation.",
+      "notes": "WEEK 2\nUNILATERAL STRENGTH & STABILITY\nImprove trail-leg loading, lead-leg control, and the ability to resist unwanted rotation.\n\nWORKOUT A FOCUS:\n- Trail-leg strength and stability\n- Hip hinge and rotational control\n- Anti-rotation core stability\n- Connect lower-body strength to swing mechanics\n\nWORKOUT B FOCUS:\n- Lead-leg stability and balance\n- Lateral movement and hip control\n- Dynamic rotational strength\n- Transfer pressure from trail to lead leg\n\nWORKOUT C FOCUS:\n- Explosive rotational power\n- Dynamic lower-body movement\n- Sequencing and speed development\n- Translate strength into golf-specific movement\n\nINTERMEDIATE GOLF PROGRAM\nWEEK 2 OF 6\n3 WORKOUTS PER WEEK\n30-35 MINUTES EACH\nMOVE BETTER. PLAY BETTER.",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "Bulgarian Split Squat",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep torso tall, drive through the mid-foot, control descent."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: TRAIL-LEG LOADING & ROTATIONAL CONTROL (30-35 MINUTES)",
+          "workoutNote": "Develop a stronger trail leg, improve hip--torso separation and controlled rotation."
+        },
+        {
+          "n": 2,
+          "name": "Single-Leg RDL (DB or KB)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hinge at the hips, keep a flat back, maintain balance."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: TRAIL-LEG LOADING & ROTATIONAL CONTROL (30-35 MINUTES)"
+        },
+        {
+          "n": 3,
+          "name": "Pallof Press (Anti-Rotation)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep a tall posture, resist rotation, maintain core tension."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: TRAIL-LEG LOADING & ROTATIONAL CONTROL (30-35 MINUTES)"
+        },
+        {
+          "n": 4,
+          "name": "Golfer Switch Row",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Rotate through the hips, keep arms straight on the pull, shoulders down."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: TRAIL-LEG LOADING & ROTATIONAL CONTROL (30-35 MINUTES)"
+        },
+        {
+          "n": 5,
+          "name": "Step-Up with Knee Drive",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive through the heel, control the knee, finish tall and balanced."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: TRAIL-LEG LOADING & ROTATIONAL CONTROL (30-35 MINUTES)"
+        },
+        {
+          "n": 6,
+          "name": "Light Cable Swing (High to Low)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Initiate with the hips, keep lower body stable, finish with rotation."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: TRAIL-LEG LOADING & ROTATIONAL CONTROL (30-35 MINUTES)"
+        },
+        {
+          "n": 7,
+          "name": "Cossack Squat",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep foot flat, sit into the hip, maintain upright torso."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: LEAD-LEG STABILITY & DYNAMIC CONTROL (30-35 MINUTES)",
+          "workoutNote": "Strengthen the lead leg, improve lateral stability, and build control through dynamic movement."
+        },
+        {
+          "n": 8,
+          "name": "Assisted Pistol Squat",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep knee aligned, control the descent, use support as needed."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: LEAD-LEG STABILITY & DYNAMIC CONTROL (30-35 MINUTES)"
+        },
+        {
+          "n": 9,
+          "name": "Single-Leg Glute Bridge",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep hips level, squeeze the glute, maintain core engagement."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: LEAD-LEG STABILITY & DYNAMIC CONTROL (30-35 MINUTES)"
+        },
+        {
+          "n": 10,
+          "name": "Side Crab Walk (Band)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep hips low, maintain tension in the glutes, toes forward."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "20 ft each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: LEAD-LEG STABILITY & DYNAMIC CONTROL (30-35 MINUTES)"
+        },
+        {
+          "n": 11,
+          "name": "Rotational Medicine Ball Scoop (Trail Side)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Load into the trail leg, rotate and throw into the ground or wall."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: LEAD-LEG STABILITY & DYNAMIC CONTROL (30-35 MINUTES)"
+        },
+        {
+          "n": 12,
+          "name": "Controlled Three-Quarter Swing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Smooth tempo, maintain posture, finish with a balanced follow-through."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: LEAD-LEG STABILITY & DYNAMIC CONTROL (30-35 MINUTES)"
+        },
+        {
+          "n": 13,
+          "name": "Lateral Ball Throw (Explosive)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Load into the trail leg, rotate forcefully through the hips, keep arms long."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: POWER & SEQUENCING DEVELOPMENT (30-35 MINUTES)",
+          "workoutNote": "Introduce more dynamic movements to improve speed, sequencing, and rotational power."
+        },
+        {
+          "n": 14,
+          "name": "Jump Switch Lunge",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Soft landing, maintain posture, power through the glutes."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: POWER & SEQUENCING DEVELOPMENT (30-35 MINUTES)"
+        },
+        {
+          "n": 15,
+          "name": "Lateral Lunge to Knee Drive",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Sit into the hip, push through the lead leg, drive the knee up with control."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: POWER & SEQUENCING DEVELOPMENT (30-35 MINUTES)"
+        },
+        {
+          "n": 16,
+          "name": "Overhead Pole Squat",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep arms overhead, torso upright, sit through a full, comfortable range."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: POWER & SEQUENCING DEVELOPMENT (30-35 MINUTES)"
+        },
+        {
+          "n": 17,
+          "name": "Golfer Snatch (Light to Moderate)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explosive hip rotation, keep the weight close, finish tall with control."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: POWER & SEQUENCING DEVELOPMENT (30-35 MINUTES)"
+        },
+        {
+          "n": 18,
+          "name": "Step-Through Golf Swing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Shift weight, rotate through the hips, maintain posture and balance."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: POWER & SEQUENCING DEVELOPMENT (30-35 MINUTES)"
+        }
+      ],
+      "editorNotes": "Labels removed: \"Header:\", \"Footer:\" (text kept in notes; \"/\" and \"|\" separators turned into line breaks).\nProgression strip on this sheet shows week titles only (no descriptions); week 2 highlighted."
+    },
+    {
+      "key": "3",
+      "label": "Week 3",
+      "driveId": "1osycwSKLt-U2owJFPXrc_-N9JPyMME6w",
+      "focus": "ROTATIONAL POWER DEVELOPMENT: Convert strength into faster rotational movement without losing control.",
+      "notes": "WEEK 3\nROTATIONAL POWER DEVELOPMENT\nConvert strength into faster rotational movement without losing control.\n\nWORKOUT A FOCUS:\n- Explosive rotational power\n- Hip hinge and ground force production\n- Dynamic balance and control\n- Connect lower-body power to swing mechanics\n\nWORKOUT B FOCUS:\n- Single-leg strength and stability\n- Anti-rotation core control\n- Glute and hip engagement\n- Maintain posture under load\n\nWORKOUT C FOCUS:\n- Rotational power and speed development\n- Dynamic lower-body movement\n- Sequencing and coordination\n- Transfer strength to a faster, controlled swing\n\nINTERMEDIATE GOLF PROGRAM\nWEEK 3 OF 6\n3 WORKOUTS PER WEEK\n30-35 MINUTES EACH\nMOVE BETTER. PLAY BETTER.",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "Medicine Ball Rotational Throw (Into Wall)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Load trail leg, rotate explosively, throw from the hips. Finish balanced."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: EXPLOSIVE ROTATION & LOWER-BODY POWER (30-35 MINUTES)",
+          "workoutNote": "Develop rotational speed, ground force, and hip power for a more dynamic swing."
+        },
+        {
+          "n": 2,
+          "name": "Single-Leg RDL (DB or KB)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hinge at the hips, keep a flat back, control the descent."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: EXPLOSIVE ROTATION & LOWER-BODY POWER (30-35 MINUTES)"
+        },
+        {
+          "n": 3,
+          "name": "Cable Swing (High to Low)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Initiate with the hips, keep lower body stable, finish with rotation."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: EXPLOSIVE ROTATION & LOWER-BODY POWER (30-35 MINUTES)"
+        },
+        {
+          "n": 4,
+          "name": "Jump Switch Lunge",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Soft landing, maintain posture, power through the glutes."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: EXPLOSIVE ROTATION & LOWER-BODY POWER (30-35 MINUTES)"
+        },
+        {
+          "n": 5,
+          "name": "Golfer Switch Row",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Rotate through the hips, keep arms straight on the pull, shoulders down."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: EXPLOSIVE ROTATION & LOWER-BODY POWER (30-35 MINUTES)"
+        },
+        {
+          "n": 6,
+          "name": "Lateral Lunge to Knee Drive",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Sit into the hip, drive through the lead leg, maintain balance and control."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: EXPLOSIVE ROTATION & LOWER-BODY POWER (30-35 MINUTES)"
+        },
+        {
+          "n": 7,
+          "name": "Rear-Foot Elevated Split Squat",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep torso tall, knee aligned, control the descent, drive through the front leg."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: UNILATERAL STRENGTH & ROTATIONAL CONTROL (30-35 MINUTES)",
+          "workoutNote": "Improve single-leg strength, stability, and the ability to resist unwanted rotation."
+        },
+        {
+          "n": 8,
+          "name": "Lateral Step-Down (6-12 in)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Control the descent, keep knee aligned, maintain pelvic stability."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: UNILATERAL STRENGTH & ROTATIONAL CONTROL (30-35 MINUTES)"
+        },
+        {
+          "n": 9,
+          "name": "Single-Leg Glute Bridge (Elevated)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep hips level, squeeze the glute, maintain core engagement."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: UNILATERAL STRENGTH & ROTATIONAL CONTROL (30-35 MINUTES)"
+        },
+        {
+          "n": 10,
+          "name": "Pallof Press (Anti-Rotation)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep a tall posture, resist rotation, maintain a stable core."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: UNILATERAL STRENGTH & ROTATIONAL CONTROL (30-35 MINUTES)"
+        },
+        {
+          "n": 11,
+          "name": "Side Plank with Hip Abduction",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep body aligned, engage the glute, maintain a stable torso."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: UNILATERAL STRENGTH & ROTATIONAL CONTROL (30-35 MINUTES)"
+        },
+        {
+          "n": 12,
+          "name": "TRX Row with Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive through the elbow, rotate the torso, keep shoulders down."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: UNILATERAL STRENGTH & ROTATIONAL CONTROL (30-35 MINUTES)"
+        },
+        {
+          "n": 13,
+          "name": "Lateral Ball Scoop Throw (Rotational)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Load trail side, scoop and rotate through the hips, throw low and across."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: POWER SEQUENCING & SWING INTEGRATION (30-35 MINUTES)",
+          "workoutNote": "Combine strength, coordination, and dynamic movement into golf-specific patterns."
+        },
+        {
+          "n": 14,
+          "name": "Step-Through Golf Swing (Medium Speed)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Shift weight, rotate through the hips, maintain posture and balance."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: POWER SEQUENCING & SWING INTEGRATION (30-35 MINUTES)"
+        },
+        {
+          "n": 15,
+          "name": "Rotational Landmine Press",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Push and rotate through the torso, keep a stable base, finish tall."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: POWER SEQUENCING & SWING INTEGRATION (30-35 MINUTES)"
+        },
+        {
+          "n": 16,
+          "name": "Overhead Pole Squat with Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep arms overhead, squat through a comfortable range, rotate at the top."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: POWER SEQUENCING & SWING INTEGRATION (30-35 MINUTES)"
+        },
+        {
+          "n": 17,
+          "name": "Golfer Snatch (Light to Moderate)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explosive hip drive, keep weight close, finish tall with a balanced position."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: POWER SEQUENCING & SWING INTEGRATION (30-35 MINUTES)"
+        },
+        {
+          "n": 18,
+          "name": "Controlled Three-Quarter Swing (Speed)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Smooth tempo, maintain posture, rotate through the torso, balanced follow-through."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: POWER SEQUENCING & SWING INTEGRATION (30-35 MINUTES)"
+        }
+      ],
+      "editorNotes": "Labels removed: \"Header:\", \"Footer:\" (text kept in notes; \"/\" and \"|\" separators turned into line breaks).\nProgression strip on this sheet shows week titles only (no descriptions); week 3 highlighted."
+    },
+    {
+      "key": "4",
+      "label": "Week 4",
+      "driveId": "1Rk_cuUJ8CkGEgMipeGaQlZUKcS9qbzzr",
+      "focus": "GROUND FORCE & ATHLETIC MOVEMENT: Develop coordinated force production through the feet, hips and torso.",
+      "notes": "WEEK 4\nGROUND FORCE & ATHLETIC MOVEMENT\nDevelop coordinated force production through the feet, hips and torso.\n\nWORKOUT A FOCUS:\n- Explosive lower-body power\n- Lateral strength and stability\n- Hip drive and ground force production\n- Dynamic control and balance\n\nWORKOUT B FOCUS:\n- Rotational strength under load\n- Core stability and anti-rotation control\n- Single-leg balance and hip control\n- Connect lower and upper body strength\n\nWORKOUT C FOCUS:\n- Explosive rotational power\n- Dynamic full-body movement\n- Speed, sequencing and coordination\n- Transfer strength into a golf-specific swing\n\nINTERMEDIATE GOLF PROGRAM\nWEEK 4 OF 6\n3 WORKOUTS PER WEEK\n30-35 MINUTES EACH\nMOVE BETTER. PLAY BETTER.",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "Lateral Bound (Skater Jump)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode off one leg, control the landing, keep hips level and stick the landing."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: LOWER-BODY POWER & DYNAMIC STABILITY (30-35 MINUTES)",
+          "workoutNote": "Build explosive lower-body strength, lateral power and dynamic stability for a stronger, more efficient swing."
+        },
+        {
+          "n": 2,
+          "name": "Trap Bar Deadlift (Explosive)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive through the ground, extend the hips, keep a tall torso, powerful but controlled."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: LOWER-BODY POWER & DYNAMIC STABILITY (30-35 MINUTES)"
+        },
+        {
+          "n": 3,
+          "name": "Bulgarian Split Squat to Knee Drive",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep torso tall, drive through the front leg, control the knee drive at the top."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: LOWER-BODY POWER & DYNAMIC STABILITY (30-35 MINUTES)"
+        },
+        {
+          "n": 4,
+          "name": "Lateral Lunge with Rotational Reach",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Sit into the hip, keep foot flat, rotate through the torso, maintain balance."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: LOWER-BODY POWER & DYNAMIC STABILITY (30-35 MINUTES)"
+        },
+        {
+          "n": 5,
+          "name": "Cable Woodchop (High to Low)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Initiate with the hips, keep arms long, finish low and across the body."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: LOWER-BODY POWER & DYNAMIC STABILITY (30-35 MINUTES)"
+        },
+        {
+          "n": 6,
+          "name": "Step-Up to Hip Drive",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive through the lead leg, control the descent, stand tall with glute engagement."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: LOWER-BODY POWER & DYNAMIC STABILITY (30-35 MINUTES)"
+        },
+        {
+          "n": 7,
+          "name": "Single-Leg RDL with Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hinge at the hip, keep hips level, rotate through the torso, maintain balance."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: ROTATIONAL STRENGTH & ANTI-ROTATION (30-35 MINUTES)",
+          "workoutNote": "Increase rotational strength under load while improving core stability and control."
+        },
+        {
+          "n": 8,
+          "name": "Half-Kneeling Landmine Press with Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive through the hip, press and rotate, finish tall, keep ribs down."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: ROTATIONAL STRENGTH & ANTI-ROTATION (30-35 MINUTES)"
+        },
+        {
+          "n": 9,
+          "name": "TRX Single-Leg Squat (Pistol)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep knee aligned, control the descent, use support as needed, maintain balance."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: ROTATIONAL STRENGTH & ANTI-ROTATION (30-35 MINUTES)"
+        },
+        {
+          "n": 10,
+          "name": "Side Plank with Row",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep body in a straight line, resist rotation, row with control."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: ROTATIONAL STRENGTH & ANTI-ROTATION (30-35 MINUTES)"
+        },
+        {
+          "n": 11,
+          "name": "Rotational Medicine Ball Scoop Throw (Trail Side)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Load into the trail leg, rotate and throw into the ground or wall, keep arms long."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: ROTATIONAL STRENGTH & ANTI-ROTATION (30-35 MINUTES)"
+        },
+        {
+          "n": 12,
+          "name": "Pallof Press with Step Out",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Resist rotation, step out and back, maintain a stable torso and neutral spine."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: ROTATIONAL STRENGTH & ANTI-ROTATION (30-35 MINUTES)"
+        },
+        {
+          "n": 13,
+          "name": "Rotational Medicine Ball Throw (Side Throw)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Load into the trail leg, rotate explosively, keep arms long, finish balanced."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: POWER, SEQUENCING & ATHLETIC MOVEMENT (30-35 MINUTES)",
+          "workoutNote": "Combine strength, speed and coordination to develop a more powerful and athletic swing."
+        },
+        {
+          "n": 14,
+          "name": "Jump Lunge (Alternating)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode up, switch legs in the air, land softly and maintain posture."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: POWER, SEQUENCING & ATHLETIC MOVEMENT (30-35 MINUTES)"
+        },
+        {
+          "n": 15,
+          "name": "Rotational Cable Swing (Low to High)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive through the hips, keep lower body stable, finish tall with rotation."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: POWER, SEQUENCING & ATHLETIC MOVEMENT (30-35 MINUTES)"
+        },
+        {
+          "n": 16,
+          "name": "Overhead Medicine Ball Slam with Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Engage the hips, slam diagonally into the ground, maintain a stable base."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: POWER, SEQUENCING & ATHLETIC MOVEMENT (30-35 MINUTES)"
+        },
+        {
+          "n": 17,
+          "name": "Golfer Snatch (Moderate)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explosive hip drive, keep the weight close, finish tall with control."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: POWER, SEQUENCING & ATHLETIC MOVEMENT (30-35 MINUTES)"
+        },
+        {
+          "n": 18,
+          "name": "Controlled Three-Quarter Golf Swing (Speed)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Smooth and fast, maintain posture, rotate through the torso, balanced follow-through."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: POWER, SEQUENCING & ATHLETIC MOVEMENT (30-35 MINUTES)"
+        }
+      ],
+      "editorNotes": "Labels removed: \"Header:\", \"Footer:\" (text kept in notes; \"/\" and \"|\" separators turned into line breaks).\nProgression strip on this sheet shows week titles only (no descriptions); week 4 highlighted."
+    },
+    {
+      "key": "5",
+      "label": "Week 5",
+      "driveId": "1j053waqudN63LBqzF2qNjpObhdE0s1Pw",
+      "focus": "SPEED & POWER INTEGRATION: Combine strength, speed and sequencing to improve power, efficiency and repeatability.",
+      "notes": "WEEK 5\nSPEED & POWER INTEGRATION\nCombine strength, speed and sequencing to improve power, efficiency and repeatability.\n\nWORKOUT A FOCUS:\n- Explosive rotational power\n- Hip drive and speed development\n- Lower-body strength with rotation\n- Transfer strength to dynamic movement\n\nWORKOUT B FOCUS:\n- Single-leg strength and power\n- Core stability and anti-rotation control\n- Rotational strength under load\n- Balance, deceleration and movement control\n\nWORKOUT C FOCUS:\n- Speed, sequencing and coordination\n- Explosive full-body movement\n- Golf-specific rotational power\n- Integrate strength into a faster, more efficient swing\n\nINTERMEDIATE GOLF PROGRAM\nWEEK 5 OF 6\n3 WORKOUTS PER WEEK\n30-35 MINUTES EACH\nMOVE BETTER. PLAY BETTER.",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "Rotational Medicine Ball Scoop Throw (Trail Side)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Load into trail leg, rotate explosively through the hips, finish tall and balanced."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: SPEED STRENGTH & ROTATIONAL POWER (30-35 MINUTES)",
+          "workoutNote": "Develop faster, more powerful hip rotation while maintaining control and posture."
+        },
+        {
+          "n": 2,
+          "name": "Kettlebell Rotational Deadlift to High Pull",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive through the ground, rotate through the hips, keep the shoulders down."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: SPEED STRENGTH & ROTATIONAL POWER (30-35 MINUTES)"
+        },
+        {
+          "n": 3,
+          "name": "Cable Swing (High to Low) (Explosive)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Initiate with the hips, keep lower body stable, finish with rotation and speed."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: SPEED STRENGTH & ROTATIONAL POWER (30-35 MINUTES)"
+        },
+        {
+          "n": 4,
+          "name": "Lateral Lunge with Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Sit into the hip, keep foot flat, rotate through the torso, maintain balance."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: SPEED STRENGTH & ROTATIONAL POWER (30-35 MINUTES)"
+        },
+        {
+          "n": 5,
+          "name": "Rotational Landmine Press",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive and rotate through the torso, keep a stable base, finish tall."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: SPEED STRENGTH & ROTATIONAL POWER (30-35 MINUTES)"
+        },
+        {
+          "n": 6,
+          "name": "Jump Switch Lunge (Power)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Quick ground contact, soft landing, maintain posture, power through the glutes."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: SPEED STRENGTH & ROTATIONAL POWER (30-35 MINUTES)"
+        },
+        {
+          "n": 7,
+          "name": "Single-Leg RDL with Row",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hinge at the hip, keep hips level, row without rotating through the torso."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: UNILATERAL POWER & CORE CONTROL (30-35 MINUTES)",
+          "workoutNote": "Build single-leg power, stability and anti-rotation control to support a faster, more efficient swing."
+        },
+        {
+          "n": 8,
+          "name": "Elevated Step-Up with Knee Drive (Dumbbell)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive through the heel, control the descent, maintain balance, finish tall."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: UNILATERAL POWER & CORE CONTROL (30-35 MINUTES)"
+        },
+        {
+          "n": 9,
+          "name": "TRX Pistol Squat (Assisted)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep knee aligned, control the movement, maintain posture."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: UNILATERAL POWER & CORE CONTROL (30-35 MINUTES)"
+        },
+        {
+          "n": 10,
+          "name": "Side Plank Row (Contralateral)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep body in a straight line, resist rotation, keep hips stable."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: UNILATERAL POWER & CORE CONTROL (30-35 MINUTES)"
+        },
+        {
+          "n": 11,
+          "name": "Lateral Deceleration to Stick",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Control the landing, keep knee aligned, stick and hold for 2-3 seconds."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: UNILATERAL POWER & CORE CONTROL (30-35 MINUTES)"
+        },
+        {
+          "n": 12,
+          "name": "Pallof Press with Step and Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Resist rotation, step out, rotate through the torso, maintain a stable core."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: UNILATERAL POWER & CORE CONTROL (30-35 MINUTES)"
+        },
+        {
+          "n": 13,
+          "name": "Step-Through Golf Swing (High Speed)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Shift weight, rotate through the hips, maintain posture, finish tall and balanced."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: POWER SEQUENCING & SWING MECHANICS (30-35 MINUTES)",
+          "workoutNote": "Integrate full-body power, speed and coordination into golf-specific movement patterns."
+        },
+        {
+          "n": 14,
+          "name": "Overhead Rotational Medicine Ball Slam",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Engage the hips, slam through the ground, finish with full rotation."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: POWER SEQUENCING & SWING MECHANICS (30-35 MINUTES)"
+        },
+        {
+          "n": 15,
+          "name": "Lateral Bound with Stick",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode laterally, control the landing, stick and hold, keep hips level."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: POWER SEQUENCING & SWING MECHANICS (30-35 MINUTES)"
+        },
+        {
+          "n": 16,
+          "name": "Golfer Snatch (Moderate to Heavy)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explosive hip drive, keep the weight close, finish tall with control."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "5 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: POWER SEQUENCING & SWING MECHANICS (30-35 MINUTES)"
+        },
+        {
+          "n": 17,
+          "name": "Controlled Three-Quarter Swing (Speed)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Smooth and fast, maintain posture, sequence hips → torso → arms, balanced finish."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: POWER SEQUENCING & SWING MECHANICS (30-35 MINUTES)"
+        },
+        {
+          "n": 18,
+          "name": "Rotational Push-Up to Reach",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep core braced, rotate through the torso, reach to the sky, maintain a stable base."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: POWER SEQUENCING & SWING MECHANICS (30-35 MINUTES)"
+        }
+      ],
+      "editorNotes": "Labels removed: \"Header:\", \"Footer:\" (text kept in notes; \"/\" and \"|\" separators turned into line breaks).\nProgression strip on this sheet shows week titles only (no descriptions); week 5 highlighted."
+    },
+    {
+      "key": "6",
+      "label": "Week 6",
+      "driveId": "1NPosNGmsflgO1YodC9OVXMF0O3DjS8cQ",
+      "focus": "PERFORMANCE & REPEATABILITY: Express improved mobility, power and control while maintaining consistent, repeatable mechanics.",
+      "notes": "WEEK 6\nPERFORMANCE & REPEATABILITY\nExpress improved mobility, power and control while maintaining consistent, repeatable mechanics.\n\nWORKOUT A FOCUS:\n- Full-body power and integration\n- Explosive lower-body strength\n- Rotational strength and coordination\n- Transfer strength into a golf-specific swing\n\nWORKOUT B FOCUS:\n- Rotational strength under load\n- Core stability and anti-rotation\n- Single-leg strength and balance\n- Control and stability at higher speeds\n\nWORKOUT C FOCUS:\n- Speed, sequencing and coordination\n- Explosive full-body movement\n- Golf-specific rotational power\n- Consistency and repeatability under fatigue\n\nINTERMEDIATE GOLF PROGRAM\nWEEK 6 OF 6\n3 WORKOUTS PER WEEK\n30-35 MINUTES EACH\nMOVE BETTER. PLAY BETTER.",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "Golfer Snatch (Heavy)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explosive hip drive, keep the weight close, finish tall with control."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "5 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: FULL-BODY POWER & ROTATIONAL INTEGRATION (30-35 MINUTES)",
+          "workoutNote": "Combine lower-body power, rotational strength and upper-body control into a complete, athletic movement."
+        },
+        {
+          "n": 2,
+          "name": "Rotational Medicine Ball Scoop Throw (Trail Side)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Load into trail leg, rotate explosively through the hips, finish balanced."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: FULL-BODY POWER & ROTATIONAL INTEGRATION (30-35 MINUTES)"
+        },
+        {
+          "n": 3,
+          "name": "Trap Bar Deadlift (Moderate-Heavy)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive through the ground, keep a neutral spine, maintain a tall torso."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: FULL-BODY POWER & ROTATIONAL INTEGRATION (30-35 MINUTES)"
+        },
+        {
+          "n": 4,
+          "name": "Lateral Lunge with Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Sit into the hip, keep foot flat, rotate through the torso, maintain balance."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: FULL-BODY POWER & ROTATIONAL INTEGRATION (30-35 MINUTES)"
+        },
+        {
+          "n": 5,
+          "name": "Single-Leg RDL with Reach",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hinge at the hip, keep hips level, reach through the torso, maintain control."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: FULL-BODY POWER & ROTATIONAL INTEGRATION (30-35 MINUTES)"
+        },
+        {
+          "n": 6,
+          "name": "Jump Switch Lunge (Power)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Quick ground contact, soft landing, maintain posture, power through the glutes."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout A: FULL-BODY POWER & ROTATIONAL INTEGRATION (30-35 MINUTES)"
+        },
+        {
+          "n": 7,
+          "name": "Standing Cable Row with Rotation (Explosive)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Rotate through the hips, keep arms straight on the pull, finish tall and controlled."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: ROTATIONAL STRENGTH & STABILITY UNDER SPEED (30-35 MINUTES)",
+          "workoutNote": "Improve the ability to produce and resist rotational forces at higher intensities while maintaining control."
+        },
+        {
+          "n": 8,
+          "name": "Pallof Press with Step Out & Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Resist rotation, step out, control the movement, maintain a stable core and tall posture."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: ROTATIONAL STRENGTH & STABILITY UNDER SPEED (30-35 MINUTES)"
+        },
+        {
+          "n": 9,
+          "name": "Split Squat with Rotation (Banded)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep knee aligned, rotate through the torso, maintain balance and glute engagement."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: ROTATIONAL STRENGTH & STABILITY UNDER SPEED (30-35 MINUTES)"
+        },
+        {
+          "n": 10,
+          "name": "Side Plank Row (Contralateral)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep body in a straight line, resist rotation, control the row, maintain hip stability."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: ROTATIONAL STRENGTH & STABILITY UNDER SPEED (30-35 MINUTES)"
+        },
+        {
+          "n": 11,
+          "name": "Rotational Landmine Press",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive and rotate through the torso, keep a stable base, finish tall with control."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: ROTATIONAL STRENGTH & STABILITY UNDER SPEED (30-35 MINUTES)"
+        },
+        {
+          "n": 12,
+          "name": "Overhead Carry with March",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep arms overhead, maintain rib position, march with control, stay tall and stable."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "20 ft each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout B: ROTATIONAL STRENGTH & STABILITY UNDER SPEED (30-35 MINUTES)"
+        },
+        {
+          "n": 13,
+          "name": "Step-Through Golf Swing (Maximum Speed)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode from the ground, rotate through the hips, finish tall and balanced."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: SPEED, SEQUENCING & MOVEMENT EFFICIENCY (30-35 MINUTES)",
+          "workoutNote": "Integrate speed, dynamic movement and sequencing to develop a more efficient and repeatable swing."
+        },
+        {
+          "n": 14,
+          "name": "Lateral Ball Scoop Throw (Rotational Power)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Load trail side, rotate and throw laterally, keep arms long, finish with control."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: SPEED, SEQUENCING & MOVEMENT EFFICIENCY (30-35 MINUTES)"
+        },
+        {
+          "n": 15,
+          "name": "Rotational Box Jump to Stick Landing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode up, rotate in the air, land softly and hold a stable position for 2-3 seconds."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: SPEED, SEQUENCING & MOVEMENT EFFICIENCY (30-35 MINUTES)"
+        },
+        {
+          "n": 16,
+          "name": "Lateral Bound to Stick",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode laterally, control the landing, stick the position, keep hips level."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: SPEED, SEQUENCING & MOVEMENT EFFICIENCY (30-35 MINUTES)"
+        },
+        {
+          "n": 17,
+          "name": "Controlled Three-Quarter Swing (Speed)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Smooth and fast, maintain posture, rotate through the torso, finish balanced."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: SPEED, SEQUENCING & MOVEMENT EFFICIENCY (30-35 MINUTES)"
+        },
+        {
+          "n": 18,
+          "name": "Turkish Get-Up (Strength & Control)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Full-body control, keep the shoulder stable, move through each position with balance."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "5 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "Workout C: SPEED, SEQUENCING & MOVEMENT EFFICIENCY (30-35 MINUTES)"
+        }
+      ],
+      "editorNotes": "Labels removed: \"Header:\", \"Footer:\" (text kept in notes; \"/\" and \"|\" separators turned into line breaks).\nProgression strip on this sheet shows week titles only (no descriptions); week 6 highlighted."
+    }
+  ],
+  "uncertain": [
+    "Week 2 Workout A subtitle prints 'improve hip--torso separation' with a doubled hyphen (zoomed 4x); kept as printed. Week 1 prints 'hip-torso' with a single hyphen.",
+    "Time boxes and footers print '30–35' with an en dash, and week 3 'Lateral Step-Down (6–12 in)' and the '2–3 seconds' cues (week 5 B5, week 6 C3) also use en dashes; written with an ASCII hyphen per the schema rule.",
+    "Week 3 Workout A #1 cue mixes punctuation: 'Load trail leg, rotate explosively, throw from the hips. Finish balanced.' (capital F after a full stop); kept as one cue line as printed.",
+    "Week 5 Workout C #5 cue uses arrows: 'sequence hips → torso → arms'; arrows kept as printed (U+2192).",
+    "Week 5 Workout A #3 name prints two parentheticals: 'Cable Swing (High to Low) (Explosive)'; kept as printed.",
+    "Week 4 Workout C #3 'Rotational Cable Swing (Low to High)' differs in direction from the 'High to Low' cable swings in other weeks; kept as printed.",
+    "Several bilateral/each-side inconsistencies kept as printed: TRX Squat, Overhead Pole Squat (weeks 1-2), Trap Bar Deadlift (weeks 4, 6) have no 'each side'; week 3 'Overhead Pole Squat with Rotation' is '3 × 8 each side'.",
+    "Only the week 1 sheet's progression strip carries a one-line description under each week title; weeks 2-6 strips show titles only. progression.overview uses the week 1 strip text. Each week's own header box (top right) has a longer description, which is used for that week's 'focus'.",
+    "No level goals box, KEY CUES, warm-up, recovery or how-to-progress rules appear on any main-series sheet; top-level goal/principles/dailyBasics left empty. (The ALTERNATE week-1 sheet does have a WEEK 1 GOALS box; it is described in sourceNotes only.)"
+  ],
+  "sourceNotes": "Read 6 main-series sheets (1536x1024 each) via Drive thumbnail at sz=w2400, cropped per workout table and upscaled 1.6x (4x for doubtful text): week 1 (1L68xrm3SLrD9EUBODCouwx4qG2UQcfmA), week 2 (1FK_puUUprlKSeRNVvoTarG-EMQ-PrkV8), week 3 (1osycwSKLt-U2owJFPXrc_-N9JPyMME6w), week 4 (1Rk_cuUJ8CkGEgMipeGaQlZUKcS9qbzzr), week 5 (1j053waqudN63LBqzF2qNjpObhdE0s1Pw), week 6 (1NPosNGmsflgO1YodC9OVXMF0O3DjS8cQ). No missing weeks. Every sheet has the same layout: title '6-WEEK INTERMEDIATE GOLF PROGRAM' with tagline, a week header box (title + description), a 6-week progression strip, three tables (WORKOUT A/B/C, each with heading, subtitle and a '30-35 MINUTES' time box, columns # / EXERCISE / SETS x REPS / CUES, 6 rows each) with a WORKOUT FOCUS box (4 bullets) under each, and a footer 'MDFIT ONLINE | INTERMEDIATE GOLF PROGRAM | WEEK n OF 6 | 3 WORKOUTS PER WEEK | 30-35 MINUTES EACH | MOVE BETTER. PLAY BETTER.' Sets x reps printed as '3 x 8 each side' are split into sets '3' and reps '8 each side'; each cue cell is one sentence and is kept as one focus line. ALTERNATE week-1 sheet (1rlVgBJs4tA3Opq4bnWAuZSRLEhTOUDb8, not used as a week): titled 'WEEK 1 / BUILD CAPACITY', it is a different design from the main series. It adds an intro line ('Take your game to the next level. Build on your foundation with increased strength, dynamic movement, and golf-specific power while maintaining mobility and control.'), four benefit icons (GREATER ROTATIONAL POWER, IMPROVED CONTROL, STRONGER LOWER BODY, FUNCTIONAL MOBILITY), a WEEK 1 GOALS box (Reinforce proper movement patterns; Improve mobility through a larger range of motion; Build foundational strength and stability; Prepare the body for increased power and speed), and a different 6-WEEK OUTLINE (1 Build Capacity, 2 Rotational Strength, 3 Speed and Power Development, 4 Integrated Movement, 5 Swing Efficiency, 6 Performance and Assessment, each with 3 bullets) instead of the main series' Rotational Strength Foundations / Unilateral Strength & Stability / Rotational Power Development / Ground Force & Athletic Movement / Speed & Power Integration / Performance & Repeatability. Its workouts are shorter (25-35 MINUTES) but longer lists (8 exercises each, 24 total vs 18) and more mobility-led: Workout A 'MOBILITY & ROTATION FOUNDATION' (e.g. 90/90 Hip Switch with Forward Lean, Couch Stretch with Glute Engagement, Thoracic Rotation (Open Book), Ankle Mobility Rocks, Golf Posture Rotation Drill), Workout B 'STRENGTH & STABILITY' (Glute RDL, Assisted Pistol Squat, Walking Lunge, Single-Leg Glute Bridge, Core Anti-Rotation Pallof Press, Golf Stance Weight Shift), Workout C 'POWER & SWING MECHANICS' (Golfer Switch Row, Light Cable Swing, Lateral Ball Throw, Step-Through Golf Swing, Jump Switch Lunge, Medicine Ball Rotational Scoop, Overhead Pole Squat, Controlled Three-Quarter Swing), mostly 3 x 8-15 (plus 3 x 30 sec and 3 x 20 ft) rather than the main sheet's 3 x 6-10 with loaded unilateral work (Assisted Cossack Squat, Split Squat Rotation Press, Golfer Snatch). In short: the alternate is a gentler, mobility-first entry week tied to a capacity-to-assessment outline, while the main-series week 1 starts straight into rotational strength and power. Its content was not transcribed row by row.",
+  "editorNotes": "progression.footer: The sheet prints \"|\" divider bars between these items; written as \"•\". Original: \"INTERMEDIATE GOLF PROGRAM | 3 WORKOUTS PER WEEK | 30-35 MINUTES EACH | MOVE BETTER. PLAY BETTER.\""
+}

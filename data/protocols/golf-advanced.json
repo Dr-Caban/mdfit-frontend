@@ -1,0 +1,3173 @@
+{
+  "id": "golf-advanced",
+  "title": "6-WEEK ADVANCED GOLF PROGRAM",
+  "tagline": "POWER. SPEED. CONTROL. CONSISTENCY UNDER PRESSURE.",
+  "goal": "",
+  "principles": [],
+  "dailyBasics": [],
+  "progression": {
+    "overview": [
+      {
+        "week": "1",
+        "title": "Advanced Movement Foundations",
+        "focus": "Build strength, mobility and power capacity."
+      },
+      {
+        "week": "2",
+        "title": "Rotational Strength & Unilateral Power",
+        "focus": "Increase load, stability and force production."
+      },
+      {
+        "week": "3",
+        "title": "Explosive Power & Speed Development",
+        "focus": "Train higher velocity rotational movement."
+      },
+      {
+        "week": "4",
+        "title": "Dynamic Integration & Athleticism",
+        "focus": "Combine speed, strength and control."
+      },
+      {
+        "week": "5",
+        "title": "On-Course Power & Endurance",
+        "focus": "Develop repeatable power under fatigue."
+      },
+      {
+        "week": "6",
+        "title": "Performance & Refinement",
+        "focus": "Peak movement efficiency, consistency and resilience."
+      }
+    ],
+    "guidelines": [],
+    "expect": [],
+    "remember": "",
+    "callouts": [
+      "4 WORKOUTS • 45-60 MINUTES EACH • MOBILITY + STRENGTH + POWER + CONTROL"
+    ],
+    "footer": ""
+  },
+  "weeks": [
+    {
+      "key": "1",
+      "label": "Week 1",
+      "driveId": "1ktPiRiCgqZdlFCNDjfeS6IiH-irdKE2Q",
+      "focus": "Advanced Movement Foundations: Build strength, mobility and power capacity.",
+      "notes": "WEEK 1\nADVANCED GOLF PROGRAM\n4 WORKOUTS\n45-60 MINUTES EACH\nMOBILITY + STRENGTH + POWER + CONTROL\n\nTAKE YOUR GAME FURTHER:\n- Higher swing speed\n- More efficient power transfer\n- Greater mobility and resilience\n- Improved consistency\n- Reduced injury risk\n\nWORKOUT A FOCUS:\n- Explosive lower-body power\n- Hip drive and ground force production\n- Rotational power and coordination\n- Build strength into a dynamic movement pattern\n\nWORKOUT B FOCUS:\n- Single-leg strength and stability\n- Anti-rotation core control\n- Glute and hip engagement\n- Posture and balance under load\n\nWORKOUT C FOCUS:\n- Upper body strength and power\n- Rotational strength and control\n- Lat activation and shoulder stability\n- Build a strong, connected swing chain\n\nWORKOUT D FOCUS:\n- Full-body power and coordination\n- Rotational speed development\n- Dynamic movement patterns\n- Translate strength into a faster, more efficient swing\n\nMDFIT ONLINE\nADVANCED GOLF PROGRAM\nWEEK 1 OF 6\n4 WORKOUTS PER WEEK\n45-60 MINUTES EACH\nMOBILITY. POWER. CONTROL. CONSISTENCY.",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "Trap Bar Deadlift (Explosive)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive through the ground, full hip extension, controlled and powerful."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: EXPLOSIVE LOWER BODY & ROTATIONAL POWER (45-60 MINUTES)",
+          "workoutNote": "Build groundt force, hip drive and dynamic rotational strength."
+        },
+        {
+          "n": 2,
+          "name": "Lateral Bound to Stick",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode laterally, control the landing, stick and hold 2-3 s."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: EXPLOSIVE LOWER BODY & ROTATIONAL POWER (45-60 MINUTES)"
+        },
+        {
+          "n": 3,
+          "name": "Rotational Medicine Ball Throw (Into Wall)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Load trail leg, rotate explosively through the hips, finish tall."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: EXPLOSIVE LOWER BODY & ROTATIONAL POWER (45-60 MINUTES)"
+        },
+        {
+          "n": 4,
+          "name": "Bulgarian Split Squat with Rotation (DB or Cable)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep torso tall, drive through front leg, rotate through torso."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: EXPLOSIVE LOWER BODY & ROTATIONAL POWER (45-60 MINUTES)"
+        },
+        {
+          "n": 5,
+          "name": "Cable Woodchop (High to Low)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Initiate with hips, keep arms long, power through rotation."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: EXPLOSIVE LOWER BODY & ROTATIONAL POWER (45-60 MINUTES)"
+        },
+        {
+          "n": 6,
+          "name": "Jump Switch Lunge",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Minimal ground contact, soft landing, maintain posture and control."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: EXPLOSIVE LOWER BODY & ROTATIONAL POWER (45-60 MINUTES)"
+        },
+        {
+          "n": 7,
+          "name": "Single-Leg RDL with Row (DB or Cable)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hinge at the hip, keep spine neutral, row without losing balance."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UNILATERAL STRENGTH & CORE CONTROL (45-60 MINUTES)",
+          "workoutNote": "Improve single-leg strength, stability and anti-rotation control for a more efficient swing."
+        },
+        {
+          "n": 8,
+          "name": "Elevated Step-Up with Knee Drive",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive through heel, control the top, knee to hip height."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UNILATERAL STRENGTH & CORE CONTROL (45-60 MINUTES)"
+        },
+        {
+          "n": 9,
+          "name": "TRX Single-Leg Squat (Pistol)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep knee aligned, control the descent, use support as needed."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UNILATERAL STRENGTH & CORE CONTROL (45-60 MINUTES)"
+        },
+        {
+          "n": 10,
+          "name": "Side Plank Row (Contralateral)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep body in a straight line, resist rotation, row with control."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UNILATERAL STRENGTH & CORE CONTROL (45-60 MINUTES)"
+        },
+        {
+          "n": 11,
+          "name": "Pallof Press with Step Out",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Resist rotation, step out and back, maintain a stable core."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UNILATERAL STRENGTH & CORE CONTROL (45-60 MINUTES)"
+        },
+        {
+          "n": 12,
+          "name": "Suitcase Carry with March",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Tall posture, core braced, controlled march, resist lateral lean."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "40 ft each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UNILATERAL STRENGTH & CORE CONTROL (45-60 MINUTES)"
+        },
+        {
+          "n": 13,
+          "name": "Rotational Landmine Press",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive from the hips, rotate fully, keep a stable base."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER BODY POWER & ROTATIONAL STRENGTH (45-60 MINUTES)",
+          "workoutNote": "Develop strong, connected upper body movement without excessive tension."
+        },
+        {
+          "n": 14,
+          "name": "Pull-Up or Assisted Pull-Up (Neutral Grip)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep shoulders down, engage lats, full range of motion."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6-8",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER BODY POWER & ROTATIONAL STRENGTH (45-60 MINUTES)"
+        },
+        {
+          "n": 15,
+          "name": "Single-Arm Cable Row with Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Initiate with hips, keep shoulders down, rotate through the torso."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER BODY POWER & ROTATIONAL STRENGTH (45-60 MINUTES)"
+        },
+        {
+          "n": 16,
+          "name": "Push-Up with Shoulder Tap",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep core stable, minimize hip sway, control the rotation."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER BODY POWER & ROTATIONAL STRENGTH (45-60 MINUTES)"
+        },
+        {
+          "n": 17,
+          "name": "Rotational Medicine Ball Slam (Overhead)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode through the hips, slam diagonally, maintain control."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER BODY POWER & ROTATIONAL STRENGTH (45-60 MINUTES)"
+        },
+        {
+          "n": 18,
+          "name": "Golfer Carry (Overhead or Rack)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Maintain tall posture, core braced, steady and controlled."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "40 ft each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER BODY POWER & ROTATIONAL STRENGTH (45-60 MINUTES)"
+        },
+        {
+          "n": 19,
+          "name": "Step-Through Golf Swing (High Speed)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explosive hip rotation, full finish, maintain balance."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY INTEGRATION & SPEED (45-60 MINUTES)",
+          "workoutNote": "Combine strength, speed and coordination into golf-specific movement patterns."
+        },
+        {
+          "n": 20,
+          "name": "Lateral Medicine Ball Scoop Throw",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Load trail side, rotate and throw across the body, finish tall."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY INTEGRATION & SPEED (45-60 MINUTES)"
+        },
+        {
+          "n": 21,
+          "name": "Rotational Box Jump to Stick Landing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode and rotate in the air, land softly and hold."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY INTEGRATION & SPEED (45-60 MINUTES)"
+        },
+        {
+          "n": 22,
+          "name": "Cable Rotational Chop to Press",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive from the hips, rotate and press, keep arms long."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY INTEGRATION & SPEED (45-60 MINUTES)"
+        },
+        {
+          "n": 23,
+          "name": "Curtsy Lunge to Knee Drive",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Control the lunge, power through the glute, drive knee up."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY INTEGRATION & SPEED (45-60 MINUTES)"
+        },
+        {
+          "n": 24,
+          "name": "Battle Rope Rotational Slams",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explosive rotation, maintain an athletic stance, keep shoulders down."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "20 s each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY INTEGRATION & SPEED (45-60 MINUTES)"
+        }
+      ],
+      "editorNotes": "Labels removed: \"Header band:\", \"Top-right box:\", \"Footer:\" (text kept in notes; \"|\" and \"/\" separators turned into line breaks)."
+    },
+    {
+      "key": "2",
+      "label": "Week 2",
+      "driveId": "1BqCHFB6fBBkv4sVeI8NcurswR_MOriQg",
+      "focus": "Rotational Strength & Unilateral Power: Increase load, stability and force production.",
+      "notes": "WEEK 2\nADVANCED GOLF PROGRAM\n4 WORKOUTS\n45-60 MINUTES EACH\nMOBILITY + STRENGTH + POWER + CONTROL\n\nWEEK 2\nROTATIONAL STRENGTH & UNILATERAL POWER\nIncrease load, stability and force production while maintaining mobility and control.\n\nWORKOUT A FOCUS:\n- Unilateral lower-body strength\n- Lateral stability and balance\n- Rotational strength under load\n- Improve force production from the ground\n\nWORKOUT B FOCUS:\n- Core strength and anti-rotation control\n- Hip-torso separation\n- Single-side stability and balance\n- Posture and control under load\n\nWORKOUT C FOCUS:\n- Upper-body strength and lats activation\n- Rotational power and speed\n- Shoulder stability and control\n- Integrate upper and lower body movement\n\nWORKOUT D FOCUS:\n- Full-body power and coordination\n- Rotational speed and athleticism\n- Dynamic movement patterns\n- Transfer strength into a faster, more efficient swing\n\nMDFIT ONLINE\nADVANCED GOLF PROGRAM\nWEEK 2 OF 6\n4 WORKOUTS PER WEEK\n45-60 MINUTES EACH\nPOWER. SPEED. CONTROL. CONSISTENCY.\nMOVE BETTER. PLAY BETTER. MOVE BETTER. PLAY BETTER.",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "Front-Foot Elevated Split Squat (DB)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep torso tall, front knee aligned, drive through the front heel."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: UNILATERAL LOWER-BODY STRENGTH & ROTATIONAL CONTROL (45-60 MINUTES)",
+          "workoutNote": "Build single-leg strength, lateral stability and rotational control for a more powerful and stable swing."
+        },
+        {
+          "n": 2,
+          "name": "Single-Leg RDL (Heavy)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hinge at the hip, keep hips level, maintain balance and control."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: UNILATERAL LOWER-BODY STRENGTH & ROTATIONAL CONTROL (45-60 MINUTES)"
+        },
+        {
+          "n": 3,
+          "name": "Lateral Lunge to Knee Drive",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Control the lateral load, push through the heel, drive the knee up with power."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: UNILATERAL LOWER-BODY STRENGTH & ROTATIONAL CONTROL (45-60 MINUTES)"
+        },
+        {
+          "n": 4,
+          "name": "Cable Woodchop (High to Low)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Initiate with the hips, keep arms long, finish with rotation and control."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: UNILATERAL LOWER-BODY STRENGTH & ROTATIONAL CONTROL (45-60 MINUTES)"
+        },
+        {
+          "n": 5,
+          "name": "Trap Bar Deadlift (Moderate-Heavy)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive through the ground, neutral spine, keep shoulders down and lats on."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: UNILATERAL LOWER-BODY STRENGTH & ROTATIONAL CONTROL (45-60 MINUTES)"
+        },
+        {
+          "n": 6,
+          "name": "Curtsy Lunge with Rotation (DB or Cable)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep glute engaged, rotate through the torso, maintain balance."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: UNILATERAL LOWER-BODY STRENGTH & ROTATIONAL CONTROL (45-60 MINUTES)"
+        },
+        {
+          "n": 7,
+          "name": "Half-Kneeling Landmine Press with Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive through the front hip, resist rotation, finish tall with control."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: CORE STABILITY & ANTI-ROTATION STRENGTH (45-60 MINUTES)",
+          "workoutNote": "Improve core strength, anti-rotation control and hip-torso separation for a more consistent swing."
+        },
+        {
+          "n": 8,
+          "name": "Side Plank Row (DB or Cable)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep hips stacked, resist rotation, pull with back, not the arm."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: CORE STABILITY & ANTI-ROTATION STRENGTH (45-60 MINUTES)"
+        },
+        {
+          "n": 9,
+          "name": "Pallof Press with Step Out",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Resist rotation, step out and back, maintain a stable core."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: CORE STABILITY & ANTI-ROTATION STRENGTH (45-60 MINUTES)"
+        },
+        {
+          "n": 10,
+          "name": "Single-Arm Cable Row with Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Rotate through the torso, keep shoulder down, control the eccentric."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: CORE STABILITY & ANTI-ROTATION STRENGTH (45-60 MINUTES)"
+        },
+        {
+          "n": 11,
+          "name": "Stability Ball Stir-the-Pot (Plank)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Maintain a flat back, control movement, keep core braced."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: CORE STABILITY & ANTI-ROTATION STRENGTH (45-60 MINUTES)"
+        },
+        {
+          "n": 12,
+          "name": "Suitcase Carry (Heavy)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Tall posture, resist lateral lean, keep shoulders down and core tight."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "40 ft each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: CORE STABILITY & ANTI-ROTATION STRENGTH (45-60 MINUTES)"
+        },
+        {
+          "n": 13,
+          "name": "Rotational Medicine Ball Throw (Into Wall)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Load the trail side, rotate explosively from the hips, finish tall."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER-BODY STRENGTH & ROTATIONAL POWER (45-60 MINUTES)",
+          "workoutNote": "Build pulling and pressing strength while integrating rotational power and lats-driven movement."
+        },
+        {
+          "n": 14,
+          "name": "Pull-Up or Assisted Pull-Up (Neutral or Pronated)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep shoulders down, engage lats, full range of motion."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6-8",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER-BODY STRENGTH & ROTATIONAL POWER (45-60 MINUTES)"
+        },
+        {
+          "n": 15,
+          "name": "Single-Arm DB Bench Press with Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep shoulder down, rotate through the torso, maintain a stable base."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER-BODY STRENGTH & ROTATIONAL POWER (45-60 MINUTES)"
+        },
+        {
+          "n": 16,
+          "name": "TRX Row with External Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Squeeze shoulder blades, externally rotate at the top, keep neck relaxed."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER-BODY STRENGTH & ROTATIONAL POWER (45-60 MINUTES)"
+        },
+        {
+          "n": 17,
+          "name": "Landmine Press (Standing, Rotational)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive through the hips, keep ribs down, finish tall."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER-BODY STRENGTH & ROTATIONAL POWER (45-60 MINUTES)"
+        },
+        {
+          "n": 18,
+          "name": "Battle Rope Rotational Slams",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode from the hips, maintain athletic stance, keep shoulders down."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "20 s each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER-BODY STRENGTH & ROTATIONAL POWER (45-60 MINUTES)"
+        },
+        {
+          "n": 19,
+          "name": "Step-Through Golf Swing (High Speed)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode through the hips, rotate fully, maintain balance, finish tall."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY POWER & MOVEMENT INTEGRATION (45-60 MINUTES)",
+          "workoutNote": "Combine strength, speed and coordination into advanced golf-specific movement patterns."
+        },
+        {
+          "n": 20,
+          "name": "Rotational Box Jump to Stick Landing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode up, rotate in the air, land softly and hold a stable position for 2-3 s."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY POWER & MOVEMENT INTEGRATION (45-60 MINUTES)"
+        },
+        {
+          "n": 21,
+          "name": "Lateral Bound to Stick",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode laterally, control the landing, keep hips level and stick the landing."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY POWER & MOVEMENT INTEGRATION (45-60 MINUTES)"
+        },
+        {
+          "n": 22,
+          "name": "Golfers Snatch (Moderate-Heavy)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explosive hip drive, keep weight close, finish tall with control."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY POWER & MOVEMENT INTEGRATION (45-60 MINUTES)"
+        },
+        {
+          "n": 23,
+          "name": "Rotational Push-Up to Reach",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep core braced, rotate through the torso, reach to the sky, maintain balance."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY POWER & MOVEMENT INTEGRATION (45-60 MINUTES)"
+        },
+        {
+          "n": 24,
+          "name": "Lateral Shuffle with Medicine Ball Scoop & Throw",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Stay low, move with control, scoop and throw explosively."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY POWER & MOVEMENT INTEGRATION (45-60 MINUTES)"
+        }
+      ],
+      "editorNotes": "Labels removed: \"Header band:\", \"Top-right box:\", \"Footer:\" (text kept in notes; \"|\" and \"/\" separators turned into line breaks)."
+    },
+    {
+      "key": "3",
+      "label": "Week 3",
+      "driveId": "1s69WRYKnS5q6ikY4-UvzFn8riqABmMGL",
+      "focus": "Explosive Power & Speed Development: Train higher velocity rotational movement.",
+      "notes": "WEEK 3\nADVANCED GOLF PROGRAM\n4 WORKOUTS\n45-60 MINUTES EACH\nMOBILITY + STRENGTH + POWER + CONTROL\n\nWEEK 3\nEXPLOSIVE POWER & SPEED DEVELOPMENT\nTrain higher velocity rotational movement while maintaining control and stability.\n\nWORKOUT A FOCUS:\n- Explosive lower-body power\n- Ground force and hip drive\n- Rotational power and sequencing\n- Stability under high-speed movement\n\nWORKOUT B FOCUS:\n- Core strength and anti-rotation control\n- Hip-torso separation and stability\n- Unilateral strength and balance\n- Control under dynamic load\n\nWORKOUT C FOCUS:\n- Upper body power and rotational strength\n- Scapular stability and shoulder health\n- Pulling and pressing power with rotation\n- Core control during upper body movement\n\nWORKOUT D FOCUS:\n- Full-body power and coordination\n- Rotational speed and athleticism\n- Golf-specific movement patterns\n- Transfer strength into a faster, more efficient swing\n\nMDFIT ONLINE\nADVANCED GOLF PROGRAM\nWEEK 3 OF 6\n4 WORKOUTS PER WEEK\n45-60 MINUTES EACH\nPOWER. SPEED. CONTROL. CONSISTENCY.\nMOVE BETTER. PLAY BETTER.",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "Lateral Bound (Explosive)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode laterally, stick the landing, keep hips level and controlled."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: EXPLOSIVE LOWER BODY & ROTATIONAL POWER (45-60 MINUTES)",
+          "workoutNote": "Develop ground force, hip drive and high-velocity rotation for more clubhead speed."
+        },
+        {
+          "n": 2,
+          "name": "Trap Bar Deadlift (Explosive)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive through the ground, full hip extension, keep spine neutral."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "4",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: EXPLOSIVE LOWER BODY & ROTATIONAL POWER (45-60 MINUTES)"
+        },
+        {
+          "n": 3,
+          "name": "Rotational Landmine Press (Explosive)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive from the hips, rotate through, finish tall with a stable base."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: EXPLOSIVE LOWER BODY & ROTATIONAL POWER (45-60 MINUTES)"
+        },
+        {
+          "n": 4,
+          "name": "Jump Switch Lunge",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Quick ground contact, soft landing, maintain posture, power through the glutes."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: EXPLOSIVE LOWER BODY & ROTATIONAL POWER (45-60 MINUTES)"
+        },
+        {
+          "n": 5,
+          "name": "Rotational Medicine Ball Throw (Into Wall)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Load trail leg, rotate explosively through the hips, finish tall."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: EXPLOSIVE LOWER BODY & ROTATIONAL POWER (45-60 MINUTES)"
+        },
+        {
+          "n": 6,
+          "name": "Single-Leg RDL with Reach (Moderate-Heavy)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hinge at the hip, keep hips level, maintain balance and control."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: EXPLOSIVE LOWER BODY & ROTATIONAL POWER (45-60 MINUTES)"
+        },
+        {
+          "n": 7,
+          "name": "Half-Kneeling Cable Lift to Chop (High to Low)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive from the hip, rotate and chop with speed, finish tall and controlled."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: CORE STRENGTH & ANTI-ROTATION POWER (45-60 MINUTES)",
+          "workoutNote": "Build a stronger, more stable core that transfers force efficiently while resisting unwanted rotation."
+        },
+        {
+          "n": 8,
+          "name": "Single-Arm Cable Row with Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Row and rotate through the torso, keep shoulder down and stable."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: CORE STRENGTH & ANTI-ROTATION POWER (45-60 MINUTES)"
+        },
+        {
+          "n": 9,
+          "name": "Stability Ball Stir-the-Pot (Plank)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep core braced, hips level, move slow and controlled."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: CORE STRENGTH & ANTI-ROTATION POWER (45-60 MINUTES)"
+        },
+        {
+          "n": 10,
+          "name": "Pallof Press with Step and Reach",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Resist rotation, step out and reach, maintain a stable core."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: CORE STRENGTH & ANTI-ROTATION POWER (45-60 MINUTES)"
+        },
+        {
+          "n": 11,
+          "name": "Suitcase Carry (Heavy)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Tall posture, resist lateral lean, strong grip, controlled pace."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "40 ft each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: CORE STRENGTH & ANTI-ROTATION POWER (45-60 MINUTES)"
+        },
+        {
+          "n": 12,
+          "name": "Cossack Squat to Balance",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Move slow, full range, keep foot flat, finish in single-leg balance."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: CORE STRENGTH & ANTI-ROTATION POWER (45-60 MINUTES)"
+        },
+        {
+          "n": 13,
+          "name": "Rotational Medicine Ball Slam (Overhead)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode through the hips and slam diagonally, keep core braced."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER BODY POWER & ROTATIONAL STRENGTH (45-60 MINUTES)",
+          "workoutNote": "Increase upper body pulling and pressing power while integrating rotation and speed."
+        },
+        {
+          "n": 14,
+          "name": "Single-Arm DB Bench Press with Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Press and rotate through the torso, keep shoulder down and stable."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER BODY POWER & ROTATIONAL STRENGTH (45-60 MINUTES)"
+        },
+        {
+          "n": 15,
+          "name": "TRX High Row to External Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Pull, rotate and externally rotate, keep ribs down and core engaged."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER BODY POWER & ROTATIONAL STRENGTH (45-60 MINUTES)"
+        },
+        {
+          "n": 16,
+          "name": "Push-Up to Row (Renegade)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Maintain a stable core, minimal hip sway, control the rotation."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER BODY POWER & ROTATIONAL STRENGTH (45-60 MINUTES)"
+        },
+        {
+          "n": 17,
+          "name": "Cable Woodchop (High to Low) (Explosive)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive and rotate through the hips, finish with speed and control."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER BODY POWER & ROTATIONAL STRENGTH (45-60 MINUTES)"
+        },
+        {
+          "n": 18,
+          "name": "Incline Y-T-R (Rotator Cuff)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep shoulders down, control the movement, improve scapular stability."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each position",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER BODY POWER & ROTATIONAL STRENGTH (45-60 MINUTES)"
+        },
+        {
+          "n": 19,
+          "name": "Step-Through Golf Swing (Max Speed)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode from the ground, rotate fully, maintain balance and finish tall."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY SPEED & ATHLETIC INTEGRATION (45-60 MINUTES)",
+          "workoutNote": "Combine strength, speed and coordination into advanced golf-specific movement patterns."
+        },
+        {
+          "n": 20,
+          "name": "Lateral Medicine Ball Scoop Throw (Rotational Power)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Load trail side, rotate and throw across the body with speed."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY SPEED & ATHLETIC INTEGRATION (45-60 MINUTES)"
+        },
+        {
+          "n": 21,
+          "name": "Rotational Box Jump to Stick Landing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode up and rotate, stick the landing, keep hips level."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY SPEED & ATHLETIC INTEGRATION (45-60 MINUTES)"
+        },
+        {
+          "n": 22,
+          "name": "Golfers Snatch (Heavy)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explosive hip drive, keep the weight close, finish tall with control."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "5 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY SPEED & ATHLETIC INTEGRATION (45-60 MINUTES)"
+        },
+        {
+          "n": 23,
+          "name": "Battle Rope Rotational Slams",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explosive rotation, maintain athletic stance, keep shoulders down."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "20 s each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY SPEED & ATHLETIC INTEGRATION (45-60 MINUTES)"
+        },
+        {
+          "n": 24,
+          "name": "Lateral Shuffle to Shot Stop",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Move quickly, control the stop, maintain posture, explosive push-off."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY SPEED & ATHLETIC INTEGRATION (45-60 MINUTES)"
+        }
+      ],
+      "editorNotes": "Labels removed: \"Header band:\", \"Top-right box:\", \"Footer:\" (text kept in notes; \"|\" and \"/\" separators turned into line breaks)."
+    },
+    {
+      "key": "4",
+      "label": "Week 4",
+      "driveId": "1PK3IXhamGCtMzSekAV7actbrGKWIUndT",
+      "focus": "Dynamic Integration & Athleticism: Combine speed, strength and control.",
+      "notes": "WEEK 4\nADVANCED GOLF PROGRAM\n4 WORKOUTS\n45-60 MINUTES EACH\nMOBILITY + STRENGTH + POWER + CONTROL\n\nWEEK 4\nDYNAMIC INTEGRATION & ATHLETICISM\nCombine strength, speed and rotation into powerful, athletic movement patterns.\n\nWORKOUT A FOCUS:\n- Explosive rotational power\n- Lower-body strength and stability\n- Ground force and hip drive\n- Power transfer into a rotational swing\n\nWORKOUT B FOCUS:\n- Single-leg strength and stability\n- Hip-torso separation and control\n- Glute and lateral hip engagement\n- Posture and balance under load\n\nWORKOUT C FOCUS:\n- Upper-body rotational power\n- Shoulder stability and control\n- Core integration and anti-rotation\n- Efficient force transfer to the club\n\nWORKOUT D FOCUS:\n- Full-body power and coordination\n- Rotational speed and athleticism\n- Dynamic movement patterns\n- Transfer strength into a faster, more efficient swing\n\nMDFIT ONLINE\nADVANCED GOLF PROGRAM\nWEEK 4 OF 6\n4 WORKOUTS PER WEEK\n45-60 MINUTES EACH\nPOWER. SPEED. CONTROL. CONSISTENCY. MOVE BETTER. PLAY BETTER.",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "Medicine Ball Rotational Scoop (High to Low)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode through the hips, rotate fully, finish balanced."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: ROTATIONAL POWER & LOWER-BODY STABILITY (45-60 MINUTES)",
+          "workoutNote": "Train explosive rotation, ground force and single-leg control to generate more consistent clubhead speed."
+        },
+        {
+          "n": 2,
+          "name": "Rear-Foot Elevated Split Squat with Rotation (DB or Cable)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive through front heel, rotate through the torso, keep knee stable."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: ROTATIONAL POWER & LOWER-BODY STABILITY (45-60 MINUTES)"
+        },
+        {
+          "n": 3,
+          "name": "Cable Woodchop (Low to High)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Initiate with hips, keep arms long, finish tall with full rotation."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: ROTATIONAL POWER & LOWER-BODY STABILITY (45-60 MINUTES)"
+        },
+        {
+          "n": 4,
+          "name": "Lateral Lunge to Rotational Press",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode laterally, load the trail leg, rotate and press through the torso."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: ROTATIONAL POWER & LOWER-BODY STABILITY (45-60 MINUTES)"
+        },
+        {
+          "n": 5,
+          "name": "Trap Bar Deadlift (Jump Shrug)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explosive hip extension, quick and powerful, soft landing."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "4",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: ROTATIONAL POWER & LOWER-BODY STABILITY (45-60 MINUTES)"
+        },
+        {
+          "n": 6,
+          "name": "Rotational Pallof Press Walk",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Maintain core brace, resist rotation, controlled steps."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: ROTATIONAL POWER & LOWER-BODY STABILITY (45-60 MINUTES)"
+        },
+        {
+          "n": 7,
+          "name": "Single-Leg RDL with Row (DB or Cable)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hinge at the hip, keep spine neutral, row without losing balance."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UNILATERAL STRENGTH & HIP-TORSO SEPARATION (45-60 MINUTES)",
+          "workoutNote": "Develop single-leg strength, hip-torso separation and controlled rotation for a more efficient, repeatable swing."
+        },
+        {
+          "n": 8,
+          "name": "Step-Up with Knee Drive & Rotation (DB)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive through heel, bring knee up, rotate over the top, control down."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UNILATERAL STRENGTH & HIP-TORSO SEPARATION (45-60 MINUTES)"
+        },
+        {
+          "n": 9,
+          "name": "TRX Single-Leg Squat to Row",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep knee aligned, use support as needed, maintain balance."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UNILATERAL STRENGTH & HIP-TORSO SEPARATION (45-60 MINUTES)"
+        },
+        {
+          "n": 10,
+          "name": "Cossack Squat to Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Move slow, deep range, rotate through the torso, keep foot flat."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UNILATERAL STRENGTH & HIP-TORSO SEPARATION (45-60 MINUTES)"
+        },
+        {
+          "n": 11,
+          "name": "Suitcase Carry with March",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Tall posture, core braced, drive the knee, resist lateral lean."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "40 ft each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UNILATERAL STRENGTH & HIP-TORSO SEPARATION (45-60 MINUTES)"
+        },
+        {
+          "n": 12,
+          "name": "Banded Hip Internal/External Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Control through full range of motion, keep pelvis stable."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UNILATERAL STRENGTH & HIP-TORSO SEPARATION (45-60 MINUTES)"
+        },
+        {
+          "n": 13,
+          "name": "Rotational Landmine Press (Explosive)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive from the hips, rotate and press, full finish, stable base."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER-BODY POWER & ROTATIONAL PULL/ PUSH (45-60 MINUTES)",
+          "workoutNote": "Build powerful, connected upper-body movement that integrates with lower-body rotation."
+        },
+        {
+          "n": 14,
+          "name": "Single-Arm Cable Row with Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Initiate with the hips, keep shoulder down, full rotation and control."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER-BODY POWER & ROTATIONAL PULL/ PUSH (45-60 MINUTES)"
+        },
+        {
+          "n": 15,
+          "name": "Push-Up to Row (Renegade)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep core stable, minimize hip sway, control the row."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER-BODY POWER & ROTATIONAL PULL/ PUSH (45-60 MINUTES)"
+        },
+        {
+          "n": 16,
+          "name": "Rotational Medicine Ball Slam (Overhead)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode down and across, rotate through the torso, finish with control."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER-BODY POWER & ROTATIONAL PULL/ PUSH (45-60 MINUTES)"
+        },
+        {
+          "n": 17,
+          "name": "Half-Kneeling Cable Lift to Press (High to Low)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep torso upright, rotate through the hips, finish tall."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER-BODY POWER & ROTATIONAL PULL/ PUSH (45-60 MINUTES)"
+        },
+        {
+          "n": 18,
+          "name": "Slider Y-T-W (Scapular Control)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep shoulders down, control the movement, focus on scapular stability."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each position",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER-BODY POWER & ROTATIONAL PULL/ PUSH (45-60 MINUTES)"
+        },
+        {
+          "n": 19,
+          "name": "Step-Through Golf Swing (Max Speed)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode from the ground, rotate fully, maintain posture, finish balanced."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY SPEED & ATHLETIC INTEGRATION (45-60 MINUTES)",
+          "workoutNote": "Integrate strength, speed and coordination into golf-specific, high-velocity movement patterns."
+        },
+        {
+          "n": 20,
+          "name": "Lateral Medicine Ball Scoop Throw (Rotational)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Load trail leg, rotate and throw across the body, finish tall."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY SPEED & ATHLETIC INTEGRATION (45-60 MINUTES)"
+        },
+        {
+          "n": 21,
+          "name": "Rotational Box Jump to Stick Landing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode up and rotate, stick the landing, hold 2-3 seconds."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "5 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY SPEED & ATHLETIC INTEGRATION (45-60 MINUTES)"
+        },
+        {
+          "n": 22,
+          "name": "Lateral Bound to Stick with Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode laterally, control the landing, rotate and hold balance."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY SPEED & ATHLETIC INTEGRATION (45-60 MINUTES)"
+        },
+        {
+          "n": 23,
+          "name": "Battle Rope Rotational Slams",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explosive rotation, maintain athletic stance, keep shoulders down."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "20 s each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY SPEED & ATHLETIC INTEGRATION (45-60 MINUTES)"
+        },
+        {
+          "n": 24,
+          "name": "Golfer's Carry Complex (Overhead + Suitcase)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Tall posture, core braced, controlled and smooth steps."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "40 ft each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY SPEED & ATHLETIC INTEGRATION (45-60 MINUTES)"
+        }
+      ],
+      "editorNotes": "Labels removed: \"Header band:\", \"Top-right box:\", \"Footer:\" (text kept in notes; \"|\" and \"/\" separators turned into line breaks)."
+    },
+    {
+      "key": "5",
+      "label": "Week 5",
+      "driveId": "1CWOJyeoY9Wc1hg_XxuEAMePXq3DvzZT1",
+      "focus": "On-Course Power & Endurance: Develop repeatable power under fatigue.",
+      "notes": "WEEK 5\nADVANCED GOLF PROGRAM\n4 WORKOUTS\n45-60 MINUTES EACH\nMOBILITY + STRENGTH + POWER + CONTROL\n\nWEEK 5\nON-COURSE POWER & ENDURANCE\nDevelop repeatable power under fatigue and transfer strength to the course.\n\nWORKOUT A FOCUS:\n- Lower-body power and endurance\n- Rotational strength under fatigue\n- Ground force production\n- Transfer power to the swing\n\nWORKOUT B FOCUS:\n- Rotational strength and power\n- Anti-rotation control\n- Hip-torso separation\n- Posture and balance under load\n\nWORKOUT C FOCUS:\n- Upper-body power and rotational speed\n- Shoulder stability and control\n- Scapular activation and core integration\n- Efficient force transfer to the club\n\nWORKOUT D FOCUS:\n- Full-body speed and coordination\n- Rotational power under fatigue\n- Dynamic movement patterns\n- Transfer strength into a faster, more efficient swing\n\nMDFIT ONLINE\nADVANCED GOLF PROGRAM\nWEEK 5 OF 6\n4 WORKOUTS PER WEEK\n45-60 MINUTES EACH\nPOWER. SPEED. CONTROL. CONSISTENCY. MOVE BETTER. PLAY BETTER.",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "Trap Bar Deadlift (Explosive)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive through the ground, full hip extension, maintain neutral spine."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER-BODY POWER & ROTATIONAL ENDURANCE (45-60 MINUTES)",
+          "workoutNote": "Develop repeatable lower-body power, endurance and rotational strength for consistent clubhead speed."
+        },
+        {
+          "n": 2,
+          "name": "Rear-Foot Elevated Split Squat with Rotation (DB or Cable)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hips square, rotate through the torso, finish tall and controlled."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER-BODY POWER & ROTATIONAL ENDURANCE (45-60 MINUTES)"
+        },
+        {
+          "n": 3,
+          "name": "Lateral Lunge to Landmine Press",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode laterally, load the trail leg, press and rotate through the torso."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER-BODY POWER & ROTATIONAL ENDURANCE (45-60 MINUTES)"
+        },
+        {
+          "n": 4,
+          "name": "Single-Leg RDL with Row (DB or Cable)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hinge at the hip, keep hips level, row without losing balance."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER-BODY POWER & ROTATIONAL ENDURANCE (45-60 MINUTES)"
+        },
+        {
+          "n": 5,
+          "name": "Rotational Box Jump to Stick Landing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode and rotate in the air, land softly and hold 2-3 s."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER-BODY POWER & ROTATIONAL ENDURANCE (45-60 MINUTES)"
+        },
+        {
+          "n": 6,
+          "name": "Sled Push (Moderate-Heavy)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive through hips, short powerful steps, maintain posture."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "20 yd",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: LOWER-BODY POWER & ROTATIONAL ENDURANCE (45-60 MINUTES)"
+        },
+        {
+          "n": 7,
+          "name": "Landmine Rotational Chop to Press (High to Low)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive from the hips, rotate through the torso, finish tall."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: ROTATIONAL STRENGTH & ANTI-ROTATION CONTROL (45-60 MINUTES)",
+          "workoutNote": "Build rotational power while maintaining core stability and resisting unwanted movement."
+        },
+        {
+          "n": 8,
+          "name": "Single-Arm Cable Row with Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep shoulder down, rotate through the torso, control the return."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: ROTATIONAL STRENGTH & ANTI-ROTATION CONTROL (45-60 MINUTES)"
+        },
+        {
+          "n": 9,
+          "name": "Pallof Press with Step Out",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Resist rotation, step out and hold, maintain a stable core."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: ROTATIONAL STRENGTH & ANTI-ROTATION CONTROL (45-60 MINUTES)"
+        },
+        {
+          "n": 10,
+          "name": "Cable Woodchop (Low to High)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Initiate with hips, keep arms long, rotate fully, finish tall with control."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: ROTATIONAL STRENGTH & ANTI-ROTATION CONTROL (45-60 MINUTES)"
+        },
+        {
+          "n": 11,
+          "name": "Rotational Medicine Ball Scoop Throw (Explosive)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Rotate and throw across the body, keep feet planted, finish tall."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: ROTATIONAL STRENGTH & ANTI-ROTATION CONTROL (45-60 MINUTES)"
+        },
+        {
+          "n": 12,
+          "name": "Suitcase Carry (Heavy)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Tall posture, resist lateral lean, keep core braced and shoulders level."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "40 ft each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: ROTATIONAL STRENGTH & ANTI-ROTATION CONTROL (45-60 MINUTES)"
+        },
+        {
+          "n": 13,
+          "name": "Rotational Overhead Medicine Ball Slam",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode down and across, rotate through the torso, finish with control."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER-BODY POWER & SPEED INTEGRATION (45-60 MINUTES)",
+          "workoutNote": "Train upper-body power and speed with rotational movement patterns and shoulder stability."
+        },
+        {
+          "n": 14,
+          "name": "Push-Up to Row (Renegade)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep core stable, minimize hip sway, control the row."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER-BODY POWER & SPEED INTEGRATION (45-60 MINUTES)"
+        },
+        {
+          "n": 15,
+          "name": "Single-Arm DB Bench Press with Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive and rotate, keep shoulder down, maintain a stable base."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER-BODY POWER & SPEED INTEGRATION (45-60 MINUTES)"
+        },
+        {
+          "n": 16,
+          "name": "TRX Row with External Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Pull, rotate and externally rotate, keep ribs down and core engaged."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER-BODY POWER & SPEED INTEGRATION (45-60 MINUTES)"
+        },
+        {
+          "n": 17,
+          "name": "Cable Press to Rotation (Standing)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Press and rotate through the torso, maintain control and posture."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER-BODY POWER & SPEED INTEGRATION (45-60 MINUTES)"
+        },
+        {
+          "n": 18,
+          "name": "Battle Rope Rotational Slams",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode, rotate through the torso, maintain athletic stance and control."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "20 s each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER-BODY POWER & SPEED INTEGRATION (45-60 MINUTES)"
+        },
+        {
+          "n": 19,
+          "name": "Step-Through Golf Swing (Max Speed)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode from the ground, rotate fully, maintain balance, finish tall."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY SPEED & MOVEMENT COMPLEXES (45-60 MINUTES)",
+          "workoutNote": "Combine strength, speed and coordination into golf-specific, high-intensity movement patterns."
+        },
+        {
+          "n": 20,
+          "name": "Lateral Bound to Stick with Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode laterally, control the landing, rotate and hold 2-3 s."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY SPEED & MOVEMENT COMPLEXES (45-60 MINUTES)"
+        },
+        {
+          "n": 21,
+          "name": "Jump Switch Lunge (Explosive)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Minimal ground contact, maintain posture and hip control."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY SPEED & MOVEMENT COMPLEXES (45-60 MINUTES)"
+        },
+        {
+          "n": 22,
+          "name": "Golfer's Snatch (Moderate-Heavy)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explosive hip drive, keep weight close, finish tall with control."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY SPEED & MOVEMENT COMPLEXES (45-60 MINUTES)"
+        },
+        {
+          "n": 23,
+          "name": "Rotational Push-Up to Reach",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Control the body, rotate through the torso, keep hips level."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY SPEED & MOVEMENT COMPLEXES (45-60 MINUTES)"
+        },
+        {
+          "n": 24,
+          "name": "Sled Sprint or Hill Sprint",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode forward, maintain posture, drive through hips, recover fully."
+          ],
+          "dosage": {
+            "sets": "6",
+            "reps": "20 yd",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY SPEED & MOVEMENT COMPLEXES (45-60 MINUTES)"
+        }
+      ],
+      "editorNotes": "Labels removed: \"Header band:\", \"Top-right box:\", \"Footer:\" (text kept in notes; \"|\" and \"/\" separators turned into line breaks)."
+    },
+    {
+      "key": "6",
+      "label": "Week 6",
+      "driveId": "1K_QdM23-pWQQprlhSH8hbNi1g_Lr-dY7",
+      "focus": "Performance & Refinement: Peak movement efficiency, consistency and resilience.",
+      "notes": "WEEK 6\nADVANCED GOLF PROGRAM\n4 WORKOUTS\n45-60 MINUTES EACH\nMOBILITY + STRENGTH + POWER + CONTROL\n\nFINISH STRONG:\n- Maximum power and control\n- Transfer to real performance\n- Greater consistency on course\n- Reduced injury risk\n- Sustainable long-term routine\n\nWORKOUT A FOCUS:\n- Integrated rotational power\n- Ground force and hip drive\n- Explosive intent with control\n- Transfer strength to the club\n\nWORKOUT B FOCUS:\n- Single-leg strength and control\n- Hip-torso separation\n- Glute and lateral hip stability\n- Balance and posture under load\n\nWORKOUT C FOCUS:\n- Upper-body power and rotational speed\n- Shoulder stability and control\n- Scapular activation and posture\n- Efficient force transfer to the club\n\nWORKOUT D FOCUS:\n- Full-body speed and power under fatigue\n- Rotational endurance and repeatability\n- Golf-specific movement patterns\n- Transfer strength into consistent on-course performance\n\nMDFIT ONLINE\nADVANCED GOLF PROGRAM\nWEEK 6 OF 6\n4 WORKOUTS PER WEEK\n45-60 MINUTES EACH\nPOWER. SPEED. CONTROL. CONSISTENCY. MOVE BETTER. PLAY BETTER.",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "Landmine Rotational Press (Explosive)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive from the ground, rotate fully, finish tall and balanced."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: POWER & ROTATION INTEGRATION (45-60 MINUTES)",
+          "workoutNote": "Combine strength, speed and precise rotational control to produce efficient, repeatable power."
+        },
+        {
+          "n": 2,
+          "name": "Cable Woodchop to High Finish",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode up and across, keep hips leading, finish in a tall, stable position."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: POWER & ROTATION INTEGRATION (45-60 MINUTES)"
+        },
+        {
+          "n": 3,
+          "name": "Rotational Medicine Ball Scoop Throw (Into Wall)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Load trail side, rotate and throw across the body with full intent."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: POWER & ROTATION INTEGRATION (45-60 MINUTES)"
+        },
+        {
+          "n": 4,
+          "name": "Step-Up with Knee Drive & Rotation (DB)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive through heel, rotate through the torso, control the down phase."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: POWER & ROTATION INTEGRATION (45-60 MINUTES)"
+        },
+        {
+          "n": 5,
+          "name": "Single-Leg RDL to Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Hinge at the hip, keep spine neutral, rotate through the torso."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: POWER & ROTATION INTEGRATION (45-60 MINUTES)"
+        },
+        {
+          "n": 6,
+          "name": "Lateral Bound to Stick",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode laterally, control the landing, freeze for 2-3 s."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT A: POWER & ROTATION INTEGRATION (45-60 MINUTES)"
+        },
+        {
+          "n": 7,
+          "name": "Bulgarian Split Squat with Rotation (DB or Cable)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep torso tall, rotate through the torso, maintain hip and knee alignment."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UNILATERAL STRENGTH & STABILITY REFINEMENT (45-60 MINUTES)",
+          "workoutNote": "Maximize single-leg strength, stability and hip-torso separation for better control and injury resilience."
+        },
+        {
+          "n": 8,
+          "name": "Single-Leg Cable Row with Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep knee aligned, rotate from the torso, control the return."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UNILATERAL STRENGTH & STABILITY REFINEMENT (45-60 MINUTES)"
+        },
+        {
+          "n": 9,
+          "name": "Elevated Step-Up to Balance with Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive through heel, bring knee up, rotate, hold 2-3 s."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UNILATERAL STRENGTH & STABILITY REFINEMENT (45-60 MINUTES)"
+        },
+        {
+          "n": 10,
+          "name": "TRX Single-Leg Squat to Row",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Maintain balance, use support as needed, keep hips level."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UNILATERAL STRENGTH & STABILITY REFINEMENT (45-60 MINUTES)"
+        },
+        {
+          "n": 11,
+          "name": "Suitcase Carry with March",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Tall posture, resist lateral lean, control the march."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "40 ft each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UNILATERAL STRENGTH & STABILITY REFINEMENT (45-60 MINUTES)"
+        },
+        {
+          "n": 12,
+          "name": "Cossack Squat to Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Move slow, deep range, rotate through the torso, keep foot flat and stable."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT B: UNILATERAL STRENGTH & STABILITY REFINEMENT (45-60 MINUTES)"
+        },
+        {
+          "n": 13,
+          "name": "Rotational Landmine Press (Overhead)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode up and across, keep core tight, finish tall and stable."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "5 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER-BODY POWER & SHOULDER HEALTH (45-60 MINUTES)",
+          "workoutNote": "Develop powerful upper-body movement with rotational speed while maintaining shoulder stability and control."
+        },
+        {
+          "n": 14,
+          "name": "Single-Arm DB Bench Press with Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Drive from the ground, keep shoulder down, rotate through torso."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER-BODY POWER & SHOULDER HEALTH (45-60 MINUTES)"
+        },
+        {
+          "n": 15,
+          "name": "Half-Kneeling Cable Lift to Press (High to Low)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep ribs down, rotate and press, control the finish."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER-BODY POWER & SHOULDER HEALTH (45-60 MINUTES)"
+        },
+        {
+          "n": 16,
+          "name": "Push-Up to Row (Renegade)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Keep core stable, minimize hip sway, control the row."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER-BODY POWER & SHOULDER HEALTH (45-60 MINUTES)"
+        },
+        {
+          "n": 17,
+          "name": "Rotational Medicine Ball Slam (Overhead or Side)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode down, rotate through the torso, finish with control."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER-BODY POWER & SHOULDER HEALTH (45-60 MINUTES)"
+        },
+        {
+          "n": 18,
+          "name": "TRX Y-T-W (Scapular Control)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Move with control, keep shoulders down, focus on scapular stability."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each position",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT C: UPPER-BODY POWER & SHOULDER HEALTH (45-60 MINUTES)"
+        },
+        {
+          "n": 19,
+          "name": "Step-Through Golf Swing (Max Speed)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode from the ground, rotate fully, maintain balance and finish tall."
+          ],
+          "dosage": {
+            "sets": "4",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY SPEED & ON-COURSE PERFORMANCE (45-60 MINUTES)",
+          "workoutNote": "Combine strength, speed and coordination into golf-specific, high-intensity movement patterns."
+        },
+        {
+          "n": 20,
+          "name": "Lateral Medicine Ball Scoop Throw (Rotational Power)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Load trail side, rotate and throw across the body. with intent."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY SPEED & ON-COURSE PERFORMANCE (45-60 MINUTES)"
+        },
+        {
+          "n": 21,
+          "name": "Battle Rope Rotational Slams",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explosive rotation, maintain athletic stance, keep shoulders down."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "20 s each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY SPEED & ON-COURSE PERFORMANCE (45-60 MINUTES)"
+        },
+        {
+          "n": 22,
+          "name": "Jump Switch Lunge (Explosive)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Minimal ground contact, maintain posture and hip control."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY SPEED & ON-COURSE PERFORMANCE (45-60 MINUTES)"
+        },
+        {
+          "n": 23,
+          "name": "Golfer's Carry Complex (Overhead + Suitcase)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Tall posture, core braced, controlled and smooth steps."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "40 ft each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY SPEED & ON-COURSE PERFORMANCE (45-60 MINUTES)"
+        },
+        {
+          "n": 24,
+          "name": "Sled Push or Hill Sprint",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [
+            "Explode forward, maintain posture, drive through hips, recover fully."
+          ],
+          "dosage": {
+            "sets": "6",
+            "reps": "20 yd",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "",
+          "workout": "WORKOUT D: FULL-BODY SPEED & ON-COURSE PERFORMANCE (45-60 MINUTES)"
+        }
+      ],
+      "editorNotes": "Labels removed: \"Header band:\", \"Top-right box:\", \"Footer:\" (text kept in notes; \"|\" and \"/\" separators turned into line breaks)."
+    }
+  ],
+  "uncertain": [
+    "Week 1 Workout A subtitle prints 'Build groundt force' (typo for 'ground'); kept as printed.",
+    "Week 6 Workout D #2 cue prints 'across the body. with intent.' with a full stop mid-sentence (confirmed at 4x zoom); kept as printed.",
+    "Week 4 Workout C heading prints 'ROTATIONAL PULL/ PUSH' with a space after the slash; kept as printed.",
+    "Weeks 2 and 3 print 'Golfers Snatch' (no apostrophe) while Week 5 prints 'Golfer's Snatch'; Week 4/6 print 'Golfer's Carry Complex' and Week 1 'Golfer Carry'. Kept each as printed.",
+    "'hip-torso' / 'Hip-torso' appears with an en dash on some sheets (Week 2 Workout B subtitle and focus, Week 6 Workout B subtitle and focus) and a hyphen on others; written with an ASCII hyphen throughout.",
+    "Week 2 footer prints 'MOVE BETTER. PLAY BETTER.' twice (once after a separator, once again before the golfer icon); kept both. Weeks 4-6 footers have no separator bar before 'MOVE BETTER. PLAY BETTER.' (Week 3 does); Week 1 footer ends at 'MOBILITY. POWER. CONTROL. CONSISTENCY.' with no 'MOVE BETTER' line.",
+    "Week 3 Workout C #5 name prints two parentheticals 'Cable Woodchop (High to Low) (Explosive)'; kept as printed.",
+    "Week 1 progression strip shows week 6 title as 'Performance & Refinement' on two lines ('Performance' / '& Refinement'); weeks 2-6 break it as 'Performance &' / 'Refinement'. Same words.",
+    "En dashes in ranges ('45–60', '6–8', '2–3 s') written as ASCII hyphens per the schema rule; the '×' in sets × reps is kept only in the source cell, split into sets/reps fields.",
+    "No level goals box, KEY CUES, warm-up, recovery, or how-to-progress rules appear on any sheet; top-level goal/principles/dailyBasics are empty. The 'TAKE YOUR GAME FURTHER' (week 1) and 'FINISH STRONG' (week 6) checklists are recorded in those weeks' notes only."
+  ],
+  "sourceNotes": "Read 6 sheets (1536x1024 each) via Drive thumbnail at sz=w2400, cropped per workout column and upscaled ~1.8-4x: week 1 (1ktPiRiCgqZdlFCNDjfeS6IiH-irdKE2Q), week 2 (1BqCHFB6fBBkv4sVeI8NcurswR_MOriQg), week 3 (1s69WRYKnS5q6ikY4-UvzFn8riqABmMGL), week 4 (1PK3IXhamGCtMzSekAV7actbrGKWIUndT), week 5 (1CWOJyeoY9Wc1hg_XxuEAMePXq3DvzZT1), week 6 (1K_QdM23-pWQQprlhSH8hbNi1g_Lr-dY7). All six weeks present, no duplicates. Each sheet: title + tagline header, top-right box (week 1: TAKE YOUR GAME FURTHER checklist; weeks 2-5: week title + description; week 6: FINISH STRONG checklist), 6-week progression strip (identical wording on every sheet, recorded once in progression.overview), WEEK n band '4 WORKOUTS | 45-60 MINUTES EACH | MOBILITY + STRENGTH + POWER + CONTROL' (same every week, in progression.callouts), four workouts A-D each with heading, 45-60 MINUTES time box, subtitle (workoutNote), 6 exercise rows (#, photo, EXERCISE, SETS × REPS, CUES) and a WORKOUT X FOCUS box (in week notes), then a footer bar (in week notes). Each CUES cell is one comma-joined sentence, stored as a single focus bullet.",
+  "editorNotes": "progression.callouts: The sheet prints \"|\" divider bars between these items; written as \"•\". Original: \"4 WORKOUTS | 45-60 MINUTES EACH | MOBILITY + STRENGTH + POWER + CONTROL\""
+}
