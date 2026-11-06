@@ -4,62 +4,210 @@
   "tagline": "Dual-Track Program with Weekly Integration",
   "goal": "This system restores posterior chain length, control, and movement confidence through two complementary tracks:\nTrack A: Posterior Chain Eccentric Protocol\nTrack B: Mobility Conditioning Circuit\nThe program is designed to be repeatable, progressive, and durable, not a short-term mobility fix.\nMost days use one track only.\nOne day per week, both tracks are intentionally combined.",
   "principles": [
-    { "title": "GLOBAL RULES (NON-NEGOTIABLE)", "text": "External load is used to access deeper range under control, not as a strength challenge" },
-    { "title": "GLOBAL RULES (NON-NEGOTIABLE)", "text": "Eccentric control governs every posterior chain movement" },
-    { "title": "GLOBAL RULES (NON-NEGOTIABLE)", "text": "Depth is self-regulated, never forced" },
-    { "title": "GLOBAL RULES (NON-NEGOTIABLE)", "text": "Quality, alignment, and breathing dictate progression" },
-    { "title": "GLOBAL RULES (NON-NEGOTIABLE)", "text": "If stiffness worsens beyond 24 hours, reduce volume or load — not movement quality" },
-    { "title": "POSTERIOR CHAIN TRACK — LOADING & DEPTH INTENT", "text": "External load in the Posterior Chain Track is used as a tool to access deeper range of motion under control, not to chase intensity.\nDepth always earns load. Load never forces depth." },
-    { "title": "KEY CUES", "text": "SHOULDERS DOWN" },
-    { "title": "KEY CUES", "text": "GLUTES ENGAGED (5-10%)" },
-    { "title": "KEY CUES", "text": "NASAL BREATHING" },
-    { "title": "KEY CUES", "text": "CONTROL THE LOWER" },
-    { "title": "KEY CUES", "text": "QUALITY OVER QUANTITY" },
-    { "title": "AVOID", "text": "Long periods of sitting" },
-    { "title": "AVOID", "text": "Forced stretching" },
-    { "title": "AVOID", "text": "Bouncing stretches" },
-    { "title": "AVOID", "text": "Sacrificing control for depth" }
+    {
+      "title": "GLOBAL RULES (NON-NEGOTIABLE)",
+      "text": "External load is used to access deeper range under control, not as a strength challenge"
+    },
+    {
+      "title": "GLOBAL RULES (NON-NEGOTIABLE)",
+      "text": "Eccentric control governs every posterior chain movement"
+    },
+    {
+      "title": "GLOBAL RULES (NON-NEGOTIABLE)",
+      "text": "Depth is self-regulated, never forced"
+    },
+    {
+      "title": "GLOBAL RULES (NON-NEGOTIABLE)",
+      "text": "Quality, alignment, and breathing dictate progression"
+    },
+    {
+      "title": "GLOBAL RULES (NON-NEGOTIABLE)",
+      "text": "If stiffness worsens beyond 24 hours, reduce volume or load — not movement quality"
+    },
+    {
+      "title": "POSTERIOR CHAIN TRACK — LOADING & DEPTH INTENT",
+      "text": "External load in the Posterior Chain Track is used as a tool to access deeper range of motion under control, not to chase intensity.\nDepth always earns load. Load never forces depth."
+    },
+    {
+      "title": "KEY CUES",
+      "text": "SHOULDERS DOWN"
+    },
+    {
+      "title": "KEY CUES",
+      "text": "GLUTES ENGAGED (5-10%)"
+    },
+    {
+      "title": "KEY CUES",
+      "text": "NASAL BREATHING"
+    },
+    {
+      "title": "KEY CUES",
+      "text": "CONTROL THE LOWER"
+    },
+    {
+      "title": "KEY CUES",
+      "text": "QUALITY OVER QUANTITY"
+    },
+    {
+      "title": "AVOID",
+      "text": "Long periods of sitting"
+    },
+    {
+      "title": "AVOID",
+      "text": "Forced stretching"
+    },
+    {
+      "title": "AVOID",
+      "text": "Bouncing stretches"
+    },
+    {
+      "title": "AVOID",
+      "text": "Sacrificing control for depth"
+    }
   ],
   "dailyBasics": [
-    { "title": "DAILY NON-NEGOTIABLES (ALL 12 WEEKS)", "text": "Morning: 90/90 Breathing\n3 × 5 breaths\nThoracic Rotation - 10/side" },
-    { "title": "DAILY NON-NEGOTIABLES (ALL 12 WEEKS)", "text": "Walk 20-30 minutes daily" },
-    { "title": "DAILY NON-NEGOTIABLES (ALL 12 WEEKS)", "text": "Hydrate" },
-    { "title": "DAILY NON-NEGOTIABLES (ALL 12 WEEKS)", "text": "Change positions frequently" },
-    { "title": "DAILY NON-NEGOTIABLES (ALL 12 WEEKS)", "text": "Shoulders down into pockets" },
-    { "title": "DAILY NON-NEGOTIABLES (ALL 12 WEEKS)", "text": "Glutes lightly engaged (5-10%)" },
-    { "title": "DAILY NON-NEGOTIABLES (ALL 12 WEEKS)", "text": "Walk every hour (if desk-bound)" },
-    { "title": "DAILY NON-NEGOTIABLES (ALL 12 WEEKS)", "text": "Chin tucked" },
-    { "title": "DAILY RECOVERY ESSENTIALS (NON-NEGOTIABLE): ACUPRESSURE MAT FOR MUSCLE RELAXATION", "text": "Use daily for 10-20 minutes.\nGreat for reducing muscle tension, improving circulation and promoting relaxation.\nPROGRESSION:\nWeek 1: Soft surface, thin shirt\nWeek 2-3: Harder surface\nWeek 4+: Bare skin, hard surface\nGoal: 20 minutes" },
-    { "title": "DAILY RECOVERY ESSENTIALS (NON-NEGOTIABLE): ICE PACKS TO MAINTAIN LENGTH", "text": "Use 10-15 minutes daily on tight or worked areas.\nHelps maintain newly gained tissue length and reduce reactive tightening." },
-    { "title": "DAILY CHECKLIST - DO THESE EVERY DAY", "text": "Walk 20-30 Minutes" },
-    { "title": "DAILY CHECKLIST - DO THESE EVERY DAY", "text": "Hydration Goal" },
-    { "title": "DAILY CHECKLIST - DO THESE EVERY DAY", "text": "Shoulders Down Into Pockets" },
-    { "title": "DAILY CHECKLIST - DO THESE EVERY DAY", "text": "Chin Tucked" },
-    { "title": "DAILY CHECKLIST - DO THESE EVERY DAY", "text": "Glutes Engaged (5-10%)" },
-    { "title": "DAILY CHECKLIST - DO THESE EVERY DAY", "text": "Frequent Position Changes" },
-    { "title": "DAILY CHECKLIST - DO THESE EVERY DAY", "text": "Nasal Breathing" },
-    { "title": "DAILY CHECKLIST - DO THESE EVERY DAY", "text": "Acupressure Mat" },
-    { "title": "DAILY CHECKLIST - DO THESE EVERY DAY", "text": "Ice Pack Protocol (10-15 min)" },
-    { "title": "ACTIVE RECOVERY DAY CHECKLIST", "text": "Walk 30 Minutes" },
-    { "title": "ACTIVE RECOVERY DAY CHECKLIST", "text": "Open Book" },
-    { "title": "ACTIVE RECOVERY DAY CHECKLIST", "text": "Couch Stretch" },
-    { "title": "ACTIVE RECOVERY DAY CHECKLIST", "text": "Thoracic Rotation" },
-    { "title": "ACTIVE RECOVERY DAY CHECKLIST", "text": "Acupressure Mat" },
-    { "title": "ACTIVE RECOVERY DAY CHECKLIST", "text": "Ice Pack Protocol (10-15 min)" },
-    { "title": "ACTIVE RECOVERY DAY CHECKLIST", "text": "OPTIONAL: Track B Circuit" },
-    { "title": "ACUPRESSURE MAT PROGRESSION", "text": "WEEK 1: Soft Surface; Thin Shirt\nWEEKS 2-3: Harder Surface\nWEEKS 4-12: Hard Surface; Minimal Clothing\nGOAL: 20 Minutes Continuous" },
-    { "title": "ICE PACK PROTOCOL", "text": "10-15 Minutes\nApply after training or mobility work.\nPURPOSE: Maintain newly gained tissue length and reduce reactive tightening while training new movement patterns." }
+    {
+      "title": "DAILY NON-NEGOTIABLES (ALL 12 WEEKS)",
+      "text": "Morning: 90/90 Breathing\n3 × 5 breaths\nThoracic Rotation - 10/side"
+    },
+    {
+      "title": "DAILY NON-NEGOTIABLES (ALL 12 WEEKS)",
+      "text": "Walk 20-30 minutes daily"
+    },
+    {
+      "title": "DAILY NON-NEGOTIABLES (ALL 12 WEEKS)",
+      "text": "Hydrate"
+    },
+    {
+      "title": "DAILY NON-NEGOTIABLES (ALL 12 WEEKS)",
+      "text": "Change positions frequently"
+    },
+    {
+      "title": "DAILY NON-NEGOTIABLES (ALL 12 WEEKS)",
+      "text": "Shoulders down into pockets"
+    },
+    {
+      "title": "DAILY NON-NEGOTIABLES (ALL 12 WEEKS)",
+      "text": "Glutes lightly engaged (5-10%)"
+    },
+    {
+      "title": "DAILY NON-NEGOTIABLES (ALL 12 WEEKS)",
+      "text": "Walk every hour (if desk-bound)"
+    },
+    {
+      "title": "DAILY NON-NEGOTIABLES (ALL 12 WEEKS)",
+      "text": "Chin tucked"
+    },
+    {
+      "title": "DAILY RECOVERY ESSENTIALS (NON-NEGOTIABLE): ACUPRESSURE MAT FOR MUSCLE RELAXATION",
+      "text": "Use daily for 10-20 minutes.\nGreat for reducing muscle tension, improving circulation and promoting relaxation.\nPROGRESSION:\nWeek 1: Soft surface, thin shirt\nWeek 2-3: Harder surface\nWeek 4+: Bare skin, hard surface\nGoal: 20 minutes"
+    },
+    {
+      "title": "DAILY RECOVERY ESSENTIALS (NON-NEGOTIABLE): ICE PACKS TO MAINTAIN LENGTH",
+      "text": "Use 10-15 minutes daily on tight or worked areas.\nHelps maintain newly gained tissue length and reduce reactive tightening."
+    },
+    {
+      "title": "DAILY CHECKLIST - DO THESE EVERY DAY",
+      "text": "Walk 20-30 Minutes"
+    },
+    {
+      "title": "DAILY CHECKLIST - DO THESE EVERY DAY",
+      "text": "Hydration Goal"
+    },
+    {
+      "title": "DAILY CHECKLIST - DO THESE EVERY DAY",
+      "text": "Shoulders Down Into Pockets"
+    },
+    {
+      "title": "DAILY CHECKLIST - DO THESE EVERY DAY",
+      "text": "Chin Tucked"
+    },
+    {
+      "title": "DAILY CHECKLIST - DO THESE EVERY DAY",
+      "text": "Glutes Engaged (5-10%)"
+    },
+    {
+      "title": "DAILY CHECKLIST - DO THESE EVERY DAY",
+      "text": "Frequent Position Changes"
+    },
+    {
+      "title": "DAILY CHECKLIST - DO THESE EVERY DAY",
+      "text": "Nasal Breathing"
+    },
+    {
+      "title": "DAILY CHECKLIST - DO THESE EVERY DAY",
+      "text": "Acupressure Mat"
+    },
+    {
+      "title": "DAILY CHECKLIST - DO THESE EVERY DAY",
+      "text": "Ice Pack Protocol (10-15 min)"
+    },
+    {
+      "title": "ACTIVE RECOVERY DAY CHECKLIST",
+      "text": "Walk 30 Minutes"
+    },
+    {
+      "title": "ACTIVE RECOVERY DAY CHECKLIST",
+      "text": "Open Book"
+    },
+    {
+      "title": "ACTIVE RECOVERY DAY CHECKLIST",
+      "text": "Couch Stretch"
+    },
+    {
+      "title": "ACTIVE RECOVERY DAY CHECKLIST",
+      "text": "Thoracic Rotation"
+    },
+    {
+      "title": "ACTIVE RECOVERY DAY CHECKLIST",
+      "text": "Acupressure Mat"
+    },
+    {
+      "title": "ACTIVE RECOVERY DAY CHECKLIST",
+      "text": "Ice Pack Protocol (10-15 min)"
+    },
+    {
+      "title": "ACTIVE RECOVERY DAY CHECKLIST",
+      "text": "OPTIONAL: Track B Circuit"
+    },
+    {
+      "title": "ACUPRESSURE MAT PROGRESSION",
+      "text": "WEEK 1: Soft Surface; Thin Shirt\nWEEKS 2-3: Harder Surface\nWEEKS 4-12: Hard Surface; Minimal Clothing\nGOAL: 20 Minutes Continuous"
+    },
+    {
+      "title": "ICE PACK PROTOCOL",
+      "text": "10-15 Minutes\nApply after training or mobility work.\nPURPOSE: Maintain newly gained tissue length and reduce reactive tightening while training new movement patterns."
+    }
   ],
   "progression": {
     "overview": [
-      { "week": "1-2", "focus": "PHASE 1 — RESET & DECOMPRESS. GOAL: Reduce protective tension and improve positioning." },
-      { "week": "3-4", "focus": "PHASE 2 — RE-LENGTHEN & ACTIVATE. GOAL: Create usable mobility." },
-      { "week": "5-6", "focus": "PHASE 3 — GROUND MOBILITY DEVELOPMENT. GOAL: Own new ranges of motion." },
-      { "week": "7-8", "focus": "PHASE 4 — ROTATION & STABILITY. GOAL: Build rotational control and trunk stability." },
-      { "week": "9-10", "focus": "PHASE 5 — DYNAMIC MOBILITY. GOAL: Transfer mobility into movement." },
-      { "week": "11-12", "focus": "PHASE 6 — PERFORMANCE MOBILITY. GOAL: Maintain mobility under athletic conditions." }
+      {
+        "week": "1-2",
+        "focus": "PHASE 1 — RESET & DECOMPRESS. GOAL: Reduce protective tension and improve positioning."
+      },
+      {
+        "week": "3-4",
+        "focus": "PHASE 2 — RE-LENGTHEN & ACTIVATE. GOAL: Create usable mobility."
+      },
+      {
+        "week": "5-6",
+        "focus": "PHASE 3 — GROUND MOBILITY DEVELOPMENT. GOAL: Own new ranges of motion."
+      },
+      {
+        "week": "7-8",
+        "focus": "PHASE 4 — ROTATION & STABILITY. GOAL: Build rotational control and trunk stability."
+      },
+      {
+        "week": "9-10",
+        "focus": "PHASE 5 — DYNAMIC MOBILITY. GOAL: Transfer mobility into movement."
+      },
+      {
+        "week": "11-12",
+        "focus": "PHASE 6 — PERFORMANCE MOBILITY. GOAL: Maintain mobility under athletic conditions."
+      }
     ],
     "guidelines": [
+      "HOW THE BALANCE SHIFTS — Weeks 1-2 lean toward mobility: Track B (mobility circuit) 3x/week, Track A (posterior chain strength) 2x/week. From Week 3 the balance shifts toward strength: Track A 3x/week, Track B 2x/week, through Week 12.",
       "TRACK A PROGRESSION ROADMAP — WEEKS 1-4 FOUNDATION: Minimal load. Learn positions and master eccentric control.",
       "TRACK A PROGRESSION ROADMAP — WEEKS 5-8 BUILD: Increase load 10-20% while maintaining perfect control and positions.",
       "TRACK A PROGRESSION ROADMAP — WEEKS 9-12 ADVANCE: Continue to progress load. Maintain perfect eccentric control and full range.",
@@ -67,7 +215,6 @@
       "WEEKS 3-4: CONTROLLED DEPTH EXPANSION — Load: Moderate. Focus: Owning greater usable depth. Load may increase slightly to allow access to deeper positions while maintaining slow eccentrics, alignment, and consistency.",
       "WEEKS 5-6: OWNED DEPTH — Load: Increased as tolerated. Focus: Stable, repeatable depth under full control. If added load reduces depth or control, load is reduced immediately.",
       "TRACK COMBINATION RULE — Track A and Track B are typically performed on separate days. One day per week, both tracks are performed together. Combined Day Order: Track A first; Track B second, at a controlled pace. This day reinforces newly gained range through full-body movement.",
-      "EXAMPLE WEEKLY CALENDAR — Monday: Track A — Posterior Chain Eccentric Protocol. Tuesday: Track B — Mobility Conditioning Circuit. Wednesday: Track A — Posterior Chain Eccentric Protocol. Thursday: Track B — Mobility Conditioning Circuit. Friday: Track A + Track B (Combined Day) Track A first, Track B second. Saturday: Optional Track A or Active Recovery. Sunday: Full Rest.",
       "OPTION 1 — WEEKS 1-2 OF THE PROGRAM (TRACK A TWICE PER WEEK). 3 TRACK B DAYS • 1 FULL REST DAY (OPTIONAL TRACK B ON SATURDAY). MON: TRACK A (Complete Track A Workout; Daily Checklist (Below)). TUE: TRACK B (Complete Track B Circuit; Daily Checklist (Below)). WED: TRACK B (Complete Track B Circuit; Daily Checklist (Below)). THU: TRACK A (Complete Track A Workout; Daily Checklist (Below)). FRI: TRACK B (Complete Track B Circuit; Daily Checklist (Below)). SAT: ACTIVE RECOVERY, OPTIONAL TRACK B (Active Recovery Checklist (Below) OR Track B Circuit). SUN: REST DAY (Full Rest Day; Daily Checklist (Below)). This option is for Weeks 1-2 to build the foundation. Track A = 2x/week, Track B = 3x/week.",
       "OPTION 2 — WEEKS 3-12 OF THE PROGRAM (TRACK A THREE TIMES PER WEEK). 2 TRACK B DAYS • 1 ACTIVE RECOVERY DAY • 1 FULL REST DAY. MON: TRACK A (Complete Track A Workout; Daily Checklist (Below)). TUE: TRACK B (Complete Track B Circuit; Daily Checklist (Below)). WED: TRACK A (Complete Track A Workout; Daily Checklist (Below)). THU: ACTIVE RECOVERY (Active Recovery Checklist (Below); Optional Track B Circuit). FRI: TRACK B (Complete Track B Circuit; Daily Checklist (Below)). SAT: TRACK A (Complete Track A Workout; Daily Checklist (Below)). SUN: REST DAY (Full Rest Day; Daily Checklist (Below)). This option begins in Week 3 and continues through Week 12. Track A = 3x/week, Track B = 2x/week.",
       "WALKING: Weeks 1-2: 20-30 MIN DAILY; Weeks 3-12: 25-30 MIN DAILY."
@@ -89,7 +236,7 @@
       "label": "TRACK A — POSTERIOR CHAIN ECCENTRIC PROTOCOL",
       "driveId": "1k8lFfMQMp0xQpabOYmtEg7UXS4EXynSp",
       "focus": "THE GOAL: BUILD LENGTH, STRENGTH & RESILIENCE IN THE POSTERIOR CHAIN",
-      "notes": "FREQUENCY 2-4x / WEEK\nVOLUME 3 SETS × 12-20 REPS\nTEMPO 4-6 SECOND LOWERING PHASE\n\n- Frequency: 2–4× per week\n- Session Length: 25–35 minutes\n- Prescription (All Movements): 3 sets × 12–20 reps, 4–6 second eccentric\n- Concentric phase assisted or unloaded as needed\n\nExercises (Performed Every Track A Session)",
+      "notes": "FREQUENCY 2x / WEEK (WEEKS 1-2), 3x / WEEK (WEEKS 3-12)\nVOLUME 3 SETS × 12-20 REPS\nTEMPO 4-6 SECOND LOWERING PHASE\n\n- Frequency: 2× per week in Weeks 1-2, then 3× per week from Week 3\n- Session Length: 25–35 minutes\n- Prescription (All Movements): 3 sets × 12–20 reps, 4–6 second eccentric\n- Concentric phase assisted or unloaded as needed\n\nExercises (Performed Every Track A Session)",
       "editorNotes": "Not a calendar week: the Track A session, performed every Track A day in all 12 weeks (2x/week in weeks 1-2, 3x/week in weeks 3-12 per 'Week 1&2 vs 3-12.png' 1V4ILNrn9i9FOkgWmFKp-ruBx7PgrPLrp; rules doc says 2-4× per week).\nSources: poster 'Track A vs Track B.png' (1k8lFfMQMp0xQpabOYmtEg7UXS4EXynSp, left half) + rules doc 1aa-jLXdkfbh5ISq8ZcIkiBz6SzeRI_7F4skyIgLecZE (= PDF 1OTQ3WfAl5JiM86MgIcIQIxG_hMQTttHx).\nLabels removed: \"Poster header:\", \"Rules doc:\" (text kept in notes).\nhowTo = poster 'HOW TO PERFORM (ECCENTRIC FOCUS)' bullets; focus = cue lines under the matching heading in the rules doc. Exercise 7 (Baseball Cable Swing) is on the poster and weekly checklist only, not in the rules doc.",
       "exercises": [
         {
@@ -97,84 +244,230 @@
           "name": "Eccentric Calf Drops (Straight Knee)",
           "isNew": false,
           "whenToUse": "",
-          "howTo": ["Step off a ledge with balls of feet.", "Rise up with both feet.", "Lower down for 4-6 seconds.", "Feel deep stretch in calf."],
-          "focus": ["Rise with both feet", "Lower on one foot", "Knee stays straight"],
-          "dosage": { "sets": "3", "reps": "12-20", "tempo": "4-6 second lowering phase", "hold": "", "frequency": "2-4x / week", "other": { "Rules doc heading": "Eccentric Calf Drops — Straight Leg", "Concentric": "Concentric phase assisted or unloaded as needed" } },
+          "howTo": [
+            "Step off a ledge with balls of feet.",
+            "Rise up with both feet.",
+            "Lower down for 4-6 seconds.",
+            "Feel deep stretch in calf."
+          ],
+          "focus": [
+            "Rise with both feet",
+            "Lower on one foot",
+            "Knee stays straight"
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12-20",
+            "tempo": "4-6 second lowering phase",
+            "hold": "",
+            "frequency": "2-4x / week",
+            "other": {
+              "Rules doc heading": "Eccentric Calf Drops — Straight Leg",
+              "Concentric": "Concentric phase assisted or unloaded as needed"
+            }
+          },
           "steps": [],
           "proTip": "",
-          "video": { "title": "Copy of AN_CO_ECCENTRIC_CALF_DROPS_RHB.mp4", "driveId": "1vxHmhVpTzIrS1hHHhgYDmmsc0A2V3ucU" }
+          "video": {
+            "title": "Copy of AN_CO_ECCENTRIC_CALF_DROPS_RHB.mp4",
+            "driveId": "1vxHmhVpTzIrS1hHHhgYDmmsc0A2V3ucU"
+          }
         },
         {
           "n": 2,
           "name": "Eccentric Calf Drops (Bent Knee)",
           "isNew": false,
           "whenToUse": "",
-          "howTo": ["Step off a ledge with bent knees.", "Rise up with both feet.", "Lower down for 4-6 seconds.", "Feel deep stretch in lower calf."],
-          "focus": ["Slight knee bend maintained", "Smaller controlled range"],
-          "dosage": { "sets": "3", "reps": "12-20", "tempo": "4-6 second lowering phase", "hold": "", "frequency": "2-4x / week", "other": { "Rules doc heading": "Eccentric Calf Drops — Bent Knee", "Concentric": "Concentric phase assisted or unloaded as needed" } },
+          "howTo": [
+            "Step off a ledge with bent knees.",
+            "Rise up with both feet.",
+            "Lower down for 4-6 seconds.",
+            "Feel deep stretch in lower calf."
+          ],
+          "focus": [
+            "Slight knee bend maintained",
+            "Smaller controlled range"
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12-20",
+            "tempo": "4-6 second lowering phase",
+            "hold": "",
+            "frequency": "2-4x / week",
+            "other": {
+              "Rules doc heading": "Eccentric Calf Drops — Bent Knee",
+              "Concentric": "Concentric phase assisted or unloaded as needed"
+            }
+          },
           "steps": [],
           "proTip": "",
-          "video": { "title": "Copy of AN_CO_ECCENTRIC_CALF_DROPS_RHB.mp4", "driveId": "1vxHmhVpTzIrS1hHHhgYDmmsc0A2V3ucU" }
+          "video": {
+            "title": "Copy of AN_CO_ECCENTRIC_CALF_DROPS_RHB.mp4",
+            "driveId": "1vxHmhVpTzIrS1hHHhgYDmmsc0A2V3ucU"
+          }
         },
         {
           "n": 3,
           "name": "Straight Leg Deadlift Eccentric",
           "isNew": false,
           "whenToUse": "",
-          "howTo": ["Hinge at hips with soft knees.", "Lower weight down the legs for 4-6 seconds.", "Feel stretch in hamstrings."],
-          "focus": ["Minimal to moderate load", "Hips back, spine neutral", "Stop before lumbar flexion"],
-          "dosage": { "sets": "3", "reps": "12-20", "tempo": "4-6 second lowering phase", "hold": "", "frequency": "2-4x / week", "other": { "Rules doc heading": "Straight-Leg Deadlift — Eccentric Only", "Concentric": "Concentric phase assisted or unloaded as needed" } },
+          "howTo": [
+            "Hinge at hips with soft knees.",
+            "Lower weight down the legs for 4-6 seconds.",
+            "Feel stretch in hamstrings."
+          ],
+          "focus": [
+            "Minimal to moderate load",
+            "Hips back, spine neutral",
+            "Stop before lumbar flexion"
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12-20",
+            "tempo": "4-6 second lowering phase",
+            "hold": "",
+            "frequency": "2-4x / week",
+            "other": {
+              "Rules doc heading": "Straight-Leg Deadlift — Eccentric Only",
+              "Concentric": "Concentric phase assisted or unloaded as needed"
+            }
+          },
           "steps": [],
           "proTip": "",
-          "video": { "title": "Copy of HP_HN_STRAIGHT_LEG_DEADLIFT_STR.mp4", "driveId": "1rmmahpsKEqOGRjRedSS0XxMo4z4a44ik" }
+          "video": {
+            "title": "Copy of HP_HN_STRAIGHT_LEG_DEADLIFT_STR.mp4",
+            "driveId": "1rmmahpsKEqOGRjRedSS0XxMo4z4a44ik"
+          }
         },
         {
           "n": 4,
           "name": "Romanian Deadlift Eccentric",
           "isNew": false,
           "whenToUse": "",
-          "howTo": ["Hinge at hips.", "Maintain neutral spine.", "Lower bar down legs for 4-6 seconds.", "Feel stretch in hamstrings and glutes."],
-          "focus": ["Slight knee bend", "Controlled hinge", "Even posterior chain tension"],
-          "dosage": { "sets": "3", "reps": "12-20", "tempo": "4-6 second lowering phase", "hold": "", "frequency": "2-4x / week", "other": { "Rules doc heading": "Romanian Deadlift — Eccentric Only", "Concentric": "Concentric phase assisted or unloaded as needed" } },
+          "howTo": [
+            "Hinge at hips.",
+            "Maintain neutral spine.",
+            "Lower bar down legs for 4-6 seconds.",
+            "Feel stretch in hamstrings and glutes."
+          ],
+          "focus": [
+            "Slight knee bend",
+            "Controlled hinge",
+            "Even posterior chain tension"
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12-20",
+            "tempo": "4-6 second lowering phase",
+            "hold": "",
+            "frequency": "2-4x / week",
+            "other": {
+              "Rules doc heading": "Romanian Deadlift — Eccentric Only",
+              "Concentric": "Concentric phase assisted or unloaded as needed"
+            }
+          },
           "steps": [],
           "proTip": "",
-          "video": { "title": "Copy of HP_HN_ROMANIAN_DEADLIFT_STR.mp4", "driveId": "1Na_dF_z1tYFcSeRu46W8GkPsFfupyqhJ" }
+          "video": {
+            "title": "Copy of HP_HN_ROMANIAN_DEADLIFT_STR.mp4",
+            "driveId": "1Na_dF_z1tYFcSeRu46W8GkPsFfupyqhJ"
+          }
         },
         {
           "n": 5,
           "name": "Glute Hip Bridge",
           "isNew": false,
           "whenToUse": "",
-          "howTo": ["Drive through heels and lift hips.", "Squeeze glutes at top.", "Lower down for 4-6 seconds.", "Feel length in glutes and hamstrings."],
-          "focus": ["Posterior pelvic tilt first", "Ribs down, abs braced", "Slow controlled lowering"],
-          "dosage": { "sets": "3", "reps": "12-20", "tempo": "4-6 second lowering phase", "hold": "", "frequency": "2-4x / week", "other": { "Rules doc heading": "Glute Hip Bridge with Maximal Core Contraction", "Concentric": "Concentric phase assisted or unloaded as needed" } },
+          "howTo": [
+            "Drive through heels and lift hips.",
+            "Squeeze glutes at top.",
+            "Lower down for 4-6 seconds.",
+            "Feel length in glutes and hamstrings."
+          ],
+          "focus": [
+            "Posterior pelvic tilt first",
+            "Ribs down, abs braced",
+            "Slow controlled lowering"
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12-20",
+            "tempo": "4-6 second lowering phase",
+            "hold": "",
+            "frequency": "2-4x / week",
+            "other": {
+              "Rules doc heading": "Glute Hip Bridge with Maximal Core Contraction",
+              "Concentric": "Concentric phase assisted or unloaded as needed"
+            }
+          },
           "steps": [],
           "proTip": "",
-          "video": { "title": "Copy of HP_HN_HIP_THRUST_MOB.mp4", "driveId": "1D8OO6x8Fkw-LAwSlMuDuHiqbDxgkg9DG" }
+          "video": {
+            "title": "Copy of HP_HN_HIP_THRUST_MOB.mp4",
+            "driveId": "1D8OO6x8Fkw-LAwSlMuDuHiqbDxgkg9DG"
+          }
         },
         {
           "n": 6,
           "name": "Kneeling Straight Arm Cable Pulldown",
           "isNew": false,
           "whenToUse": "",
-          "howTo": ["Kneel tall facing cable.", "Pull arms down and back.", "Lower up slowly for 4-6 seconds.", "Feel stretch in lats."],
-          "focus": ["Tall kneeling", "Arms straight", "Neutral spine maintained"],
-          "dosage": { "sets": "3", "reps": "12-20", "tempo": "4-6 second lowering phase", "hold": "", "frequency": "2-4x / week", "other": { "Rules doc heading": "Kneeling Straight-Arm Cable Pulldown", "Weekly checklist name": "Kneeling Straight Arm Pulldown", "Concentric": "Concentric phase assisted or unloaded as needed" } },
+          "howTo": [
+            "Kneel tall facing cable.",
+            "Pull arms down and back.",
+            "Lower up slowly for 4-6 seconds.",
+            "Feel stretch in lats."
+          ],
+          "focus": [
+            "Tall kneeling",
+            "Arms straight",
+            "Neutral spine maintained"
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12-20",
+            "tempo": "4-6 second lowering phase",
+            "hold": "",
+            "frequency": "2-4x / week",
+            "other": {
+              "Rules doc heading": "Kneeling Straight-Arm Cable Pulldown",
+              "Weekly checklist name": "Kneeling Straight Arm Pulldown",
+              "Concentric": "Concentric phase assisted or unloaded as needed"
+            }
+          },
           "steps": [],
           "proTip": "",
-          "video": { "title": "Copy of SH_PL_OVERHEAD_STRAIGHT_ARM_PULLDOWN_MOB.mp4", "driveId": "1MHowEhZlzRuJP5MXpMjeK8zG1hYDNb4z" }
+          "video": {
+            "title": "Copy of SH_PL_OVERHEAD_STRAIGHT_ARM_PULLDOWN_MOB.mp4",
+            "driveId": "1MHowEhZlzRuJP5MXpMjeK8zG1hYDNb4z"
+          }
         },
         {
           "n": 7,
           "name": "Baseball Cable Swing",
           "isNew": false,
           "whenToUse": "",
-          "howTo": ["Set cable at chest height.", "Rotate and swing across body explosively.", "Control the return for 4-6 seconds.", "Feel stretch across obliques and lats."],
+          "howTo": [
+            "Set cable at chest height.",
+            "Rotate and swing across body explosively.",
+            "Control the return for 4-6 seconds.",
+            "Feel stretch across obliques and lats."
+          ],
           "focus": [],
-          "dosage": { "sets": "3", "reps": "12-20", "tempo": "4-6 second lowering phase", "hold": "", "frequency": "2-4x / week", "other": {} },
+          "dosage": {
+            "sets": "3",
+            "reps": "12-20",
+            "tempo": "4-6 second lowering phase",
+            "hold": "",
+            "frequency": "2-4x / week",
+            "other": {}
+          },
           "steps": [],
           "proTip": "",
-          "video": { "title": "Copy of SP_RT_BASEBALL_CABLE_STRETCH_MOB.mp4", "driveId": "1kRpBxT2luZ7txshPnqL78Lp0ELX5WDEr" }
+          "video": {
+            "title": "Copy of SP_RT_BASEBALL_CABLE_STRETCH_MOB.mp4",
+            "driveId": "1kRpBxT2luZ7txshPnqL78Lp0ELX5WDEr"
+          }
         }
       ]
     },
@@ -183,7 +476,7 @@
       "label": "TRACK B — MOBILITY CONDITIONING CIRCUIT",
       "driveId": "1k8lFfMQMp0xQpabOYmtEg7UXS4EXynSp",
       "focus": "GOAL: 5 ROUNDS IN 30 MINUTES",
-      "notes": "- Frequency: 2–3× per week\n- Duration: 30 minutes\n- Format: Continuous circuit, same order each round\n\nMobility Circuit (Fixed Order)\n\nGoal:\n- 5 full rounds in 30 minutes\n- All movements unassisted\n- No form breakdown or joint irritation\n\nComplete rounds continuously for approximately 30 minutes (± 2-3 minutes). Do not count rounds. Simply continue cycling through the movements until approximately 30 minutes has elapsed.",
+      "notes": "- Frequency: 3× per week in Weeks 1-2, then 2× per week from Week 3\n- Duration: 30 minutes\n- Format: Continuous circuit, same order each round\n\nMobility Circuit (Fixed Order)\n\nGoal:\n- 5 full rounds in 30 minutes\n- All movements unassisted\n- No form breakdown or joint irritation\n\nComplete rounds continuously for approximately 30 minutes (± 2-3 minutes). Do not count rounds. Simply continue cycling through the movements until approximately 30 minutes has elapsed.",
       "editorNotes": "Not a calendar week: the Track B circuit, performed every Track B day in all 12 weeks (3x/week in weeks 1-2, 2x/week in weeks 3-12 per 1V4ILNrn9i9FOkgWmFKp-ruBx7PgrPLrp; rules doc says 2–3× per week).\nSources: poster 'Track A vs Track B.png' (1k8lFfMQMp0xQpabOYmtEg7UXS4EXynSp, right half; cards have only title + count + photo, no text bullets) + rules doc 1aa-jLXdkfbh5ISq8ZcIkiBz6SzeRI_7F4skyIgLecZE (= PDF 1OTQ3WfAl5JiM86MgIcIQIxG_hMQTttHx).\nLabels removed: \"Rules doc:\", \"Goal (rules doc):\", \"Weekly sheet (1V4ILNrn9i9FOkgWmFKp-ruBx7PgrPLrp):\" (text kept in notes).\n(this conflicts with the poster/rules-doc goal of 5 rounds — both kept)\nhowTo = rules-doc cue lines under each movement.",
       "exercises": [
         {
@@ -191,72 +484,171 @@
           "name": "TRX Squat",
           "isNew": false,
           "whenToUse": "",
-          "howTo": ["Heels down", "Knees track out", "Elbows point forward", "Traps disengaged during descent and during the pull of the ascent"],
+          "howTo": [
+            "Heels down",
+            "Knees track out",
+            "Elbows point forward",
+            "Traps disengaged during descent and during the pull of the ascent"
+          ],
           "focus": [],
-          "dosage": { "sets": "", "reps": "10", "tempo": "", "hold": "", "frequency": "2-3x / week", "other": { "Rules doc heading": "TRX Squats to Full Depth — 10 reps" } },
+          "dosage": {
+            "sets": "",
+            "reps": "10",
+            "tempo": "",
+            "hold": "",
+            "frequency": "2-3x / week",
+            "other": {
+              "Rules doc heading": "TRX Squats to Full Depth — 10 reps"
+            }
+          },
           "steps": [],
           "proTip": "",
-          "video": { "title": "Copy of HP_SQ_TRX_SQUAT_MOB.mp4", "driveId": "1w1_PS0A3f1gu2GkTZu3fZ-d5AGgjaPvZ" }
+          "video": {
+            "title": "Copy of HP_SQ_TRX_SQUAT_MOB.mp4",
+            "driveId": "1w1_PS0A3f1gu2GkTZu3fZ-d5AGgjaPvZ"
+          }
         },
         {
           "n": 2,
           "name": "Overhead Pole Squat",
           "isNew": false,
           "whenToUse": "",
-          "howTo": ["Arms fully overhead", "Scapula upwardly rotate", "Neutral spine"],
+          "howTo": [
+            "Arms fully overhead",
+            "Scapula upwardly rotate",
+            "Neutral spine"
+          ],
           "focus": [],
-          "dosage": { "sets": "", "reps": "10", "tempo": "", "hold": "", "frequency": "2-3x / week", "other": { "Rules doc heading": "Overhead Pole Squats (Broom / Mop / Bar) — 10 reps" } },
+          "dosage": {
+            "sets": "",
+            "reps": "10",
+            "tempo": "",
+            "hold": "",
+            "frequency": "2-3x / week",
+            "other": {
+              "Rules doc heading": "Overhead Pole Squats (Broom / Mop / Bar) — 10 reps"
+            }
+          },
           "steps": [],
           "proTip": "",
-          "video": { "title": "Copy of HP_SQ_POLE_SQUAT_MOB.mp4", "driveId": "1VHbzSC3Gxtza15ccCMIJTQ5XSFHgUVnE" }
+          "video": {
+            "title": "Copy of HP_SQ_POLE_SQUAT_MOB.mp4",
+            "driveId": "1VHbzSC3Gxtza15ccCMIJTQ5XSFHgUVnE"
+          }
         },
         {
           "n": 3,
           "name": "Controlled Burpees",
           "isNew": false,
           "whenToUse": "",
-          "howTo": ["Descent order:", "Heels down → knees wide → knees to ground → hips → chest", "Ascent order:", "Chest → hips → knees"],
+          "howTo": [
+            "Descent order:",
+            "Heels down → knees wide → knees to ground → hips → chest",
+            "Ascent order:",
+            "Chest → hips → knees"
+          ],
           "focus": [],
-          "dosage": { "sets": "", "reps": "10", "tempo": "", "hold": "", "frequency": "2-3x / week", "other": { "Rules doc heading": "Controlled Burpees (Spinal Mobility Emphasis) — 10 reps" } },
+          "dosage": {
+            "sets": "",
+            "reps": "10",
+            "tempo": "",
+            "hold": "",
+            "frequency": "2-3x / week",
+            "other": {
+              "Rules doc heading": "Controlled Burpees (Spinal Mobility Emphasis) — 10 reps"
+            }
+          },
           "steps": [],
           "proTip": "",
-          "video": { "title": "Copy of FB_CO_BURPEE_MOB.mp4", "driveId": "1ESnU7y-7ZDQOhulMOPGatKIpmk5PHjtW" }
+          "video": {
+            "title": "Copy of FB_CO_BURPEE_MOB.mp4",
+            "driveId": "1ESnU7y-7ZDQOhulMOPGatKIpmk5PHjtW"
+          }
         },
         {
           "n": 4,
           "name": "Assisted Pistol Squat",
           "isNew": false,
           "whenToUse": "",
-          "howTo": ["Heel stays down", "Must touch ankle each rep", "Full depth using support"],
+          "howTo": [
+            "Heel stays down",
+            "Must touch ankle each rep",
+            "Full depth using support"
+          ],
           "focus": [],
-          "dosage": { "sets": "", "reps": "5 / leg", "tempo": "", "hold": "", "frequency": "2-3x / week", "other": { "Rules doc heading": "Assisted Pistol Squats — 5 reps per leg" } },
+          "dosage": {
+            "sets": "",
+            "reps": "5 / leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "2-3x / week",
+            "other": {
+              "Rules doc heading": "Assisted Pistol Squats — 5 reps per leg"
+            }
+          },
           "steps": [],
           "proTip": "",
-          "video": { "title": "Copy of HP_SQ_PISTOL_SQUAT_MOB.mp4", "driveId": "1eaKezJR_KLeUa2ecMDNtBi2w7txwNOQJ" }
+          "video": {
+            "title": "Copy of HP_SQ_PISTOL_SQUAT_MOB.mp4",
+            "driveId": "1eaKezJR_KLeUa2ecMDNtBi2w7txwNOQJ"
+          }
         },
         {
           "n": 5,
           "name": "Assisted Cossack Squat",
           "isNew": false,
           "whenToUse": "",
-          "howTo": ["Heel stays down", "Knees travel wide", "Hips do not shift past heel"],
+          "howTo": [
+            "Heel stays down",
+            "Knees travel wide",
+            "Hips do not shift past heel"
+          ],
           "focus": [],
-          "dosage": { "sets": "", "reps": "5 / leg", "tempo": "", "hold": "", "frequency": "2-3x / week", "other": { "Rules doc heading": "Assisted Cossack Squats — 5 reps per leg" } },
+          "dosage": {
+            "sets": "",
+            "reps": "5 / leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "2-3x / week",
+            "other": {
+              "Rules doc heading": "Assisted Cossack Squats — 5 reps per leg"
+            }
+          },
           "steps": [],
           "proTip": "",
-          "video": { "title": "Copy of HP_SQ_COSSACK_SQUAT_MOB.mp4", "driveId": "1MNItjaywwJtwjIKVIPsZZoazvj_WfkGB" }
+          "video": {
+            "title": "Copy of HP_SQ_COSSACK_SQUAT_MOB.mp4",
+            "driveId": "1MNItjaywwJtwjIKVIPsZZoazvj_WfkGB"
+          }
         },
         {
           "n": 6,
           "name": "Bear Crawl",
           "isNew": false,
           "whenToUse": "",
-          "howTo": ["Hands slightly turned out", "Scapula engaged", "Knees ~1 inch off ground", "Short, controlled steps"],
+          "howTo": [
+            "Hands slightly turned out",
+            "Scapula engaged",
+            "Knees ~1 inch off ground",
+            "Short, controlled steps"
+          ],
           "focus": [],
-          "dosage": { "sets": "", "reps": "4 lengths", "tempo": "", "hold": "", "frequency": "2-3x / week", "other": { "Rules doc heading": "Bear Crawls — ~20 feet" } },
+          "dosage": {
+            "sets": "",
+            "reps": "4 lengths",
+            "tempo": "",
+            "hold": "",
+            "frequency": "2-3x / week",
+            "other": {
+              "Rules doc heading": "Bear Crawls — ~20 feet"
+            }
+          },
           "steps": [],
           "proTip": "",
-          "video": { "title": "Copy of SP_GT_BEAR_CRAWL_ACT.mp4", "driveId": "1SreJ_J0TdrMm0mwVqHQNmQvfb-rRflTr" }
+          "video": {
+            "title": "Copy of SP_GT_BEAR_CRAWL_ACT.mp4",
+            "driveId": "1SreJ_J0TdrMm0mwVqHQNmQvfb-rRflTr"
+          }
         }
       ]
     },
@@ -265,17 +657,153 @@
       "label": "PHASE 1 — WEEKS 1-2",
       "driveId": "1k8lFfMQMp0xQpabOYmtEg7UXS4EXynSp",
       "focus": "RESET & DECOMPRESS",
-      "notes": "WALKING 20-30 MIN DAILY\n\nGOAL: Reduce protective tension and improve positioning.\n\nSCHEDULE: OPTION 1 (Track A 2x/week, Track B 3x/week)\n\nTRACK A LOAD:\nWEEKS 1–2: EXPLORATORY DEPTH UNDER CONTROL, Load: Minimal.\n\nACUPRESSURE MAT:\n- Week 1 soft surface/thin shirt\n- Week 2 harder surface",
+      "notes": "WALKING 20-30 MIN DAILY\n\nGOAL: Reduce protective tension and improve positioning.\n\nSCHEDULE: OPTION 1 (Track A 2x/week, Track B 3x/week)\nThese two weeks lean toward mobility.\n\nTRACK A LOAD:\nWEEKS 1–2: EXPLORATORY DEPTH UNDER CONTROL, Load: Minimal.\n\nACUPRESSURE MAT:\n- Week 1 soft surface/thin shirt\n- Week 2 harder surface",
       "editorNotes": "From the '12-WEEK MOBILITY PROGRESSION ROADMAP' strip on 1k8lFfMQMp0xQpabOYmtEg7UXS4EXynSp.\nSchedule source: 1V4ILNrn9i9FOkgWmFKp-ruBx7PgrPLrp. Track A load source: rules doc 1aa-jLXdkfbh5ISq8ZcIkiBz6SzeRI_7F4skyIgLecZE.\nThe roadmap lists movement names only (no sets/reps/how-to).",
       "exercises": [
-        { "n": 1, "name": "90/90 Breathing", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 2, "name": "Supine Reach", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 3, "name": "Thoracic Rotation", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 4, "name": "Hip Flexor Reach Stretch", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 5, "name": "Hamstring Nerve Glide", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 6, "name": "Quadruped Rock Back", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 7, "name": "Bear Position Hold", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 8, "name": "Open Book", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" }
+        {
+          "n": 1,
+          "name": "90/90 Breathing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "name": "Supine Reach",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "name": "Thoracic Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "name": "Hip Flexor Reach Stretch",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "name": "Hamstring Nerve Glide",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 6,
+          "name": "Quadruped Rock Back",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 7,
+          "name": "Bear Position Hold",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 8,
+          "name": "Open Book",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        }
       ]
     },
     {
@@ -283,14 +811,99 @@
       "label": "PHASE 2 — WEEKS 3-4",
       "driveId": "1k8lFfMQMp0xQpabOYmtEg7UXS4EXynSp",
       "focus": "RE-LENGTHEN & ACTIVATE",
-      "notes": "WALKING 25-30 MIN DAILY\n\nGOAL: Create usable mobility.\n\nSCHEDULE: OPTION 2 (Track A 3x/week, Track B 2x/week, 1 active recovery day)\n\nTRACK A LOAD:\nWEEKS 3–4: CONTROLLED DEPTH EXPANSION, Load: Moderate.\n\nACUPRESSURE MAT:\n- Week 3 harder surface\n- Week 4+ bare skin, hard surface",
+      "notes": "WALKING 25-30 MIN DAILY\n\nGOAL: Create usable mobility.\n\nSCHEDULE: OPTION 2 (Track A 3x/week, Track B 2x/week, 1 active recovery day)\nFrom here the balance shifts toward strength.\n\nTRACK A LOAD:\nWEEKS 3–4: CONTROLLED DEPTH EXPANSION, Load: Moderate.\n\nACUPRESSURE MAT:\n- Week 3 harder surface\n- Week 4+ bare skin, hard surface",
       "editorNotes": "From the roadmap strip on 1k8lFfMQMp0xQpabOYmtEg7UXS4EXynSp.\nSchedule source: 1V4ILNrn9i9FOkgWmFKp-ruBx7PgrPLrp. Track A load source: rules doc.\nMovement names only.",
       "exercises": [
-        { "n": 1, "name": "Deep Supported Squat Hold", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 2, "name": "Cossack Shift", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 3, "name": "Half Kneeling Hip Rotation", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 4, "name": "Open Book", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 5, "name": "Farmer Carry", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" }
+        {
+          "n": 1,
+          "name": "Deep Supported Squat Hold",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "name": "Cossack Shift",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "name": "Half Kneeling Hip Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "name": "Open Book",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "name": "Farmer Carry",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        }
       ]
     },
     {
@@ -301,13 +914,132 @@
       "notes": "WALKING 25-30 MIN DAILY\n\nGOAL: Own new ranges of motion.\n\nSCHEDULE: OPTION 2\n\nTRACK A LOAD:\n- WEEKS 5–6: OWNED DEPTH, Load: Increased as tolerated.\n- WEEKS 5-8 BUILD (increase load 10-20%).",
       "editorNotes": "From the roadmap strip on 1k8lFfMQMp0xQpabOYmtEg7UXS4EXynSp.\nLabels removed: \"Track A load (rules doc):\", \"Track A poster roadmap:\".\nMovement names only.",
       "exercises": [
-        { "n": 1, "name": "Deep Squat Hold", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 2, "name": "Cossack Squat", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 3, "name": "Bear Crawl", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 4, "name": "Crab Reach", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 5, "name": "Couch Stretch", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 6, "name": "Walking Lunge Reach", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 7, "name": "Open Book", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" }
+        {
+          "n": 1,
+          "name": "Deep Squat Hold",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "name": "Cossack Squat",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "name": "Bear Crawl",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "name": "Crab Reach",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "name": "Couch Stretch",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 6,
+          "name": "Walking Lunge Reach",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 7,
+          "name": "Open Book",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        }
       ]
     },
     {
@@ -318,14 +1050,150 @@
       "notes": "WALKING 25-30 MIN DAILY\n\nGOAL: Build rotational control and trunk stability.\n\nSCHEDULE: OPTION 2\n\nTRACK A: WEEKS 5-8 BUILD",
       "editorNotes": "From the roadmap strip on 1k8lFfMQMp0xQpabOYmtEg7UXS4EXynSp.\nLabel removed: \"Track A poster roadmap:\".\nMovement names only.",
       "exercises": [
-        { "n": 1, "name": "Thoracic Rotation", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 2, "name": "Half Kneeling Rotation", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 3, "name": "Cossack Squat", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 4, "name": "Baseball Cable Swing", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 5, "name": "Side Plank", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 6, "name": "Cross Body Carry", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 7, "name": "Bear Crawl", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 8, "name": "Open Book", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" }
+        {
+          "n": 1,
+          "name": "Thoracic Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "name": "Half Kneeling Rotation",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "name": "Cossack Squat",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "name": "Baseball Cable Swing",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "name": "Side Plank",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 6,
+          "name": "Cross Body Carry",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 7,
+          "name": "Bear Crawl",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 8,
+          "name": "Open Book",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        }
       ]
     },
     {
@@ -336,14 +1204,150 @@
       "notes": "WALKING 25-30 MIN DAILY\n\nGOAL: Transfer mobility into movement.\n\nSCHEDULE: OPTION 2\n\nTRACK A: WEEKS 9-12 ADVANCE",
       "editorNotes": "From the roadmap strip on 1k8lFfMQMp0xQpabOYmtEg7UXS4EXynSp.\nLabel removed: \"Track A poster roadmap:\".\nMovement names only.",
       "exercises": [
-        { "n": 1, "name": "Overhead Squat", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 2, "name": "Walking Lunge Reach", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 3, "name": "Lateral Bound Stick", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 4, "name": "Cossack Squat", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 5, "name": "Bear Crawl", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 6, "name": "Farmer Carry", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 7, "name": "Marching Carry", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 8, "name": "Open Book", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" }
+        {
+          "n": 1,
+          "name": "Overhead Squat",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "name": "Walking Lunge Reach",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "name": "Lateral Bound Stick",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "name": "Cossack Squat",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "name": "Bear Crawl",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 6,
+          "name": "Farmer Carry",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 7,
+          "name": "Marching Carry",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 8,
+          "name": "Open Book",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        }
       ]
     },
     {
@@ -354,15 +1358,168 @@
       "notes": "WALKING 25-30 MIN DAILY\n\nGOAL: Maintain mobility under athletic conditions.\n\nSCHEDULE: OPTION 2\n\nTRACK A: WEEKS 9-12 ADVANCE",
       "editorNotes": "From the roadmap strip on 1k8lFfMQMp0xQpabOYmtEg7UXS4EXynSp.\nLabel removed: \"Track A poster roadmap:\".\nMovement names only.",
       "exercises": [
-        { "n": 1, "name": "Deep Squat Hold", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 2, "name": "Overhead Squat", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 3, "name": "Pistol Progression", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 4, "name": "Cossack Squat", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 5, "name": "Bear Crawl", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 6, "name": "Marching Carry", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 7, "name": "Farmer Carry", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 8, "name": "Lateral Bound Stick", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
-        { "n": 9, "name": "Open Book", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" }
+        {
+          "n": 1,
+          "name": "Deep Squat Hold",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "name": "Overhead Squat",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "name": "Pistol Progression",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "name": "Cossack Squat",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "name": "Bear Crawl",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 6,
+          "name": "Marching Carry",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 7,
+          "name": "Farmer Carry",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 8,
+          "name": "Lateral Bound Stick",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 9,
+          "name": "Open Book",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        }
       ]
     }
   ],
@@ -377,7 +1534,8 @@
     "Acupressure mat progression on Track B poster reads 'Week 4+:' — the '+' glyph is blurry (rendered like '4∘'); weekly sheet says 'WEEKS 4-12'. Poster 'Week 2-3' vs weekly sheet 'WEEKS 2-3'.",
     "Exercise names: poster card titles are in ALL CAPS; written in the mixed case used on the weekly checklist sheet (1V4ILNrn9i9FOkgWmFKp-ruBx7PgrPLrp). Rules-doc names are kept in dosage.other['Rules doc heading'].",
     "Extra (non-schema) field 'video' on Track A/B exercises: matched by video file name in the Track A / Track B movement folders; the calf-drop video is used for both calf exercises, HIP_THRUST for Glute Hip Bridge, BASEBALL_CABLE_STRETCH for Baseball Cable Swing, OVERHEAD_STRAIGHT_ARM_PULLDOWN for the kneeling pulldown — matching by name only, videos not watched.",
-    "Title: no single printed title for the whole system; used the File Links doc/folder name. Rules doc title is 'POSTERIOR CHAIN MOBILITY & LENGTH SYSTEM'; weekly sheet title is 'MD FIT WEEKLY PROGRAM & DAILY CHECKLIST'."
+    "Title: no single printed title for the whole system; used the File Links doc/folder name. Rules doc title is 'POSTERIOR CHAIN MOBILITY & LENGTH SYSTEM'; weekly sheet title is 'MD FIT WEEKLY PROGRAM & DAILY CHECKLIST'.",
+    "Dr. Jared's decision (Nov 2026): phases split differently in weeks 1-2 (more mobility) and then shift toward strength / balance. Track A/B frequencies set to Option 1 (wk 1-2) and Option 2 (wk 3-12); removed the rules-doc example calendar that conflicted: EXAMPLE WEEKLY CALENDAR — Monday: Track A — Posterior Chain Eccentric Protocol. Tuesday: Track B — Mobility Conditioning Circuit. Wednesday: Track A — Posterior Chain Eccentric Protocol. Thursday: Track B — Mobility Conditioning Circuit. Friday: Track A + Track B (Combined Day) Track A first, Track B second. Saturday: Optional Track A or Active Recovery. Sunday: Full Rest."
   ],
   "sourceNotes": "Folder 11yJbj5A_KZubZAD6uS6vDaPoLVMCY9Im contains: doc '12 Week FULL Mobility System - File Links' (1Lpqzhaf-SjmYcfp83XrN82onEUZnn9jVGp2p2fR2Agg, index of links only); doc 'POSTERIOR CHAIN MOBILITY & LENGTH SYSTEM RULES' (1aa-jLXdkfbh5ISq8ZcIkiBz6SzeRI_7F4skyIgLecZE); image 'Track A vs Track B.png' (1k8lFfMQMp0xQpabOYmtEg7UXS4EXynSp, two posters side by side: Track A exercise cards + progression roadmap + key cues; Track B circuit cards + daily recovery essentials + daily non-negotiables + avoid + 12-week mobility progression roadmap); image 'Week 1&2 vs 3-12.png' (1V4ILNrn9i9FOkgWmFKp-ruBx7PgrPLrp, 'MD FIT WEEKLY PROGRAM & DAILY CHECKLIST': Option 1/Option 2 calendars, Track A/B checklists, daily checklist, active recovery checklist, acupressure mat progression, ice pack protocol); subfolder 'Track A movements' (1tUzXEEvKw9XZDzI605rOQ3EZIHZYfKX9, 6 mp4) and 'Track B movements' (15hbHD_ZgYCwvcjb-nfXa501qzdjYPvAi, 6 mp4). The PDF 'POSTERIOR CHAIN MOBILITY & LENGTH SYSTEM.pdf' (1OTQ3WfAl5JiM86MgIcIQIxG_hMQTttHx) is word-for-word identical to the RULES doc (diffed) and is merged here rather than duplicated. Weekly sheet KEY: TRACK A Posterior Chain Eccentric Protocol; TRACK B Mobility Conditioning Circuit; RECOVERY Mobility & Recovery Work. En dashes converted to ASCII hyphens in ranges; em dashes and × kept. Images are native 1536x1024; read via upscaled crops."
 }

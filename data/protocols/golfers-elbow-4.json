@@ -1,6 +1,6 @@
 {
   "id": "golfers-elbow-4",
-  "title": "Golf Elbow Rehab Program",
+  "title": "Elbow Epicondylitis Protocol: Wrist Extensors",
   "tagline": "4-Week Plan to Reduce Pain and Restore Strength",
   "goal": "",
   "principles": [],
@@ -365,7 +365,8 @@
     "Sheet header says 'GOLF ELBOW' (not 'Golfer's Elbow'); title kept as printed.",
     "Week 1 ice card differs slightly from weeks 2-4: subtitle 'Reduce inflammation and pain.' (not 'Reduces'), '15-20 minutes' without a period, and 'After exercises, sports (golf)...' (plural); kept as printed per week.",
     "Week 2 card 1 step 2 says 'Slowly lower down (eccentric) over 3-4 seconds to full wrist flexion.' for an extension exercise; kept as printed.",
-    "Clinical content check for Dr. Caban: golfer's elbow (medial epicondylitis) normally involves the wrist FLEXORS, but every golf-elbow sheet targets the wrist EXTENSORS (palm down), while the tennis-elbow sheets target the flexors. Transcribed verbatim; the two programs may be swapped on the source sheets."
+    "Clinical content check for Dr. Caban: golfer's elbow (medial epicondylitis) normally involves the wrist FLEXORS, but every golf-elbow sheet targets the wrist EXTENSORS (palm down), while the tennis-elbow sheets target the flexors. Transcribed verbatim; the two programs may be swapped on the source sheets.",
+    "Dr. Jared's decision (Nov 2026): tennis and golfer's elbow are both called epicondylitis; renamed from 'Golf Elbow Rehab Program'. This program trains the wrist extensors."
   ],
   "sourceNotes": "Read golfers-elbow-4 Week 1-4 sheets (Drive ids as listed per week). All four sheets present, no duplicates. Each sheet: header (MD FIT logo, condition title, 4-week tagline, target callout), week banner with headline + 3 icon goals, WEEK N FOCUS box with anatomy illustration, card 1 = the strengthening exercise (picture captions + SETS & REPS / SETS, REPS & LOAD box + KEY POINTS), card 2 = Ice After Activity, card 3 = Heat in the Evening (both with HOW TO DO IT bullets), bottom row = tips strip + AVOID FOR NOW. Field mapping: each card's one-line subtitle (purpose line under the title) is stored in whenToUse; KEY POINTS -> focus; picture captions -> steps; HOW TO DO IT bullets -> howTo; week banner headline -> week focus; banner icons, WEEK N FOCUS bullets, tips strip and AVOID FOR NOW list -> week notes (they differ week to week). Header text is printed in ALL CAPS; titles/names converted to title case. En dashes in ranges converted to ASCII hyphens; em dashes kept. No GOAL box, key principles, daily basics or progression overview exist on these sheets, so those fields are empty. Sheets downloaded via Drive thumbnail endpoint at sz=w2400 (1145x1374 originals) and read in upscaled crops."
 }
