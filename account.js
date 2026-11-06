@@ -1161,6 +1161,18 @@
     $("#book-dates").innerHTML = `<p class="muted small">Loading times…</p>`;
     try { await loadSlots(); } catch (err) { $("#book-dates").innerHTML = `<p class="muted small">Couldn't load times: ${esc(err.message)}</p>`; }
   });
+  // Live: the member socket gets "slots_changed" when a day's times change; refresh the open booking sheet
+  if (window.MDFitRT) MDFitRT.on("slots_changed", async () => {
+    if (!bookDlg.open || !bookState.type || !bookState.availability) return;
+    const picked = bookState.time;
+    try { await loadSlots(); } catch { return; }
+    const day = bookState.availability.days.find((d) => d.date === bookState.date);
+    if (picked && !(day && day.slots.includes(picked)) && !$("#book-flow [data-step=confirm]").hidden) {
+      bookState.time = "";
+      $$("#book-flow .book-step").forEach((s) => { s.hidden = s.dataset.step !== "when"; });
+      toast("That time was just taken. Please pick another.");
+    }
+  });
   $("#book-back").addEventListener("click", () => { $$("#book-flow .book-step").forEach((s) => { s.hidden = s.dataset.step !== "type"; }); });
   $("#book-dates").addEventListener("click", (e) => { const b = e.target.closest("[data-date]"); if (!b) return; bookState.date = b.dataset.date; bookState.time = ""; renderTimes(); });
   $("#book-times").addEventListener("click", (e) => {

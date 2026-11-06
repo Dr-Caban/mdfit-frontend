@@ -99,6 +99,13 @@
       });
       MDFitRT.on("message_reaction", (ev) => { if (openThread && ev.clientId === openThread) showThread(openThread); });
       MDFitRT.on("toast", (ev) => { rtToast(ev.text, TOAST_ICONS[ev.type]); });
+      // Google Calendar / SimplePractice changed (the server checks every minute): refresh what's on screen
+      MDFitRT.on("calendar_changed", (ev) => {
+        const n = (ev && ev.dates && ev.dates.length) || 0;
+        rtToast(`Your calendar changed${n ? ` (${n} day${n === 1 ? "" : "s"})` : ""}. Booking times updated.`);
+        if (current === "appts") run(loadAppts)();
+        if (current === "hours") loadSync();
+      });
       MDFitRT.on("online_count", (ev) => {
         const bar = $("#online-bar"); if (!bar) return;
         bar.classList.add("live");
@@ -229,6 +236,7 @@
     const g = st.google === "configured", sp = st.simplepractice === "configured";
     $("#sync-status").innerHTML = `<p><b>Google Calendar:</b> ${g ? `connected (${esc(st.calendarId || "")})` : "not connected. Add GOOGLE_SERVICE_ACCOUNT and GOOGLE_CALENDAR_ID in Railway"}${st.serviceAccountEmail ? `<br><span class="muted small">Share your calendar with <code>${esc(st.serviceAccountEmail)}</code> ("Make changes to events")</span>` : ""}</p>
       <p><b>SimplePractice:</b> ${sp ? `connected ${st.simplePracticeUrl ? `<span class="muted small">${esc(st.simplePracticeUrl)}</span>` : ""}` : "not connected. Paste your calendar link below"}</p>
+      ${st.live && st.live.everySec && (g || sp) ? `<p class="muted small">Live: checks every ${st.live.everySec >= 60 ? `${Math.round(st.live.everySec / 60)} min` : `${st.live.everySec} sec`} and updates open booking pages instantly${st.live.lastCheck ? ` · last check ${when(st.live.lastCheck)}` : ""}${st.live.lastChange ? ` · last change ${when(st.live.lastChange)}` : ""}</p>` : ""}
       ${st.lastSync ? `<p class="muted small">Last sync ${when(st.lastSync)}</p>` : ""}${st.lastError ? `<p class="form-msg err">${esc(st.lastError)}</p>` : ""}${st.busyNext14Days !== undefined ? `<p class="muted small">Busy blocks in the next 14 days: ${st.busyNext14Days} ${Object.entries(st.bySource || {}).map(([k, v]) => `(${k}: ${v})`).join(" ")}</p>` : ""}`;
   };
   const loadSync = () => api("GET", "/api/admin/calsync").then(showSync).catch(() => {});

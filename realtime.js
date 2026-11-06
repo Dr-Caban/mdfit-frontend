@@ -27,14 +27,17 @@
       apiUrl = apiUrl.replace(/\/+$/, "");
       var ns = opts.namespace || "/";
       var token = opts.token;
-      if (!token) return Promise.resolve(null);
+      // "/public" needs no login (booking pages); "/member" and "/admin" do
+      if (!token && ns !== "/public") return Promise.resolve(null);
+      // A page that already has a live connection (e.g. the member app) keeps it: every namespace gets slots_changed
+      if (ns === "/public" && socket) return Promise.resolve(socket);
 
       return loadSocketIO().then(function (io) {
         if (socket) { socket.disconnect(); socket = null; }
         socket = io(apiUrl + ns, {
           path: "/ws",
           transports: ["websocket", "polling"],
-          auth: { token: token }
+          auth: token ? { token: token } : {}
         });
 
         socket.on("connect", function () {

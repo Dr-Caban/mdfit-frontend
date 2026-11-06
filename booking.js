@@ -147,6 +147,27 @@
       if (w) { state.start = addDays(state.start, 7 * Number(w.dataset.week)); state.date = null; state.time = null; state.searched = true; load(); }
       if (d) { state.date = d.dataset.date; state.time = null; $$(".date", root).forEach((x) => x.setAttribute("aria-checked", x === d)); renderSlots(); }
     });
+    // Live: when a day's times change (someone books, or Dr. Jared's Google Calendar / SimplePractice changes),
+    // the server sends socket.io "slots_changed"; refresh this week quietly and say so if the picked time is gone.
+    async function refreshLive(ev) {
+      const date = ev && ev.date;
+      if (!state.days || !bookedBox.hidden || (date && (date < state.start || date > addDays(state.start, 6)))) return;
+      let d; try { d = await api(`/api/availability?type=${encodeURIComponent(state.type.id)}&from=${state.start}&days=7`); } catch { return; }
+      const picked = state.time, pickedDate = state.date;
+      state.days = d.days; state.lastDate = d.lastDate;
+      const day = d.days.find((x) => x.date === state.date);
+      const lost = picked && !(day && day.slots.includes(picked));
+      if (lost) state.time = null;
+      if (!day || !day.slots.length) state.date = (d.days.find((x) => x.slots.length) || {}).date || null;
+      renderDates();
+      if (lost) {
+        const n = document.createElement("p"); n.className = "form-msg err"; n.setAttribute("role", "alert");
+        n.textContent = `${fmtTime(picked)} on ${fmtDate(pickedDate, { weekday: "long", month: "short", day: "numeric" })} was just taken. Please pick another time.`;
+        $(".slots", root).prepend(n);
+      }
+    }
+    if (window.MDFitRT) { MDFitRT.on("slots_changed", refreshLive); MDFitRT.connect({ namespace: "/public" }); }
+
     $(".slots", root).addEventListener("click", (e) => {
       const s = e.target.closest("[data-time]");
       if (!s) return;
