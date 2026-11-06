@@ -218,3 +218,11 @@ code { background: var(--paper-2); padding: 1px 6px; border-radius: 4px; font-si
 /* Email delivery (Analytics) */
 .email-log { display: grid; gap: 10px; }
 .email-log .stat.bad b, .email-log b.err { color: var(--err); }
+
+/* Clients: totals across the top (tap to filter) */
+.client-totals { display: flex; flex-wrap: wrap; gap: 10px; margin: -4px 0 16px; }
+.client-totals .ct { display: grid; gap: 2px; min-width: 120px; padding: 10px 14px; text-align: left; border: 1.5px solid var(--line, #ddd); border-radius: 12px; background: var(--card, #fff); font: inherit; cursor: pointer; }
+.client-totals .ct b { font-size: 24px; line-height: 1.1; }
+.client-totals .ct span { font-size: 13px; opacity: .75; }
+.client-totals .ct.on { border-color: #0a1a2e; background: #0a1a2e; color: #fff; }
+.client-totals .ct.on span { opacity: .85; }

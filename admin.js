@@ -299,15 +299,35 @@
     clientList = await api("GET", "/api/admin/clients");
     renderClients();
   }
+  // Totals across the top: tap one to show only those clients (tap again, or "All clients", to show everyone)
+  let clientPeriod = "all";
+  const clinicDay = (iso) => new Date(iso).toLocaleDateString("en-CA", { timeZone: "America/New_York" });
+  function clientsIn(period) {
+    const today = clinicDay(new Date().toISOString());
+    const daysAgo = (n) => clinicDay(new Date(Date.now() - n * 864e5).toISOString());
+    const from = { today, week: daysAgo(6), month: today.slice(0, 8) + "01" }[period];
+    if (period === "plan") return clientList.filter((c) => c.hasPlan);
+    return from ? clientList.filter((c) => c.createdAt && clinicDay(c.createdAt) >= from) : clientList;
+  }
+  function renderClientTotals() {
+    const chips = [["all", "All clients"], ["today", "Joined today"], ["week", "Last 7 days"], ["month", "This month"], ["plan", "Have a plan"]];
+    $("#client-totals").innerHTML = chips.map(([k, label]) => `<button type="button" class="ct${k === clientPeriod ? " on" : ""}" data-period="${k}" aria-pressed="${k === clientPeriod}"><b>${clientsIn(k).length.toLocaleString()}</b><span>${label}</span></button>`).join("");
+  }
+  $("#client-totals").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-period]"); if (!b) return;
+    clientPeriod = clientPeriod === b.dataset.period ? "all" : b.dataset.period;
+    renderClients();
+  });
   function renderClients() {
+    renderClientTotals();
     const q = $("#client-search").value.trim().toLowerCase();
-    const rows = clientList.filter((c) => !q || [c.name, c.email, c.phone].join(" ").toLowerCase().includes(q));
+    const rows = clientsIn(clientPeriod).filter((c) => !q || [c.name, c.email, c.phone].join(" ").toLowerCase().includes(q));
     table($("#clients-table"), ["Client", "Phone", "Next visit", "Last pain log", "Plan", "Joined"], rows.map((c) => `
       <tr data-id="${c.id}" class="click-row"><td><b>${esc(c.name)}</b><br><span class="muted">${esc(c.email)}</span></td><td>${esc(c.phone)}</td>
         <td>${c.next ? `${fmtDate(c.next.date)} · ${fmtTime(c.next.time)}` : "—"}</td>
         <td>${c.lastPain ? `${esc(c.lastPain.area)} ${c.lastPain.level}/10 · ${fmtDate(c.lastPain.date)}` : "—"}</td>
         <td>${c.hasPlan ? "✓" : "—"}</td><td>${when(c.createdAt)}</td></tr>`),
-      "No client accounts yet. Clients sign up at /login.");
+      clientList.length ? "No clients match." : "No client accounts yet. Clients sign up at /login.");
   }
   $("#client-search").addEventListener("input", renderClients);
   $("#clients-table").addEventListener("click", run(async (e) => {
