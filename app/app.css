@@ -959,7 +959,7 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
 }
 
 /* Referral card */
-.referral-code-row { display: flex; align-items: center; gap: 10px; margin: 10px 0; }
+.referral-code-row { display: flex; align-items: center; gap: 10px; margin: 10px 0; flex-wrap: wrap; }
 .referral-code { font-size: 18px; font-weight: 700; letter-spacing: .08em; background: var(--bg, #0d2240); color: var(--accent, #E8922A); padding: 8px 14px; border-radius: 8px; user-select: all; flex: 1; text-align: center; }
 .referral-share { margin-top: 8px; }
 
@@ -1286,3 +1286,6 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
 .pex-group-head .pex-group { margin: 0; border: 0; padding: 0; }
 .pex-group-head .btn-blue { flex: none; }
 .pex-group-note { margin: 0 0 8px; }
+/* Refer a friend: the code on its own line (never broken mid-code), Copy and Share side by side under it */
+.referral-code-row .referral-code { flex: 1 1 100%; white-space: nowrap; text-align: center; letter-spacing: .04em; }
+.referral-code-row .btn-gold, .referral-code-row .btn-blue { flex: 1 1 0; }

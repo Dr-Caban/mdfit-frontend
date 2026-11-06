@@ -99,7 +99,6 @@
   .pain-form { grid-template-columns: 1fr 1fr; }
 }
 /* Referral */
-.referral-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 8px 0 0; }
 .referral-code { font: 700 18px/1 var(--body); background: var(--paper-2, #f5f5f5); padding: 10px 16px; border-radius: 8px; letter-spacing: 1px; user-select: all; }
 
 @media (max-width: 520px) {

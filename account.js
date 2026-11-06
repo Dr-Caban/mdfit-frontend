@@ -1044,23 +1044,11 @@
     return { message: "Password saved. You can now log in with your email and password. Other devices were signed out." };
   });
   // Referral code
+  // (one "Refer a friend" card: the code shows right away from the account, the sign-up count once /api/me/referral answers)
   function renderReferral() {
     const code = client.referralCode;
-    if (!code) return;
-    $("#referral-code").textContent = code;
+    if (code && $("#ref-code").textContent === "—") $("#ref-code").textContent = code;
   }
-  $("#copy-referral").addEventListener("click", () => {
-    const code = client.referralCode;
-    if (!code) return;
-    navigator.clipboard.writeText(code).then(() => { $("#referral-msg").textContent = "Code copied!"; setTimeout(() => ($("#referral-msg").textContent = ""), 2000); });
-  });
-  $("#share-referral").addEventListener("click", () => {
-    const code = client.referralCode;
-    if (!code) return;
-    const url = `${location.origin}/login?signup&ref=${encodeURIComponent(code)}`;
-    if (navigator.share) navigator.share({ title: "Join MD Fit", text: `Sign up with my code and get 3 months free access!`, url }).catch(() => {});
-    else navigator.clipboard.writeText(url).then(() => { $("#referral-msg").textContent = "Link copied!"; setTimeout(() => ($("#referral-msg").textContent = ""), 2000); });
-  });
   $("#logout").addEventListener("click", () => { auth.clear(); location.href = "/"; });
 
   async function loadReferral() {
@@ -1081,7 +1069,7 @@
     earn("share");
     const code = $("#ref-code").textContent;
     if (!code || code === "—") return;
-    const url = `${location.origin}/login?ref=${code}&signup`;
+    const url = `${location.origin}/login?signup&ref=${encodeURIComponent(code)}`;
     if (navigator.share) navigator.share({ title: "Join MD Fit", text: `Sign up with my referral code ${code} and get 3 months free!`, url }).catch(() => {});
     else navigator.clipboard.writeText(url).then(() => toast("Share link copied!")).catch(() => toast("Couldn't copy the link."));
   });
