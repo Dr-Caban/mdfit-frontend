@@ -27,6 +27,9 @@
     get(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
   };
+  // Clean update: drop what older app versions saved on this device and no longer use (old workout-generator
+  // choices and old "today's workout"). Sign-in, favorites and everything on the account are left alone.
+  try { ["mdfit_prefs", "mdfit_prefs1", "mdfit_prefs2", "mdfit_today", "mdfit_today1", "mdfit_today2"].forEach((k) => localStorage.removeItem(k)); } catch {}
   let client = auth.client(), stats = null, appts = { upcoming: [], past: [] }, painLog = [], allWorkouts = [], reward = null;
   let lib = { favorites: [], programs: [] };
 
