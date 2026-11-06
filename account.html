@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="app/app.css?v=c39effd7">
+  <link rel="stylesheet" href="app/app.css?v=3a3db328">
   <link rel="stylesheet" href="account.css?v=1dcb2f21">
   <link rel="stylesheet" href="guides.css?v=0a19199b">
 </head>
@@ -73,6 +73,7 @@
           <div><b id="today-title">Loading…</b><span id="today-meta"></span></div>
         </div>
         <button type="button" class="btn-blue" id="start-today"><svg viewBox="0 0 24 24"><path d="M7 4v16l13-8z"/></svg> Start Workout</button>
+        <button type="button" class="btn-ghost ten-min" id="start-ten"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm4.2 14.2L11 13V7h1.5v5.2l4.5 2.7z"/></svg> <span>Short on time? <b>10-minute workout</b></span></button>
         <button type="button" class="link" data-goto="generate">Change workout</button>
       </div>
 
@@ -271,6 +272,27 @@
       </div>
     </section>
 
+    <!-- ================= LEADERBOARD ================= -->
+    <section class="view" id="view-leaders" data-view="leaders" hidden>
+      <header class="hero">
+        <div><h1>Leader<em>board</em></h1><p>Earn XP for workouts, check-ins, pain entries and visits. Today's board resets at midnight, the monthly board on the 1st.</p></div>
+      </header>
+      <div class="card board" id="board">
+        <div class="card-head"><span class="label accent">Leaderboard</span>
+          <div class="seg seg4" role="tablist" aria-label="Period"><button type="button" data-period="day" aria-selected="true">Today</button><button type="button" data-period="month" aria-selected="false">This month</button><button type="button" data-period="week" aria-selected="false">This week</button><button type="button" data-period="all" aria-selected="false">All time</button></div>
+        </div>
+        <div class="leagues" role="tablist">
+          <button type="button" data-league="pro" aria-selected="true"><span>🏅</span>Pro League</button>
+          <button type="button" data-league="olympic" aria-selected="false"><span>🏆</span>Olympic League</button>
+        </div>
+        <p class="board-reset small" id="board-reset"></p>
+        <p class="small muted board-sub" id="board-sub">Log anything to earn XP and climb the ranks.</p>
+        <ol class="board-list" id="board-list"></ol>
+        <p class="board-me small" id="board-me"></p>
+        <label class="board-hide small"><input type="checkbox" id="board-hide"> Hide me from the leaderboard</label>
+      </div>
+    </section>
+
     <!-- ================= HEALTH TIPS ================= -->
     <section class="view" id="view-tips" data-view="tips" hidden>
       <header class="hero">
@@ -401,19 +423,10 @@
         <details class="sub"><summary>All entries (<span id="entry-count">0</span>)</summary><table class="tbl" id="entries"></table></details>
       </div>
 
-          <div class="card board" id="board">
-            <div class="card-head"><span class="label accent">Leaderboard</span>
-              <div class="seg" role="tablist"><button type="button" data-period="week" aria-selected="true">This week</button><button type="button" data-period="all" aria-selected="false">All time</button></div>
-            </div>
-            <div class="leagues" role="tablist">
-              <button type="button" data-league="pro" aria-selected="true"><span>🏅</span>Pro League</button>
-              <button type="button" data-league="olympic" aria-selected="false"><span>🏆</span>Olympic League</button>
-            </div>
-            <p class="small muted board-sub" id="board-sub">Log anything to earn XP and climb the ranks.</p>
-            <ol class="board-list" id="board-list"></ol>
-            <p class="board-me small" id="board-me"></p>
-            <label class="board-hide small"><input type="checkbox" id="board-hide"> Hide me from the leaderboard</label>
-          </div>
+          <button type="button" class="card board-link" data-goto="leaders">
+            <span class="label accent">Leaderboard</span>
+            <span class="bl-text">See where you rank today and this month</span><span class="bl-go" aria-hidden="true">›</span>
+          </button>
 
           <div class="card">
             <div class="card-head"><span class="label accent">Badges</span><span class="muted small" id="badge-count"></span></div>
@@ -542,6 +555,7 @@
     <button type="button" data-tab="pain"><svg viewBox="0 0 24 24"><path d="M12 2a2 2 0 1 1-2 2 2 2 0 0 1 2-2zm-3 20v-7H7.5V9a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v6H15v7z"/></svg><span class="short">Pain</span><span class="long">Pain Tool</span></button>
     <button type="button" data-tab="learn" class="ov"><svg viewBox="0 0 24 24"><path d="M12 3 1 9l11 6 9-4.9V17h2V9zM5 13.2v4L12 21l7-3.8v-4L12 17z"/></svg><span class="short">Learn</span><span class="long">Lectures &amp; Live Q&amp;A</span></button>
     <button type="button" data-tab="progress"><svg viewBox="0 0 24 24"><path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z"/></svg><span class="short">Progress</span><span class="long">Progress Tracking</span></button>
+    <button type="button" data-tab="leaders" class="ov"><svg viewBox="0 0 24 24"><path d="M19 4h-2V2H7v2H5a2 2 0 0 0-2 2v1a5 5 0 0 0 4.4 4.96A5 5 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5 5 0 0 0 3.6-3.94A5 5 0 0 0 21 7V6a2 2 0 0 0-2-2zM5 7V6h2v3.8A3 3 0 0 1 5 7zm14 0a3 3 0 0 1-2 2.8V6h2z"/></svg><span class="short">Leaders</span><span class="long">Leaderboard</span></button>
     <button type="button" data-tab="premium" class="ov"><svg viewBox="0 0 24 24"><path d="M5 16 3 5l5.5 5L12 4l3.5 6L21 5l-2 11zm14 3a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-1h14z"/></svg><span class="short">Membership</span><span class="long">Membership &amp; 1-on-1</span></button>
     <button type="button" data-tab="messages" class="ov"><svg viewBox="0 0 24 24"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM6 9h12v2H6zm8 5H6v-2h8zm4-6H6V6h12z"/></svg><span class="short">Messages</span><span class="long">Message Dr. Jared</span><i class="tab-badge" id="msg-badge" hidden></i></button>
     <button type="button" data-tab="tips" class="ov"><svg viewBox="0 0 24 24"><path d="M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9zm3-19a7 7 0 0 0-4 12.7V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.3A7 7 0 0 0 12 2z"/></svg><span class="short">Tips</span><span class="long">Health Tips</span></button>
@@ -682,7 +696,7 @@
   <script src="search.js?v=c2d8a6de" defer></script>
   <script src="app/exercises.js?v=13bcd350"></script>
   <script src="app/library.js?v=4e053a85"></script>
-  <script src="app/generator.js?v=d77eb2fe"></script>
+  <script src="app/generator.js?v=ded93234"></script>
   <script src="painmuscles.js?v=74e3b348"></script>
   <script src="painpatterns.js?v=eefa906e"></script>
   <script src="paintracks.js?v=a4fc10a4"></script>
@@ -690,7 +704,7 @@
   <script src="musclereports.js?v=cd9ced26"></script>
   <script src="guides.js?v=aaa4ac68"></script>
   <script src="stripe-checkout.js?v=0b68bde3"></script>
-  <script src="account.js?v=5a1f2240"></script>
+  <script src="account.js?v=4b2e5fb4"></script>
 <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>

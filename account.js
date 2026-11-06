@@ -118,7 +118,7 @@
   }
 
   // ================= Tabs (hash routing so the back button and refresh work)
-  const TABS = ["home", "generate", "programs", "videos", "pain", "learn", "progress", "premium", "messages", "tips", "profile"];
+  const TABS = ["home", "generate", "programs", "videos", "pain", "learn", "progress", "leaders", "premium", "messages", "tips", "profile"];
   // Hash is "#tab" or "#pain/muscle/<id>" (deep link to a muscle report)
   function show(hash) {
     let [tab, sub, arg] = String(hash).split("/");
@@ -130,7 +130,8 @@
     $$(".tabbar [data-tab]").forEach((b) => (b.dataset.tab === tab ? b.setAttribute("aria-current", "page") : b.removeAttribute("aria-current")));
     if (tab === "videos") renderVideos();
     if (tab === "pain" && !show.painMap) { show.painMap = true; if (window.MDFitPainMap) window.MDFitPainMap.init($("[data-painmap='app']")); }
-    if (tab === "progress") { renderCalendar(); if (typeof loadBoard === "function") loadBoard(); }
+    if (tab === "progress") renderCalendar();
+    if (tab === "leaders" && typeof loadBoard === "function") loadBoard();
     if (["programs", "learn", "premium", "tips"].includes(tab)) renderContent(tab, tab === "programs" ? String(hash).split("/").slice(1).join("/") : sub);
     if (tab === "messages") openMessages(); else clearInterval(msgPoll);
     $("#more-btn").classList.toggle("on", $$(".tabbar .ov").some((b) => b.dataset.tab === tab));
@@ -273,6 +274,12 @@
     $("#today-meta").textContent = `About ${w.minutes} min · ${planLine(w)} · ${w.levelLabel}`;
   }
   $("#start-today").addEventListener("click", async () => { const w = todaysWorkout(); if (await claim(w)) startPlayer(w); });
+  // Short on time: the same goal, place and level as today's workout, cut to about 10 minutes (same one every time today)
+  function tenMinuteWorkout() {
+    const t = todayInTz();
+    return Gen.generate({ ...prefs, length: 10, ...Gen.presetFor(10), seed: daySeed(t + (client?.id || "") + "-10") });
+  }
+  $("#start-ten").addEventListener("click", async () => { const w = tenMinuteWorkout(); if (await claim(w)) startPlayer(w); });
 
   function renderPlan() {
     const p = client.plan || { guides: [], exercises: [], notes: "" };
@@ -2364,13 +2371,16 @@
     heart: '<path d="M12 21 10.6 19.7C5.4 15 2 11.9 2 8.1 2 5 4.4 2.6 7.5 2.6c1.7 0 3.4.8 4.5 2.1 1.1-1.3 2.8-2.1 4.5-2.1C19.6 2.6 22 5 22 8.1c0 3.8-3.4 6.9-8.6 11.6z"/>',
     star: '<path d="m12 17.3 6.2 3.7-1.6-7 5.4-4.7-7.2-.6L12 2 9.2 8.7 2 9.3l5.4 4.7-1.6 7z"/>'
   };
-  let boardPeriod = "week", boardLeague = "";
+  let boardPeriod = "day", boardLeague = "";
+  const PERIOD_UNIT = { day: "XP today", week: "XP this week", month: "XP this month", all: "XP" };
+  const PERIOD_EMPTY = { day: "today", week: "this week", month: "this month", all: "yet" };
   async function loadBoard() {
     if (!$("#board")) return;
     let d; try { d = await apiAuth("GET", `/api/me/leaderboard?period=${boardPeriod}${boardLeague ? `&league=${boardLeague}` : ""}`); } catch { return; }
     if (!d || !Array.isArray(d.top)) return;
     $$("#board [data-period]").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.period === d.period)));
-    const unit = d.period === "week" ? "XP this week" : "XP";
+    const unit = PERIOD_UNIT[d.period] || "XP";
+    $("#board-reset").textContent = d.resetsOn ? `${d.period === "day" ? "Resets at midnight" : `Resets ${fmtDate(d.resetsOn, { weekday: "long", month: "short", day: "numeric" })}`}${d.period === "day" ? "" : " at midnight"} · everyone starts from zero` : "Lifetime XP. Never resets.";
     boardLeague = d.league;
     $$("#board [data-league]").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.league === d.league)));
     const lname = d.league === "olympic" ? "Olympic League" : "Pro League";
@@ -2378,7 +2388,7 @@
       ? (d.league === "olympic" ? "You're in the Olympic League, the top tier. Defend your spot." : `You're in the Pro League. Reach level ${d.olympicLevel} to move up to the Olympic League.`)
       : (d.league === "olympic" ? `Reach level ${d.olympicLevel} to compete here.` : "Where everyone starts.");
     $("#board-list").innerHTML = d.top.length ? d.top.map((r) => `<li class="${r.me ? "me" : ""}"><span class="rk rk-${r.rank}">${r.rank <= 3 ? ["🥇", "🥈", "🥉"][r.rank - 1] : r.rank}</span><span class="nm">${esc(r.name)}${r.me ? " (you)" : ""}<small>Lv ${r.level}</small></span><b>${r.score.toLocaleString()}</b></li>`).join("")
-      : `<li class="empty muted small">No one in the ${lname} has XP ${d.period === "week" ? "this week" : "yet"}.${d.myLeague === d.league ? " Log a workout, check-in or pain entry to take #1." : ""}</li>`;
+      : `<li class="empty muted small">No one in the ${lname} has XP ${PERIOD_EMPTY[d.period] || "yet"}.${d.myLeague === d.league ? " Log a workout, check-in or pain entry to take #1." : ""}</li>`;
     $("#board-me").textContent = d.hidden ? "You're hidden from the leaderboard." : d.me ? (d.me.rank > 10 ? `You're #${d.me.rank} of ${d.total} with ${d.me.score.toLocaleString()} ${unit}.` : "") : "Log anything to join the rankings.";
     $("#board-hide").checked = d.hidden;
   }

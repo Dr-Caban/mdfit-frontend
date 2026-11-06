@@ -1289,3 +1289,16 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
 /* Refer a friend: the code on its own line (never broken mid-code), Copy and Share side by side under it */
 .referral-code-row .referral-code { flex: 1 1 100%; white-space: nowrap; text-align: center; letter-spacing: .04em; }
 .referral-code-row .btn-gold, .referral-code-row .btn-blue { flex: 1 1 0; }
+/* Leaderboard tab: Today / This month / This week / All time */
+#view-leaders .board .card-head { flex-wrap: wrap; gap: 8px; }
+#view-leaders .seg4 { display: grid; grid-template-columns: repeat(4, 1fr); width: 100%; margin: 4px 0 0; }
+#view-leaders .seg4 button { padding: 8px 4px; white-space: nowrap; }
+.board-reset { margin: 8px 0 0; color: var(--navy); font-weight: 600; }
+.board-reset:empty { display: none; }
+.board-link { position: relative; display: grid; gap: 4px; width: 100%; text-align: left; font: inherit; color: var(--text); cursor: pointer; padding-right: 44px; }
+.board-link .bl-text { font-weight: 600; color: var(--navy); }
+.board-link .bl-go { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); font-size: 26px; color: var(--muted); }
+.today .ten-min { width: 100%; margin-top: 8px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-weight: 500; }
+.today .ten-min svg { width: 18px; height: 18px; fill: currentColor; }
+.today .ten-min span { text-align: left; }
+.today .ten-min svg { flex: none; }
