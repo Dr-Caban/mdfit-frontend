@@ -1964,7 +1964,13 @@
       ? `<button type="button" class="crumb" data-goto="${esc(href)}">${esc(label)}</button><span class="crumb-sep" aria-hidden="true">›</span>`
       : `<span class="crumb now" aria-current="page">${esc(label)}</span>`)).join("")}</nav>`;
   }
-  const progCrumbs = (p) => { const sp = isSport(p) && sportOf(p); return [["Programs", "programs"], ...(sp ? [[sp, sportHref(sp)], [lvlName(p.level), `programs/${p.id}`]] : [[p.title, `programs/${p.id}`]])]; };
+  const progCrumbs = (p) => {
+    const sp = isSport(p) && sportOf(p);
+    if (!sp) return [["Programs", "programs"], [p.title, `programs/${p.id}`]];
+    // A level with several programs (e.g. Marathon › Advanced) gets its own list page between the sport and the program
+    const shared = sportPrograms(sp).filter((x) => x.level === p.level).length > 1;
+    return [["Programs", "programs"], [sp, sportHref(sp)], ...(shared ? [[lvlName(p.level), sportHref(sp, p.level)], [p.title, `programs/${p.id}`]] : [[lvlName(p.level), `programs/${p.id}`]])];
+  };
   const progStats = (p) => {
     const isProto = PROTO.ids.has(p.id), nWeeks = isProto ? ((PROTO.weekCounts || {})[p.id] || p.weeks) : 0;
     const weeksStarted = isProto ? new Set(allWorkouts.filter((w) => String(w.key || "").startsWith(`prog-${p.id}-w`)).map((w) => w.key)).size : 0;
@@ -2065,10 +2071,12 @@
     return score >= 0.6 ? best : null;
   }
   const doseText = (d = {}) => [d.sets && `${d.sets} sets`, d.reps && d.reps, d.hold && `hold ${d.hold}`].filter(Boolean).join(" × ").slice(0, 60);
-  function protoWorkout(p, pr, wk) {
-    const circuit = wk.exercises.map((x) => { const m = libMatch(x.name); return m ? { ...m, name: x.name, sets: doseText(x.dosage), block: wk.label } : { id: "", name: x.name, sets: doseText(x.dosage), block: wk.label }; });
-    return { title: `${pr.title}: ${wk.label}`, goal: "Rehab", goalId: "mobility", location: p.location, level: p.level, levelLabel: wk.label, rounds: 1, restEx: 20, restRound: 0,
-      minutes: Math.max(10, wk.exercises.length * 5), warmup: [], cooldown: [], circuit, exercises: circuit, perRound: circuit.length, key: protoKey(p, wk.key), noRest: true };
+  function protoWorkout(p, pr, wk, group) {
+    const g = group != null && group !== "" ? weekGroups(wk)[Number(group)] : null;
+    const list = g ? g.items : wk.exercises, label = g && g.name ? titleCase(g.name) : wk.label;
+    const circuit = list.map((x) => { const m = libMatch(x.name); return m ? { ...m, name: x.name, sets: doseText(x.dosage), block: label } : { id: "", name: x.name, sets: doseText(x.dosage), block: label }; });
+    return { title: `${pr.title}: ${wk.label}${g ? ` · ${label}` : ""}`, goal: "Rehab", goalId: "mobility", location: p.location, level: p.level, levelLabel: wk.label, rounds: 1, restEx: 20, restRound: 0,
+      minutes: Math.max(10, list.length * 5), warmup: [], cooldown: [], circuit, exercises: circuit, perRound: circuit.length, key: protoKey(p, wk.key), noRest: true };
   }
   const sheetSrc = (pr, wk, w) => `assets/protocols/${pr.id}/${encodeURIComponent(wk.key)}-${w}.webp`;
   // Sections the sheets have beyond the standard ones (e.g. "why", "key points") are shown too, so nothing transcribed is hidden
@@ -2095,11 +2103,20 @@
     </article>`;
   }
   // A week's exercises; sport weeks group them by workout (x.workout, e.g. "Workout A: Foundation & Lower Body Control")
-  function groupedExercises(wk) {
+  // Sheets print headings in capitals; show them in title case ("WORKOUT A: HIP MOBILITY (20-30 MINUTES)" -> "Workout A: Hip Mobility (20-30 Minutes)")
+  const titleCase = (t) => (/[a-z]/.test(t) ? t : t.toLowerCase().replace(/(^|[\s(\/&:+–-])([a-z])/g, (m, a, b) => a + b.toUpperCase()));
+  function weekGroups(wk) {
     const groups = [];
     for (const x of wk.exercises) { const g = x.workout || ""; let last = groups[groups.length - 1]; if (!last || last.name !== g) groups.push((last = { name: g, items: [] })); last.items.push(x); }
+    return groups;
+  }
+  function groupedExercises(wk, p) {
+    const groups = weekGroups(wk);
     if (groups.length === 1 && !groups[0].name) return `<div class="pex-list">${wk.exercises.map(protoExerciseCard).join("")}</div>`;
-    return groups.map((g) => `${g.name ? `<h3 class="pex-group">${esc(g.name)}</h3>` : ""}<div class="pex-list">${g.items.map(protoExerciseCard).join("")}</div>`).join("");
+    return groups.map((g, i) => `<div class="pex-group-head"><h3 class="pex-group">${esc(titleCase(g.name || "Exercises"))}</h3>
+        ${p.locked || g.items.length < 2 ? "" : `<button type="button" class="btn-blue sm" data-pweek-start="${esc(wk.key)}" data-pgroup="${i}"><svg viewBox="0 0 24 24"><path d="M7 4v16l13-8z"/></svg> Start</button>`}</div>
+      ${g.items[0].workoutNote ? `<p class="muted small pex-group-note">${esc(g.items[0].workoutNote)}</p>` : ""}
+      <div class="pex-list">${g.items.map(protoExerciseCard).join("")}</div>`).join("");
   }
   async function renderProtocol(p, weekKey) {
     const box = $("#prog-detail"), pr = await loadProtocol(p.id);
@@ -2137,15 +2154,15 @@
         <div class="pd-top"><div><span class="label accent">${esc(isSport(p) ? `${sportOf(p)} · ${lvlName(p.level)}` : pr.title)}</span>
           <h2 class="pw-title">${esc(wk.label)}</h2>
           ${focusOf(wk.key) ? `<p class="proto-wgoal"><b>Focus:</b> ${esc(focusOf(wk.key))}</p>` : ""}
-          <p class="muted small">${wk.exercises.length} exercise${wk.exercises.length === 1 ? "" : "s"} · ${protoDone(p, wk.key) ? `done ${protoDone(p, wk.key)}×` : "do this routine daily unless the card says otherwise"}</p></div>
-          ${p.locked || !wk.exercises.length ? "" : `<button type="button" class="btn-blue sm" data-pweek-start="${esc(wk.key)}"><svg viewBox="0 0 24 24"><path d="M7 4v16l13-8z"/></svg> Start</button>`}</div>
+          <p class="muted small">${wk.exercises.length} exercise${wk.exercises.length === 1 ? "" : "s"} · ${protoDone(p, wk.key) ? `done ${protoDone(p, wk.key)}×` : weekGroups(wk).some((g) => g.items.length > 1) && weekGroups(wk).length > 1 ? "start a workout below" : weekGroups(wk).length > 1 ? "follow the plan below" : "do this routine daily unless the card says otherwise"}</p></div>
+          ${p.locked || !wk.exercises.length || weekGroups(wk).length > 1 ? "" : `<button type="button" class="btn-blue sm" data-pweek-start="${esc(wk.key)}"><svg viewBox="0 0 24 24"><path d="M7 4v16l13-8z"/></svg> Start</button>`}</div>
         ${wk.goal ? `<p class="proto-wgoal"><b>This week's goal:</b> ${esc(wk.goal)}</p>` : ""}
         ${wk.focus && wk.focus !== focusOf(wk.key) ? `<p class="proto-wgoal"><b>Focus:</b> ${esc(wk.focus)}</p>` : ""}
         ${textList(wk.principles).length ? `<ul class="proto-wprin">${textList(wk.principles).map((t) => `<li>${esc(t)}</li>`).join("")}</ul>` : ""}
         ${wk.notes ? `<p class="prog-notes">${esc(wk.notes).replace(/\n/g, "<br>")}</p>` : ""}
         ${extraSections(wk, STD_WK)}
         ${wk.driveId ? `<button type="button" class="proto-sheet" data-sheet="${esc(wk.key)}" aria-label="Open the ${esc(wk.label)} sheet full size"><img src="${sheetSrc(pr, wk, 960)}" srcset="${sheetSrc(pr, wk, 960)} 960w, ${sheetSrc(pr, wk, 1600)} 1600w" sizes="(max-width: 820px) 100vw, 760px" alt="Dr. Jared's ${esc(pr.title)} sheet, ${esc(wk.label)}" loading="lazy" decoding="async" onerror="this.closest('.proto-sheet').hidden=true"><span>Tap to enlarge</span></button>` : ""}
-        ${groupedExercises(wk)}
+        ${groupedExercises(wk, p)}
       </div>
       <nav class="proto-pn" aria-label="Other weeks">
         ${prev ? `<button type="button" class="btn-ghost sm" data-goto="${esc(weekHref(prev))}">‹ ${esc(prev.label)}</button>` : "<span></span>"}
@@ -2183,7 +2200,7 @@
   $("#prog-detail").addEventListener("click", async (e) => {
     const p0 = C.programs.find((x) => x.id === $("#prog-detail").dataset.id); if (!p0) return;
     const ws = e.target.closest("[data-pweek-start]");
-    if (ws) { const pr = await loadProtocol(p0.id), wk = pr && pr.weeks.find((w) => w.key === ws.dataset.pweekStart); if (wk && !p0.locked) startPlayer(protoWorkout(p0, pr, wk)); return; }
+    if (ws) { const pr = await loadProtocol(p0.id), wk = pr && pr.weeks.find((w) => w.key === ws.dataset.pweekStart); if (wk && !p0.locked) startPlayer(protoWorkout(p0, pr, wk, ws.dataset.pgroup)); return; }
     const sh = e.target.closest("[data-sheet]");
     if (sh) {
       const pr = await loadProtocol(p0.id), wk = pr && pr.weeks.find((w) => w.key === sh.dataset.sheet); if (!wk) return;

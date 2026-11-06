@@ -1282,3 +1282,7 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
 .proto-pn > :last-child { justify-self: end; }
 .proto-pn > :first-child { justify-self: start; }
 .proto-pn .btn-ghost { white-space: normal; text-align: center; }
+.pex-group-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 20px 0 6px; border-bottom: 2px solid var(--gold); padding-bottom: 6px; }
+.pex-group-head .pex-group { margin: 0; border: 0; padding: 0; }
+.pex-group-head .btn-blue { flex: none; }
+.pex-group-note { margin: 0 0 8px; }
