@@ -1,0 +1,371 @@
+{
+  "id": "golfers-elbow-4",
+  "title": "Golf Elbow Rehab Program",
+  "tagline": "4-Week Plan to Reduce Pain and Restore Strength",
+  "goal": "",
+  "principles": [],
+  "dailyBasics": [],
+  "progression": {
+    "overview": [],
+    "guidelines": [],
+    "expect": [],
+    "remember": "",
+    "callouts": [
+      "Targets the inside of the elbow (Medial Epicondylitis)"
+    ],
+    "footer": ""
+  },
+  "weeks": [
+    {
+      "key": "1",
+      "label": "Week 1",
+      "driveId": "1kesOEfU52_Fd0b-V3kR6FUO5pMXLg2_a",
+      "focus": "Calm pain. Start healing.",
+      "notes": "CALM PAIN. START HEALING.\n- Reduce irritation\n- Begin tendon remodeling\n- Restore function\nWEEK 1 FOCUS:\n- Eccentric lengthening of the wrist extensors\n- Reduce inflammation\n- Maintain mobility\n- Begin building tendon tolerance\nADDITIONAL TIPS FOR WEEK 1:\n- Use a light weight (1-2 lbs).\n- Do exercises 2-3× per day.\n- Ice 15-20 minutes after any activity.\n- Use heat 2-6 hours in the evening.\n- Stay consistent every day.\nAVOID FOR NOW:\n- Heavy lifting or gripping\n- Repetitive wrist flexion or twisting (e.g., heavy golf, wrenching)\n- Pain-provoking activities — modify as needed",
+      "editorNotes": "Labels removed from notes: \"Week banner:\" (around the banner slogan) and \"Banner icons:\" (before the icon list).",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "Eccentric Wrist Extensions",
+          "isNew": false,
+          "whenToUse": "Targets the wrist extensors to rehab the tendon.",
+          "howTo": [],
+          "focus": [
+            "Palm down (knuckles up)",
+            "Keep your forearm supported on a table or your thigh",
+            "Move slowly — 3-4 seconds on the way down",
+            "Full range of motion (let the weight pull your wrist down as far as comfortable)",
+            "Use 1-2 lb weight (start light)"
+          ],
+          "dosage": {
+            "sets": "2-3",
+            "reps": "10",
+            "tempo": "",
+            "hold": "",
+            "frequency": "2-3× per day",
+            "other": {}
+          },
+          "steps": [
+            "Start at the top. Use a light weight (1-2 lbs). Help up with your other hand if needed.",
+            "Slowly lower down with the affected arm (eccentric) over 3-4 seconds.",
+            "Go through full range of motion. Then use your other hand to help lift back up and repeat."
+          ],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "name": "Ice After Activity",
+          "isNew": false,
+          "whenToUse": "Reduce inflammation and pain.",
+          "howTo": [
+            "Use an ice pack or ice massage.",
+            "15-20 minutes",
+            "After exercises, sports (golf), typing, phone use, or any prolonged forearm activity.",
+            "You can repeat multiple times throughout the day."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "name": "Heat in the Evening",
+          "isNew": false,
+          "whenToUse": "Increases blood flow and promotes healing.",
+          "howTo": [
+            "Use a heating pad or warm compress.",
+            "2-6 hours at the end of the day (after all activity).",
+            "Keep it comfortable (warm, not hot)."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ]
+    },
+    {
+      "key": "2",
+      "label": "Week 2",
+      "driveId": "1bnlCk7ieGzoGgUAzjYbbTo3UtKMzJgNj",
+      "focus": "Increase load. Deepen the stretch.",
+      "notes": "INCREASE LOAD. DEEPEN THE STRETCH.\n- Build tendon tolerance\n- Improve strength and control\n- Reduce pain and prevent recurrence\nWEEK 2 FOCUS:\n- Continue eccentric lengthening of the wrist extensors\n- Increase repetitions and/or resistance\n- Add a wrist flexion squeeze at the bottom of each rep\n- Continue ice after activity and heat in the evening\nWEEK 2 TIPS FOR SUCCESS:\n- Increase to 3-4 lbs (if Week 1 was 1-2 lbs).\n- Increase to 2-3 sets of 15 reps.\n- Always include the wrist flexion squeeze at the bottom.\n- Ice immediately after activity.\n- Use heat in the evening for 2-6 hours.\n- Stay consistent daily.\nAVOID FOR NOW:\n- Heavy lifting or gripping\n- Repetitive wrist flexion or twisting\n- Pain-provoking activities\n- Golf with poor technique or excessive volume",
+      "editorNotes": "Labels removed from notes: \"Week banner:\" (around the banner slogan) and \"Banner icons:\" (before the icon list).",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "Eccentric Wrist Extensions + Flexion Squeeze",
+          "isNew": false,
+          "whenToUse": "Lengthens and strengthens the wrist extensors while improving flexibility.",
+          "howTo": [],
+          "focus": [
+            "Full range of motion",
+            "Lower slowly (3-4 seconds)",
+            "Add a gentle wrist flexion squeeze at the bottom",
+            "Keep your forearm supported",
+            "Use a weight that is challenging but allows good form",
+            "No pain during or after (except mild discomfort)"
+          ],
+          "dosage": {
+            "sets": "2-3",
+            "reps": "15",
+            "tempo": "",
+            "hold": "",
+            "frequency": "2-3× per day",
+            "other": {
+              "Load": "Use 3-4 lb weight (or increase from Week 1)"
+            }
+          },
+          "steps": [
+            "Start at the top. Hold a moderate weight (3-4 lbs). Palm down. Support your forearm on your thigh or a table.",
+            "Slowly lower down (eccentric) over 3-4 seconds to full wrist flexion.",
+            "At the bottom, perform a gentle wrist flexion squeeze for 1-2 seconds to further stretch the wrist extensors."
+          ],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "name": "Ice After Activity",
+          "isNew": false,
+          "whenToUse": "Reduces inflammation and pain.",
+          "howTo": [
+            "Use an ice pack or ice massage.",
+            "15-20 minutes.",
+            "After exercise, sports (golf), typing, phone use, or any prolonged forearm activity.",
+            "You can repeat multiple times throughout the day."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "name": "Heat in the Evening",
+          "isNew": false,
+          "whenToUse": "Increases blood flow and promotes healing.",
+          "howTo": [
+            "Use a heating pad or warm compress.",
+            "2-6 hours at the end of the day (after all activity).",
+            "Keep it comfortable (warm, not hot)."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ]
+    },
+    {
+      "key": "3",
+      "label": "Week 3",
+      "driveId": "1Rd1LaMS35P55itlxJorIe-7ZVzObPX2n",
+      "focus": "Add strength. Control both directions.",
+      "notes": "ADD STRENGTH. CONTROL BOTH DIRECTIONS.\n- Build strength and tendon capacity\n- Add light concentric work\n- Improve endurance and function\nWEEK 3 FOCUS:\n- Continue eccentric lengthening of the wrist extensors\n- Add a light concentric (lifting) phase\n- Maintain the wrist flexion squeeze at the bottom of each rep\n- Increase resistance (typically 3-4 lbs) and/or repetitions\n- Continue ice after activity and heat in the evening\nWEEK 3 TIPS FOR SUCCESS:\n- Increase to 3-4 lbs (if Week 2 was 1-2 lbs).\n- Add the concentric (lifting) phase with a light weight (1-2 lbs).\n- Maintain the wrist flexion squeeze at the bottom.\n- Ice after activity (15-20 minutes).\n- Heat in the evening (2-6 hours).\n- Stay consistent 2-3× per day.\nAVOID FOR NOW:\n- Heavy lifting or gripping\n- Repetitive wrist flexion or twisting\n- Pain-provoking activities\n- Golf with poor technique or excessive volume",
+      "editorNotes": "Labels removed from notes: \"Week banner:\" (around the banner slogan) and \"Banner icons:\" (before the icon list).",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "Wrist Extensions with Concentric + Eccentric",
+          "isNew": false,
+          "whenToUse": "Strengthens the wrist extensors and builds tendon tolerance.",
+          "howTo": [],
+          "focus": [
+            "Full range of motion",
+            "Lift up (concentric) with light weight and good control (1-2 seconds)",
+            "Lower down (eccentric) slowly over 3-4 seconds",
+            "Perform a gentle wrist flexion squeeze at the bottom",
+            "Focus on controlled movement — no swinging",
+            "Use a weight that is challenging but allows good form"
+          ],
+          "dosage": {
+            "sets": "2-3",
+            "reps": "12-15",
+            "tempo": "",
+            "hold": "",
+            "frequency": "2-3× per day",
+            "other": {
+              "Load": "Use 3-4 lb weight (or increase from Week 2)"
+            }
+          },
+          "steps": [
+            "Start at the bottom. Wrist relaxed and slightly flexed (stretch position). Squeeze gently.",
+            "Concentric (up): Slowly lift the weight up through full range of motion (1-2 seconds). Use a light weight (1-2 lbs).",
+            "Pause at the top. Squeeze for 1 second.",
+            "Eccentric (down): Slowly lower over 3-4 seconds. At the bottom, perform a gentle wrist flexion squeeze for 1-2 seconds."
+          ],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "name": "Ice After Activity",
+          "isNew": false,
+          "whenToUse": "Reduces inflammation and pain.",
+          "howTo": [
+            "Use an ice pack or ice massage.",
+            "15-20 minutes.",
+            "After exercise, sports (golf), typing, phone use, or any prolonged forearm activity.",
+            "You can repeat multiple times throughout the day."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "name": "Heat in the Evening",
+          "isNew": false,
+          "whenToUse": "Increases blood flow and promotes healing.",
+          "howTo": [
+            "Use a heating pad or warm compress.",
+            "2-6 hours at the end of the day (after all activity).",
+            "Keep it comfortable (warm, not hot)."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ]
+    },
+    {
+      "key": "4",
+      "label": "Week 4",
+      "driveId": "1PgaeS2Mcg38-a2MTrwIS_xQFbIs9StBg",
+      "focus": "Build strength. Return to activity.",
+      "notes": "BUILD STRENGTH. RETURN TO ACTIVITY.\n- Restore strength and endurance\n- Improve control and function\n- Prepare for return to golf and daily use\nWEEK 4 FOCUS:\n- Continue eccentric and concentric wrist extensions\n- Increase resistance (5-6 lbs for eccentric, 1-2 lbs for concentric)\n- Maintain wrist flexion squeeze at the bottom of each rep\n- Build strength and endurance\n- Continue ice after activity and heat in the evening\nWEEK 4 TIPS FOR SUCCESS:\n- Use 5-6 lb for eccentric (down) reps.\n- Use 1-2 lb for concentric (up) reps.\n- Work up to 15-20 reps per set.\n- Keep the wrist flexion squeeze at the bottom.\n- Ice after activity (15-20 minutes).\n- Heat in the evening (2-6 hours).\n- Begin return to golf and normal activity as pain allows.\nAVOID FOR NOW:\n- Heavy lifting or gripping\n- Repetitive wrist flexion or twisting\n- Pain-provoking activities\n- Golf with poor technique or excessive volume",
+      "editorNotes": "Labels removed from notes: \"Week banner:\" (around the banner slogan) and \"Banner icons:\" (before the icon list).",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "Wrist Extensions (Full Program)",
+          "isNew": false,
+          "whenToUse": "Perform both concentric (up) and eccentric (down) with a wrist flexion squeeze at the bottom.",
+          "howTo": [],
+          "focus": [
+            "Full range of motion",
+            "Use a heavier weight for the eccentric (down) and a lighter weight for the concentric (up)",
+            "Wrist flexion squeeze at the bottom of each rep",
+            "Controlled movement (neither fast nor jerky)",
+            "Increase reps toward 20 if comfortable",
+            "Stop if sharp pain (mild discomfort is okay)"
+          ],
+          "dosage": {
+            "sets": "2-3",
+            "reps": "15-20",
+            "tempo": "",
+            "hold": "",
+            "frequency": "2-3× per day",
+            "other": {
+              "Concentric": "1-2 lb",
+              "Eccentric": "5-6 lb"
+            }
+          },
+          "steps": [
+            "Start at the bottom. Wrist relaxed and slightly flexed (stretch position). Squeeze gently.",
+            "Concentric (up): Use a light weight (1-2 lbs). Lift through full range of motion in 1-2 seconds.",
+            "Pause at the top. Squeeze for 1 second. Keep control.",
+            "Eccentric (down): Use a heavier weight (5-6 lbs). Lower slowly over 3-4 seconds. At the bottom, perform a gentle wrist flexion squeeze for 1-2 seconds."
+          ],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "name": "Ice After Activity",
+          "isNew": false,
+          "whenToUse": "Reduces inflammation and pain.",
+          "howTo": [
+            "Use an ice pack or ice massage.",
+            "15-20 minutes.",
+            "After exercise, sports (golf), typing, phone use, or any prolonged forearm activity.",
+            "You can repeat multiple times throughout the day."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "name": "Heat in the Evening",
+          "isNew": false,
+          "whenToUse": "Increases blood flow and promotes healing.",
+          "howTo": [
+            "Use a heating pad or warm compress.",
+            "2-6 hours at the end of the day (after all activity).",
+            "Keep it comfortable (warm, not hot)."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ]
+    }
+  ],
+  "uncertain": [
+    "Sheet header says 'GOLF ELBOW' (not 'Golfer's Elbow'); title kept as printed.",
+    "Week 1 ice card differs slightly from weeks 2-4: subtitle 'Reduce inflammation and pain.' (not 'Reduces'), '15-20 minutes' without a period, and 'After exercises, sports (golf)...' (plural); kept as printed per week.",
+    "Week 2 card 1 step 2 says 'Slowly lower down (eccentric) over 3-4 seconds to full wrist flexion.' for an extension exercise; kept as printed.",
+    "Clinical content check for Dr. Caban: golfer's elbow (medial epicondylitis) normally involves the wrist FLEXORS, but every golf-elbow sheet targets the wrist EXTENSORS (palm down), while the tennis-elbow sheets target the flexors. Transcribed verbatim; the two programs may be swapped on the source sheets."
+  ],
+  "sourceNotes": "Read golfers-elbow-4 Week 1-4 sheets (Drive ids as listed per week). All four sheets present, no duplicates. Each sheet: header (MD FIT logo, condition title, 4-week tagline, target callout), week banner with headline + 3 icon goals, WEEK N FOCUS box with anatomy illustration, card 1 = the strengthening exercise (picture captions + SETS & REPS / SETS, REPS & LOAD box + KEY POINTS), card 2 = Ice After Activity, card 3 = Heat in the Evening (both with HOW TO DO IT bullets), bottom row = tips strip + AVOID FOR NOW. Field mapping: each card's one-line subtitle (purpose line under the title) is stored in whenToUse; KEY POINTS -> focus; picture captions -> steps; HOW TO DO IT bullets -> howTo; week banner headline -> week focus; banner icons, WEEK N FOCUS bullets, tips strip and AVOID FOR NOW list -> week notes (they differ week to week). Header text is printed in ALL CAPS; titles/names converted to title case. En dashes in ranges converted to ASCII hyphens; em dashes kept. No GOAL box, key principles, daily basics or progression overview exist on these sheets, so those fields are empty. Sheets downloaded via Drive thumbnail endpoint at sz=w2400 (1145x1374 originals) and read in upscaled crops."
+}

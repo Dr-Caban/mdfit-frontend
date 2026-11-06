@@ -1,0 +1,379 @@
+{
+  "id": "tennis-elbow-4",
+  "title": "Tennis Elbow Rehab Program",
+  "tagline": "4-Week Plan to Reduce Pain and Restore Strength",
+  "goal": "",
+  "principles": [],
+  "dailyBasics": [],
+  "progression": {
+    "overview": [],
+    "guidelines": [],
+    "expect": [],
+    "remember": "",
+    "callouts": [
+      "Targets the outside of the elbow (Lateral Epicondylitis)"
+    ],
+    "footer": ""
+  },
+  "weeks": [
+    {
+      "key": "1",
+      "label": "Week 1",
+      "driveId": "1dpzHCPtcB6WUoeptfm1N7RoyTv3Cy1Z-",
+      "focus": "Calm pain. Start healing.",
+      "notes": "CALM PAIN. START HEALING.\n- Reduce irritation\n- Begin tendon remodeling\n- Restore function\nWEEK 1 FOCUS:\n- Eccentric lengthening of the wrist flexors\n- Reduce inflammation and pain\n- Maintain mobility\n- Begin building tendon tolerance\nADDITIONAL TIPS FOR WEEK 1:\n- Use a light weight (1-2 lbs).\n- Do exercises 2-3× per day.\n- Ice 15-20 minutes after any activity.\n- Use heat 2-6 hours in the evening.\n- Stay consistent every day.\nAVOID FOR NOW:\n- Repetitive gripping or twisting\n- Heavy lifting or forceful wrist flexion (e.g., lifting with palm up)\n- Pain-provoking activities — modify as needed",
+      "editorNotes": "Labels removed from notes: \"Week banner:\" (around the banner slogan) and \"Banner icons:\" (before the icon list).",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "Eccentric Wrist Flexions (Palm Up Start)",
+          "isNew": false,
+          "whenToUse": "Targets the wrist flexors to help the irritated tendon heal.",
+          "howTo": [],
+          "focus": [
+            "Palm up (supine) throughout.",
+            "Full range of motion.",
+            "Lower slowly over 3-4 seconds (eccentric).",
+            "Squeeze at the bottom (1 second).",
+            "Use the other hand to return to the top.",
+            "Use a light weight (1-2 lbs).",
+            "Keep your forearm supported.",
+            "Mild stretch and fatigue is good. Sharp pain means reduce weight or reps."
+          ],
+          "dosage": {
+            "sets": "2-3",
+            "reps": "10",
+            "tempo": "",
+            "hold": "",
+            "frequency": "2-3× per day",
+            "other": {}
+          },
+          "steps": [
+            "Start at the top. Palm up (supine), wrist fully extended. Use a light weight (1-2 lbs). Support your forearm on your thigh or a table.",
+            "Slowly lower down (eccentric) over 3-4 seconds to full wrist flexion.",
+            "Gentle squeeze at the bottom. Hold for 1 second to further stretch the wrist flexors. Then use your other hand to lift the weight back up to the starting position."
+          ],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "name": "Ice After Activity",
+          "isNew": false,
+          "whenToUse": "Reduces inflammation and pain.",
+          "howTo": [
+            "Use an ice pack or ice massage.",
+            "15-20 minutes.",
+            "After exercise, sports (tennis), typing, phone use, or any prolonged forearm activity.",
+            "You can repeat multiple times throughout the day."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "name": "Heat in the Evening",
+          "isNew": false,
+          "whenToUse": "Increases blood flow and promotes healing.",
+          "howTo": [
+            "Use a heating pad or warm compress.",
+            "2-6 hours at the end of the day (after all activity).",
+            "Keep it comfortable (warm, not hot)."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ]
+    },
+    {
+      "key": "2",
+      "label": "Week 2",
+      "driveId": "1Ia6fB7njW2bDOXALjKrgGQ21rvHd9uq_",
+      "focus": "Increase load. Deepen the stretch.",
+      "notes": "INCREASE LOAD. DEEPEN THE STRETCH.\n- Build tendon tolerance\n- Improve strength and control\n- Reduce pain and prevent recurrence\nWEEK 2 FOCUS:\n- Continue eccentric lengthening of the wrist flexors\n- Increase repetitions and/or resistance\n- Maintain full range of motion with a controlled lower (eccentric)\n- Keep the bottom stretch (supine position)\n- Continue ice after activity and heat in the evening\nWEEK 2 TIPS FOR SUCCESS:\n- Increase to 3-4 lbs (if Week 1 was 1-2 lbs).\n- Increase to 2-3 sets of 15 reps.\n- Maintain the bottom squeeze (supine) each rep.\n- Ice immediately after activity.\n- Use heat in the evening for 2-6 hours.\n- Stay consistent daily.\nAVOID FOR NOW:\n- Repetitive gripping or twisting\n- Heavy lifting or forceful wrist flexion (e.g., lifting with palm up)\n- Pain-provoking activities\n- Increase weight too quickly",
+      "editorNotes": "Labels removed from notes: \"Week banner:\" (around the banner slogan) and \"Banner icons:\" (before the icon list).",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "Eccentric Wrist Flexions + Bottom Squeeze",
+          "isNew": false,
+          "whenToUse": "Targets the wrist flexors to help the irritated tendon heal.",
+          "howTo": [],
+          "focus": [
+            "Start supine (palm up)",
+            "Full range of motion",
+            "Lower slowly (3-4 seconds)",
+            "Squeeze at the bottom (1-2 seconds)",
+            "Increase weight or reps from Week 1)",
+            "Keep the forearm supported",
+            "No aggressive or jerky movements",
+            "Mild fatigue is good — sharp pain is a sign to reduce weight or reps"
+          ],
+          "dosage": {
+            "sets": "2-3",
+            "reps": "15",
+            "tempo": "",
+            "hold": "",
+            "frequency": "2-3× per day",
+            "other": {
+              "Load": "Use 3-4 lb weight (or increase from Week 1)"
+            }
+          },
+          "steps": [
+            "Start at the top. Palm up (supine), wrist fully extended. Use a moderate weight (3-4 lbs). Support your forearm on your thigh or a table.",
+            "Slowly lower down (eccentric) over 3-4 seconds to full wrist flexion.",
+            "At the bottom, gently squeeze for 1-2 seconds to further stretch the wrist flexors. Keep the palm up (supine) throughout the movement.",
+            "Use your other hand to lift the weight back to the starting position. The concentric assist can be light or none (still focus on the slow eccentric lower)."
+          ],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "name": "Ice After Activity",
+          "isNew": false,
+          "whenToUse": "Reduces inflammation and pain.",
+          "howTo": [
+            "Use an ice pack or ice massage.",
+            "15-20 minutes.",
+            "After exercise, sports (tennis), typing, phone use, or any prolonged forearm activity.",
+            "You can repeat multiple times throughout the day."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "name": "Heat in the Evening",
+          "isNew": false,
+          "whenToUse": "Increases blood flow and promotes healing.",
+          "howTo": [
+            "Use a heating pad or warm compress.",
+            "2-6 hours at the end of the day (after all activity).",
+            "Keep it comfortable (warm, not hot)."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ]
+    },
+    {
+      "key": "3",
+      "label": "Week 3",
+      "driveId": "1OHrrDGSkM2gU2Kkjx3SipDiWyhmVs-BJ",
+      "focus": "Add a concentric phase. Build strength.",
+      "notes": "ADD A CONCENTRIC PHASE. BUILD STRENGTH.\n- Improve tendon capacity\n- Combine eccentric and concentric work\n- Increase strength and function\nWEEK 3 FOCUS:\n- Add a concentric (lifting) phase with lighter weight\n- Continue eccentric (slow lowering) with moderate weight\n- Maintain wrist flexion stretch at the bottom (supine position)\n- Increase strength, endurance, and tendon tolerance\n- Continue ice after activity and heat in the evening\nWEEK 3 TIPS FOR SUCCESS:\n- Use 3-4 lb for eccentric (down) reps.\n- Use 1-2 lb for concentric (up) reps.\n- Progress to 12-15 reps per set.\n- Maintain the bottom squeeze (supine) each rep.\n- Ice after activity (15-20 minutes).\n- Heat in the evening (2-6 hours).\n- Stay consistent 2-3× per day.\nAVOID FOR NOW:\n- Repetitive gripping or twisting\n- Heavy lifting with wrist flexion (e.g., lifting with palm up)\n- Pain-provoking activities\n- Increasing weight too quickly",
+      "editorNotes": "Labels removed from notes: \"Week banner:\" (around the banner slogan) and \"Banner icons:\" (before the icon list).",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "Wrist Flexions: Eccentric + Concentric (Palm Up)",
+          "isNew": false,
+          "whenToUse": "Now include both lifting (concentric) and lowering (eccentric) with a bottom squeeze.",
+          "howTo": [],
+          "focus": [
+            "Full range of motion both directions.",
+            "Use a lighter weight for the concentric (up) and a heavier weight for the eccentric (down).",
+            "Squeeze and hold 1-2 seconds at the bottom (supine).",
+            "Control the movement — no swinging.",
+            "Keep the forearm supported.",
+            "Increase to 15 reps if comfortable.",
+            "Mild fatigue is expected — sharp pain is a sign to reduce weight or reps."
+          ],
+          "dosage": {
+            "sets": "2-3",
+            "reps": "12-15",
+            "tempo": "",
+            "hold": "",
+            "frequency": "2-3× per day",
+            "other": {
+              "Concentric": "1-2 lb",
+              "Eccentric": "3-4 lb"
+            }
+          },
+          "steps": [
+            "Start at the bottom. Palm up (supine), wrist fully extended. Use a moderate weight (3-4 lbs). Support your forearm on your thigh or a table.",
+            "Concentric (up): Lift the weight through full range of motion in 1-2 seconds using a lighter weight (1-2 lbs).",
+            "Pause at the top. Squeeze for 1 second. Keep control and avoid wrist deviation.",
+            "Eccentric (down): Slowly lower a heavier weight (3-4 lbs) over 3-4 seconds. At the bottom, perform a gentle wrist flexion squeeze for 1-2 seconds."
+          ],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "name": "Ice After Activity",
+          "isNew": false,
+          "whenToUse": "Reduces inflammation and pain.",
+          "howTo": [
+            "Use an ice pack or ice massage.",
+            "15-20 minutes.",
+            "After exercise, sports (tennis), typing, phone use, or any prolonged forearm activity.",
+            "You can repeat multiple times throughout the day."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "name": "Heat in the Evening",
+          "isNew": false,
+          "whenToUse": "Increases blood flow and promotes healing.",
+          "howTo": [
+            "Use a heating pad or warm compress.",
+            "2-6 hours at the end of the day (after all activity).",
+            "Keep it comfortable (warm, not hot)."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ]
+    },
+    {
+      "key": "4",
+      "label": "Week 4",
+      "driveId": "1DggFIeEsXbHUbLBzHdFgrucDcJ8mMDJ7",
+      "focus": "Build strength. Return to activity.",
+      "notes": "BUILD STRENGTH. RETURN TO ACTIVITY.\n- Increase strength and endurance\n- Improve control and function\n- Prepare for sport, work, and daily use\nWEEK 4 FOCUS:\n- Progress eccentric load and volume\n- Continue concentric phase with light weight\n- Maintain full range of motion and bottom stretch (supine)\n- Build strength, tendon capacity, and endurance\n- Continue ice after activity and heat in the evening\nWEEK 4 TIPS FOR SUCCESS:\n- Use 5-6 lb for eccentric (down) reps.\n- Use 1-2 lb for concentric (up) reps.\n- Increase to 15-20 reps per set as tolerated.\n- Keep the bottom squeeze (supine) each rep.\n- Ice after activity (15-20 minutes).\n- Heat in the evening (2-6 hours).\n- Begin gradual return to tennis, work, and normal use.\nAVOID FOR NOW:\n- Repetitive gripping or twisting\n- Heavy lifting or forceful wrist flexion (e.g., lifting with palm up)\n- Pain-provoking activities\n- Sudden increase in weight or volume",
+      "editorNotes": "Labels removed from notes: \"Week banner:\" (around the banner slogan) and \"Banner icons:\" (before the icon list).",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "Wrist Flexions: Eccentric + Concentric (Palm Up)",
+          "isNew": false,
+          "whenToUse": "Use heavier weight for the eccentric (lowering) and light weight for the concentric (lifting).",
+          "howTo": [],
+          "focus": [
+            "Full range of motion in both directions.",
+            "Use heavier weight for eccentric (down) and lighter weight for concentric (up).",
+            "Squeeze and hold 1-2 seconds at the bottom (supine).",
+            "Controlled tempo — no swinging or jerky movement.",
+            "Progress reps toward 20 if comfortable.",
+            "Keep the forearm supported.",
+            "Mild fatigue is expected — sharp pain means reduce weight or reps."
+          ],
+          "dosage": {
+            "sets": "2-3",
+            "reps": "15-20",
+            "tempo": "",
+            "hold": "",
+            "frequency": "2-3× per day",
+            "other": {
+              "Concentric": "1-2 lb",
+              "Eccentric": "5-6 lb"
+            }
+          },
+          "steps": [
+            "Start at the top. Palm up (supine), wrist fully extended. Use a heavier weight (5-6 lbs) for the eccentric.",
+            "Slowly lower down (eccentric) over 3-4 seconds to full wrist flexion using the heavier weight (5-6 lbs).",
+            "At the bottom, squeeze and hold for 1-2 seconds to maximize the stretch on the wrist flexors.",
+            "Concentric (up): Lift the weight through full range of motion in 1-2 seconds using a lighter weight (1-2 lbs)."
+          ],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "name": "Ice After Activity",
+          "isNew": false,
+          "whenToUse": "Reduces inflammation and pain.",
+          "howTo": [
+            "Use an ice pack or ice massage.",
+            "15-20 minutes.",
+            "After exercise, sports (tennis), typing, phone use, or any prolonged forearm activity.",
+            "You can repeat multiple times throughout the day."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "name": "Heat in the Evening",
+          "isNew": false,
+          "whenToUse": "Increases blood flow and promotes healing.",
+          "howTo": [
+            "Use a heating pad or warm compress.",
+            "2-6 hours at the end of the day (after all activity).",
+            "Keep it comfortable (warm, not hot)."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ]
+    }
+  ],
+  "uncertain": [
+    "Week 2 card 1 key point 'Increase weight or reps from Week 1)' has an unmatched closing parenthesis on the sheet; kept as printed.",
+    "Week 3 card 1 step 1 reads 'Start at the bottom. Palm up (supine), wrist fully extended.' while weeks 2 and 4 start 'at the top'; kept as printed.",
+    "Clinical content check for Dr. Caban: tennis elbow (lateral epicondylitis) normally involves the wrist EXTENSORS, but every tennis-elbow sheet targets the wrist FLEXORS with palm-up flexion work (and the golf-elbow sheets target the extensors). Transcribed verbatim; the two programs may be swapped on the source sheets."
+  ],
+  "sourceNotes": "Read tennis-elbow-4 Week 1-4 sheets (Drive ids as listed per week). All four sheets present, no duplicates. Ice and heat cards are word-for-word identical across the four weeks. Each sheet: header (MD FIT logo, condition title, 4-week tagline, target callout), week banner with headline + 3 icon goals, WEEK N FOCUS box with anatomy illustration, card 1 = the strengthening exercise (picture captions + SETS & REPS / SETS, REPS & LOAD box + KEY POINTS), card 2 = Ice After Activity, card 3 = Heat in the Evening (both with HOW TO DO IT bullets), bottom row = tips strip + AVOID FOR NOW. Field mapping: each card's one-line subtitle (purpose line under the title) is stored in whenToUse; KEY POINTS -> focus; picture captions -> steps; HOW TO DO IT bullets -> howTo; week banner headline -> week focus; banner icons, WEEK N FOCUS bullets, tips strip and AVOID FOR NOW list -> week notes (they differ week to week). Header text is printed in ALL CAPS; titles/names converted to title case. En dashes in ranges converted to ASCII hyphens; em dashes kept. No GOAL box, key principles, daily basics or progression overview exist on these sheets, so those fields are empty. Sheets downloaded via Drive thumbnail endpoint at sz=w2400 (1145x1374 originals) and read in upscaled crops."
+}

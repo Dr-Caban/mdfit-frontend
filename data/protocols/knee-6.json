@@ -1,0 +1,1209 @@
+{
+  "id": "knee-6",
+  "title": "6-Week Knee Protocol",
+  "tagline": "Build tolerance • Improve control • Reduce irritation",
+  "goal": "",
+  "principles": [
+    {
+      "title": "No pain rule",
+      "text": "Stay within a pain-free range."
+    },
+    {
+      "title": "Slow & controlled",
+      "text": "Quality and control over quantity."
+    },
+    {
+      "title": "Consistency",
+      "text": "Daily work builds lasting results."
+    },
+    {
+      "title": "Glute engagement",
+      "text": "Keep glutes gently active all day."
+    },
+    {
+      "title": "Frequency",
+      "text": "Do this routine EVERY DAY"
+    }
+  ],
+  "dailyBasics": [],
+  "progression": {
+    "overview": [
+      {
+        "week": "1",
+        "focus": "Foundation"
+      },
+      {
+        "week": "2",
+        "focus": "Build & Increase"
+      },
+      {
+        "week": "3",
+        "focus": "Increase Range & Control"
+      },
+      {
+        "week": "4",
+        "focus": "Strength & Endurance"
+      },
+      {
+        "week": "5",
+        "focus": "Strength & Depth Focus"
+      },
+      {
+        "week": "6",
+        "focus": "Full Range & Function"
+      }
+    ],
+    "guidelines": [],
+    "expect": [],
+    "remember": "Small daily habits = big results. Consistency beats intensity. Protect today. Perform tomorrow.",
+    "callouts": [
+      "IMPORTANT: Stop any exercise that causes sharp pain. Mild discomfort is okay, but it should never linger. When in doubt, scale back and focus on quality."
+    ],
+    "footer": "Stronger knees. Better movement. For life."
+  },
+  "weeks": [
+    {
+      "key": "1",
+      "label": "Week 1",
+      "driveId": "1T_5EFGD6h_muddrUchrkgKbYYFc0I5aR",
+      "focus": "Foundation",
+      "goal": "Establish daily habits, activate the right muscles, and introduce gentle movement without pain.",
+      "principles": [
+        {
+          "title": "No pain rule",
+          "text": "Stay within a pain-free range."
+        },
+        {
+          "title": "Slow & controlled",
+          "text": "Quality and control over quantity."
+        },
+        {
+          "title": "Consistency",
+          "text": "Daily work builds lasting results."
+        },
+        {
+          "title": "Glute engagement",
+          "text": "Keep glutes gently active all day."
+        },
+        {
+          "title": "Frequency",
+          "text": "Do this routine EVERY DAY"
+        }
+      ],
+      "notes": "DAILY BASICS - DO THESE EVERY DAY (ALL 6 WEEKS)\n\nTHIS IS WEEK 1\nKeep everything pain-free and controlled. RANGE IS SMALL. EFFORT IS LOW. CONSISTENCY IS KEY.\n\nPROGRESSION PREVIEW:\nOver the next 5 weeks we will gradually increase: range of motion, weight, effort, and control to rebuild strong, pain-free knees.",
+      "editorNotes": "Header: \"WEEK 1: FOUNDATION\". Key principles row titled \"KEY PRINCIPLES FOR WEEK 1\". Cards 1-2 sit under the banner \"DAILY BASICS - DO THESE EVERY DAY (ALL 6 WEEKS)\" (banner text kept in notes). Label removed: \"Bottom panel:\".",
+      "exercises": [
+        {
+          "n": 1,
+          "printedNumber": "1",
+          "name": "Roll Out Quads – Daily",
+          "isNew": false,
+          "dailyBasic": true,
+          "whenToUse": "",
+          "howTo": [
+            "Use a foam roller or rolling pin.",
+            "Roll slowly over the entire front of your thigh (quad).",
+            "Focus on tight or tender areas.",
+            "Breathe and relax."
+          ],
+          "why": "Helps rule out telefemoral pain syndrome (tight quads causing knee pain) and improves tissue quality.",
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "Daily",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "printedNumber": "2",
+          "name": "Basic Glute Engagement – All Day",
+          "isNew": false,
+          "dailyBasic": true,
+          "whenToUse": "",
+          "howTo": [
+            "Gently engage your glutes as if you are \"squeezing a credit card\" between your cheeks.",
+            "Standing",
+            "Walking",
+            "Sitting",
+            "During all exercises"
+          ],
+          "why": "Tight quads often cause knee pain. Glute activation helps take pressure off the knee.",
+          "focus": [
+            "Engage gently (about 10-20% effort) throughout your day.",
+            "Do not over-squeeze.",
+            "Keep low back relaxed."
+          ],
+          "whyItMatters": "Strong, active glutes reduce quad dominance and help protect your knees.",
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "All day",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "printedNumber": "3",
+          "name": "Knee Circles (Low Range) – Daily",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Stand tall holding onto a wall or support if needed.",
+            "Put as little weight as your knee can tolerate WITHOUT pain.",
+            "Keep heel planted.",
+            "Do NOT move hip or ankle.",
+            "Very small circles to start.",
+            "Very low knee bend."
+          ],
+          "directions": "Perform slow, controlled circles in each direction.",
+          "focus": [],
+          "dosage": {
+            "sets": "3-4 sets each direction",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "Daily",
+            "other": {
+              "Circles per set": "5-10 slow circles",
+              "Focus": "Control and comfort NOT depth or speed"
+            }
+          },
+          "steps": [
+            "COUNTERCLOCKWISE",
+            "CLOCKWISE"
+          ],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "printedNumber": "4A",
+          "name": "Isometric Hamstring Wall Heel Dig – Daily",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Lie on your back with heel against the wall.",
+            "Knee slightly bent (20-30°).",
+            "Dig heel gently into the wall."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2-3 sets",
+            "reps": "10 holds per day",
+            "tempo": "",
+            "hold": "Hold for 5-10 seconds at about 40-50% effort.",
+            "frequency": "Daily",
+            "other": {
+              "Rest": "30-60 sec between sets"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "printedNumber": "4B",
+          "name": "Quadriceps Squeeze (Full Lockout) – Daily",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Lit or lie with leg straight.",
+            "Tighten your quad and push knee down into the floor (or pad/towel).",
+            "Lock knee fully straight."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2-3 sets",
+            "reps": "10 holds per day",
+            "tempo": "",
+            "hold": "Hold for 5-10 seconds at about 40-50% effort.",
+            "frequency": "Daily",
+            "other": {
+              "Rest": "30-60 sec between sets"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ]
+    },
+    {
+      "key": "2",
+      "label": "Week 2",
+      "driveId": "11ErHuR5A-kijZyupA7E3hhXo8etdFkF_",
+      "focus": "Build & Increase",
+      "goal": "Gradually increase load and strength while maintaining excellent control and pain-free movement.",
+      "principles": [
+        {
+          "title": "No pain rule",
+          "text": "Stay within a pain-free range."
+        },
+        {
+          "title": "Slow & controlled",
+          "text": "Quality and control over quantity."
+        },
+        {
+          "title": "Consistency",
+          "text": "Daily work builds lasting results."
+        },
+        {
+          "title": "Glute engagement",
+          "text": "Keep glutes gently active all day."
+        },
+        {
+          "title": "Frequency",
+          "text": "Daily. Do all routines EVERY DAY"
+        }
+      ],
+      "notes": "DAILY BASICS - DO THESE EVERY DAY\n\nTHIS IS WEEK 2\nWe are still focused on CONTROL, not depth. Increase weight and strength slightly if pain-free. Stay consistent, stay patient, and protect your progress.\n\nPROGRESSION PREVIEW:\nWeeks 3-6 will continue to increase:\n- Weight during knee circles\n- Strength of quad contractions\n- Size of circles and total control\n\nSTRONGER KNEES. BETTER MOVEMENT. FOR LIFE.",
+      "editorNotes": "Header: \"WEEK 2: BUILD & INCREASE\". Key principles row titled \"KEY PRINCIPLES FOR WEEK 2\". Cards 1-3 sit under the banner \"DAILY BASICS - DO THESE EVERY DAY\" (banner text kept in notes). Labels removed: \"Bottom panel:\", \"Brand line:\".\nThe Week 1 Isometric Hamstring Wall Heel Dig does not appear this week.",
+      "exercises": [
+        {
+          "n": 1,
+          "printedNumber": "1",
+          "name": "Roll Out Quads – Daily",
+          "isNew": false,
+          "dailyBasic": true,
+          "whenToUse": "",
+          "howTo": [
+            "Use a foam roller or rolling pin.",
+            "Roll slowly over the entire front of your thigh (quad).",
+            "Focus on tight or tender areas.",
+            "Breathe and relax."
+          ],
+          "why": "Helps rule out telefemoral pain syndrome (tight quads causing knee pain) and improves tissue quality.",
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "Daily",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "printedNumber": "2",
+          "name": "Basic Glute Engagement – All Day",
+          "isNew": false,
+          "dailyBasic": true,
+          "whenToUse": "",
+          "howTo": [
+            "Gently engage your glutes as if you are \"squeezing a credit card\" between your cheeks.",
+            "Standing",
+            "Walking",
+            "Sitting",
+            "During all exercises"
+          ],
+          "why": "Tight quads often cause knee pain. Glute activation helps take pressure off the knee.",
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "All day",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "printedNumber": "3",
+          "name": "Knee Traction – 3 to 10 Times Per Day",
+          "isNew": false,
+          "dailyBasic": true,
+          "whenToUse": "",
+          "howTo": [
+            "Lie on your back.",
+            "Place a rolled towel behind your knee.",
+            "Use a light pole or PVC pipe across your thigh just above the knee.",
+            "Gently pull upward to create traction.",
+            "Hold for 5 seconds."
+          ],
+          "focus": [
+            "Light pull only",
+            "Comfortable stretch/relief",
+            "5-second holds",
+            "Repeat 3-10 times per day",
+            "Do not force"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "5 seconds",
+            "frequency": "3 to 10 times per day",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "printedNumber": "4",
+          "name": "Knee Circles (Low Range) – Daily",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Stand tall holding onto a wall or support.",
+            "Put as much weight as your knee can tolerate WITHOUT pain.",
+            "Keep heel planted.",
+            "Do NOT move hip or ankle.",
+            "Very small circles to start.",
+            "Very low knee bend."
+          ],
+          "whatsNew": "Increase the weight slightly from Week 1 if pain-free. Circle size can be a little bigger than Week 1, but still keep it small and controlled.",
+          "focus": [],
+          "dosage": {
+            "sets": "3-4 sets each direction",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "Daily",
+            "other": {
+              "Circles per set": "6-12 slow circles",
+              "Focus": "Control and comfort NOT depth or speed"
+            }
+          },
+          "steps": [
+            "COUNTERCLOCKWISE",
+            "CLOCKWISE"
+          ],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "printedNumber": "5",
+          "name": "Isometric Quad Squeeze (Full Lockout) – Daily",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Sit or lie with leg fully straight.",
+            "Tighten quad and push knee down.",
+            "Lock knee fully straight."
+          ],
+          "whatsNew": "Increase effort to about 50-60% of your maximum strength.",
+          "focus": [],
+          "dosage": {
+            "sets": "3-4 sets",
+            "reps": "10 holds per day",
+            "tempo": "",
+            "hold": "5-10 seconds",
+            "frequency": "Daily",
+            "other": {
+              "Effort": "50-60% strength",
+              "Rest between sets": "30-60 sec"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ]
+    },
+    {
+      "key": "3",
+      "label": "Week 3",
+      "driveId": "1rcFKZkZwh8OosXUz-diaxCUnJDJ4b-Ov",
+      "focus": "Increase Range & Control",
+      "goal": "Increase knee circle range, reduce load if needed, and add backward walking to build control and strength.",
+      "principles": [
+        {
+          "title": "No pain rule",
+          "text": "Stay within a pain-free range."
+        },
+        {
+          "title": "Slow & controlled",
+          "text": "Quality and control over quantity."
+        },
+        {
+          "title": "Consistency",
+          "text": "Daily work builds lasting results."
+        },
+        {
+          "title": "Glute engagement",
+          "text": "Keep glutes gently active all day."
+        },
+        {
+          "title": "Frequency",
+          "text": "Do all routines EVERY DAY"
+        }
+      ],
+      "notes": "DAILY BASICS - DO THESE EVERY DAY\n\nTHIS IS WEEK 3\nWe continue to build CONTROL and RANGE OF MOTION. Reduce weight if needed. Increase circle size only if pain-free. Backward walking adds strength without joint compression.\n\nPROGRESSION PREVIEW:\nWeeks 4-6 will continue to increase:\n- Range of motion for knee circles\n- Strength of quad contractions\n- Distance of backward walking\n- Overall control and stability\n\nREMEMBER:\nConsistency beats intensity. Small, daily wins lead to stronger, pain-free knees.\n\nSTRONGER KNEES. BETTER MOVEMENT. FOR LIFE.",
+      "editorNotes": "Header: \"WEEK 3: INCREASE RANGE & CONTROL\". Key principles row titled \"KEY PRINCIPLES FOR WEEK 3\". Cards 1-3 sit under the banner \"DAILY BASICS - DO THESE EVERY DAY\" (banner text kept in notes). Labels removed: \"Bottom panel:\", \"Brand line:\".\nKnee Traction (week 2 card 3) does not appear this week; Backward Walking replaces it (not marked NEW on the sheet).",
+      "exercises": [
+        {
+          "n": 1,
+          "printedNumber": "1",
+          "name": "Roll Out Quads – Daily",
+          "isNew": false,
+          "dailyBasic": true,
+          "whenToUse": "",
+          "howTo": [
+            "Use a foam roller or rolling pin.",
+            "Roll slowly over the entire front of your thigh (quad).",
+            "Focus on tight or tender areas.",
+            "Breathe and relax."
+          ],
+          "why": "Helps rule out telefemoral pain syndrome (tight quads causing knee pain) and improves tissue quality.",
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "Daily",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "printedNumber": "2",
+          "name": "Basic Glute Engagement – All Day",
+          "isNew": false,
+          "dailyBasic": true,
+          "whenToUse": "",
+          "howTo": [
+            "Gently engage your glutes as if you are \"squeezing a credit card\" between your cheeks.",
+            "Standing",
+            "Walking",
+            "Sitting",
+            "During all exercises"
+          ],
+          "why": "Tight quads often cause knee pain. Glute activation helps take pressure off the knee.",
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "All day",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "printedNumber": "3",
+          "name": "Backward Walking – Daily",
+          "isNew": false,
+          "dailyBasic": true,
+          "whenToUse": "",
+          "howTo": [
+            "Walk backward slowly with control and good posture.",
+            "Start with shorter distances and build up.",
+            "Use pain-free range only.",
+            "Focus on a smooth, controlled stride."
+          ],
+          "why": "Strengthens knee, hip, and core while decompressing the patellofemoral joint.",
+          "focus": [
+            "Walk slowly and controlled",
+            "Maintain upright posture",
+            "Small steps at first",
+            "Increase distance as tolerated",
+            "No pain rule"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "Daily",
+            "other": {
+              "Distance": "100-400 FT PER DAY"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "printedNumber": "4",
+          "name": "Knee Circles (Increase Range) – Daily",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Stand tall holding onto a wall or support.",
+            "Use LESS weight if needed to keep it pain-free.",
+            "Keep heel planted.",
+            "Do NOT move hip or ankle.",
+            "Controlled circles only.",
+            "Moderate knee bend."
+          ],
+          "whatsNew": "Increase the size of your circles compared to Week 2. If pain occurs, reduce the range or the weight.",
+          "focus": [],
+          "dosage": {
+            "sets": "3-4 sets each direction",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "Daily",
+            "other": {
+              "Circles per set": "8-15 slow circles",
+              "Focus": "Control and comfort NOT depth or speed"
+            }
+          },
+          "steps": [
+            "COUNTERCLOCKWISE",
+            "CLOCKWISE"
+          ],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "printedNumber": "5",
+          "name": "Isometric Quad Squeeze (Full Lockout) – Daily",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Sit or lie with leg fully straight.",
+            "Tighten quad and push knee down.",
+            "Lock knee fully straight."
+          ],
+          "whatsNew": "Increase effort to about 60-70% of your maximum strength.",
+          "focus": [],
+          "dosage": {
+            "sets": "3-4 sets",
+            "reps": "10 holds per day",
+            "tempo": "",
+            "hold": "8-10 seconds",
+            "frequency": "Daily",
+            "other": {
+              "Effort": "60-70% strength",
+              "Rest between sets": "30-60 sec"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ]
+    },
+    {
+      "key": "4",
+      "label": "Week 4",
+      "driveId": "1DflmgwjblOrmiCwPBSYEu3L1albNNIjj",
+      "focus": "Strength & Endurance",
+      "goal": "Increase knee control, range, and endurance while maintaining pain-free movement and building strength.",
+      "principles": [
+        {
+          "title": "No pain rule",
+          "text": "Stay within a pain-free range."
+        },
+        {
+          "title": "Slow & controlled",
+          "text": "Quality and control over quantity."
+        },
+        {
+          "title": "Consistency",
+          "text": "Daily work builds lasting results."
+        },
+        {
+          "title": "Glute engagement",
+          "text": "Keep glutes gently active all day."
+        },
+        {
+          "title": "Frequency",
+          "text": "Daily. Do all routines EVERY DAY"
+        }
+      ],
+      "notes": "DAILY BASICS - DO THESE EVERY DAY (ALL 6 WEEKS)\n\nTHIS IS WEEK 4\nWe're increasing your knee's control, range, and endurance. Stay consistent, listen to your body, and keep it pain-free.\n\nPROGRESSION PREVIEW:\nWeeks 5-6 will continue to increase:\n- Range of motion for knee circles\n- Backward walking distance and control\n- Strength and endurance overall\n\nREMEMBER:\nSmall daily habits = big results. Consistency beats intensity. Protect today. Perform tomorrow.\n\nSTRONGER KNEES. BETTER MOVEMENT. FOR LIFE.",
+      "editorNotes": "Header: \"WEEK 4: STRENGTH & ENDURANCE\". Key principles row titled \"KEY PRINCIPLES FOR WEEK 4\". Cards 1-3 sit under the banner \"DAILY BASICS - DO THESE EVERY DAY (ALL 6 WEEKS)\" (banner text kept in notes). Labels removed: \"Bottom panel:\", \"Brand line:\".\nCard 5 title carries the highlighted tag \"(REPLACES ISOMETRIC QUAD SQUEEZE)\".",
+      "exercises": [
+        {
+          "n": 1,
+          "printedNumber": "1",
+          "name": "Roll Out Quads – Daily",
+          "isNew": false,
+          "dailyBasic": true,
+          "whenToUse": "",
+          "howTo": [
+            "Use a foam roller or rolling pin.",
+            "Roll slowly over the entire front of your thigh (quad).",
+            "Focus on tight or tender areas.",
+            "Breathe and relax."
+          ],
+          "why": "Helps rule out telefemoral pain syndrome (tight quads causing knee pain) and improves tissue quality.",
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "Daily",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "printedNumber": "2",
+          "name": "Basic Glute Engagement – All Day",
+          "isNew": false,
+          "dailyBasic": true,
+          "whenToUse": "",
+          "howTo": [
+            "Gently engage your glutes as if you are \"squeezing a credit card\" between your cheeks.",
+            "Standing",
+            "Walking",
+            "Sitting",
+            "During all exercises"
+          ],
+          "why": "Tight quads often cause knee pain. Glute activation helps take pressure off the knee.",
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "All day",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "printedNumber": "3",
+          "name": "Backward Walking – Daily",
+          "isNew": false,
+          "dailyBasic": true,
+          "whenToUse": "",
+          "howTo": [
+            "Walk backward slowly with control and good posture.",
+            "Start at 300 ft and progress up to 600 ft as tolerated.",
+            "Use pain-free range only.",
+            "Shorter steps at first.",
+            "Focus on smooth, controlled stride."
+          ],
+          "focus": [
+            "Walk slowly",
+            "Maintain upright posture",
+            "Small steps at first",
+            "Increase distance as tolerated",
+            "No pain rule"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "Daily",
+            "other": {
+              "Distance": "300-600 FT PER DAY"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "printedNumber": "4",
+          "name": "Knee Circles (Increase Range) – Daily",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Stand tall holding onto a wall or support.",
+            "Use less weight if needed to keep it pain-free.",
+            "Keep heel planted.",
+            "Do NOT move hip or ankle.",
+            "Controlled circles only.",
+            "Increase range compared to Week 3—only if pain-free."
+          ],
+          "whatsNew": "Increase the size of your circles compared to Week 3. Reduce weight if needed to maintain a pain-free range.",
+          "focus": [],
+          "dosage": {
+            "sets": "3-4 sets each direction",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "Daily",
+            "other": {
+              "Circles per set": "10-15 slow circles",
+              "Focus": "Control and comfort NOT depth or speed"
+            }
+          },
+          "steps": [
+            "COUNTERCLOCKWISE",
+            "CLOCKWISE"
+          ],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "printedNumber": "5",
+          "name": "Wall Sit – Daily",
+          "isNew": false,
+          "replaces": "Isometric Quad Squeeze",
+          "whenToUse": "",
+          "howTo": [
+            "Slide down a wall to 90° knee bend.",
+            "Feet shoulder-width or slightly wider.",
+            "Heels planted firmly.",
+            "Knees pushed out wide (don't collapse in).",
+            "Engage glutes and core gently.",
+            "Keep back flat against the wall.",
+            "Breathe and relax."
+          ],
+          "whatsNew": "We build endurance with longer isometric holds.",
+          "focus": [],
+          "dosage": {
+            "sets": "4-5 sets",
+            "reps": "",
+            "tempo": "",
+            "hold": "Aim for 30 seconds per set",
+            "frequency": "Daily",
+            "other": {
+              "Focus": "Heels down, knees wide, glutes engaged"
+            }
+          },
+          "steps": [],
+          "proTip": "Push knees out wide and feel your glutes lightly engaged."
+        }
+      ]
+    },
+    {
+      "key": "5",
+      "label": "Week 5",
+      "driveId": "1vtGdaFzk5JzdeC1KvIdP0EKv-NngaKWI",
+      "focus": "Strength & Depth Focus",
+      "goal": "Increase strength, control, and depth while maintaining pain-free movement and building lower body resilience.",
+      "principles": [
+        {
+          "title": "No pain rule",
+          "text": "Stay within a pain-free range."
+        },
+        {
+          "title": "Slow & controlled",
+          "text": "Quality and control over quantity."
+        },
+        {
+          "title": "Consistency",
+          "text": "Daily work builds lasting results."
+        },
+        {
+          "title": "Glute engagement",
+          "text": "Keep glutes gently active all day."
+        },
+        {
+          "title": "Frequency",
+          "text": "Daily. Do all routines EVERY DAY"
+        }
+      ],
+      "notes": "DAILY BASICS - DO THESE EVERY DAY (ALL 6 WEEKS)\n\nTHIS IS WEEK 5\nWe are increasing depth, range, and strength. Challenge your control and build confidence in your knees. Stay consistent, listen to your body, and keep it pain-free.\n\nPROGRESSION PREVIEW:\nWeek 6 will continue to increase:\n- Knee circle depth and control\n- Squat reps or resistance\n- Wall sit hold time or load\n- Overall strength and confidence\n\nREMEMBER:\nSmall daily habits = big results. Consistency beats intensity. Protect today. Perform tomorrow.\n\nIMPORTANT:\nStop any exercise that causes sharp pain. Mild discomfort is okay, but it should never linger. When in doubt, scale back and focus on quality.\n\nSTRONGER KNEES. BETTER MOVEMENT. FOR LIFE.",
+      "editorNotes": "Header: \"WEEK 5: STRENGTH & DEPTH FOCUS\". Key principles row titled \"KEY PRINCIPLES FOR WEEK 5\". Cards 1-3 sit under the banner \"DAILY BASICS - DO THESE EVERY DAY (ALL 6 WEEKS)\" (banner text kept in notes). Labels removed: \"Bottom panel:\", \"Brand line:\".",
+      "exercises": [
+        {
+          "n": 1,
+          "printedNumber": "1",
+          "name": "Roll Out Quads – Daily",
+          "isNew": false,
+          "dailyBasic": true,
+          "whenToUse": "",
+          "howTo": [
+            "Use a foam roller or rolling pin.",
+            "Roll slowly over the entire front of your thigh (quad).",
+            "Focus on tight or tender areas.",
+            "Breathe and relax."
+          ],
+          "why": "Helps rule out telefemoral pain syndrome (tight quads causing knee pain) and improves tissue quality.",
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "Daily",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "printedNumber": "2",
+          "name": "Basic Glute Engagement – All Day",
+          "isNew": false,
+          "dailyBasic": true,
+          "whenToUse": "",
+          "howTo": [
+            "Gently engage your glutes as if you are \"squeezing a credit card\" between your cheeks.",
+            "Standing",
+            "Walking",
+            "Sitting",
+            "During all exercises"
+          ],
+          "why": "Tight quads often cause knee pain. Glute activation helps take pressure off the knee.",
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "All day",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "printedNumber": "3",
+          "name": "Backward Walking – Daily",
+          "isNew": false,
+          "dailyBasic": true,
+          "whenToUse": "",
+          "howTo": [
+            "Walk backward slowly with control and good posture.",
+            "Start at 300 ft and progress up to 600 ft as tolerated.",
+            "Use pain-free range only.",
+            "Shorter steps at first.",
+            "Focus on smooth, controlled stride."
+          ],
+          "focus": [
+            "Walk slowly",
+            "Maintain upright posture",
+            "Small steps at first",
+            "Increase distance as tolerated",
+            "No pain rule"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "Daily",
+            "other": {
+              "Distance": "300-600 FT PER DAY"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "printedNumber": "4",
+          "name": "Knee Circles (Increase Range) – Daily",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Stand tall holding onto a wall or support.",
+            "Use less weight if needed to keep it pain-free.",
+            "Keep heel planted.",
+            "Do NOT move hip or ankle.",
+            "Controlled circles only.",
+            "Increase range compared to Week 4—only if pain-free."
+          ],
+          "whatsNew": "Increase the depth/size of your circles compared to Week 4. Reduce the weight if needed to maintain a pain-free range.",
+          "focus": [],
+          "dosage": {
+            "sets": "3-4 sets each direction",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "Daily",
+            "other": {
+              "Circles per set": "15-20 slow circles",
+              "Focus": "Control and comfort NOT speed or speed"
+            }
+          },
+          "steps": [
+            "COUNTERCLOCKWISE",
+            "CLOCKWISE"
+          ],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "printedNumber": "5",
+          "name": "Wall Sit – Daily",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Slide down a wall to 90° knee bend.",
+            "Feet shoulder-width or slightly wider.",
+            "Heels planted firmly.",
+            "Knees pushed out wide. (don't collapse in).",
+            "Core lightly braced.",
+            "Engage glutes.",
+            "Keep back flat against the wall.",
+            "Breathe and relax."
+          ],
+          "whatsNew": "",
+          "focus": [],
+          "dosage": {
+            "sets": "4-5 sets",
+            "reps": "",
+            "tempo": "",
+            "hold": "Aim for 30 seconds per set",
+            "frequency": "Daily",
+            "other": {
+              "Focus": "Heels down, knees wide, glutes engaged"
+            }
+          },
+          "steps": [],
+          "proTip": "As you get stronger, aim to increase hold time or add light weight (dumbbell or plate) on your lap."
+        },
+        {
+          "n": 6,
+          "printedNumber": "6",
+          "name": "Bodyweight Squat – Daily",
+          "isNew": true,
+          "whenToUse": "",
+          "howTo": [
+            "Feet shoulder-width or slightly wider.",
+            "Toes slightly out.",
+            "Sit back and down.",
+            "Keep chest up.",
+            "Heels down.",
+            "Knees track over toes and push out.",
+            "Engage glutes.",
+            "Core lightly braced."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3 sets",
+            "reps": "10 reps each set",
+            "tempo": "",
+            "hold": "",
+            "frequency": "Daily",
+            "other": {
+              "Focus": "Depth with control, heels down, knees wide, glutes engaged"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ]
+    },
+    {
+      "key": "6",
+      "label": "Week 6",
+      "driveId": "1x1c2IOjd5r_8xU_3nK5-tj3yP45M4mh6",
+      "focus": "Full Range & Function",
+      "goal": "Achieve deep, pain-free knee control with full range of motion. Build long-term strength, stability, and function.",
+      "principles": [
+        {
+          "title": "No pain rule",
+          "text": "Stay within a pain-free range."
+        },
+        {
+          "title": "Slow & controlled",
+          "text": "Quality and control over quantity."
+        },
+        {
+          "title": "Consistency",
+          "text": "Daily work builds lasting results."
+        },
+        {
+          "title": "Glute engagement",
+          "text": "Keep glutes gently active all day."
+        },
+        {
+          "title": "Frequency",
+          "text": "Daily. Do all routines EVERY DAY"
+        }
+      ],
+      "notes": "DAILY BASICS - DO THESE EVERY DAY (ALL 6 WEEKS)\n\nTHIS IS WEEK 6\nYou've built the foundation. Now it's time to achieve full range, deep control, and functional strength. Stay consistent, keep moving well, and keep it pain-free.\n\nPROGRESSION PREVIEW:\nYou've completed the 6-week protocol!\n- Built tolerance\n- Improved control\n- Reduced irritation\n- Achieved strength\n- Restored function\n- Now maintain and thrive!\n\nREMEMBER:\nSmall daily habits = big results. Consistency beats intensity. Protect today. Perform tomorrow.\n\nIMPORTANT:\nStop any exercise that causes sharp pain. Mild discomfort is okay, but it should never linger. When in doubt, scale back and focus on quality.\n\nSTRONGER KNEES. BETTER MOVEMENT. FOR LIFE.",
+      "editorNotes": "Header: \"WEEK 6: FULL RANGE & FUNCTION\". Key principles row titled \"KEY PRINCIPLES FOR WEEK 6\". Cards 1-3 sit under the banner \"DAILY BASICS - DO THESE EVERY DAY (ALL 6 WEEKS)\" (banner text kept in notes). Labels removed: \"Bottom panel:\", \"Brand line:\".\n(sheet typo \"inloubt\") - corrected to \"in doubt\" in notes.\nBackward Walking, Wall Sit and Bodyweight Squat (week 5) do not appear on this sheet.",
+      "exercises": [
+        {
+          "n": 1,
+          "printedNumber": "1",
+          "name": "Roll Out Quads – Daily",
+          "isNew": false,
+          "dailyBasic": true,
+          "whenToUse": "",
+          "howTo": [
+            "Use a foam roller or rolling pin.",
+            "Roll slowly over the entire front of your thigh (quad).",
+            "Focus on tight or tender areas.",
+            "Breathe and relax."
+          ],
+          "why": "Helps rule out telefemoral pain syndrome (tight quads causing knee pain) and improves tissue quality.",
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "Daily",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "printedNumber": "2",
+          "name": "Basic Glute Engagement – All Day",
+          "isNew": false,
+          "dailyBasic": true,
+          "whenToUse": "",
+          "howTo": [
+            "Gently engage your glutes as if you are \"squeezing a credit card\" between your cheeks.",
+            "Standing",
+            "Walking",
+            "Sitting",
+            "During all exercises"
+          ],
+          "why": "Tight quads often cause knee pain. Glute activation helps take pressure off the knee.",
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "All day",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "printedNumber": "3",
+          "name": "Knee Circles (Increase Range) – Daily",
+          "isNew": false,
+          "dailyBasic": true,
+          "whenToUse": "",
+          "howTo": [
+            "Stand tall holding onto a wall or support.",
+            "Use less weight if needed to keep it pain-free.",
+            "Keep heel planted.",
+            "Do NOT move hip or ankle.",
+            "Controlled circles only."
+          ],
+          "whatsNew": "Continue to increase the depth and range of your circles. Reduce the weight if needed to maintain a pain-free range.",
+          "longTermGoal": "Achieve deep knee bend and full range circles with control and no pain. Continue in perpetuity for maintenance.",
+          "focus": [],
+          "dosage": {
+            "sets": "3-4 sets each direction",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "Daily",
+            "other": {
+              "Circles per set": "15-20 slow circles",
+              "Focus": "Full range of motion with control."
+            }
+          },
+          "steps": [
+            "COUNTERCLOCKWISE",
+            "CLOCKWISE"
+          ],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "printedNumber": "4",
+          "name": "Cossack Squat (Assisted to Start) – Daily",
+          "isNew": true,
+          "whenToUse": "",
+          "howTo": [
+            "Stand tall with feet wide.",
+            "Shift your weight to one side while keeping the other leg straight.",
+            "Keep heel down on the bent leg.",
+            "Push hips back and down.",
+            "Keep knee wide in line with toes.",
+            "Use support (TRX, pole, counter, or bench) as needed.",
+            "Core lightly braced."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3 sets",
+            "reps": "5-8 reps each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "Daily",
+            "other": {
+              "Focus": "Heel down, knee wide, hips back, full control."
+            }
+          },
+          "steps": [],
+          "proTip": "Start with partial range and support. As mobility and strength improve, go deeper and reduce the amount of support."
+        },
+        {
+          "n": 5,
+          "printedNumber": "5",
+          "name": "Optional Add-Ons (If Tolerated)",
+          "isNew": false,
+          "whenToUse": "Add these if they do not increase knee pain or irritation.",
+          "howTo": [
+            "CALF STRETCH: 2-3 sets, 30-45 sec each",
+            "HAMSTRING STRETCH: 2-3 sets, 30-45 sec each",
+            "HIP FLEXOR STRETCH: 2-3 sets, 30-45 sec each"
+          ],
+          "focus": [
+            "Improve overall mobility, balance and recovery."
+          ],
+          "dosage": {
+            "sets": "2-3 sets",
+            "reps": "",
+            "tempo": "",
+            "hold": "30-45 sec each",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 6,
+          "printedNumber": "6",
+          "name": "Continue Daily Maintenance",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Roll out quads",
+            "Basic glute engagement",
+            "Knee circles (full range)",
+            "Cossack squats (assisted as needed)",
+            "Stay consistent",
+            "Listen to your body"
+          ],
+          "whatsNew": "This week is about mastering full range of motion, deep knee control, and functional strength. Keep knee circles in your routine long-term to maintain healthy, pain-free knees.",
+          "inPerpetuity": "Knee circles are a lifetime maintenance tool. Keep them in your routine!",
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ]
+    }
+  ],
+  "uncertain": [
+    "Sheet typo kept: 'telefemoral pain syndrome' (Roll Out Quads WHY, all weeks) – likely 'patellofemoral'.",
+    "Sheet typo kept: Week 1 card 4B 'Lit or lie with leg straight.' (later weeks 'Sit or lie').",
+    "Week 2 card 3: sheet prints 'PVC pipe' with with a garbled letter ('pipɐe'); transcribed as 'PVC pipe'.",
+    "Sheet typo kept: Week 5 card 4 focus 'Control and comfort NOT speed or speed' (other weeks 'NOT depth or speed').",
+    "Sheet typo kept: Week 6 IMPORTANT line 'When inloubt' (week 5: 'When in doubt').",
+    "Week 5 card 5 'Knees pushed out wide. (don't collapse in).' punctuation as printed.",
+    "Knee sheets have no overall GOAL box; top-level 'goal' left empty, each week's 'Goal:' is in weeks[].goal. Overview built from each sheet's week title (no overview table on knee sheets).",
+    "Week 1 cards 4A/4B numbered 'n' 4 and 5; printed numbers kept in 'printedNumber'. Week 6 card 5 (Optional Add-Ons) and card 6 (Continue Daily Maintenance) are not single exercises; transcribed as cards."
+  ],
+  "sourceNotes": "Read all 6 knee sheets (Drive ids per week), 1536x1024, all distinct. Each card, header and bottom panel cropped and read at 2.2-2.5x. Knee layout differs from hip: per-week title+goal, 'Daily Basics' cards (flagged dailyBasic:true), SETUP bullets -> howTo, KEY POINTS -> focus, WHY/WHAT'S NEW/LONG-TERM GOAL/IN PERPETUITY kept in extra fields (why, whatsNew, longTermGoal, inPerpetuity, whyItMatters, directions, replaces, printedNumber). Per-week principles kept in weeks[].principles (Frequency text differs: wk1 'Do this routine EVERY DAY', wk3 'Do all routines EVERY DAY', others 'Daily. Do all routines EVERY DAY'). Bottom panels (This is week N, Progression preview, Remember, Important) are in each week's notes. Exercise changes: wk2 drops Hamstring Heel Dig, adds Knee Traction; wk3 Backward Walking replaces Traction; wk4 Wall Sit replaces Quad Squeeze; wk5 adds Bodyweight Squat (NEW); wk6 drops Backward Walking/Wall Sit/Squat, adds Cossack Squat (NEW), Optional Add-Ons, Continue Daily Maintenance."
+}

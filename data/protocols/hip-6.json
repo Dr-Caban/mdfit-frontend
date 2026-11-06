@@ -1,0 +1,889 @@
+{
+  "id": "hip-6",
+  "title": "6-Week Hip Protocol",
+  "tagline": "Build tolerance • Improve control • Reduce irritation",
+  "goal": "Build strong, stable, pain-free hips through controlled movement, glute engagement, and core stability.",
+  "principles": [
+    {
+      "title": "No pain rule",
+      "text": "Stay within a pain-free range."
+    },
+    {
+      "title": "Slow & controlled",
+      "text": "Quality and control over quantity."
+    },
+    {
+      "title": "Consistency",
+      "text": "Daily work builds lasting results."
+    },
+    {
+      "title": "Glute engagement",
+      "text": "Glutes on, shoulders down, engage core."
+    },
+    {
+      "title": "Frequency",
+      "text": "Daily. Do all routines EVERY DAY"
+    }
+  ],
+  "dailyBasics": [
+    {
+      "title": "Posture",
+      "text": "Shoulders down, chest tall, core lightly braced."
+    },
+    {
+      "title": "Glute engagement",
+      "text": "Keep glutes lightly engaged at all times."
+    },
+    {
+      "title": "Core bracing",
+      "text": "Brace before every rep (exhale, tighten core as if bracing for a tap)."
+    },
+    {
+      "title": "Breathing",
+      "text": "Exhale during effort. Inhale through the nose, exhale through the mouth."
+    },
+    {
+      "title": "Quality over quantity",
+      "text": "Better to do less with perfect control than more with tension or pain."
+    }
+  ],
+  "progression": {
+    "overview": [
+      {
+        "week": "1",
+        "focus": "Learn movement and control"
+      },
+      {
+        "week": "2",
+        "focus": "Improve control and stability"
+      },
+      {
+        "week": "3",
+        "focus": "Increase reps and hold time"
+      },
+      {
+        "week": "4",
+        "focus": "Increase range and endurance"
+      },
+      {
+        "week": "5",
+        "focus": "Build strength and stability"
+      },
+      {
+        "week": "6",
+        "focus": "Max control, full range, confidence"
+      }
+    ],
+    "guidelines": [
+      "Add 1-2 reps or seconds each week if pain-free.",
+      "Increase range of motion gradually.",
+      "Keep movement slow, and controlled.",
+      "If pain increases, regress and return to basics."
+    ],
+    "expect": [
+      "Improved hip stability and strength",
+      "Reduced pain and irritation",
+      "Better movement and daily function",
+      "Less radiating pain over time",
+      "Stronger glutes and core connection"
+    ],
+    "remember": "Small daily habits create big results. Stay consistent, trust the process, and protect today so you can perform tomorrow.",
+    "callouts": [
+      "Pain is a signal, not a goal. Listen to your body. Stay consistent.",
+      "Stronger hips. Better movement. For life."
+    ],
+    "footer": "Consistency + Control + Glute engagement + Core bracing = Strong, stable, pain-free hips"
+  },
+  "weeks": [
+    {
+      "key": "1",
+      "label": "Week 1",
+      "driveId": "1UOPuZ66RbIDQlYwFQ4NYmBW6DPf0hV6k",
+      "focus": "Learn movement and control",
+      "notes": "",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "Hip Dip (Eccentric Control)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Stand on a yoga block with the painful side (stabilizing side).",
+            "Keep both legs locked (straight) and hips level (no twisting or bending at the hips).",
+            "Slowly lower the opposite leg by letting the pelvis drop straight down.",
+            "Tap the foot lightly on the floor.",
+            "Use a support (wall, chair, counter) to bring the leg back up.",
+            "Both legs stay perfectly vertical the entire time.",
+            "Do not lean, twist, or hike the hip."
+          ],
+          "focus": [
+            "Hips stay level and square.",
+            "Move slowly and controlled (eccentric lower).",
+            "Feel the work in the standing hip and glute."
+          ],
+          "dosage": {
+            "sets": "2-3",
+            "reps": "6-10 each side",
+            "tempo": "3-5 sec down, 1-2 sec up.",
+            "hold": "",
+            "frequency": "Daily",
+            "other": {}
+          },
+          "steps": [
+            "START: Stand tall on block (painful side).",
+            "LOWER (3-5 SEC): Lower opposite leg straight down."
+          ],
+          "proTip": "Control is the goal. Don't rush the lowering phase."
+        },
+        {
+          "n": 2,
+          "name": "Side Plank (Modified)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Lie on your side, elbow under shoulder.",
+            "Knees bent and stacked, feet together.",
+            "Engage glutes and core.",
+            "Lift hips off the ground into a mild side plank.",
+            "Exhale and push your air out while holding.",
+            "Hold for a few seconds, then lower down with control."
+          ],
+          "focus": [
+            "Hips forward (no rolling back).",
+            "Glutes and core stay engaged.",
+            "Neck neutral, gaxe forward."
+          ],
+          "dosage": {
+            "sets": "1-2",
+            "reps": "3-5 each side",
+            "tempo": "",
+            "hold": "3-5 seconds",
+            "frequency": "Daily",
+            "other": {}
+          },
+          "steps": [
+            "LIFT & HOLD (EXHALE)",
+            "LOWER (INHALE)"
+          ],
+          "proTip": "Quality holds build stability. Stop if form breaks."
+        },
+        {
+          "n": 3,
+          "name": "Knee Drive (For Radiating Pain Only)",
+          "isNew": false,
+          "whenToUse": "Use only if you have radiating pain down the lateral hip, thigh, leg or even into the calf/foot.",
+          "howTo": [
+            "Stand tall with feet hip-width.",
+            "Keep both feet planted.",
+            "Engage core and glutes.",
+            "Turn (rotate) the knee of the affected side inward and gently drive it toward the opposite knee. (Do not move the foot.)",
+            "Keep hips and torso facing forward.",
+            "Hold for a moment, then relax.",
+            "Repeat as needed."
+          ],
+          "focus": [
+            "Short, controlled movement.",
+            "Do not lift or move the foot.",
+            "Relief is the goal."
+          ],
+          "dosage": {
+            "sets": "1-2",
+            "reps": "5-10",
+            "tempo": "",
+            "hold": "",
+            "frequency": "Use only when in pain",
+            "other": {
+              "Relief focus": "Short, effective pain relief"
+            }
+          },
+          "steps": [
+            "START: Feet hip-width, knees forward.",
+            "DRIVE KNEE IN: Turn knee inward toward opposite knee."
+          ],
+          "proTip": "Use gently. This is a relief tool, not a strength exercise."
+        }
+      ]
+    },
+    {
+      "key": "2",
+      "label": "Week 2",
+      "driveId": "1lMFDB18TXC6486SdEvtueAZ23pmbSa_b",
+      "focus": "Improve control and stability",
+      "notes": "PROGRESSION GUIDELINES:\n- Keep movement slow, controlled, and clean.",
+      "editorNotes": "Label removed: \"Progression Guidelines on this sheet read:\" (the sheet line is kept in notes).",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "Hip Dip (Eccentric Control)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Stand on a yoga block with the painful side (stabilizing side).",
+            "Keep both legs locked (straight) and hips level (no twisting or bending at the hips).",
+            "Slowly lower the opposite leg by letting the pelvis drop straight down.",
+            "Tap the foot lightly on the floor.",
+            "Use a support (wall, chair, counter) to bring the leg back up.",
+            "Both legs stay perfectly vertical the entire time.",
+            "Do not lean, twist, or hike the hip."
+          ],
+          "focus": [
+            "Hips stay level and square.",
+            "Move slowly and controlled (eccentric lower).",
+            "Feel the work in the standing hip and glute."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10-15 each side",
+            "tempo": "3-5 sec down, 1-2 sec up.",
+            "hold": "",
+            "frequency": "Daily",
+            "other": {}
+          },
+          "steps": [
+            "START: Stand tall on block (painful side).",
+            "LOWER (3 SETS OF 10-15 REPS EACH SIDE): Lower opposite leg straight down."
+          ],
+          "proTip": "Control is the goal. Don't rush the lowering phase."
+        },
+        {
+          "n": 2,
+          "name": "Side Plank (Modified)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Lie on your side, elbow under shoulder.",
+            "Knees bent and stacked, feet together.",
+            "Engage glutes and core.",
+            "Lift hips off the ground into a mild side plank.",
+            "Exhale and push your air out while holding.",
+            "Hold for 2 seconds at the top, then lower down with control."
+          ],
+          "focus": [
+            "Hips forward (no rolling back).",
+            "Glutes and core stay engaged.",
+            "Neck neutral, gaze forward."
+          ],
+          "dosage": {
+            "sets": "1-2",
+            "reps": "5-10 each side",
+            "tempo": "",
+            "hold": "2 sec at top",
+            "frequency": "Daily",
+            "other": {}
+          },
+          "steps": [
+            "LIFT & HOLD (EXHALE)",
+            "LOWER (INHALE)"
+          ],
+          "proTip": "Quality holds build stability. Stop if form breaks."
+        },
+        {
+          "n": 3,
+          "name": "Knee Drive (For Radiating Pain Only)",
+          "isNew": false,
+          "whenToUse": "Use only if you have radiating pain down the lateral hip, thigh, leg or even into the calf/foot.",
+          "howTo": [
+            "Stand tall with feet hip-width.",
+            "Keep both feet planted firmly on the ground.",
+            "Engage core and glutes.",
+            "Turn (rotate) the knee of the affected side inward and gently drive it toward the opposite knee. (Do not move the foot.)",
+            "Keep hips and torso facing forward.",
+            "Hold for a moment, then relax.",
+            "Repeat as needed."
+          ],
+          "focus": [
+            "Short, controlled movement.",
+            "Do not lift or move the foot.",
+            "Relief is the goal."
+          ],
+          "dosage": {
+            "sets": "1-2",
+            "reps": "5-10",
+            "tempo": "",
+            "hold": "",
+            "frequency": "Use only when in pain",
+            "other": {
+              "Relief focus": "Short, effective pain relief"
+            }
+          },
+          "steps": [
+            "START: Feet hip-width, knees forward.",
+            "DRIVE KNEE IN: Turn knee inward toward opposite knee."
+          ],
+          "proTip": "Use gently. This is a relief tool, not a strength exercise."
+        },
+        {
+          "n": 4,
+          "name": "Seated C-Through & Lean",
+          "isNew": true,
+          "whenToUse": "",
+          "howTo": [
+            "Sit with feet planted wide and knees bent.",
+            "Hands behind your head, elbows out wide.",
+            "Rotate your torso in one direction.",
+            "Bring that same-side elbow down toward the same-side hip (oblique crunch).",
+            "Return elbows to level (not back to start).",
+            "Rotate further in the same direction and bring that elbow down again.",
+            "Perform 3-4 times, then switch sides."
+          ],
+          "focus": [
+            "Rotate through your torso, not just your arms.",
+            "Use your obliques to crunch the elbow to the hip.",
+            "Keep core engaged and spine tall.",
+            "Move slow and controlled."
+          ],
+          "dosage": {
+            "sets": "1-2",
+            "reps": "3-4 per side",
+            "tempo": "Controlled",
+            "hold": "",
+            "frequency": "Daily",
+            "other": {}
+          },
+          "steps": [
+            "1. ROTATE: Turn torso in one direction.",
+            "2. CRUNCH: Bring same-side elbow to same-side hip (oblique crunch).",
+            "3. RETURN & ROTATE MORE: Bring elbows back to level, rotate further, and repeat the crunch."
+          ],
+          "proTip": "Go only as far as you can maintain control and breath."
+        }
+      ]
+    },
+    {
+      "key": "3",
+      "label": "Week 3",
+      "driveId": "1kV7jWNPK2uhERbEG6J9lzKztckQFk9LZ",
+      "focus": "Increase reps and hold time",
+      "notes": "PROGRESSION GUIDELINES:\n- Keep movement slow, controlled, and clean.",
+      "editorNotes": "Label removed: \"Progression Guidelines on this sheet read:\" (the sheet line is kept in notes).",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "Hip Dip (Eccentric Control)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Stand on a yoga block with the painful side (stabilizing side).",
+            "Keep both legs locked (straight) and hips level (no twisting or bending at the hips).",
+            "Slowly lower the opposite leg by letting the pelvis drop straight down.",
+            "Tap the foot lightly on the floor.",
+            "Use a support (wall, chair, counter) to bring the leg back up.",
+            "Both legs stay perfectly vertical the entire time.",
+            "Do not lean, twist, or hike the hip."
+          ],
+          "focus": [
+            "Hips stay level and square.",
+            "Move slowly and controlled (eccentric lower).",
+            "Feel the work in the standing hip and glute."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10-15 each side",
+            "tempo": "3-5 sec down, 1-2 sec up.",
+            "hold": "",
+            "frequency": "Daily",
+            "other": {}
+          },
+          "steps": [
+            "START: Stand tall on block (painful side).",
+            "LOWER (3 SETS OF 10-15 REPS EACH SIDE): Lower opposite leg straight down."
+          ],
+          "proTip": "Control is the goal. Don't rush the lowering phase."
+        },
+        {
+          "n": 2,
+          "name": "Side Plank (Modified)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Lie on your side, elbow under shoulder.",
+            "Knees bent and stacked, feet together.",
+            "Engage glutes and core.",
+            "Lift hips off the ground into a mild side plank.",
+            "Exhale and push your air out while holding.",
+            "Hold for 2 seconds at the top, then lower down with control."
+          ],
+          "focus": [
+            "Hips forward (no rolling back).",
+            "Glutes and core stay engaged.",
+            "Neck neutral, gaze forward."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "5-10 each side* (with 2 sec hold at top)",
+            "tempo": "",
+            "hold": "2 sec at top",
+            "frequency": "Daily",
+            "other": {}
+          },
+          "steps": [
+            "LIFT & HOLD (EXHALE)",
+            "LOWER (INHALE)"
+          ],
+          "proTip": "Quality holds build stability. Stop if form breaks."
+        },
+        {
+          "n": 3,
+          "name": "Knee Drive (For Radiating Pain Only)",
+          "isNew": false,
+          "whenToUse": "Use only if you have radiating pain down the lateral hip, thigh, leg or even into the calf/foot.",
+          "howTo": [
+            "Stand tall with feet hip-width.",
+            "Keep both feet planted firmly on the ground.",
+            "Engage core and glutes.",
+            "Turn (rotate) the knee of the affected side inward and gently drive it toward the opposite knee. (Do not move the foot.)",
+            "Keep hips and torso facing forward.",
+            "Hold for a moment, then relax.",
+            "Repeat as needed."
+          ],
+          "focus": [
+            "Short, controlled movement.",
+            "Do not lift or move the foot.",
+            "Relief is the goal."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "5-10",
+            "tempo": "",
+            "hold": "",
+            "frequency": "Use only when in pain",
+            "other": {
+              "Relief focus": "Short, effective pain relief"
+            }
+          },
+          "steps": [
+            "START: Feet hip-width, knees planted.",
+            "DRIVE KNEE IN: Turn knee inward toward opposite knee."
+          ],
+          "proTip": "Use gently. This is a relief tool, not a strength exercise."
+        },
+        {
+          "n": 4,
+          "name": "Seated C-Through & Lean",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Sit with feet planted wide and knees bent.",
+            "Hands behind your head, elbows out wide.",
+            "Rotate your torso to one side as far as comfortable.",
+            "Bring that elbow toward the same-side hip (oblique crunch).",
+            "Return elbows to level (not back to start).",
+            "Rotate further in the same direction and repeat the elbow-to-hip crunch.",
+            "Perform 3-4 times, then switch sides."
+          ],
+          "focus": [
+            "Rotate through your torso, not just your arms.",
+            "Use your obliques to crunch the elbow to the hip.",
+            "Keep core engaged and spine tall.",
+            "Move slow and controlled."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "3-4 per side",
+            "tempo": "Controlled",
+            "hold": "",
+            "frequency": "Daily",
+            "other": {}
+          },
+          "steps": [
+            "1. ROTATE: Turn torso to one side.",
+            "2. CRUNCH: Bring elbow to same-side hip.",
+            "3. ROTATE MORE: Elbows back to level, rotate further."
+          ],
+          "proTip": "Go only as far as you can maintain control and breath."
+        },
+        {
+          "n": 5,
+          "name": "Wide Stance Side Reach",
+          "isNew": true,
+          "whenToUse": "",
+          "howTo": [
+            "Stand tall with feet wider than hip-width.",
+            "Keep legs mostly straight with a slight soft bend in the knees.",
+            "Slide your fingers down the lateral line of one leg",
+            "as far as you can toward your foot (touching the leg or reaching toward the shoe).",
+            "The opposite arm reaches up and over your head to stretch the side.",
+            "Return to center.",
+            "Alternate sides."
+          ],
+          "focus": [
+            "Keep chest up and back flat.",
+            "Reach through your side body.",
+            "Move slow and controlled.",
+            "Do not bounce."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "3-5 sec reach",
+            "hold": "",
+            "frequency": "Daily",
+            "other": {}
+          },
+          "steps": [
+            "REACH LEFT: Slide fingers down left leg and reach. right arm up.",
+            "REACH RIGHT: Slide fingers down right leg and reach. left arm up."
+          ],
+          "proTip": "Reach, don't rush. Feel the stretch in your oblique."
+        }
+      ]
+    },
+    {
+      "key": "4",
+      "label": "Week 4",
+      "driveId": "1Ynpe2e_Wv8tHtsB-lqz505rosNZDASbv",
+      "focus": "Increase range and endurance",
+      "notes": "PROGRESSION GUIDELINES:\n- Keep movement slow, controlled, and clean.",
+      "editorNotes": "Label removed: \"Progression Guidelines on this sheet read:\" (the sheet line is kept in notes).\nHip Dip and Side Plank (Modified) no longer appear from this week.",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "Hip Leg Pendulum",
+          "isNew": true,
+          "whenToUse": "",
+          "howTo": [
+            "Stand on a yoga block with one foot flat and hands supported on a table, bench, or stable surface.",
+            "Hinge at the hips with a flat back and arms straight.",
+            "Keep the standing leg straight (soft knee never bent).",
+            "Let the affected leg dangle relaxed.",
+            "Slowly swing the leg diagonally across under your body.",
+            "Then gently kick it diagonally out behind you (small range, not to full extension).",
+            "Control the motion and repeat."
+          ],
+          "focus": [
+            "Hips stay level and stable.",
+            "Move slowly and controlled.",
+            "Feel the work in the hip and glute.",
+            "Moving leg stays completely straight."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10-15 each side",
+            "tempo": "3-5 sec swing, 1-2 sec pause",
+            "hold": "",
+            "frequency": "Daily",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "Control is the goal. Small range, big results."
+        },
+        {
+          "n": 2,
+          "name": "Knee Drive (For Radiating Pain Only)",
+          "isNew": false,
+          "whenToUse": "Use only if you have radiating pain down the lateral hip, thigh, leg or even into the calf/foot.",
+          "howTo": [
+            "Stand tall with feet hip-width.",
+            "Keep both feet planted firmly on the ground.",
+            "Engage core and glutes.",
+            "Turn (rotate) the knee of the affected side inward and gently drive it toward the opposite knee. (Do not move the foot.)",
+            "Keep hips and torso facing forward.",
+            "Hold for a moment, then relax.",
+            "Repeat as needed."
+          ],
+          "focus": [
+            "Short, controlled movement.",
+            "Do not lift or move the foot.",
+            "Relief is the goal."
+          ],
+          "dosage": {
+            "sets": "1-2",
+            "reps": "5-10",
+            "tempo": "",
+            "hold": "",
+            "frequency": "Use only when in pain",
+            "other": {
+              "Relief focus": "Short, effective pain relief"
+            }
+          },
+          "steps": [
+            "START: Feet hip-width, knees forward.",
+            "DRIVE KNEE IN: Turn knee inward toward opposite knee."
+          ],
+          "proTip": "Use gently. This is a relief tool, not a strength exercise."
+        },
+        {
+          "n": 3,
+          "name": "Seated C-Through & Lean",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Sit with feet planted wide and knees bent.",
+            "Hands behind your head, elbows out wide.",
+            "Rotate your torso to one side as far as comfortable.",
+            "Bring that elbow toward the same-side hip (oblique crunch).",
+            "Return elbows to level (not back to start).",
+            "Rotate further in the same direction and repeat the elbow-to-hip crunch.",
+            "Perform 3-4 times, then switch sides."
+          ],
+          "focus": [
+            "Rotate through your torso, not just your arms.",
+            "Use your obliques to crunch the elbow to the hip.",
+            "Keep core engaged and spine tall.",
+            "Move slow and controlled."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "3-4 per side",
+            "tempo": "Controlled",
+            "hold": "",
+            "frequency": "Daily",
+            "other": {}
+          },
+          "steps": [
+            "1. ROTATE: Turn torso to one side.",
+            "2. CRUNCH: Bring elbow to same-side hip.",
+            "3. ROTATE MORE: Return elbows to level, rotate further."
+          ],
+          "proTip": "Go only as far as you can maintain control and breath."
+        },
+        {
+          "n": 4,
+          "name": "Wide Stance Side Reach",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Stand tall with feet wider than hip-width.",
+            "One arm reaches overhead while the other hand slides down the leg.",
+            "Reach down along the lateral line toward the shoe while stretching the opposite side.",
+            "Keep chest up and spine tall.",
+            "Return to center and switch sides."
+          ],
+          "focus": [
+            "Keep chest up and back flat.",
+            "Reach through your side body.",
+            "Move slow and controlled.",
+            "Do not bounce."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each side",
+            "tempo": "3-5 sec reach",
+            "hold": "",
+            "frequency": "Daily",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "Reach, don't rush. Feel the stretch in your oblique."
+        }
+      ]
+    },
+    {
+      "key": "5",
+      "label": "Week 5",
+      "driveId": "1JcK6vHWFxhJemDKjxD9HhyF7Ix7p8apl",
+      "focus": "Build strength and stability",
+      "notes": "PROGRESSION GUIDELINES:\n- Keep movement slow, controlled, and clean.",
+      "editorNotes": "Label removed: \"Progression Guidelines on this sheet read:\" (the sheet line is kept in notes).\nDaily Basics Breathing on this sheet reads: \"Exhale during effort. Inhale through the nose. exhale through the mouth.\" (period instead of comma).",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "Hip Leg Pendulum",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Stand on a yoga block with one foot flat and hands supported on a table, bench, or stable surface.",
+            "Hinge at the hips with a flat",
+            "back and arms straight. straight (knee never bends).",
+            "Let the affected leg dangle relaxed.",
+            "Slowly swing the leg diagonally across under your body.",
+            "Then swing it diagonally out behind you (small range, not to full extension).",
+            "Control the motion and repeat."
+          ],
+          "focus": [
+            "Hips stay level and stable.",
+            "Move slowly and controlled.",
+            "Feel the work in the hip and glute.",
+            "Moving leg stays completely straight."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10-15 each side",
+            "tempo": "3-5 sec swing, 1-2 sec pause",
+            "hold": "",
+            "frequency": "Daily",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "Control is the goal. Small range, big results."
+        },
+        {
+          "n": 2,
+          "name": "90/90 Seated Stretch Switch",
+          "isNew": true,
+          "whenToUse": "",
+          "howTo": [
+            "Sit on the floor with both knees bent to 90 degrees and together to one side.",
+            "Feet stay close, knees stacked, both pointing in the same direction.",
+            "Without using your hands to push the knees, engage your glutes and adductors.",
+            "Shift your hips and rotate both knees to the other side, keeping them stacked.",
+            "Push your knees to the floor using hip and inner thigh strength.",
+            "Return to the other side and repeat."
+          ],
+          "focus": [
+            "Use glutes and adductors to move the knees.",
+            "Do NOT use your hands to push.",
+            "Keep chest tall and core braced.",
+            "Control the switch, don't rush."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each direction",
+            "tempo": "2-3 sec per switch",
+            "hold": "",
+            "frequency": "Daily",
+            "other": {}
+          },
+          "steps": [
+            "START: Knees together to one side.",
+            "SWITCH: Engage glutes and adductors to push knees to the other side."
+          ],
+          "proTip": "Strong hips move you. Control builds them."
+        },
+        {
+          "n": 3,
+          "name": "Bench Slider Thread & Extend",
+          "isNew": true,
+          "whenToUse": "",
+          "howTo": [
+            "Sit on a bench.",
+            "One foot stays planted (stable leg).",
+            "Place the affected leg's heel on a slider.",
+            "Thread the slider between the stable leg and the bench.",
+            "Then push the slider straight back behind you into hip extension.",
+            "Engage your glute as you extend.",
+            "Return forward and repeat."
+          ],
+          "focus": [
+            "Stay tall, don't lean back.",
+            "Drive through your heel.",
+            "Squeeze glute at full extension.",
+            "Move slow and controlled."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "10-15 each side",
+            "tempo": "2-3 sec thread & extend",
+            "hold": "",
+            "frequency": "Daily",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "Quality glute engagement > speed or range."
+        }
+      ]
+    },
+    {
+      "key": "6",
+      "label": "Week 6",
+      "driveId": "1v31eFuj54j6Epx7E12NP65G63LL-KXZE",
+      "focus": "Max control, full range, confidence",
+      "notes": "PROGRESSION GUIDELINES:\n- Keep movement slow, controlled, and clean.\n\nWHAT TO EXPECT:\n- Improved hip strength and stability\n- Greater range of motion\n- Better movement quality\n- Less pain and irritation\n- Stronger glutes and core connection\n- More confidence in daily movement",
+      "editorNotes": "Differences on this sheet: Weekly Progression Overview row 5 reads \"Build strength and mobility\" (weeks 1-5 sheets: \"Build strength and stability\").\nLabels removed: \"Progression Guidelines read\", \"WHAT TO EXPECT on this sheet:\" (content kept in notes).\nKnee Drive no longer appears.",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "Wide Sumo Squat",
+          "isNew": true,
+          "whenToUse": "",
+          "howTo": [
+            "Stand with feet very wide, toes turned out.",
+            "Drive knees apart.",
+            "Sit hips down and back, chest tall.",
+            "Lower as low as you can with control.",
+            "Drive through your heels to stand tall.",
+            "Repeat."
+          ],
+          "focus": [
+            "Drive knees out.",
+            "Chest up, core braced.",
+            "Sit low with control.",
+            "Heels stay down."
+          ],
+          "dosage": {
+            "sets": "2",
+            "reps": "5-10",
+            "tempo": "3 sec down, 1-2 sec up",
+            "hold": "",
+            "frequency": "Daily",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "Depth is less important than control and knee positioning."
+        },
+        {
+          "n": 2,
+          "name": "Sumo Knee Drop",
+          "isNew": true,
+          "whenToUse": "",
+          "howTo": [
+            "Start in a wide sumo squat stance, toes turned out.",
+            "Keep one foot planted and rotate the opposite knee down toward the floor.",
+            "Lightly touch the knee to the floor.",
+            "Drive through the planted foot and glute to stand back up.",
+            "Repeat on the other side."
+          ],
+          "focus": [
+            "Rotate the knee down with control.",
+            "Keep chest tall and core braced.",
+            "Drive through the planted leg and glute.",
+            "Move slowly and with balance."
+          ],
+          "dosage": {
+            "sets": "2-3",
+            "reps": "8-12 (each side)",
+            "tempo": "2 sec down, 1-2 sec up",
+            "hold": "",
+            "frequency": "Daily",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "Quality movement builds control and hip strength."
+        },
+        {
+          "n": 3,
+          "name": "Forward Lunge With Hip Extension",
+          "isNew": true,
+          "whenToUse": "",
+          "howTo": [
+            "Step forward into a lunge.",
+            "Lower hips straight down, both knees bent ~90°.",
+            "Drive your hips forward as you stand up.",
+            "Squeeze the glute of the back leg at full extension.",
+            "Step back and repeat on the same leg.",
+            "Complete all reps, then switch legs."
+          ],
+          "focus": [
+            "Drive hips forward at the top.",
+            "Squeeze the glute of the back leg.",
+            "Keep torso tall.",
+            "Control the lowering phase."
+          ],
+          "dosage": {
+            "sets": "3-4",
+            "reps": "10-15 (each leg)",
+            "tempo": "2 sec down, 1-2 sec up",
+            "hold": "",
+            "frequency": "Daily",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "Full hip extension = full glute activation."
+        }
+      ]
+    }
+  ],
+  "uncertain": [
+    "Sheet typo kept: Week 1 card 2 focus 'Neck neutral, gaxe forward.' (weeks 2-3 print 'gaze').",
+    "Sheet wording kept: card title 'Seated C-Through & Lean' (likely 'Reach-Through'); 'maintain control and breath' in its pro tip.",
+    "Week 3 card 2 reps printed '5-10 each side* (with 2 sec hold at top)' – asterisk has no footnote on the sheet.",
+    "Week 3 card 3 caption 'Feet hip-width, knees planted.' (weeks 1, 2, 4 say 'knees forward').",
+    "Week 3 card 5 how-to: one sentence split across two bullets on the sheet ('...lateral line of one leg' / 'as far as you can toward your foot...'); kept as two bullets. Captions 'reach. right arm up.' punctuation as printed.",
+    "Week 4 card 1 how-to 'Keep the standing leg straight (soft knee never bent).' – contradictory wording as printed.",
+    "Week 5 card 1 how-to garbled on sheet: bullets 'Hinge at the hips with a flat' / 'back and arms straight.' followed by 'straight (knee never bends).' – kept as printed (2nd and 3rd lines merged into one item).",
+    "Week 5 Daily Basics Breathing: 'Inhale through the nose. exhale through the mouth.' (period) vs comma on other sheets.",
+    "Progression guideline wording: week 1 sheet 'Keep movement slow, and controlled.' (top level); weeks 2-6 sheets 'Keep movement slow, controlled, and clean.' (see week notes).",
+    "Hip Leg Pendulum, Wide Stance Side Reach (wk 4), Bench Slider and weeks 5-6 cards have no picture captions; steps left empty."
+  ],
+  "sourceNotes": "Read all 6 sheets (Drive ids listed per week), each 1535-1536x1024; all distinct (md5). Every card cropped and read at 2.2-3.5x. Shared header/principles/daily basics/progression/expect/remember/footer taken from Week 1; per-week differences in each week's notes. Week 6 sheet has a different WHAT TO EXPECT list and overview row 5 wording (see week 6 notes). 'callouts' includes the brand line 'Stronger hips. Better movement. For life.' Week focus taken from the overview table."
+}

@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="app/app.css?v=119da7ae">
+  <link rel="stylesheet" href="app/app.css?v=7251e0ec">
   <link rel="stylesheet" href="account.css?v=989fceea">
   <link rel="stylesheet" href="guides.css?v=0a19199b">
 </head>
@@ -591,6 +591,12 @@
     <p class="muted small" id="lec-meta"></p>
   </dialog>
 
+  <dialog class="sheet sheet-wide" id="sheet-dialog">
+    <div class="sheet-head"><b id="sheet-title"></b><button type="button" class="icon-btn" data-close aria-label="Close"><svg viewBox="0 0 24 24"><path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/></svg></button></div>
+    <div class="sheet-zoom"><img id="sheet-img" alt="" decoding="async"></div>
+    <p class="muted small">Tap the sheet to zoom in, then scroll to read the small print. Every exercise is also written out on the program page.</p>
+  </dialog>
+
   <!-- Workout player -->
   <div class="player" id="player" hidden role="dialog" aria-modal="true" aria-label="Workout">
     <header class="player-top">
@@ -697,7 +703,7 @@
   <script src="musclereports.js?v=cd9ced26"></script>
   <script src="guides.js?v=aaa4ac68"></script>
   <script src="stripe-checkout.js?v=0b68bde3"></script>
-  <script src="account.js?v=162fc04e"></script>
+  <script src="account.js?v=3060571e"></script>
 <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>

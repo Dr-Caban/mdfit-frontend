@@ -1,0 +1,3837 @@
+{
+  "id": "low-back-6",
+  "title": "Back Stability",
+  "tagline": "",
+  "goal": "",
+  "principles": [
+    {
+      "title": "MD FIT RULES 1",
+      "text": "Brace before moving."
+    },
+    {
+      "title": "MD FIT RULES 2",
+      "text": "Hips move; spine remains quiet."
+    },
+    {
+      "title": "MD FIT RULES 3",
+      "text": "Glutes initiate lower-body movement."
+    },
+    {
+      "title": "MD FIT RULES 4",
+      "text": "Shoulders stay depressed and relaxed."
+    },
+    {
+      "title": "MD FIT RULES 5",
+      "text": "Stop immediately if symptoms travel farther down the leg."
+    },
+    {
+      "title": "MD FIT RULES 6",
+      "text": "Muscle fatigue is acceptable; sharp pain, joint pain, numbness, tingling, or increasing radiating pain are not."
+    },
+    {
+      "title": "MD FIT RULES 7",
+      "text": "Progress only when you can complete all prescribed movements with good control and without increased symptoms for at least three consecutive sessions."
+    }
+  ],
+  "dailyBasics": [
+    {
+      "title": "SI/Pillow Belt",
+      "text": "as needed"
+    },
+    {
+      "title": "Shoulders",
+      "text": "down"
+    },
+    {
+      "title": "10-20%",
+      "text": "Glute Engagement"
+    },
+    {
+      "title": "10-20%",
+      "text": "Abdominal Brace"
+    },
+    {
+      "title": "Neutral",
+      "text": "Pelvis"
+    },
+    {
+      "title": "Walk",
+      "text": "15-20 min"
+    }
+  ],
+  "progression": {
+    "overview": [
+      {
+        "week": "Baseline Phase",
+        "focus": "FOUNDATION & ACTIVATION"
+      },
+      {
+        "week": "0",
+        "focus": "FOUNDATION FIRST: CALM THE SPINE"
+      },
+      {
+        "week": "1",
+        "focus": "DYNAMIC STABILITY: CONTROL THE BASICS"
+      },
+      {
+        "week": "2",
+        "focus": "BUILD CONTROL AND RESIST ROTATION"
+      },
+      {
+        "week": "3",
+        "focus": "BUILD STABILITY: ADD STRENGTH AND RANGE"
+      },
+      {
+        "week": "4",
+        "focus": "BUILD STRENGTH AND STABILITY: ADD CHALLENGE"
+      },
+      {
+        "week": "5",
+        "focus": "BUILD POWER AND STABILITY: INCREASE INTENSITY"
+      },
+      {
+        "week": "6",
+        "focus": "BUILD STRENGTH AND FUNCTION: ADVANCE CONTROL"
+      },
+      {
+        "week": "7",
+        "focus": "BUILD STRENGTH AND FUNCTION: ADVANCE CONTROL"
+      },
+      {
+        "week": "8",
+        "focus": "BUILD STRENGTH AND FUNCTION: PEAK CONTROL & POWER"
+      },
+      {
+        "week": "9",
+        "focus": "BUILD STRENGTH AND FUNCTION: POWER, CONTROL & PERFORMANCE"
+      },
+      {
+        "week": "10",
+        "focus": "BUILD STRENGTH AND FUNCTION: POWER, CONTROL & PERFORMANCE"
+      },
+      {
+        "week": "11-12",
+        "focus": "BUILD STRENGTH AND FUNCTION: POWER, CONTROL & PERFORMANCE"
+      }
+    ],
+    "guidelines": [
+      "Progress only when you can complete all prescribed movements with good control and without increased symptoms for at least three consecutive sessions."
+    ],
+    "expect": [],
+    "remember": "Muscle soreness is acceptable. Joint pain, sharp pain, numbness, tingling, or increasing radiating pain are not.",
+    "callouts": [],
+    "footer": "CONSISTENCY + CONTROL = CONFIDENCE + STRENGTH"
+  },
+  "weeks": [
+    {
+      "key": "foundation",
+      "label": "Baseline Phase",
+      "driveId": "1p7Zj6LjD43E1EAD9FEirVlRxKBCc8Smb",
+      "focus": "FOUNDATION & ACTIVATION",
+      "notes": "THE STARTING POINT FOR YOUR HIP & LOWER BACK PROTOCOL\nComplete this baseline consistently before beginning Week 0.\n\nSTRONGER HIPS. A STRONGER CORE. A MORE RESILIENT YOU.\n\nACTIVATE | CONNECT | STABILIZE | PROGRESS\n\n“A STRONG FOUNDATION BUILDS EVERYTHING.” — Dr. Jared Caban\n\nMOVE BETTER. FEEL BETTER. LIVE BETTER.\n\nBUILD THE FOUNDATION. MOVE WITHOUT LIMITS.\nSTRONG HIPS. A HEALTHY BACK. A BETTER YOU.\nGOSD — GLUTES ON SHOULDERS DOWN\n\nThis protocol is for educational purposes and is not a substitute for medical advice. Discontinue or modify if pain increases.\n— Dr. Jared Caban, MD, MSC, CCEP",
+      "editorNotes": "Different kind of page: a portrait 'BASELINE PHASE / FOUNDATION & ACTIVATION' sheet (no 'Week' label) with two detailed exercise panels instead of the weekly card grid.\nLabels removed: \"Header:\", \"Side box:\", \"Icon row:\", \"Quote:\", \"Logo tagline:\", \"Footer:\", \"Disclaimer:\" (text kept in notes).\nMapping used for exercise 1: howTo = the 7 numbered steps; focus = KEY POSITIONING CUES; dosage = FREQUENCY and REPETITIONS boxes, with PURPOSE and MUSCLES INVOLVED under dosage.other; steps = the anatomy-image labels; proTip = the yellow warning box. Exercise 2: howTo = numbered steps; focus = IMPORTANT NOTES; steps = the two diagram panels (title: caption); BENEFITS under dosage.other.",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "WALL-SUPPORTED HIP / GLUTE ACTIVATION",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Stand facing a wall and place your hips high against the wall.",
+            "Keep your heels up off the ground.",
+            "Keep your knees pretty well extended (soft, not locked).",
+            "Turn your knees and toes slightly inward.",
+            "Bend forward from the hips (let your torso hang).",
+            "Engage and squeeze your glutes.",
+            "Hold for 1-2 seconds.",
+            "Perform 5-10 repetitions, once daily."
+          ],
+          "focus": [
+            "Hips high on the wall",
+            "Heels up off the ground",
+            "Knees nearly extended (soft, not locked)",
+            "Knees and toes slightly inward",
+            "Bend forward and relax the upper body",
+            "Engage the glutes (squeeze)",
+            "Hold 1-2 seconds",
+            "Repeat 5-10 times daily"
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "5-10 reps",
+            "tempo": "",
+            "hold": "1-2 seconds",
+            "frequency": "DAILY (1 session)",
+            "other": {
+              "Subtitle": "ACTIVATE THE GLUTES. SET THE FOUNDATION.",
+              "Repetitions (as printed)": "5-10 reps (hold 1-2 seconds)",
+              "Purpose": [
+                "Activates the glutes and posterior chain",
+                "Improves hip and lumbopelvic awareness",
+                "Helps decompress the lower back",
+                "Establishes baseline tolerance for progression",
+                "Prepares the body for Weeks 0-6 of the Hip and Lower Back Protocols"
+              ],
+              "Muscles involved": [
+                "Gluteus Maximus (primary)",
+                "Gluteus Medius (stabilization)",
+                "Hamstrings (lengthened)",
+                "Core (stabilization)",
+                "Erector Spinae (support)",
+                "Glutes (activation)"
+              ]
+            }
+          },
+          "steps": [
+            "Gluteus Maximus (engage)",
+            "Hamstrings (lengthened)"
+          ],
+          "proTip": "If this causes increased radiating, burning or tingling pain (nerve-like symptoms), reduce to 1-2 repetitions initially and build tolerance gradually."
+        },
+        {
+          "n": 2,
+          "name": "PELVIC FLOOR ACTIVATION",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "After you urinate, gently contract the muscles to hold urine (bladder Kegel), then relax. Do 5-10 repetitions.",
+            "Then contract the muscles to hold fecal matter (anal Kegel), then relax. Do 5-10 repetitions.",
+            "Perform both exercises every time after you urinate."
+          ],
+          "focus": [
+            "Do not repeatedly start and stop your urine stream.",
+            "Use the sensation of stopping/expelling as a guide, and perform the repetitions after urination.",
+            "Keep the contractions gentle and controlled.",
+            "Breathe normally."
+          ],
+          "dosage": {
+            "sets": "",
+            "reps": "5-10 repetitions",
+            "tempo": "",
+            "hold": "",
+            "frequency": "every time after you urinate",
+            "other": {
+              "Subtitle": "BLADDER & ANAL KEGEL EXERCISES",
+              "Benefits": [
+                "Improves pelvic floor strength and coordination",
+                "Supports core and lower back stability",
+                "Enhances hip control",
+                "May reduce urgency and incontinence symptoms",
+                "Creates a strong foundation for all future hip and lower back work"
+              ]
+            }
+          },
+          "steps": [
+            "BLADDER (URINARY) KEGEL: Same motion you would use to stop urine flow.",
+            "ANAL (BOWEL) KEGEL: Same motion you would use to hold fecal matter."
+          ],
+          "proTip": ""
+        }
+      ]
+    },
+    {
+      "key": "0",
+      "label": "Week 0",
+      "driveId": "1ZvKvFw6p72-a3yniQfss7qBEmTHE4mU0",
+      "focus": "FOUNDATION FIRST: CALM THE SPINE",
+      "notes": "Goal: Reduce pain, restore stability, and build confidence.\n\nStay in Week 0 as long as needed. Move forward only when you have NO PAIN AT REST.\n\nDO THESE EVERY DAY:\n- PILLOW BELT / SI BELT - Wear during all upright activities as needed.\n- SHOULDERS DOWN - Keep shoulders down and relaxed. Avoid shrugging.\n- 10-20% GLUTE ENGAGEMENT - Lightly squeeze glutes throughout the day.\n- 10-20% CORE ENGAGEMENT - Brace your core gently, like preparing for a light punch.\n- NEUTRAL PELVIS - Avoid arching low back. Ribs down, pelvis level.\n- WALKING - 15-20 minutes comfortable pace daily.\n\nSTABILITY BASICS – PAIN RELIEF & CONTROL\nPerform these movements 1-2 times per day.\n\nIMPORTANT NOTES:\n- Stay in Week 0 as long as it takes to have NO PAIN AT REST.\n- It's normal to feel mild muscle work. Sharp pain, joint pain, numbness, tingling, or radiating pain are NOT normal.\n- Quality over quantity. Stop if symptoms increase.\n- Consistency is the key. Small daily habits create big changes.\n\nTHE GOAL:\nReduce pain, calm the nervous system, and rebuild trust in your body. When you are pain-free at rest and these movements feel easy and comfortable, you are ready for Week 1.\n\nPAIN GUIDE:\n- GOOD 0-3/10 - Mild muscle effort, soreness, or tightness. This is acceptable.\n- CAUTION 4-6/10 - Reduce range or intensity. Focus on quality and breathing.\n- STOP 7-10/10 - Sharp pain, joint pain, numbness, tingling, or radiating pain. Stop and reassess.\n\nMD FIT RULES:\n- Protect your spine.\n- Hips move; spine stays quiet.\n- Glutes initiate lower body movement.\n- Shoulders stay down and relaxed.\n- Stop if symptoms travel farther down the leg.\n- Progress only when you are pain-free at rest.",
+      "editorNotes": "Single-page sheet; different from later weeks.\nLabels removed: \"Callout:\", \"Exercise section header:\" (text kept in notes).\nDO THESE EVERY DAY (fuller version of the daily basics)\n(cards have no separate dosage line; the reps/holds are in the bullets; each card's PURPOSE line is stored in proTip)\nWeek 0 MD FIT RULES (shorter, different wording from later weeks)",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "DIAPHRAGMATIC BREATHING",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Hands on belly and lower ribs.",
+            "Inhale through nose, belly rises.",
+            "Exhale through mouth, belly gently draws in.",
+            "10 slow breaths."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "1-2 times per day",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "PURPOSE: Calms nervous system and engages deep core."
+        },
+        {
+          "n": 2,
+          "name": "PELVIC TILTS (GENTLE)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Flatten low back slightly.",
+            "Hold 3-5 seconds.",
+            "Relax and return.",
+            "2 sets of 10-15."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "1-2 times per day",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "PURPOSE: Improves awareness and reduces low back tension."
+        },
+        {
+          "n": 3,
+          "name": "GLUTE SETS",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Tighten glutes gently.",
+            "Hold 5 seconds.",
+            "Relax.",
+            "2 sets of 10-15."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "1-2 times per day",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "PURPOSE: Activates glutes without moving the spine."
+        },
+        {
+          "n": 4,
+          "name": "ABDOMINAL BRACE (ISOMETRIC)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Gently brace as if preparing for a punch.",
+            "Keep breathing.",
+            "Hold 5-10 seconds.",
+            "2 sets of 10."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "1-2 times per day",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "PURPOSE: Teaches core stability without movement."
+        },
+        {
+          "n": 5,
+          "name": "SUPINE KNEE ROCKS (SMALL RANGE)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Rock knees side to side in small range.",
+            "Pain-free range only.",
+            "1-2 minutes."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "1-2 times per day",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "PURPOSE: Gently frees low back and reduces stiffness."
+        },
+        {
+          "n": 6,
+          "name": "CHILD'S POSE (SUPPORTIVE)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Knees wide, arms forward.",
+            "Forehead on pillow or hands.",
+            "Breathe slow and deep.",
+            "Hold 1-2 minutes."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "1-2 times per day",
+            "other": {}
+          },
+          "steps": [],
+          "proTip": "PURPOSE: Calms the nervous system and decompresses spine."
+        }
+      ]
+    },
+    {
+      "key": "1",
+      "label": "Week 1",
+      "driveId": "1rLAvPKULoAWIxaqJZfplBd3yZbGSpcpq",
+      "focus": "DYNAMIC STABILITY: CONTROL THE BASICS",
+      "notes": "Goal: Teach the spine to stay quiet while the hips and shoulders move.\n\nREMEMBER:\nMuscle soreness is acceptable. Joint pain, sharp pain, numbness, tingling, or increasing radiating pain are not.\n\nCONSISTENCY + CONTROL = CONFIDENCE + STRENGTH",
+      "editorNotes": "Single-page sheet. Includes a MOBILITY box (CAT-CAMEL, stored as exercise 9 although it is unnumbered on the sheet).\nLabel removed: \"Footer banner:\" (text kept in notes).",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "POSTERIOR PELVIC TILTS",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Very small movement",
+            "Flatten low back",
+            "Slow return",
+            "No pain"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "15",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 15"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "name": "HEEL SLIDES",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Maintain core tight",
+            "Glutes lightly engaged",
+            "No pelvic rotation"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 10 each leg"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "name": "BENT KNEE FALL-OUTS",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Open one knee slowly",
+            "Pelvis cannot move",
+            "Reduce range if pelvis shifts"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 each",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 10 each"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "name": "SUPINE MARCHES",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Lift one foot only 2-3 inches",
+            "No lumbar movement",
+            "Keep core and glutes engaged"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "10",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 10"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "name": "BRIDGE HOLDS",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Lift only until hips align",
+            "Hold 5 seconds",
+            "Stop if hamstrings cramp or low back takes over"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "10",
+            "tempo": "",
+            "hold": "5 sec hold",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 10 (5 sec hold)"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 6,
+          "name": "STANDING HIP HINGE",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Hands on hips",
+            "Very small movement",
+            "Teach bending from hips, not low back"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "15",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 15"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 7,
+          "name": "WALL SQUATS (QUARTER DEPTH)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Neutral spine",
+            "Weight through heels",
+            "Glutes initiate movement"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "12",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 12"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 8,
+          "name": "FARMER CARRY",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Very light weight",
+            "Shoulders down",
+            "Core engaged",
+            "Walk slowly"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2 rounds",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 rounds (30-60 sec)",
+              "Duration": "30-60 sec"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 9,
+          "name": "CAT-CAMEL",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Not stretching",
+            "Just segmental control",
+            "Move slowly"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 gentle reps",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Section": "MOBILITY",
+              "As printed": "10 gentle reps"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ]
+    },
+    {
+      "key": "2",
+      "label": "Week 2",
+      "driveId": "1TWT_drmXttapVp-hd2yMnmRWS1miXk7Q",
+      "focus": "BUILD CONTROL AND RESIST ROTATION",
+      "notes": "Goal: Increase challenge while maintaining a stable spine.\n\nREMEMBER:\nMuscle soreness is acceptable. Joint pain, sharp pain, numbness, tingling, or increasing radiating pain are not.\n\nCONSISTENCY + CONTROL = CONFIDENCE + STRENGTH",
+      "editorNotes": "Single-page sheet. CONTINUE DAILY appears twice (top strip and a box at the bottom). MOBILITY box (CAT-CAMEL) stored as exercise 9 although unnumbered on the sheet.\nLabel removed: \"Footer banner:\" (text kept in notes).",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "HEEL SLIDES (PROGRESSED)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Use longer lever",
+            "Slow, controlled return",
+            "Keep core tight",
+            "No pelvic rotation"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 10 each leg"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "name": "SUPINE MARCHES (PROGRESSED)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Lift slightly higher",
+            "Maintain zero trunk movement",
+            "Move slowly"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 10 each leg"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "name": "SINGLE-LEG BRIDGE PREP",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Bridge up",
+            "Shift 20-30% bodyweight to one leg",
+            "Return and alternate"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 8 each side"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "name": "DEAD BUG – ARMS ONLY",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Arms move",
+            "Legs remain still",
+            "Core stays engaged"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "10",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 10"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "name": "PALLOF PRESS",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Use very light band",
+            "Press straight out",
+            "Hold 2-3 seconds",
+            "No trunk rotation"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "12",
+            "tempo": "",
+            "hold": "2-3 sec hold",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 12 (2-3 sec hold)"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 6,
+          "name": "STANDING HIP ABDUCTION",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Band above knees",
+            "Slow and controlled",
+            "No trunk lean",
+            "Keep pelvis level"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "15 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 15 each leg"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 7,
+          "name": "MINI STEP-UPS",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "4-6 inch step",
+            "Step up with control",
+            "Slow lowering",
+            "Maintain pelvic control"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 10 each leg"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 8,
+          "name": "SPLIT-STANCE WEIGHT SHIFTS",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Forward / Backward / Side to Side",
+            "Teach loading through hips, not low back"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 min total",
+              "Duration": "2 min total"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 9,
+          "name": "CAT-CAMEL",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Not stretching",
+            "Just segmental control",
+            "Move slowly"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 gentle reps",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Section": "MOBILITY",
+              "As printed": "10 gentle reps"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ]
+    },
+    {
+      "key": "3",
+      "label": "Week 3",
+      "driveId": "1bDr09Zw1KMgr7gK5CFEzFbqWM8dzeCYI",
+      "focus": "BUILD STABILITY: ADD STRENGTH AND RANGE",
+      "notes": "Goal: Increase strength while maintaining mobility and perfecting form.",
+      "editorNotes": "Two-page spread (left and right page), each page with its own MD FIT RULES panel (identical to the top-level principles) and a CONTINUE DAILY panel.",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "FULL DEAD BUG",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Arms and opposite leg extend",
+            "Low back stays flat",
+            "Move slow, control fully",
+            "Keep core tight"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 10 each side"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "name": "SUPINE SINGLE-LEG GLUTE BRIDGE",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Drive through heel",
+            "Lift hips, squeeze glute",
+            "Keep hips level",
+            "Lower with control"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 10 each leg"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "name": "SINGLE-LEG GLUTE BRIDGE (LONG LEVER)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Drive through heel, lift hips",
+            "Extend other leg straight",
+            "Squeeze glute at top",
+            "Don't let hips drop"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 8 each side"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "name": "KNEE LIFT + GLUTE EXTENSION",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Lift knee to hip, then extend back",
+            "Keep core tight, hips level",
+            "Squeeze glute at full extension",
+            "Slow and controlled"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 10 each side"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "name": "ASSISTED TRX SQUAT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Sit back and down",
+            "Keep chest up, core tight",
+            "Knees track over toes",
+            "Drive through heels"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "10-12",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 10-12"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 6,
+          "name": "FULL STEP-UPS",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Step up through heel",
+            "Stand tall at the top",
+            "Controlled step down",
+            "Use height that challenges you"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 10 each leg"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 7,
+          "name": "BELOW-THE-PLANE NEGATIVE CALF DROP",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Rise up with both feet",
+            "Drop below step slowly",
+            "3-5 sec down",
+            "Full stretch, control up"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "12-15",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 12-15"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 8,
+          "name": "HIP HINGE (DOWEL)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Push hips back",
+            "Keep spine neutral",
+            "Soft knees",
+            "Feel stretch in hamstrings"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "12",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 12"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 9,
+          "name": "LATERAL BAND WALKS",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Band above knees",
+            "Slight squat position",
+            "Step side to side",
+            "Keep tension in band"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 steps each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 10 steps each direction"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 10,
+          "name": "COSSACK SQUAT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Sit back, chest up",
+            "Keep opposite leg straight",
+            "Control the depth",
+            "Hips low, move slow"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 8 each side"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 11,
+          "name": "POLE SQUAT (OVERHEAD)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Bar overhead, arms locked",
+            "Sit deep, keep chest tall",
+            "Knees track over toes",
+            "Core tight throughout"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "8",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 8"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 12,
+          "name": "SINGLE-LEG RDL (BODYWEIGHT)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Hinge at hips",
+            "Back flat, hips square",
+            "Reach back with leg",
+            "Control the return"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 8 each leg"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 13,
+          "name": "PALLOF PRESS (ANTI-ROTATION)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Press straight out",
+            "Hold and resist rotation",
+            "Core braced",
+            "Controlled return"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "2-3 sec hold",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 10 each side (2-3 sec hold)"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 14,
+          "name": "STANDING HIP ABDUCTION",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Band above knees",
+            "Stand tall, slight bend",
+            "Lift leg out to side",
+            "Slow and controlled"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "12 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 12 each leg"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 15,
+          "name": "STANDING HIP EXTENSION",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Band around ankles",
+            "Extend leg back",
+            "Squeeze glute",
+            "Don't lean forward"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "12 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 12 each leg"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 16,
+          "name": "WALL SIT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Back flat on wall",
+            "Knees at 90°",
+            "Core tight",
+            "Breathe slow"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "",
+            "tempo": "",
+            "hold": "30-45 sec",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 30-45 sec"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 17,
+          "name": "SPLIT-STANCE WEIGHT SHIFTS",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Forward / Backward / Side to Side",
+            "Teach loading through hips, not low back"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 min total",
+              "Duration": "2 min total"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ]
+    },
+    {
+      "key": "4",
+      "label": "Week 4",
+      "driveId": "1fjDop2p-UB9XhWMkCbE5kYIZAZdtRPPx",
+      "focus": "BUILD STRENGTH AND STABILITY: ADD CHALLENGE",
+      "notes": "Goal: Improve single-leg strength, core control, and full-body stability.",
+      "editorNotes": "Two-page spread (left and right page), each page with its own MD FIT RULES panel (identical to the top-level principles) and a CONTINUE DAILY panel.",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "DEAD BUG",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Arms and opposite leg extend",
+            "Low back stays flat",
+            "Move slow, control fully",
+            "Keep core tight"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 10 each side"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "name": "SUPINE SINGLE-LEG GLUTE BRIDGE",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Drive through heel",
+            "Lift hips, squeeze glute",
+            "Keep hips level",
+            "Lower with control"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 10 each leg"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "name": "SINGLE-LEG GLUTE BRIDGE (LONG LEVER)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Drive through heel, lift hips",
+            "Extend other leg straight",
+            "Squeeze glute at top",
+            "Don't let hips drop"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 8 each side"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "name": "KNEE LIFT + GLUTE EXTENSION",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Lift knee to hip, then extend back",
+            "Keep core tight, hips level",
+            "Squeeze glute at full extension",
+            "Slow and controlled"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 10 each side"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "name": "TRX ASSISTED SQUAT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Sit back and down",
+            "Keep chest up, core tight",
+            "Knees track over toes",
+            "Drive through heels"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "10-12",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 10-12"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 6,
+          "name": "FULL STEP-UPS",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Step up through heel",
+            "Stand tall at the top",
+            "Controlled step down",
+            "Use height that challenges you"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 10 each leg"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 7,
+          "name": "BASIC LUNGE",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Step forward, lower down",
+            "Both knees at 90°",
+            "Front knee over ankle",
+            "Push through front heel"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 8 each leg"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 8,
+          "name": "BELOW-THE-PLANE NEGATIVE CALF DROP",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Rise up with both feet",
+            "Drop below step slowly",
+            "3-5 sec down",
+            "Full stretch, control up"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "12-15",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 12-15"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 9,
+          "name": "ALL FOURS TRANSITION (PRONE TO QUADRUPED)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Start lying flat on stomach",
+            "Press through hands to hands and knees",
+            "Keep core tight, no arching",
+            "Move slow and controlled"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "6-8",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 6-8"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 10,
+          "name": "COSSACK SQUAT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Sit back, chest up",
+            "Keep opposite leg straight",
+            "Control the depth",
+            "Hips low, move slow"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 8 each side"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 11,
+          "name": "POLE SQUAT (OVERHEAD)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Bar overhead, arms locked",
+            "Sit deep, keep chest tall",
+            "Knees track over toes",
+            "Core tight throughout"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "8",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 8"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 12,
+          "name": "SINGLE-LEG RDL (BODYWEIGHT)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Hinge at hips",
+            "Back flat, hips square",
+            "Reach back with leg",
+            "Control the return"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 8 each leg"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 13,
+          "name": "PALLOF PRESS (ANTI-ROTATION)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Press straight out",
+            "Hold and resist rotation",
+            "Core braced",
+            "Controlled return"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "2-3 sec hold",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 10 each side (2-3 sec hold)"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 14,
+          "name": "STANDING HIP ABDUCTION",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Band above knees",
+            "Stand tall, slight bend",
+            "Lift leg out to side",
+            "Slow and controlled"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "12 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 12 each leg"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 15,
+          "name": "STANDING HIP EXTENSION",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Band around ankles",
+            "Extend leg back",
+            "Squeeze glute",
+            "Don't lean forward"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "12 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 12 each leg"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 16,
+          "name": "LATERAL BAND WALKS",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Band above knees",
+            "Slight squat position",
+            "Step side to side",
+            "Keep tension in band"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 steps each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 10 steps each direction"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 17,
+          "name": "WALL SIT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Back flat on wall",
+            "Knees at 90°",
+            "Core tight",
+            "Breathe slow"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "",
+            "tempo": "",
+            "hold": "30-45 sec",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 30-45 sec"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ]
+    },
+    {
+      "key": "5",
+      "label": "Week 5",
+      "driveId": "17Fx3veHh_ooNwCTU2ebn5Ds8EzntL1xB",
+      "focus": "BUILD POWER AND STABILITY: INCREASE INTENSITY",
+      "notes": "Goal: Build lower-body strength and full-body control with greater load and range.",
+      "editorNotes": "Two-page spread (left and right page), each page with its own MD FIT RULES panel (identical to the top-level principles) and a CONTINUE DAILY panel.",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "SUPINE SINGLE-LEG HIP THRUST",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Drive through heel",
+            "Hips extend through shoulder-knee line",
+            "Squeeze glute at top",
+            "Lower with control"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 10 each leg"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "name": "TRX ASSISTED SQUAT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Sit back and down",
+            "Keep chest up, core tight",
+            "Knees track over toes",
+            "Drive through heels"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "10-12",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 10-12"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "name": "SINGLE-LEG HIP THRUST (LONG LEVER)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Drive through heel, lift hips",
+            "Extend other leg straight",
+            "Squeeze glute at top",
+            "Don't let hips drop"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 8 each side"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "name": "20\" STEP-UPS",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Step up through heel",
+            "Stand tall at the top",
+            "Controlled step down",
+            "Use height that challenges you"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 10 each leg"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "name": "BELOW-THE-PLANE NEGATIVE CALF DROP",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Rise up with both feet",
+            "Drop below step slowly",
+            "3-5 sec down",
+            "Full stretch, control up"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "12-15",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 12-15"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 6,
+          "name": "BASIC LUNGE",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Step forward, lower down",
+            "Both knees at 90°",
+            "Front knee over ankle",
+            "Push through front heel"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 8 each leg"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 7,
+          "name": "SKATEBOARDERS",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "ADrive knee up in front",
+            "Extend leg back and squeeze glute",
+            "Keep chest up",
+            "Control the movement"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "12 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 12 each leg"
+            }
+          },
+          "steps": [
+            "A. Knee drive forward",
+            "B. Extend leg back"
+          ],
+          "proTip": ""
+        },
+        {
+          "n": 8,
+          "name": "PRONE TO QUADRUPED WITH ALTERNATING LUNGE",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Start lying flat on stomach",
+            "Press to hands and knees",
+            "Step one leg forward into lunge",
+            "Return to quadruped, then lower to prone",
+            "Alternate legs each rep"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "6-8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 6-8 each side"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 9,
+          "name": "POLE SQUAT (OVERHEAD)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Bar overhead, arms locked",
+            "Sit deep, keep chest tall",
+            "Knees track over toes",
+            "Core tight throughout"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "8",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 8"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 10,
+          "name": "COSSACK SQUAT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Sit back, chest up",
+            "Keep opposite leg straight",
+            "Control the depth",
+            "Hips low, move slow"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 8 each side"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 11,
+          "name": "PALLOF PRESS (ANTI-ROTATION)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Press straight out",
+            "Hold and resist rotation",
+            "Core braced",
+            "Controlled return"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "2-3 sec hold",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 10 each side (2-3 sec hold)"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 12,
+          "name": "SINGLE-LEG RDL (BODYWEIGHT)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Hinge at hips",
+            "Back flat, hips square",
+            "Reach back with leg",
+            "Control the return"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 8 each leg"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 13,
+          "name": "HIP HINGE (DOWEL)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Push hips back",
+            "Keep spine neutral",
+            "Soft knees",
+            "Feel stretch in hamstrings"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "12",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 12"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 14,
+          "name": "LATERAL BAND WALKS (DEEP SQUAT POSITION)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Band above knees",
+            "Stay in deep squat",
+            "Step side to side",
+            "Keep tension in band"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 steps each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 10 steps each direction"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 15,
+          "name": "WALL SIT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Back flat on wall",
+            "Knees at 90°",
+            "Core tight",
+            "Breathe slow"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "",
+            "tempo": "",
+            "hold": "30-45 sec",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 30-45 sec"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ]
+    },
+    {
+      "key": "6",
+      "label": "Week 6",
+      "driveId": "1O7iGBKYVHSUOlEgCMhADFweSW97ssg8j",
+      "focus": "BUILD STRENGTH AND FUNCTION: ADVANCE CONTROL",
+      "notes": "Goal: Increase lower-body strength, stability, and full-body control with advanced movement patterns.",
+      "editorNotes": "Two-page spread (left and right page), each page with its own MD FIT RULES panel (identical to the top-level principles) and a CONTINUE DAILY panel.",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "SUPINE SINGLE-LEG HIP THRUST",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Drive through heel",
+            "Hips extend through shoulder-knee line",
+            "Squeeze glute at top",
+            "Lower with control"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 10 each leg"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "name": "TRX ASSISTED SQUAT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Sit back and down",
+            "Keep chest up, core tight",
+            "Knees track over toes",
+            "Drive through heels"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "10-12",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 10-12"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "name": "SINGLE-LEG HIP THRUST (LONG LEVER)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Drive through heel, lift hips",
+            "Extend other leg straight",
+            "Squeeze glute at top",
+            "Don't let hips drop"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 8 each side"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "name": "20\" STEP-UPS",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Step up through heel",
+            "Stand tall at the top",
+            "Controlled step down",
+            "Use height that challenges you"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 10 each leg"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "name": "BELOW-THE-PLANE NEGATIVE CALF DROP",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Rise up with both feet",
+            "Drop below step slowly",
+            "3-5 sec down",
+            "Full stretch, control up"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "12-15",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 12-15"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 6,
+          "name": "BULGARIAN SPLIT SQUAT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Step forward, lower down",
+            "Both knees at 90°",
+            "Front knee over ankle",
+            "Push through front heel"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 8 each leg"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 7,
+          "name": "SINGLE-ARM OVERHEAD SQUAT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Press weight overhead",
+            "Sit hips down between feet",
+            "Chest up, core tight",
+            "Knees track over toes"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 6 each side"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 8,
+          "name": "STAND-UP (FULL)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Start lying flat on stomach",
+            "Press to hands and knees",
+            "Step one foot forward into lunge",
+            "Drive up to stand tall",
+            "Alternate legs each rep"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "6-8",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 6-8"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 9,
+          "name": "POLE SQUAT (OVERHEAD)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Bar overhead, arms locked",
+            "Sit deep, keep chest tall",
+            "Knees track over toes",
+            "Core tight throughout"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "8",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 8"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 10,
+          "name": "COSSACK SQUAT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Sit back, chest up",
+            "Keep opposite leg straight",
+            "Control the depth",
+            "Hips low, move slow"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 8 each side"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 11,
+          "name": "PALLOF PRESS (ANTI-ROTATION)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Press straight out",
+            "Hold and resist rotation",
+            "Core braced",
+            "Controlled return"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 each side",
+            "tempo": "",
+            "hold": "2-3 sec hold",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 10 each side (2-3 sec hold)"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 12,
+          "name": "SINGLE-LEG RDL (BODYWEIGHT)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Hinge at hips",
+            "Back flat, hips square",
+            "Reach back with leg",
+            "Control the return"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 8 each leg"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 13,
+          "name": "LATERAL BAND WALKS (DEEP SQUAT POSITION)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Band above knees",
+            "Stay in deep squat",
+            "Step side to side",
+            "Keep tension in band"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 steps each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 10 steps each direction"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 14,
+          "name": "WALL SIT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Back flat on wall",
+            "Knees at 90°",
+            "Core tight",
+            "Breathe slow"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "",
+            "tempo": "",
+            "hold": "30-45 sec",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 30-45 sec"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ]
+    },
+    {
+      "key": "7",
+      "label": "Week 7",
+      "driveId": "1tj6OXE8exC6UiIfpLrlaIKoSULZpoAWT",
+      "focus": "BUILD STRENGTH AND FUNCTION: ADVANCE CONTROL",
+      "notes": "Goal: Increase lower-body strength, stability, and full-body control with advanced movement patterns.",
+      "editorNotes": "Two-page spread (left and right page), each page with its own MD FIT RULES panel (identical to the top-level principles) and a CONTINUE DAILY panel. Card numbering on the sheet jumps from 7 (left page) to 10 (right page): there are no cards 8 or 9; the 'n' values below keep the printed numbers.",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "TRX ASSISTED SQUAT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Sit back and down",
+            "Keep chest up, core tight",
+            "Knees track over toes",
+            "Drive through heels"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "10-12",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 10-12"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "name": "STAND-UP (FULL)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Start lying flat on stomach",
+            "Press to hands and knees",
+            "Step one leg forward into lunge",
+            "Drive up to stand tall",
+            "Alternate legs each rep"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "6-8",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 6-8"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "name": "STRAIGHT LEG DEADLIFT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Hinge at hips",
+            "Keep legs straight (soft knees)",
+            "Lower until stretch in hamstrings",
+            "Drive hips forward to stand tall"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "8-10",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 8-10"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "name": "20\" STEP-UPS",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Step up through heel",
+            "Stand tall at the top",
+            "Controlled step down",
+            "Use height that challenges you"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 10 each leg"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "name": "BELOW-THE-PLANE NEGATIVE CALF DROP",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Rise up with both feet",
+            "Drop below step slowly",
+            "3-5 sec down",
+            "Full stretch, control up"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "12-15",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 12-15"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 6,
+          "name": "LATERAL BAND WALKS (DEEP SQUAT POSITION)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Band above knees",
+            "Stay in deep squat",
+            "Step side to side",
+            "Keep tension in band"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "10 steps each direction",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 10 steps each direction"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 7,
+          "name": "SINGLE-ARM OVERHEAD SQUAT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Press weight overhead",
+            "Sit hips down between feet",
+            "Chest up, core tight",
+            "Knees track over toes"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 6 each side"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 10,
+          "name": "COSSACK SQUAT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Sit back, chest up",
+            "Keep opposite leg straight",
+            "Control the depth",
+            "Hips low, move slow"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 8 each side"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 11,
+          "name": "ECCENTRIC CABLE BASEBALL SWING (STRETCH FOCUS)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Start in loaded position",
+            "Rotate and control the stretch",
+            "Use light weight",
+            "Slow 3-5 sec return"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 8 each side"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 12,
+          "name": "BULGARIAN SPLIT SQUAT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Step forward, lower down",
+            "Both knees at 90°",
+            "Front knee over ankle",
+            "Push through front heel"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 8 each leg"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 13,
+          "name": "WALL SIT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Back flat on wall",
+            "Knees at 90°",
+            "Core tight",
+            "Breathe slow"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "",
+            "tempo": "",
+            "hold": "30-45 sec",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 30-45 sec"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 14,
+          "name": "POLE SQUAT (OVERHEAD)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Bar overhead, arms locked",
+            "Sit deep, keep chest tall",
+            "Knees track over toes",
+            "Core tight throughout"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "8",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 8"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 15,
+          "name": "BEAR CRAWL HOLD (ALT ARM/LEG)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "From tabletop, brace core",
+            "Extend opposite arm and leg",
+            "Hold position, don't let hips twist",
+            "Alternate sides"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "",
+            "tempo": "",
+            "hold": "20-30 sec",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 20-30 sec"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ]
+    },
+    {
+      "key": "8",
+      "label": "Week 8",
+      "driveId": "14AKf5WQpDSB_YJqhP4dRQVL6jxugY55I",
+      "focus": "BUILD STRENGTH AND FUNCTION: PEAK CONTROL & POWER",
+      "notes": "Goal: Maximize lower-body strength, stability, and full-body control with advanced movement patterns.",
+      "editorNotes": "Two-page spread (left and right page), each page with its own MD FIT RULES panel (identical to the top-level principles) and a CONTINUE DAILY panel. Cards 14 and 15 repeat cards 7 and 9 exactly (same name, dosage and bullets) as printed. Card 8 has no bullet points on the sheet (picture only). The right-page MD FIT RULES panel misspells rule 6 as 'Muscle fatigue is accepttable;' (left page spells it correctly).",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "TRX ASSISTED SQUAT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Sit back and down",
+            "Keep chest up, core tight",
+            "Knees track over toes",
+            "Drive through heels"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "10-12",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 10-12"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "name": "STAND-UP (FULL)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Start lying flat on stomach",
+            "Press to hands and knees",
+            "Step one leg forward into lunge",
+            "Drive up to stand tall",
+            "Alternate legs each rep"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "6-8",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 6-8"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "name": "MED BALL LIFT OVER SHOULDER",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Squat and pick up med ball",
+            "Drive through legs and hips",
+            "Lift and rotate the ball",
+            "Finish with ball over opposite shoulder",
+            "Control back down"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "8-10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 8-10 each side"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "name": "20\" STEP-UPS",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Step up through heel",
+            "Stand tall at the top",
+            "Controlled step down",
+            "Use height that challenges you"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 10 each leg"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "name": "BELOW-THE-PLANE NEGATIVE CALF DROP",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Rise up with both feet",
+            "Drop below step slowly",
+            "3-5 sec down",
+            "Full stretch, control up"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "12-15",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 12-15"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 6,
+          "name": "ASSISTED PISTOL SQUAT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Hold support for balance",
+            "Stand on one leg",
+            "Sit hips back and lower",
+            "Reach other leg forward",
+            "Drive through heel to stand"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "6-8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 6-8 each leg"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 7,
+          "name": "SINGLE-ARM OVERHEAD SQUAT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Press weight overhead",
+            "Sit hips down between feet",
+            "Chest up, core tight",
+            "Knees track over toes"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 6 each side"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 8,
+          "name": "ECCENTRIC CABLE BASEBALL SWING (STRETCH FOCUS)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 8 each side"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 9,
+          "name": "BEAR CRAWL HOLD (ALT ARM/LEG)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "From tabletop, brace core",
+            "Extend opposite arm and leg",
+            "Hold position, don't let hips twist",
+            "Alternate sides slowly"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "",
+            "tempo": "",
+            "hold": "20-30 sec",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 20-30 sec"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 10,
+          "name": "COSSACK SQUAT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Sit back, chest up",
+            "Keep opposite leg straight",
+            "Control the depth",
+            "Hips low, move slow"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 8 each side"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 11,
+          "name": "POLE SQUAT (OVERHEAD)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Bar overhead, arms locked",
+            "Sit deep, keep chest tall",
+            "Knees track over toes",
+            "Core tight throughout"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "8",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 8"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 12,
+          "name": "BULGARIAN SPLIT SQUAT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Step forward, lower down",
+            "Both knees at 90°",
+            "Front knee over ankle",
+            "Push through front heel"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 8 each leg"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 13,
+          "name": "WALL SIT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Back flat on wall",
+            "Knees at 90°",
+            "Core tight",
+            "Breathe slow"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "",
+            "tempo": "",
+            "hold": "30-45 sec",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 30-45 sec"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 14,
+          "name": "SINGLE-ARM OVERHEAD SQUAT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Press weight overhead",
+            "Sit hips down between feet",
+            "Chest up, core tight",
+            "Knees track over toes"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "6 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 6 each side"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 15,
+          "name": "BEAR CRAWL HOLD (ALT ARM/LEG)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "From tabletop, brace core",
+            "Extend opposite arm and leg",
+            "Hold position, don't let hips twist",
+            "Alternate sides slowly"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "",
+            "tempo": "",
+            "hold": "20-30 sec",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 20-30 sec"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ]
+    },
+    {
+      "key": "9",
+      "label": "Week 9",
+      "driveId": "17-CVpvmd11Jzk1m0eBZ0IgShrnoWxNVS",
+      "focus": "BUILD STRENGTH AND FUNCTION: POWER, CONTROL & PERFORMANCE",
+      "notes": "Goal: Maximize lower-body strength, stability, and full-body control with advanced movement patterns.",
+      "editorNotes": "Single-page sheet with CONTINUE DAILY at the top only; the bottom has two identical MD FIT RULES panels side by side.",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "TRX ASSISTED SQUAT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Sit back and down",
+            "Keep chest up, core tight",
+            "Knees track over toes",
+            "Drive through heels"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "10-12",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 10-12"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "name": "BURPEE",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Squat down, place hands",
+            "Kick feet back, then forward",
+            "Explode up to stand tall",
+            "Full body, controlled effort"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "6-8",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 6-8"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "name": "MED BALL LIFT OVER SHOULDER",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Squat and pick up med ball",
+            "Drive through legs and hips",
+            "Lift and rotate the ball",
+            "Finish with ball over opposite shoulder",
+            "Control back down"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "8-10 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 8-10 each side"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "name": "12\" BOX JUMP",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Jump up, land soft",
+            "Stand tall at the top",
+            "Step down slowly (3-4 sec)",
+            "Use soft knees"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "6-8",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 6-8"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "name": "BELOW-THE-PLANE NEGATIVE CALF RAISE",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Rise up with both feet",
+            "Drop below step slowly",
+            "3-5 sec down",
+            "Full stretch, control up"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "12-15",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 12-15"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 6,
+          "name": "ASSISTED PISTOL SQUAT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Hold support for balance",
+            "Stand on one leg",
+            "Sit hips back and lower",
+            "Reach other leg forward",
+            "Drive through heel to stand"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "6-8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 6-8 each leg"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 7,
+          "name": "BEAR CRAWL HOLD",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "From tabletop, brace core",
+            "Extend opposite arm and leg",
+            "Hold position, don't let hips twist",
+            "Alternate sides slowly",
+            "Keep knees close to floor"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "",
+            "tempo": "",
+            "hold": "20-30 sec",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 20-30 sec"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 8,
+          "name": "COSSACK SQUAT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Sit back, chest up",
+            "Keep opposite leg straight",
+            "Control the depth",
+            "Hips low, move slow"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "8 each side",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "2 x 8 each side"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 9,
+          "name": "OVERHEAD SQUAT (TWO HANDS)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Arms overhead, no weight",
+            "Sit hips down between feet",
+            "Chest up, core tight",
+            "Knees track over toes"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "8-10",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 8-10"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 10,
+          "name": "BULGARIAN SPLIT SQUAT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Step forward, lower down",
+            "Both knees at 90°",
+            "Front knee over ankle",
+            "Push through front heel"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "8 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 8 each leg"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ]
+    },
+    {
+      "key": "10",
+      "label": "Week 10",
+      "driveId": "1qvlIH8V2KxsDunupsut8QAxJ7_cmWyG0",
+      "focus": "BUILD STRENGTH AND FUNCTION: POWER, CONTROL & PERFORMANCE",
+      "notes": "Goal: Maximize lower-body strength, stability, and full-body control with advanced movement patterns.\n\nMAIN CIRCUIT – COMPLETE AS MANY ROUNDS AS POSSIBLE IN UNDER 30 MINUTES\n\nHOW IT WORKS:\n- 10 REPS OF EACH MOVEMENT + 4 x 20 FT MOVING BEAR CRAWLS = 1 ROUND\n- COMPLETE 1-2 ROUNDS (KEEP TOTAL TIME UNDER 30 MINUTES)\n\nTHE GOAL:\nBuild up to 5 total rounds in under 30 minutes with perfect form and no assistance.\n\nFINISHER (NOT TIMED) – GHD SIT-UP\n\nREMEMBER:\n10 REPS OF EACH MOVEMENT + 4 x 20 FT MOVING BEAR CRAWLS = 1 ROUND. Complete 1-2 rounds in under 30 minutes. Quality always comes before quantity.\n\nGOAL:\nBuild up to 5 total rounds in under 30 minutes with perfect form and no assistance.",
+      "editorNotes": "Single-page circuit sheet. Banner: 'MAIN CIRCUIT – COMPLETE AS MANY ROUNDS AS POSSIBLE IN UNDER 30 MINUTES)' (stray closing parenthesis as printed) - removed in notes.\nExercise 7 is the 'FINISHER (NOT TIMED) – GHD SIT-UP' panel (unnumbered on the sheet); panel title kept in notes.\nMD FIT RULES panel identical to top-level principles.",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "TRX ASSISTED SQUAT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Sit back and down",
+            "Keep chest up, core tight",
+            "Knees track over toes",
+            "Drive through heels"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 REPS",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "10 REPS"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "name": "BURPEE",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Squat down, place hands",
+            "Kick feet back, then forward",
+            "Explode up to stand tall",
+            "Full body, controlled effort"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 REPS",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "10 REPS"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "name": "OVERHEAD BAR SQUAT (ASSISTED)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Bar overhead, arms locked",
+            "Sit deep, keep chest tall",
+            "Knees track over toes",
+            "Core tight throughout"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 REPS",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "10 REPS"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "name": "ASSISTED PISTOL SQUAT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Hold support for balance",
+            "Stand on one leg",
+            "Sit hips back and lower",
+            "Reach other leg forward",
+            "Drive through heel to stand"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 REPS EACH LEG",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "10 REPS EACH LEG"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "name": "COSSACK SQUAT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Sit back, chest up",
+            "Keep opposite leg straight",
+            "Control the depth",
+            "Hips low, move slow"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 REPS EACH SIDE",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "10 REPS EACH SIDE"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 6,
+          "name": "MOVING BEAR CRAWL",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Shoulders down, core braced",
+            "Knees close to the floor",
+            "Knees and feet wide",
+            "Small, controlled movements",
+            "Crawl forward 20 ft and back 20 ft"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "4",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "4 x 20 FT (FORWARD AND BACK = 1 REP)",
+              "Distance": "20 FT (FORWARD AND BACK = 1 REP)"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 7,
+          "name": "GHD SIT-UP",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Lower your torso back slowly",
+            "Only go as deep as is comfortable",
+            "Engage your glutes to come back up",
+            "Avoid using momentum",
+            "Control every rep"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "8-12",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 x 8-12",
+              "Section": "FINISHER (NOT TIMED) – GHD SIT-UP"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ]
+    },
+    {
+      "key": "11-12",
+      "label": "Weeks 11-12",
+      "driveId": "1b6TvdSO-C5AdCJ_zt4iH-_flYZ9Qf3yp",
+      "focus": "BUILD STRENGTH AND FUNCTION: POWER, CONTROL & PERFORMANCE",
+      "notes": "Goal: Maximize lower-body strength, stability, and full-body control with advanced movement patterns.\n\nMAIN CIRCUIT – COMPLETE AS MANY ROUNDS AS POSSIBLE IN UNDER 30 MINUTES\n- EACH MOVEMENT = 10 REPS\n- MOVING BEAR CRAWL = 4 × 20 FT (FORWARD AND BACK = 1 REP)\n- 1 ROUND = ALL 6 MOVEMENTS COMPLETED\nPERFORM WITH PERFECT FORM.\n\nAs you approach the 30-minute mark, reduce assistance (TRX angle, support, or weight) to make the rounds harder while maintaining perfect form.\n\nPROGRESS AND INTENSITY:\nProgress by increasing rounds week to week. At the 30-minute mark, remove assistance to make the rounds harder while maintaining perfect form.\n- 1-2 ROUNDS - WEEKS 11\n- 2-3 ROUNDS - WEEKS 12\n- 3-4 ROUNDS - WEEKS 13+\n- 5 ROUNDS - GOAL\n\nGOAL:\nPerform 5 full rounds in under 30 minutes without assistance on any movement. Continue progressing beyond Week 12 until you can complete 5 total rounds in under 30 minutes without assistance on any movement, with perfect form.\n\nFINISHER (NOT TIMED) – GHD SIT-UP PROGRESSION",
+      "editorNotes": "Single-page circuit sheet. Labels removed: \"Banner:\", \"Sub-banner:\", \"Bar chart:\" (text kept in notes).\n('WEEKS 11'/'WEEKS 12' plural as printed)\nExercise 7 is the 'FINISHER (NOT TIMED) – GHD SIT-UP PROGRESSION' panel (unnumbered on the sheet); its HOW TO PROGRESS bullets are stored in howTo. Panel title kept in notes.\nMD FIT RULES panel identical to top-level principles.",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "TRX ASSISTED SQUAT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Sit back and down",
+            "Keep chest up, core tight",
+            "Knees track over toes",
+            "Drive through heels"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 REPS",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "10 REPS"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "name": "BURPEE",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Squat down, place hands",
+            "Kick feet back, then forward",
+            "Explode up to stand tall",
+            "Full body, controlled effort"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 REPS",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "10 REPS"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "name": "OVERHEAD BAR SQUAT (ASSISTED)",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Bar overhead, arms locked",
+            "Sit deep, keep chest tall",
+            "Knees track over toes",
+            "Core tight throughout"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 REPS",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "10 REPS"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "name": "ASSISTED PISTOL SQUAT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Hold support for balance",
+            "Stand on one leg",
+            "Sit hips back and lower",
+            "Reach other leg forward",
+            "Drive through heel to stand"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 REPS",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "10 REPS"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "name": "COSSACK SQUAT",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Sit back, chest up",
+            "Keep opposite leg straight",
+            "Control the depth",
+            "Hips low, move slow"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "10 REPS",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "10 REPS"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 6,
+          "name": "MOVING BEAR CRAWL",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Shoulders down, core braced",
+            "Knees close to the floor",
+            "Knees and feet wide",
+            "Small, controlled movements",
+            "Crawl forward 20 ft and back 20 ft"
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "4",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "4 × 20 FT (FORWARD AND BACK = 1 REP)",
+              "Distance": "20 FT (FORWARD AND BACK = 1 REP)"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 7,
+          "name": "GHD SIT-UP",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": [
+            "Start: Only go as deep as is comfortable.",
+            "Engage your glutes to come back up.",
+            "Gradually increase range over time.",
+            "Goal: Reach backward and touch the ground with both hands."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "8-12",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "As printed": "3 × 8-12",
+              "Section": "FINISHER (NOT TIMED) – GHD SIT-UP PROGRESSION"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ]
+    }
+  ],
+  "uncertain": [
+    "Protocol title: no sheet prints an overall protocol title; 'Back Stability' is taken from the brief. tagline and goal are left empty because no sheet has a protocol-wide tagline or GOAL box (each week has its own 'Goal:' line, kept in that week's notes).",
+    "Top-level principles = the 'MD FIT RULES' panel (weeks 1-12); dailyBasics = the 'CONTINUE DAILY' strip (weeks 1-12; Week 0 has a longer 'DO THESE EVERY DAY' version, in its notes). progression.overview is built from each sheet's header title (there is no overview table); progression.guidelines repeats rule 7; remember/footer come from the Week 1-2 bottom banners. expect/callouts are empty (not on the sheets).",
+    "Foundation exercise 1, numbered steps: the 7th step's number badge is printed as what looks like '8' (sequence reads 1,2,3,4,5,6,8,7). Transcribed in order, without numbers.",
+    "Week 5 card 7 (SKATEBOARDERS), first bullet is printed 'ADrive knee up in front' (stray 'A'). Kept as printed.",
+    "Week 8: the right-page MD FIT RULES misspells rule 6 as 'accepttable'. Cards 14-15 repeat cards 7 and 9. Card 8 (ECCENTRIC CABLE BASEBALL SWING) has no bullets on the sheet.",
+    "Week 7: card numbers skip from 7 to 10 (there are no cards 8 or 9). The printed numbers are kept in 'n'.",
+    "Week 9 card 5 is titled 'BELOW-THE-PLANE NEGATIVE CALF RAISE' (other weeks: 'CALF DROP') but has the same bullets. Kept as printed.",
+    "Week 3 card 5 is printed 'ASSISTED TRX SQUAT'; every other week says 'TRX ASSISTED SQUAT'. Kept as printed.",
+    "Week 6 STAND-UP (FULL) says 'Step one foot forward into lunge'; Weeks 7-8 say 'Step one leg forward into lunge'. Kept as printed.",
+    "Week 10 banner has a stray closing parenthesis: '...IN UNDER 30 MINUTES)'. The Weeks 11-12 chart labels read 'WEEKS 11' / 'WEEKS 12' (plural). Kept as printed.",
+    "Weeks 11-12: card 4 (ASSISTED PISTOL SQUAT) and card 5 (COSSACK SQUAT) say only '10 REPS', where Week 10 says 'EACH LEG' / 'EACH SIDE'.",
+    "Dosage strip: the sheets print one dosage line per card (e.g. '2 x 10 (5 sec hold)'). I split it into sets/reps/hold, and the exact printed line is always kept in dosage.other['As printed'].",
+    "Week 0 cards have no dosage line; their reps and holds are in the bullets. Each card's PURPOSE line is stored in proTip. Week 1-2 MOBILITY (CAT-CAMEL) and Week 10/11-12 GHD finisher are unnumbered on the sheets; they were given n = 9 / 7."
+  ],
+  "sourceNotes": "Read all 13 PNGs (thumbnail endpoint, sz=w2400): foundation 1024x1536 portrait; weeks 0-12 1536x1024 landscape. Weeks 3-8 are two-page spreads (cards 1-9 on the left, 10-17 on the right, with MD FIT RULES on both pages). Weeks 0, 1, 2, 9, 10 and 11-12 are single pages. Foundation is a different kind of page: the 'BASELINE PHASE / FOUNDATION & ACTIVATION' sheet with wall glute activation and Kegels. Week 0 is a 'calm the spine' daily-basics sheet with 6 gentle movements, a pain guide and its own short rule list. Weeks 10 and 11-12 are timed circuit sheets (6 movements x 10 reps, AMRAP under 30 min) with a GHD sit-up finisher. Every card was read from 2x crops, plus extra 2.5-5x crops for small print, and a second verification pass compared half-sheet crops against this JSON. Sheet typos are kept and listed in uncertain. En dashes in ranges are converted to ASCII hyphens; '×' is kept where printed (Weeks 11-12), and the en dash in titles like 'DEAD BUG – ARMS ONLY' is kept."
+}

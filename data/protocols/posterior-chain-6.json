@@ -1,0 +1,149 @@
+{
+  "id": "posterior-chain-6",
+  "title": "LOW BACK, MID-BACK & HIP FLEXOR PAIN, MOBILITY & CONTROL PROTOCOL",
+  "tagline": "6-Week Progressive Eccentric, Glute-Driven & Full-Range Integration System",
+  "goal": "This protocol restores mobility and reduces pain in the low back, mid-back, hips, and pelvis by addressing:\nGlute inhibition\nHip flexor tone\nPosterior chain stiffness\nThoracolumbar control\nLoss of usable range of motion\nThe system prioritizes:\nGlute-driven spinal unloading\nEccentric length under control\nHip flexor decompression\nFull-range motion integration\nLong-term maintenance through movement",
+  "principles": [
+    { "title": "⚠️ MOST IMPORTANT RULE — READ FIRST", "text": "THIS IS THE SINGLE MOST IMPORTANT PART OF THIS ENTIRE PROTOCOL.\nIF THIS RULE IS NOT FOLLOWED CONSISTENTLY, THE REST OF THE PROGRAM WILL NOT HOLD AND PAIN WILL RETURN." },
+    { "title": "GLUTES MUST BE “ON” — ALL DAY, EVERY DAY", "text": "The glutes must remain lightly engaged at all times, even when you are not exercising.\nTarget:\n5-10% effort\nGentle background tension\nNever a hard squeeze\nThink of the glutes as idling, not contracting.\n❌ Do NOT fully relax the glutes while sitting\n❌ Do NOT rely on the low back for posture\n❌ Do NOT wait until pain appears to engage them" },
+    { "title": "WHEN THIS APPLIES (ALL THE TIME)", "text": "This applies while:\nSitting\nStanding\nWalking\nTransitioning positions\nLifting\nExercising\nTraining\nEvery movement is part of the protocol." },
+    { "title": "KEY CUE (MEMORIZE THIS)", "text": "“My glutes are always on — just enough.”\nThis rule continues permanently, even after the 6-week protocol ends.\nThis is how pain stays gone." },
+    { "title": "IMPORTANT SENSATION & SAFETY NOTICE", "text": "Some discomfort is expected during eccentric and length-based work.\nSTOP IMMEDIATELY if you experience:\nSharp spinal pain\nLoss of leg strength\nProgressive numbness or tingling\nPain that worsens for more than 24 hours" }
+  ],
+  "dailyBasics": [],
+  "progression": {
+    "overview": [
+      { "week": "1-2", "focus": "PHASE 1 — DECOMPRESSION, GLUTE RE-ACTIVATION & EXPLORATORY RANGE" },
+      { "week": "3-4", "focus": "PHASE 2 — CONTROLLED DEPTH & HIP FLEXOR TOLERANCE" },
+      { "week": "5-6", "focus": "PHASE 3 — FULL-RANGE INTEGRATION & GLOBAL MOVEMENT" }
+    ],
+    "guidelines": [
+      "FULL-RANGE MOTION IS YOUR MAINTENANCE",
+      "The movements taught in this program must be integrated into:\nStrength training\nConditioning\nDaily movement\nThey are not optional.",
+      "As long as:\nGlutes remain lightly active\nFull-range motion is respected\nPain should not return."
+    ],
+    "expect": [
+      "Reduced low and mid-back pain",
+      "Improved hip mobility",
+      "Improved spinal confidence",
+      "Reduced stiffness accumulation",
+      "Increased tolerance to daily movement"
+    ],
+    "remember": "",
+    "callouts": [
+      "This is not stretching for flexibility.\nThis is motor control + tolerance restoration."
+    ],
+    "footer": "“The exercises restore range.\nThe glutes protect the spine.\nConsistent movement keeps the pain away.”"
+  },
+  "weeks": [
+    {
+      "key": "1-2",
+      "label": "PHASE 1 — WEEKS 1-2",
+      "driveId": "",
+      "focus": "DECOMPRESSION, GLUTE RE-ACTIVATION & EXPLORATORY RANGE",
+      "notes": "",
+      "editorNotes": "Source: PDF 'POST. CHAIN 6 week mobility pain protocol .pdf' (1Kdqfxo90swzw_BRvTNQS3Pg4NkTR6XIc), text-only document.",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "Eccentric Calf Drops (Straight & Bent Knee)",
+          "isNew": false,
+          "whenToUse": "Purpose: Restore posterior chain length from the ground up.",
+          "howTo": ["Rise with both feet", "Lower slowly on one foot", "Straight knee for gastrocnemius", "Bent knee for soleus"],
+          "focus": [],
+          "dosage": { "sets": "3", "reps": "12-20", "tempo": "4-6 second lowering", "hold": "", "frequency": "", "other": {} },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "name": "Straight-Leg Deadlift — Eccentric Only",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": ["Minimal load", "Hips back", "Spine neutral", "Stop before lumbar flexion"],
+          "focus": [],
+          "dosage": { "sets": "3", "reps": "12-20", "tempo": "", "hold": "", "frequency": "", "other": {} },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "name": "Romanian Deadlift — Eccentric Only",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": ["Slight knee bend", "Slow controlled hinge", "Load used to access depth"],
+          "focus": [],
+          "dosage": { "sets": "3", "reps": "12-20", "tempo": "", "hold": "", "frequency": "", "other": {} },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "name": "Glute Hip Bridge with Core Engagement",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": ["Posterior pelvic tilt first", "Ribs down", "Glutes lightly engaged"],
+          "focus": [],
+          "dosage": { "sets": "3", "reps": "12-20", "tempo": "", "hold": "", "frequency": "", "other": {} },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "name": "Kneeling Straight-Arm Cable Pulldown",
+          "isNew": false,
+          "whenToUse": "",
+          "howTo": ["Tall kneeling", "Arms straight", "Control eccentric return", "Maintain rib position"],
+          "focus": [],
+          "dosage": { "sets": "3", "reps": "12-20", "tempo": "", "hold": "", "frequency": "", "other": {} },
+          "steps": [],
+          "proTip": ""
+        }
+      ]
+    },
+    {
+      "key": "3-4",
+      "label": "PHASE 2 — WEEKS 3-4",
+      "driveId": "",
+      "focus": "CONTROLLED DEPTH & HIP FLEXOR TOLERANCE",
+      "notes": "Progressions:\n- Slightly increase load where control allows\n- Continue eccentric tempo\n- Maintain glute engagement throughout",
+      "editorNotes": "Source: PDF 1Kdqfxo90swzw_BRvTNQS3Pg4NkTR6XIc.\n(The PDF lists only these progressions and the one added exercise for Phase 2; it implies, but does not state, that the Phase 1 exercises continue.)",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "Hip Flexor Length Integration",
+          "isNew": true,
+          "whenToUse": "",
+          "howTo": ["Half-kneeling position", "Glutes lightly engaged", "Pelvis stays neutral", "Move into range only as allowed"],
+          "focus": [],
+          "dosage": { "sets": "", "reps": "Multiple repetitions, not static holds", "tempo": "", "hold": "3-5 seconds", "frequency": "", "other": {} },
+          "steps": [],
+          "proTip": ""
+        }
+      ]
+    },
+    {
+      "key": "5-6",
+      "label": "PHASE 3 — WEEKS 5-6",
+      "driveId": "",
+      "focus": "FULL-RANGE INTEGRATION & GLOBAL MOVEMENT",
+      "notes": "Mobility Conditioning Circuit\n(Performed on non–posterior chain days)\nRepeat continuously for 30 minutes.\n\nGoal:\n- 5 full rounds\n- Perfect form\n- No joint irritation",
+      "editorNotes": "Source: PDF 1Kdqfxo90swzw_BRvTNQS3Pg4NkTR6XIc.\n[6 movements below] (placeholder after \"Repeat continuously for 30 minutes:\")",
+      "exercises": [
+        { "n": 1, "name": "TRX Squats to full depth", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "10", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
+        { "n": 2, "name": "Overhead pole squats", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "10", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
+        { "n": 3, "name": "Controlled burpees", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "10", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
+        { "n": 4, "name": "Assisted pistol squats", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "5 reps per leg", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
+        { "n": 5, "name": "Assisted Cossack squats", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "5 reps per leg", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" },
+        { "n": 6, "name": "Bear crawls", "isNew": false, "whenToUse": "", "howTo": [], "focus": [], "dosage": { "sets": "", "reps": "4 lengths of 20 ft", "tempo": "", "hold": "", "frequency": "", "other": {} }, "steps": [], "proTip": "" }
+      ]
+    }
+  ],
+  "uncertain": [
+    "Phase 2 and Phase 3 list only new material. Whether the Phase 1 exercises continue in weeks 3-6 is implied ('Progressions ... Continue eccentric tempo'; circuit 'Performed on non–posterior chain days') but not stated; I did not copy Phase 1 exercises into those weeks.",
+    "Phase 1 tempo '4-6 second lowering' is printed only under exercise 1; exercises 2-5 show only '3 sets × 12-20 reps'.",
+    "Program Intent bullet list in the PDF puts 'The system prioritizes:' as a bullet among the others; kept as one goal text with line breaks.",
+    "Shares its exercises and circuit with mobility-12 (Track A minus Baseball Cable Swing; Track B), but the wording differs and it is a separate pain-focused document, so it is kept as its own protocol."
+  ],
+  "sourceNotes": "Transcribed from 'POST. CHAIN 6 week mobility pain protocol .pdf' (1Kdqfxo90swzw_BRvTNQS3Pg4NkTR6XIc), 5-page text-only PDF (no images), read via Drive text and pdftotext -layout, page 1 rendered to confirm layout. The second requested PDF, 'POSTERIOR CHAIN MOBILITY & LENGTH SYSTEM.pdf' (1OTQ3WfAl5JiM86MgIcIQIxG_hMQTttHx), is word-for-word identical to the 'POSTERIOR CHAIN MOBILITY & LENGTH SYSTEM RULES' doc in the 12-week folder, so it is merged into mobility-12 and not duplicated here. En dashes in ranges converted to ASCII hyphens; em dashes, curly quotes, ⚠️ and ❌ kept as printed."
+}

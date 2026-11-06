@@ -1,0 +1,25 @@
+{
+ "version": "b67296e6dc",
+ "ids": [
+  "golfers-elbow-4",
+  "hip-6",
+  "knee-6",
+  "low-back-6",
+  "mobility-12",
+  "plantar-4",
+  "posterior-chain-6",
+  "shoulder-6",
+  "tennis-elbow-4"
+ ],
+ "weeks": {
+  "golfers-elbow-4": 4,
+  "hip-6": 6,
+  "knee-6": 6,
+  "low-back-6": 13,
+  "mobility-12": 8,
+  "plantar-4": 4,
+  "posterior-chain-6": 3,
+  "shoulder-6": 6,
+  "tennis-elbow-4": 4
+ }
+}

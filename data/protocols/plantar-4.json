@@ -1,0 +1,563 @@
+{
+  "id": "plantar-4",
+  "title": "Plantar Fasciitis 4-Week Rehab Protocol",
+  "tagline": "",
+  "goal": "",
+  "principles": [],
+  "dailyBasics": [],
+  "progression": {
+    "overview": [],
+    "guidelines": [],
+    "expect": [],
+    "remember": "",
+    "callouts": [],
+    "footer": ""
+  },
+  "weeks": [
+    {
+      "key": "1",
+      "label": "Week 1: Start Here",
+      "driveId": "1kMKCoaAzjvWIGrou_HgeohFo9hGnw_AW",
+      "focus": "Loosen the tight tissues, gently mobilize the foot and ankle, and start loading the calf with controlled eccentric drops.",
+      "notes": "REDUCE PAIN. IMPROVE MOBILITY. START HEALING.\n\nHOW OFTEN? Do these exercises 2× per day (morning and evening).",
+      "editorNotes": "Label removed: \"Banner tagline:\" (text kept in notes).",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "Toe Extension Stretch",
+          "isNew": false,
+          "whenToUse": "Loosens the tissue on the bottom of your foot.",
+          "howTo": [
+            "Sit down and cross one foot over the other knee.",
+            "Grab your big toe and gently pull it up and back.",
+            "You should feel a stretch along the bottom of your foot.",
+            "Hold for 30 seconds. Repeat 3 times per foot."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "",
+            "tempo": "",
+            "hold": "30 seconds",
+            "frequency": "",
+            "other": {
+              "Sets & Time": "3 sets × 30 seconds each foot"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "name": "Ankle Alphabet",
+          "isNew": false,
+          "whenToUse": "Gently moves and loosens your ankle.",
+          "howTo": [
+            "Sit down with your foot off the ground.",
+            "Slowly trace the letters A through Z with your toes.",
+            "Keep the movement smooth and controlled.",
+            "Do 1 full round on each foot."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Sets & Time": "1 round (A-Z) each foot"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "name": "Straight-Leg Eccentric Calf Drops",
+          "isNew": false,
+          "whenToUse": "Strengthens and lengthens your calf without overloading your foot.",
+          "howTo": [],
+          "focus": [
+            "Keep your knee straight the whole time.",
+            "Use the opposite leg to lift up.",
+            "The painful foot ONLY does the lowering (eccentric) part.",
+            "Lower slowly (3-4 seconds).",
+            "Go to a comfortable full stretch (heel below step).",
+            "Mild discomfort is okay. Sharp pain means do less reps."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Sets & Reps": "3 sets × 12 reps each leg"
+            }
+          },
+          "steps": [
+            "Start on a step with both feet.",
+            "Use your non-painful leg to lift up. The painful foot just rides along (no pushing).",
+            "Shift your weight to the painful leg and slowly lower your heel down over 3-4 seconds.",
+            "Lower to a full stretch (heel below the step), then repeat."
+          ],
+          "proTip": ""
+        }
+      ]
+    },
+    {
+      "key": "2",
+      "label": "Week 2: Build Strength & Control",
+      "driveId": "1dqIiM6ceuJ0NqXMd_a9JNMIN6_YaKQRZ",
+      "focus": "Continue Week 1 exercises and add bent-knee eccentric calf drops to target deeper calf muscles and further reduce tension on the plantar fascia.",
+      "notes": "REDUCE PAIN. IMPROVE MOBILITY. PROGRESS TOWARD FULL RECOVERY.\n\nHOW OFTEN? Do all exercises 2× per day (morning and evening).",
+      "editorNotes": "Label removed: \"Banner tagline:\" (text kept in notes).\nCard 4 (Bent-Knee Eccentric Calf Drops) is the exercise added this week; the sheet has no \"(NEW)\" label.",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "Toe Extension Stretch",
+          "isNew": false,
+          "whenToUse": "Loosens the tissue on the bottom of your foot.",
+          "howTo": [
+            "Sit down and cross one foot over the other knee.",
+            "Grab your big toe and gently pull it up and back.",
+            "You should feel a stretch along the bottom of your foot.",
+            "Hold for 30 seconds. Repeat 3 times per foot."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "",
+            "tempo": "",
+            "hold": "30 seconds",
+            "frequency": "",
+            "other": {
+              "Sets & Time": "3 sets × 30 seconds each foot"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "name": "Ankle Alphabet",
+          "isNew": false,
+          "whenToUse": "Gently moves and loosens your ankle.",
+          "howTo": [
+            "Sit down with your foot off the ground.",
+            "Slowly trace the letters A through Z with your toes.",
+            "Keep the movement smooth and controlled.",
+            "Do 1 full round on each foot."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Sets & Time": "1 round (A-Z) each foot"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "name": "Straight-Leg Eccentric Calf Drops",
+          "isNew": false,
+          "whenToUse": "Strengthens and lengthens your calf without overloading your foot.",
+          "howTo": [],
+          "focus": [
+            "Keep your knee straight the whole time.",
+            "Use the opposite leg to lift up.",
+            "The painful foot ONLY does the lowering (eccentric) part.",
+            "Lower slowly (3-4 seconds).",
+            "Go to a comfortable full stretch (heel below step).",
+            "Mild discomfort is okay. Sharp pain means do less reps."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Sets & Reps": "3 sets × 12 reps each leg"
+            }
+          },
+          "steps": [
+            "Start on a step with both feet.",
+            "Use your non-painful leg to lift up. The painful foot just rides along (no pushing).",
+            "Shift your weight to the painful leg and slowly lower your heel down over 3-4 seconds.",
+            "Lower to a full stretch (heel below the step). then repeat."
+          ],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "name": "Bent-Knee Eccentric Calf Drops",
+          "isNew": false,
+          "whenToUse": "Targets the deeper calf muscle and further reduces tension on the plantar fascia.",
+          "howTo": [],
+          "focus": [
+            "Keep your knee bent about 20-30°.",
+            "Use the opposite leg to lift up.",
+            "The painful foot ONLY does the lowering (eccentric) part.",
+            "Lower slowly (3-4 seconds).",
+            "Go to a comfortable full stretch (heel below step).",
+            "Mild discomfort is okay. Sharp pain means do less reps."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12 each leg",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Sets & Reps": "3 sets × 12 reps each leg"
+            }
+          },
+          "steps": [
+            "Start on a step with both feet, knees slightly bent (20-30°).",
+            "Use your non-painful leg to lift up. The painful foot just rides along (no pushing).",
+            "Shift your weight to the painful leg and slowly lower your heel down over 3-4 seconds.",
+            "Lower to a full stretch (heel below step) with knee still bent, then repeat."
+          ],
+          "proTip": ""
+        }
+      ]
+    },
+    {
+      "key": "3",
+      "label": "Week 3: Release, Recover & Rebuild",
+      "driveId": "1BLuqvvKzsG5mGGnEMAk4u0poTmB6079G",
+      "focus": "Add soft tissue work (including icing) and begin foot strengthening exercises to improve foot function and support the arch.",
+      "notes": "REDUCE PAIN. IMPROVE MOBILITY. BUILD FOOT STRENGTH.\n\nHOW OFTEN? Do all exercises 1-2× per day (morning and/or evening).\n\nFOOT STRENGTHENING EXERCISES — Builds the small muscles in your foot to improve arch support and prevent recurrence.\n\nWEEK 3 TIPS:\n- Do the rolling and icing before or after activity.\n- Focus on slow, controlled movements.\n- These exercises should be gentle and pain-free (mild discomfort is okay).\n- Stay consistent — this helps improve foot function and reduces flare-ups.\n\nPROGRESS CHECK:\n- Less morning pain?\n- Less stiffness after sitting?\n- Foot feels looser?\n- Stronger and more stable when walking?\n- If symptoms are worse, reduce volume and continue with Week 2.",
+      "editorNotes": "Label removed: \"Banner tagline:\" (text kept in notes).\nCard 3 on the sheet is a group card: \"FOOT STRENGTHENING EXERCISES — ...\" (card text kept in notes). Its sub-cards 3A Towel Curls, 3B Big Toe Press-Down and 3C Short Foot (Arch Lift) are transcribed as exercises n 3, 4 and 5.\nCard 1 pictures are labelled \"Option 1: Lacrosse Ball\" and \"Option 2: Frozen Water Bottle\" (stored as steps).",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "Plantar Fascia Rolling",
+          "isNew": false,
+          "whenToUse": "Loosens tight tissue and reduces stiffness and pain.",
+          "howTo": [
+            "Sit down and place the ball or frozen bottle under your foot.",
+            "Roll slowly from the heel to the toes, focusing on tender areas.",
+            "Use moderate pressure (firm but comfortable).",
+            "Spend extra time on tight or sore spots."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "1-2× per day",
+            "other": {
+              "Time & Reps": "2-3 minutes per foot, 1-2× per day"
+            }
+          },
+          "steps": [
+            "Option 1: Lacrosse Ball",
+            "Option 2: Frozen Water Bottle"
+          ],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "name": "Ice the Area",
+          "isNew": false,
+          "whenToUse": "Reduces inflammation and helps with pain.",
+          "howTo": [
+            "Use a frozen water bottle (roll) or ice pack.",
+            "Apply to the bottom of the foot and heel.",
+            "Keep icing for about 10 minutes.",
+            "You can do this after activity or at the end of the day."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "1-2× per day",
+            "other": {
+              "Time & Frequency": "10 minutes per foot, 1-2× per day (best after rolling or exercise)"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "name": "Towel Curls",
+          "isNew": false,
+          "whenToUse": "Strengthens the muscles in your arch.",
+          "howTo": [
+            "Place a small towel on the floor.",
+            "Use your toes to scrunch the towel toward you.",
+            "Repeat 20 times."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "20 each foot",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Sets & Reps": "2 sets × 20 reps each foot"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "name": "Big Toe Press-Down",
+          "isNew": false,
+          "whenToUse": "Activates the big toe and helps support the arch.",
+          "howTo": [
+            "Press your big toe down into the floor.",
+            "Keep the other toes relaxed.",
+            "Hold for 3 seconds.",
+            "Repeat 10 times."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each foot",
+            "tempo": "",
+            "hold": "3-second hold",
+            "frequency": "",
+            "other": {
+              "Sets & Reps": "3 sets × 10 reps (3-second hold) each foot"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "name": "Short Foot (Arch Lift)",
+          "isNew": false,
+          "whenToUse": "Strengthens your arch without curling your toes.",
+          "howTo": [
+            "Gently pull the ball of your foot toward your heel (shorten the foot).",
+            "Keep your toes relaxed and on the floor.",
+            "Hold for 3 seconds.",
+            "Repeat 10 times."
+          ],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each foot",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Sets & Reps": "3 sets × 10 reps each foot"
+            }
+          },
+          "steps": [],
+          "proTip": ""
+        }
+      ]
+    },
+    {
+      "key": "4",
+      "label": "Week 4: Full Calf Raises & Maintain",
+      "driveId": "1vR70WIglBSNlowa36OT79R9PPjaxBl8h",
+      "focus": "Add full calf raises (both up and down) through a full range of motion. Continue icing and intrinsic foot exercises from Week 3 to maintain progress and prevent recurrence.",
+      "notes": "BUILD STRENGTH. RESTORE FULL FUNCTION. KEEP IMPROVING.\n\nHOW OFTEN? Do all exercises 1-2× per day (morning and/or evening).\n\nCONTINUE FROM WEEK 3 — Keep these to maintain progress.\nCONTINUE FOOT EXERCISES — Keep building arch strength.\n\nWEEK 4 TIPS:\n- Do all exercises 1-2× per day.\n- Use slow, controlled movements.\n- Continue icing after activity or at the end of the day.\n- Keep doing your foot exercises to maintain strength.\n- Progress gradually — quality is more important than speed.\n- Mild discomfort is okay. If pain increases, reduce reps and stay consistent.",
+      "editorNotes": "Label removed: \"Banner tagline:\" (text kept in notes).\nCard 3 on the sheet is \"CONTINUE FROM WEEK 3 — ...\" with sub-panels Plantar Fascia Rolling and Ice the Area (transcribed as exercises n 3 and 4). Card 4 is \"CONTINUE FOOT EXERCISES — ...\" with sub-panels Toe Curls, Big Toe Press and Short Foot (transcribed as exercises n 5, 6 and 7). (Card headings kept in notes.)\nLabel removed: \"Card 5\" (before WEEK 4 TIPS).",
+      "exercises": [
+        {
+          "n": 1,
+          "name": "Full Calf Raises – Straight Knee (Gastrocnemius)",
+          "isNew": false,
+          "whenToUse": "Now you will use both the concentric (up) and eccentric (down) phases.",
+          "howTo": [],
+          "focus": [
+            "Knee straight the entire time.",
+            "Use full range of motion (heel below step).",
+            "Go up with both feet, down slowly with both feet.",
+            "Keep your weight evenly distributed.",
+            "Move in a controlled manner (3-4 seconds on the way down).",
+            "Mild discomfort is okay. Sharp pain means do less reps."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12 each leg (both up and down)",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Sets & Reps": "3 sets × 12 reps each leg (both up and down)"
+            }
+          },
+          "steps": [
+            "Start at full depth with both feet, heels below the step.",
+            "Push through both feet and raise up as high as you can (full contraction).",
+            "Pause for 1 second at the top.",
+            "Lower slowly over 3-4 seconds back to full depth."
+          ],
+          "proTip": ""
+        },
+        {
+          "n": 2,
+          "name": "Full Calf Raises – Bent Knee (Soleus)",
+          "isNew": false,
+          "whenToUse": "Targets the lower calf muscle with both the up and down phases.",
+          "howTo": [],
+          "focus": [
+            "Keep your knees bent 20-30° throughout the movement.",
+            "Use full range of motion (heel below step).",
+            "Go up with both feet, down slowly with both feet.",
+            "Control the movement (3-4 seconds on the way down).",
+            "Mild discomfort is okay. Sharp pain means do less reps."
+          ],
+          "dosage": {
+            "sets": "3",
+            "reps": "12 each leg (both up and down)",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Sets & Reps": "3 sets × 12 reps each leg (both up and down)"
+            }
+          },
+          "steps": [
+            "Start at full depth with both feet, knees slightly bent (20-30°).",
+            "Push through both feet and raise up as high as you can (full contraction).",
+            "Pause for 1 second at the top.",
+            "Lower slowly over 3-4 seconds back to full depth."
+          ],
+          "proTip": ""
+        },
+        {
+          "n": 3,
+          "name": "Plantar Fascia Rolling",
+          "isNew": false,
+          "whenToUse": "Keep these to maintain progress.",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "1-2× per day",
+            "other": {
+              "Time": "2-3 minutes per foot, 1-2× per day"
+            }
+          },
+          "steps": [
+            "Roll from heel to toes, focus on tight areas."
+          ],
+          "proTip": ""
+        },
+        {
+          "n": 4,
+          "name": "Ice the Area",
+          "isNew": false,
+          "whenToUse": "Keep these to maintain progress.",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "",
+            "reps": "",
+            "tempo": "",
+            "hold": "",
+            "frequency": "1-2× per day",
+            "other": {
+              "Time": "10 minutes per foot, 1-2× per day"
+            }
+          },
+          "steps": [
+            "Apply ice to the bottom of the foot and heel."
+          ],
+          "proTip": ""
+        },
+        {
+          "n": 5,
+          "name": "Toe Curls",
+          "isNew": false,
+          "whenToUse": "Keep building arch strength.",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "2",
+            "reps": "20 each foot",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Sets & Reps": "2 sets × 20 reps each foot"
+            }
+          },
+          "steps": [
+            "Use your toes to scrunch the towel."
+          ],
+          "proTip": ""
+        },
+        {
+          "n": 6,
+          "name": "Big Toe Press",
+          "isNew": false,
+          "whenToUse": "Keep building arch strength.",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "10",
+            "tempo": "",
+            "hold": "3-second hold",
+            "frequency": "",
+            "other": {
+              "Sets & Reps": "3 sets × 10 reps (3-second hold)"
+            }
+          },
+          "steps": [
+            "Press your big toe down into the floor."
+          ],
+          "proTip": ""
+        },
+        {
+          "n": 7,
+          "name": "Short Foot",
+          "isNew": false,
+          "whenToUse": "Keep building arch strength.",
+          "howTo": [],
+          "focus": [],
+          "dosage": {
+            "sets": "3",
+            "reps": "10 each foot",
+            "tempo": "",
+            "hold": "",
+            "frequency": "",
+            "other": {
+              "Sets & Reps": "3 sets × 10 reps each foot"
+            }
+          },
+          "steps": [
+            "Lift your arch without curling your toes."
+          ],
+          "proTip": ""
+        }
+      ]
+    }
+  ],
+  "uncertain": [
+    "Week 2 card 3 step 4 reads '(heel below the step). then repeat.' (period, lowercase 'then'); Week 1 has a comma. Kept as printed.",
+    "Week 3 sub-card 3A is titled 'Towel Curls' but the Week 4 maintenance panel calls the same exercise 'Toe Curls'; kept as printed in each week.",
+    "Week 3 'Big Toe Press-Down' is called 'Big Toe Press' and 'Short Foot (Arch Lift)' is called 'Short Foot' on the Week 4 sheet; Week 4 Big Toe Press dosage omits 'each foot' (Week 3 has it). Kept as printed.",
+    "Week 4 card 3/4 sub-panels have no subtitle of their own; whenToUse holds the parent card's subtitle.",
+    "Week 1 and 2 'HOW OFTEN' differ: 'Do these exercises 2× per day' (W1) vs 'Do all exercises 2× per day' (W2); weeks 3-4 say 1-2× per day. Kept per week in notes.",
+    "Structured dosage fields (sets/reps/hold/frequency) are split from the printed SETS & REPS / TIME box only; the verbatim box text is kept in dosage.other. Tempo (3-4 seconds lowering) appears only in captions/key points, so dosage.tempo is left empty."
+  ],
+  "sourceNotes": "Read plantar-4 Week 1-4 sheets (Drive ids per week; 1145x1374 originals via thumbnail sz=w2400, read in upscaled crops). All four present, no duplicates. No sheet-wide tagline (each week has its own banner tagline, recorded in week notes), no GOAL box, key principles, daily basics or progression overview exist on these sheets, so those fields are empty. Each week's banner headline is used as its label (e.g. 'Week 1: Start Here'); the 'Week N Focus' text is the week focus; banner tagline, HOW OFTEN, tips and progress check are in week notes. Card subtitles (purpose lines) are stored in whenToUse; HOW TO DO IT -> howTo; KEY POINTS -> focus; picture captions -> steps. Headers printed in ALL CAPS converted to title case; en dashes in ranges converted to ASCII hyphens; em dashes and ×/° kept. Titles of Week 4 cards 1-2 use an en dash separator ('Full Calf Raises – Straight Knee') kept as printed."
+}

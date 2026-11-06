@@ -1964,33 +1964,146 @@
     }
     $("#prog-cats").innerHTML = chips;
     $("#prog-grid").innerHTML = list.map((p) => {
-      const sessions = p.weeks * p.days.length, done = p.days.reduce((n, _, i) => n + doneCount(p, i), 0);
+      const isProto = PROTO.ids.has(p.id), nWeeks = isProto ? ((PROTO.weekCounts || {})[p.id] || p.weeks) : 0;
+      const weeksStarted = isProto ? new Set(allWorkouts.filter((w) => String(w.key || "").startsWith(`prog-${p.id}-w`)).map((w) => w.key)).size : 0;
+      const sessions = isProto ? nWeeks : p.weeks * p.days.length, done = isProto ? weeksStarted : p.days.reduce((n, _, i) => n + doneCount(p, i), 0);
       return `<button type="button" class="prog-card${p.image ? " prog-card-img" : ""}" data-prog="${p.id}">
         ${p.image ? progPoster(p, "pc-img", "(max-width: 700px) 100vw, 50vw") : ""}
         <span class="pc-cat">${esc(p.category)}</span>${p.locked ? lockBadge : ""}
         <b>${esc(p.title)}</b><p>${esc(p.summary)}</p>
-        <span class="pc-meta">${p.weeks} weeks · ${p.days.length} days/week · ${esc(p.level[0].toUpperCase() + p.level.slice(1))} · ${esc((Gen.LOCATIONS.find((l) => l.id === p.location) || {}).label || "")}</span>
-        ${done ? `<span class="pc-bar"><i style="width:${Math.min(100, Math.round((done / sessions) * 100))}%"></i></span><span class="pc-done">${done} of ${sessions} sessions done</span>` : ""}
+        <span class="pc-meta">${p.weeks} weeks · ${isProto ? "week-by-week plan" : `${p.days.length} days/week`} · ${esc(p.level[0].toUpperCase() + p.level.slice(1))} · ${esc((Gen.LOCATIONS.find((l) => l.id === p.location) || {}).label || "")}</span>
+        ${done ? `<span class="pc-bar"><i style="width:${Math.min(100, Math.round((done / sessions) * 100))}%"></i></span><span class="pc-done">${done} of ${sessions} ${isProto ? "weeks started" : "sessions done"}</span>` : ""}
       </button>`;
     }).join("");
     const open = sub && C.programs.find((p) => p.id === sub);
     $("#prog-grid").hidden = !!open; $("#prog-cats").hidden = !!open; $("#prog-detail").hidden = !open;
     if (open) renderProgram(open);
   }
+  // ---- Week-by-week protocols (Dr. Jared's weekly sheets, written out in full): /data/protocols/<program id>.json
+  // Loaded on demand; a program with a protocol file shows a week picker instead of the generic day list.
+  const PROTO = { index: null, data: {}, week: {} };
+  const protoIndex = () => PROTO.index || (PROTO.index = fetch("/data/protocols/index.json", { cache: "no-cache" }).then((r) => (r.ok ? r.json() : { ids: [] })).catch(() => ({ ids: [] })));
+  const loadProtocol = async (id) => {
+    if (PROTO.data[id]) return PROTO.data[id];
+    const idx = await protoIndex();
+    if (!(idx.ids || []).includes(id)) return null;
+    const v = idx.version ? `?v=${encodeURIComponent(idx.version)}` : "";
+    return (PROTO.data[id] = await fetch(`/data/protocols/${id}.json${v}`).then((r) => (r.ok ? r.json() : null)).catch(() => null));
+  };
+  // ids of programs that have a protocol file, once the index has loaded (program cards use it)
+  PROTO.ids = new Set();
+  protoIndex().then((idx) => { PROTO.ids = new Set(idx.ids || []); PROTO.weekCounts = idx.weeks || {}; if (!$("#view-programs").hidden && !$("#prog-grid").hidden) renderProgramsView(); });
+  const protoKey = (p, wkKey) => `prog-${p.id}-w${wkKey}`;
+  const protoDone = (p, wkKey) => allWorkouts.filter((w) => w.key === protoKey(p, wkKey)).length;
+  // Suggested week: count whole weeks since the first logged session of this protocol; otherwise the first week
+  function protoCurrentWeek(p, pr) {
+    const keys = pr.weeks.map((w) => w.key);
+    if (PROTO.week[p.id] && keys.includes(PROTO.week[p.id])) return PROTO.week[p.id];
+    const mine = allWorkouts.filter((w) => String(w.key || "").startsWith(`prog-${p.id}-w`)).map((w) => w.date).filter(Boolean).sort();
+    if (!mine.length) return keys[0];
+    const days = Math.floor((Date.parse(todayInTz() + "T12:00:00Z") - Date.parse(mine[0] + "T12:00:00Z")) / 864e5);
+    const firstNumbered = keys.findIndex((k) => /^\d/.test(k));
+    const i = Math.min(keys.length - 1, Math.max(0, (firstNumbered < 0 ? 0 : firstNumbered) + Math.floor(days / 7)));
+    return keys[i];
+  }
+  // Match a protocol exercise to a library video by name (exact, alias, then the closest name sharing the most words)
+  const words = (s) => String(s).toLowerCase().replace(/\(.*?\)/g, " ").replace(/[^a-z0-9]+/g, " ").split(" ").filter((x) => x.length > 2 && !["the", "and", "with", "for", "new"].includes(x));
+  function libMatch(name) {
+    const byName = Object.fromEntries(EX.map((e) => [e.name.toLowerCase(), e]));
+    const plain = String(name).replace(/\s*\(.*?\)\s*/g, " ").trim();
+    const hit = byName[name.toLowerCase()] || byName[plain.toLowerCase()] || (VIDEO_ALIAS[name] && byName[VIDEO_ALIAS[name].toLowerCase()]) || (VIDEO_ALIAS[plain] && byName[VIDEO_ALIAS[plain].toLowerCase()]);
+    if (hit) return hit;
+    const want = new Set(words(name)); if (!want.size) return null;
+    let best = null, score = 0;
+    for (const e of EX) { const w = words(e.name), s = w.filter((x) => want.has(x)).length / Math.max(want.size, w.length); if (s > score) { score = s; best = e; } }
+    return score >= 0.6 ? best : null;
+  }
+  const doseText = (d = {}) => [d.sets && `${d.sets} sets`, d.reps && d.reps, d.hold && `hold ${d.hold}`].filter(Boolean).join(" × ").slice(0, 60);
+  function protoWorkout(p, pr, wk) {
+    const circuit = wk.exercises.map((x) => { const m = libMatch(x.name); return m ? { ...m, name: x.name, sets: doseText(x.dosage), block: wk.label } : { id: "", name: x.name, sets: doseText(x.dosage), block: wk.label }; });
+    return { title: `${pr.title}: ${wk.label}`, goal: "Rehab", goalId: "mobility", location: p.location, level: p.level, levelLabel: wk.label, rounds: 1, restEx: 20, restRound: 0,
+      minutes: Math.max(10, wk.exercises.length * 5), warmup: [], cooldown: [], circuit, exercises: circuit, perRound: circuit.length, key: protoKey(p, wk.key), noRest: true };
+  }
+  const sheetSrc = (pr, wk, w) => `assets/protocols/${pr.id}/${encodeURIComponent(wk.key)}-${w}.webp`;
+  // Sections the sheets have beyond the standard ones (e.g. "why", "key points") are shown too, so nothing transcribed is hidden
+  const STD_EX = new Set(["n", "name", "isNew", "whenToUse", "howTo", "focus", "dosage", "steps", "proTip", "printedNumber", "video"]);
+  const STD_WK = new Set(["key", "label", "driveId", "focus", "notes", "exercises", "goal", "principles", "editorNotes"]); // editorNotes: transcription remarks for staff, not shown
+  const humanize = (k) => k.replace(/([a-z])([A-Z])/g, "$1 $2").replace(/[_-]+/g, " ").replace(/^./, (c) => c.toUpperCase());
+  function extraSections(o, std, tag = "h5") {
+    return Object.entries(o).filter(([k, v]) => !std.has(k) && v && (typeof v === "string" || (Array.isArray(v) && v.length && v.every((x) => typeof x === "string")))).map(([k, v]) =>
+      `<${tag}>${esc(humanize(k))}</${tag}>${typeof v === "string" ? `<p>${esc(v)}</p>` : `<ul>${v.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>`}`).join("");
+  }
+  const textList = (arr) => (Array.isArray(arr) ? arr : arr ? [arr] : []).map((x) => (typeof x === "string" ? x : [x.title, x.text].filter(Boolean).join(": ")));
+  function protoExerciseCard(x) {
+    const d = x.dosage || {}, cells = [["Sets", d.sets], ["Reps", d.reps], ["Tempo", d.tempo], ["Hold", d.hold], ["Frequency", d.frequency], ...Object.entries(d.other || {})].filter(([, v]) => v);
+    const list = (title, arr, cls = "") => (arr && arr.length ? `<h5>${title}</h5><ul class="${cls}">${arr.map((s) => `<li>${esc(s)}</li>`).join("")}</ul>` : "");
+    return `<article class="pex">
+      <header><span class="pex-n">${esc(x.printedNumber || x.n || "")}</span><h4>${esc(x.name)}</h4>${x.isNew ? `<span class="pex-new">New</span>` : ""}</header>
+      ${x.whenToUse ? `<h5>When to use</h5><p>${esc(x.whenToUse)}</p>` : ""}
+      ${list("How to perform", x.howTo)}
+      ${x.steps && x.steps.length ? `<ol class="pex-steps">${x.steps.map((s) => `<li>${esc(s)}</li>`).join("")}</ol>` : ""}
+      ${list("Focus points", x.focus, "pex-focus")}
+      ${cells.length ? `<dl class="pex-dose">${cells.map(([k, v]) => `<div><dt>${esc(k[0].toUpperCase() + k.slice(1))}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>` : ""}
+      ${extraSections(x, STD_EX)}
+      ${x.proTip ? `<p class="pex-tip"><b>Pro tip:</b> ${esc(x.proTip)}</p>` : ""}
+    </article>`;
+  }
+  async function renderProtocol(p) {
+    const box = $("#prog-detail"), pr = await loadProtocol(p.id);
+    if (!pr || box.dataset.id !== p.id) return false;
+    const cur = protoCurrentWeek(p, pr), wk = pr.weeks.find((w) => w.key === cur) || pr.weeks[0];
+    const pg = pr.progression || {}, focusOf = (k) => ((pg.overview || []).find((o) => String(o.week) === String(k)) || {}).focus || "";
+    const doneWeeks = pr.weeks.filter((w) => protoDone(p, w.key)).length;
+    const section = (title, html) => (html ? `<details class="card proto-more"><summary>${title}</summary>${html}</details>` : "");
+    box.querySelector(".prog-body").innerHTML = `
+      ${pr.goal ? `<div class="card proto-goal"><span class="label accent">The goal</span><p>${esc(pr.goal)}</p>${pr.tagline ? `<p class="muted small">${esc(pr.tagline)}</p>` : ""}</div>` : ""}
+      <div class="proto-weeks" role="tablist" aria-label="Week">${pr.weeks.map((w) => `<button type="button" role="tab" class="chip${protoDone(p, w.key) ? " done" : ""}" data-pweek="${esc(w.key)}" aria-selected="${w.key === wk.key}">${esc(w.label)}</button>`).join("")}</div>
+      <p class="muted small proto-progress">${doneWeeks} of ${pr.weeks.length} weeks started · tap a week to see its plan</p>
+      <div class="card proto-week">
+        <div class="pd-top"><div><span class="label accent">${esc(wk.label)}${focusOf(wk.key) ? ` · ${esc(focusOf(wk.key))}` : ""}</span>
+          <h3>${wk.exercises.length} exercise${wk.exercises.length === 1 ? "" : "s"} this week</h3>
+          <p class="muted small">${protoDone(p, wk.key) ? `Done ${protoDone(p, wk.key)}× this week's routine` : "Do this routine daily unless the card says otherwise."}</p></div>
+          ${p.locked || !wk.exercises.length ? "" : `<button type="button" class="btn-blue sm" data-pweek-start="${esc(wk.key)}"><svg viewBox="0 0 24 24"><path d="M7 4v16l13-8z"/></svg> Start</button>`}</div>
+        ${wk.goal ? `<p class="proto-wgoal"><b>This week's goal:</b> ${esc(wk.goal)}</p>` : ""}
+        ${wk.focus && wk.focus !== focusOf(wk.key) ? `<p class="proto-wgoal"><b>Focus:</b> ${esc(wk.focus)}</p>` : ""}
+        ${textList(wk.principles).length ? `<ul class="proto-wprin">${textList(wk.principles).map((t) => `<li>${esc(t)}</li>`).join("")}</ul>` : ""}
+        ${wk.notes ? `<p class="prog-notes">${esc(wk.notes).replace(/\n/g, "<br>")}</p>` : ""}
+        ${extraSections(wk, STD_WK)}
+        ${wk.driveId ? `<button type="button" class="proto-sheet" data-sheet="${esc(wk.key)}" aria-label="Open the ${esc(wk.label)} sheet full size"><img src="${sheetSrc(pr, wk, 960)}" srcset="${sheetSrc(pr, wk, 960)} 960w, ${sheetSrc(pr, wk, 1600)} 1600w" sizes="(max-width: 820px) 100vw, 760px" alt="Dr. Jared's ${esc(pr.title)} sheet, ${esc(wk.label)}" loading="lazy" decoding="async" onerror="this.closest('.proto-sheet').hidden=true"><span>Tap to enlarge</span></button>` : ""}
+        <div class="pex-list">${wk.exercises.map(protoExerciseCard).join("")}</div>
+      </div>
+      ${section("Key principles", (pr.principles || []).length ? `<dl class="proto-dl">${pr.principles.map((x) => `<div><dt>${esc(x.title)}</dt><dd>${esc(x.text)}</dd></div>`).join("")}</dl>` : "")}
+      ${section("Daily basics: do these every day", (pr.dailyBasics || []).length ? `<dl class="proto-dl">${pr.dailyBasics.map((x) => `<div><dt>${esc(x.title)}</dt><dd>${esc(x.text)}</dd></div>`).join("")}</dl>` : "")}
+      ${section("How the weeks progress", [
+        (pg.overview || []).length ? `<table class="proto-table"><thead><tr><th>Week</th><th>Focus</th></tr></thead><tbody>${pg.overview.map((o) => `<tr><td>${esc(o.week)}</td><td>${esc(o.focus)}</td></tr>`).join("")}</tbody></table>` : "",
+        (pg.guidelines || []).length ? `<h5>Progression guidelines</h5><ul>${pg.guidelines.map((s) => `<li>${esc(s)}</li>`).join("")}</ul>` : "",
+        (pg.expect || []).length ? `<h5>What to expect</h5><ul>${pg.expect.map((s) => `<li>${esc(s)}</li>`).join("")}</ul>` : "",
+        (pg.callouts || []).map((s) => `<p class="prog-notes">${esc(s)}</p>`).join(""),
+        pg.remember ? `<h5>Remember</h5><p>${esc(pg.remember)}</p>` : "",
+        pg.footer ? `<p class="proto-footer">${esc(pg.footer)}</p>` : ""].join(""))}`;
+    box.dataset.shownWeek = wk.key;
+    return true;
+  }
   function renderProgram(p) {
+    $("#prog-detail").dataset.id = p.id;
+    renderProgramDays(p);
+    // Week-by-week protocol? Swap the day list for it once its file has loaded (falls back to the day list otherwise)
+    loadProtocol(p.id).then((pr) => { if (pr) renderProtocol(p); });
+  }
+  function renderProgramDays(p) {
     const wk = (i) => Math.min(p.weeks, doneCount(p, i) + 1);
     $("#prog-detail").innerHTML = `<button type="button" class="link-sm back-link" data-goto="programs">‹ All programs</button>
       <div class="card prog-head${p.image ? " prog-head-img" : ""}">${p.image ? progPoster(p, "ph-img", "(max-width: 520px) 100vw, 480px") : ""}<span class="pc-cat">${esc(p.category)}</span>${p.locked ? lockBadge : ""}<h2>${esc(p.title)}</h2><p>${esc(p.summary)}</p>
         <p class="muted small">${p.weeks} weeks · ${p.days.length} sessions a week · ${esc(p.level)} · ${esc((Gen.LOCATIONS.find((l) => l.id === p.location) || {}).label || "")}</p>
         ${p.notes ? `<p class="prog-notes">${esc(p.notes)}</p>` : ""}</div>
-      ${p.days.map((d, i) => { const w = progDayWorkout(p, i); return `<div class="card prog-day">
+      <div class="prog-body">${p.days.map((d, i) => { const w = progDayWorkout(p, i); return `<div class="card prog-day">
         <div class="pd-top"><div><span class="label accent">Day ${i + 1} · Week ${wk(i)} of ${p.weeks}</span><h3>${esc(d.name)}</h3>
           <p class="muted small">About ${w.minutes} min · ${w.circuit.length} exercises × ${w.rounds} rounds · warm-up and cool-down included</p></div>
           ${p.locked ? "" : `<button type="button" class="btn-blue sm" data-prog-start="${i}"><svg viewBox="0 0 24 24"><path d="M7 4v16l13-8z"/></svg> Start</button>`}</div>
-        <ol class="pd-ex">${w.circuit.map((e) => `<li>${esc(e.name)} <span>${esc(e.sets)}</span></li>`).join("")}</ol></div>`; }).join("")}
+        <ol class="pd-ex">${w.circuit.map((e) => `<li>${esc(e.name)} <span>${esc(e.sets)}</span></li>`).join("")}</ol></div>`; }).join("")}</div>
       ${p.locked ? `<div class="locked-note">${unlockBtn("this program")}</div>` : ""}`;
-    $("#prog-detail").dataset.id = p.id;
   }
+  $("#sheet-img").addEventListener("click", (e) => e.target.classList.toggle("zoomed"));
   $("#prog-cats").addEventListener("click", (e) => {
     const b = e.target.closest("[data-pcat]"), sp = e.target.closest("[data-psport]"), lv = e.target.closest("[data-plevel]");
     if (b) { progCat = b.dataset.pcat; progSport = ""; progLevel = ""; }
@@ -2000,9 +2113,22 @@
     renderProgramsView();
   });
   $("#prog-grid").addEventListener("click", (e) => { const b = e.target.closest("[data-prog]"); if (b) go("programs/" + b.dataset.prog); });
-  $("#prog-detail").addEventListener("click", (e) => {
+  $("#prog-detail").addEventListener("click", async (e) => {
+    const p0 = C.programs.find((x) => x.id === $("#prog-detail").dataset.id); if (!p0) return;
+    const wb = e.target.closest("button[data-pweek]");
+    if (wb) { PROTO.week[p0.id] = wb.dataset.pweek; await renderProtocol(p0); $("#prog-detail .proto-week").scrollIntoView({ behavior: "smooth", block: "start" }); return; }
+    const ws = e.target.closest("[data-pweek-start]");
+    if (ws) { const pr = await loadProtocol(p0.id), wk = pr && pr.weeks.find((w) => w.key === ws.dataset.pweekStart); if (wk && !p0.locked) startPlayer(protoWorkout(p0, pr, wk)); return; }
+    const sh = e.target.closest("[data-sheet]");
+    if (sh) {
+      const pr = await loadProtocol(p0.id), wk = pr && pr.weeks.find((w) => w.key === sh.dataset.sheet); if (!wk) return;
+      const dlg = $("#sheet-dialog");
+      $("#sheet-title").textContent = `${pr.title} · ${wk.label}`;
+      $("#sheet-img").src = sheetSrc(pr, wk, 1600); $("#sheet-img").alt = `${pr.title}, ${wk.label}`; $("#sheet-img").classList.remove("zoomed");
+      dlg.showModal(); return;
+    }
     const b = e.target.closest("[data-prog-start]"); if (!b) return;
-    const p = C.programs.find((x) => x.id === $("#prog-detail").dataset.id);
+    const p = p0;
     if (p && !p.locked) startPlayer(progDayWorkout(p, Number(b.dataset.progStart)));
   });
 
