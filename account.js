@@ -173,7 +173,7 @@
   const saveData = !!(navigator.connection && (navigator.connection.saveData || /(^|-)2g$/.test(navigator.connection.effectiveType || "")));
   const warm = new Map(); const WARM_MAX = 8; let warmQueue = [], warmActive = 0;
   function warmVideo(id, level = "metadata") {
-    if (!id) return null;
+    if (!id || !MDFitVideo.onCdn(id)) return null; // Drive-hosted clips can only play in Drive's iframe: no element to warm
     let v = warm.get(id);
     if (v) { warm.delete(id); warm.set(id, v); if (level === "auto" && v.preload !== "auto") { v.preload = "auto"; v.load(); } return v; }
     v = document.createElement("video");
@@ -186,7 +186,7 @@
   function pumpWarm() {
     while (warmActive < 3 && warmQueue.length) {
       const id = warmQueue.shift(); if (warm.has(id)) continue;
-      const v = warmVideo(id, "metadata"); warmActive++;
+      const v = warmVideo(id, "metadata"); if (!v) continue; warmActive++;
       let finished = false;
       const done = () => { if (finished) return; finished = true; warmActive--; v.removeEventListener("loadedmetadata", done); v.removeEventListener("error", done); pumpWarm(); };
       v.addEventListener("loadedmetadata", done); v.addEventListener("error", done); setTimeout(done, 8000);
@@ -201,20 +201,34 @@
     const c = e.target.closest && e.target.closest("[data-video]"); if (c) warmVideo(c.dataset.video, "auto");
   }, { passive: true }));
   vd.addEventListener("close", () => {
+    clearTimeout(playVideo.stall);
     $("#vd-frame").src = "about:blank"; $("#vd-frame").hidden = true;
     const v = $("#vd-box .vd-video"); if (v) { v.pause(); v.remove(); }
   });
   const earn = (kind, ref = "") => apiAuth("POST", "/api/me/xp", { kind, ref: String(ref) }).then(() => loadRewards(true)).catch(() => {});
+  // Drive answers the direct MP4 with Cross-Origin-Resource-Policy: same-site (and an HTML virus-scan page for files
+  // over 100 MB), so browsers refuse it in a <video> within milliseconds: Drive's own player (the iframe) is the real
+  // path for everything not yet on Cloudinary. The warmed element has therefore usually failed before this runs
+  // (touchstart on the card reloads it well ahead of the click) and a MediaError is never fired twice, so read the
+  // state here instead of only waiting for `error`; a clip that shows no frame within 6 s falls back too.
   function playVideo(id, title, meta = "") {
     earn("video", id);
     $("#vd-title").textContent = title;
     $("#vd-meta").textContent = meta;
-    const box = $("#vd-box"), v = warmVideo(id, "auto");
+    const box = $("#vd-box"), f = $("#vd-frame"), v = warmVideo(id, "auto");
+    if (!v) { f.hidden = false; f.src = MDFitVideo.preview(id); vd.showModal(); return; }
     v.controls = true; v.muted = true; v.autoplay = true;
-    v.onerror = () => { v.remove(); const f = $("#vd-frame"); f.hidden = false; f.src = `https://drive.google.com/file/d/${encodeURIComponent(id)}/preview`; };
+    const fallback = () => {
+      clearTimeout(playVideo.stall); v.onerror = null; v.remove();
+      warm.delete(id); v.removeAttribute("src"); v.load(); // drop the dead element so the next tap starts clean
+      f.hidden = false; f.src = MDFitVideo.preview(id);
+    };
+    v.onerror = fallback;
+    clearTimeout(playVideo.stall);
+    playVideo.stall = setTimeout(() => { if (v.isConnected && v.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) fallback(); }, 6000);
     box.prepend(v);
     vd.showModal();
-    v.play().catch(() => {});
+    if (v.error) fallback(); else v.play().catch(() => {});
   }
   const exMeta = (e) => [e.region, e.cat, e.level && `Level ${e.level}`, e.loc && e.loc !== "any" && e.loc[0].toUpperCase() + e.loc.slice(1)].filter(Boolean).join(" · ");
   const byId = new Map(EX.map((e) => [e.id, e]));
@@ -1197,7 +1211,7 @@
       $$("#book-flow .book-step").forEach((s) => { s.hidden = s.dataset.step !== "done"; });
       earn("booking");
       await loadAppointments(); renderEvents(); renderNotes();
-      if (bookState.type.id === "massage" || bookState.type.id === "massage90") toast("Check your email for the intake form link.");
+      toast("Check your email for your intake documents link.");
     } catch (err) { msg.textContent = err.message; btn.disabled = false; }
   });
   $("#book-close-done").addEventListener("click", () => bookDlg.close());
@@ -1368,7 +1382,7 @@
   // Drive serves the raw MP4 (CORS + range requests), so a real <video> can autoplay, loop through the set and move on by itself.
   const driveMp4 = (id) => MDFitVideo.mp4(id);
   const PLAY_KEY = "mdfit.player.v2"; // v2: breaks default off so videos run back to back
-  const P = { w: null, steps: [], i: 0, start: 0, tick: null, rest: null, done: false, left: 0, paused: false,
+  const P = { w: null, steps: [], i: 0, start: 0, tick: null, stall: null, rest: null, done: false, left: 0, paused: false,
     opt: { breaks: false, sound: false, ...(store.get(PLAY_KEY) || {}) } };
   const fmtClock = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
   function buildSteps(w) {
@@ -1423,7 +1437,7 @@
     // Clear "#pain/track/<id>" so picking the same track again changes the hash and starts it
     if (/^#pain\/track\//.test(location.hash)) history.replaceState(null, "", "#pain");
     exitPlayerFs();
-    clearInterval(P.tick);
+    clearInterval(P.tick); clearTimeout(P.stall);
     const v = $("#p-video"); if (v) { v.pause(); v.removeAttribute("src"); v.load(); v.onended = null; v.onerror = null; }
     $("#p-vwrap").hidden = true;
     const ifr = $("#p-vwrap .p-fallback-iframe"); if (ifr) ifr.remove();
@@ -1494,6 +1508,9 @@
     if (noVid) return;
     v.loop = false;
     v.src = driveMp4(e.id);
+    // No frame within 6 s (Drive refuses the direct MP4, see playVideo; or a stalled download): Drive's player instead
+    clearTimeout(P.stall); const si = P.i;
+    P.stall = setTimeout(() => { if (P.i === si && !v.hidden && v.readyState < HTMLMediaElement.HAVE_CURRENT_DATA && v.onerror) v.onerror(); }, 6000);
     // Seamless sequence: buffer the next exercise video while this one plays
     const nx = P.steps.slice(P.i + 1).find((x) => x.e && x.e.id);
     if (nx && typeof warmVideo === "function") try { warmVideo(nx.e.id, "auto"); } catch {}

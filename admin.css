@@ -171,6 +171,13 @@ code { background: var(--paper-2); padding: 1px 6px; border-radius: 4px; font-si
 .intake-view div { display: grid; grid-template-columns: 140px 1fr; gap: 10px; }
 .intake-view b { color: #0A1A2E; }
 @media (max-width: 600px) { .intake-view div { grid-template-columns: 1fr; gap: 2px; } }
+/* Documents packet: one section per form inside the intake box; amber chip until every form is in */
+.intake-view section { display: grid; gap: 6px; }
+.intake-view section + section { border-top: 1px solid #e4ded1; padding-top: 10px; }
+.intake-view h4, .intake-view p { margin: 0; }
+.intake-view h4 { font-size: 14px; }
+.badge.docs { background: #f3ecd9; color: #8a6d1d; }
+.badge.docs.done { background: #e3f4ea; color: var(--ok); }
 .badge.remote { background: var(--accent); color: var(--ink); }
 .pill.bug { background: #FEE2E2; color: #991B1B; }
 .pill.suggestion { background: #DBEAFE; color: #1E3A8A; }

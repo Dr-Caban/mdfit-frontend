@@ -836,6 +836,7 @@
   }
   function wireTrackGuide(t) {
     const body = dlg.querySelector(".gd-body");
+    let stall = 0; // the fallback timer of the clip now playing
     const quiz = body.querySelector(".tg-quiz");
     if (quiz) quiz.addEventListener("change", () => {
       const tot = Number(quiz.dataset.total) || 1, got = [...quiz.querySelectorAll("input:checked")].reduce((a, c) => a + Number(c.dataset.w), 0), pct = got / tot;
@@ -851,7 +852,12 @@
         pl.hidden = false;
         sc.innerHTML = `<video playsinline muted autoplay loop controls preload="auto"></video>`;
         const v = sc.querySelector("video");
-        v.addEventListener("error", () => { sc.innerHTML = `<iframe src="https://drive.google.com/file/d/${encodeURIComponent(id)}/preview" title="Exercise video" allow="autoplay; fullscreen" allowfullscreen></iframe>`; }, { once: true });
+        // Drive refuses the direct MP4 in a <video> (Cross-Origin-Resource-Policy) and a download can also just hang,
+        // so `error` or no frame within 6 s both hand over to Drive's own player
+        const fallback = () => { clearTimeout(stall); sc.innerHTML = `<iframe src="https://drive.google.com/file/d/${encodeURIComponent(id)}/preview" title="Exercise video" allow="autoplay; fullscreen" allowfullscreen></iframe>`; };
+        v.addEventListener("error", fallback, { once: true });
+        clearTimeout(stall);
+        stall = setTimeout(() => { if (v.isConnected && v.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) fallback(); }, 6000);
         v.src = mp4(id); v.play().catch(() => {});
         pl.querySelector(".tg-now").textContent = "Now playing: " + b.dataset.gname;
         pl.scrollIntoView({ behavior: "smooth", block: "center" });

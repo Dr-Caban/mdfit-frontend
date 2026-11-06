@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <script src="/nozoom.js?v=45d3b173"></script>
   <meta name="robots" content="noindex, nofollow">
-  <title>Massage Intake | MD Fit</title>
+  <title>Intake Documents | MD Fit</title>
   <link rel="icon" href="assets/icon-64.png" type="image/png">
   <link rel="apple-touch-icon" href="assets/logo.webp">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,12 +28,38 @@
     .in-form textarea { min-height: 84px; resize: vertical; }
     .in-checks { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px 14px; }
     .in-checks label, .in-radios label { display: flex; gap: 8px; align-items: flex-start; font-weight: 500; }
+    .in-checks input, .in-radios input, .in-agree input { width: 18px; height: 18px; margin: 3px 0 0; padding: 0; flex: 0 0 auto; accent-color: var(--accent-text); }
     .in-radios { display: flex; flex-wrap: wrap; gap: 8px 18px; }
     .in-hint { font-size: 13px; color: var(--muted); margin: 0; }
     .in-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .in-consent { background: var(--accent-soft); border-radius: 12px; padding: 14px 16px; font-size: 14px; }
     .in-done { text-align: center; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 32px 22px; }
-    @media (max-width: 560px) { .in-row { grid-template-columns: 1fr; } .in-form { padding: 16px; } }
+    .in-form input[type=email], .in-form input[type=date], .in-form select { font: inherit; padding: 11px 12px; border: 1px solid var(--line); border-radius: 10px; background: #fff; width: 100%; }
+    .in-req { color: #b3261e; margin-left: 2px; }
+    .in-progress { display: flex; align-items: center; gap: 12px; margin: 0 0 14px; font-weight: 600; color: var(--heading); }
+    .in-bar { flex: 1; height: 8px; border-radius: 99px; background: var(--line); overflow: hidden; }
+    .in-bar i { display: block; height: 100%; background: var(--accent, #2e7d32); border-radius: 99px; transition: width .3s; }
+    .in-docs { display: grid; gap: 10px; margin: 0 0 18px; padding: 0; list-style: none; }
+    .in-doc { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; width: 100%; text-align: left; font: inherit; color: inherit; cursor: pointer;
+      background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; }
+    .in-doc:hover { border-color: var(--heading); }
+    .in-doc b { display: block; color: var(--heading); font-size: 16px; }
+    .in-doc small { color: var(--muted); }
+    .in-dot { width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--line); display: grid; place-items: center; font-size: 14px; font-weight: 700; color: #fff; }
+    .in-doc.done .in-dot { background: #2e7d32; border-color: #2e7d32; }
+    .in-doc .go { font-weight: 700; color: var(--accent-text); white-space: nowrap; }
+    .in-doc.done .go { color: #2e7d32; }
+    .in-scale { display: grid; grid-template-columns: repeat(11, 1fr); gap: 4px; }
+    .in-scale label { display: grid; place-items: center; padding: 8px 0; border: 1px solid var(--line); border-radius: 8px; background: #fff; cursor: pointer; font-weight: 600; font-size: 14px; }
+    .in-scale label { position: relative; }
+    .in-scale input { position: absolute; opacity: 0; pointer-events: none; width: 1px; height: 1px; margin: 0; padding: 0; border: 0; }
+    .in-scale label:has(input:checked) { background: var(--heading); color: #fff; border-color: var(--heading); }
+    .in-scale label:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .in-scale-ends { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); }
+    .in-agree p { margin: 0 0 10px; line-height: 1.5; }
+    .in-back { background: none; border: 0; padding: 0; font: inherit; color: var(--accent-text); font-weight: 600; cursor: pointer; justify-self: start; }
+    .in-form h2 { font: 700 22px/1.2 var(--display); color: var(--heading); margin: 0; }
+    @media (max-width: 560px) { .in-row { grid-template-columns: 1fr; } .in-form { padding: 16px; } .in-scale { grid-template-columns: repeat(6, 1fr); } }
   </style>
   <link rel="stylesheet" href="/site-header.css?v=cb0c2bf1">
   <script src="/site-header.js?v=9d8f5351" defer></script>
@@ -60,81 +86,115 @@
   </header>
   <!-- /site-header -->
   <main class="in-wrap">
-    <h1>Medical massage intake</h1>
+    <h1>Intake documents</h1>
     <p class="in-when" id="when"></p>
-    <p class="in-lock"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5zm-3 8V7a3 3 0 0 1 6 0v3z"/></svg>Private and encrypted. Only Dr. Jared sees your answers. About 3 minutes.</p>
+    <p class="in-lock"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5zm-3 8V7a3 3 0 0 1 6 0v3z"/></svg>Private and encrypted. Only Dr. Jared sees your answers. Each form saves on its own, so you can finish later from the same link.</p>
 
-    <form class="in-form" id="form" novalidate hidden>
-      <label><span>Where would you like us to focus?</span><textarea name="focus" required maxlength="600" placeholder="e.g. right shoulder and upper back, tight after desk work"></textarea></label>
-      <fieldset><legend>Pain right now (optional)</legend>
-        <label class="slider"><span class="in-hint">0 = none, 10 = worst <output id="pain-out">–</output></span><input type="range" name="painLevel" min="0" max="10" value="0" data-untouched></label>
-      </fieldset>
-      <fieldset><legend>Pressure you prefer</legend><div class="in-radios" id="pressure"></div></fieldset>
-      <label><span>Goals for this massage (optional)</span><textarea name="goals" maxlength="600" placeholder="Relief, recovery after training, better range of motion…"></textarea></label>
-      <fieldset><legend>Do any of these apply to you?</legend><p class="in-hint">Some change how we treat you. Check all that apply.</p><div class="in-checks" id="conditions"></div></fieldset>
-      <label><span>Medications (optional)</span><textarea name="medications" maxlength="600" placeholder="Especially blood thinners, steroids or pain medication"></textarea></label>
-      <label><span>Allergies (optional)</span><input type="text" name="allergies" maxlength="300" placeholder="Oils, lotions, nuts, latex…"></label>
-      <label><span>Anything else we should know? (optional)</span><textarea name="other" maxlength="1000"></textarea></label>
-      <div class="in-row">
-        <label><span>Emergency contact (optional)</span><input type="text" name="emergencyName" maxlength="80" autocomplete="off"></label>
-        <label><span>Their phone</span><input type="tel" name="emergencyPhone" maxlength="30" autocomplete="off"></label>
-      </div>
-      <div class="in-consent">
-        <label><span style="display:flex;gap:10px;align-items:flex-start;font-weight:500"><input type="checkbox" name="consent" required> I confirm this information is accurate, and I consent to medical massage at MD Fit. I'll tell my therapist about any discomfort or change in my health.</span></label>
-      </div>
-      <label><span>Type your full name to sign</span><input type="text" name="signature" required maxlength="80" autocomplete="name"></label>
-      <button class="btn btn-lg" type="submit">Submit intake</button>
-      <p class="form-msg" role="status"></p>
-    </form>
+    <section id="list" hidden>
+      <div class="in-progress"><span id="count"></span><span class="in-bar"><i id="bar"></i></span></div>
+      <ul class="in-docs" id="docs"></ul>
+    </section>
+
+    <form class="in-form" id="form" novalidate hidden></form>
+
     <div class="in-done" id="done" hidden>
       <h2 style="font:700 24px var(--display);color:var(--heading);margin:0 0 8px">Thank you, you're all set.</h2>
-      <p class="muted">Dr. Jared will review this before your massage. See you soon.</p>
+      <p class="muted">Dr. Jared will review your documents before your visit. See you soon.</p>
+      <p><button class="in-back" type="button" id="review">Review or update a form</button></p>
       <a class="btn btn-line" href="/">Back to MD Fit</a>
     </div>
     <p class="form-msg err" id="bad" hidden></p>
   </main>
   <script src="config.js?v=aac711e3"></script>
-  <script src="analytics.js?v=871c86ba" defer></script>
+  <script src="analytics.js?v=f3f61f9e" defer></script>
   <script>
     (() => {
       const API = window.MDFIT_CONFIG.apiUrl.replace(/\/+$/, "");
       const q = new URLSearchParams(location.search), id = q.get("id"), token = q.get("token");
-      const $ = (s) => document.querySelector(s), esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+      const $ = (s, r = document) => r.querySelector(s), esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
       const bad = (m) => { $("#bad").hidden = false; $("#bad").textContent = m; };
       if (!/^[a-f0-9]{12}$/.test(id || "") || !token) return bad("This intake link is incomplete. Please use the link in your booking email, or call 941-313-0562.");
       const url = `${API}/api/appointments/${id}/intake`;
+      let P = null;
+
+      const show = (which) => { ["list", "form", "done"].forEach((k) => ($("#" + k).hidden = k !== which && !(which === "list" && k === "list"))); scrollTo(0, 0); };
+      function renderList() {
+        const n = P.docs.filter((d) => d.done).length;
+        $("#count").textContent = `${n} of ${P.docs.length} complete`;
+        $("#bar").style.width = `${Math.round((n / P.docs.length) * 100)}%`;
+        $("#docs").innerHTML = P.docs.map((d, i) => `<li><button type="button" class="in-doc${d.done ? " done" : ""}" data-doc="${i}">
+          <span class="in-dot">${d.done ? "✓" : ""}</span><span><b>${esc(d.title)}</b><small>${d.done ? "Completed · tap to fill again" : `About ${d.minutes} min`}</small></span>
+          <span class="go">${d.done ? "Update ›" : "Start ›"}</span></button></li>`).join("");
+        if (n === P.docs.length) { $("#list").hidden = true; $("#form").hidden = true; $("#done").hidden = false; }
+        else { $("#list").hidden = false; $("#form").hidden = true; $("#done").hidden = true; }
+      }
+      const req = (f) => (f.required ? '<span class="in-req" aria-hidden="true">*</span>' : "");
+      function field(f) {
+        const pre = f.prefill ? P.prefill[f.prefill] || "" : "";
+        const name = `name="${f.k}"`;
+        if (f.type === "textarea") return `<label><span>${esc(f.label)}${req(f)}</span><textarea ${name} maxlength="${f.max || 600}"></textarea></label>`;
+        if (["text", "tel", "email", "date"].includes(f.type)) return `<label><span>${esc(f.label)}${req(f)}</span><input type="${f.type}" ${name} maxlength="${f.max || 200}" value="${esc(pre)}"${f.type === "tel" ? ' inputmode="tel"' : ""}></label>`;
+        if (f.type === "sign") return `<label><span>${esc(f.label)}${req(f)}</span><input type="text" ${name} maxlength="80" autocomplete="name" value="${esc(P.prefill.name || "")}"></label>`;
+        if (f.type === "select") return `<label><span>${esc(f.label)}${req(f)}</span><select ${name}><option value="">Choose…</option>${f.options.map((o) => `<option>${esc(o)}</option>`).join("")}</select></label>`;
+        if (f.type === "radio" || f.type === "yesno") { const opts = f.type === "yesno" ? ["Yes", "No"] : f.options;
+          return `<fieldset><legend>${esc(f.label)}${req(f)}</legend><div class="in-radios">${opts.map((o) => `<label><input type="radio" ${name} value="${esc(o)}"> ${esc(o)}</label>`).join("")}</div></fieldset>`; }
+        if (f.type === "checks") return `<fieldset><legend>${esc(f.label)}${req(f)}</legend><div class="in-checks">${f.options.map((o) => `<label><input type="checkbox" ${name} value="${esc(o)}"> ${esc(o)}</label>`).join("")}</div></fieldset>`;
+        if (f.type === "scale") return `<fieldset><legend>${esc(f.label)}${req(f)}</legend><div class="in-scale">${Array.from({ length: 11 }, (_, n) => `<label><input type="radio" ${name} value="${n}">${n}</label>`).join("")}</div><div class="in-scale-ends"><span>0 = no pain</span><span>10 = worst imaginable</span></div></fieldset>`;
+        if (f.type === "agree") return `<div class="in-consent in-agree"><p><b>${esc(f.label)}</b></p><p>${esc(f.text)}</p><label><span style="display:flex;gap:10px;align-items:flex-start;font-weight:500"><input type="checkbox" ${name}${f.required ? " required" : ""}> I have read and agree${f.required ? "" : " (optional)"}.</span></label></div>`;
+        return "";
+      }
+      function openDoc(i) {
+        const d = P.docs[i], last = P.docs.findIndex((x, j) => j > i && !x.done);
+        const f = $("#form");
+        f.innerHTML = `<button type="button" class="in-back" data-back>‹ All documents</button><h2>${esc(d.title)}</h2><p class="in-hint">${esc(d.intro)} Fields marked <span class="in-req">*</span> are required.</p>
+          ${d.fields.map(field).join("")}
+          <button class="btn btn-lg" type="submit">${d.done ? "Save changes" : last >= 0 || P.docs.some((x, j) => j !== i && !x.done) ? "Save and continue" : "Save and finish"}</button>
+          <p class="form-msg" role="status"></p>`;
+        f.dataset.doc = i;
+        $("#list").hidden = true; $("#done").hidden = true; f.hidden = false; scrollTo(0, 0);
+      }
+      function collect(d, f) {
+        const out = { token };
+        for (const x of d.fields) {
+          if (x.type === "checks") out[x.k] = [...f.querySelectorAll(`[name="${x.k}"]:checked`)].map((i) => i.value);
+          else if (["radio", "yesno", "scale"].includes(x.type)) { const c = f.querySelector(`[name="${x.k}"]:checked`); out[x.k] = c ? c.value : ""; if (x.type === "scale" && c) out[x.k] = Number(c.value); }
+          else if (x.type === "agree") out[x.k] = f.querySelector(`[name="${x.k}"]`).checked;
+          else out[x.k] = f.elements[x.k].value;
+        }
+        return out;
+      }
+      function missing(d, body) {
+        return d.fields.find((x) => x.required && (Array.isArray(body[x.k]) ? !body[x.k].length : body[x.k] === "" || body[x.k] === false || body[x.k] == null));
+      }
+
+      $("#docs").addEventListener("click", (e) => { const b = e.target.closest("[data-doc]"); if (b) openDoc(Number(b.dataset.doc)); });
+      $("#review").addEventListener("click", () => { $("#done").hidden = true; $("#list").hidden = false; });
+      $("#form").addEventListener("click", (e) => { if (e.target.closest("[data-back]")) { renderList(); $("#list").hidden = false; $("#done").hidden = true; scrollTo(0, 0); } });
+      $("#form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const f = e.target, i = Number(f.dataset.doc), d = P.docs[i], msg = $(".form-msg", f), btn = $("button[type=submit]", f);
+        const body = collect(d, f), miss = missing(d, body);
+        if (miss) { msg.className = "form-msg err"; msg.textContent = miss.type === "agree" ? `Please agree to: ${miss.label}.` : `Please fill in: ${miss.label}`; const el = f.querySelector(`[name="${miss.k}"]`); if (el) el.focus(); return; }
+        btn.disabled = true; msg.className = "form-msg"; msg.textContent = "Saving securely…";
+        try {
+          const r = await fetch(`${url}/${encodeURIComponent(d.id)}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+          const out = await r.json().catch(() => ({}));
+          if (!r.ok) throw new Error(out.error || "Couldn't save. Please try again.");
+          d.done = new Date().toISOString();
+          const next = P.docs.findIndex((x) => !x.done);
+          if (next >= 0) openDoc(next); else { renderList(); scrollTo(0, 0); }
+        } catch (err) { btn.disabled = false; msg.className = "form-msg err"; msg.textContent = err.message; }
+      });
+
       fetch(`${url}?token=${encodeURIComponent(token)}`).then(async (r) => {
         const d = await r.json().catch(() => ({}));
         if (!r.ok) throw new Error(d.error || "This intake link isn't valid.");
+        if (d.cancelled) throw new Error("This appointment was cancelled.");
+        P = d;
         const t = d.time.split(":").map(Number), when = new Date(d.date + "T12:00:00Z").toLocaleDateString("en-US", { timeZone: "UTC", weekday: "long", month: "long", day: "numeric" });
-        $("#when").textContent = `${d.typeName} · ${when} at ${((t[0] + 11) % 12) + 1}:${String(t[1]).padStart(2, "0")} ${t[0] < 12 ? "AM" : "PM"}`;
-        if (d.done) { $("#done").hidden = false; $("#done h2").textContent = `Thanks ${d.name}, we have your intake.`; $("#done p").textContent = "Need to change something? You can submit it again below."; }
-        $("#pressure").innerHTML = d.pressure.map((p, i) => `<label><input type="radio" name="pressure" value="${esc(p)}" ${p === "Not sure" ? "checked" : ""}> ${esc(p)}</label>`).join("");
-        $("#conditions").innerHTML = d.conditions.map((c) => `<label><input type="checkbox" name="conditions" value="${esc(c)}"> ${esc(c)}</label>`).join("");
-        $("#form").hidden = false;
-      }).catch((e) => bad(e.message + " Please call 941-313-0562."));
-
-      const range = $("[name=painLevel]");
-      range.addEventListener("input", () => { delete range.dataset.untouched; $("#pain-out").textContent = range.value + "/10"; });
-      $("#form").addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const f = e.target, msg = $(".form-msg", f), btn = $("button[type=submit]", f);
-        if (!f.elements.focus.value.trim()) { msg.className = "form-msg err"; msg.textContent = "Tell us where you'd like us to focus."; f.elements.focus.focus(); return; }
-        if (!f.consent.checked) { msg.className = "form-msg err"; msg.textContent = "Please check the consent box."; return; }
-        if (f.signature.value.trim().length < 2) { msg.className = "form-msg err"; msg.textContent = "Type your full name to sign."; f.signature.focus(); return; }
-        const body = { token, focus: f.elements.focus.value, goals: f.goals.value, medications: f.medications.value, allergies: f.allergies.value, other: f.other.value,
-          emergencyName: f.emergencyName.value, emergencyPhone: f.emergencyPhone.value, signature: f.signature.value, consent: true,
-          pressure: (f.querySelector("[name=pressure]:checked") || {}).value, conditions: [...f.querySelectorAll("[name=conditions]:checked")].map((i) => i.value),
-          painLevel: range.dataset.untouched !== undefined ? null : Number(range.value) };
-        btn.disabled = true; msg.className = "form-msg"; msg.textContent = "Sending securely…";
-        try {
-          const r = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
-          const d = await r.json().catch(() => ({}));
-          if (!r.ok) throw new Error(d.error || "Couldn't send. Please try again.");
-          f.hidden = true; $("#done").hidden = false; $("#done h2").textContent = "Thank you, you're all set."; $("#done p").textContent = "Dr. Jared will review this before your massage. See you soon.";
-          scrollTo(0, 0);
-        } catch (err) { btn.disabled = false; msg.className = "form-msg err"; msg.textContent = err.message; }
-      });
+        $("#when").textContent = `Hi ${d.name}: ${d.typeName} · ${when} at ${((t[0] + 11) % 12) + 1}:${String(t[1]).padStart(2, "0")} ${t[0] < 12 ? "AM" : "PM"}`;
+        renderList();
+      }).catch((e) => bad(/941-313-0562/.test(e.message) ? e.message : e.message + " Please call 941-313-0562."));
     })();
   </script>
 <script defer src="/_vercel/insights/script.js"></script>

@@ -51,8 +51,17 @@
       msg.className = "form-msg err"; msg.textContent = err.message;
     }
   });
-  function logout() { token = ""; session.set(""); $("#app").hidden = true; $("#login").hidden = false; if (window.MDFitRT) MDFitRT.disconnect(); }
+  // Logging out also empties every rendered list: client names, messages and documents must not stay in the DOM
+  // on a shared screen (HIPAA automatic logoff). The idle timer signs out after 15 minutes without input.
+  function logout() {
+    token = ""; session.set(""); $("#app").hidden = true; $("#login").hidden = false; if (window.MDFitRT) MDFitRT.disconnect();
+    $$("#appts-list, #clients-list, #client-totals, #leads-list, #members-list, #msg-thread, #msg-threads, #bc-list, #feedback-list, #reviews-list, #app table tbody").forEach((el) => { el.innerHTML = ""; });
+    clearTimeout(idleT);
+  }
   $("#logout").addEventListener("click", logout);
+  const IDLE_MS = 15 * 60 * 1000; let idleT = 0;
+  const idleBump = () => { if (!token) return; clearTimeout(idleT); idleT = setTimeout(() => { logout(); $("#login .form-msg").textContent = "Signed out after 15 minutes of inactivity."; }, IDLE_MS); };
+  ["pointerdown", "keydown", "scroll", "touchstart"].forEach((t) => document.addEventListener(t, idleBump, { passive: true }));
 
   // ---- Tabs
   const loaders = { dash: loadDash, clients: loadClients, appts: loadAppts, hours: loadHours, leads: loadLeads, classes: loadClasses, bookings: loadBookings, subs: loadSubs, reviews: loadReviews, audit: loadAudit, messages: loadThreads, members: loadMembers, content: loadContent, settings: loadSettings, feedback: loadFeedback, analytics: loadAnalytics };
@@ -78,7 +87,7 @@
   const hasNotify = typeof window.Notification !== "undefined";
   let rtWired = false; // live-update handlers are registered once; logging in again only reconnects
   function show() {
-    $("#login").hidden = true; $("#app").hidden = false; openTab(current);
+    $("#login").hidden = true; $("#app").hidden = false; openTab(current); idleBump();
     pollBadges(); // unread messages / open feedback counts right away, not a minute after logging in
     if (hasNotify && Notification.permission === "default") { try { Promise.resolve(Notification.requestPermission()).catch(() => {}); } catch {} }
     if (window.MDFitRT) {
@@ -87,7 +96,7 @@
       rtWired = true;
       MDFitRT.on("activity", (ev) => {
         if (current === "dash") run(loadDash)();
-        if (ev.type === "appointment" || ev.type === "appointment_cancelled") { if (current === "appts") run(loadAppts)(); }
+        if (ev.type === "appointment" || ev.type === "appointment_cancelled" || ev.type === "intake") { if (current === "appts") run(loadAppts)(); }
         if (ev.type === "booking" || ev.type === "booking_cancelled") { if (current === "bookings") run(loadBookings)(); }
         if (ev.type === "lead") { if (current === "leads") run(loadLeads)(); }
         if (ev.type === "subscribe") { if (current === "subs") run(loadSubs)(); }
@@ -161,7 +170,8 @@
         <div><strong>${esc(a.name)}</strong> · <a href="tel:${esc(a.phone)}">${esc(a.phone)}</a> · <a href="mailto:${esc(a.email)}">${esc(a.email)}</a></div>
         <div class="intake">${[...(a.areas || []), a.painLevel != null && `Pain ${a.painLevel}/10`].filter(Boolean).map((x) => `<span>${esc(x)}</span>`).join("")}</div>
         ${a.notes ? `<p class="msg">${esc(a.notes)}</p>` : ""}
-        ${["massage", "massage90"].includes(a.typeId) ? (a.intakeAt ? `<p><button class="mini" data-intake>View massage intake</button> <span class="meta">received ${when(a.intakeAt)}</span></p><div class="intake-view" hidden></div>` : `<p class="meta">Massage intake not received yet</p>`) : ""}
+        ${a.documents && a.documents.total ? `<p><span class="badge docs${a.documents.complete ? " done" : ""}">${a.documents.complete ? "Documents complete ✓" : `Documents ${a.documents.done} of ${a.documents.total}`}</span>${
+          a.documents.done ? ` <button class="mini" data-intake>View documents</button>` : ""}</p><div class="intake-view" hidden></div>` : ""}
         <textarea rows="2" placeholder="Session notes (private)" data-notes>${esc(a.adminNotes)}</textarea>
         <div class="actions">
           <select data-status>${APPT_STATUSES.map((x) => `<option ${x === a.status ? "selected" : ""}>${x}</option>`).join("")}</select>
@@ -176,10 +186,11 @@
       const box = $(".intake-view", card);
       if (!box.hidden) { box.hidden = true; return; }
       const d = await api("GET", `/api/admin/appointments/${card.dataset.id}/intake`);
-      const row = (k, v) => v ? `<div><b>${k}</b><span>${esc(v)}</span></div>` : "";
-      box.innerHTML = row("Focus", d.focus) + row("Pain", d.painLevel != null ? `${d.painLevel}/10` : "") + row("Pressure", d.pressure) + row("Goals", d.goals)
-        + row("Conditions", (d.conditions || []).join(", ") || "None checked") + row("Medications", d.medications) + row("Allergies", d.allergies) + row("Other", d.other)
-        + row("Emergency contact", [d.emergencyName, d.emergencyPhone].filter(Boolean).join(" · ")) + row("Signed", `${d.signature} · ${when(d.consentAt)}`);
+      // One section per completed document; answers arrive as strings, numbers, booleans or arrays
+      const val = (v) => Array.isArray(v) ? v.join(", ") : v === true ? "Yes" : v === false ? "No" : v == null || v === "" ? "—" : String(v);
+      box.innerHTML = (d.docs || []).map((doc) => `<section><h4>${esc(doc.title)}</h4><p class="meta">Completed ${when(doc.createdAt)}</p>${
+        (doc.fields || []).map((f) => `<div><b>${esc(f.label)}</b><span>${esc(val(f.value))}</span></div>`).join("")}</section>`).join("")
+        || `<p class="meta">No documents received yet.</p>`;
       box.hidden = false; return;
     }
     if (!card || !e.target.matches("[data-save]")) return;

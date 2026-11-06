@@ -47,7 +47,12 @@
     sc.innerHTML = `<video playsinline autoplay controls preload="auto"></video>`;
     const vid = sc.querySelector("video");
     let plays = 0;
-    vid.addEventListener("error", () => { sc.innerHTML = `<iframe src="https://drive.google.com/file/d/${encodeURIComponent(id)}/preview" title="Exercise video" allow="autoplay; fullscreen" allowfullscreen></iframe>`; }, { once: true });
+    const fallback = () => { clearTimeout(play.stall); sc.innerHTML = `<iframe src="https://drive.google.com/file/d/${encodeURIComponent(id)}/preview" title="Exercise video" allow="autoplay; fullscreen" allowfullscreen></iframe>`; };
+    vid.addEventListener("error", fallback, { once: true });
+    // Drive refuses the direct MP4 in a <video> (Cross-Origin-Resource-Policy), and a download can also just hang:
+    // no frame within 6 s means Drive's own player takes over
+    clearTimeout(play.stall);
+    play.stall = setTimeout(() => { if (vid.isConnected && vid.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) fallback(); }, 6000);
     vid.addEventListener("ended", () => {
       if (++plays < LOOPS) { vid.currentTime = 0; vid.play().catch(() => {}); return; }
       if (!f.querySelector(".tk-auto input").checked) return;
