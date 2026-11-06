@@ -236,7 +236,8 @@
   }
 
   // Today's workout: one per day from the client's last generator settings, kept until they change it
-  const PREFS_KEY = "mdfit_prefs2", TODAY_KEY = "mdfit_today2";
+  // v3: no rest by default, no rest between rounds, warm-up / cool-down chosen after generating (older saved choices are dropped)
+  const PREFS_KEY = "mdfit_prefs3", TODAY_KEY = "mdfit_today3";
   const saved = store.get(PREFS_KEY, {});
   const prefs = { ...Gen.DEFAULTS, ...saved, addons: { ...Gen.DEFAULTS.addons, ...(saved.addons || {}) } };
   const daySeed = (d) => [...d].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7);
@@ -277,7 +278,7 @@
   // Short on time: the same goal, place and level as today's workout, cut to about 10 minutes (same one every time today)
   function tenMinuteWorkout() {
     const t = todayInTz();
-    return Gen.generate({ ...prefs, length: 10, ...Gen.presetFor(10), seed: daySeed(t + (client?.id || "") + "-10") });
+    return Gen.generate({ ...prefs, length: 10, ...Gen.presetFor(10), restEx: 0, restRound: 0, seed: daySeed(t + (client?.id || "") + "-10") });
   }
   $("#start-ten").addEventListener("click", async () => { const w = tenMinuteWorkout(); if (await claim(w)) startPlayer(w); });
 
@@ -429,7 +430,7 @@
   const svgIc = (k) => `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[k]}</svg>`;
   const bars = (n) => `<span class="bars-ic" aria-hidden="true">${[1, 2, 3, 4].map((i) => `<i class="${i <= n ? "on" : ""}" style="height:${6 + i * 6}px"></i>`).join("")}</span>`;
   const secs = (v) => (v ? `${v} sec` : "None");
-  const choice = { ...prefs, addons: { ...prefs.addons } };
+  const choice = { ...prefs, restRound: 0, addons: { ...prefs.addons, warmup: false, cooldown: false } };
   // type "cards" = big tiles, "pills" = number chips. Each step reads/writes choice[key].
   const STEPS = [
     { key: "type", title: "Session type", sub: "Rehab sessions use only Dr. Jared's corrective movements, kept gentle. Workouts train strength and conditioning.", type: "cards", items: Gen.TYPES.map((t) => ({ v: t.id, html: `${svgIc(t.id === "rehab" ? "mobility" : "full")}<b>${esc(t.label)}</b><small>${esc(t.hint)}</small>` })) },
@@ -438,9 +439,8 @@
     { key: "level", title: "Difficulty level", sub: "Match the workout to your current ability.", type: "cards", items: Gen.LEVELS.map((l) => ({ v: l.id, html: `${bars(l.bars)}<b>${l.label}</b><small>${l.hint}</small>` })) },
     { key: "length", title: "Workout length", sub: "Sets exercises, rounds and rest to fit. Fine-tune below.", type: "pills", items: Gen.LENGTHS.map((n) => ({ v: n, html: `<b>${n}</b><small>min</small>` })) },
     { key: "perRound", title: "Exercises per round", sub: "How many different exercises in each round?", type: "pills", items: Gen.PER_ROUND.map((n) => ({ v: n, html: `<b>${n}</b>` })) },
-    { key: "rounds", title: "Rounds", sub: "How many total rounds of the workout?", type: "pills", items: Gen.ROUNDS.map((n) => ({ v: n, html: `<b>${n}</b>` })) },
-    { key: "restEx", title: "Rest between exercises", sub: "How much rest between each exercise?", type: "pills", items: Gen.REST_EX.map((n) => ({ v: n, html: n ? `<b>${n}</b><small>sec</small>` : `<b>None</b><small>0 sec</small>` })) },
-    { key: "restRound", title: "Rest between rounds", sub: "How much rest between each round?", type: "pills", items: Gen.REST_ROUND.map((n) => ({ v: n, html: n ? `<b>${n}</b><small>sec</small>` : `<b>None</b><small>0 sec</small>` })) }
+    { key: "rounds", title: "Rounds", sub: "How many total rounds? Pick 1 for one long round with high reps on every movement (reps scale with your level).", type: "pills", items: Gen.ROUNDS.map((n) => ({ v: n, html: n === 1 ? `<b>1</b><small>high reps</small>` : `<b>${n}</b>` })) },
+    { key: "restEx", title: "Rest between exercises", sub: "None by default. Add rest if you need it.", type: "pills", items: Gen.REST_EX.map((n) => ({ v: n, html: n ? `<b>${n}</b><small>sec</small>` : `<b>None</b><small>0 sec</small>` })) }
   ];
   const stepHtml = (st, i) => `
     <section class="step" data-key="${st.key}">
@@ -452,24 +452,24 @@
   // Steps 1, 4 full width; 2+3, 5+6, 7+8 pair up on wider screens
   $("#steps").innerHTML = [stepHtml(STEPS[0], 0), `<div class="step-pair">${stepHtml(STEPS[1], 1)}${stepHtml(STEPS[2], 2)}</div>`, stepHtml(STEPS[3], 3),
     `<div class="step-pair">${stepHtml(STEPS[4], 4)}${stepHtml(STEPS[5], 5)}</div>`, `<div class="step-pair">${stepHtml(STEPS[6], 6)}${stepHtml(STEPS[7], 7)}</div>`].join("");
-  $("#addons").innerHTML = Gen.ADDONS.map((a) => `<li><button type="button" class="toggle" role="switch" data-addon="${a.id}"><span>${esc(a.label)}</span><i aria-hidden="true"></i></button></li>`).join("");
+  $("#addons").innerHTML = Gen.ADDONS.filter((a) => a.id !== "warmup" && a.id !== "cooldown").map((a) => `<li><button type="button" class="toggle" role="switch" data-addon="${a.id}"><span>${esc(a.label)}</span><i aria-hidden="true"></i></button></li>`).join("");
 
   function renderChoices() {
     $$("#steps .step").forEach((el) => $$("[data-v]", el).forEach((b) => b.setAttribute("aria-checked", String(b.dataset.v) === String(choice[el.dataset.key]))));
     $$("#addons [data-addon]").forEach((b) => b.setAttribute("aria-checked", String(!!choice.addons[b.dataset.addon])));
     const G = Gen.GOALS.find((g) => g.id === choice.goal), Lo = Gen.LOCATIONS.find((l) => l.id === choice.location), Lv = Gen.LEVELS.find((l) => l.id === choice.level);
-    const est = Gen.estimate({ warm: choice.addons.warmup ? (choice.length <= 15 ? 1 : 2) : 0, cool: choice.addons.cooldown ? (choice.length <= 20 ? 1 : 2) : 0, ...choice });
+    const oneRound = choice.rounds === 1 && choice.type !== "rehab" && !G.mobility;
+    const est = oneRound ? choice.length : Gen.estimate({ ...choice, warm: 0, cool: 0, restRound: 0 });
     const rows = [["Type", G.label], ["Location", Lo.label], ["Difficulty", Lv.label], ["Estimated time", `${est} min`, "est"],
-      ["Exercises per round", choice.perRound], ["Total rounds", choice.rounds], ["Rest between exercises", secs(choice.restEx)], ["Rest between rounds", secs(choice.restRound)]];
+      ["Exercises per round", choice.perRound], ["Total rounds", oneRound ? "1 · high reps" : choice.rounds], ["Rest between exercises", secs(choice.restEx)]];
     $("#summary").innerHTML = rows.map(([k, v, c]) => `<dt>${k}</dt><dd${c ? ` class="${c}"` : ""}>${esc(v)}</dd>`).join("");
   }
   // Keep the estimate close to the chosen workout length. If the user picks fewer rounds (or fewer exercises
   // per round) than the preset, bump the other knob up so a 30-minute workout stays about 30 minutes.
   const fitLength = () => {
+    if (choice.rounds === 1) return; // one round: the reps grow to fill the length instead
     const target = choice.length * 60;
-    const warmS = (choice.addons.warmup ? (choice.length <= 15 ? 1 : 2) : 0) * 75;
-    const coolS = (choice.addons.cooldown ? (choice.length <= 20 ? 1 : 2) : 0) * 75;
-    const estAt = (perRound, rounds) => warmS + coolS + rounds * (perRound * 45 + Math.max(0, perRound - 1) * choice.restEx) + Math.max(0, rounds - 1) * choice.restRound;
+    const estAt = (perRound, rounds) => rounds * (perRound * 45 + Math.max(0, perRound - 1) * choice.restEx);
     const MAX_PR = Math.max(...Gen.PER_ROUND), MAX_R = Math.max(...Gen.ROUNDS);
     while (estAt(choice.perRound, choice.rounds) < target * 0.9 && choice.perRound < MAX_PR) choice.perRound = Gen.PER_ROUND.find((n) => n > choice.perRound) || MAX_PR;
     while (estAt(choice.perRound, choice.rounds) < target * 0.9 && choice.rounds < MAX_R) choice.rounds = Gen.ROUNDS.find((n) => n > choice.rounds) || MAX_R;
@@ -477,10 +477,11 @@
   $("#steps").addEventListener("click", (e) => {
     const b = e.target.closest("[data-v]");
     if (!b) return;
-    const key = b.closest(".step").dataset.key, num = ["length", "perRound", "rounds", "restEx", "restRound"].includes(key);
+    const key = b.closest(".step").dataset.key, num = ["length", "perRound", "rounds", "restEx"].includes(key);
     choice[key] = num ? Number(b.dataset.v) : b.dataset.v;
-    if (key === "length") Object.assign(choice, Gen.presetFor(choice.length));
-    if (["rounds", "perRound", "restEx", "restRound"].includes(key)) fitLength();
+    // A new length picks exercises and rounds to fit it, with no rest (members add rest themselves)
+    if (key === "length") { const keepOne = choice.rounds === 1; Object.assign(choice, Gen.presetFor(choice.length), { restEx: 0, restRound: 0 }); if (keepOne) choice.rounds = 1; fitLength(); }
+    if (["rounds", "perRound", "restEx"].includes(key)) fitLength();
     renderChoices();
   });
   $("#addons").addEventListener("click", (e) => {
@@ -492,7 +493,7 @@
   $("#randomize").addEventListener("click", () => {
     const any = (arr) => arr[Math.floor(Math.random() * arr.length)];
     choice.goal = any(Gen.GOALS).id; choice.location = any(Gen.LOCATIONS).id; choice.level = any(Gen.LEVELS).id;
-    choice.length = any(Gen.LENGTHS); Object.assign(choice, Gen.presetFor(choice.length));
+    choice.length = any(Gen.LENGTHS); Object.assign(choice, Gen.presetFor(choice.length), { restEx: 0, restRound: 0 }); fitLength();
     renderChoices();
   });
 
@@ -503,17 +504,26 @@
     const w = current, loc = Gen.LOCATIONS.find((l) => l.id === w.location);
     $("#generated").hidden = false;
     $("#gen-title").textContent = w.title;
-    $("#gen-meta").textContent = `About ${w.minutes} min · ${planLine(w)} · ${w.levelLabel} · ${loc ? loc.label : ""}. Tap any exercise to watch Dr. Jared demo it.${w.note ? " " + w.note : ""}`;
+    const ex = w.extraMin || { warmup: 0, cooldown: 0 }, on = (k) => !!(w.addons && w.addons[k]) && (w[k + "Opt"] || []).length;
+    const extra = (on("warmup") ? ex.warmup : 0) + (on("cooldown") ? ex.cooldown : 0);
+    $("#gen-meta").textContent = `About ${w.minutes} min${extra ? ` (+${extra} min ${on("warmup") && on("cooldown") ? "warm-up & cool-down" : on("warmup") ? "warm-up" : "cool-down"})` : ""} · ${w.chipper ? "1 round · high reps" : planLine(w)} · ${w.levelLabel} · ${loc ? loc.label : ""}. Tap any exercise to watch Dr. Jared demo it.${w.note ? " " + w.note : ""}`;
     const swapLi = (block) => (e, i) => `<li class="ex-swap">${exLi(e).slice(4, -5)}<button type="button" class="swap-btn" data-swap="${block}" data-i="${i}" aria-label="Swap ${esc(e.name)} for another movement" title="Swap for another movement"><svg viewBox="0 0 24 24"><path d="M7 7h11l-3-3 1.4-1.4L22 8l-5.6 5.4L15 12l3-3H7zm10 10H6l3 3-1.4 1.4L2 16l5.6-5.4L9 12l-3 3h11z"/></svg></button></li>`;
     const group = (label, list, block, note = "") => list.length ? `<li class="block-tag">${label}${note ? `<span>${note}</span>` : ""}</li>${list.map(swapLi(block)).join("")}` : "";
-    $("#gen-list").innerHTML = group("Warm-up · plays once", w.warmup, "Warm-up")
-      + group(`Circuit × ${w.rounds} round${w.rounds === 1 ? "" : "s"}`, w.circuit, "Circuit", [w.restEx && `${w.restEx}s between exercises`, w.restRound && w.rounds > 1 && `${w.restRound}s between rounds`].filter(Boolean).join(" · "))
-      + group("Cool-down · starts automatically", w.cooldown, "Cool-down");
+    $("#gen-list").innerHTML = group("Warm-up · plays first", w.warmup, "Warm-up")
+      + group(w.chipper ? "One round · high reps · finish every rep" : `Circuit × ${w.rounds} round${w.rounds === 1 ? "" : "s"}`, w.circuit, "Circuit", [w.restEx && `${w.restEx}s between exercises`, w.restRound && w.rounds > 1 && `${w.restRound}s between rounds`].filter(Boolean).join(" · "))
+      + group("Cool-down · plays last", w.cooldown, "Cool-down");
+    // Optional extras, not part of the workout's length
+    $("#gen-extras").hidden = !(w.warmupOpt || []).length && !(w.cooldownOpt || []).length;
+    $("#gen-extras").innerHTML = `<p class="gx-title">Add to your workout</p>${["warmup", "cooldown"].filter((k) => (w[k + "Opt"] || []).length).map((k) => `
+      <button type="button" class="gx-btn" role="switch" aria-checked="${!!on(k)}" data-extra="${k}">
+        <span class="gx-check" aria-hidden="true"></span>
+        <span class="gx-txt"><b>${k === "warmup" ? "Warm-up" : "Cool-down"}</b><small>+${ex[k]} min · ${(w[k + "Opt"] || []).map((e) => esc(e.name)).join(", ")}</small></span>
+        <span class="gx-rec">Recommended</span></button>`).join("")}`;
   }
   function generateNow(seed = Date.now(), manual = true) {
     if (manual) earn("generate");
-    current = Gen.generate({ ...choice, seed });
-    Object.assign(prefs, choice, { addons: { ...choice.addons } });
+    current = Gen.generate({ ...choice, restRound: 0, seed });
+    Object.assign(prefs, choice, { restRound: 0, addons: { ...choice.addons, warmup: false, cooldown: false } });
     store.set(PREFS_KEY, prefs);
     // This becomes today's workout on Home too
     store.set(TODAY_KEY, { date: todayInTz(), workout: current });
@@ -537,7 +547,19 @@
     const li = $$(`#gen-list [data-swap="${b.dataset.swap}"]`)[Number(b.dataset.i)];
     if (li) li.closest("li").classList.add("swapped");
   });
+  // Switch the warm-up / cool-down on or off for this workout (it is not remembered: every workout starts without them)
+  $("#gen-extras").addEventListener("click", (ev) => {
+    const b = ev.target.closest("[data-extra]"); if (!b || !current) return;
+    const k = b.dataset.extra, onNow = !(current.addons && current.addons[k]);
+    current = { ...current, addons: { ...current.addons, [k]: onNow } };
+    if (k === "warmup") current.warmup = [...(onNow ? current.warmupOpt : []), ...(current.prep || [])];
+    else current.cooldown = onNow ? current.cooldownOpt : [];
+    current.exercises = [...current.warmup, ...current.circuit, ...current.cooldown];
+    store.set(TODAY_KEY, { date: todayInTz(), workout: current });
+    renderToday(); renderGenerated();
+  });
   $("#start-gen").addEventListener("click", async () => { if (current && await claim(current)) startPlayer(current); });
+  fitLength(); // with no rest, the starting exercises and rounds are stretched to fill the chosen length
   renderChoices();
 
   // ---- My programs: saved workouts, kept on the account
@@ -1927,7 +1949,7 @@
   const progDayWorkout = (p, i) => {
     const d = p.days[i];
     const hasCircuit = Array.isArray(d.circuit) && d.circuit.length;
-    const w = Gen.generate({ goal: d.goal, location: p.location, level: p.level, length: d.length, ...Gen.presetFor(d.length),
+    const w = Gen.generate({ fixed: true, goal: d.goal, location: p.location, level: p.level, length: d.length, ...Gen.presetFor(d.length),
       ...(d.rounds ? { rounds: d.rounds } : {}), ...(d.restEx !== undefined ? { restEx: d.restEx } : {}), ...(d.restRound !== undefined ? { restRound: d.restRound } : {}),
       addons: { warmup: !hasCircuit, cooldown: !hasCircuit }, seed: p.seed + (d.seedOffset || 0) + i * 101 });
     // Fixed circuit: use exactly the exercises Dr. Jared specified (looked up by name)

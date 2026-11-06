@@ -52,6 +52,16 @@
     "Desk & posture": { beginner: "Set up once", intermediate: "Set up once", advanced: "Set up once", elite: "Set up once" }
   };
   const prescription = (ex, level) => (PRESCRIBE[ex.cat] || PRESCRIBE.Mobility)[level] || "10 reps";
+  // One-round workouts: a single long round with high reps (e.g. 20 min, elite: 35 thrusters, 30 muscle-ups, 35 Bulgarians...).
+  // Each movement gets an equal share of the time; reps = that time / seconds per rep, scaled down for lower levels.
+  const SEC_PER_REP = { Strength: 8, Power: 10, Activation: 5 };
+  const LEVEL_SHARE = { beginner: 0.45, intermediate: 0.65, advanced: 0.85, elite: 1 };
+  const round5 = (n) => Math.max(5, Math.round(n / 5) * 5);
+  function chipperRx(ex, level, secs) {
+    const f = LEVEL_SHARE[level] || 0.65;
+    if (/sec|min/.test(prescription(ex, level))) { const t = Math.min(300, round5(secs * f * 0.8)); return t >= 120 && t % 60 === 0 ? `${t / 60} min` : `${t} sec`; }
+    return `${Math.max(10, round5((secs / (SEC_PER_REP[ex.cat] || 8)) * f))} reps`;
+  }
   // Rough seconds one set takes, for the time estimate
   const workSecs = (rx) => { const m = rx.match(/(\d+)\s*(sec|min)/); return m ? Number(m[1]) * (m[2] === "min" ? 60 : 1) : 45; };
 
@@ -82,8 +92,10 @@
     return out;
   }
 
-  const DEFAULTS = { type: "workout", goal: "full", location: "home", level: "intermediate", length: 45, perRound: 8, rounds: 5, restEx: 15, restRound: 45,
-    addons: { warmup: true, cooldown: true } };
+  // No rest by default (members add rest between exercises if they need it). There is no rest between rounds in the
+  // generator, and the warm-up and cool-down are optional extras chosen after generating, never counted in the length.
+  const DEFAULTS = { type: "workout", goal: "full", location: "home", level: "intermediate", length: 45, perRound: 8, rounds: 5, restEx: 0, restRound: 0,
+    addons: { warmup: false, cooldown: false } };
 
   // Estimated minutes for a plan, used for the summary and to fit rounds to a target length
   function estimate({ warm = 0, cool = 0, perRound, rounds, restEx, restRound, work = 45 }) {
@@ -127,15 +139,18 @@
     const inRegion = (e) => !G.regions || G.regions.includes(e.rc) || (G.id === "full" && e.rc === "FB");
     const inBand = (e, lo = L.min, hi = L.max) => e.level >= lo && e.level <= hi;
     const easy = (e) => e.level <= Math.min(L.max, 4);
-    const nWarm = o.addons.warmup ? (o.length <= 15 ? 1 : 2) : 0, nCool = o.addons.cooldown ? (o.length <= 20 ? 1 : 2) : 0;
+    // The warm-up and cool-down are always picked, so they can be added after generating; they only play when switched on
+    const nWarm = o.length <= 15 ? 1 : 2, nCool = o.length <= 20 ? 1 : 2;
 
     // Warm-up: rehab-side prep (mobility / activation), easy, in the region when possible
     const warmOK = (e) => WARM.includes(e.cat) && easy(e) && isRehab(e);
     let warm = pick(pool.filter((e) => warmOK(e) && inRegion(e)), nWarm, rand, taken);
     if (warm.length < nWarm) warm.push(...pick(pool.filter(warmOK), nWarm - warm.length, rand, taken));
     // Mobility and balance add-ons are rehab-side work: they go in the warm-up, not the main circuit
-    if (!rehab && o.addons.mobility && !G.mobility) warm.push(...pick(pool.filter((e) => e.cat === "Mobility" && isRehab(e) && inRegion(e) && easy(e)), 1, rand, taken));
-    if (!rehab && o.addons.balance) warm.push(...pick(pool.filter((e) => BALANCE.test(e.name) && easy(e)), 1, rand, taken));
+    // (these always play, warm-up switched on or not)
+    const prep = [];
+    if (!rehab && o.addons.mobility && !G.mobility) prep.push(...pick(pool.filter((e) => e.cat === "Mobility" && isRehab(e) && inRegion(e) && easy(e)), 1, rand, taken));
+    if (!rehab && o.addons.balance) prep.push(...pick(pool.filter((e) => BALANCE.test(e.name) && easy(e)), 1, rand, taken));
 
     const circuit = [];
     const slot = (list) => { if (circuit.length < perRound) circuit.push(...list.slice(0, perRound - circuit.length)); };
@@ -164,19 +179,26 @@
     let cool = pick(pool.filter((e) => coolOK(e) && inRegion(e)), nCool, rand, taken);
     if (cool.length < nCool) cool.push(...pick(pool.filter(coolOK), nCool - cool.length, rand, taken));
 
-    const rx = (e) => (rehab || isRehab(e) ? rehabRx(e) : prescription(e, L.id));
+    // One round (not rehab, not a fixed program circuit) = one long high-rep round filling the whole length
+    const chipper = !rehab && !G.mobility && rounds === 1 && !o.fixed;
+    const chipSecs = chipper ? Math.round((o.length * 60) / Math.max(1, circuit.length)) : 0;
+    const rx = (e) => (rehab || isRehab(e) ? rehabRx(e) : chipper ? chipperRx(e, L.id, chipSecs) : prescription(e, L.id));
     const tag = (arr, block) => arr.map((e) => ({ ...e, block, sets: block === "Circuit" ? rx(e) : (isRehab(e) ? rehabRx(e) : prescription(e, L.id)) }));
-    const w = tag(warm, "Warm-up"), c = tag(circuit, "Circuit"), d = tag(cool, "Cool-down");
-    const restEx = rehab ? Math.max(30, Number(o.restEx) || 0) : Number(o.restEx) || 0, restRound = rehab ? Math.max(60, Number(o.restRound) || 0) : Number(o.restRound) || 0;
-    const work = c.length ? Math.round(c.reduce((s, e) => s + workSecs(e.sets), 0) / c.length) : 45;
+    const wOpt = tag(warm, "Warm-up"), pre = tag(prep, "Warm-up"), c = tag(circuit, "Circuit"), dOpt = tag(cool, "Cool-down");
+    const w = [...(o.addons.warmup ? wOpt : []), ...pre], d = o.addons.cooldown ? dOpt : [];
+    const restEx = Number(o.restEx) || 0, restRound = Number(o.restRound) || 0;
+    const work = chipper ? chipSecs : c.length ? Math.round(c.reduce((s, e) => s + workSecs(e.sets), 0) / c.length) : 45;
     return {
       title: rehab ? `Rehab Session: ${G.label}` : G.mobility ? "Mobility & Recovery Flow" : `${G.label} ${TITLES[L.id]}`,
       type: rehab ? "rehab" : "workout",
       note: rehab ? "Rehab rules: slow and controlled, pain no higher than 3/10 during or after. Stop any move that causes sharp pain." : "",
       goal: G.label, goalId: G.id, location: o.location, level: L.id, levelLabel: rehab ? "Rehab" : L.label,
-      perRound: c.length, rounds, restEx, restRound, addons: o.addons,
+      perRound: c.length, rounds, restEx, restRound, addons: o.addons, chipper, chipSecs,
       warmup: w, circuit: c, cooldown: d, exercises: [...w, ...c, ...d],
-      minutes: estimate({ warm: w.length, cool: d.length, perRound: c.length, rounds, restEx, restRound, work }),
+      // the optional extras (always picked; shown as "add a warm-up / cool-down" after generating) and their minutes
+      warmupOpt: wOpt, cooldownOpt: dOpt, prep: pre, extraMin: { warmup: estimate({ warm: wOpt.length, perRound: 0, rounds: 0, restEx: 0, restRound: 0 }), cooldown: estimate({ cool: dOpt.length, perRound: 0, rounds: 0, restEx: 0, restRound: 0 }) },
+      // the workout's length never includes the warm-up or cool-down
+      minutes: estimate({ warm: pre.length, cool: 0, perRound: c.length, rounds, restEx, restRound, work }),
       seed: o.seed, createdAt: new Date().toISOString()
     };
   }
@@ -210,8 +232,11 @@
       const c = pool.filter((e) => t(e) && fits(e));
       if (c.length) {
         const n = c[Math.floor(rand() * c.length)];
-        const list = w[key].slice(); list[index] = { ...n, block, sets: w.type === "rehab" || isRehab(n) ? rehabRx(n) : prescription(n, L.id) };
+        const list = w[key].slice(); list[index] = { ...n, block, sets: w.type === "rehab" || isRehab(n) ? rehabRx(n) : key === "circuit" && w.chipper ? chipperRx(n, L.id, w.chipSecs) : prescription(n, L.id) };
         const out = { ...w, [key]: list };
+        // a swapped warm-up / cool-down move stays swapped if the extra is switched off and on again
+        if (key === "warmup" && w.warmupOpt) out.warmupOpt = list.filter((e) => !(w.prep || []).some((x) => x.id === e.id));
+        if (key === "cooldown" && w.cooldownOpt) out.cooldownOpt = list;
         out.exercises = [...out.warmup, ...out.circuit, ...out.cooldown];
         return out;
       }
