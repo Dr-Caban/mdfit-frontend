@@ -131,7 +131,7 @@
     if (tab === "videos") renderVideos();
     if (tab === "pain" && !show.painMap) { show.painMap = true; if (window.MDFitPainMap) window.MDFitPainMap.init($("[data-painmap='app']")); }
     if (tab === "progress") { renderCalendar(); if (typeof loadBoard === "function") loadBoard(); }
-    if (["programs", "learn", "premium", "tips"].includes(tab)) renderContent(tab, sub);
+    if (["programs", "learn", "premium", "tips"].includes(tab)) renderContent(tab, tab === "programs" ? String(hash).split("/").slice(1).join("/") : sub);
     if (tab === "messages") openMessages(); else clearInterval(msgPoll);
     $("#more-btn").classList.toggle("on", $$(".tabbar .ov").some((b) => b.dataset.tab === tab));
     const ms = $("#more-sheet"); if (ms.open) ms.close();
@@ -1944,40 +1944,86 @@
     return { ...w, title: `${p.title}: ${d.name}`, key: `prog-${p.id}-d${i}`, noRest: REHAB_CATS.has(p.category) };
   };
   const doneCount = (p, i) => allWorkouts.filter((w) => w.key === `prog-${p.id}-d${i}`).length;
-  // Sport Performance: sport sub-tabs (Golf, Pickleball, ...), each with Beginner / Intermediate / Advanced sub-tabs
-  let progSport = "", progLevel = "";
+  // Programs are navigated like folders, each step with its own address (back button and links work):
+  //   #programs                          all programs; each sport is one folder card
+  //   #programs/sport/<Sport>            the sport's levels (Beginner / Intermediate / Advanced)
+  //   #programs/sport/<Sport>/<level>    only when a level has more than one program
+  //   #programs/<id>                     a program; week-by-week protocols list their weeks
+  //   #programs/<id>/<week key>          one week of a protocol
   const LEVEL_ORDER = ["beginner", "intermediate", "advanced"];
   const sportOf = (p) => p.sport || (p.category === "Sport Performance" ? p.title.split(/\s+/)[0] : "");
-  function renderProgramsView(sub) {
-    const cats = ["All", ...C.categories.filter((c) => C.programs.some((p) => p.category === c))];
-    let chips = cats.map((c) => `<button type="button" class="chip" data-pcat="${esc(c)}" aria-selected="${c === progCat}">${esc(c)}</button>`).join("");
-    let list = C.programs.filter((p) => progCat === "All" || p.category === progCat);
-    if (progCat === "Sport Performance") {
-      const sports = [...new Set(list.map(sportOf).filter(Boolean))].sort();
-      if (!sports.includes(progSport)) progSport = sports[0] || "";
-      const inSport = list.filter((p) => sportOf(p) === progSport);
-      const levels = LEVEL_ORDER.filter((l) => inSport.some((p) => p.level === l));
-      if (!levels.includes(progLevel)) progLevel = levels[0] || "";
-      chips += `<div class="sub-tabs" role="tablist" aria-label="Sport">${sports.map((sp) => `<button type="button" class="chip sub" data-psport="${esc(sp)}" aria-selected="${sp === progSport}">${esc(sp)}</button>`).join("")}</div>`;
-      if (levels.length > 1) chips += `<div class="sub-tabs lvl" role="tablist" aria-label="Level">${levels.map((l) => `<button type="button" class="chip sub" data-plevel="${l}" aria-selected="${l === progLevel}">${l[0].toUpperCase() + l.slice(1)}</button>`).join("")}</div>`;
-      list = inSport.filter((p) => !progLevel || p.level === progLevel);
-    }
-    $("#prog-cats").innerHTML = chips;
-    $("#prog-grid").innerHTML = list.map((p) => {
-      const isProto = PROTO.ids.has(p.id), nWeeks = isProto ? ((PROTO.weekCounts || {})[p.id] || p.weeks) : 0;
-      const weeksStarted = isProto ? new Set(allWorkouts.filter((w) => String(w.key || "").startsWith(`prog-${p.id}-w`)).map((w) => w.key)).size : 0;
-      const sessions = isProto ? nWeeks : p.weeks * p.days.length, done = isProto ? weeksStarted : p.days.reduce((n, _, i) => n + doneCount(p, i), 0);
-      return `<button type="button" class="prog-card${p.image ? " prog-card-img" : ""}" data-prog="${p.id}">
+  const isSport = (p) => p.category === "Sport Performance" && !!sportOf(p);
+  const sportPrograms = (sp) => C.programs.filter((p) => isSport(p) && sportOf(p) === sp);
+  const lvlName = (l) => (l ? l[0].toUpperCase() + l.slice(1) : "");
+  const enc = encodeURIComponent;
+  // "6 weeks" when each part is one week; otherwise "13 parts" (e.g. Baseline, Week 0, Weeks 1-10, Weeks 11-12)
+  const partsLabel = (n, p) => `${n} ${n === p.weeks ? (n === 1 ? "week" : "weeks") : (n === 1 ? "part" : "parts")}`;
+  const sportHref = (sp, lvl) => `programs/sport/${enc(sp)}${lvl ? "/" + lvl : ""}`;
+  function crumbs(parts) {
+    return `<nav class="crumbs" aria-label="You are here">${parts.map(([label, href], i) => (i < parts.length - 1
+      ? `<button type="button" class="crumb" data-goto="${esc(href)}">${esc(label)}</button><span class="crumb-sep" aria-hidden="true">›</span>`
+      : `<span class="crumb now" aria-current="page">${esc(label)}</span>`)).join("")}</nav>`;
+  }
+  const progCrumbs = (p) => { const sp = isSport(p) && sportOf(p); return [["Programs", "programs"], ...(sp ? [[sp, sportHref(sp)], [lvlName(p.level), `programs/${p.id}`]] : [[p.title, `programs/${p.id}`]])]; };
+  const progStats = (p) => {
+    const isProto = PROTO.ids.has(p.id), nWeeks = isProto ? ((PROTO.weekCounts || {})[p.id] || p.weeks) : 0;
+    const weeksStarted = isProto ? new Set(allWorkouts.filter((w) => String(w.key || "").startsWith(`prog-${p.id}-w`)).map((w) => w.key)).size : 0;
+    const sessions = isProto ? nWeeks : p.weeks * p.days.length, done = isProto ? weeksStarted : p.days.reduce((n, _, i) => n + doneCount(p, i), 0);
+    return { isProto, nWeeks, sessions, done };
+  };
+  const progBar = (st) => (st.done ? `<span class="pc-bar"><i style="width:${Math.min(100, Math.round((st.done / st.sessions) * 100))}%"></i></span><span class="pc-done">${st.done} of ${st.sessions} ${st.isProto ? "weeks started" : "sessions done"}</span>` : "");
+  function programCard(p, opts = {}) {
+    const st = progStats(p);
+    return `<button type="button" class="prog-card${p.image ? " prog-card-img" : ""}" data-goto="programs/${p.id}">
         ${p.image ? progPoster(p, "pc-img", "(max-width: 700px) 100vw, 50vw") : ""}
-        <span class="pc-cat">${esc(p.category)}</span>${p.locked ? lockBadge : ""}
-        <b>${esc(p.title)}</b><p>${esc(p.summary)}</p>
-        <span class="pc-meta">${p.weeks} weeks · ${isProto ? "week-by-week plan" : `${p.days.length} days/week`} · ${esc(p.level[0].toUpperCase() + p.level.slice(1))} · ${esc((Gen.LOCATIONS.find((l) => l.id === p.location) || {}).label || "")}</span>
-        ${done ? `<span class="pc-bar"><i style="width:${Math.min(100, Math.round((done / sessions) * 100))}%"></i></span><span class="pc-done">${done} of ${sessions} ${isProto ? "weeks started" : "sessions done"}</span>` : ""}
+        <span class="pc-cat">${esc(opts.kicker || p.category)}</span>${p.locked ? lockBadge : ""}
+        <b>${esc(opts.title || p.title)}</b><p>${esc(p.summary)}</p>
+        <span class="pc-meta">${st.isProto ? `${partsLabel(st.nWeeks, p)} · week-by-week plan` : `${p.weeks} weeks · ${p.days.length} days/week`} · ${esc(lvlName(p.level))} · ${esc((Gen.LOCATIONS.find((l) => l.id === p.location) || {}).label || "")}</span>
+        ${progBar(st)}
       </button>`;
-    }).join("");
-    const open = sub && C.programs.find((p) => p.id === sub);
+  }
+  function sportCard(sp) {
+    const ps = sportPrograms(sp), levels = LEVEL_ORDER.filter((l) => ps.some((p) => p.level === l)), img = ps.find((p) => p.image);
+    return `<button type="button" class="prog-card folder-card${img ? " prog-card-img" : ""}" data-goto="${esc(sportHref(sp))}">
+        ${img ? progPoster(img, "pc-img", "(max-width: 700px) 100vw, 50vw") : ""}
+        <span class="pc-cat">Sport Performance</span>
+        <b>${esc(sp)}</b><p>${levels.length > 1 ? `Choose your level: ${levels.map(lvlName).join(" · ")}` : esc((ps[0] || {}).summary || "")}</p>
+        <span class="pc-meta">${levels.length} ${levels.length === 1 ? "level" : "levels"} · open folder ›</span>
+      </button>`;
+  }
+  function renderSportFolder(sp, level) {
+    const ps = sportPrograms(sp);
+    if (!ps.length) { go("programs"); return; }
+    $("#prog-grid").hidden = true; $("#prog-cats").hidden = true; $("#prog-detail").hidden = false;
+    const box = $("#prog-detail"); box.dataset.id = "";
+    const levels = LEVEL_ORDER.filter((l) => ps.some((p) => p.level === l)).concat([...new Set(ps.map((p) => p.level))].filter((l) => !LEVEL_ORDER.includes(l)));
+    if (level) {
+      const at = ps.filter((p) => p.level === level);
+      box.innerHTML = `${crumbs([["Programs", "programs"], [sp, sportHref(sp)], [lvlName(level), ""]])}<div class="prog-grid">${at.map((p) => programCard(p)).join("")}</div>`;
+      return;
+    }
+    box.innerHTML = `${crumbs([["Programs", "programs"], [sp, ""]])}
+      <div class="card prog-head"><span class="pc-cat">Sport Performance</span><h2>${esc(sp)}</h2><p class="muted">Pick your level. Each level is its own program, week by week.</p></div>
+      <div class="level-list">${levels.map((l) => {
+        const at = ps.filter((p) => p.level === l), one = at.length === 1 ? at[0] : null, st = one ? progStats(one) : null;
+        return `<button type="button" class="level-card lvl-${esc(l)}" data-goto="${esc(one ? `programs/${one.id}` : sportHref(sp, l))}">
+          <span class="lc-level">${esc(lvlName(l))}</span>
+          <b>${esc(one ? one.title : `${at.length} programs`)}</b>
+          ${one ? `<p>${esc(one.summary)}</p><span class="pc-meta">${st.isProto ? `${partsLabel(st.nWeeks, one)} · week-by-week plan` : `${one.weeks} weeks · ${one.days.length} days/week`}</span>${progBar(st)}` : ""}
+          <span class="lc-go" aria-hidden="true">›</span></button>`;
+      }).join("")}</div>`;
+  }
+  function renderProgramsView(path) {
+    const seg = String(path || "").split("/").filter(Boolean).map((x) => { try { return decodeURIComponent(x); } catch { return x; } });
+    if (seg[0] === "sport" && seg[1]) return renderSportFolder(seg[1], seg[2]);
+    const cats = ["All", ...C.categories.filter((c) => C.programs.some((p) => p.category === c))];
+    $("#prog-cats").innerHTML = cats.map((c) => `<button type="button" class="chip" data-pcat="${esc(c)}" aria-selected="${c === progCat}">${esc(c)}</button>`).join("");
+    const list = C.programs.filter((p) => progCat === "All" || p.category === progCat);
+    const sports = [...new Set(list.filter(isSport).map(sportOf))].sort();
+    $("#prog-grid").innerHTML = list.filter((p) => !isSport(p)).map((p) => programCard(p)).join("") + sports.map(sportCard).join("");
+    const open = seg[0] && C.programs.find((p) => p.id === seg[0]);
     $("#prog-grid").hidden = !!open; $("#prog-cats").hidden = !!open; $("#prog-detail").hidden = !open;
-    if (open) renderProgram(open);
+    if (open) renderProgram(open, seg[1]);
   }
   // ---- Week-by-week protocols (Dr. Jared's weekly sheets, written out in full): /data/protocols/<program id>.json
   // Loaded on demand; a program with a protocol file shows a week picker instead of the generic day list.
@@ -2048,30 +2094,31 @@
       ${x.proTip ? `<p class="pex-tip"><b>Pro tip:</b> ${esc(x.proTip)}</p>` : ""}
     </article>`;
   }
-  async function renderProtocol(p) {
+  // A week's exercises; sport weeks group them by workout (x.workout, e.g. "Workout A: Foundation & Lower Body Control")
+  function groupedExercises(wk) {
+    const groups = [];
+    for (const x of wk.exercises) { const g = x.workout || ""; let last = groups[groups.length - 1]; if (!last || last.name !== g) groups.push((last = { name: g, items: [] })); last.items.push(x); }
+    if (groups.length === 1 && !groups[0].name) return `<div class="pex-list">${wk.exercises.map(protoExerciseCard).join("")}</div>`;
+    return groups.map((g) => `${g.name ? `<h3 class="pex-group">${esc(g.name)}</h3>` : ""}<div class="pex-list">${g.items.map(protoExerciseCard).join("")}</div>`).join("");
+  }
+  async function renderProtocol(p, weekKey) {
     const box = $("#prog-detail"), pr = await loadProtocol(p.id);
     if (!pr || box.dataset.id !== p.id) return false;
-    const cur = protoCurrentWeek(p, pr), wk = pr.weeks.find((w) => w.key === cur) || pr.weeks[0];
     const pg = pr.progression || {}, focusOf = (k) => ((pg.overview || []).find((o) => String(o.week) === String(k)) || {}).focus || "";
-    const doneWeeks = pr.weeks.filter((w) => protoDone(p, w.key)).length;
     const section = (title, html) => (html ? `<details class="card proto-more"><summary>${title}</summary>${html}</details>` : "");
-    box.querySelector(".prog-body").innerHTML = `
+    const wk = weekKey && pr.weeks.find((w) => w.key === weekKey);
+    const weekHref = (w) => `programs/${p.id}/${enc(w.key)}`;
+    if (!wk) {
+      // Program overview: the goal, then every week as its own page
+      const cur = protoCurrentWeek(p, pr), doneWeeks = pr.weeks.filter((w) => protoDone(p, w.key)).length;
+      box.querySelector(".prog-body").innerHTML = `
       ${pr.goal ? `<div class="card proto-goal"><span class="label accent">The goal</span><p>${esc(pr.goal)}</p>${pr.tagline ? `<p class="muted small">${esc(pr.tagline)}</p>` : ""}</div>` : ""}
-      <div class="proto-weeks" role="tablist" aria-label="Week">${pr.weeks.map((w) => `<button type="button" role="tab" class="chip${protoDone(p, w.key) ? " done" : ""}" data-pweek="${esc(w.key)}" aria-selected="${w.key === wk.key}">${esc(w.label)}</button>`).join("")}</div>
-      <p class="muted small proto-progress">${doneWeeks} of ${pr.weeks.length} weeks started · tap a week to see its plan</p>
-      <div class="card proto-week">
-        <div class="pd-top"><div><span class="label accent">${esc(wk.label)}${focusOf(wk.key) ? ` · ${esc(focusOf(wk.key))}` : ""}</span>
-          <h3>${wk.exercises.length} exercise${wk.exercises.length === 1 ? "" : "s"} this week</h3>
-          <p class="muted small">${protoDone(p, wk.key) ? `Done ${protoDone(p, wk.key)}× this week's routine` : "Do this routine daily unless the card says otherwise."}</p></div>
-          ${p.locked || !wk.exercises.length ? "" : `<button type="button" class="btn-blue sm" data-pweek-start="${esc(wk.key)}"><svg viewBox="0 0 24 24"><path d="M7 4v16l13-8z"/></svg> Start</button>`}</div>
-        ${wk.goal ? `<p class="proto-wgoal"><b>This week's goal:</b> ${esc(wk.goal)}</p>` : ""}
-        ${wk.focus && wk.focus !== focusOf(wk.key) ? `<p class="proto-wgoal"><b>Focus:</b> ${esc(wk.focus)}</p>` : ""}
-        ${textList(wk.principles).length ? `<ul class="proto-wprin">${textList(wk.principles).map((t) => `<li>${esc(t)}</li>`).join("")}</ul>` : ""}
-        ${wk.notes ? `<p class="prog-notes">${esc(wk.notes).replace(/\n/g, "<br>")}</p>` : ""}
-        ${extraSections(wk, STD_WK)}
-        ${wk.driveId ? `<button type="button" class="proto-sheet" data-sheet="${esc(wk.key)}" aria-label="Open the ${esc(wk.label)} sheet full size"><img src="${sheetSrc(pr, wk, 960)}" srcset="${sheetSrc(pr, wk, 960)} 960w, ${sheetSrc(pr, wk, 1600)} 1600w" sizes="(max-width: 820px) 100vw, 760px" alt="Dr. Jared's ${esc(pr.title)} sheet, ${esc(wk.label)}" loading="lazy" decoding="async" onerror="this.closest('.proto-sheet').hidden=true"><span>Tap to enlarge</span></button>` : ""}
-        <div class="pex-list">${wk.exercises.map(protoExerciseCard).join("")}</div>
-      </div>
+      <h3 class="proto-h">${partsLabel(pr.weeks.length, p)[0].toUpperCase() + partsLabel(pr.weeks.length, p).slice(1)}, one page each</h3>
+      <p class="muted small proto-progress">${doneWeeks} of ${pr.weeks.length} started · open one to see its exercises and sheet</p>
+      <div class="proto-wk-list">${pr.weeks.map((w) => { const n = protoDone(p, w.key), f = focusOf(w.key) || w.focus || ""; return `<button type="button" class="proto-wk${n ? " done" : ""}${w.key === cur ? " cur" : ""}" data-goto="${esc(weekHref(w))}">
+        <span class="pw-label">${esc(w.label)}</span>${w.key === cur ? `<span class="pw-next">${n ? "Current" : "Start here"}</span>` : ""}
+        ${f ? `<span class="pw-focus">${esc(f)}</span>` : ""}
+        <span class="pw-meta">${w.exercises.length} exercise${w.exercises.length === 1 ? "" : "s"}${n ? ` · done ${n}×` : ""}</span><span class="pw-go" aria-hidden="true">›</span></button>`; }).join("")}</div>
       ${section("Key principles", (pr.principles || []).length ? `<dl class="proto-dl">${pr.principles.map((x) => `<div><dt>${esc(x.title)}</dt><dd>${esc(x.text)}</dd></div>`).join("")}</dl>` : "")}
       ${section("Daily basics: do these every day", (pr.dailyBasics || []).length ? `<dl class="proto-dl">${pr.dailyBasics.map((x) => `<div><dt>${esc(x.title)}</dt><dd>${esc(x.text)}</dd></div>`).join("")}</dl>` : "")}
       ${section("How the weeks progress", [
@@ -2081,20 +2128,44 @@
         (pg.callouts || []).map((s) => `<p class="prog-notes">${esc(s)}</p>`).join(""),
         pg.remember ? `<h5>Remember</h5><p>${esc(pg.remember)}</p>` : "",
         pg.footer ? `<p class="proto-footer">${esc(pg.footer)}</p>` : ""].join(""))}`;
-    box.dataset.shownWeek = wk.key;
+      return true;
+    }
+    // One week, on its own page
+    const i = pr.weeks.indexOf(wk), prev = pr.weeks[i - 1], next = pr.weeks[i + 1];
+    box.innerHTML = `${crumbs([...progCrumbs(p), [wk.label, ""]])}
+      <div class="card proto-week">
+        <div class="pd-top"><div><span class="label accent">${esc(isSport(p) ? `${sportOf(p)} · ${lvlName(p.level)}` : pr.title)}</span>
+          <h2 class="pw-title">${esc(wk.label)}</h2>
+          ${focusOf(wk.key) ? `<p class="proto-wgoal"><b>Focus:</b> ${esc(focusOf(wk.key))}</p>` : ""}
+          <p class="muted small">${wk.exercises.length} exercise${wk.exercises.length === 1 ? "" : "s"} · ${protoDone(p, wk.key) ? `done ${protoDone(p, wk.key)}×` : "do this routine daily unless the card says otherwise"}</p></div>
+          ${p.locked || !wk.exercises.length ? "" : `<button type="button" class="btn-blue sm" data-pweek-start="${esc(wk.key)}"><svg viewBox="0 0 24 24"><path d="M7 4v16l13-8z"/></svg> Start</button>`}</div>
+        ${wk.goal ? `<p class="proto-wgoal"><b>This week's goal:</b> ${esc(wk.goal)}</p>` : ""}
+        ${wk.focus && wk.focus !== focusOf(wk.key) ? `<p class="proto-wgoal"><b>Focus:</b> ${esc(wk.focus)}</p>` : ""}
+        ${textList(wk.principles).length ? `<ul class="proto-wprin">${textList(wk.principles).map((t) => `<li>${esc(t)}</li>`).join("")}</ul>` : ""}
+        ${wk.notes ? `<p class="prog-notes">${esc(wk.notes).replace(/\n/g, "<br>")}</p>` : ""}
+        ${extraSections(wk, STD_WK)}
+        ${wk.driveId ? `<button type="button" class="proto-sheet" data-sheet="${esc(wk.key)}" aria-label="Open the ${esc(wk.label)} sheet full size"><img src="${sheetSrc(pr, wk, 960)}" srcset="${sheetSrc(pr, wk, 960)} 960w, ${sheetSrc(pr, wk, 1600)} 1600w" sizes="(max-width: 820px) 100vw, 760px" alt="Dr. Jared's ${esc(pr.title)} sheet, ${esc(wk.label)}" loading="lazy" decoding="async" onerror="this.closest('.proto-sheet').hidden=true"><span>Tap to enlarge</span></button>` : ""}
+        ${groupedExercises(wk)}
+      </div>
+      <nav class="proto-pn" aria-label="Other weeks">
+        ${prev ? `<button type="button" class="btn-ghost sm" data-goto="${esc(weekHref(prev))}">‹ ${esc(prev.label)}</button>` : "<span></span>"}
+        <button type="button" class="btn-ghost sm" data-goto="programs/${p.id}">All weeks</button>
+        ${next ? `<button type="button" class="btn-ghost sm" data-goto="${esc(weekHref(next))}">${esc(next.label)} ›</button>` : "<span></span>"}
+      </nav>
+      ${p.locked ? `<div class="locked-note">${unlockBtn("this program")}</div>` : ""}`;
     return true;
   }
-  function renderProgram(p) {
+  function renderProgram(p, weekKey) {
     $("#prog-detail").dataset.id = p.id;
     renderProgramDays(p);
-    // Week-by-week protocol? Swap the day list for it once its file has loaded (falls back to the day list otherwise)
-    loadProtocol(p.id).then((pr) => { if (pr) renderProtocol(p); });
+    // Week-by-week protocol? Swap the day list for its weeks (or the one week asked for) once its file has loaded
+    loadProtocol(p.id).then((pr) => { if (pr) renderProtocol(p, weekKey); else if (weekKey) history.replaceState(null, "", "#programs/" + p.id); });
   }
   function renderProgramDays(p) {
     const wk = (i) => Math.min(p.weeks, doneCount(p, i) + 1);
-    $("#prog-detail").innerHTML = `<button type="button" class="link-sm back-link" data-goto="programs">‹ All programs</button>
+    $("#prog-detail").innerHTML = `${crumbs(progCrumbs(p))}
       <div class="card prog-head${p.image ? " prog-head-img" : ""}">${p.image ? progPoster(p, "ph-img", "(max-width: 520px) 100vw, 480px") : ""}<span class="pc-cat">${esc(p.category)}</span>${p.locked ? lockBadge : ""}<h2>${esc(p.title)}</h2><p>${esc(p.summary)}</p>
-        <p class="muted small">${p.weeks} weeks · ${p.days.length} sessions a week · ${esc(p.level)} · ${esc((Gen.LOCATIONS.find((l) => l.id === p.location) || {}).label || "")}</p>
+        <p class="muted small">${PROTO.ids.has(p.id) ? `${partsLabel((PROTO.weekCounts || {})[p.id] || p.weeks, p)} · week-by-week plan` : `${p.weeks} weeks · ${p.days.length} session${p.days.length === 1 ? "" : "s"} a week`} · ${esc(lvlName(p.level))} · ${esc((Gen.LOCATIONS.find((l) => l.id === p.location) || {}).label || "")}</p>
         ${p.notes ? `<p class="prog-notes">${esc(p.notes)}</p>` : ""}</div>
       <div class="prog-body">${p.days.map((d, i) => { const w = progDayWorkout(p, i); return `<div class="card prog-day">
         <div class="pd-top"><div><span class="label accent">Day ${i + 1} · Week ${wk(i)} of ${p.weeks}</span><h3>${esc(d.name)}</h3>
@@ -2105,18 +2176,12 @@
   }
   $("#sheet-img").addEventListener("click", (e) => e.target.classList.toggle("zoomed"));
   $("#prog-cats").addEventListener("click", (e) => {
-    const b = e.target.closest("[data-pcat]"), sp = e.target.closest("[data-psport]"), lv = e.target.closest("[data-plevel]");
-    if (b) { progCat = b.dataset.pcat; progSport = ""; progLevel = ""; }
-    else if (sp) { progSport = sp.dataset.psport; progLevel = ""; }
-    else if (lv) progLevel = lv.dataset.plevel;
-    else return;
+    const b = e.target.closest("[data-pcat]"); if (!b) return;
+    progCat = b.dataset.pcat;
     renderProgramsView();
   });
-  $("#prog-grid").addEventListener("click", (e) => { const b = e.target.closest("[data-prog]"); if (b) go("programs/" + b.dataset.prog); });
   $("#prog-detail").addEventListener("click", async (e) => {
     const p0 = C.programs.find((x) => x.id === $("#prog-detail").dataset.id); if (!p0) return;
-    const wb = e.target.closest("button[data-pweek]");
-    if (wb) { PROTO.week[p0.id] = wb.dataset.pweek; await renderProtocol(p0); $("#prog-detail .proto-week").scrollIntoView({ behavior: "smooth", block: "start" }); return; }
     const ws = e.target.closest("[data-pweek-start]");
     if (ws) { const pr = await loadProtocol(p0.id), wk = pr && pr.weeks.find((w) => w.key === ws.dataset.pweekStart); if (wk && !p0.locked) startPlayer(protoWorkout(p0, pr, wk)); return; }
     const sh = e.target.closest("[data-sheet]");
@@ -2460,7 +2525,7 @@
     apiAuth("GET", "/api/me/vitals").then((v) => { vitals = v; renderPerf(); }).catch(() => renderPerf());
     pollUnread();
     apiAuth("GET", "/api/me/access").then((a) => { access = a; renderToday(); renderAccessBadge(); }).catch(() => {});
-    loadContent().then(() => { renderFeaturedPrograms(); const t = location.hash.slice(1).split("/"); if (["programs", "learn", "premium", "tips"].includes(t[0])) renderContent(t[0], t[1]); });
+    loadContent().then(() => { renderFeaturedPrograms(); const t = location.hash.slice(1).split("/"); if (["programs", "learn", "premium", "tips"].includes(t[0])) renderContent(t[0], t[0] === "programs" ? t.slice(1).join("/") : t[1]); });
     if (lb.status === "fulfilled") { lib = lb.value; renderPrograms(); if (!$("#view-videos").hidden) renderVideos(); }
     renderStats(); renderEvents(); renderActivity(); renderNotes(); renderCalendar();
     setTimeout(notifyVisits, 1200);
