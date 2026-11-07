@@ -670,6 +670,50 @@
 
   // Client type: inpatients (in-clinic) never pay for video calls or consultations; everyone else is an outpatient
   const typeBadge = (t) => t === "inpatient" ? `<span class="badge ctype in">Inpatient</span>` : `<span class="badge ctype out">Outpatient</span>`;
+  // ---- Programs Dr. Jared assigns to a client: grouped by category (sports by sport), each with its level and length,
+  // a search box, an optional note per program, and progress on the ones assigned (from the sessions the app logs)
+  const LEVEL_NAMES = { beginner: "Beginner", intermediate: "Intermediate", advanced: "Expert", elite: "Pro" };
+  const LEVEL_ORDER = ["beginner", "intermediate", "advanced", "elite"];
+  const PROG_CATS = ["Rehabilitation", "Mobility", "Desk & posture", "Anti-inflammatory", "Weight loss", "Hypertrophy", "Strength", "Performance", "Sport Performance"];
+  const lvlName = (l) => LEVEL_NAMES[l] || l || "";
+  const sportOf = (p) => p.sport || (p.category === "Sport Performance" ? String(p.title).split(/\s+/)[0] : "");
+  const progGroup = (p) => (p.category === "Sport Performance" && sportOf(p) ? `Sport · ${sportOf(p)}` : p.category || "Other");
+  const progMeta = (p) => [p.category === "Sport Performance" && sportOf(p), lvlName(p.level), `${p.weeks} wk`].filter(Boolean).join(" · ");
+  let protoIdx = null; // /data/protocols/index.json: which programs are week-by-week, and how many parts each has
+  const loadProtoIdx = () => protoIdx || (protoIdx = fetch("/data/protocols/index.json", { cache: "no-cache" }).then((r) => (r.ok ? r.json() : {})).catch(() => ({})));
+  const wkLabel = (k) => (/^\d+$/.test(k) ? `Week ${k}` : /^\d+\s*-\s*\d+$/.test(k) ? `Weeks ${k}` : String(k).replace(/-/g, " ").replace(/^./, (x) => x.toUpperCase()));
+  function progressLine(p, pr, idx) {
+    if (!pr || !pr.sessions) return "Not started yet";
+    const parts = (idx && idx.weeks && idx.weeks[p.id]) || 0, out = [], wk = pr.weeksStarted && pr.weeksStarted.length;
+    if (wk) out.push(`reached ${wkLabel(pr.lastWeek)}`, `${wk}${parts ? ` of ${parts}` : ""} ${parts && parts !== p.weeks ? "parts" : "weeks"} started`, `${pr.sessions} session${pr.sessions === 1 ? "" : "s"}`);
+    else out.push(`${pr.sessions} of ${p.weeks * (p.days || []).length} sessions`);
+    out.push(`last ${fmtDate(pr.lastDate)}`);
+    return out.join(" · ");
+  }
+  function programsFormBody(c, progs) {
+    const first = esc(c.name.split(" ")[0]), assigned = new Map((c.assignedPrograms || []).map((x) => [x.id, x]));
+    const hist = new Map((c.programHistory || []).map((x) => [x.id, x])), prog = c.programProgress || {}, idx = c._protoIdx || {};
+    const byId = new Map(progs.map((p) => [p.id, p]));
+    const groups = new Map();
+    [...progs].sort((a, b) => {
+      const ca = PROG_CATS.indexOf(a.category), cb = PROG_CATS.indexOf(b.category);
+      return (ca < 0 ? 99 : ca) - (cb < 0 ? 99 : cb) || progGroup(a).localeCompare(progGroup(b)) || LEVEL_ORDER.indexOf(a.level) - LEVEL_ORDER.indexOf(b.level) || a.title.localeCompare(b.title);
+    }).forEach((p) => { const g = progGroup(p); if (!groups.has(g)) groups.set(g, []); groups.get(g).push(p); });
+    const mine = [...assigned.values()].filter((x) => byId.has(x.id));
+    return `<p class="muted fine">Checked programs show on ${first}'s Home under "From Dr. Jared", with your note. The email ${first} gets only says a program was added; your note stays in the app.</p>
+      ${mine.length ? `<div class="prog-mine"><span class="label-sm">Assigned now</span><ul>${mine.map((x) => { const p = byId.get(x.id); return `<li><div><b>${esc(p.title)}</b> <span class="muted">${esc(progMeta(p))}</span>
+        <span class="prog-progress">${esc(progressLine(p, prog[x.id], idx))}</span>${x.note ? `<span class="muted fine prog-note">Note: ${esc(x.note)}</span>` : ""}</div>
+        <button type="button" class="mini" data-unassign="${esc(x.id)}">Unassign</button></li>`; }).join("")}</ul></div>` : ""}
+      <label class="prog-search-l">Find a program<input type="search" class="prog-search" placeholder="Knee, golf, beginner…" autocomplete="off"></label>
+      <div class="prog-picks">${[...groups].map(([g, ps]) => `<fieldset class="prog-group"><legend>${esc(g)}</legend>${ps.map((p) => {
+        const a = assigned.get(p.id), note = a ? a.note : (hist.get(p.id) || {}).note || "";
+        const q = [p.title, p.category, sportOf(p), lvlName(p.level), p.level, `${p.weeks} wk`, p.id].join(" ").toLowerCase();
+        return `<div class="prog-pick" data-q="${esc(q)}"><label class="check"><input type="checkbox" name="prog" value="${esc(p.id)}" ${a ? "checked" : ""}> <span><b>${esc(p.title)}</b> <span class="muted">${esc(progMeta(p))}</span></span></label>
+          <input type="text" name="note-${esc(p.id)}" maxlength="300" placeholder="Note for ${first} (optional)" aria-label="Note for ${first} about ${esc(p.title)}" value="${esc(note)}" ${a ? "" : "hidden"}></div>`;
+      }).join("")}</fieldset>`).join("")}</div>
+      <p class="muted fine prog-none" hidden>No program matches that search.</p>
+      <button class="btn btn-sm" type="submit">Save programs</button><p class="form-msg" role="status"></p>`;
+  }
   const careBox = (c, types, progs, roomUrl) => {
     const first = esc(c.name.split(" ")[0]), assigned = new Map((c.assignedPrograms || []).map((x) => [x.id, x]));
     const today = new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" });
@@ -696,13 +740,8 @@
             <label>Message (optional)<textarea name="message" rows="2" maxlength="500"></textarea></label>
             <button class="btn btn-sm" type="submit">Schedule and email the link</button><p class="form-msg" role="status"></p>
           </form></details>
-        <details class="care"><summary>Programs for ${first} (${assigned.size})</summary>
-          <form class="form care-form" data-care="programs" novalidate>
-            <p class="muted fine">Checked programs show on ${first}'s Home under "From Dr. Jared".</p>
-            <div class="prog-picks">${progs.map((p) => `<div class="prog-pick"><label class="check"><input type="checkbox" name="prog" value="${esc(p.id)}" ${assigned.has(p.id) ? "checked" : ""}> ${esc(p.title)}</label>
-              <input type="text" name="note-${esc(p.id)}" maxlength="300" placeholder="Note for ${first} (optional)" value="${esc((assigned.get(p.id) || {}).note || "")}"></div>`).join("")}</div>
-            <button class="btn btn-sm" type="submit">Save programs</button><p class="form-msg" role="status"></p>
-          </form></details>
+        <details class="care care-progs"><summary>Programs for ${first} (${assigned.size})</summary>
+          <form class="form care-form" data-care="programs" novalidate>${programsFormBody(c, progs)}</form></details>
       </div></section>`;
   };
 
@@ -727,8 +766,8 @@
   }
 
   async function openClient(id) {
-    const [c, st, ct] = await Promise.all([api("GET", `/api/admin/clients/${id}`), api("GET", "/api/admin/settings"), contentCache ? contentCache : api("GET", "/api/admin/content")]);
-    contentCache = ct;
+    const [c, st, ct, pidx] = await Promise.all([api("GET", `/api/admin/clients/${id}`), api("GET", "/api/admin/settings"), contentCache ? contentCache : api("GET", "/api/admin/content"), loadProtoIdx()]);
+    contentCache = ct; c._protoIdx = pidx;
     const box = $("#client-detail");
     const p = c.plan;
     box.innerHTML = `
@@ -797,13 +836,34 @@
         } else {
           const programs = $$("[name=prog]:checked", f).map((x) => ({ id: x.value, note: f.elements[`note-${x.value}`].value }));
           const r = await api("PUT", `/api/admin/clients/${id}/programs`, { programs });
+          Object.assign(c, { assignedPrograms: r.assignedPrograms, programHistory: r.programHistory || [], programProgress: r.programProgress || {} });
           $("summary", f.closest("details")).textContent = `Programs for ${c.name.split(" ")[0]} (${r.assignedPrograms.length})`;
-          msg.textContent = "Saved. They're on the client's Home now.";
+          f.innerHTML = programsFormBody(c, ct.programs || []);
+          const n = r.assignedPrograms.length, m2 = $(".form-msg", f); m2.className = "form-msg ok";
+          m2.textContent = n ? `Saved. ${n} program${n === 1 ? " is" : "s are"} on ${c.name.split(" ")[0]}'s Home now.` : "Saved. No programs assigned.";
+          return;
         }
         msg.className = "form-msg ok";
       } catch (err) { msg.className = "form-msg err"; msg.textContent = err.message; }
       btn.disabled = false;
     })));
+    const pf = $("form[data-care=programs]", box);
+    pf.addEventListener("input", (e) => {
+      if (!e.target.matches(".prog-search")) return;
+      const q = e.target.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+      $$(".prog-pick", pf).forEach((r) => (r.hidden = !q.every((w) => r.dataset.q.includes(w))));
+      $$(".prog-group", pf).forEach((g) => (g.hidden = !$$(".prog-pick", g).some((r) => !r.hidden)));
+      $(".prog-none", pf).hidden = $$(".prog-pick", pf).some((r) => !r.hidden);
+    });
+    pf.addEventListener("change", (e) => {
+      if (e.target.name !== "prog") return;
+      const n = pf.elements[`note-${e.target.value}`]; n.hidden = !e.target.checked; if (e.target.checked) n.focus();
+    });
+    pf.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-unassign]"); if (!b) return;
+      const cb = $$("[name=prog]", pf).find((x) => x.value === b.dataset.unassign); if (cb) cb.checked = false;
+      pf.requestSubmit();
+    });
     const pfm = $("#plan-form", box);
     pfm.addEventListener("submit", run(async (e) => {
       e.preventDefault();
@@ -1231,13 +1291,14 @@
     programs: { blank: { id: "", title: "", category: "Strength", level: "beginner", location: "home", weeks: 4, seed: Math.floor(Math.random() * 90000) + 1000, access: "free", summary: "", notes: "", days: [{ name: "Day 1", goal: "full", length: 30 }] }, html: (x, c) => `
       <label>Title<input data-f="title" value="${esc(x.title)}" maxlength="80"></label>
       <label>Category<select data-f="category">${c.categories.map((t) => `<option${t === x.category ? " selected" : ""}>${t}</option>`).join("")}</select></label>
-      <label>Level<select data-f="level">${["beginner", "intermediate", "advanced", "elite"].map((t) => `<option${t === x.level ? " selected" : ""}>${t}</option>`).join("")}</select></label>
+      <label>Level<select data-f="level">${LEVEL_ORDER.map((t) => `<option value="${t}"${t === x.level ? " selected" : ""}>${lvlName(t)}</option>`).join("")}</select></label>
       <label>Where<select data-f="location">${["home", "gym", "outdoor", "office"].map((t) => `<option${t === x.location ? " selected" : ""}>${t}</option>`).join("")}</select></label>
       <label>Weeks<input data-f="weeks" type="number" min="1" max="52" value="${x.weeks}"></label>
       <label>Seed<input data-f="seed" type="number" min="1" value="${x.seed}"></label>
       <label>Access<select data-f="access">${["free", "member", "premium"].map((a) => `<option${a === x.access ? " selected" : ""}>${a}</option>`).join("")}</select></label>
       <label class="wide">Summary<input data-f="summary" value="${esc(x.summary)}" maxlength="400"></label>
       <label class="wide">Coaching notes<textarea data-f="notes" rows="2" maxlength="1000">${esc(x.notes)}</textarea></label>
+      <label class="wide">Program resources (Health Tips shown on the program). Ctrl/Cmd-click to pick several<select data-f="resources" multiple size="4">${(c.recommendations || []).map((r) => `<option value="${esc(r.id)}"${(x.resources || []).includes(r.id) ? " selected" : ""}>${esc(r.title)}</option>`).join("")}</select></label>
       <label class="wide">Days<textarea data-f="days" rows="4">${esc(x.days.map((d) => [d.name, d.goal, d.length, d.rounds || ""].join(" | ")).join("\n"))}</textarea></label>` },
     events: { blank: { id: "", title: "", date: "", time: "", location: "", description: "", link: "", free: false }, html: (x) => `
       <label>Title<input data-f="title" value="${esc(x.title)}" maxlength="120"></label>
@@ -1302,6 +1363,7 @@
         o.levels = levels;
       }
       if (kind === "programs") {
+        o.resources = [...$("[data-f=resources]", r).selectedOptions].map((op) => op.value);
         // Each line is "name | focus | minutes | rounds". Keep each day's exercise list and rest times by matching
         // the original day by name (else by position) and laying the edited fields over it.
         const origDays = orig.days || [];

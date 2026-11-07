@@ -1565,7 +1565,7 @@
         ${hr ? `<div class="stats3 dev-stats"><div><b>${hr.avg}</b><span>Avg heart rate</span></div><div><b>${hr.max}</b><span>Max heart rate</span></div><div><b>${esc(HR.name || "Device")}</b><span>Source</span></div></div>` : ""}`;
       allWorkouts.push(r.workout);
       numbersForm($("#done-form"), r.workout, "How hard was that?");
-      renderStats(); renderActivity(); renderNotes(); renderCalendar(); renderPerf();
+      renderStats(); renderActivity(); renderNotes(); renderCalendar(); renderPerf(); renderMyPlans();
       loadRewards(true);
     } catch (err) { $("#done-msg").textContent = "Couldn't save this workout: " + err.message; }
   }
@@ -2006,7 +2006,7 @@
       const chosen = d.circuit.map((x) => { const m = byName[x.ex] || byName[VIDEO_ALIAS[x.ex]]; return m ? { ...m, name: x.ex, sets: x.sets || "" } : { id: "", name: x.ex, sets: x.sets || "" }; }).filter((x) => x.name);
       if (chosen.length) w.circuit = chosen;
     }
-    return { ...w, title: `${p.title}: ${d.name}`, key: `prog-${p.id}-d${i}`, noRest: REHAB_CATS.has(p.category) };
+    return { ...w, title: `${p.title}: ${d.name}`, levelLabel: lvlName(p.level), key: `prog-${p.id}-d${i}`, noRest: REHAB_CATS.has(p.category) };
   };
   const doneCount = (p, i) => allWorkouts.filter((w) => w.key === `prog-${p.id}-d${i}`).length;
   // Programs are navigated like folders, each step with its own address (back button and links work):
@@ -2112,7 +2112,7 @@
   };
   // ids of programs that have a protocol file, once the index has loaded (program cards use it)
   PROTO.ids = new Set();
-  protoIndex().then((idx) => { PROTO.ids = new Set(idx.ids || []); PROTO.weekCounts = idx.weeks || {}; if (!$("#view-programs").hidden && !$("#prog-grid").hidden) renderProgramsView(); });
+  protoIndex().then((idx) => { PROTO.ids = new Set(idx.ids || []); PROTO.weekCounts = idx.weeks || {}; if (!$("#view-programs").hidden && !$("#prog-grid").hidden) renderProgramsView(); renderMyPlans(); });
   const protoKey = (p, wkKey) => `prog-${p.id}-w${wkKey}`;
   const protoDone = (p, wkKey) => allWorkouts.filter((w) => w.key === protoKey(p, wkKey)).length;
   // Suggested week: count whole weeks since the first logged session of this protocol; otherwise the first week
@@ -2122,14 +2122,28 @@
     const mine = allWorkouts.filter((w) => String(w.key || "").startsWith(`prog-${p.id}-w`)).map((w) => w.date).filter(Boolean).sort();
     if (!mine.length) return keys[0];
     const days = Math.floor((Date.parse(todayInTz() + "T12:00:00Z") - Date.parse(mine[0] + "T12:00:00Z")) / 864e5);
-    const firstNumbered = keys.findIndex((k) => /^\d/.test(k));
-    const i = Math.min(keys.length - 1, Math.max(0, (firstNumbered < 0 ? 0 : firstNumbered) + Math.floor(days / 7)));
-    return keys[i];
+    // Parts can span weeks ("1-2", "11-12") and a week can be missing (no week 4 sheet): pick the part that covers
+    // this week of the program, else the last part that started before it
+    const span = (k) => { const m = /^(\d+)(?:\s*-\s*(\d+))?$/.exec(k); return m ? [Number(m[1]), Number(m[2] || m[1])] : null; };
+    const numbered = keys.filter(span);
+    if (!numbered.length) return keys[Math.min(keys.length - 1, Math.floor(days / 7))];
+    const wkNo = span(numbered[0])[0] + Math.floor(days / 7), lastN = numbered[numbered.length - 1];
+    // past the numbered weeks: parts after them (e.g. the marathon taper), one per week
+    if (wkNo > span(lastN)[1]) return keys[Math.min(keys.length - 1, keys.indexOf(lastN) + wkNo - span(lastN)[1])];
+    return numbered.find((k) => span(k)[0] <= wkNo && wkNo <= span(k)[1]) || numbered.filter((k) => span(k)[0] <= wkNo).pop() || numbered[0];
   }
   // Match a protocol exercise to a library video by name (exact, alias, then the closest name sharing the most words)
   const words = (s) => String(s).toLowerCase().replace(/\(.*?\)/g, " ").replace(/[^a-z0-9]+/g, " ").split(" ").filter((x) => x.length > 2 && !["the", "and", "with", "for", "new"].includes(x));
+  // Names the word matching paired with the wrong video (e.g. "Wall Sit" -> "Wall Ball Sit Up"): the right video, or none
+  const VIDEO_FIX = [
+    [/^wall sit\b/i, ""], [/^single[- ]leg rdl\b/i, ""], [/^standing hip extension\b/i, ""], [/^single-arm overhead squat\b/i, ""],
+    [/^skater jump to box\b/i, ""], [/^banded external rotation\b/i, "Rotator Cuff External Rotation"],
+    [/^rotator cuff rotation in abduction\b/i, "Abducted External Rotation"]
+  ];
   function libMatch(name) {
     const byName = Object.fromEntries(EX.map((e) => [e.name.toLowerCase(), e]));
+    const fix = VIDEO_FIX.find(([re]) => re.test(String(name).trim()));
+    if (fix) return fix[1] ? byName[fix[1].toLowerCase()] || null : null;
     const plain = String(name).replace(/\s*\(.*?\)\s*/g, " ").trim();
     const hit = byName[name.toLowerCase()] || byName[plain.toLowerCase()] || (VIDEO_ALIAS[name] && byName[VIDEO_ALIAS[name].toLowerCase()]) || (VIDEO_ALIAS[plain] && byName[VIDEO_ALIAS[plain].toLowerCase()]);
     if (hit) return hit;
@@ -2199,7 +2213,8 @@
       box.querySelector(".prog-body").innerHTML = `
       ${pr.goal ? `<div class="card proto-goal"><span class="label accent">The goal</span><p>${esc(pr.goal)}</p>${pr.tagline ? `<p class="muted small">${esc(pr.tagline)}</p>` : ""}</div>` : ""}
       <h3 class="proto-h">${partsLabel(pr.weeks.length, p)[0].toUpperCase() + partsLabel(pr.weeks.length, p).slice(1)}, one page each</h3>
-      <p class="muted small proto-progress">${doneWeeks} of ${pr.weeks.length} started · open one to see its exercises and sheet</p>
+      <div class="proto-next"><p class="muted small proto-progress">${doneWeeks} of ${pr.weeks.length} started · open one to see its exercises and sheet</p>
+        ${p.locked ? "" : `<button type="button" class="btn-blue sm" data-goto="${esc(weekHref(pr.weeks.find((w) => w.key === cur) || pr.weeks[0]))}">${doneWeeks ? "Continue" : "Start"}: ${esc((pr.weeks.find((w) => w.key === cur) || pr.weeks[0]).label)} ›</button>`}</div>
       <div class="proto-wk-list">${pr.weeks.map((w) => { const n = protoDone(p, w.key), f = focusOf(w.key) || w.focus || ""; return `<button type="button" class="proto-wk${n ? " done" : ""}${w.key === cur ? " cur" : ""}" data-goto="${esc(weekHref(w))}">
         <span class="pw-label">${esc(w.label)}</span>${w.key === cur ? `<span class="pw-next">${n ? "Current" : "Start here"}</span>` : ""}
         ${f ? `<span class="pw-focus">${esc(f)}</span>` : ""}
@@ -2240,6 +2255,22 @@
       ${p.locked ? `<div class="locked-note">${unlockBtn("this program")}</div>` : ""}`;
     return true;
   }
+  // Dr. Jared's note when he assigned this program, and the Health Tips that belong to it ("Program resources")
+  const assignedOf = (pid) => ((client && client.assignedPrograms) || []).find((x) => x.id === pid);
+  // (the note sits above the program so it's the first thing the client reads; resources follow the summary)
+  function progNote(p) {
+    const a = assignedOf(p.id);
+    return a ? `<div class="card prog-assigned"><span class="label accent">From Dr. Jared</span><p>${a.note ? esc(a.note) : "Dr. Jared added this program for you."}</p></div>` : "";
+  }
+  function progResources(p) {
+    const recs = (p.resources || []).map((id) => (C.recommendations || []).find((r) => r.id === id)).filter(Boolean);
+    return (recs.length ? `<div class="card prog-res"><span class="label">Program resources</span><ul>${recs.map((r) => `<li><button type="button" class="pr-link" data-tip-open="${esc(r.id)}"><b>${esc(r.title)}</b>${r.area ? `<span class="muted small">${esc(r.area)}</span>` : ""}<span aria-hidden="true">›</span></button></li>`).join("")}</ul></div>` : "");
+  }
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-tip-open]"); if (!b) return;
+    const id = b.dataset.tipOpen;
+    if (window.MDFitTips && window.MDFitTips.open) window.MDFitTips.open(id); else location.hash = "tips";
+  });
   function renderProgram(p, weekKey) {
     $("#prog-detail").dataset.id = p.id;
     renderProgramDays(p);
@@ -2249,10 +2280,12 @@
   function renderProgramDays(p) {
     const wk = (i) => Math.min(p.weeks, doneCount(p, i) + 1);
     $("#prog-detail").innerHTML = `${crumbs(progCrumbs(p))}
+      ${progNote(p)}
       <div class="card prog-head prog-head-img">${progPoster(p, "ph-img", "(max-width: 520px) 100vw, 480px")}<span class="pc-cat">${esc(p.category)}</span>${p.locked ? lockBadge : ""}<h2>${esc(p.title)}</h2><p>${esc(p.summary)}</p>
         <p class="muted small">${PROTO.ids.has(p.id) ? `${partsLabel((PROTO.weekCounts || {})[p.id] || p.weeks, p)} · week-by-week plan` : `${p.weeks} weeks · ${p.days.length} session${p.days.length === 1 ? "" : "s"} a week`} · ${esc(lvlName(p.level))} · ${esc((Gen.LOCATIONS.find((l) => l.id === p.location) || {}).label || "")}</p>
         ${p.notes ? `<p class="prog-notes">${esc(p.notes)}</p>` : ""}
         <button type="button" class="btn-ghost sm save-plan${isSaved(p.id) ? " on" : ""}" data-save-plan="${esc(p.id)}">${isSaved(p.id) ? "Saved to my dashboard ✓" : "Save to my dashboard"}</button></div>
+      ${progResources(p)}
       <div class="prog-body">${p.days.map((d, i) => { const w = progDayWorkout(p, i); return `<div class="card prog-day">
         <div class="pd-top"><div><span class="label accent">Day ${i + 1} · Week ${wk(i)} of ${p.weeks}</span><h3>${esc(d.name)}</h3>
           <p class="muted small">About ${w.minutes} min · ${w.circuit.length} exercises × ${w.rounds} rounds · warm-up and cool-down included</p></div>
@@ -2695,10 +2728,10 @@
     const byId = new Map((C.programs || []).map((p) => [p.id, p]));
     const assigned = (client.assignedPrograms || []).filter((x) => byId.has(x.id));
     const saved = (client.pinnedPrograms || []).filter((id) => byId.has(id) && !assigned.some((x) => x.id === id));
-    const row = (p, note) => `<li><button type="button" class="mp-item" data-fp="${esc(p.id)}">
+    const row = (p, note) => { const st = progStats(p); return `<li><button type="button" class="mp-item" data-fp="${esc(p.id)}">
         ${p.image ? progImg(p.image, "", "56px", { sizes: "56px" }) : `<span class="fp-ic pp-blank"></span>`}
-        <span class="mp-body"><b>${esc(p.title)}</b><span class="muted small">${note ? esc(note) : `${p.weeks} weeks · ${esc(lvlName(p.level))}`}</span></span>
-        <span class="mp-go">Open ›</span></button></li>`;
+        <span class="mp-body"><b>${esc(p.title)}</b>${note ? `<span class="mp-note">${esc(note)}</span>` : ""}<span class="muted small">${esc(lvlName(p.level))} · ${st.isProto ? partsLabel(st.nWeeks, p) : `${p.weeks} weeks`}${st.done ? ` · ${st.done} of ${st.sessions} ${st.isProto ? "started" : "done"}` : note !== undefined ? " · not started yet" : ""}</span></span>
+        <span class="mp-go">Open ›</span></button></li>`; };
     $("#mp-assigned").innerHTML = assigned.length ? `<span class="label accent">From Dr. Jared</span><ul class="mp-list">${assigned.map((x) => row(byId.get(x.id), x.note)).join("")}</ul>` : "";
     $("#mp-saved").innerHTML = saved.length ? `<span class="label">My saved plans</span><ul class="mp-list">${saved.map((id) => row(byId.get(id))).join("")}</ul>` : "";
     box.hidden = !assigned.length && !saved.length;
