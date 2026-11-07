@@ -1896,7 +1896,9 @@
   // Programs saved without a photo borrow the closest existing one; the rest draw a branded poster (never a blank box)
   const PROG_ART = [[/mobility/i, "assets/programs/mobility-ladder-new.png"], [/low back|mid-back|lumbar/i, "assets/programs/low-back-new.png"],
     [/hip/i, "assets/programs/hip-new.png"], [/shoulder|rotator/i, "assets/programs/shoulder-new.png"], [/golf/i, "assets/programs/golf-new.png"],
-    [/pickleball/i, "assets/programs/pickleball.png"], [/marathon/i, "assets/programs/marathon-new.png"], [/running/i, "assets/programs/running-new.png"]];
+    [/pickleball/i, "assets/programs/pickleball.png"], [/marathon/i, "assets/programs/marathon-new.png"], [/running/i, "assets/programs/running-new.png"],
+    [/\bski/i, "assets/programs/ski.png", true]]; // true = the poster already carries its title text; draw nothing over it
+  const COMPLETE_POSTERS = new Set(PROG_ART.filter((x) => x[2]).map((x) => x[1]));
   const withArt = (d) => { (d && d.programs || []).forEach((p) => { if (!p.image) { const m = PROG_ART.find(([re]) => re.test(p.title || "")); if (m) p.image = m[1]; } }); return d; };
   const loadContent = () => (contentLoading = apiAuth("GET", "/api/me/content").then((d) => (C = withArt(d))).catch(() => api("/api/content").then((d) => (C = withArt({ ...d, access: "free" })))));
   const money = (n) => "$" + Number(n).toLocaleString("en-US");
@@ -1928,10 +1930,11 @@
   };
   // Program photo with the poster text drawn in HTML on top (the photos carry no text of their own). The text is
   // aria-hidden because the card repeats the title for screen readers; it hides itself when the photo is too small.
-  const progPoster = (p, cls, sizes, thumb) => `<span class="prog-poster ${cls}${p.image ? "" : " pp-blank"}">${p.image ? progImg(p.image, "", sizes, thumb) : ""}<span class="pp-text" aria-hidden="true">`
+  const progPoster = (p, cls, sizes, thumb) => `<span class="prog-poster ${cls}${p.image ? "" : " pp-blank"}">${p.image ? progImg(p.image, "", sizes, thumb) : ""}`
+    + (COMPLETE_POSTERS.has(String(p.image || "").replace(/^\//, "")) ? "" : `<span class="pp-text" aria-hidden="true">`
     + `<span class="pp-brand"><i>MD</i> FIT${p.category ? " · " + esc(p.category) : ""}</span>`
     + `<span class="pp-title">${esc(String(p.title || "").replace(/^\s*\d+\s*-?\s*weeks?\s*/i, "") || p.title)}</span>`
-    + (p.weeks ? `<span class="pp-badge">${esc(p.weeks)}-week program</span>` : "") + `</span></span>`;
+    + (p.weeks ? `<span class="pp-badge">${esc(p.weeks)}-week program</span>` : "") + `</span>`) + `</span>`;
   function renderFeaturedPrograms() {
     if (!C || !C.programs || !C.programs.length) {
       ["#featured-progs", "#hero-progs"].forEach((s) => { const el = $(s); if (el) el.hidden = true; });

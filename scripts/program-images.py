@@ -72,6 +72,11 @@ def crop_padded(im, box):
     return out.crop((x0 + pad, y0 + pad, x1 + pad, y1 + pad))
 
 
+# Posters whose text is part of the picture (the app draws no caption over them): the sharp text would be mistaken
+# for the person, so the thumbnail crop is set by hand (x0, y0, x1, y1).
+MANUAL_CROP = {"ski.png": (20, 10, 670, 660)}
+
+
 def stale(dest, src):
     return FORCE or not dest.exists() or dest.stat().st_mtime < src.stat().st_mtime
 
@@ -88,7 +93,7 @@ for png in sorted(SRC.glob("*.png")):
                 im.resize((w, round(im.height * w / im.width)), Image.LANCZOS).save(dest, "WEBP", quality=QUALITY[w], method=6)
                 written.append(dest)
         box = subject_box(im)
-        crop = thumb_crop(im.size, box)
+        crop = MANUAL_CROP.get(png.name) or thumb_crop(im.size, box)
         for w in THUMB_WIDTHS:
             dest = OUT / f"{png.stem}-thumb-{w}.webp"
             if stale(dest, png):
