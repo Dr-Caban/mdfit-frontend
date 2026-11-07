@@ -530,3 +530,5 @@
 .hb-card.open .hb-chev { transform: rotate(180deg); }
 .hb-card .hb-body { margin-top: 10px; }
 .hb-card .hb-toggle.hb-head { margin-bottom: 0; flex-wrap: nowrap; }
+/* Progress no longer repeats the gem/XP (it lives in the Home gem card) */
+#view-progress #level-card, #view-progress #rank-card { display: none; }

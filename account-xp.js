@@ -75,6 +75,7 @@
   document.addEventListener("mdfit:rewards", (e) => { reward = e.detail; renderGem(); });
   document.addEventListener("click", (e) => {
     if (e.target.closest("[data-overall]")) { A.showBoard("all", "all"); return; }
+    if (e.target.closest("[data-gem-jump]")) { setTimeout(() => gemCard.scrollIntoView({ behavior: "smooth", block: "center" }), 60); return; }
     if (e.target.closest("[data-activities]")) {
       const c = $("#habits-card"); if (!c) return;
       if ($("#view-home").hidden) A.go("home");

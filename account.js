@@ -98,7 +98,7 @@
       badgeCount++; if (badgeCount % 3 === 0) msShowBoard = true;
     });
     if (lvl !== null && r.level > lvl) {
-      notify({ kind: "level", title: `New gem: ${r.title}`, body: "You reached a new gem level. Keep it going!", action: "View", go: "#progress" });
+      notify({ kind: "level", title: `New gem: ${r.title}`, body: "You reached a new gem level. Keep it going!", action: "View", go: "#home" });
       milestone({ icon: `<span class="ms-lv">${r.level}</span>`, kicker: "New gem!", title: r.title, desc: r.level === (r.olympicLevel || 4) ? "Welcome to the Olympic League." : `You reached ${r.title}, gem level ${r.level} of 8.`, xp: 0 });
       msShowBoard = true;
     }
