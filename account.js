@@ -2120,7 +2120,9 @@
     const span = (k) => { const m = /^(\d+)(?:\s*-\s*(\d+))?$/.exec(k); return m ? [Number(m[1]), Number(m[2] || m[1])] : null; };
     const numbered = keys.filter(span);
     if (!numbered.length) return keys[Math.min(keys.length - 1, Math.floor(days / 7))];
-    const wkNo = span(numbered[0])[0] + Math.floor(days / 7);
+    const wkNo = span(numbered[0])[0] + Math.floor(days / 7), lastN = numbered[numbered.length - 1];
+    // past the numbered weeks: parts after them (e.g. the marathon taper), one per week
+    if (wkNo > span(lastN)[1]) return keys[Math.min(keys.length - 1, keys.indexOf(lastN) + wkNo - span(lastN)[1])];
     return numbered.find((k) => span(k)[0] <= wkNo && wkNo <= span(k)[1]) || numbered.filter((k) => span(k)[0] <= wkNo).pop() || numbered[0];
   }
   // Match a protocol exercise to a library video by name (exact, alias, then the closest name sharing the most words)
