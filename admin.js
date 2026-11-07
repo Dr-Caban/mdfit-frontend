@@ -498,12 +498,25 @@
       ${st.live && st.live.everySec && (g || sp) ? `<p class="muted small">Live: checks every ${st.live.everySec >= 60 ? `${Math.round(st.live.everySec / 60)} min` : `${st.live.everySec} sec`} and updates open booking pages instantly${st.live.lastCheck ? ` · last check ${when(st.live.lastCheck)}` : ""}${st.live.lastChange ? ` · last change ${when(st.live.lastChange)}` : ""}</p>` : ""}
       ${st.lastSync ? `<p class="muted small">Last sync ${when(st.lastSync)}</p>` : ""}${st.lastError ? `<p class="form-msg err">${esc(st.lastError)}</p>` : ""}${st.busyNext14Days !== undefined ? `<p class="muted small">Busy blocks in the next 14 days: ${st.busyNext14Days} ${Object.entries(st.bySource || {}).map(([k, v]) => `(${k}: ${v})`).join(" ")}</p>` : ""}`;
   };
-  const loadSync = () => api("GET", "/api/admin/calsync").then(showSync).catch(() => {});
-  syncF.addEventListener("submit", run(async (e) => {
-    e.preventDefault(); const msg = $(".form-msg", syncF);
-    try { await api("PUT", "/api/admin/calsync", { icsUrl: syncF.icsUrl.value.trim() }); syncF.icsUrl.value = ""; msg.className = "form-msg ok"; msg.textContent = "Saved."; loadSync(); }
+  // The saved SimplePractice link is private, so the server only shows it masked: the box stays empty after a reload and
+  // saving it empty must not wipe the link on file (only "Remove link" does).
+  let spOn = false;
+  const loadSync = () => api("GET", "/api/admin/calsync").then((st) => {
+    spOn = st.simplepractice === "configured"; $("#sync-clear").hidden = !spOn;
+    syncF.icsUrl.placeholder = spOn ? "Link saved. Paste a new one to replace it" : "Paste the link from SimplePractice → Settings → Calendar → Calendar sync";
+    showSync(st);
+  }).catch(() => {});
+  const saveSp = async (icsUrl, done) => {
+    const msg = $(".form-msg", syncF);
+    try { await api("PUT", "/api/admin/calsync", { icsUrl }); msg.className = "form-msg ok"; msg.textContent = done; loadSync(); }
     catch (err) { msg.className = "form-msg err"; msg.textContent = err.message; }
+  };
+  syncF.addEventListener("submit", run(async (e) => {
+    e.preventDefault(); const u = syncF.icsUrl.value.trim(), msg = $(".form-msg", syncF);
+    if (!u) { msg.className = "form-msg err"; msg.textContent = spOn ? "Your link is already saved. Paste a new one to replace it, or use Remove link." : "Paste your SimplePractice calendar link first."; return; }
+    await saveSp(u, "Saved.");
   }));
+  $("#sync-clear").addEventListener("click", run(async () => { syncF.icsUrl.value = ""; await saveSp("", "Link removed."); }));
   $("#sync-test").addEventListener("click", run(async () => showSync(await api("POST", "/api/admin/calsync/test"))));
 
   async function loadHours() {
