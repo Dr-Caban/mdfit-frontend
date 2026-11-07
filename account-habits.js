@@ -19,8 +19,11 @@
   const home = $("#view-home .col-main");
   const card = document.createElement("section");
   card.className = "card hb-card"; card.id = "habits-card"; card.setAttribute("aria-labelledby", "hb-title");
-  card.innerHTML = `<div class="hb-head"><h2 class="label accent" id="hb-title">Daily activities</h2><span class="hb-sub">Extra XP · each once a day</span></div>
-    <div class="hb-body"><p class="muted">Loading…</p></div>`;
+  card.innerHTML = `<button type="button" class="hb-head hb-toggle" aria-expanded="false" aria-controls="hb-body"><span><b class="label accent" id="hb-title">Daily activities</b><span class="hb-sub" id="hb-sub">Extra XP · each once a day</span></span><span class="hb-chev" aria-hidden="true">▾</span></button>
+    <div class="hb-body" id="hb-body" hidden><p class="muted">Loading…</p></div>`;
+  let open = false;
+  const setOpen = (v) => { open = v; $(".hb-toggle", card).setAttribute("aria-expanded", String(v)); $(".hb-body", card).hidden = !v; card.classList.toggle("open", v); };
+  document.addEventListener("mdfit:habits-open", () => setOpen(true));
   if (home) { const after = $("#challenges-card", home) || $("#gem-card", home); after ? after.after(card) : home.prepend(card); }
 
   const FIRST = 8; // on a phone the list starts short; "Show all" opens the rest (done ones always show)
@@ -32,14 +35,15 @@
     const shown = short ? manual.filter((h, i) => i < FIRST || h.done) : manual;
     const streakTxt = `<span class="hb-streak" title="Days in a row with ${d.goal}+ XP from activities and workouts">${s.current ? `${s.current}-day streak` : "Start a streak today"}</span>` +
       (rep.available ? `<span class="hb-rep" title="A repair covers one missed day in your streak. Earn one every 3 days in a row.">${rep.available} repair${rep.available === 1 ? "" : "s"}</span>` : "");
+    const doneN = manual.filter((h) => h.done).length;
+    $("#hb-sub", card).textContent = `${doneN} of ${manual.length} done · +${d.points} XP today`;
+    document.dispatchEvent(new CustomEvent("mdfit:habits", { detail: d }));
     $(".hb-body", card).innerHTML = `
       ${d.goalLevels ? `<div class="hb-norm" role="radiogroup" aria-label="My daily XP goal">${Object.entries(d.goalLevels).map(([k, v]) => `<button type="button" role="radio" data-goal-level="${k}" aria-checked="${d.goalLevel === k}">${k === "pro" ? "Pro / Elite" : k[0].toUpperCase() + k.slice(1)} <small>${v} XP</small></button>`).join("")}</div>` : ""}
       <div class="hb-sumrow"><p class="hb-today"><b>+${d.points}</b> XP from activities today</p><p class="hb-meta">${d.qualifying ? `<b class="hb-ok">Goal met (${d.goal} XP).</b>` : `${d.remaining} XP to today's goal of ${d.goal}`} · ${streakTxt}</p></div>
       <div class="hb-list">${shown.map(item).join("")}</div>
       ${short ? `<button type="button" class="link-sm hb-more" data-hb-all>Show all ${manual.length} activities</button>` : ""}
-      <p class="hb-cat">Earned automatically</p>
-      <div class="hb-list hb-auto">${auto.map(item).join("")}</div>
-      <p class="hb-foot muted">Workouts: <b>${wr.normal || 30} XP</b> a day · <b>${wr.custom || 35}</b> when you built it yourself · <b>${wr.program || 50}</b> for a Dr. Jared program · challenge <b>+${wr.challengeBonus || 10}</b>. <button type="button" class="link-sm" data-build-workout>Build a workout</button></p>`;
+      <p class="hb-foot muted">Workouts: <b>${wr.normal || 30} XP</b> a day · <b>${wr.custom || 35}</b> when you built it yourself · <b>${wr.program || 50}</b> for a Dr. Jared program or pain track · challenges: <b>+${wr.challengeSent || 5}</b> for sending, <b>+${wr.challengeBonus || 10}</b> for doing one. <button type="button" class="link-sm" data-build-workout>Build a workout</button></p>`;
   }
   function item(h) {
     const sub = h.how;
@@ -55,6 +59,7 @@
   }
 
   card.addEventListener("click", async (e) => {
+    if (e.target.closest(".hb-toggle")) { setOpen(!open); return; }
     if (e.target.id === "hb-retry") return load();
     if (e.target.closest("[data-hb-all]")) { showAll = true; render(); return; }
     // Daily XP norm: Beginner 50 / Intermediate 75 / Pro 100 (applies from today)

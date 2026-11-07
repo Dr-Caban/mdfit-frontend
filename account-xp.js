@@ -39,6 +39,19 @@
   if (prof) prof.appendChild(profGem);
 
   const rankText = (o) => (o ? `#${o.rank}` : "—");
+  // Today at a glance: XP today, the streak (days in a row at the daily goal) and the goal itself, in one row.
+  // The streak/goal come from the daily activities module (mdfit:habits); before it answers, XP today shows alone.
+  let hab = null;
+  document.addEventListener("mdfit:habits", (e) => { hab = e.detail; renderGem(); });
+  function todayRow(r) {
+    const h = hab, goal = h ? h.goal : 0, total = h ? h.total : r.todayXp, pct = goal ? Math.min(100, Math.round((total / goal) * 100)) : 0;
+    return `<div class="gc-today" aria-label="Today">
+        <div><b>${r.todayXp}</b><span>XP today</span></div>
+        <div><b>${h ? `🔥 ${h.streak.current}` : "—"}</b><span>day streak</span></div>
+        <div><b>${h ? `${Math.min(total, goal)}/${goal}` : "—"}</b><span>${h && h.qualifying ? "goal met ✓" : "daily goal"}</span></div>
+      </div>
+      ${h ? `<div class="gc-goal" role="progressbar" aria-label="Today's goal" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><i style="width:${pct}%"></i></div>` : ""}`;
+  }
   function renderGem() {
     const r = reward; if (!r || !r.rank) return;
     const cur = r.rank.current, next = r.rank.next, o = r.overall, tp = r.todayParts || { workouts: 0, activities: 0, other: 0 };
@@ -52,11 +65,7 @@
       </div>
       <div class="gc-bar" role="progressbar" aria-label="Progress to ${next ? esc(next.name) : "the top gem"}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><i style="width:${pct}%"></i></div>
       <p class="gc-next">${next ? `<b>${r.rank.xpToNext.toLocaleString()} XP</b> to ${gem(next.color, 14)} ${esc(next.name)}` : `<b>Top gem reached.</b> Platinum is forever.`}</p>
-      <div class="gc-today" aria-label="Today's XP">
-        <div><b>${r.todayXp}</b><span>XP today</span></div>
-        <div><b>${tp.workouts}</b><span>Workout</span></div>
-        <div><b>${tp.activities}</b><span>Activities</span></div>
-      </div>
+      ${todayRow(r)}
       <ol class="gc-ladder" aria-label="Gem levels">${r.gems.map((g) => `<li class="${g.id === cur.id ? "cur" : r.xp >= g.xp ? "done" : ""}" title="${esc(g.name)}: ${g.xp.toLocaleString()}+ XP">${gem(r.xp >= g.xp ? g.color : "#3a4a62", 18)}<small>${esc(g.name)}</small></li>`).join("")}</ol>
       <div class="gc-actions"><button type="button" class="btn-gold sm" data-activities>Daily activities: extra XP</button><button type="button" class="btn-outline-light sm" data-build-workout>Build a workout</button></div>
       ${o && o.hidden ? `<p class="gc-hidden">You're hidden from the leaderboard; only you see your rank.</p>` : ""}`;
@@ -69,6 +78,7 @@
     if (e.target.closest("[data-activities]")) {
       const c = $("#habits-card"); if (!c) return;
       if ($("#view-home").hidden) A.go("home");
+      document.dispatchEvent(new CustomEvent("mdfit:habits-open"));
       setTimeout(() => c.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
       return;
     }
