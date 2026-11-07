@@ -1226,11 +1226,14 @@
       if (kind === "tracks") {
         o.pts = [...$("[data-f=pts]", r).selectedOptions].map((op) => op.value);
         o.img = o.img.split("\n").map((x) => x.trim()).filter(Boolean);
-        const levels = [];
+        const levels = [], oldVids = (orig.levels || []).flatMap((l) => l.videos || []);
         o.levels.split("\n").map((x) => x.trim()).filter(Boolean).forEach((line) => {
           const i = line.indexOf("|");
           if (i < 0) levels.push({ title: line, videos: [] });
-          else { if (!levels.length) levels.push({ title: "Level 1", videos: [] }); levels[levels.length - 1].videos.push({ name: line.slice(0, i).trim(), id: line.slice(i + 1).trim() }); }
+          else { if (!levels.length) levels.push({ title: "Level 1", videos: [] }); const name = line.slice(0, i).trim(), id = line.slice(i + 1).trim();
+            // keep fields the editor doesn't show (a video's uploaded `file`) by matching the original video by name
+            const { id: _oldId, ...keep } = oldVids.find((v) => v.name === name) || {};
+            levels[levels.length - 1].videos.push({ ...keep, name, id }); }
         });
         o.levels = levels;
       }
