@@ -38,8 +38,9 @@
     const doneN = manual.filter((h) => h.done).length;
     $("#hb-sub", card).textContent = `${doneN} of ${manual.length} done · +${d.points} XP today`;
     document.dispatchEvent(new CustomEvent("mdfit:habits", { detail: d }));
+    renderProfileGoal();
     $(".hb-body", card).innerHTML = `
-      ${d.goalLevels ? `<div class="hb-norm" role="radiogroup" aria-label="My daily XP goal">${Object.entries(d.goalLevels).map(([k, v]) => `<button type="button" role="radio" data-goal-level="${k}" aria-checked="${d.goalLevel === k}">${k === "pro" ? "Pro / Elite" : k[0].toUpperCase() + k.slice(1)} <small>${v} XP</small></button>`).join("")}</div>` : ""}
+      ${d.goalLevels ? `<div class="hb-norm" role="radiogroup" aria-label="My daily XP goal">${goalButtons(d)}</div>` : ""}
       <div class="hb-sumrow"><p class="hb-today"><b>+${d.points}</b> XP from activities today</p><p class="hb-meta">${d.qualifying ? `<b class="hb-ok">Goal met (${d.goal} XP).</b>` : `${d.remaining} XP to today's goal of ${d.goal}`} · ${streakTxt}</p></div>
       <div class="hb-list">${shown.map(item).join("")}</div>
       ${short ? `<button type="button" class="link-sm hb-more" data-hb-all>Show all ${manual.length} activities</button>` : ""}
@@ -53,6 +54,20 @@
       <span class="hb-pts">+${h.points}</span></button>`;
   }
 
+  // Daily XP goal levels (owner's names): Beginner 50, Advanced 75, Elite 100+. Stored ids stay beginner/intermediate/pro.
+  const GOAL_NAMES = { beginner: "Beginner", intermediate: "Advanced", pro: "Elite" };
+  const goalButtons = (d) => Object.entries(d.goalLevels).map(([k, v]) => `<button type="button" role="radio" data-goal-level="${k}" aria-checked="${d.goalLevel === k}">${GOAL_NAMES[k] || k} <small>${v}${k === "pro" ? "+" : ""} XP</small></button>`).join("");
+  // The same picker sits at the top of the Profile, where members expect to find a setting
+  const profileGoal = $("#p-goal");
+  function renderProfileGoal() {
+    if (!profileGoal || !data || !data.goalLevels) return;
+    profileGoal.innerHTML = goalButtons(data);
+    $("#p-goal-now").textContent = `Today: ${data.total || data.points || 0} of ${data.goal} XP${data.qualifying ? " · goal met" : ""}.`;
+  }
+  if (profileGoal) profileGoal.addEventListener("click", async (e) => {
+    const gl = e.target.closest("[data-goal-level]"); if (!gl || gl.getAttribute("aria-checked") === "true") return;
+    try { data = await apiAuth("PUT", "/api/me/habits/goal", { level: gl.dataset.goalLevel }); render(); toast(`Daily goal: ${data.goal} XP.`); } catch (err) { toast(err.message); }
+  });
   async function load() {
     try { data = await apiAuth("GET", "/api/me/habits/today"); render(); }
     catch (e) { $(".hb-body", card).innerHTML = `<p class="muted">Couldn't load today's activities. <button type="button" class="link-sm" id="hb-retry">Try again</button></p>`; }
@@ -62,7 +77,7 @@
     if (e.target.closest(".hb-toggle")) { setOpen(!open); return; }
     if (e.target.id === "hb-retry") return load();
     if (e.target.closest("[data-hb-all]")) { showAll = true; render(); return; }
-    // Daily XP norm: Beginner 50 / Intermediate 75 / Pro 100 (applies from today)
+    // Daily XP norm: Beginner 50 / Advanced 75 / Elite 100 (applies from today)
     const gl = e.target.closest("[data-goal-level]");
     if (gl) {
       if (gl.getAttribute("aria-checked") === "true") return;

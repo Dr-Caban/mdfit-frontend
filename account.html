@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="app/app.css?v=3fd2c90e">
-  <link rel="stylesheet" href="account.css?v=617e5802">
+  <link rel="stylesheet" href="account.css?v=3edf13e1">
   <link rel="stylesheet" href="guides.css?v=0a19199b">
 </head>
 <body class="mdapp">
@@ -458,6 +458,13 @@
       </div>
 
       <div class="profile-grid">
+      <div class="card" id="p-goal-card">
+        <div class="card-head"><span class="label">My daily XP goal</span></div>
+        <p class="muted small">How much XP counts as a full day for you. Reach it to keep your streak and paint the day gold on your calendar. A change applies from today.</p>
+        <div class="hb-norm p-goal" id="p-goal" role="radiogroup" aria-label="My daily XP goal"></div>
+        <p class="muted small" id="p-goal-now"></p>
+      </div>
+
       <div class="card list-card">
         <div class="card-head"><span class="label">My appointments</span><button type="button" class="btn-blue sm" id="p-book-open">Book an evaluation</button></div>
         <ul class="events" id="p-appts"></ul>
@@ -708,7 +715,7 @@
   <script src="stripe-checkout.js?v=087989ec"></script>
   <script src="account.js?v=7e28927d"></script>
   <script src="account-xp.js?v=69db22b4"></script>
-  <script src="account-habits.js?v=4d76cde1"></script>
+  <script src="account-habits.js?v=294905ab"></script>
 <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>

@@ -541,3 +541,8 @@
 .hbc-under { margin-top: 10px; }
 .hbc-under .hbc-sum { margin: 0 0 6px; }
 .hbc-key .k { width: 12px !important; height: 12px !important; min-width: 0; flex: 0 0 12px; padding: 0; }
+
+/* Profile: daily XP goal picker (same buttons as Home, a little taller so it reads as a setting) */
+#p-goal-card .p-goal { margin: 10px 0 8px; }
+#p-goal-card .p-goal button { min-height: 56px; font-size: 14px; }
+#p-goal-card .p-goal button small { font-size: 12px; }
