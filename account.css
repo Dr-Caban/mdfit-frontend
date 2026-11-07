@@ -297,3 +297,14 @@
 .cmp-table > p.muted:only-child { margin: 8px 0 0; padding: 18px 14px; text-align: center; background: var(--card-2); border-radius: 12px; }
 /* Daily XP bars: a faint track behind each day so an empty week reads as a chart, not a blank gap */
 .level-card .xw { background: linear-gradient(rgba(255,255,255,.07), rgba(255,255,255,.07)) no-repeat 50% 16px / min(60%, 26px) calc(100% - 32px); }
+
+/* Embedded Stripe checkout inside the member app (same dialog as the pricing page) */
+.stripe-dlg { width: min(560px, calc(100% - 24px)); max-height: calc(100vh - 24px); padding: 0; border: 0; border-radius: 20px; background: #fff; color: #424244; overflow: hidden; }
+.stripe-dlg::backdrop { background: rgba(10, 26, 46, .78); }
+.stripe-dlg header { display: flex; justify-content: space-between; align-items: center; padding: 16px 18px; background: #0A1A2E; color: #fff; }
+.stripe-dlg header b { font: 700 18px/1 "Libre Baskerville", Georgia, serif; }
+.stripe-close { background: none; border: 0; color: #fff; font-size: 28px; line-height: 1; padding: 0 4px; cursor: pointer; min-width: 44px; min-height: 44px; }
+.stripe-meta { margin: 10px 18px 4px; font-size: 12.5px; color: #6b6b70; }
+.stripe-mount { padding: 10px 18px 24px; max-height: calc(100vh - 180px); overflow-y: auto; }
+.stripe-loading { text-align: center; color: #6b6b70; padding: 40px 10px; }
+@media (max-width: 600px) { .stripe-dlg { width: 100%; max-width: 100%; height: 100%; max-height: 100%; border-radius: 0; } .stripe-mount { max-height: calc(100vh - 110px); } }

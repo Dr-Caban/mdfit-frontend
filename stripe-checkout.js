@@ -41,7 +41,9 @@
     const stripe = Stripe(publishableKey);
     mount.innerHTML = "";
     if (embedded) { try { embedded.destroy(); } catch {} embedded = null; }
-    embedded = await stripe.initEmbeddedCheckout({ clientSecret });
+    // Stripe.js renamed initEmbeddedCheckout to createEmbeddedCheckoutPage (2026-03-25.dahlia); use whichever this Stripe.js has
+    const create = stripe.createEmbeddedCheckoutPage ? stripe.createEmbeddedCheckoutPage.bind(stripe) : stripe.initEmbeddedCheckout.bind(stripe);
+    embedded = await create({ clientSecret });
     embedded.mount(mount);
   }
   function close() {

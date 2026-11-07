@@ -2364,8 +2364,13 @@
     $("#meet-list").innerHTML = d.meetings.map((x) => `<li><b>${esc(x.topic)}</b><span class="pill ${x.status}">${x.status}</span>
       <span class="muted small">${x.when ? esc(x.when) : `Asked for: ${esc(x.times)}`}</span>${x.link && x.status === "scheduled" ? `<a class="btn-gold sm" href="${esc(x.link)}" target="_blank" rel="noopener">Join</a>` : ""}</li>`).join("");
   }
-  let payOn = false, pays = null;
-  api("/api/app/config").then((c) => { payOn = !!(c.features && c.features.payments); }).catch(() => {});
+  let payOn = false, pays = null, stripePub = "";
+  // Online payments on (keys + webhook set): redraw the plans so they say Subscribe and open checkout in the page
+  api("/api/app/config").then((c) => {
+    stripePub = c.stripePublishableKey || "";
+    payOn = !!(c.features && c.features.payments && stripePub);
+    if (payOn && C && $("#tier-grid") && $("#tier-grid").innerHTML) renderPremium().catch(() => {});
+  }).catch(() => {});
   if (new URLSearchParams(location.search).get("checkout") === "success") {
     toast("Payment received. Thank you! Your account updates in a moment.");
     history.replaceState(null, "", "/account" + location.hash);
@@ -2388,8 +2393,16 @@
     const t = C.tiers.find((x) => x.id === b.dataset.tier);
     if (payOn) {
       b.disabled = true;
-      try { location.href = (await apiAuth("POST", "/api/me/checkout/membership", { tier: t.id, rewardCode: access.reviewCode || store.get("mdfit_review_code", null) || undefined })).url; }
-      catch (err) { toast(err.message); b.disabled = false; }
+      // Stripe's own checkout, mounted inside MD Fit (no trip to another site); Apple Pay / Google Pay / Link / card
+      const label = b.textContent; b.textContent = "Opening secure checkout…";
+      try {
+        const r = await apiAuth("POST", "/api/me/checkout/membership", { tier: t.id, ui: "embedded", rewardCode: access.reviewCode || store.get("mdfit_review_code", null) || undefined });
+        if (r.clientSecret && window.MDFitStripe) {
+          try { await window.MDFitStripe.open({ clientSecret: r.clientSecret, publishableKey: stripePub }); }
+          catch { try { window.MDFitStripe.close(); } catch {} throw new Error("Secure checkout couldn't load. Check your connection or ad blocker and try again, or call 941-313-0562."); }
+        } else if (r.url) location.href = r.url;
+      } catch (err) { toast(err.message); }
+      b.disabled = false; b.textContent = label;
       return;
     }
     const note = prompt(`Request ${t.name} (${money(t.price)}/month)?\nAdd a note for Dr. Jared (optional):`, "");
