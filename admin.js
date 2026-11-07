@@ -107,7 +107,7 @@
   // ---- Notifications bell: what patients and visitors did (bookings, messages, documents, leads, reviews...),
   // newest first. "Unread" = newer than the last time the bell was opened on this browser.
   const NOTE = {
-    appointment: ["📅", "New booking", "dash"], appointment_cancelled: ["❌", "Appointment cancelled", "dash"], intake: ["📝", "Intake document completed", "dash"],
+    appointment: ["📅", "New booking", "dash"], appointment_cancelled: ["❌", "Appointment cancelled", "dash"], intake: ["📝", "Intake documents", "appts"],
     lead: ["🎯", "New evaluation request", "leads"], booking: ["🏋️", "Class spot booked", "bookings"], booking_cancelled: ["❌", "Class spot cancelled", "bookings"],
     message: ["💬", "New message", "messages"], subscribe: ["📧", "New newsletter subscriber", "subs"], bug_report: ["🐛", "Bug report", "feedback"],
     suggestion: ["💡", "Suggestion", "feedback"], feedback: ["⭐", "New review", "reviews"], client_signup: ["👤", "New client account", "clients"],
@@ -118,16 +118,45 @@
   const seenAt = () => { try { return localStorage.getItem(SEEN_KEY) || ""; } catch { return ""; } };
   const ago = (t) => { const m = Math.round((Date.now() - Date.parse(t)) / 60000); return m < 1 ? "just now" : m < 60 ? `${m} min ago` : m < 1440 ? `${Math.round(m / 60)} h ago` : when(t); };
   function renderNotes() {
-    const seen = seenAt(), list = notes.filter((n) => NOTE[n.type] || /^cal_booking/.test(n.type)).slice(0, 40);
+    const seen = seenAt(), list = groupNotes(notes.filter((n) => NOTE[n.type] || /^cal_booking/.test(n.type))).slice(0, 40);
     const unread = list.filter((n) => n.time > seen).length;
     $("#bell-count").hidden = !unread; $("#bell-count").textContent = unread > 99 ? "99+" : unread;
     $("#notif-list").innerHTML = list.map((n, i) => {
-      const [ic, label] = NOTE[n.type] || ["📅", "Cal.com booking"];
+      const [ic, base] = NOTE[n.type] || ["📅", "Cal.com booking"];
+      const label = n.type === "intake" ? (n.total && n.completed >= n.total ? "Intake documents completed" : n.total ? `Intake documents: ${n.completed} of ${n.total} done` : base) : base;
       return `<li><button type="button" class="np-item${n.time > seen ? " unread" : ""}" data-note="${i}"><span class="np-ic" aria-hidden="true">${ic}</span>
         <span class="np-txt"><b>${esc(label)}</b>${n.email ? `<span>${esc(n.email)}</span>` : ""}<small>${esc(ago(n.time))}</small></span></button></li>`;
     }).join("") || `<li class="np-empty">Nothing new yet.</li>`;
     $("#notif-list").dataset.items = "";
     renderNotes.list = list;
+  }
+  // One line per thing that happened: the forms of one intake packet (saved one at a time) collapse into a single
+  // "Intake documents" item, and the same event arriving twice (live + reload) shows once.
+  function groupNotes(list) {
+    const out = [], seenKeys = new Set();
+    for (const n of list) {
+      const key = n.type === "intake" ? `intake|${n.appointmentId || n.email || ""}|${String(n.time).slice(0, 10)}`
+        : `${n.type}|${n.email || ""}|${n.id || n.appointmentId || ""}|${String(n.time).slice(0, 16)}`;
+      if (seenKeys.has(key)) continue;
+      seenKeys.add(key); out.push(n);
+    }
+    return out;
+  }
+  // Open the documents an intake notification is about: the visit's card in Appointments, or the client's profile
+  async function openIntake(n) {
+    if (n.appointmentId) {
+      openTab("appts", { load: false });
+      await loadAppts();
+      let card = $(`#appts-list .appt[data-id="${CSS.escape(n.appointmentId)}"]`);
+      if (!card && !$("#appts-all").checked) { $("#appts-all").checked = true; await loadAppts(); card = $(`#appts-list .appt[data-id="${CSS.escape(n.appointmentId)}"]`); }
+      const btn = card && $("[data-intake]", card);
+      if (card) card.scrollIntoView({ block: "start", behavior: "smooth" });
+      if (btn) btn.click();
+      if (card) return;
+    }
+    const who = n.email && clientList.find((c) => c.email === n.email);
+    if (who) { await goClient(who.id); const b = $("[data-cdocs]"); if (b) { b.click(); b.scrollIntoView({ block: "center" }); } return; }
+    openTab("appts");
   }
   async function loadNotes() { try { notes = await api("GET", "/api/admin/activity"); renderNotes(); } catch {} }
   function toggleNotes(open) {
@@ -145,6 +174,7 @@
     try { if (n.time > seenAt()) localStorage.setItem(SEEN_KEY, n.time); } catch {}
     const target = (NOTE[n.type] || [, , "dash"])[2];
     const who = n.email && clientList.find((c) => c.email === n.email);
+    if (n.type === "intake") return openIntake(n);
     if (target === "messages" && who) return goThread(who.id);
     if (target === "clients" && who) return goClient(who.id);
     openTab(target);
