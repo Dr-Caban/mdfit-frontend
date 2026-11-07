@@ -74,7 +74,7 @@ def crop_padded(im, box):
 
 # Posters whose text is part of the picture (the app draws no caption over them): the sharp text would be mistaken
 # for the person, so the thumbnail crop is set by hand (x0, y0, x1, y1).
-MANUAL_CROP = {"ski.png": (20, 10, 670, 660)}
+MANUAL_CROP = {"ski.png": (20, 10, 670, 660), "mobility-ladder-poster.png": (10, 110, 690, 790)}
 
 
 def stale(dest, src):

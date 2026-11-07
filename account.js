@@ -1898,7 +1898,7 @@
     [/hip/i, "assets/programs/hip-new.png"], [/shoulder|rotator/i, "assets/programs/shoulder-new.png"], [/golf/i, "assets/programs/golf-new.png"],
     [/pickleball/i, "assets/programs/pickleball.png"], [/marathon/i, "assets/programs/marathon-new.png"], [/running/i, "assets/programs/running-new.png"],
     [/\bski/i, "assets/programs/ski.png", true]]; // true = the poster already carries its title text; draw nothing over it
-  const COMPLETE_POSTERS = new Set(PROG_ART.filter((x) => x[2]).map((x) => x[1]));
+  const COMPLETE_POSTERS = new Set([...PROG_ART.filter((x) => x[2]).map((x) => x[1]), "assets/programs/mobility-ladder-poster.png"]);
   const withArt = (d) => { (d && d.programs || []).forEach((p) => { if (!p.image) { const m = PROG_ART.find(([re]) => re.test(p.title || "")); if (m) p.image = m[1]; } }); return d; };
   const loadContent = () => (contentLoading = apiAuth("GET", "/api/me/content").then((d) => (C = withArt(d))).catch(() => api("/api/content").then((d) => (C = withArt({ ...d, access: "free" })))));
   const money = (n) => "$" + Number(n).toLocaleString("en-US");
@@ -1965,7 +1965,7 @@
       ${progPoster(p, "hp-img", "(max-width: 820px) 88px, 320px", { media: "(max-width: 820px)", sizes: "88px" })}
       <span class="hp-cat">${esc(p.category || "Program")}</span>
       <b>${esc(p.title)}</b>
-      <span class="muted small hp-meta">${p.weeks} weeks · ${esc(p.level || "all levels")}${p.days && p.days.length ? ` · ${p.days.length} days/wk` : ""}</span>
+      <span class="muted small hp-meta">${p.weeks} weeks · ${esc(p.level || "all levels")}${p.days && p.days.length ? ` · ${freqLabel(p).replace("/week", "/wk")}` : ""}</span>
       ${p.summary ? `<span class="hp-sum small">${esc(p.summary.slice(0, 100))}${p.summary.length > 100 ? "…" : ""}</span>` : ""}
       <span class="hp-go">Start this program →</span>
     </button>`;
@@ -2045,9 +2045,15 @@
   const progStats = (p) => {
     const isProto = PROTO.ids.has(p.id), nWeeks = isProto ? ((PROTO.weekCounts || {})[p.id] || p.weeks) : 0;
     const weeksStarted = isProto ? new Set(allWorkouts.filter((w) => String(w.key || "").startsWith(`prog-${p.id}-w`)).map((w) => w.key)).size : 0;
-    const sessions = isProto ? nWeeks : p.weeks * p.days.length, done = isProto ? weeksStarted : p.days.reduce((n, _, i) => n + doneCount(p, i), 0);
+    const sessions = isProto ? nWeeks : perWeekTotal(p) || p.weeks * p.days.length, done = isProto ? weeksStarted : p.days.reduce((n, _, i) => n + doneCount(p, i), 0);
     return { isProto, nWeeks, sessions, done };
   };
+  // Programs paced week by week (perWeek: sessions in week 1, 2, …, e.g. the Mobility Ladder's 1, 2, 2, 3, 3) instead of a fixed days × weeks grid
+  const perWeekTotal = (p) => (Array.isArray(p.perWeek) && p.perWeek.length ? p.perWeek.reduce((n, x) => n + Number(x || 0), 0) : 0);
+  const freqLabel = (p) => { const pw = Array.isArray(p.perWeek) && p.perWeek.length ? p.perWeek.map(Number) : null; if (!pw) return `${p.days.length} day${p.days.length === 1 ? "" : "s"}/week`; const lo = Math.min(...pw), hi = Math.max(...pw); return lo === hi ? `${lo}×/week` : `${lo} to ${hi}×/week`; };
+  // Which week (1-based) and which session of that week the n-th finished session (0-based) falls in
+  const perWeekPos = (p, done) => { const pw = p.perWeek.map(Number); let left = done; for (let w = 0; w < pw.length; w++) { if (left < pw[w]) return { week: w + 1, session: left + 1, of: pw[w] }; left -= pw[w]; } return { week: pw.length, session: pw[pw.length - 1], of: pw[pw.length - 1], complete: true }; };
+  const perWeekPlan = (p) => { const pw = p.perWeek.map(Number), parts = []; for (let i = 0; i < pw.length;) { let j = i; while (j + 1 < pw.length && pw[j + 1] === pw[i]) j++; const n = pw[i], times = n === 1 ? "once" : n === 2 ? "twice" : `${n} times`; parts.push(`${i === j ? `Week ${i + 1}` : `Weeks ${i + 1}-${j + 1}`}: ${times}`); i = j + 1; } return parts.join(" · "); };
   const progBar = (st) => (st.done ? `<span class="pc-bar"><i style="width:${Math.min(100, Math.round((st.done / st.sessions) * 100))}%"></i></span><span class="pc-done">${st.done} of ${st.sessions} ${st.isProto ? "weeks started" : "sessions done"}</span>` : "");
   function programCard(p, opts = {}) {
     const st = progStats(p);
@@ -2055,7 +2061,7 @@
         ${progPoster(p, "pc-img", "(max-width: 700px) 100vw, 50vw")}
         <span class="pc-cat">${esc(opts.kicker || p.category)}</span>${p.locked ? lockBadge : ""}
         <b>${esc(opts.title || p.title)}</b><p>${esc(p.summary)}</p>
-        <span class="pc-meta">${st.isProto ? `${partsLabel(st.nWeeks, p)} · week-by-week plan` : `${p.weeks} weeks · ${p.days.length} days/week`} · ${esc(lvlName(p.level))} · ${esc((Gen.LOCATIONS.find((l) => l.id === p.location) || {}).label || "")}</span>
+        <span class="pc-meta">${st.isProto ? `${partsLabel(st.nWeeks, p)} · week-by-week plan` : `${p.weeks} weeks · ${freqLabel(p)}`} · ${esc(lvlName(p.level))} · ${esc((Gen.LOCATIONS.find((l) => l.id === p.location) || {}).label || "")}</span>
         ${progBar(st)}
       </button>`;
   }
@@ -2086,7 +2092,7 @@
         return `<button type="button" class="level-card lvl-${esc(l)}" data-goto="${esc(one ? `programs/${one.id}` : sportHref(sp, l))}">
           <span class="lc-level">${esc(lvlName(l))}</span>
           <b>${esc(one ? one.title : `${at.length} programs`)}</b>
-          ${one ? `<p>${esc(one.summary)}</p><span class="pc-meta">${st.isProto ? `${partsLabel(st.nWeeks, one)} · week-by-week plan` : `${one.weeks} weeks · ${one.days.length} days/week`}</span>${progBar(st)}` : ""}
+          ${one ? `<p>${esc(one.summary)}</p><span class="pc-meta">${st.isProto ? `${partsLabel(st.nWeeks, one)} · week-by-week plan` : `${one.weeks} weeks · ${freqLabel(one)}`}</span>${progBar(st)}` : ""}
           <span class="lc-go" aria-hidden="true">›</span></button>`;
       }).join("")}</div>`;
   }
@@ -2282,16 +2288,17 @@
     loadProtocol(p.id).then((pr) => { if (pr) renderProtocol(p, weekKey); else if (weekKey) history.replaceState(null, "", "#programs/" + p.id); });
   }
   function renderProgramDays(p) {
-    const wk = (i) => Math.min(p.weeks, doneCount(p, i) + 1);
+    const paced = perWeekTotal(p) > 0, pos = paced ? perWeekPos(p, p.days.reduce((n, _, i) => n + doneCount(p, i), 0)) : null;
+    const wk = (i) => (paced ? pos.week : Math.min(p.weeks, doneCount(p, i) + 1));
     $("#prog-detail").innerHTML = `${crumbs(progCrumbs(p))}
       ${progNote(p)}
       <div class="card prog-head prog-head-img">${progPoster(p, "ph-img", "(max-width: 520px) 100vw, 480px")}<span class="pc-cat">${esc(p.category)}</span>${p.locked ? lockBadge : ""}<h2>${esc(p.title)}</h2><p>${esc(p.summary)}</p>
-        <p class="muted small">${PROTO.ids.has(p.id) ? `${partsLabel((PROTO.weekCounts || {})[p.id] || p.weeks, p)} · week-by-week plan` : `${p.weeks} weeks · ${p.days.length} session${p.days.length === 1 ? "" : "s"} a week`} · ${esc(lvlName(p.level))} · ${esc((Gen.LOCATIONS.find((l) => l.id === p.location) || {}).label || "")}</p>
+        <p class="muted small">${PROTO.ids.has(p.id) ? `${partsLabel((PROTO.weekCounts || {})[p.id] || p.weeks, p)} · week-by-week plan` : paced ? `${p.weeks} weeks · ${perWeekPlan(p)}` : `${p.weeks} weeks · ${p.days.length} session${p.days.length === 1 ? "" : "s"} a week`} · ${esc(lvlName(p.level))} · ${esc((Gen.LOCATIONS.find((l) => l.id === p.location) || {}).label || "")}</p>
         ${p.notes ? `<p class="prog-notes">${esc(p.notes)}</p>` : ""}
         <button type="button" class="btn-ghost sm save-plan${isSaved(p.id) ? " on" : ""}" data-save-plan="${esc(p.id)}">${isSaved(p.id) ? "Saved to my dashboard ✓" : "Save to my dashboard"}</button></div>
       ${progResources(p)}
       <div class="prog-body">${p.days.map((d, i) => { const w = progDayWorkout(p, i); return `<div class="card prog-day">
-        <div class="pd-top"><div><span class="label accent">Day ${i + 1} · Week ${wk(i)} of ${p.weeks}</span><h3>${esc(d.name)}</h3>
+        <div class="pd-top"><div><span class="label accent">${paced ? (pos.complete ? `All ${perWeekTotal(p)} sessions done · Week ${p.weeks} of ${p.weeks}` : `Week ${pos.week} of ${p.weeks} · session ${pos.session} of ${pos.of} this week`) : `Day ${i + 1} · Week ${wk(i)} of ${p.weeks}`}</span><h3>${esc(d.name)}</h3>
           <p class="muted small">About ${w.minutes} min · ${w.circuit.length} exercises × ${w.rounds} rounds · warm-up and cool-down included</p></div>
           ${p.locked ? "" : `<button type="button" class="btn-blue sm" data-prog-start="${i}"><svg viewBox="0 0 24 24"><path d="M7 4v16l13-8z"/></svg> Start</button>`}</div>
         <ol class="pd-ex">${w.circuit.map((e) => `<li>${esc(e.name)} <span>${esc(e.sets)}</span></li>`).join("")}</ol></div>`; }).join("")}</div>

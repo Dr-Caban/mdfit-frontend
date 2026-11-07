@@ -1300,7 +1300,8 @@
       <label class="wide">Summary<input data-f="summary" value="${esc(x.summary)}" maxlength="400"></label>
       <label class="wide">Coaching notes<textarea data-f="notes" rows="2" maxlength="1000">${esc(x.notes)}</textarea></label>
       <label class="wide">Program resources (Health Tips shown on the program). Ctrl/Cmd-click to pick several<select data-f="resources" multiple size="4">${(c.recommendations || []).map((r) => `<option value="${esc(r.id)}"${(x.resources || []).includes(r.id) ? " selected" : ""}>${esc(r.title)}</option>`).join("")}</select></label>
-      <label class="wide">Days<textarea data-f="days" rows="4">${esc(x.days.map((d) => [d.name, d.goal, d.length, d.rounds || ""].join(" | ")).join("\n"))}</textarea></label>` },
+      <label class="wide">Days<textarea data-f="days" rows="4">${esc(x.days.map((d) => [d.name, d.goal, d.length, d.rounds || ""].join(" | ")).join("\n"))}</textarea></label>
+      <label class="wide">Sessions per week, week by week (blank = every day above, every week; e.g. Mobility Ladder 1, 2, 2, 3, 3)<input data-f="perWeek" value="${esc((x.perWeek || []).join(", "))}" placeholder="1, 2, 2, 3, 3"></label>` },
     events: { blank: { id: "", title: "", date: "", time: "", location: "", description: "", link: "", free: false }, html: (x) => `
       <label>Title<input data-f="title" value="${esc(x.title)}" maxlength="120"></label>
       <label>Date (YYYY-MM-DD)<input data-f="date" value="${esc(x.date)}" maxlength="10" placeholder="2026-11-14"></label>
@@ -1365,6 +1366,8 @@
       }
       if (kind === "programs") {
         o.resources = [...$("[data-f=resources]", r).selectedOptions].map((op) => op.value);
+        const pw = String(o.perWeek || "").split(/[\s,]+/).filter(Boolean).map(Number);
+        if (pw.length) o.perWeek = pw; else { delete o.perWeek; delete orig.perWeek; }
         // Each line is "name | focus | minutes | rounds". Keep each day's exercise list and rest times by matching
         // the original day by name (else by position) and laying the edited fields over it.
         const origDays = orig.days || [];
