@@ -147,6 +147,7 @@
             <label>Start times every<select name="slotStepMin"><option value="15">15 min</option><option value="20">20 min</option><option value="30">30 min</option><option value="60">60 min</option></select></label>
             <label>Minimum notice (hours)<input name="minNoticeHours" type="number" min="0" max="168"></label>
             <label>Book up to (days ahead)<input name="daysAhead" type="number" min="1" max="90"></label>
+            <label>Latest start time (blank = any)<input name="lastStart" type="time" step="900"></label>
           </div>
           <label>Closed dates (holidays, vacation), one per line as YYYY-MM-DD<textarea name="blockedDates" rows="4" placeholder="2026-12-25"></textarea></label>
           <h2>Appointment types</h2>

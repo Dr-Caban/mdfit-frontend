@@ -520,6 +520,7 @@
     hf.slotStepMin.value = String(sch.slotStepMin);
     hf.minNoticeHours.value = sch.minNoticeHours;
     hf.daysAhead.value = sch.daysAhead;
+    hf.lastStart.value = sch.lastStart || "";
     hf.blockedDates.value = sch.blockedDates.join("\n");
     hf.appointmentTypes.value = s.appointmentTypes.map((t) => [t.id, t.name, t.minutes, t.description].join(" | ")).join("\n");
     origApptTypes = s.appointmentTypes;
@@ -541,7 +542,7 @@
       });
       await api("PUT", "/api/admin/settings", {
         scheduling: {
-          hours, slotStepMin: Number(hf.slotStepMin.value), minNoticeHours: Number(hf.minNoticeHours.value), daysAhead: Number(hf.daysAhead.value),
+          hours, slotStepMin: Number(hf.slotStepMin.value), minNoticeHours: Number(hf.minNoticeHours.value), daysAhead: Number(hf.daysAhead.value), lastStart: hf.lastStart.value,
           blockedDates: hf.blockedDates.value.split(/[\s,]+/).filter(Boolean)
         },
         appointmentTypes
