@@ -212,7 +212,9 @@
 
   // ---- Dashboard
   async function loadDash() {
-    const [s, me] = await Promise.all([api("GET", "/api/admin/stats"), api("GET", "/api/admin/me")]);
+    const [s, me, st] = await Promise.all([api("GET", "/api/admin/stats"), api("GET", "/api/admin/me"), api("GET", "/api/admin/settings").catch(() => null)]);
+    // Telehealth types are offered but no video room link is saved: patients would get no way to join
+    $("#video-banner").hidden = !st || !!(st.booking && st.booking.telehealthUrl) || !(st.appointmentTypes || []).some((t) => t.remote);
     $("#email-banner").hidden = me.emailNotifications;
     $(".stats").innerHTML = [
       [s.appointmentsToday, "Appointments today"], [s.appointmentsWeek, "Appointments next 7 days"], [s.leadsNew, "New requests"],
@@ -270,6 +272,7 @@
     drafts.delete(homeThread);
     toast("Sent. They'll get an email that you replied."); await openHomeThread(homeThread);
   }));
+  $("#video-banner-go").addEventListener("click", () => { openTab("hours"); setTimeout(() => { const f = $('#cal-form [name="telehealthUrl"]'); if (f) { f.scrollIntoView({ block: "center" }); f.focus(); } }, 400); });
   $("#home-inbox-card").addEventListener("click", (e) => { const l = e.target.closest("[data-tab-link]"); if (l) openTab(l.dataset.tabLink); });
   // Phones/tablets: Calendar and Inbox share Home, one at a time
   $$("[data-homeview]").forEach((b) => b.addEventListener("click", () => {
