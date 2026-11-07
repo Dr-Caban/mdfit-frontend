@@ -240,3 +240,20 @@ code { background: var(--paper-2); padding: 1px 6px; border-radius: 4px; font-si
 /* Video visits: the join link on an appointment card */
 .meet-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; }
 .meet-row input { flex: 1 1 260px; min-width: 0; }
+
+/* Client type + care actions on the client profile */
+.badge.ctype.in { background: #e6effa; color: #1d4f86; }
+.badge.ctype.out { background: #eef0ee; color: #4b5a52; }
+.client-care { border: 1px solid #e4ded1; border-radius: 12px; padding: 12px 14px; margin: 0 0 16px; background: #fff; display: grid; gap: 10px; }
+.ctype-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.label-sm { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #6b6a63; }
+.seg { display: inline-flex; border: 1px solid #d8d2c4; border-radius: 999px; padding: 3px; background: #f6f4ee; }
+.seg button { border: 0; background: none; font: inherit; font-weight: 600; padding: 6px 14px; border-radius: 999px; cursor: pointer; color: #4b5a52; }
+.seg button[aria-checked="true"] { background: #0A1A2E; color: #fff; }
+.care-actions { display: grid; gap: 8px; }
+.care > summary { cursor: pointer; font-weight: 700; padding: 6px 0; }
+.care-form { margin-top: 6px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.prog-picks { display: grid; gap: 6px; max-height: 340px; overflow: auto; }
+.prog-pick { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; align-items: center; }
+@media (max-width: 640px) { .grid3, .prog-pick { grid-template-columns: 1fr; } }

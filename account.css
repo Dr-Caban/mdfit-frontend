@@ -244,3 +244,13 @@
 /* Programs without a photo: the poster draws on its own (navy, soft accent glow) instead of a blank box */
 .prog-poster.pp-blank { background: radial-gradient(120% 90% at 85% 10%, rgba(126,178,221,.35), transparent 60%), linear-gradient(135deg, #16314f, #0A1A2E); }
 .fp-ic.pp-blank { background: linear-gradient(135deg, #16314f, #0A1A2E); }
+
+/* Home: programs Dr. Jared assigned and plans the member saved */
+.my-plans { display: grid; gap: 12px; }
+.mp-list { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 8px; }
+.mp-item { display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; gap: 12px; align-items: center; width: 100%; text-align: left; font: inherit; color: inherit; background: none; border: 1px solid var(--line); border-radius: 12px; padding: 8px; cursor: pointer; }
+.mp-item img, .mp-item .fp-ic { width: 56px; height: 56px; border-radius: 10px; object-fit: cover; display: block; }
+.mp-body b { display: block; color: var(--navy); }
+.mp-go { font-weight: 700; color: var(--accent-text, #2a6aa8); white-space: nowrap; }
+.save-plan { margin-top: 10px; width: auto; }
+.save-plan.on { background: #e3f4ea; color: #2e7d32; border-color: #bfe3cc; }

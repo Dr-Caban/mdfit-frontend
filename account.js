@@ -2238,7 +2238,8 @@
     $("#prog-detail").innerHTML = `${crumbs(progCrumbs(p))}
       <div class="card prog-head prog-head-img">${progPoster(p, "ph-img", "(max-width: 520px) 100vw, 480px")}<span class="pc-cat">${esc(p.category)}</span>${p.locked ? lockBadge : ""}<h2>${esc(p.title)}</h2><p>${esc(p.summary)}</p>
         <p class="muted small">${PROTO.ids.has(p.id) ? `${partsLabel((PROTO.weekCounts || {})[p.id] || p.weeks, p)} · week-by-week plan` : `${p.weeks} weeks · ${p.days.length} session${p.days.length === 1 ? "" : "s"} a week`} · ${esc(lvlName(p.level))} · ${esc((Gen.LOCATIONS.find((l) => l.id === p.location) || {}).label || "")}</p>
-        ${p.notes ? `<p class="prog-notes">${esc(p.notes)}</p>` : ""}</div>
+        ${p.notes ? `<p class="prog-notes">${esc(p.notes)}</p>` : ""}
+        <button type="button" class="btn-ghost sm save-plan${isSaved(p.id) ? " on" : ""}" data-save-plan="${esc(p.id)}">${isSaved(p.id) ? "Saved to my dashboard ✓" : "Save to my dashboard"}</button></div>
       <div class="prog-body">${p.days.map((d, i) => { const w = progDayWorkout(p, i); return `<div class="card prog-day">
         <div class="pd-top"><div><span class="label accent">Day ${i + 1} · Week ${wk(i)} of ${p.weeks}</span><h3>${esc(d.name)}</h3>
           <p class="muted small">About ${w.minutes} min · ${w.circuit.length} exercises × ${w.rounds} rounds · warm-up and cool-down included</p></div>
@@ -2593,6 +2594,35 @@
     }).catch(() => {});
   }
 
+  // ================= My plans on Home: programs Dr. Jared assigned ("From Dr. Jared") + programs the member saved
+  function renderMyPlans() {
+    const box = $("#my-plans"); if (!box || !C || !client) return;
+    const byId = new Map((C.programs || []).map((p) => [p.id, p]));
+    const assigned = (client.assignedPrograms || []).filter((x) => byId.has(x.id));
+    const saved = (client.pinnedPrograms || []).filter((id) => byId.has(id) && !assigned.some((x) => x.id === id));
+    const row = (p, note) => `<li><button type="button" class="mp-item" data-fp="${esc(p.id)}">
+        ${p.image ? progImg(p.image, "", "56px", { sizes: "56px" }) : `<span class="fp-ic pp-blank"></span>`}
+        <span class="mp-body"><b>${esc(p.title)}</b><span class="muted small">${note ? esc(note) : `${p.weeks} weeks · ${esc(lvlName(p.level))}`}</span></span>
+        <span class="mp-go">Open ›</span></button></li>`;
+    $("#mp-assigned").innerHTML = assigned.length ? `<span class="label accent">From Dr. Jared</span><ul class="mp-list">${assigned.map((x) => row(byId.get(x.id), x.note)).join("")}</ul>` : "";
+    $("#mp-saved").innerHTML = saved.length ? `<span class="label">My saved plans</span><ul class="mp-list">${saved.map((id) => row(byId.get(id))).join("")}</ul>` : "";
+    box.hidden = !assigned.length && !saved.length;
+  }
+  const isSaved = (pid) => (client && client.pinnedPrograms || []).includes(pid);
+  document.addEventListener("click", async (e) => {
+    const b = e.target.closest("[data-save-plan]"); if (!b) return;
+    const pid = b.dataset.savePlan, on = isSaved(pid);
+    b.disabled = true;
+    try {
+      const r = await apiAuth(on ? "DELETE" : "PUT", `/api/me/pinned/${encodeURIComponent(pid)}`);
+      client.pinnedPrograms = r.pinnedPrograms; auth.set({ ...auth.get(), client });
+      b.textContent = on ? "Save to my dashboard" : "Saved to my dashboard ✓"; b.classList.toggle("on", !on);
+      toast(on ? "Removed from your dashboard." : "Saved. It's on your Home page.");
+      renderMyPlans();
+    } catch (err) { toast(err.message); }
+    b.disabled = false;
+  });
+
   // ================= Load
   show(location.hash.slice(1) || "home");
   renderProfile(); renderStats(); renderToday(); renderAreas(); renderPlan();
@@ -2611,7 +2641,7 @@
     pollUnread();
     loadPatientDocs();
     apiAuth("GET", "/api/me/access").then((a) => { access = a; renderToday(); renderAccessBadge(); }).catch(() => {});
-    loadContent().then(() => { renderFeaturedPrograms(); const t = location.hash.slice(1).split("/"); if (["programs", "learn", "premium", "tips"].includes(t[0])) renderContent(t[0], t[0] === "programs" ? t.slice(1).join("/") : t[1]); });
+    loadContent().then(() => { renderFeaturedPrograms(); renderMyPlans(); const t = location.hash.slice(1).split("/"); if (["programs", "learn", "premium", "tips"].includes(t[0])) renderContent(t[0], t[0] === "programs" ? t.slice(1).join("/") : t[1]); });
     if (lb.status === "fulfilled") { lib = lb.value; renderPrograms(); if (!$("#view-videos").hidden) renderVideos(); }
     renderStats(); renderEvents(); renderActivity(); renderNotes(); renderCalendar();
     setTimeout(notifyVisits, 1200);

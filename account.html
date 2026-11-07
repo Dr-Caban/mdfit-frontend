@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="app/app.css?v=7b6a516e">
-  <link rel="stylesheet" href="account.css?v=ef115bcb">
+  <link rel="stylesheet" href="account.css?v=7187f636">
   <link rel="stylesheet" href="guides.css?v=0a19199b">
 </head>
 <body class="mdapp">
@@ -55,6 +55,10 @@
         <span class="pc-txt"><b id="pc-title">Become a patient</b><span id="pc-sub">Fill out your intake documents once, before your first visit. They stay on file for every appointment.</span></span>
         <span class="pc-go" id="pc-go">Start intake documents ›</span>
       </a>
+      <div class="card my-plans" id="my-plans" hidden>
+        <div id="mp-assigned"></div>
+        <div id="mp-saved"></div>
+      </div>
       <div class="streak card gold-edge">
         <div class="streak-top">
           <svg class="flame" viewBox="0 0 24 24"><path d="M13.5 1.5s.8 2.7.8 4.6c0 1.9-1.2 3.4-3.1 3.4-1.9 0-3.3-1.5-3.3-3.4l.03-.33C5.9 8 4.7 11.1 4.7 14.4 4.7 18.6 8 22 12 22s7.3-3.4 7.3-7.6c0-5.1-2.4-9.6-5.8-12.9zM11.7 19c-1.6 0-2.9-1.3-2.9-2.9 0-1.5 1-2.6 2.6-2.9 1.6-.3 3.3-1.1 4.2-2.4.4 1.2.6 2.5.6 3.8 0 2.4-2 4.4-4.5 4.4z"/></svg>
@@ -698,7 +702,7 @@
   <script src="musclereports.js?v=cd9ced26"></script>
   <script src="guides.js?v=4608523e"></script>
   <script src="stripe-checkout.js?v=0b68bde3"></script>
-  <script src="account.js?v=fa3f05e4"></script>
+  <script src="account.js?v=98fb5780"></script>
 <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>

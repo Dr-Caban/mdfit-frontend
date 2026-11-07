@@ -344,8 +344,8 @@
     renderClientTotals();
     const q = $("#client-search").value.trim().toLowerCase();
     const rows = clientsIn(clientPeriod).filter((c) => !q || [c.name, c.email, c.phone].join(" ").toLowerCase().includes(q));
-    table($("#clients-table"), ["Client", "Phone", "Next visit", "Last pain log", "Plan", "Docs", "Joined"], rows.map((c) => `
-      <tr data-id="${c.id}" class="click-row"><td><b>${esc(c.name)}</b><br><span class="muted">${esc(c.email)}</span></td><td>${esc(c.phone)}</td>
+    table($("#clients-table"), ["Client", "Type", "Phone", "Next visit", "Last pain log", "Plan", "Docs", "Joined"], rows.map((c) => `
+      <tr data-id="${c.id}" class="click-row"><td><b>${esc(c.name)}</b><br><span class="muted">${esc(c.email)}</span></td><td>${typeBadge(c.clientType)}</td><td>${esc(c.phone)}</td>
         <td>${c.next ? `${fmtDate(c.next.date)} · ${fmtTime(c.next.time)}` : "—"}</td>
         <td>${c.lastPain ? `${esc(c.lastPain.area)} ${c.lastPain.level}/10 · ${fmtDate(c.lastPain.date)}` : "—"}</td>
         <td>${c.hasPlan ? "✓" : "—"}</td><td>${c.documents && c.documents.complete ? "✓" : c.documents && c.documents.done ? `${c.documents.done}/${c.documents.total}` : "—"}</td><td>${when(c.createdAt)}</td></tr>`),
@@ -357,8 +357,47 @@
     if (row) openClient(row.dataset.id);
   }));
 
+  // Client type: inpatients (in-clinic) never pay for video calls or consultations; everyone else is an outpatient
+  const typeBadge = (t) => t === "inpatient" ? `<span class="badge ctype in">Inpatient</span>` : `<span class="badge ctype out">Outpatient</span>`;
+  const careBox = (c, types, progs, roomUrl) => {
+    const first = esc(c.name.split(" ")[0]), assigned = new Map((c.assignedPrograms || []).map((x) => [x.id, x]));
+    const today = new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" });
+    return `<section class="client-care">
+      <div class="ctype-row"><span class="label-sm">Client type</span>
+        <div class="seg" role="radiogroup" aria-label="Client type">
+          <button type="button" role="radio" data-ctype="outpatient" aria-checked="${c.clientType !== "inpatient"}">Outpatient</button>
+          <button type="button" role="radio" data-ctype="inpatient" aria-checked="${c.clientType === "inpatient"}">Inpatient</button>
+        </div>
+        <span class="muted fine" id="ctype-note">${c.clientType === "inpatient" ? "Inpatient: never pays for video calls or consultations." : "Outpatient: standard booking and payment."}</span></div>
+      <div class="care-actions">
+        <details class="care"><summary>Send booking link</summary>
+          <form class="form care-form" data-care="link" novalidate>
+            <label>Appointment type<select name="typeId">${types.map((t) => `<option value="${esc(t.id)}">${esc(t.name)} · ${t.minutes} min</option>`).join("")}</select></label>
+            <label>Message (optional)<textarea name="message" rows="2" maxlength="500" placeholder="Hi ${first}, here's a link to book your next visit."></textarea></label>
+            <button class="btn btn-sm" type="submit">Email booking link</button><p class="form-msg" role="status"></p>
+          </form></details>
+        <details class="care"><summary>Schedule video consultation</summary>
+          <form class="form care-form" data-care="consult" novalidate>
+            <div class="grid3"><label>Date<input type="date" name="date" min="${today}" required></label>
+              <label>Time<input type="time" name="time" step="900" required></label>
+              <label>Length<select name="minutes"><option>15</option><option selected>30</option><option>45</option><option>60</option></select></label></div>
+            <label>Video link<input type="url" name="meetingLink" inputmode="url" value="${esc(roomUrl || "")}" placeholder="https://zoom.us/j/…"></label>
+            <label>Message (optional)<textarea name="message" rows="2" maxlength="500"></textarea></label>
+            <button class="btn btn-sm" type="submit">Schedule and email the link</button><p class="form-msg" role="status"></p>
+          </form></details>
+        <details class="care"><summary>Programs for ${first} (${assigned.size})</summary>
+          <form class="form care-form" data-care="programs" novalidate>
+            <p class="muted fine">Checked programs show on ${first}'s Home under "From Dr. Jared".</p>
+            <div class="prog-picks">${progs.map((p) => `<div class="prog-pick"><label class="check"><input type="checkbox" name="prog" value="${esc(p.id)}" ${assigned.has(p.id) ? "checked" : ""}> ${esc(p.title)}</label>
+              <input type="text" name="note-${esc(p.id)}" maxlength="300" placeholder="Note for ${first} (optional)" value="${esc((assigned.get(p.id) || {}).note || "")}"></div>`).join("")}</div>
+            <button class="btn btn-sm" type="submit">Save programs</button><p class="form-msg" role="status"></p>
+          </form></details>
+      </div></section>`;
+  };
+
   async function openClient(id) {
-    const c = await api("GET", `/api/admin/clients/${id}`);
+    const [c, st, ct] = await Promise.all([api("GET", `/api/admin/clients/${id}`), api("GET", "/api/admin/settings"), contentCache ? contentCache : api("GET", "/api/admin/content")]);
+    contentCache = ct;
     const box = $("#client-detail");
     const p = c.plan;
     box.innerHTML = `
@@ -367,6 +406,7 @@
         <p class="muted"><a href="mailto:${esc(c.email)}">${esc(c.email)}</a>${c.phone ? ` · <a href="tel:${esc(c.phone)}">${esc(c.phone)}</a>` : ""} · joined ${when(c.createdAt)}${c.lastLoginAt ? ` · last login ${when(c.lastLoginAt)}` : ""}</p></div>
         <div class="client-actions"><button type="button" class="mini" data-reset>Send reset code</button><button type="button" class="mini danger" data-delete>Delete account</button></div></div>
       <p class="client-docs">${docsChip(c.documents)}${c.documents && c.documents.done ? ` <button type="button" class="mini" data-cdocs>View documents</button>` : c.documents ? ` <span class="muted">No intake documents on file yet.</span>` : ""}</p><div class="intake-view" id="client-docs" hidden></div>
+      ${careBox(c, st.appointmentTypes || [], ct.programs || [], (st.booking || {}).telehealthUrl)}
       <div class="client-grid">
         <form class="form" id="plan-form" novalidate>
           <h2>Plan</h2>
@@ -399,6 +439,37 @@
       if (!confirm(`Delete ${c.name}'s account? Their appointments stay; their plan and pain log are removed.`)) return;
       await api("DELETE", `/api/admin/clients/${id}`); toast("Account deleted."); loadClients();
     }));
+    // Client type, booking link, video consultation, programs
+    $$("[data-ctype]", box).forEach((b) => b.addEventListener("click", run(async () => {
+      const r = await api("PUT", `/api/admin/clients/${id}/type`, { type: b.dataset.ctype });
+      $$("[data-ctype]", box).forEach((x) => x.setAttribute("aria-checked", x.dataset.ctype === r.clientType));
+      $("#ctype-note").textContent = r.clientType === "inpatient" ? "Inpatient: never pays for video calls or consultations." : "Outpatient: standard booking and payment.";
+      toast(`${c.name.split(" ")[0]} is now an ${r.clientType}.`);
+    })));
+    $$("form[data-care]", box).forEach((f) => f.addEventListener("submit", run(async (e) => {
+      e.preventDefault();
+      const msg = $(".form-msg", f), btn = $("button[type=submit]", f);
+      msg.className = "form-msg"; msg.textContent = ""; btn.disabled = true;
+      try {
+        if (f.dataset.care === "link") {
+          const r = await api("POST", `/api/admin/clients/${id}/send-booking-link`, { typeId: f.typeId.value, message: f.message.value });
+          msg.textContent = r.message;
+        } else if (f.dataset.care === "consult") {
+          if (!f.date.value || !f.time.value) throw new Error("Pick a date and time.");
+          const a = await api("POST", `/api/admin/clients/${id}/consult`, { date: f.date.value, time: f.time.value, minutes: Number(f.minutes.value), meetingLink: f.meetingLink.value.trim(), message: f.message.value });
+          msg.textContent = `Scheduled ${fmtDate(a.date)} at ${fmtTime(a.time)}. ${c.name.split(" ")[0]} has been emailed the link.`;
+          c.appointments.unshift(a);
+          table($("#client-appts"), ["When", "Type", "Status"], c.appointments.map((x) => `<tr><td>${fmtDate(x.date)} · ${fmtTime(x.time)}</td><td>${esc(x.typeName)}</td><td><span class="badge ${x.status}">${x.status}</span></td></tr>`), "");
+        } else {
+          const programs = $$("[name=prog]:checked", f).map((x) => ({ id: x.value, note: f.elements[`note-${x.value}`].value }));
+          const r = await api("PUT", `/api/admin/clients/${id}/programs`, { programs });
+          $("summary", f.closest("details")).textContent = `Programs for ${c.name.split(" ")[0]} (${r.assignedPrograms.length})`;
+          msg.textContent = "Saved. They're on the client's Home now.";
+        }
+        msg.className = "form-msg ok";
+      } catch (err) { msg.className = "form-msg err"; msg.textContent = err.message; }
+      btn.disabled = false;
+    })));
     const pfm = $("#plan-form", box);
     pfm.addEventListener("submit", run(async (e) => {
       e.preventDefault();
