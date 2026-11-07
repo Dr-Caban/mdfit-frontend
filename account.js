@@ -1144,6 +1144,7 @@
   async function openBook() {
     bookState.type = null; bookState.date = ""; bookState.time = "";
     $("#book-msg").textContent = ""; $("#book-note").value = "";
+    $("#book-confirm").disabled = false; // a finished booking left it disabled; the next booking needs it again
     $$("#book-flow .book-step").forEach((s) => { s.hidden = s.dataset.step !== "type"; });
     if (!bookState.types) {
       const site = await window.MDFit.loadSite().catch(() => null);
