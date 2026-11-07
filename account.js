@@ -2423,26 +2423,93 @@
     catch (err) { $(".nums-msg", f).textContent = err.message; }
   });
 
-  // ---- Health tips (image protocol cards from Google Drive)
+  // ---- Health tips: Dr. Jared's protocol posters, shown as readable articles (`sections`, transcribed from each poster).
+  // A tip without sections (one an admin added) stays a poster card that opens full size, or a plain text card.
   let tipArea = "All";
   const driveImg = (id, w) => `https://lh3.googleusercontent.com/d/${encodeURIComponent(id)}=w${w || 600}`;
-  function renderTips() {
+  // Header photos (real photos, free licenses; full list with links in assets/tips/CREDITS.md). Keyed by tip id.
+  const TIP_PHOTOS = {
+    "diet-health-shots": { src: "assets/tips/diet-health-shots.webp", alt: "Dried turmeric roots beside a spoon of ground turmeric", by: "formulatehealth", url: "https://www.flickr.com/photos/189590028@N07/50396528903", lic: "CC BY 2.0", licUrl: "https://creativecommons.org/licenses/by/2.0/" },
+    "bath-accu-mat": { src: "assets/tips/bath-accu-mat.webp", alt: "Close-up of the spiked discs on an acupressure mat", by: "starpause kid", url: "https://www.flickr.com/photos/58972197@N00/7328508376", lic: "CC BY 2.0", licUrl: "https://creativecommons.org/licenses/by/2.0/" },
+    "fitness-erg": { src: "assets/tips/fitness-erg.webp", alt: "A woman stretching in child's pose on a yoga mat", by: "Ivan Radic", url: "https://www.flickr.com/photos/26344495@N05/51287191909", lic: "CC BY 2.0", licUrl: "https://creativecommons.org/licenses/by/2.0/" },
+    "mobility-diet-ratios": { src: "assets/tips/mobility-diet-ratios.webp", alt: "A woman in a deep lunge stretch in a bright studio", by: "KMo Foto", url: "https://www.flickr.com/photos/28032587@N06/11278364026", lic: "CC BY 2.0", licUrl: "https://creativecommons.org/licenses/by/2.0/" },
+    "psg-protocol": { src: "assets/tips/psg-protocol.webp", alt: "A long rack of dumbbells in a gym", by: "jerryonlife", url: "https://www.flickr.com/photos/34909987@N07/3265269814", lic: "CC BY 2.0", licUrl: "https://creativecommons.org/licenses/by/2.0/" },
+    "weekly-tracking": { src: "assets/tips/weekly-tracking.webp", alt: "A hand writing in an open notebook", by: "Nguyen Nguyen (StockSnap)", url: "https://stocksnap.io/photo/notebook-pen-0AXTVI7JB2", lic: "CC0", licUrl: "https://creativecommons.org/publicdomain/zero/1.0/" }
+  };
+  const tipItem = (x) => typeof x === "string" ? esc(x) : `<b>${esc(x.title)}</b>${x.detail ? `<span>${esc(x.detail)}</span>` : ""}`;
+  const tipList = (items, style) => `<ul class="ta-list ta-${esc(style || "bullet")}">${(items || []).map((x) => `<li>${tipItem(x)}</li>`).join("")}</ul>`;
+  const TONE = { important: "Important", remember: "Remember", tip: "Tip", warning: "Caution" };
+  function tipBlock(b) {
+    const h = b.heading ? `<h2 class="ta-h">${esc(b.heading)}</h2>` : "", p = b.text ? `<p class="ta-p">${esc(b.text)}</p>` : "";
+    const note = b.note ? `<p class="ta-note">${esc(b.note)}</p>` : "";
+    let body = "";
+    if (b.type === "list") body = tipList(b.items, b.style);
+    else if (b.type === "groups") body = `<div class="ta-groups">${(b.groups || []).map((g) => `<section class="ta-group"><h3>${esc(g.title)}${g.note ? ` <small>${esc(g.note)}</small>` : ""}</h3>${tipList(g.items, g.style)}</section>`).join("")}</div>`;
+    else if (b.type === "table") {
+      const cols = b.columns || [], rows = b.rows || [];
+      const long = rows.some((r) => r.slice(1).some((c) => String(c).length > 18));
+      body = cols.length === 2
+        // two columns (ingredient + amount, habit + target): a two-sided list that never needs to scroll
+        ? `<dl class="ta-kv${long ? " ta-kv-long" : ""}">${cols.length ? `<div class="ta-kv-head"><dt>${esc(cols[0])}</dt><dd>${esc(cols[1])}</dd></div>` : ""}${rows.map((r) => `<div><dt>${esc(r[0])}</dt><dd>${esc(r[1] || "")}</dd></div>`).join("")}</dl>`
+        // wordy tables (exercise, targets, rep scheme) become one card per row on a phone; short numeric ones stay a grid
+        : `<div class="ta-table-wrap${rows.some((r) => r.some((c) => String(c).length > 24)) ? " ta-stack" : ""}" tabindex="0" role="region" aria-label="${esc(b.heading || "Table")}"><table class="ta-table"><thead><tr>${cols.map((c) => `<th scope="col">${esc(c)}</th>`).join("")}</tr></thead><tbody>${rows.map((r) => `<tr>${r.map((c, i) => i ? `<td data-label="${esc(cols[i] || "")}"${String(c).length <= 10 ? ' class="nw"' : ""}>${esc(c)}</td>` : `<th scope="row">${esc(c)}</th>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+    }
+    else if (b.type === "facts") body = `<div class="ta-facts">${(b.items || []).map((x) => `<div class="ta-fact"><b>${esc(x.title || x)}</b>${x.detail ? `<span>${esc(x.detail)}</span>` : ""}</div>`).join("")}</div>`;
+    else if (b.type === "steps") body = `<ol class="ta-steps">${(b.items || []).map((x) => `<li>${tipItem(x)}</li>`).join("")}</ol>`;
+    else if (b.type === "callout") {
+      const tone = TONE[b.tone] ? b.tone : "tip";
+      return `<aside class="ta-callout ta-${tone}"><p class="ta-callout-k">${TONE[tone]}</p>${b.title && b.title.toLowerCase() !== TONE[tone].toLowerCase() ? `<h3>${esc(b.title)}</h3>` : ""}${p}${b.items ? tipList(b.items, "check") : ""}${note}</aside>`;
+    }
+    else if (b.type === "motto") return `<p class="ta-motto">${esc(b.text)}</p>`;
+    return `<section class="ta-block">${h}${p}${body}${note}</section>`;
+  }
+  function renderTipArticle(r) {
+    const ph = TIP_PHOTOS[r.id];
+    const hero = ph ? `<figure class="ta-photo"><img src="${ph.src}" alt="${esc(ph.alt)}" width="1024" height="576"></figure>`
+      : r.image ? `<figure class="ta-photo ta-poster"><img src="${driveImg(r.image, 1200)}" alt="" width="1024" height="576"></figure>` : "";
+    $("#tip-article").innerHTML = `
+      <a class="ta-back" href="#tips"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.4 7.4 14 6l-6 6 6 6 1.4-1.4L10.8 12z"/></svg>All health tips</a>
+      <article class="ta">
+        <header class="ta-head">${hero}<div class="ta-head-text"><span class="ta-area">${esc(r.area)}</span><h1>${esc(r.title)}</h1><p>${esc(r.body)}</p></div></header>
+        <div class="ta-body">${(r.sections || []).map(tipBlock).join("")}</div>
+        <footer class="ta-foot">
+          ${r.image ? `<a class="ta-poster-link" href="${driveImg(r.image, 2400)}" target="_blank" rel="noopener" data-tipimg="${esc(r.image)}" data-tipcap="${esc(r.title)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm0 16H5V5h14zm-5-7-3 4-2-3-3 4h12z"/></svg>View original poster</a>` : ""}
+          ${r.link ? `<a class="ta-poster-link" href="${esc(r.link)}" target="_blank" rel="noopener">More from Dr. Jared</a>` : ""}
+          <p class="ta-disclaimer">General guidance from Dr. Jared's programs, not personal medical advice. Ask Dr. Jared before you change your diet, supplements or training if you have a health condition.</p>
+          ${ph ? `<p class="ta-credit">Photo: <a href="${ph.url}" target="_blank" rel="noopener">${esc(ph.by)}</a>, <a href="${ph.licUrl}" target="_blank" rel="noopener">${esc(ph.lic)}</a></p>` : ""}
+        </footer>
+      </article>`;
+  }
+  function renderTips(sub) {
+    const open = sub && C.recommendations.find((r) => r.id === sub && r.sections && r.sections.length);
+    $("#tips-list").hidden = !!open; $("#tips-hero").hidden = !!open; $("#tip-article").hidden = !open;
+    if (open) { renderTipArticle(open); return; }
+    $("#tip-article").innerHTML = "";
     const areas = ["All", ...new Set(C.recommendations.map((r) => r.area))];
     $("#tip-areas").innerHTML = areas.map((a) => `<button type="button" class="chip" data-tarea="${esc(a)}" aria-selected="${a === tipArea}">${esc(a)}</button>`).join("");
     const list = C.recommendations.filter((r) => tipArea === "All" || r.area === tipArea);
-    $("#tips").innerHTML = list.map((r) => r.image
-      ? `<button type="button" class="tip-card" data-tipimg="${esc(r.image)}" data-tipcap="${esc(r.title)}"><img src="${driveImg(r.image, 600)}" alt="${esc(r.title)}" loading="lazy"><span class="tip-card-label">${esc(r.title)}</span></button>`
-      : `<div class="tip-card tip-text"><h3>${esc(r.title)}</h3><p>${esc(r.body)}</p></div>`
-    ).join("");
+    $("#tips").innerHTML = list.map((r) => {
+      if (r.sections && r.sections.length) {
+        const ph = TIP_PHOTOS[r.id];
+        const img = ph ? `<img src="${ph.src}" alt="" loading="lazy" width="1024" height="576">` : r.image ? `<img class="poster" src="${driveImg(r.image, 600)}" alt="" loading="lazy">` : "";
+        return `<a class="tip-card tip-art" href="#tips/${encodeURIComponent(r.id)}">${img}<span class="tip-card-body"><span class="ta-area">${esc(r.area)}</span><span class="tip-card-title">${esc(r.title)}</span><span class="tip-card-sum">${esc(r.body)}</span><span class="tip-card-go">Read the protocol <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.6 16.6 10 18l6-6-6-6-1.4 1.4 4.6 4.6z"/></svg></span></span></a>`;
+      }
+      return r.image
+        ? `<button type="button" class="tip-card" data-tipimg="${esc(r.image)}" data-tipcap="${esc(r.title)}"><img src="${driveImg(r.image, 600)}" alt="${esc(r.title)}" loading="lazy"><span class="tip-card-label">${esc(r.title)}</span></button>`
+        : `<div class="tip-card tip-text"><h3>${esc(r.title)}</h3><p>${esc(r.body)}</p></div>`;
+    }).join("");
   }
   $("#tip-areas").addEventListener("click", (e) => { const b = e.target.closest("[data-tarea]"); if (!b) return; tipArea = b.dataset.tarea; renderTips(); });
-  $("#tips").addEventListener("click", (e) => {
-    const c = e.target.closest("[data-tipimg]"); if (!c) return;
+  const openPoster = (c) => {
     const lb = $("#tip-lightbox"), img = $("#tip-lb-img");
-    img.src = driveImg(c.dataset.tipimg, 1200);
-    img.alt = c.dataset.tipcap;
+    img.src = driveImg(c.dataset.tipimg, 1600);
+    img.alt = "Original poster: " + c.dataset.tipcap;
     $("#tip-lb-cap").textContent = c.dataset.tipcap;
     lb.showModal();
+  };
+  $("#view-tips").addEventListener("click", (e) => {
+    const c = e.target.closest("[data-tipimg]"); if (!c) return;
+    e.preventDefault(); openPoster(c);
   });
   $("#tip-lightbox").addEventListener("click", (e) => { if (e.target === e.currentTarget || e.target.classList.contains("tip-lb-close")) e.currentTarget.close(); });
 
