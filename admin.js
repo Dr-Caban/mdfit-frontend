@@ -571,11 +571,23 @@
   let clientList = [];
   async function loadClients() {
     $("#client-detail").hidden = true; $("#clients-list").hidden = false;
-    clientList = await api("GET", "/api/admin/clients");
+    const [list, ct] = await Promise.all([api("GET", "/api/admin/clients"), contentCache || api("GET", "/api/admin/content")]);
+    clientList = list; contentCache = ct; subTiers = ct.tiers || [];
     renderClients();
   }
   // Totals across the top: tap one to show only those clients (tap again, or "All clients", to show everyone)
   let clientPeriod = "all";
+  // Subscription types (membership tiers from Admin → Content). "Free" = no active membership.
+  let subTiers = [];
+  const tierName = (id) => (subTiers.find((t) => t.id === id) || {}).name || id;
+  const subCell = (c) => {
+    const cur = (c.membership && c.membership.tier) || "";
+    const opts = [["", "Free"], ...subTiers.map((t) => [t.id, t.name])];
+    if (cur && !subTiers.some((t) => t.id === cur)) opts.push([cur, cur]);
+    return `<select class="sub-pick${cur ? " paid" : ""}" data-sub="${c.id}" aria-label="${esc(c.name)}: membership">${opts.map(([v, l]) => `<option value="${esc(v)}" ${v === cur ? "selected" : ""}>${esc(l)}</option>`).join("")}</select>${
+      c.membership && c.membership.until ? `<br><span class="muted fine">through ${fmtDate(c.membership.until)}</span>` : ""}${
+      c.requestedTier && c.requestedTier !== cur ? `<br><span class="badge docs">Requested ${esc(tierName(c.requestedTier))}</span>` : ""}`;
+  };
   const clinicDay = (iso) => new Date(iso).toLocaleDateString("en-CA", { timeZone: "America/New_York" });
   function clientsIn(period) {
     const today = clinicDay(new Date().toISOString());
@@ -583,10 +595,12 @@
     const from = { today, week: daysAgo(6), month: today.slice(0, 8) + "01" }[period];
     if (period === "plan") return clientList.filter((c) => c.hasPlan);
     if (period === "inpatient") return clientList.filter((c) => c.clientType === "inpatient");
+    if (period === "subscribed") return clientList.filter((c) => c.membership);
+    if (period.startsWith("tier:")) return clientList.filter((c) => c.membership && c.membership.tier === period.slice(5));
     return from ? clientList.filter((c) => c.createdAt && clinicDay(c.createdAt) >= from) : clientList;
   }
   function renderClientTotals() {
-    const chips = [["all", "All clients"], ["today", "Joined today"], ["week", "Last 7 days"], ["month", "This month"], ["inpatient", "Inpatients"], ["plan", "Have a plan"]];
+    const chips = [["all", "All clients"], ["today", "Joined today"], ["week", "Last 7 days"], ["month", "This month"], ["inpatient", "Inpatients"], ["plan", "Have a plan"], ["subscribed", "Members (paid)"], ...subTiers.map((t) => [`tier:${t.id}`, t.name])];
     $("#client-totals").innerHTML = chips.map(([k, label]) => `<button type="button" class="ct${k === clientPeriod ? " on" : ""}" data-period="${k}" aria-pressed="${k === clientPeriod}"><b>${clientsIn(k).length.toLocaleString()}</b><span>${label}</span></button>`).join("");
   }
   $("#client-totals").addEventListener("click", (e) => {
@@ -598,8 +612,8 @@
     renderClientTotals();
     const q = $("#client-search").value.trim().toLowerCase();
     const rows = clientsIn(clientPeriod).filter((c) => !q || [c.name, c.email, c.phone].join(" ").toLowerCase().includes(q));
-    table($("#clients-table"), ["Client", "Type", "Phone", "Next visit", "Last pain log", "Plan", "Docs", "Joined"], rows.map((c) => `
-      <tr data-id="${c.id}" class="click-row"><td><b>${esc(c.name)}</b><br><span class="muted">${esc(c.email)}</span></td><td><button type="button" class="badge ctype type-toggle ${c.clientType === "inpatient" ? "in" : "out"}" data-type-toggle="${c.id}" title="Click to switch to ${c.clientType === "inpatient" ? "outpatient" : "inpatient"}" aria-label="${esc(c.name)}: ${c.clientType === "inpatient" ? "Inpatient" : "Outpatient"}. Click to switch.">${c.clientType === "inpatient" ? "Inpatient" : "Outpatient"} <span aria-hidden="true">⇄</span></button></td><td>${esc(c.phone)}</td>
+    table($("#clients-table"), ["Client", "Type", "Membership", "Phone", "Next visit", "Last pain log", "Plan", "Docs", "Joined"], rows.map((c) => `
+      <tr data-id="${c.id}" class="click-row"><td><b>${esc(c.name)}</b><br><span class="muted">${esc(c.email)}</span></td><td><button type="button" class="badge ctype type-toggle ${c.clientType === "inpatient" ? "in" : "out"}" data-type-toggle="${c.id}" title="Click to switch to ${c.clientType === "inpatient" ? "outpatient" : "inpatient"}" aria-label="${esc(c.name)}: ${c.clientType === "inpatient" ? "Inpatient" : "Outpatient"}. Click to switch.">${c.clientType === "inpatient" ? "Inpatient" : "Outpatient"} <span aria-hidden="true">⇄</span></button></td><td>${subCell(c)}</td><td>${esc(c.phone)}</td>
         <td>${c.next ? `${fmtDate(c.next.date)} · ${fmtTime(c.next.time)}` : "—"}</td>
         <td>${c.lastPain ? `${esc(c.lastPain.area)} ${c.lastPain.level}/10 · ${fmtDate(c.lastPain.date)}` : "—"}</td>
         <td>${c.hasPlan ? "✓" : "—"}</td><td>${c.documents && c.documents.complete ? "✓" : c.documents && c.documents.done ? `${c.documents.done}/${c.documents.total}` : "—"}</td><td>${when(c.createdAt)}</td></tr>`),
@@ -617,8 +631,20 @@
       toast(`${c.name.split(" ")[0]} is now an ${r.clientType}.`);
       return;
     }
+    if (e.target.closest("[data-sub]")) return; // the subscription picker saves on change, it doesn't open the profile
     const row = e.target.closest("tr[data-id]");
     if (row) openClient(row.dataset.id);
+  }));
+  // Change a client's subscription right from the list (keeps "paid through" and any Stripe details)
+  $("#clients-table").addEventListener("change", run(async (e) => {
+    const sel = e.target.closest("[data-sub]"); if (!sel) return;
+    const c = clientList.find((x) => x.id === sel.dataset.sub); if (!c) return;
+    sel.disabled = true;
+    try {
+      const r = await api("PUT", `/api/admin/clients/${c.id}/membership`, { tier: sel.value, until: (c.membership && c.membership.until) || "" });
+      c.membership = r.membership; if (r.membership && c.requestedTier === r.membership.tier) c.requestedTier = "";
+      toast(`${c.name.split(" ")[0]}: ${sel.value ? tierName(sel.value) : "Free"}.`);
+    } finally { renderClients(); }
   }));
 
   // Client type: inpatients (in-clinic) never pay for video calls or consultations; everyone else is an outpatient
