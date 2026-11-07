@@ -1341,7 +1341,7 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
   .sticky-cta { bottom: calc(var(--tabbar-h) + 14px + env(safe-area-inset-bottom)); }
   .xp-chip { min-height: 44px; padding-top: 5px; padding-bottom: 5px; }
   .sm, .select.sm, .ev-act { min-height: 44px; }
-  .chip, .pill, .intro-btn, .fb-tab, .kind-seg button, .loc-seg button, .vid-org .seg button, #view-leaders .seg4 button, .tip-lb-close { min-height: 44px; }
+  .chip, .pill, .intro-btn, .fb-tab, .btn-outline-light, .tg-filter button, .kind-seg button, .loc-seg button, .vid-org .seg button, #view-leaders .seg4 button, .tip-lb-close { min-height: 44px; }
   .chip { padding: 10px 16px; }
   .kind-seg button { min-width: 44px; }
   .app-painmap .pm-toggle button { min-height: 44px; min-width: 88px; font-size: 14px; }
