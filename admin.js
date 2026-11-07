@@ -751,6 +751,14 @@
       </article>`).join("") : `<p class="muted">No leads yet.</p>`;
   }
   $("#lead-filter").addEventListener("change", run(loadLeads));
+  // Picking a status saves it right away (with the notes as typed); it used to wait for the Save button and was lost on reload
+  $("#leads-list").addEventListener("change", run(async (e) => {
+    if (!e.target.matches("[data-status]")) return;
+    const card = e.target.closest(".lead");
+    const r = await api("PATCH", `/api/admin/leads/${card.dataset.id}`, { status: e.target.value });
+    const badge = $("h3 .badge", card); if (badge) { badge.className = `badge ${r.status}`; badge.textContent = r.status; }
+    toast("Lead saved."); // no re-render, so notes being typed aren't wiped
+  }));
   $("#leads-list").addEventListener("click", run(async (e) => {
     const card = e.target.closest(".lead");
     if (!card) return;
