@@ -226,7 +226,6 @@
     table($("#upcoming"), ["When", "Class", "Booked"], s.upcoming.map((x) =>
       `<tr><td>${fmtDate(x.date)} · ${fmtTime(x.time)}</td><td>${esc(x.title)}</td><td>${x.capacity - x.spotsLeft} / ${x.capacity}</td></tr>`),
       "No classes in the next 7 days. Add some under Classes.");
-    calClasses = s.upcoming || [];
     await Promise.all([loadCalendar(), homeThread ? openHomeThread(homeThread) : loadHomeInbox()]);
   }
 
@@ -284,11 +283,15 @@
   const mondayOf = (d) => addD(d, -((new Date(d + "T12:00:00Z").getUTCDay() + 6) % 7));
   let calView = matchMedia("(max-width: 700px)").matches ? "day" : "week", calDay = tzDay(), calAppts = [], calClasses = [];
   const toMin = (t) => Number(t.slice(0, 2)) * 60 + Number(t.slice(3, 5));
-  async function loadCalendar() { calAppts = (await api("GET", "/api/admin/appointments?all=1")).filter((a) => a.status !== "cancelled"); renderCalendar(); }
+  // Classes come from the public schedule (14 days ahead; the dashboard's "upcoming" list stops at 10 sessions)
+  async function loadCalendar() {
+    const [ap, sc] = await Promise.all([api("GET", "/api/admin/appointments?all=1"), api("GET", "/api/schedule?days=14").catch(() => ({ sessions: [] }))]);
+    calAppts = ap.filter((a) => a.status !== "cancelled"); calClasses = sc.sessions || []; renderCalendar();
+  }
   function renderCalendar() {
     const days = calView === "week" ? Array.from({ length: 7 }, (_, i) => addD(mondayOf(calDay), i)) : [calDay];
     const evs = [...calAppts.map((a) => ({ kind: "appt", a, date: a.date, start: toMin(a.time), end: toMin(a.time) + (a.minutes || 60) })),
-      ...calClasses.map((x) => ({ kind: "class", x, date: x.date, start: toMin(x.time), end: toMin(x.time) + (x.minutes || 60) }))].filter((e) => days.includes(e.date));
+      ...calClasses.map((x) => ({ kind: "class", x, date: x.date, start: toMin(x.time), end: toMin(x.time) + (x.durationMin || 60) }))].filter((e) => days.includes(e.date));
     const lo = Math.min(7 * 60, ...evs.map((e) => Math.floor(e.start / 60) * 60)), hi = Math.max(19 * 60, ...evs.map((e) => Math.ceil(e.end / 60) * 60));
     const PX = 52 / 60, today = tzDay();
     $("#cal-label").textContent = calView === "week" ? `${fmtDate(days[0], { month: "short", day: "numeric" })} – ${fmtDate(days[6], { month: "short", day: "numeric", year: "numeric" })}` : fmtDate(calDay, { weekday: "long", month: "long", day: "numeric" });
