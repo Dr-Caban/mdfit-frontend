@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css?v=c75279d6">
-  <link rel="stylesheet" href="admin.css?v=668e5f6f">
+  <link rel="stylesheet" href="admin.css?v=4601afb2">
 </head>
 <body class="admin">
   <section id="login" class="login">
@@ -47,8 +47,7 @@
       <nav aria-label="Admin sections">
         <button type="button" data-nav="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 16H5V9h14zM7 11h5v5H7z"/></svg><span>Home</span></button>
         <button type="button" data-nav="people"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 11a3 3 0 1 0-3-3 3 3 0 0 0 3 3zm-8 0a3 3 0 1 0-3-3 3 3 0 0 0 3 3zm0 2c-2.3 0-7 1.2-7 3.5V19h14v-2.5C15 14.2 10.3 13 8 13zm8 0c-.3 0-.6 0-1 .1a4.2 4.2 0 0 1 2 3.4V19h6v-2.5c0-2.3-4.7-3.5-7-3.5z"/></svg><span>Clients</span></button>
-        <button type="button" data-nav="messages"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM6 9h12v2H6zm8 5H6v-2h8zm4-6H6V6h12z"/></svg><span>Messages</span> <span class="pill pending" id="admin-msg-count" hidden></span></button>
-        <button type="button" data-nav="feedback"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17.3 18.2 21l-1.6-7 5.4-4.7-7.2-.6L12 2 9.2 8.7 2 9.3l5.4 4.7-1.6 7z"/></svg><span>Feedback</span> <span class="pill pending" id="admin-fb-count" hidden></span></button>
+        <button type="button" data-nav="inbox"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM6 9h12v2H6zm8 5H6v-2h8zm4-6H6V6h12z"/></svg><span>Inbox</span> <span class="pill pending" id="admin-msg-count" hidden></span></button>
         <button type="button" data-nav="insights"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z"/></svg><span>Insights</span></button>
         <button type="button" data-nav="settings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.1 12.9a7 7 0 0 0 0-1.8l2-1.5-2-3.4-2.3.9a7 7 0 0 0-1.6-.9L14.9 4h-4l-.4 2.2a7 7 0 0 0-1.5.9l-2.4-.9-2 3.4 2 1.5a7 7 0 0 0 0 1.8l-2 1.5 2 3.4 2.4-.9a7 7 0 0 0 1.5.9l.4 2.2h4l.3-2.2a7 7 0 0 0 1.6-.9l2.3.9 2-3.4zM12.9 15a3 3 0 1 1 3-3 3 3 0 0 1-3 3z"/></svg><span>Settings</span></button>
       </nav>
@@ -62,6 +61,10 @@
       <div class="subnav" id="subnav" role="tablist" hidden></div>
 
       <section data-panel="dash">
+        <div class="home-switch seg" role="radiogroup" aria-label="Show">
+          <button type="button" role="radio" data-homeview="cal" aria-checked="true">Calendar</button>
+          <button type="button" role="radio" data-homeview="inbox" aria-checked="false">Inbox <span class="pill pending" id="home-inbox-count" hidden></span></button>
+        </div>
         <p class="banner" id="email-banner" hidden>Email notifications are off. Add <code>RESEND_API_KEY</code> and <code>NOTIFY_FROM</code> in Railway to get an email for every booking and request.</p>
         <div class="home-strip">
           <div class="online-bar" id="online-bar"><span class="online-dot"></span><span id="online-text">Connecting…</span></div>
@@ -69,7 +72,7 @@
             <span class="share-more muted">Phone consult: <code id="call-link"></code></span></div>
         </div>
         <div class="stats"></div>
-        <div class="home-grid">
+        <div class="home-grid" data-show="cal">
           <div class="cal-card">
             <div class="cal-head">
               <div class="cal-nav"><button type="button" class="mini" id="cal-prev" aria-label="Previous">‹</button><button type="button" class="mini" id="cal-today">Today</button><button type="button" class="mini" id="cal-next" aria-label="Next">›</button></div>
@@ -80,6 +83,11 @@
             <div class="cal-grid" id="cal-grid"></div>
           </div>
           <aside class="agenda">
+            <div class="home-inbox card-lite" id="home-inbox-card">
+              <div class="hi-head"><h2>Inbox</h2><button type="button" class="link" data-tab-link="messages">All messages ›</button></div>
+              <div id="home-inbox"><p class="muted">Loading…</p></div>
+              <p class="hi-more muted" id="home-inbox-more"><button type="button" class="link" data-tab-link="feedback">Bug reports & ideas <span class="pill pending" id="admin-fb-count" hidden></span></button> · <button type="button" class="link" data-tab-link="reviews">Reviews</button> · <button type="button" class="link" data-tab-link="leads">Leads</button></p>
+            </div>
             <h2>Today</h2>
             <div class="table-wrap"><table id="today"></table></div>
             <details class="agenda-more"><summary>Coming up</summary><div class="table-wrap"><table id="next-appts"></table></div></details>
@@ -380,7 +388,7 @@
   <script src="realtime.js?v=c1829e8b"></script>
   <script src="painmuscles.js?v=74e3b348"></script>
   <script src="paintracks.js?v=55ce1cb4"></script>
-  <script src="admin.js?v=a37ccf7b"></script>
+  <script src="admin.js?v=cf1002a6"></script>
 <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>

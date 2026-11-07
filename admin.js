@@ -70,8 +70,7 @@
   const NAV = [
     { id: "home", label: "Home", tabs: [["dash", "Calendar"], ["appts", "Appointments"], ["classes", "Classes"], ["bookings", "Class bookings"], ["hours", "Hours & sync"]] },
     { id: "people", label: "Clients", tabs: [["clients", "Clients"], ["leads", "Leads"], ["members", "Members"], ["subs", "Newsletter"]] },
-    { id: "messages", label: "Messages", tabs: [["messages", "Messages"]] },
-    { id: "feedback", label: "Feedback", tabs: [["reviews", "Reviews"], ["feedback", "Bug reports & ideas"]] },
+    { id: "inbox", label: "Inbox", tabs: [["messages", "Messages"], ["reviews", "Reviews"], ["feedback", "Bug reports & ideas"]] },
     { id: "insights", label: "Insights", tabs: [["analytics", "Analytics"], ["audit", "Audit"]] },
     { id: "settings", label: "Settings", tabs: [["settings", "Settings"], ["content", "Content"]] }
   ];
@@ -179,6 +178,7 @@
         if (ev.type === "feedback" || ev.type === "bug_report" || ev.type === "suggestion") { if (current === "feedback") run(loadFeedback)(); pollBadges(); }
       });
       MDFitRT.on("new_message", () => {
+        if (current === "dash") run(() => (homeThread ? openHomeThread(homeThread) : loadHomeInbox()))();
         if (current === "messages") run(loadThreads)();
         else pollBadges();
       });
@@ -224,8 +224,55 @@
       `<tr><td>${fmtDate(x.date)} · ${fmtTime(x.time)}</td><td>${esc(x.title)}</td><td>${x.capacity - x.spotsLeft} / ${x.capacity}</td></tr>`),
       "No classes in the next 7 days. Add some under Classes.");
     calClasses = s.upcoming || [];
-    await loadCalendar();
+    await Promise.all([loadCalendar(), homeThread ? openHomeThread(homeThread) : loadHomeInbox()]);
   }
+
+  // ---- Home inbox: message threads beside the calendar; a tap opens the conversation right here, with a reply box
+  let homeThread = null;
+  async function loadHomeInbox() {
+    homeThread = null;
+    const d = await api("GET", "/api/admin/messages");
+    const hc = $("#home-inbox-count"); hc.hidden = !d.unread; hc.textContent = d.unread;
+    const list = d.threads.slice().sort((x, y) => (y.unread > 0) - (x.unread > 0)).slice(0, 8);
+    $("#home-inbox").innerHTML = list.length ? `<ul class="hi-list">${list.map((t) => `<li><button type="button" class="hi-row${t.unread ? " unread" : ""}" data-hthread="${esc(t.clientId)}">
+        <span class="hi-name"><b>${esc(t.name)}</b>${t.unread ? `<span class="pill pending">${t.unread}</span>` : ""}</span>
+        <span class="hi-last">${t.last ? `${t.last.from === "doctor" ? "You: " : ""}${esc(t.last.body)}` : ""}</span>
+        <small class="muted">${t.last ? esc(when(t.last.at)) : ""}</small></button></li>`).join("")}</ul>` : `<p class="muted">No messages yet. Members can message you from the app.</p>`;
+  }
+  async function openHomeThread(cid) {
+    homeThread = cid;
+    const d = await api("GET", `/api/admin/messages/${cid}`);
+    const first = esc(d.client.name.split(" ")[0]);
+    $("#home-inbox").innerHTML = `<div class="hi-thread">
+        <div class="hi-top"><button type="button" class="mini" data-hback>‹ Inbox</button><b>${esc(d.client.name)}</b>
+          <span class="hi-actions"><button type="button" class="link" data-hclient="${esc(cid)}">Profile</button></span></div>
+        <div class="msg-log hi-log">${d.messages.map((m) => `<div class="mb ${m.from}"><p>${esc(m.body).replace(/\n/g, "<br>")}</p><small>${m.from === "doctor" ? "You" : first} · ${when(m.at)}</small></div>`).join("") || `<p class="muted">No messages yet.</p>`}</div>
+        <form class="msg-reply hi-reply"><textarea name="body" rows="2" maxlength="2000" placeholder="Reply to ${first}…"></textarea><button class="btn btn-sm" type="submit">Send</button></form>
+      </div>`;
+    const log = $(".hi-log"); log.scrollTop = log.scrollHeight;
+    const ta = $(".hi-reply textarea"); ta.value = drafts.get(cid) || ""; ta.addEventListener("input", () => drafts.set(cid, ta.value));
+    pollBadges(); // opening a thread marks it read
+  }
+  $("#home-inbox").addEventListener("click", run(async (e) => {
+    const t = e.target.closest("[data-hthread]"), back = e.target.closest("[data-hback]"), prof = e.target.closest("[data-hclient]");
+    if (t) await openHomeThread(t.dataset.hthread);
+    else if (back) await loadHomeInbox();
+    else if (prof) await goClient(prof.dataset.hclient);
+  }));
+  $("#home-inbox").addEventListener("submit", run(async (e) => {
+    e.preventDefault();
+    const f = e.target, body = f.body.value.trim(), btn = $("button[type=submit]", f); if (!body || btn.disabled || !homeThread) return;
+    btn.disabled = true; // one tap = one message (and one email)
+    try { await api("POST", `/api/admin/messages/${homeThread}`, { body }); } finally { btn.disabled = false; }
+    drafts.delete(homeThread);
+    toast("Sent. They'll get an email that you replied."); await openHomeThread(homeThread);
+  }));
+  $("#home-inbox-card").addEventListener("click", (e) => { const l = e.target.closest("[data-tab-link]"); if (l) openTab(l.dataset.tabLink); });
+  // Phones/tablets: Calendar and Inbox share Home, one at a time
+  $$("[data-homeview]").forEach((b) => b.addEventListener("click", () => {
+    $(".home-grid").dataset.show = b.dataset.homeview; $('[data-panel="dash"]').dataset.show = b.dataset.homeview;
+    $$("[data-homeview]").forEach((x) => x.setAttribute("aria-checked", x === b));
+  }));
 
   // ---- Calendar (Home): appointments and classes on a week or day grid, 7 AM to 7 PM (stretches for earlier/later
   // visits). Tap a visit for the details, the client's profile and the video link.
