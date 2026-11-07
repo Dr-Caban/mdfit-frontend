@@ -628,11 +628,16 @@
     renderClientTotals();
     const q = $("#client-search").value.trim().toLowerCase();
     const rows = clientsIn(clientPeriod).filter((c) => !q || [c.name, c.email, c.phone].join(" ").toLowerCase().includes(q));
+    // Plain words instead of dashes, and a data-label on every cell so phones can show each client as a labelled card
+    const none = (t) => `<span class="muted none">${t}</span>`;
     table($("#clients-table"), ["Client", "Type", "Membership", "Phone", "Next visit", "Last pain log", "Plan", "Docs", "Joined"], rows.map((c) => `
-      <tr data-id="${c.id}" class="click-row"><td><b>${esc(c.name)}</b><br><span class="muted">${esc(c.email)}</span></td><td><button type="button" class="badge ctype type-toggle ${c.clientType === "inpatient" ? "in" : "out"}" data-type-toggle="${c.id}" title="Click to switch to ${c.clientType === "inpatient" ? "outpatient" : "inpatient"}" aria-label="${esc(c.name)}: ${c.clientType === "inpatient" ? "Inpatient" : "Outpatient"}. Click to switch.">${c.clientType === "inpatient" ? "Inpatient" : "Outpatient"} <span aria-hidden="true">⇄</span></button></td><td>${subCell(c)}</td><td>${esc(c.phone)}</td>
-        <td>${c.next ? `${fmtDate(c.next.date)} · ${fmtTime(c.next.time)}` : "—"}</td>
-        <td>${c.lastPain ? `${esc(c.lastPain.area)} ${c.lastPain.level}/10 · ${fmtDate(c.lastPain.date)}` : "—"}</td>
-        <td>${c.hasPlan ? "✓" : "—"}</td><td>${c.documents && c.documents.complete ? "✓" : c.documents && c.documents.done ? `${c.documents.done}/${c.documents.total}` : "—"}</td><td>${when(c.createdAt)}</td></tr>`),
+      <tr data-id="${c.id}" class="click-row"><td data-label="Client" class="c-name"><b>${esc(c.name)}</b><br><span class="muted">${esc(c.email)}</span></td><td data-label="Type"><button type="button" class="badge ctype type-toggle ${c.clientType === "inpatient" ? "in" : "out"}" data-type-toggle="${c.id}" title="Click to switch to ${c.clientType === "inpatient" ? "outpatient" : "inpatient"}" aria-label="${esc(c.name)}: ${c.clientType === "inpatient" ? "Inpatient" : "Outpatient"}. Click to switch.">${c.clientType === "inpatient" ? "Inpatient" : "Outpatient"} <span aria-hidden="true">⇄</span></button></td><td data-label="Membership">${subCell(c)}</td>
+        <td data-label="Phone">${c.phone ? `<a href="tel:${esc(c.phone)}" data-nolink>${esc(c.phone)}</a>` : none("No phone")}</td>
+        <td data-label="Next visit">${c.next ? `${fmtDate(c.next.date)} · ${fmtTime(c.next.time)}` : none("Not booked")}</td>
+        <td data-label="Last pain log">${c.lastPain ? `${esc(c.lastPain.area)} ${c.lastPain.level}/10 · ${fmtDate(c.lastPain.date)}` : none("None logged")}</td>
+        <td data-label="Plan">${c.hasPlan ? "✓ Has a plan" : none("No plan yet")}</td>
+        <td data-label="Docs">${c.documents && c.documents.complete ? "✓ Complete" : c.documents && c.documents.done ? `${c.documents.done} of ${c.documents.total} done` : none("Not started")}</td>
+        <td data-label="Joined">${when(c.createdAt)}</td></tr>`),
       clientList.length ? "No clients match." : "No client accounts yet. Clients sign up at /login.");
   }
   $("#client-search").addEventListener("input", renderClients);
@@ -647,7 +652,7 @@
       toast(`${c.name.split(" ")[0]} is now an ${r.clientType}.`);
       return;
     }
-    if (e.target.closest("[data-sub]")) return; // the subscription picker saves on change, it doesn't open the profile
+    if (e.target.closest("[data-sub], [data-nolink]")) return; // the membership picker and the phone link don't open the profile
     const row = e.target.closest("tr[data-id]");
     if (row) openClient(row.dataset.id);
   }));
@@ -712,9 +717,9 @@
     const m = c.membership, st = c.stats || {}, rw = c.rewards || {};
     const card = (k, v, sub = "") => `<div class="ov"><span>${k}</span><b>${v}</b>${sub ? `<small>${sub}</small>` : ""}</div>`;
     return `<div class="client-ov">
-      ${card("Next visit", next ? `${fmtDate(next.date)} · ${fmtTime(next.time)}` : "—", next ? esc(next.typeName) : "")}
+      ${card("Next visit", next ? `${fmtDate(next.date)} · ${fmtTime(next.time)}` : "Not booked", next ? esc(next.typeName) : "Send a booking link below")}
       ${card("Visits done", n("completed"), `${n("no-show")} no-show · ${n("cancelled")} cancelled`)}
-      ${card("Pain", last ? `${last.level}/10` : "—", last ? `${esc(last.area)} · ${esc(trend || fmtDate(last.date))}${spark}` : "No entries yet")}
+      ${card("Pain", last ? `${last.level}/10` : "None logged", last ? `${esc(last.area)} · ${esc(trend || fmtDate(last.date))}${spark}` : "Pain entries from their app show here")}
       ${card("Membership", m ? esc(m.tier) : "None", m && m.until ? `paid through ${fmtDate(m.until)}` : "")}
       ${card("Activity", `${st.streak || 0}-day streak`, `${st.workouts || 0} workouts${rw.level ? ` · level ${rw.level}` : ""}`)}
       ${card("Last login", c.lastLoginAt ? when(c.lastLoginAt) : "Never", `joined ${when(c.createdAt)}`)}

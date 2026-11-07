@@ -429,3 +429,29 @@ body.admin .form { grid-template-columns: minmax(0, 1fr); } /* a grid form's col
 .cal-ev:not(.busy) { z-index: 1; }
 .cg-allday { display: block; margin-top: 2px; font-size: 11px; font-weight: 600; color: #6b675d; background: #e8e5dc; border-radius: 6px; padding: 1px 4px; }
 .lg.lg-busy { background: repeating-linear-gradient(135deg, #d9d5ca 0 3px, #eceae3 3px 6px); border: 1px solid #9b968a; }
+
+/* Clients list on phones: one labelled card per client instead of a sideways-scrolling table */
+#clients-table .none { font-size: 13px; }
+@media (max-width: 760px) {
+  #clients-table thead { display: none; }
+  #clients-table, #clients-table tbody { display: block; width: 100%; min-width: 0; }
+  #clients-table tr.click-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 14px; padding: 14px; border-bottom: 1px solid var(--line); }
+  #clients-table tr.click-row td { display: block; padding: 0; border: 0; min-width: 0; font-size: 14px; }
+  #clients-table tr.click-row td::before { content: attr(data-label); display: block; font-size: 11px; font-weight: 700; letter-spacing: .6px; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
+  #clients-table tr.click-row td.c-name { grid-column: 1 / -1; font-size: 16px; }
+  #clients-table tr.click-row td.c-name::before { display: none; }
+  #clients-table .sub-pick { max-width: 100%; }
+  #clients-table td.empty { display: block; }
+  .table-wrap:has(#clients-table) { overflow-x: visible; }
+}
+@media (max-width: 760px) {
+  /* Client profile tables: no forced width, and empty messages wrap instead of running off the card */
+  #client-appts, #client-pain { min-width: 0; }
+  #client-appts td.empty, #client-pain td.empty { white-space: normal; text-align: left; padding: 16px; }
+}
+@media (max-width: 760px) {
+  /* Totals: one swipeable row so the clients start near the top of the screen */
+  #client-totals { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 8px; padding-bottom: 4px; scrollbar-width: none; }
+  #client-totals .ct { flex: 0 0 auto; min-width: 104px; padding: 8px 12px; }
+  #client-totals .ct b { font-size: 20px; }
+}
