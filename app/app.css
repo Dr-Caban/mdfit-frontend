@@ -1324,3 +1324,42 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
 .gx-txt small { color: var(--muted); font-size: 12.5px; overflow-wrap: anywhere; }
 .gx-rec { font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: #fff; background: #2e9e5b; border-radius: 999px; padding: 4px 9px; white-space: nowrap; }
 .level-list .level-card.lvl-elite { border-left-color: #0A1A2E; } /* Pro */
+
+/* ---- Polish: touch targets, bottom clearance, search ----
+   Apple's minimum tap target is 44px. On the phone/tablet layout every control gets at least that, mostly by padding so the
+   look barely changes. Desktop (mouse) keeps the compact sizes. */
+:root { --tabbar-h: 68px; }
+/* The fixed tab bar is --tabbar-h tall plus the home-indicator inset; leave that much (and a little air) under every page
+   so the last card is never hidden behind it. */
+.icon-btn { width: 44px; height: 44px; }
+.qsearch { padding: 2px 6px 2px 38px; }
+.qsearch input { font-size: 16px; padding: 12px 4px; min-height: 44px; }
+.qsearch input::placeholder { color: var(--muted); opacity: 1; }
+.qsearch-x { min-width: 44px; min-height: 44px; }
+@media (max-width: 999px) {
+  .app { padding-bottom: calc(var(--tabbar-h) + 32px + env(safe-area-inset-bottom)); }
+  .sticky-cta { bottom: calc(var(--tabbar-h) + 14px + env(safe-area-inset-bottom)); }
+  .xp-chip { min-height: 44px; padding-top: 5px; padding-bottom: 5px; }
+  .sm, .select.sm, .ev-act { min-height: 44px; }
+  .chip, .pill, .intro-btn, .fb-tab, .kind-seg button, .loc-seg button, .vid-org .seg button, #view-leaders .seg4 button, .tip-lb-close { min-height: 44px; }
+  .chip { padding: 10px 16px; }
+  .kind-seg button { min-width: 44px; }
+  .app-painmap .pm-toggle button { min-height: 44px; min-width: 88px; font-size: 14px; }
+  .cal-nav .icon-btn { width: 44px; height: 44px; }
+  /* Text links inside card headers and under cards: grow the hit area, not the layout */
+  .card-head .link-sm { display: inline-flex; align-items: center; min-height: 44px; margin: -12px 0; padding: 0 2px; }
+  .today .link { padding: 13px 16px; margin-top: 2px; }
+  .link.danger, .profile-links a { display: inline-flex; align-items: center; min-height: 44px; }
+  .profile-links { gap: 4px 18px; }
+  .sub summary, .entries summary, .pw summary, .pain-secondary > summary, details > summary { padding-top: 13px; padding-bottom: 13px; }
+  .board-hide { min-height: 44px; }
+  .board-hide input { width: 20px; height: 20px; }
+  .app input[type=range] { height: 44px; }
+  /* Favourite hearts stay small on the thumbnail but take a 44px tap */
+  .heart::before { content: ""; position: absolute; inset: -6px; }
+  .mini-vids .heart::before { inset: -8px; }
+  /* Five places to train don't fit in one row on a phone without "Office / Desk" breaking over three lines: scroll them */
+  .loc-seg { display: flex; overflow-x: auto; scrollbar-width: none; }
+  .loc-seg::-webkit-scrollbar { display: none; }
+  .loc-seg button { flex: 1 0 auto; white-space: nowrap; padding: 10px 14px; font-size: 13.5px; }
+}

@@ -124,7 +124,7 @@
 .app-painmap .painmap-figure { background: var(--paper); border-radius: 14px; overflow: hidden; margin: 0 16px; }
 .app-painmap .pm-toggle { display: flex; justify-content: center; gap: 6px; padding: 10px 0 4px; }
 .app-painmap .pm-toggle button { background: var(--paper-2); border: 1px solid var(--line); border-radius: 20px; padding: 6px 18px; font: 600 13px var(--body); color: var(--muted); cursor: pointer; }
-.app-painmap .pm-toggle button[aria-pressed="true"] { background: var(--navy); color: #fff; border-color: var(--navy); }
+.app-painmap .pm-toggle button[aria-pressed="true"] { background: var(--gold); color: var(--navy); border-color: var(--gold); }
 .app-painmap .pm-viewport { overflow: hidden; }
 .app-painmap .pm-stage { position: relative; }
 .app-painmap .pm-stage img.pm-figures { width: 100%; height: auto; display: block; }
