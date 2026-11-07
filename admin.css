@@ -35,6 +35,9 @@ td.empty { color: var(--muted); text-align: center; padding: 28px; }
 
 .stack { display: grid; gap: 12px; }
 .lead { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; display: grid; gap: 10px; }
+/* The public site's hero ".lead" paragraph (white, centered, big) shares this class name: undo it for Admin cards */
+body.admin .lead { color: var(--text); font-size: 15px; max-width: none; margin: 0; text-align: left; }
+body.admin .intake-view h4 { color: var(--ink); }
 .lead header { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .lead h3 { margin: 0; font-size: 17px; }
 .lead .meta { color: var(--muted); font-size: 14px; }
@@ -168,7 +171,7 @@ code { background: var(--paper-2); padding: 1px 6px; border-radius: 4px; font-si
 .mfa-secret { font-size: 15px; background: #f6f4ee; padding: 3px 8px; border-radius: 6px; letter-spacing: 1px; }
 .mfa-recovery { background: #f6f4ee; padding: 12px; border-radius: 8px; font-size: 15px; letter-spacing: 1px; }
 .intake-view { display: grid; gap: 6px; padding: 12px 14px; margin: 6px 0 10px; background: #f6f4ee; border-radius: 10px; font-size: 14px; }
-.intake-view div { display: grid; grid-template-columns: 140px 1fr; gap: 10px; }
+.intake-view div { display: grid; grid-template-columns: minmax(140px, 260px) 1fr; gap: 12px; }
 .intake-view b { color: #0A1A2E; }
 @media (max-width: 600px) { .intake-view div { grid-template-columns: 1fr; gap: 2px; } }
 /* Documents packet: one section per form inside the intake box; amber chip until every form is in */
