@@ -379,7 +379,7 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
 @media (min-width: 1000px) {
   .app { max-width: none; margin: 0 0 0 248px; padding: 24px 36px 60px; }
   .view { max-width: 1240px; margin: 0 auto; padding-top: 0; }
-  .tabbar { left: 0; top: 0; bottom: 0; transform: none; width: 248px; display: flex; flex-direction: column; gap: 4px; padding: 22px 14px; border-top: 0; background: linear-gradient(180deg, var(--navy) 55%, var(--navy-2)); }
+  .tabbar { left: 0; top: 0; bottom: 0; transform: none; width: 248px; display: flex; flex-direction: column; gap: 4px; padding: 22px 14px; border-top: 0; background: linear-gradient(180deg, var(--navy) 55%, var(--navy-2)); overflow-y: auto; }
   .tabbar .short { display: none; } .tabbar .long { display: inline; }
   .tabbar button { display: flex; align-items: center; gap: 14px; padding: 12px 14px; border-radius: 10px; font-size: 15px; color: var(--on-navy); text-align: left; }
   .tabbar button:hover { background: var(--navy-3); color: #fff; }
@@ -403,6 +403,7 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
   .app-top { margin: 0 0 -44px; padding: 0; background: none; color: var(--navy); justify-content: flex-end; }
   .app-top .app-logo { display: none; }
   .hello { margin-top: 0; }
+  .hello-row { padding-right: 56px; }
   .home-grid { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 20px; align-items: start; }
   .notes-panel { max-width: 420px; margin-left: auto; position: relative; z-index: 2; }
   .quick { grid-template-columns: repeat(4, 1fr); }
@@ -807,7 +808,7 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
 .meet-list .pill { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: var(--gold-soft); text-transform: capitalize; }
 .nums-form .full { display: grid; gap: 4px; font-size: 12px; font-weight: 600; color: var(--muted); }
 .nums-form .full textarea, .nums-form .full input { font: inherit; font-size: 15px; padding: 9px 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); color: var(--text); }
-.tip-grid { display: grid; grid-template-columns: 1fr; gap: 16px; padding: 0 16px 24px; }
+.tip-grid { display: grid; grid-template-columns: 1fr; gap: 16px; padding: 0 0 24px; }
 .tip-card { all: unset; display: block; cursor: pointer; border-radius: 14px; overflow: hidden; background: var(--card); border: 1px solid var(--line); box-shadow: 0 2px 8px rgba(0,0,0,.06); transition: transform .15s, box-shadow .15s; }
 .tip-card:active { transform: scale(.97); }
 .tip-card img { width: 100%; display: block; }
@@ -816,6 +817,7 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
 .tip-card.tip-text h3 { font: 700 16px/1.3 var(--display); color: var(--navy); margin: 0 0 6px; }
 .tip-card.tip-text p { margin: 0; color: var(--text); font-size: 14px; line-height: 1.5; }
 .tip-lightbox { border: none; background: rgba(0,0,0,.92); padding: 0; max-width: 100vw; max-height: 100vh; width: 100vw; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.tip-lightbox:not([open]) { display: none; }
 .tip-lightbox::backdrop { background: transparent; }
 .tip-lightbox img { max-width: 96vw; max-height: 85vh; object-fit: contain; border-radius: 8px; }
 .tip-lightbox p { color: #fff; font: 600 16px/1.3 var(--display); text-align: center; margin: 12px 16px 0; }
@@ -1257,15 +1259,15 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
 .crumb-sep { color: var(--muted); }
 .folder-card .pc-meta { color: var(--navy); font-weight: 600; }
 .level-list { display: grid; gap: 12px; margin-top: 12px; }
-.level-card { position: relative; text-align: left; display: grid; gap: 6px; padding: 16px 44px 16px 16px; border: 1px solid var(--line); border-left: 6px solid var(--gold); border-radius: 16px; background: var(--card); font: inherit; color: var(--text); cursor: pointer; }
-.level-card:hover { border-color: var(--gold); }
-.level-card.lvl-beginner { border-left-color: #3aa76d; }
-.level-card.lvl-intermediate { border-left-color: #e0a526; }
-.level-card.lvl-advanced { border-left-color: #c8452f; }
-.level-card .lc-level { font: 700 12px/1 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
-.level-card b { font: 700 19px/1.2 var(--display); color: var(--navy); }
-.level-card p { margin: 0; color: var(--muted); font-size: 14px; }
-.level-card .lc-go, .proto-wk .pw-go { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); font-size: 26px; color: var(--muted); }
+.level-list .level-card { position: relative; text-align: left; display: grid; gap: 6px; padding: 16px 44px 16px 16px; border: 1px solid var(--line); border-left: 6px solid var(--gold); border-radius: 16px; background: var(--card); font: inherit; color: var(--text); cursor: pointer; }
+.level-list .level-card:hover { border-color: var(--gold); }
+.level-list .level-card.lvl-beginner { border-left-color: #3aa76d; }
+.level-list .level-card.lvl-intermediate { border-left-color: #e0a526; }
+.level-list .level-card.lvl-advanced { border-left-color: #c8452f; }
+.level-list .level-card .lc-level { font: 700 12px/1 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.level-list .level-card b { font: 700 19px/1.2 var(--display); color: var(--navy); }
+.level-list .level-card p { margin: 0; color: var(--muted); font-size: 14px; }
+.level-list .level-card .lc-go, .proto-wk .pw-go { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); font-size: 26px; color: var(--muted); }
 .proto-h { margin: 18px 0 2px; font: 700 18px/1.25 var(--display); color: var(--navy); }
 .proto-wk-list { display: grid; gap: 8px; margin: 10px 0 14px; }
 .proto-wk { position: relative; text-align: left; display: grid; gap: 3px; padding: 12px 40px 12px 14px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); font: inherit; color: var(--text); cursor: pointer; }
@@ -1315,4 +1317,4 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
 .gx-txt b { color: var(--navy); }
 .gx-txt small { color: var(--muted); font-size: 12.5px; overflow-wrap: anywhere; }
 .gx-rec { font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: #fff; background: #2e9e5b; border-radius: 999px; padding: 4px 9px; white-space: nowrap; }
-.level-card.lvl-elite { border-left-color: #0A1A2E; } /* Pro */
+.level-list .level-card.lvl-elite { border-left-color: #0A1A2E; } /* Pro */

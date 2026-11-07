@@ -124,7 +124,7 @@
 .app-painmap .painmap-figure { background: var(--paper); border-radius: 14px; overflow: hidden; margin: 0 16px; }
 .app-painmap .pm-toggle { display: flex; justify-content: center; gap: 6px; padding: 10px 0 4px; }
 .app-painmap .pm-toggle button { background: var(--paper-2); border: 1px solid var(--line); border-radius: 20px; padding: 6px 18px; font: 600 13px var(--body); color: var(--muted); cursor: pointer; }
-.app-painmap .pm-toggle button[aria-pressed="true"] { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+.app-painmap .pm-toggle button[aria-pressed="true"] { background: var(--navy); color: #fff; border-color: var(--navy); }
 .app-painmap .pm-viewport { overflow: hidden; }
 .app-painmap .pm-stage { position: relative; }
 .app-painmap .pm-stage img.pm-figures { width: 100%; height: auto; display: block; }
@@ -163,7 +163,8 @@
 .featured-progs .fp-item .fp-ic.strength { background: linear-gradient(135deg, rgba(220,80,80,.3), rgba(120,30,30,.4)); }
 .featured-progs .fp-item .fp-body { display: flex; flex-direction: column; min-width: 0; flex: 1; }
 .featured-progs .fp-item b { font-size: 14px; line-height: 1.2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.featured-progs .fp-cta { margin-top: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 4px; }
+.featured-progs .fp-cta { color: var(--navy); border-color: var(--line); margin-top: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 4px; }
+.featured-progs .fp-cta:hover { border-color: var(--navy); }
 .featured-progs .fp-cta svg { width: 14px; height: 14px; fill: currentColor; }
 
 /* Hero/Profile programs showcase — full-width card with image-forward grid of 6 programs.
