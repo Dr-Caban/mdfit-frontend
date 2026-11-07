@@ -55,7 +55,10 @@
   // on a shared screen (HIPAA automatic logoff). The idle timer signs out after 15 minutes without input.
   function logout() {
     token = ""; session.set(""); $("#app").hidden = true; $("#login").hidden = false; if (window.MDFitRT) MDFitRT.disconnect();
-    $$("#appts-list, #clients-list, #client-totals, #leads-list, #members-list, #msg-thread, #msg-threads, #bc-list, #feedback-list, #reviews-list, #app table tbody").forEach((el) => { el.innerHTML = ""; });
+    $$("#appts-list, #clients-list, #client-totals, #client-detail, #leads-list, #members-list, #msg-thread, #msg-threads, #bc-list, #feedback-list, #reviews-list, #cal-grid, #cal-pop-body, #notif-list, #home-inbox, #app table tbody").forEach((el) => { el.innerHTML = ""; });
+    const pop = $("#cal-pop"); if (pop && pop.open) pop.close();
+    // cached patient data goes too, so nothing is shown again before the next sign-in reloads it
+    clientList = []; calAppts = []; notes = []; contentCache = null; homeThread = null; drafts.clear();
     clearTimeout(idleT);
   }
   $("#logout").addEventListener("click", logout);

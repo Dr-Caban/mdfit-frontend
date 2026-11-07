@@ -1,6 +1,16 @@
 // MD Fit 1-on-1 booking widget. Used on the homepage (#book) and the standalone /book page.
 // MDFit.mountBooker(rootEl, siteData, { type: "eval" })
 (() => {
+  // A signed-in member's own booking is linked to their account (their intake documents on file count for it);
+  // a stale session just books like a visitor instead of bouncing to the login page.
+  const bookAs = async (path, body) => {
+    const sess = window.MDFit.auth.get();
+    if (!sess || !sess.token) return window.MDFit.api(path, body);
+    const res = await fetch(window.MDFit.API + path, { method: "POST", headers: { "Content-Type": "application/json", Authorization: "Bearer " + sess.token }, body: JSON.stringify(body) });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw Object.assign(new Error(data.error || "Something went wrong. Try again."), { status: res.status });
+    return data;
+  };
   const { $, $$, esc, api, fmtTime, fmtDate, todayInTz, addDays, zonedToUtc, icsStamp, telHref, wire, areaChips } = window.MDFit;
 
   function mountBooker(root, site, opts = {}) {
@@ -180,7 +190,7 @@
     wire(form, async (data) => {
       if (pain.dataset.untouched !== undefined) delete data.painLevel;
       try {
-        const out = await api("/api/appointments", { ...data, typeId: state.type.id, date: state.date, time: state.time, ...(opts.reward && state.type.id === opts.reward.type.id ? { rewardCode: opts.reward.code } : {}) });
+        const out = await bookAs("/api/appointments", { ...data, typeId: state.type.id, date: state.date, time: state.time, ...(opts.reward && state.type.id === opts.reward.type.id ? { rewardCode: opts.reward.code } : {}) });
         if (!out || !out.appointment) throw new Error("We couldn't confirm that booking. Please call 941-313-0562 and we'll get you scheduled.");
         showBooked(out.appointment);
         return null;

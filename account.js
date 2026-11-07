@@ -2547,7 +2547,8 @@
   function dayItems(d) {
     return [
       ...allWorkouts.filter((w) => w.date === d).map((w) => ({ k: "workout", t: w.title, s: `${w.minutes} min · ${w.exercises} exercises` })),
-      ...[...appts.upcoming, ...appts.past].filter((a) => a.date === d && a.status !== "cancelled").map((a) => ({ k: "visit", t: a.typeName, s: `${fmtTime(a.time)} · ${a.minutes} min${a.status === "booked" && d >= todayInTz() ? " · upcoming" : ""}` })),
+      ...[...appts.upcoming, ...appts.past].filter((a) => a.date === d && a.status !== "cancelled").map((a) => ({ k: "visit", t: a.typeName, s: `${fmtTime(a.time)} · ${a.minutes} min${a.status === "booked" && d >= todayInTz() ? " · upcoming" : ""}`,
+        link: a.status === "booked" && d >= todayInTz() ? a.meetingLink || "" : "", video: /telehealth|video|remote|online/i.test(a.typeName + " " + a.typeId) })),
       ...painLog.filter((p) => p.date === d).map((p) => ({ k: "pain", t: `${p.area} pain ${p.level}/10`, s: p.note || "Pain log" }))
     ];
   }
@@ -2572,7 +2573,8 @@
     const alreadyRepaired = repairs && repairs.usedDates && repairs.usedDates.includes(d);
     const canRepair = d < t && !items.length && repairs && repairs.available >= 1 && !alreadyRepaired;
     $("#cal-day").innerHTML = `<p class="label">${d === t ? "Today" : fmtDate(d, { weekday: "long", month: "short", day: "numeric" })}</p>` + (items.length
-      ? `<ul class="activity">${items.map((x) => `<li class="act"><span class="check k-bg-${x.k}"></span><div><b>${esc(x.t)}</b><span>${esc(x.s)}</span></div></li>`).join("")}</ul>`
+      ? `<ul class="activity">${items.map((x) => `<li class="act"><span class="check k-bg-${x.k}"></span><div><b>${esc(x.t)}</b><span>${esc(x.s)}</span>${
+          x.link ? `<a class="btn-blue sm join-link" href="${esc(x.link)}" target="_blank" rel="noopener">Join video visit</a>` : x.video && x.s.includes("upcoming") ? `<span class="muted small">Your video link will be emailed before the visit.</span>` : ""}</div></li>`).join("")}</ul>`
       : `<p class="muted small">Nothing logged. ${d === t ? "A quick workout keeps your streak alive." : ""}</p>`)
       + (alreadyRepaired ? `<p class="muted small"><b>Streak repair applied</b> — this missed day is bridged for your streak.</p>` : "")
       + (canRepair ? `<button type="button" class="btn-gold sm" data-repair="${d}">Use 1 repair to bridge this day</button>` : "");
