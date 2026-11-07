@@ -1363,3 +1363,9 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
   .loc-seg::-webkit-scrollbar { display: none; }
   .loc-seg button { flex: 1 0 auto; white-space: nowrap; padding: 10px 14px; font-size: 13.5px; }
 }
+@media (min-width: 1000px) {
+  /* The phone-only tab-bar sizing (10.5px labels) leaked into the desktop sidebar, and "More" (phones only) showed as a
+     bare "•••" under the full list. */
+  .tabbar button { font-size: 14.5px; }
+  .tabbar .more-btn { display: none; }
+}
