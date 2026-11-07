@@ -139,6 +139,8 @@
     if (tab === "messages") openMessages(); else clearInterval(msgPoll);
     $("#more-btn").classList.toggle("on", $$(".tabbar .ov").some((b) => b.dataset.tab === tab));
     const ms = $("#more-sheet"); if (ms.open) ms.close();
+    // Back/forward or a link away from the Pain Tool must not leave its pattern sheet open over the next screen
+    if (tab !== "pain") $$("dialog.pm-sheet[open]").forEach((d) => d.close());
     window.scrollTo(0, 0);
   }
   const go = (tab) => { if (location.hash !== "#" + tab) history.pushState(null, "", "#" + tab); show(tab); };
@@ -326,7 +328,7 @@
       <div class="ev-info"><b>${esc(a.typeName)}</b><span>${fmtDate(a.date, { weekday: "short" })} · ${fmtTime(a.time)} · ${a.minutes} min</span>
         ${cal ? `<span><a class="link-sm" href="${ics(a)}" download="mdfit-${a.date}.ics">Add to calendar</a></span>` : ""}
         ${a.meetingLink && a.status === "booked" && a.date >= todayInTz() ? `<span><a class="link-sm join-link" href="${esc(a.meetingLink)}" target="_blank" rel="noopener">Join video visit</a></span>` : ""}</div>
-      ${cancel ? `<button type="button" class="ev-act danger" data-cancel>Cancel</button>` : `<span class="muted tiny">${esc(a.status === "booked" ? "done" : a.status)}</span>`}
+      ${cancel ? `<button type="button" class="ev-act danger" data-cancel>Cancel</button>` : `<span class="muted tiny">${esc(a.status === "booked" ? (a.date >= todayInTz() ? "booked" : "done") : a.status)}</span>`}
     </li>`;
   function renderEvents() {
     const mine = appts.upcoming.slice(0, 3).map((a) => apptLi(a));
@@ -1144,6 +1146,7 @@
   async function openBook() {
     bookState.type = null; bookState.date = ""; bookState.time = "";
     $("#book-msg").textContent = ""; $("#book-note").value = "";
+    $("#book-confirm").disabled = false; // a finished booking left it disabled; the next booking needs it again
     $$("#book-flow .book-step").forEach((s) => { s.hidden = s.dataset.step !== "type"; });
     if (!bookState.types) {
       const site = await window.MDFit.loadSite().catch(() => null);

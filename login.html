@@ -112,8 +112,8 @@
     (() => {
       const { $, $$, api, auth, wire } = window.MDFit;
       const q = new URLSearchParams(location.search);
-      // Same-site paths only, optionally with an app deep link like /account#pain/muscle/ql
-      const next = /^\/[a-z]*(#[a-z0-9/-]*)?$/.test(q.get("next") || "") ? q.get("next") : "/account";
+      // Same-site paths only, optionally with an app deep link like /account#pain/muscle/ql (or /intake?me=1, "Become a patient")
+      const next = /^\/[a-z]*(\?me=1)?(#[a-z0-9/-]*)?$/.test(q.get("next") || "") ? q.get("next") : "/account";
       if (auth.get() && !q.get("reset")) { location.replace(next); return; }
 
       let resetEmail = "";
