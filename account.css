@@ -490,3 +490,10 @@
 .leagues { grid-template-columns: repeat(3, 1fr); }
 .leagues button[data-league="all"][aria-selected="true"] { background: var(--navy); color: var(--gold); border-color: var(--gold); }
 @media (max-width: 400px) { .leagues button { font-size: 12.5px; gap: 4px; } .leagues button span { font-size: 15px; } }
+
+/* Daily XP norm picker (Beginner 50 / Intermediate 75 / Pro 100) */
+.hb-norm { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin: 4px 0 10px; }
+.hb-norm button { display: grid; gap: 1px; justify-items: center; min-height: 44px; padding: 6px 4px; border-radius: 10px; border: 1.5px solid #e4ded1; background: #fff; color: #0A1A2E; font: 600 13px/1.2 inherit; cursor: pointer; }
+.hb-norm button small { font-weight: 500; font-size: 11.5px; color: #6b6b70; }
+.hb-norm button[aria-checked="true"] { background: #0A1A2E; border-color: #0A1A2E; color: #fff; }
+.hb-norm button[aria-checked="true"] small { color: #c8a663; }

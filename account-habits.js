@@ -33,6 +33,7 @@
     const streakTxt = `<span class="hb-streak" title="Days in a row with ${d.goal}+ XP from activities and workouts">${s.current ? `${s.current}-day streak` : "Start a streak today"}</span>` +
       (rep.available ? `<span class="hb-rep" title="A repair covers one missed day in your streak. Earn one every 3 days in a row.">${rep.available} repair${rep.available === 1 ? "" : "s"}</span>` : "");
     $(".hb-body", card).innerHTML = `
+      ${d.goalLevels ? `<div class="hb-norm" role="radiogroup" aria-label="My daily XP goal">${Object.entries(d.goalLevels).map(([k, v]) => `<button type="button" role="radio" data-goal-level="${k}" aria-checked="${d.goalLevel === k}">${k === "pro" ? "Pro / Elite" : k[0].toUpperCase() + k.slice(1)} <small>${v} XP</small></button>`).join("")}</div>` : ""}
       <div class="hb-sumrow"><p class="hb-today"><b>+${d.points}</b> XP from activities today</p><p class="hb-meta">${d.qualifying ? `<b class="hb-ok">Goal met (${d.goal} XP).</b>` : `${d.remaining} XP to today's goal of ${d.goal}`} · ${streakTxt}</p></div>
       <div class="hb-list">${shown.map(item).join("")}</div>
       ${short ? `<button type="button" class="link-sm hb-more" data-hb-all>Show all ${manual.length} activities</button>` : ""}
@@ -56,6 +57,13 @@
   card.addEventListener("click", async (e) => {
     if (e.target.id === "hb-retry") return load();
     if (e.target.closest("[data-hb-all]")) { showAll = true; render(); return; }
+    // Daily XP norm: Beginner 50 / Intermediate 75 / Pro 100 (applies from today)
+    const gl = e.target.closest("[data-goal-level]");
+    if (gl) {
+      if (gl.getAttribute("aria-checked") === "true") return;
+      try { data = await apiAuth("PUT", "/api/me/habits/goal", { level: gl.dataset.goalLevel }); render(); toast(`Daily goal: ${data.goal} XP.`); } catch (err) { toast(err.message); }
+      return;
+    }
     const b = e.target.closest("[data-habit]"); if (!b || b.getAttribute("aria-disabled") === "true") return;
     const id = b.dataset.habit, on = b.getAttribute("aria-pressed") !== "true";
     busy.add(id); b.setAttribute("aria-pressed", String(on)); b.classList.toggle("on", on); b.setAttribute("aria-disabled", "true");

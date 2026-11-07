@@ -853,7 +853,7 @@
   // Pain tracks (Dr. Jared's mapping documents): open goes straight to the videos; Start runs them in order in the player
   const trackWorkout = (t) => {
     const ex = TK.steps(t).filter((v) => v.id).map((v) => ({ ...(byId.get(v.id) || { id: v.id, region: t.region, cat: "Rehab", level: 1, loc: "any" }), name: v.name, sets: "Follow the video", block: v.level.split(" · ")[0] }));
-    return { title: `${t.title.split(" →")[0]} pain track`.slice(0, 80), goal: "Mobility & Recovery", goalId: "mobility", location: "home", level: "beginner", levelLabel: "Pain track",
+    return { title: `${t.title.split(" →")[0]} pain track`.slice(0, 80), key: `track-${String(t.id).toLowerCase().replace(/[^a-z0-9-]+/g, "-").slice(0, 60)}`, goal: "Mobility & Recovery", goalId: "mobility", location: "home", level: "beginner", levelLabel: "Pain track",
       rounds: 1, restEx: 0, restRound: 0, minutes: Math.max(5, ex.length * 3), warmup: [], circuit: ex, cooldown: [], exercises: ex, perRound: ex.length, noRest: true };
   };
   function openTrack(id) { TK.ready.then(() => { const t = TK.TRACKS.find((x) => x.id === id); if (t) startPlayer(trackWorkout(t)); }); }
@@ -998,7 +998,7 @@
     const id = report.id, r = REPORTS[id], name = MUS.MUSCLES[id].name;
     const steps = (k) => (r.protocol[k] || []).map((st) => st.video && byName.get(st.video) && { ...byName.get(st.video), sets: st.dose, block: PHASES.find((p) => p[0] === k)[1].split(" · ")[1] }).filter(Boolean);
     const all = phases.flatMap(steps);
-    return { title: `${name.split(" (")[0]} protocol`.slice(0, 80), goal: "Mobility & Recovery", goalId: "mobility", location: "home", level: "beginner", levelLabel: "Protocol",
+    return { title: `${name.split(" (")[0]} protocol`.slice(0, 80), key: `painproto-${String(id).toLowerCase().replace(/[^a-z0-9-]+/g, "-").slice(0, 60)}`, goal: "Mobility & Recovery", goalId: "mobility", location: "home", level: "beginner", levelLabel: "Protocol",
       rounds: 1, restEx: 15, restRound: 0, minutes: Math.max(5, all.length * 3), warmup: [], circuit: all, cooldown: [], exercises: all, perRound: all.length };
   }
   $("#muscle-report").addEventListener("click", async (e) => {
@@ -2452,7 +2452,7 @@
     boardLeague = d.league;
     $$("#board [data-league]").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.league === d.league)));
     const lname = d.league === "olympic" ? "Olympic League" : d.league === "all" ? "overall ranking" : "Pro League";
-    const og = d.olympicGem || `level ${d.olympicLevel}`;
+    const og = d.olympicXp ? `${Number(d.olympicXp).toLocaleString()} XP` : d.olympicGem || `level ${d.olympicLevel}`;
     $("#board-sub").textContent = d.league === "all" ? "Everyone, both leagues, ranked together. This is your #overall rank on Home."
       : d.myLeague === d.league
       ? (d.league === "olympic" ? "You're in the Olympic League, the top tier. Defend your spot." : `You're in the Pro League. Reach ${og} to move up to the Olympic League.`)
