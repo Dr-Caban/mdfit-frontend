@@ -139,6 +139,8 @@
     if (tab === "messages") openMessages(); else clearInterval(msgPoll);
     $("#more-btn").classList.toggle("on", $$(".tabbar .ov").some((b) => b.dataset.tab === tab));
     const ms = $("#more-sheet"); if (ms.open) ms.close();
+    // Back/forward or a link away from the Pain Tool must not leave its pattern sheet open over the next screen
+    if (tab !== "pain") $$("dialog.pm-sheet[open]").forEach((d) => d.close());
     window.scrollTo(0, 0);
   }
   const go = (tab) => { if (location.hash !== "#" + tab) history.pushState(null, "", "#" + tab); show(tab); };
