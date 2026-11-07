@@ -1369,3 +1369,8 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
   .tabbar button { font-size: 14.5px; }
   .tabbar .more-btn { display: none; }
 }
+
+/* Workout player: sound is on but the browser held it back until a tap */
+#p-opts [data-opt="sound"].blocked { border-color: var(--gold); color: var(--gold); animation: p-nudge 1.6s ease-in-out 3; }
+#p-opts [data-opt="sound"].blocked::after { content: " · tap for sound"; font-weight: 600; }
+@keyframes p-nudge { 50% { box-shadow: 0 0 0 4px rgba(200,166,99,.35); } }

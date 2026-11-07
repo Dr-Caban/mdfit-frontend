@@ -219,7 +219,7 @@
     $("#vd-meta").textContent = meta;
     const box = $("#vd-box"), f = $("#vd-frame"), v = warmVideo(id, "auto");
     if (!v) { f.hidden = false; f.src = MDFitVideo.preview(id); vd.showModal(); return; }
-    v.controls = true; v.muted = true; v.autoplay = true;
+    v.controls = true; v.muted = false; v.autoplay = true; // opened by a tap, so sound is allowed
     const fallback = () => {
       clearTimeout(playVideo.stall); v.onerror = null; v.remove();
       warm.delete(id); v.removeAttribute("src"); v.load(); // drop the dead element so the next tap starts clean
@@ -230,7 +230,7 @@
     playVideo.stall = setTimeout(() => { if (v.isConnected && v.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) fallback(); }, 6000);
     box.prepend(v);
     vd.showModal();
-    if (v.error) fallback(); else v.play().catch(() => {});
+    if (v.error) fallback(); else v.play().catch((err) => { if (err && err.name === "NotAllowedError") { v.muted = true; v.play().catch(() => {}); } });
   }
   const exMeta = (e) => [e.region, e.cat, e.level && `Level ${e.level}`, e.loc && e.loc !== "any" && e.loc[0].toUpperCase() + e.loc.slice(1)].filter(Boolean).join(" · ");
   const byId = new Map(EX.map((e) => [e.id, e]));
@@ -1387,7 +1387,8 @@
   const driveMp4 = (id) => MDFitVideo.mp4(id);
   const PLAY_KEY = "mdfit.player.v2"; // v2: breaks default off so videos run back to back
   const P = { w: null, steps: [], i: 0, start: 0, tick: null, stall: null, rest: null, done: false, left: 0, paused: false,
-    opt: { breaks: false, sound: false, ...(store.get(PLAY_KEY) || {}) } };
+    // Sound is on unless the member turned it off themselves (it used to start off, so everyone heard nothing)
+    opt: (() => { const o = store.get(PLAY_KEY) || {}; return { breaks: false, ...o, sound: o.soundSet ? !!o.sound : true }; })() };
   const fmtClock = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
   function buildSteps(w) {
     const out = [];
@@ -1403,6 +1404,7 @@
     return out;
   }
   const saveOpt = () => store.set(PLAY_KEY, P.opt);
+  const soundBlocked = (on) => { const b = $('#p-opts [data-opt="sound"]'); if (!b) return; b.classList.toggle("blocked", on); b.title = on ? "Tap for sound" : ""; };
   function renderOpts() {
     $$("#p-opts [data-opt]").forEach((b) => { const on = !!P.opt[b.dataset.opt]; b.classList.toggle("on", on); b.setAttribute("aria-pressed", on); });
   }
@@ -1518,7 +1520,9 @@
     // Seamless sequence: buffer the next exercise video while this one plays
     const nx = P.steps.slice(P.i + 1).find((x) => x.e && x.e.id);
     if (nx && typeof warmVideo === "function") try { warmVideo(nx.e.id, "auto"); } catch {}
-    const pr = v.play(); if (pr) pr.catch(() => { v.muted = true; v.play().catch(() => {}); });
+    // A browser that blocks sound until a tap: play muted and ask for one tap on Sound
+    const pr = v.play(); if (pr) pr.catch((err) => { if (err && err.name === "NotAllowedError" && !v.muted) { v.muted = true; soundBlocked(true); v.play().catch(() => {}); } });
+    if (!v.muted) soundBlocked(false);
     const wt = $("#p-weight");
     if (wt) wt.addEventListener("input", () => { P.log[e.id] = { name: e.name, weight: wt.value.trim().slice(0, 12) }; });
   }
@@ -1530,8 +1534,11 @@
   });
   $("#p-opts").addEventListener("click", (ev) => {
     const b = ev.target.closest("[data-opt]"); if (!b) return;
-    const k = b.dataset.opt; P.opt[k] = !P.opt[k]; saveOpt(); renderOpts();
-    if (k === "sound") { const v = $("#p-video"); if (v) { v.muted = !P.opt.sound; v.play().catch(() => {}); } }
+    const k = b.dataset.opt, v = $("#p-video");
+    // Sound is on but the browser held it back: this tap turns it on instead of switching it off
+    if (k === "sound" && P.opt.sound && v && v.muted && b.classList.contains("blocked")) { v.muted = false; v.play().catch(() => {}); soundBlocked(false); return; }
+    P.opt[k] = !P.opt[k]; if (k === "sound") P.opt.soundSet = true; saveOpt(); renderOpts();
+    if (k === "sound") { soundBlocked(false); if (v) { v.muted = !P.opt.sound; v.play().catch(() => {}); } }
     if (k === "breaks" && !P.opt.breaks && P.steps[P.i] && P.steps[P.i].rest) { skipRests(); renderStep(); }
   });
   const workoutKey = (w) => w.key || w.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 80);
