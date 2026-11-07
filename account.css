@@ -277,3 +277,18 @@
 .quick .q { align-content: start; }
 .quick .q b { line-height: 1.25; }
 @media (max-width: 999px) { #featured-progs { display: none; } }
+
+/* Gemstone rank card sits on a white card (its first styles assumed navy): solid borders, readable locked ranks */
+.rank-card .rl { opacity: 1; border-color: var(--line); background: var(--card-2); }
+.rank-card .rl:not(.done):not(.cur) .rl-gem { opacity: .5; }
+.rank-card .rl:not(.done):not(.cur) b { color: var(--muted); }
+.rank-card .rl.cur { border-color: var(--gold); background: var(--gold-soft); box-shadow: none; }
+.rank-card .rank-next .rk-max { color: var(--accent-text); }
+/* Progress: the week bars sat under a tall empty gap when there was nothing logged yet */
+.level-card .xp-week { height: 92px; margin-top: 22px; }
+/* Profile: the name lined up with the email under it (it picked up a stray side padding) */
+.profile-head .name { padding: 0; }
+/* Page titles: the gold half never splits mid-phrase ("1- / on-1") */
+.hero h1 em { white-space: nowrap; }
+/* Tips: while a protocol sheet loads (or if it can't), show a navy poster instead of a broken-image icon and alt text */
+.tip-card img { min-height: 140px; color: transparent; background: radial-gradient(120% 90% at 85% 10%, rgba(126,178,221,.35), transparent 60%), linear-gradient(135deg, #16314f, #0A1A2E); }
