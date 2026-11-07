@@ -1972,7 +1972,8 @@
     "Dumbbell Rows": "Dumbbell Row", "Incline DB Press": "Incline Bench Press", "Face Pulls": "Face Pull", "Mobility Flow": "Seated Mobility Flow Beginner",
     "Stretch & Mobility": "Seated Mobility Flow Beginner", "Breath Work": "Box Breathing", "Sumo Deadlifts": "Sumo Deadlift", "Step-Ups": "Step Up",
     "Cable Pull-Throughs": "Cable Pull Through", "Glute Kickbacks": "Quadruped Glute Kick", "Landmine Press": "Landmine Press Twist",
-    "Seated Cable Row": "Row", "Banded Row": "Row", "Lateral Raises": "Lateral Raise", "Plank Variation": "Dynamic Plank", "Sled Push": "Sled Push Pull",
+    "Seated Cable Row": "Dumbbell Row", "Banded Row": "Dumbbell Row", // "Row" is the rowing machine
+    "Lateral Raises": "Lateral Raise", "Plank Variation": "Dynamic Plank", "Sled Push": "Sled Push Pull",
     "Kettlebell Swings": "Kettlebell Swing", "Farmer Carries": "Farmer Carry", "Med Ball Slams": "Med Ball Slam", "Scalene Release": "Standing Scalene Stretch",
     "Rotator Cuff Int/Ext Rotation": "Rotator Cuff External Rotation", "Repeated Shoulder Drop Stretch": "Shoulder Drop Hold",
     "Shoulder Packing Drill": "Floor Slide Scapular Retract", "Scapular Retraction": "Floor Slide Scapular Retract",
