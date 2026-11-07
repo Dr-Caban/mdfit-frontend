@@ -330,10 +330,27 @@
       ${a.documents && a.documents.total ? `<p>${docsChip(a.documents)}</p>` : ""}
       <div class="actions">${a.meetingLink ? `<a class="btn btn-sm" href="${esc(a.meetingLink)}" target="_blank" rel="noopener">Join video</a>` : ""}
         ${who ? `<button type="button" class="btn btn-sm btn-line" data-pop-client="${esc(who.id)}">Open client</button><button type="button" class="btn btn-sm btn-line" data-pop-msg="${esc(who.id)}">Message</button>` : ""}
-        <button type="button" class="btn btn-sm btn-line" data-pop-appts>All appointments</button></div>`;
+        <button type="button" class="btn btn-sm btn-line" data-pop-appts>All appointments</button></div>
+      <div class="actions pop-status" data-pop-id="${esc(a.id)}">${a.status === "completed" ? "" : `<button type="button" class="btn btn-sm btn-line" data-pop-status="completed">Mark completed</button>`}${
+        a.status === "no-show" ? "" : `<button type="button" class="btn btn-sm btn-line" data-pop-status="no-show">No-show</button>`}${a.status === "booked" ? "" : `<button type="button" class="btn btn-sm btn-line" data-pop-status="booked">Back to booked</button>`}</div>
+      ${isVideo(a) ? `<label class="meet-row">Video link <input type="url" inputmode="url" data-pop-meet value="${esc(a.meetingLink || "")}" placeholder="https://zoom.us/j/…"></label>
+        <div class="actions"><button type="button" class="btn btn-sm" data-pop-meet-save>Save video link</button></div><p class="fine muted">A new link is emailed to the patient.</p>` : ""}`;
     $("#cal-pop").showModal();
   }));
   $("#cal-pop").addEventListener("click", run(async (e) => {
+    // Status and video link: saved straight away, then the calendar redraws
+    const st = e.target.closest("[data-pop-status]"), ms = e.target.closest("[data-pop-meet-save]");
+    if (st || ms) {
+      const id = $("[data-pop-id]", $("#cal-pop")).dataset.popId, btn = st || ms;
+      btn.disabled = true;
+      try {
+        const body = st ? { status: st.dataset.popStatus } : { meetingLink: $("[data-pop-meet]", $("#cal-pop")).value.trim() };
+        const r = await api("PATCH", `/api/admin/appointments/${id}`, body);
+        calAppts = calAppts.map((x) => (x.id === id ? { ...x, ...r } : x)); renderCalendar(); $("#cal-pop").close();
+        toast(st ? `Marked ${r.status}.` : "Video link saved.");
+      } finally { btn.disabled = false; }
+      return;
+    }
     const c = e.target.closest("[data-pop-client]"), m = e.target.closest("[data-pop-msg]"), l = e.target.closest("[data-pop-appts]");
     if (c || m || l) $("#cal-pop").close();
     if (c) await goClient(c.dataset.popClient); else if (m) await goThread(m.dataset.popMsg); else if (l) openTab("appts");
