@@ -65,14 +65,88 @@
 
   // ---- Tabs
   const loaders = { dash: loadDash, clients: loadClients, appts: loadAppts, hours: loadHours, leads: loadLeads, classes: loadClasses, bookings: loadBookings, subs: loadSubs, reviews: loadReviews, audit: loadAudit, messages: loadThreads, members: loadMembers, content: loadContent, settings: loadSettings, feedback: loadFeedback, analytics: loadAnalytics };
-  let current = "dash";
-  $$(".tabs [data-tab]").forEach((b) => b.addEventListener("click", () => openTab(b.dataset.tab)));
-  function openTab(name) {
+  // ---- Navigation: six sections in the sidebar; screens that used to be separate tabs are sub-tabs of a section.
+  // Every screen keeps its own #hash so reload and the back button return to it.
+  const NAV = [
+    { id: "home", label: "Home", tabs: [["dash", "Calendar"], ["appts", "Appointments"], ["classes", "Classes"], ["bookings", "Class bookings"], ["hours", "Hours & sync"]] },
+    { id: "people", label: "Clients", tabs: [["clients", "Clients"], ["leads", "Leads"], ["members", "Members"], ["subs", "Newsletter"]] },
+    { id: "messages", label: "Messages", tabs: [["messages", "Messages"]] },
+    { id: "feedback", label: "Feedback", tabs: [["reviews", "Reviews"], ["feedback", "Bug reports & ideas"]] },
+    { id: "insights", label: "Insights", tabs: [["analytics", "Analytics"], ["audit", "Audit"]] },
+    { id: "settings", label: "Settings", tabs: [["settings", "Settings"], ["content", "Content"]] }
+  ];
+  const groupOf = (tab) => NAV.find((g) => g.tabs.some(([t]) => t === tab)) || NAV[0];
+  const fromHash = () => { const t = location.hash.slice(1); return NAV.some((g) => g.tabs.some(([x]) => x === t)) ? t : "dash"; };
+  let current = fromHash();
+  function openTab(name, { load = true } = {}) {
     current = name;
-    $$(".tabs [data-tab]").forEach((b) => b.setAttribute("aria-selected", b.dataset.tab === name));
+    const g = groupOf(name);
+    $$("#sidebar [data-nav]").forEach((b) => b.setAttribute("aria-current", b.dataset.nav === g.id ? "page" : "false"));
+    const sub = $("#subnav");
+    sub.hidden = g.tabs.length < 2;
+    sub.innerHTML = g.tabs.map(([t, l]) => `<button type="button" role="tab" data-tab="${t}" aria-selected="${t === name}">${l}</button>`).join("");
+    $("#tb-title").textContent = g.tabs.length > 1 ? `${g.label} · ${g.tabs.find(([t]) => t === name)[1]}` : g.label;
     $$("[data-panel]").forEach((p) => (p.hidden = p.dataset.panel !== name));
-    run(loaders[name])();
+    if (location.hash.slice(1) !== name) history.pushState(null, "", "#" + name);
+    closeSidebar();
+    if (load) run(loaders[name])();
   }
+  $("#sidebar").addEventListener("click", (e) => { const b = e.target.closest("[data-nav]"); if (b) openTab(NAV.find((g) => g.id === b.dataset.nav).tabs[0][0]); });
+  $("#subnav").addEventListener("click", (e) => { const b = e.target.closest("[data-tab]"); if (b) openTab(b.dataset.tab); });
+  window.addEventListener("popstate", () => { if (token) openTab(fromHash()); });
+  // Phone/tablet: the sidebar slides in from the left
+  function closeSidebar() { $("#sidebar").classList.remove("open"); $("#sb-scrim").hidden = true; $("#menu-btn").setAttribute("aria-expanded", "false"); }
+  $("#menu-btn").addEventListener("click", () => { const o = !$("#sidebar").classList.contains("open"); $("#sidebar").classList.toggle("open", o); $("#sb-scrim").hidden = !o; $("#menu-btn").setAttribute("aria-expanded", String(o)); });
+  $("#sb-scrim").addEventListener("click", closeSidebar);
+  // Jump straight to one client's profile or message thread (from the calendar, notifications or a profile)
+  async function goClient(cid) { openTab("clients", { load: false }); await loadClients(); await openClient(cid); }
+  async function goThread(cid) { openTab("messages", { load: false }); await loadThreads(); await showThread(cid); }
+
+  // ---- Notifications bell: what patients and visitors did (bookings, messages, documents, leads, reviews...),
+  // newest first. "Unread" = newer than the last time the bell was opened on this browser.
+  const NOTE = {
+    appointment: ["📅", "New booking", "dash"], appointment_cancelled: ["❌", "Appointment cancelled", "dash"], intake: ["📝", "Intake document completed", "dash"],
+    lead: ["🎯", "New evaluation request", "leads"], booking: ["🏋️", "Class spot booked", "bookings"], booking_cancelled: ["❌", "Class spot cancelled", "bookings"],
+    message: ["💬", "New message", "messages"], subscribe: ["📧", "New newsletter subscriber", "subs"], bug_report: ["🐛", "Bug report", "feedback"],
+    suggestion: ["💡", "Suggestion", "feedback"], feedback: ["⭐", "New review", "reviews"], client_signup: ["👤", "New client account", "clients"],
+    meeting_request: ["🗓️", "1-on-1 request", "members"], membership_request: ["💳", "Membership request", "members"]
+  };
+  let notes = [];
+  const SEEN_KEY = "mdfit_admin_seen";
+  const seenAt = () => { try { return localStorage.getItem(SEEN_KEY) || ""; } catch { return ""; } };
+  const ago = (t) => { const m = Math.round((Date.now() - Date.parse(t)) / 60000); return m < 1 ? "just now" : m < 60 ? `${m} min ago` : m < 1440 ? `${Math.round(m / 60)} h ago` : when(t); };
+  function renderNotes() {
+    const seen = seenAt(), list = notes.filter((n) => NOTE[n.type] || /^cal_booking/.test(n.type)).slice(0, 40);
+    const unread = list.filter((n) => n.time > seen).length;
+    $("#bell-count").hidden = !unread; $("#bell-count").textContent = unread > 99 ? "99+" : unread;
+    $("#notif-list").innerHTML = list.map((n, i) => {
+      const [ic, label] = NOTE[n.type] || ["📅", "Cal.com booking"];
+      return `<li><button type="button" class="np-item${n.time > seen ? " unread" : ""}" data-note="${i}"><span class="np-ic" aria-hidden="true">${ic}</span>
+        <span class="np-txt"><b>${esc(label)}</b>${n.email ? `<span>${esc(n.email)}</span>` : ""}<small>${esc(ago(n.time))}</small></span></button></li>`;
+    }).join("") || `<li class="np-empty">Nothing new yet.</li>`;
+    $("#notif-list").dataset.items = "";
+    renderNotes.list = list;
+  }
+  async function loadNotes() { try { notes = await api("GET", "/api/admin/activity"); renderNotes(); } catch {} }
+  function toggleNotes(open) {
+    const p = $("#notif-panel"); open = open === undefined ? p.hidden : open;
+    p.hidden = !open; $("#bell").setAttribute("aria-expanded", String(open));
+    if (open) renderNotes();
+  }
+  $("#bell").addEventListener("click", (e) => { e.stopPropagation(); toggleNotes(); });
+  $("#notif-read").addEventListener("click", () => { try { localStorage.setItem(SEEN_KEY, new Date().toISOString()); } catch {} renderNotes(); });
+  document.addEventListener("click", (e) => { if (!$("#notif-panel").hidden && !e.target.closest("#notif-panel")) toggleNotes(false); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#notif-panel").hidden) toggleNotes(false); });
+  $("#notif-list").addEventListener("click", run(async (e) => {
+    const b = e.target.closest("[data-note]"); if (!b) return;
+    const n = renderNotes.list[Number(b.dataset.note)]; toggleNotes(false);
+    try { if (n.time > seenAt()) localStorage.setItem(SEEN_KEY, n.time); } catch {}
+    const target = (NOTE[n.type] || [, , "dash"])[2];
+    const who = n.email && clientList.find((c) => c.email === n.email);
+    if (target === "messages" && who) return goThread(who.id);
+    if (target === "clients" && who) return goClient(who.id);
+    openTab(target);
+  }));
   function rtToast(text, icon) {
     const box = $("#rt-toasts"); if (!box) return;
     const el = document.createElement("div"); el.className = "rt-toast";
@@ -87,14 +161,16 @@
   const hasNotify = typeof window.Notification !== "undefined";
   let rtWired = false; // live-update handlers are registered once; logging in again only reconnects
   function show() {
-    $("#login").hidden = true; $("#app").hidden = false; openTab(current); idleBump();
+    $("#login").hidden = true; $("#app").hidden = false; openTab(fromHash()); idleBump();
     pollBadges(); // unread messages / open feedback counts right away, not a minute after logging in
+    loadNotes(); if (!clientList.length) api("GET", "/api/admin/clients").then((l) => { clientList = l; }).catch(() => {});
     if (hasNotify && Notification.permission === "default") { try { Promise.resolve(Notification.requestPermission()).catch(() => {}); } catch {} }
     if (window.MDFitRT) {
       MDFitRT.connect({ namespace: "/admin", token });
       if (rtWired) return;
       rtWired = true;
       MDFitRT.on("activity", (ev) => {
+        notes.unshift({ time: new Date().toISOString(), ...ev }); renderNotes();
         if (current === "dash") run(loadDash)();
         if (ev.type === "appointment" || ev.type === "appointment_cancelled" || ev.type === "intake") { if (current === "appts") run(loadAppts)(); }
         if (ev.type === "booking" || ev.type === "booking_cancelled") { if (current === "bookings") run(loadBookings)(); }
@@ -113,6 +189,7 @@
         const n = (ev && ev.dates && ev.dates.length) || 0;
         rtToast(`Your calendar changed${n ? ` (${n} day${n === 1 ? "" : "s"})` : ""}. Booking times updated.`);
         if (current === "appts") run(loadAppts)();
+        if (current === "dash") run(loadCalendar)();
         if (current === "hours") loadSync();
       });
       MDFitRT.on("online_count", (ev) => {
@@ -146,7 +223,65 @@
     table($("#upcoming"), ["When", "Class", "Booked"], s.upcoming.map((x) =>
       `<tr><td>${fmtDate(x.date)} · ${fmtTime(x.time)}</td><td>${esc(x.title)}</td><td>${x.capacity - x.spotsLeft} / ${x.capacity}</td></tr>`),
       "No classes in the next 7 days. Add some under Classes.");
+    calClasses = s.upcoming || [];
+    await loadCalendar();
   }
+
+  // ---- Calendar (Home): appointments and classes on a week or day grid, 7 AM to 7 PM (stretches for earlier/later
+  // visits). Tap a visit for the details, the client's profile and the video link.
+  const tzDay = (d = new Date()) => d.toLocaleDateString("en-CA", { timeZone: "America/New_York" });
+  const addD = (d, n) => new Date(Date.parse(d + "T12:00:00Z") + n * 864e5).toISOString().slice(0, 10);
+  const mondayOf = (d) => addD(d, -((new Date(d + "T12:00:00Z").getUTCDay() + 6) % 7));
+  let calView = matchMedia("(max-width: 700px)").matches ? "day" : "week", calDay = tzDay(), calAppts = [], calClasses = [];
+  const toMin = (t) => Number(t.slice(0, 2)) * 60 + Number(t.slice(3, 5));
+  async function loadCalendar() { calAppts = (await api("GET", "/api/admin/appointments?all=1")).filter((a) => a.status !== "cancelled"); renderCalendar(); }
+  function renderCalendar() {
+    const days = calView === "week" ? Array.from({ length: 7 }, (_, i) => addD(mondayOf(calDay), i)) : [calDay];
+    const evs = [...calAppts.map((a) => ({ kind: "appt", a, date: a.date, start: toMin(a.time), end: toMin(a.time) + (a.minutes || 60) })),
+      ...calClasses.map((x) => ({ kind: "class", x, date: x.date, start: toMin(x.time), end: toMin(x.time) + (x.minutes || 60) }))].filter((e) => days.includes(e.date));
+    const lo = Math.min(7 * 60, ...evs.map((e) => Math.floor(e.start / 60) * 60)), hi = Math.max(19 * 60, ...evs.map((e) => Math.ceil(e.end / 60) * 60));
+    const PX = 52 / 60, today = tzDay();
+    $("#cal-label").textContent = calView === "week" ? `${fmtDate(days[0], { month: "short", day: "numeric" })} – ${fmtDate(days[6], { month: "short", day: "numeric", year: "numeric" })}` : fmtDate(calDay, { weekday: "long", month: "long", day: "numeric" });
+    $$("[data-calview]").forEach((b) => b.setAttribute("aria-checked", b.dataset.calview === calView));
+    const hours = []; for (let m = lo; m < hi; m += 60) hours.push(m);
+    const evHtml = (e, i) => {
+      const top = (e.start - lo) * PX, h = Math.max(22, (e.end - e.start) * PX - 2);
+      if (e.kind === "class") return `<div class="cal-ev class" style="top:${top}px;height:${h}px"><b>${esc(e.x.title)}</b><span>${fmtTime(e.x.time)} · ${e.x.capacity - e.x.spotsLeft}/${e.x.capacity}</span></div>`;
+      const a = e.a, cls = a.status === "completed" ? "completed" : a.status === "no-show" ? "noshow" : isVideo(a) ? "video" : "booked";
+      return `<button type="button" class="cal-ev ${cls}" style="top:${top}px;height:${h}px" data-ev="${esc(a.id)}"><b>${esc(a.name)}</b><span>${fmtTime(a.time)} · ${esc(a.typeName)}</span></button>`;
+    };
+    $("#cal-grid").innerHTML = `<div class="cg ${calView}" style="--cols:${days.length}">
+      <div class="cg-corner"></div>${days.map((d) => `<div class="cg-day${d === today ? " today" : ""}">${fmtDate(d, { weekday: "short" })} <b>${Number(d.slice(8))}</b></div>`).join("")}
+      <div class="cg-hours" style="height:${(hi - lo) * PX}px">${hours.map((m) => `<span style="top:${(m - lo) * PX}px">${fmtTime(String(m / 60).padStart(2, "0") + ":00").replace(":00", "")}</span>`).join("")}</div>
+      ${days.map((d) => `<div class="cg-col${d === today ? " today" : ""}" style="height:${(hi - lo) * PX}px">${hours.map((m) => `<i style="top:${(m - lo) * PX}px"></i>`).join("")}${
+        d === today ? (() => { const n = new Date().toLocaleTimeString("en-GB", { timeZone: "America/New_York", hour: "2-digit", minute: "2-digit" }); const nm = toMin(n); return nm >= lo && nm <= hi ? `<em class="cg-now" style="top:${(nm - lo) * PX}px"></em>` : ""; })() : ""}${
+        evs.filter((e) => e.date === d).map(evHtml).join("")}</div>`).join("")}</div>
+      ${evs.length ? "" : `<p class="muted cal-empty">Nothing scheduled ${calView === "week" ? "this week" : "this day"}.</p>`}`;
+  }
+  $("#cal-prev").addEventListener("click", () => { calDay = addD(calDay, calView === "week" ? -7 : -1); renderCalendar(); });
+  $("#cal-next").addEventListener("click", () => { calDay = addD(calDay, calView === "week" ? 7 : 1); renderCalendar(); });
+  $("#cal-today").addEventListener("click", () => { calDay = tzDay(); renderCalendar(); });
+  $$("[data-calview]").forEach((b) => b.addEventListener("click", () => { calView = b.dataset.calview; renderCalendar(); }));
+  $("#cal-grid").addEventListener("click", run(async (e) => {
+    const b = e.target.closest("[data-ev]"); if (!b) return;
+    const a = calAppts.find((x) => x.id === b.dataset.ev); if (!a) return;
+    if (!clientList.length) clientList = await api("GET", "/api/admin/clients");
+    const who = clientList.find((c) => c.email === a.email);
+    $("#cal-pop-body").innerHTML = `<h3>${esc(a.name)}</h3>
+      <p class="meta">${fmtDate(a.date, { weekday: "long", month: "long", day: "numeric" })} · ${fmtTime(a.time)} · ${a.minutes} min</p>
+      <p>${esc(a.typeName)} <span class="badge ${a.status}">${a.status}</span>${isVideo(a) ? ` <span class="badge remote">Video</span>` : ""}${who ? ` ${typeBadge(who.clientType)}` : ""}</p>
+      <p><a href="tel:${esc(a.phone)}">${esc(a.phone)}</a> · <a href="mailto:${esc(a.email)}">${esc(a.email)}</a></p>
+      ${a.documents && a.documents.total ? `<p>${docsChip(a.documents)}</p>` : ""}
+      <div class="actions">${a.meetingLink ? `<a class="btn btn-sm" href="${esc(a.meetingLink)}" target="_blank" rel="noopener">Join video</a>` : ""}
+        ${who ? `<button type="button" class="btn btn-sm btn-line" data-pop-client="${esc(who.id)}">Open client</button><button type="button" class="btn btn-sm btn-line" data-pop-msg="${esc(who.id)}">Message</button>` : ""}
+        <button type="button" class="btn btn-sm btn-line" data-pop-appts>All appointments</button></div>`;
+    $("#cal-pop").showModal();
+  }));
+  $("#cal-pop").addEventListener("click", run(async (e) => {
+    const c = e.target.closest("[data-pop-client]"), m = e.target.closest("[data-pop-msg]"), l = e.target.closest("[data-pop-appts]");
+    if (c || m || l) $("#cal-pop").close();
+    if (c) await goClient(c.dataset.popClient); else if (m) await goThread(m.dataset.popMsg); else if (l) openTab("appts");
+  }));
 
   // ---- Share link (the public site is where this admin page is served from)
   const bookUrl = location.origin + "/book";
@@ -329,10 +464,11 @@
     const daysAgo = (n) => clinicDay(new Date(Date.now() - n * 864e5).toISOString());
     const from = { today, week: daysAgo(6), month: today.slice(0, 8) + "01" }[period];
     if (period === "plan") return clientList.filter((c) => c.hasPlan);
+    if (period === "inpatient") return clientList.filter((c) => c.clientType === "inpatient");
     return from ? clientList.filter((c) => c.createdAt && clinicDay(c.createdAt) >= from) : clientList;
   }
   function renderClientTotals() {
-    const chips = [["all", "All clients"], ["today", "Joined today"], ["week", "Last 7 days"], ["month", "This month"], ["plan", "Have a plan"]];
+    const chips = [["all", "All clients"], ["today", "Joined today"], ["week", "Last 7 days"], ["month", "This month"], ["inpatient", "Inpatients"], ["plan", "Have a plan"]];
     $("#client-totals").innerHTML = chips.map(([k, label]) => `<button type="button" class="ct${k === clientPeriod ? " on" : ""}" data-period="${k}" aria-pressed="${k === clientPeriod}"><b>${clientsIn(k).length.toLocaleString()}</b><span>${label}</span></button>`).join("");
   }
   $("#client-totals").addEventListener("click", (e) => {
@@ -345,7 +481,7 @@
     const q = $("#client-search").value.trim().toLowerCase();
     const rows = clientsIn(clientPeriod).filter((c) => !q || [c.name, c.email, c.phone].join(" ").toLowerCase().includes(q));
     table($("#clients-table"), ["Client", "Type", "Phone", "Next visit", "Last pain log", "Plan", "Docs", "Joined"], rows.map((c) => `
-      <tr data-id="${c.id}" class="click-row"><td><b>${esc(c.name)}</b><br><span class="muted">${esc(c.email)}</span></td><td>${typeBadge(c.clientType)}</td><td>${esc(c.phone)}</td>
+      <tr data-id="${c.id}" class="click-row"><td><b>${esc(c.name)}</b><br><span class="muted">${esc(c.email)}</span></td><td><button type="button" class="badge ctype type-toggle ${c.clientType === "inpatient" ? "in" : "out"}" data-type-toggle="${c.id}" title="Click to switch to ${c.clientType === "inpatient" ? "outpatient" : "inpatient"}" aria-label="${esc(c.name)}: ${c.clientType === "inpatient" ? "Inpatient" : "Outpatient"}. Click to switch.">${c.clientType === "inpatient" ? "Inpatient" : "Outpatient"} <span aria-hidden="true">⇄</span></button></td><td>${esc(c.phone)}</td>
         <td>${c.next ? `${fmtDate(c.next.date)} · ${fmtTime(c.next.time)}` : "—"}</td>
         <td>${c.lastPain ? `${esc(c.lastPain.area)} ${c.lastPain.level}/10 · ${fmtDate(c.lastPain.date)}` : "—"}</td>
         <td>${c.hasPlan ? "✓" : "—"}</td><td>${c.documents && c.documents.complete ? "✓" : c.documents && c.documents.done ? `${c.documents.done}/${c.documents.total}` : "—"}</td><td>${when(c.createdAt)}</td></tr>`),
@@ -353,6 +489,16 @@
   }
   $("#client-search").addEventListener("input", renderClients);
   $("#clients-table").addEventListener("click", run(async (e) => {
+    // The Type badge flips inpatient/outpatient in place (without opening the profile)
+    const tg = e.target.closest("[data-type-toggle]");
+    if (tg) {
+      const c = clientList.find((x) => x.id === tg.dataset.typeToggle); if (!c) return;
+      tg.disabled = true;
+      const r = await api("PUT", `/api/admin/clients/${c.id}/type`, { type: c.clientType === "inpatient" ? "outpatient" : "inpatient" });
+      c.clientType = r.clientType; renderClients();
+      toast(`${c.name.split(" ")[0]} is now an ${r.clientType}.`);
+      return;
+    }
     const row = e.target.closest("tr[data-id]");
     if (row) openClient(row.dataset.id);
   }));
@@ -395,6 +541,26 @@
       </div></section>`;
   };
 
+  // At-a-glance numbers for one client (all from the profile they already load; nothing extra is stored)
+  function clientOverview(c) {
+    const t = new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" }), ap = c.appointments || [];
+    const n = (st) => ap.filter((a) => a.status === st).length;
+    const next = ap.filter((a) => a.status === "booked" && a.date >= t).sort((x, y) => (x.date + x.time < y.date + y.time ? -1 : 1))[0];
+    const pain = (c.painLog || []).slice(-6), last = pain[pain.length - 1], prev = pain[pain.length - 2];
+    const trend = last && prev ? (last.level < prev.level ? "↓ improving" : last.level > prev.level ? "↑ worse" : "→ steady") : "";
+    const spark = pain.length > 1 ? `<svg class="spark" viewBox="0 0 100 30" aria-hidden="true"><polyline points="${pain.map((p, i) => `${(i / (pain.length - 1)) * 100},${30 - p.level * 2.8}`).join(" ")}"/></svg>` : "";
+    const m = c.membership, st = c.stats || {}, rw = c.rewards || {};
+    const card = (k, v, sub = "") => `<div class="ov"><span>${k}</span><b>${v}</b>${sub ? `<small>${sub}</small>` : ""}</div>`;
+    return `<div class="client-ov">
+      ${card("Next visit", next ? `${fmtDate(next.date)} · ${fmtTime(next.time)}` : "—", next ? esc(next.typeName) : "")}
+      ${card("Visits done", n("completed"), `${n("no-show")} no-show · ${n("cancelled")} cancelled`)}
+      ${card("Pain", last ? `${last.level}/10` : "—", last ? `${esc(last.area)} · ${esc(trend || fmtDate(last.date))}${spark}` : "No entries yet")}
+      ${card("Membership", m ? esc(m.tier) : "None", m && m.until ? `paid through ${fmtDate(m.until)}` : "")}
+      ${card("Activity", `${st.streak || 0}-day streak`, `${st.workouts || 0} workouts${rw.level ? ` · level ${rw.level}` : ""}`)}
+      ${card("Last login", c.lastLoginAt ? when(c.lastLoginAt) : "Never", `joined ${when(c.createdAt)}`)}
+    </div>`;
+  }
+
   async function openClient(id) {
     const [c, st, ct] = await Promise.all([api("GET", `/api/admin/clients/${id}`), api("GET", "/api/admin/settings"), contentCache ? contentCache : api("GET", "/api/admin/content")]);
     contentCache = ct;
@@ -404,7 +570,8 @@
       <button type="button" class="mini" data-back>← All clients</button>
       <div class="client-head"><div><h2>${esc(c.name)}</h2>
         <p class="muted"><a href="mailto:${esc(c.email)}">${esc(c.email)}</a>${c.phone ? ` · <a href="tel:${esc(c.phone)}">${esc(c.phone)}</a>` : ""} · joined ${when(c.createdAt)}${c.lastLoginAt ? ` · last login ${when(c.lastLoginAt)}` : ""}</p></div>
-        <div class="client-actions"><button type="button" class="mini" data-reset>Send reset code</button><button type="button" class="mini danger" data-delete>Delete account</button></div></div>
+        <div class="client-actions"><button type="button" class="mini" data-cmsg>Message</button><button type="button" class="mini" data-reset>Send reset code</button><button type="button" class="mini danger" data-delete>Delete account</button></div></div>
+      ${clientOverview(c)}
       <p class="client-docs">${docsChip(c.documents)}${c.documents && c.documents.done ? ` <button type="button" class="mini" data-cdocs>View documents</button>` : c.documents ? ` <span class="muted">No intake documents on file yet.</span>` : ""}</p><div class="intake-view" id="client-docs" hidden></div>
       ${careBox(c, st.appointmentTypes || [], ct.programs || [], (st.booking || {}).telehealthUrl)}
       <div class="client-grid">
@@ -429,6 +596,7 @@
     $("#clients-list").hidden = true; box.hidden = false;
 
     $("[data-back]", box).addEventListener("click", run(loadClients));
+    $("[data-cmsg]", box).addEventListener("click", run(() => goThread(id)));
     const cd = $("[data-cdocs]", box);
     if (cd) cd.addEventListener("click", run(async () => { const v = $("#client-docs"); if (!v.hidden) { v.hidden = true; return; } showDocs(v, await api("GET", `/api/admin/clients/${id}/intake`)); }));
     $("[data-reset]", box).addEventListener("click", run(async () => {
