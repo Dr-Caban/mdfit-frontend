@@ -2004,11 +2004,13 @@
   //   #programs/sport/<Sport>/<level>    only when a level has more than one program
   //   #programs/<id>                     a program; week-by-week protocols list their weeks
   //   #programs/<id>/<week key>          one week of a protocol
-  const LEVEL_ORDER = ["beginner", "intermediate", "advanced"];
+  const LEVEL_ORDER = ["beginner", "intermediate", "advanced", "elite"];
   const sportOf = (p) => p.sport || (p.category === "Sport Performance" ? p.title.split(/\s+/)[0] : "");
   const isSport = (p) => p.category === "Sport Performance" && !!sportOf(p);
   const sportPrograms = (sp) => C.programs.filter((p) => isSport(p) && sportOf(p) === sp);
-  const lvlName = (l) => (l ? l[0].toUpperCase() + l.slice(1) : "");
+  // Stored levels stay beginner/intermediate/advanced/elite; members see Beginner · Intermediate · Expert · Pro
+  const LEVEL_NAMES = { beginner: "Beginner", intermediate: "Intermediate", advanced: "Expert", elite: "Pro" };
+  const lvlName = (l) => LEVEL_NAMES[l] || (l ? l[0].toUpperCase() + l.slice(1) : "");
   const enc = encodeURIComponent;
   // "6 weeks" when each part is one week; otherwise "13 parts" (e.g. Baseline, Week 0, Weeks 1-10, Weeks 11-12)
   const partsLabel = (n, p) => `${n} ${n === p.weeks ? (n === 1 ? "week" : "weeks") : (n === 1 ? "part" : "parts")}`;

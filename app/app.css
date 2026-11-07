@@ -1315,3 +1315,4 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
 .gx-txt b { color: var(--navy); }
 .gx-txt small { color: var(--muted); font-size: 12.5px; overflow-wrap: anywhere; }
 .gx-rec { font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: #fff; background: #2e9e5b; border-radius: 999px; padding: 4px 9px; white-space: nowrap; }
+.level-card.lvl-elite { border-left-color: #0A1A2E; } /* Pro */
