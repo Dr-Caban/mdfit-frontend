@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="app/app.css?v=3fd2c90e">
-  <link rel="stylesheet" href="account.css?v=22eeab98">
+  <link rel="stylesheet" href="account.css?v=229aa2e9">
   <link rel="stylesheet" href="guides.css?v=0a19199b">
 </head>
 <body class="mdapp">
@@ -100,6 +100,7 @@
       <h2 class="section-title">Quick actions</h2>
       <div class="quick">
         <button type="button" class="card q" data-goto="generate"><svg viewBox="0 0 24 24" class="ic blue"><path d="M3 17v2h6v-2zM3 5v2h10V5zm10 16v-2h8v-2h-8v-2h-2v6zM7 9v2H3v2h4v2h2V9zm14 4v-2H11v2zm-6-4h2V7h4V5h-4V3h-2z"/></svg><b>Generate Workout</b><span>Custom routine</span></button>
+        <button type="button" class="card q" data-build-workout><svg viewBox="0 0 24 24" class="ic gold"><path d="M20.6 14.9 22 13.4 20.6 12l-3.6 3.6L8.4 7l3.6-3.6L10.6 2 9.1 3.4 7.7 2 5.6 4.1 4.1 2.6 2.7 4.1l1.4 1.4L2 7.7l1.4 1.4L2 10.6 3.4 12 7 8.4l8.6 8.6-3.6 3.6 1.4 1.4 1.4-1.4 1.4 1.4 2.1-2.1 1.5 1.4 1.4-1.4-1.4-1.4 2.1-2.1z"/></svg><b>Build a Workout</b><span>Your own, +35 XP</span></button>
         <button type="button" class="card q" data-goto="pain"><svg viewBox="0 0 24 24" class="ic orange"><path d="M12 2a2 2 0 1 1-2 2 2 2 0 0 1 2-2zm-3 20v-7H7.5V9a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v6H15v7z"/></svg><b>Pain Tool</b><span>Find relief</span></button>
         <button type="button" class="card q" data-goto="videos"><svg viewBox="0 0 24 24" class="ic purple"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M10 8.5v7l6-3.5z" fill="#fff"/></svg><b>Video Library</b><span id="lib-count">Exercises</span></button>
         <a class="card q" href="/book"><svg viewBox="0 0 24 24" class="ic green"><path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 16H5V9h14zM7 11h2v2H7zm4 0h2v2h-2zm4 0h2v2h-2zm-8 4h2v2H7zm4 0h2v2h-2z"/></svg><b>Book a Visit</b><span>See Dr. Jared</span></a>
@@ -284,7 +285,7 @@
     <!-- ================= LEADERBOARD ================= -->
     <section class="view" id="view-leaders" data-view="leaders" hidden>
       <header class="hero">
-        <div><h1>Leader<em>board</em></h1><p>Earn XP for workouts, check-ins, pain entries and visits. Today's board resets at midnight, the monthly board on the 1st.</p></div>
+        <div><h1>Leader<em>board</em></h1><p>Earn XP for workouts, daily activities, challenges, check-ins and visits. Today's board resets at midnight, the monthly board on the 1st.</p></div>
       </header>
       <div class="card board" id="board">
         <div class="card-head"><span class="label accent">Leaderboard</span>
@@ -293,6 +294,7 @@
         <div class="leagues" role="tablist">
           <button type="button" data-league="pro" aria-selected="true"><span>🏅</span>Pro League</button>
           <button type="button" data-league="olympic" aria-selected="false"><span>🏆</span>Olympic League</button>
+          <button type="button" data-league="all" aria-selected="false"><span>🌐</span>Overall</button>
         </div>
         <p class="board-reset small" id="board-reset"></p>
         <p class="small muted board-sub" id="board-sub">Log anything to earn XP and climb the ranks.</p>
@@ -704,7 +706,9 @@
   <script src="musclereports.js?v=cd9ced26"></script>
   <script src="guides.js?v=4608523e"></script>
   <script src="stripe-checkout.js?v=087989ec"></script>
-  <script src="account.js?v=9cb125a5"></script>
+  <script src="account.js?v=8eede005"></script>
+  <script src="account-xp.js?v=164b02fa"></script>
+  <script src="account-habits.js?v=35f4eb5b"></script>
 <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>

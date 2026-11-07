@@ -67,7 +67,7 @@
   ["pointerdown", "keydown", "scroll", "touchstart"].forEach((t) => document.addEventListener(t, idleBump, { passive: true }));
 
   // ---- Tabs
-  const loaders = { dash: loadDash, clients: loadClients, appts: loadAppts, hours: loadHours, leads: loadLeads, classes: loadClasses, bookings: loadBookings, subs: loadSubs, reviews: loadReviews, audit: loadAudit, messages: loadThreads, members: loadMembers, content: loadContent, settings: loadSettings, feedback: loadFeedback, analytics: loadAnalytics };
+  const loaders = { dash: loadDash, clients: loadClients, appts: loadAppts, hours: loadHours, leads: loadLeads, classes: loadClasses, bookings: loadBookings, subs: loadSubs, reviews: loadReviews, audit: loadAudit, messages: loadThreads, members: loadMembers, content: loadContent, settings: loadSettings, feedback: loadFeedback, analytics: loadAnalytics, habits: loadHabits };
   // ---- Navigation: six sections in the sidebar; screens that used to be separate tabs are sub-tabs of a section.
   // Every screen keeps its own #hash so reload and the back button return to it.
   const NAV = [
@@ -75,7 +75,7 @@
     { id: "people", label: "Clients", tabs: [["clients", "Clients"], ["leads", "Leads"], ["members", "Members"], ["subs", "Newsletter"]] },
     { id: "inbox", label: "Inbox", tabs: [["messages", "Messages"], ["reviews", "Reviews"], ["feedback", "Bug reports & ideas"]] },
     { id: "insights", label: "Insights", tabs: [["analytics", "Analytics"], ["audit", "Audit"]] },
-    { id: "settings", label: "Settings", tabs: [["settings", "Settings"], ["content", "Content"]] }
+    { id: "settings", label: "Settings", tabs: [["settings", "Settings"], ["content", "Content"], ["habits", "Activities"]] }
   ];
   const groupOf = (tab) => NAV.find((g) => g.tabs.some(([t]) => t === tab)) || NAV[0];
   const fromHash = () => { const t = location.hash.slice(1); return NAV.some((g) => g.tabs.some(([x]) => x === t)) ? t : "dash"; };
@@ -760,7 +760,8 @@
       ${card("Visits done", n("completed"), `${n("no-show")} no-show · ${n("cancelled")} cancelled`)}
       ${card("Pain", last ? `${last.level}/10` : "None logged", last ? `${esc(last.area)} · ${esc(trend || fmtDate(last.date))}${spark}` : "Pain entries from their app show here")}
       ${card("Membership", m ? esc(m.tier) : "None", m && m.until ? `paid through ${fmtDate(m.until)}` : "")}
-      ${card("Activity", `${st.streak || 0}-day streak`, `${st.workouts || 0} workouts${rw.level ? ` · level ${rw.level}` : ""}`)}
+      ${card("Activity", `${st.streak || 0}-day streak`, `${st.workouts || 0} workouts`)}
+      ${rw.gem ? card("Gem & XP", `<i class="gem-dot" style="background:${esc(rw.gem.color)}" aria-hidden="true"></i>${esc(rw.gem.name)}`, `${Number(rw.xp || 0).toLocaleString()} XP${rw.overall ? ` · #${rw.overall.rank} overall${rw.overall.hidden ? " (hidden)" : ""}` : ""}`) : ""}
       ${card("Last login", c.lastLoginAt ? when(c.lastLoginAt) : "Never", `joined ${when(c.createdAt)}`)}
     </div>`;
   }
