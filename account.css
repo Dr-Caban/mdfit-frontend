@@ -254,3 +254,6 @@
 .mp-go { font-weight: 700; color: var(--accent-text, #2a6aa8); white-space: nowrap; }
 .save-plan { margin-top: 10px; width: auto; }
 .save-plan.on { background: #e3f4ea; color: #2e7d32; border-color: #bfe3cc; }
+
+/* Progress calendar: join button for an upcoming video visit */
+#cal-day .join-link { display: inline-flex; width: auto; margin-top: 8px; padding: 10px 16px; }
