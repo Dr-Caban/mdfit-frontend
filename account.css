@@ -240,3 +240,7 @@
 .patient-card.done { background: var(--card); color: var(--navy); border-color: var(--line); }
 .patient-card.done .pc-ic { background: #e3f4ea; color: #2e7d32; }
 .patient-card.done .pc-go { font-weight: 600; font-size: 14px; color: var(--muted); }
+
+/* Programs without a photo: the poster draws on its own (navy, soft accent glow) instead of a blank box */
+.prog-poster.pp-blank { background: radial-gradient(120% 90% at 85% 10%, rgba(126,178,221,.35), transparent 60%), linear-gradient(135deg, #16314f, #0A1A2E); }
+.fp-ic.pp-blank { background: linear-gradient(135deg, #16314f, #0A1A2E); }

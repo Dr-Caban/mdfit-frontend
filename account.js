@@ -1881,7 +1881,12 @@
 
   // ================= Member content: programs, lectures + live Q&A, membership & 1-on-1, health tips
   let C = null, contentLoading = null;
-  const loadContent = () => (contentLoading = apiAuth("GET", "/api/me/content").then((d) => (C = d)).catch(() => api("/api/content").then((d) => (C = { ...d, access: "free" }))));
+  // Programs saved without a photo borrow the closest existing one; the rest draw a branded poster (never a blank box)
+  const PROG_ART = [[/mobility/i, "assets/programs/mobility-ladder-new.png"], [/low back|mid-back|lumbar/i, "assets/programs/low-back-new.png"],
+    [/hip/i, "assets/programs/hip-new.png"], [/shoulder|rotator/i, "assets/programs/shoulder-new.png"], [/golf/i, "assets/programs/golf-new.png"],
+    [/pickleball/i, "assets/programs/pickleball.png"], [/marathon/i, "assets/programs/marathon-new.png"], [/running/i, "assets/programs/running-new.png"]];
+  const withArt = (d) => { (d && d.programs || []).forEach((p) => { if (!p.image) { const m = PROG_ART.find(([re]) => re.test(p.title || "")); if (m) p.image = m[1]; } }); return d; };
+  const loadContent = () => (contentLoading = apiAuth("GET", "/api/me/content").then((d) => (C = withArt(d))).catch(() => api("/api/content").then((d) => (C = withArt({ ...d, access: "free" })))));
   const money = (n) => "$" + Number(n).toLocaleString("en-US");
   const lockBadge = `<span class="lock" title="Members"><svg viewBox="0 0 24 24"><path d="M17 9h-1V7a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2zm-7-2a2 2 0 0 1 4 0v2h-4z"/></svg> Members</span>`;
   const unlockBtn = (what) => `<button type="button" class="btn-gold sm" data-goto="premium">Unlock ${what} with a membership</button>`;
@@ -1911,7 +1916,7 @@
   };
   // Program photo with the poster text drawn in HTML on top (the photos carry no text of their own). The text is
   // aria-hidden because the card repeats the title for screen readers; it hides itself when the photo is too small.
-  const progPoster = (p, cls, sizes, thumb) => `<span class="prog-poster ${cls}">${progImg(p.image, "", sizes, thumb)}<span class="pp-text" aria-hidden="true">`
+  const progPoster = (p, cls, sizes, thumb) => `<span class="prog-poster ${cls}${p.image ? "" : " pp-blank"}">${p.image ? progImg(p.image, "", sizes, thumb) : ""}<span class="pp-text" aria-hidden="true">`
     + `<span class="pp-brand"><i>MD</i> FIT${p.category ? " · " + esc(p.category) : ""}</span>`
     + `<span class="pp-title">${esc(String(p.title || "").replace(/^\s*\d+\s*-?\s*weeks?\s*/i, "") || p.title)}</span>`
     + (p.weeks ? `<span class="pp-badge">${esc(p.weeks)}-week program</span>` : "") + `</span></span>`;
@@ -1937,12 +1942,12 @@
       sb.hidden = false;
       $("#featured-prog-list").innerHTML = sidebar.map((p) => `
         <li><button type="button" class="fp-item" data-fp="${esc(p.id)}">
-          ${p.image ? progImg(p.image, "", "44px", { sizes: "44px" }) : `<span class="fp-ic ${esc((p.category || "").toLowerCase().split(" ")[0])}"></span>`}
+          ${p.image ? progImg(p.image, "", "44px", { sizes: "44px" }) : `<span class="fp-ic pp-blank"></span>`}
           <span class="fp-body"><b>${esc(p.title)}</b><span class="muted small">${p.weeks} wks · ${esc(p.level || "all levels")}${p.category ? " · " + esc(p.category) : ""}</span></span>
         </button></li>`).join("");
     }
     const bigCard = (p) => `<button type="button" class="hp-card" data-fp="${esc(p.id)}">
-      ${p.image ? progPoster(p, "hp-img", "(max-width: 820px) 88px, 320px", { media: "(max-width: 820px)", sizes: "88px" }) : `<span class="hp-ic ${esc((p.category || "").toLowerCase().split(" ")[0])}"></span>`}
+      ${progPoster(p, "hp-img", "(max-width: 820px) 88px, 320px", { media: "(max-width: 820px)", sizes: "88px" })}
       <span class="hp-cat">${esc(p.category || "Program")}</span>
       <b>${esc(p.title)}</b>
       <span class="muted small hp-meta">${p.weeks} weeks · ${esc(p.level || "all levels")}${p.days && p.days.length ? ` · ${p.days.length} days/wk` : ""}</span>
@@ -2028,8 +2033,8 @@
   const progBar = (st) => (st.done ? `<span class="pc-bar"><i style="width:${Math.min(100, Math.round((st.done / st.sessions) * 100))}%"></i></span><span class="pc-done">${st.done} of ${st.sessions} ${st.isProto ? "weeks started" : "sessions done"}</span>` : "");
   function programCard(p, opts = {}) {
     const st = progStats(p);
-    return `<button type="button" class="prog-card${p.image ? " prog-card-img" : ""}" data-goto="programs/${p.id}">
-        ${p.image ? progPoster(p, "pc-img", "(max-width: 700px) 100vw, 50vw") : ""}
+    return `<button type="button" class="prog-card prog-card-img" data-goto="programs/${p.id}">
+        ${progPoster(p, "pc-img", "(max-width: 700px) 100vw, 50vw")}
         <span class="pc-cat">${esc(opts.kicker || p.category)}</span>${p.locked ? lockBadge : ""}
         <b>${esc(opts.title || p.title)}</b><p>${esc(p.summary)}</p>
         <span class="pc-meta">${st.isProto ? `${partsLabel(st.nWeeks, p)} · week-by-week plan` : `${p.weeks} weeks · ${p.days.length} days/week`} · ${esc(lvlName(p.level))} · ${esc((Gen.LOCATIONS.find((l) => l.id === p.location) || {}).label || "")}</span>
@@ -2069,6 +2074,7 @@
   }
   function renderProgramsView(path) {
     const seg = String(path || "").split("/").filter(Boolean).map((x) => { try { return decodeURIComponent(x); } catch { return x; } });
+    if (!C) return renderContent("programs", path); // opened before the program list arrived: wait for it, then render
     if (seg[0] === "sport" && seg[1]) return renderSportFolder(seg[1], seg[2]);
     const cats = ["All", ...C.categories.filter((c) => C.programs.some((p) => p.category === c))];
     $("#prog-cats").innerHTML = cats.map((c) => `<button type="button" class="chip" data-pcat="${esc(c)}" aria-selected="${c === progCat}">${esc(c)}</button>`).join("");
@@ -2229,7 +2235,7 @@
   function renderProgramDays(p) {
     const wk = (i) => Math.min(p.weeks, doneCount(p, i) + 1);
     $("#prog-detail").innerHTML = `${crumbs(progCrumbs(p))}
-      <div class="card prog-head${p.image ? " prog-head-img" : ""}">${p.image ? progPoster(p, "ph-img", "(max-width: 520px) 100vw, 480px") : ""}<span class="pc-cat">${esc(p.category)}</span>${p.locked ? lockBadge : ""}<h2>${esc(p.title)}</h2><p>${esc(p.summary)}</p>
+      <div class="card prog-head prog-head-img">${progPoster(p, "ph-img", "(max-width: 520px) 100vw, 480px")}<span class="pc-cat">${esc(p.category)}</span>${p.locked ? lockBadge : ""}<h2>${esc(p.title)}</h2><p>${esc(p.summary)}</p>
         <p class="muted small">${PROTO.ids.has(p.id) ? `${partsLabel((PROTO.weekCounts || {})[p.id] || p.weeks, p)} · week-by-week plan` : `${p.weeks} weeks · ${p.days.length} session${p.days.length === 1 ? "" : "s"} a week`} · ${esc(lvlName(p.level))} · ${esc((Gen.LOCATIONS.find((l) => l.id === p.location) || {}).label || "")}</p>
         ${p.notes ? `<p class="prog-notes">${esc(p.notes)}</p>` : ""}</div>
       <div class="prog-body">${p.days.map((d, i) => { const w = progDayWorkout(p, i); return `<div class="card prog-day">
