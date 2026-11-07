@@ -951,7 +951,9 @@
       $("#bc-pick").hidden = f.to.value !== "selected";
       const n = audience().length;
       $("#bc-count").textContent = n ? `${n} ${n === 1 ? "person" : "people"} will get this.` : f.to.value === "selected" ? "Pick at least one person." : "Nobody matches this choice yet.";
-      $("#bc-send").textContent = n ? `Send to ${n}` : "Send";
+      // Only touch the label when it changes: typing the message then tapping Send fires "change" on the way, and
+      // Safari drops the click if the button's text is replaced between press and release
+      const label = n ? `Send to ${n}` : "Send"; if ($("#bc-send").textContent !== label) $("#bc-send").textContent = label;
       $("#bc-send").disabled = !n;
     };
     f.addEventListener("change", (e) => {
