@@ -1202,7 +1202,8 @@
       <label>Area<input data-f="area" value="${esc(x.area)}" placeholder="Feet, Low back…" maxlength="40"></label>
       <label class="wide">Title<input data-f="title" value="${esc(x.title)}" maxlength="120"></label>
       <label class="wide">Text<textarea data-f="body" rows="3" maxlength="2000">${esc(x.body)}</textarea></label>
-      <label class="wide">Link (optional)<input data-f="link" value="${esc(x.link)}"></label>` },
+      <label class="wide">Link (optional)<input data-f="link" value="${esc(x.link)}"></label>
+      ${x.sections && x.sections.length ? `<p class="small wide">Members see this as an article (${x.sections.length} sections, written out from the poster). Saving keeps it.</p>` : ""}` },
     tiers: { blank: { id: "", name: "", price: 0, meetings: 0, meetingMinutes: 45, perks: [] }, html: (x) => `
       <label>Name<input data-f="name" value="${esc(x.name)}" maxlength="60"></label>
       <label>Price per month ($)<input data-f="price" type="number" min="0" step="0.01" value="${x.price}"></label>
