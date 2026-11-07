@@ -113,8 +113,15 @@
       const q = new URLSearchParams(location.search), id = q.get("id"), token = q.get("token");
       const $ = (s, r = document) => r.querySelector(s), esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
       const bad = (m) => { $("#bad").hidden = false; $("#bad").textContent = m; };
-      if (!/^[a-f0-9]{12}$/.test(id || "") || !token) return bad("This intake link is incomplete. Please use the link in your booking email, or call 941-313-0562.");
-      const url = `${API}/api/appointments/${id}/intake`;
+      // Two ways in: the private link from a booking email (?id=&token=), or "Become a patient" on the member dashboard
+      // (?me=1, signed in: the documents go on file with the account and count for every future visit).
+      const member = !id || q.get("me") === "1";
+      let session = null;
+      try { const v = JSON.parse(localStorage.getItem("mdfit_client") || "null"); if (v && v.token && Date.parse(v.expiresAt) > Date.now()) session = v; } catch {}
+      if (member && !session) return location.replace("/login?next=" + encodeURIComponent("/intake?me=1"));
+      if (!member && (!/^[a-f0-9]{12}$/.test(id || "") || !token)) return bad("This intake link is incomplete. Please use the link in your booking email, or call 941-313-0562.");
+      const url = member ? `${API}/api/me/intake` : `${API}/api/appointments/${id}/intake`;
+      const headers = { "Content-Type": "application/json", ...(member ? { Authorization: "Bearer " + session.token } : {}) };
       let P = null;
 
       const show = (which) => { ["list", "form", "done"].forEach((k) => ($("#" + k).hidden = k !== which && !(which === "list" && k === "list"))); scrollTo(0, 0); };
@@ -154,7 +161,7 @@
         $("#list").hidden = true; $("#done").hidden = true; f.hidden = false; scrollTo(0, 0);
       }
       function collect(d, f) {
-        const out = { token };
+        const out = member ? {} : { token };
         for (const x of d.fields) {
           if (x.type === "checks") out[x.k] = [...f.querySelectorAll(`[name="${x.k}"]:checked`)].map((i) => i.value);
           else if (["radio", "yesno", "scale"].includes(x.type)) { const c = f.querySelector(`[name="${x.k}"]:checked`); out[x.k] = c ? c.value : ""; if (x.type === "scale" && c) out[x.k] = Number(c.value); }
@@ -177,7 +184,8 @@
         if (miss) { msg.className = "form-msg err"; msg.textContent = miss.type === "agree" ? `Please agree to: ${miss.label}.` : `Please fill in: ${miss.label}`; const el = f.querySelector(`[name="${miss.k}"]`); if (el) el.focus(); return; }
         btn.disabled = true; msg.className = "form-msg"; msg.textContent = "Saving securely…";
         try {
-          const r = await fetch(`${url}/${encodeURIComponent(d.id)}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+          const r = await fetch(`${url}/${encodeURIComponent(d.id)}`, { method: "POST", headers, body: JSON.stringify(body) });
+          if (member && r.status === 401) return location.replace("/login?next=" + encodeURIComponent("/intake?me=1"));
           const out = await r.json().catch(() => ({}));
           if (!r.ok) throw new Error(out.error || "Couldn't save. Please try again.");
           d.done = new Date().toISOString();
@@ -186,11 +194,13 @@
         } catch (err) { btn.disabled = false; msg.className = "form-msg err"; msg.textContent = err.message; }
       });
 
-      fetch(`${url}?token=${encodeURIComponent(token)}`).then(async (r) => {
+      fetch(member ? url : `${url}?token=${encodeURIComponent(token)}`, { headers }).then(async (r) => {
+        if (member && r.status === 401) return location.replace("/login?next=" + encodeURIComponent("/intake?me=1"));
         const d = await r.json().catch(() => ({}));
         if (!r.ok) throw new Error(d.error || "This intake link isn't valid.");
         if (d.cancelled) throw new Error("This appointment was cancelled.");
         P = d;
+        if (member) { $("#when").textContent = `Hi ${d.name}: New patient documents`; $("#done .muted").textContent = "Your documents are on file for every visit. Dr. Jared will review them before you come in."; $("#done a.btn").href = "/account"; $("#done a.btn").textContent = "Back to my dashboard"; return renderList(); }
         const t = d.time.split(":").map(Number), when = new Date(d.date + "T12:00:00Z").toLocaleDateString("en-US", { timeZone: "UTC", weekday: "long", month: "long", day: "numeric" });
         $("#when").textContent = `Hi ${d.name}: ${d.typeName} · ${when} at ${((t[0] + 11) % 12) + 1}:${String(t[1]).padStart(2, "0")} ${t[0] < 12 ? "AM" : "PM"}`;
         renderList();

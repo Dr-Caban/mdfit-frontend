@@ -213,7 +213,8 @@
       $(".booked-when", bookedBox).textContent = `${a.typeName} · ${fmtDate(a.date, { weekday: "long", month: "long", day: "numeric" })} at ${fmtTime(a.time)}`;
       $(".booked-where", bookedBox).textContent = `${biz.address} · ${a.minutes} minutes`;
       $(".booked-intake", bookedBox)?.remove();
-      if (a.intake) $(".booked-where", bookedBox).insertAdjacentHTML("afterend", `<div class="booked-intake"><p><b>One more step:</b> fill out your intake documents before your visit (${a.intakeDocs || 4} short forms, about 10 minutes). We also emailed you the link.</p><a class="btn" href="/intake?id=${encodeURIComponent(a.id)}&token=${encodeURIComponent(a.cancelToken)}">Fill out intake documents</a></div>`);
+      if (a.intakeDone) $(".booked-where", bookedBox).insertAdjacentHTML("afterend", `<div class="booked-intake"><p><b>Documents on file ✓</b> Your intake documents are already on file, so there's nothing to fill out before this visit.</p></div>`);
+      else if (a.intake) $(".booked-where", bookedBox).insertAdjacentHTML("afterend", `<div class="booked-intake"><p><b>One more step:</b> fill out your intake documents before your visit (${a.intakeDocs || 4} short form${a.intakeDocs === 1 ? "" : "s"}, about ${a.intakeDocs === 1 ? 2 : 10} minutes). We also emailed you the link.</p><a class="btn" href="/intake?id=${encodeURIComponent(a.id)}&token=${encodeURIComponent(a.cancelToken)}">Fill out intake documents</a></div>`);
       $$(".booker-step", root).forEach((x) => (x.hidden = true));
       bookedBox.hidden = false;
       bookedBox.scrollIntoView({ behavior: "smooth", block: "center" });

@@ -180,18 +180,24 @@
       </article>`).join("") : `<p class="muted">No upcoming appointments.</p>`;
   }
   $("#appts-all").addEventListener("change", run(loadAppts));
+  // Intake documents viewer (appointment cards and client profiles): one section per completed document;
+  // answers arrive as strings, numbers, booleans or arrays. "On file" marks forms filled from the member dashboard.
+  function showDocs(box, d) {
+    const val = (v) => Array.isArray(v) ? v.join(", ") : v === true ? "Yes" : v === false ? "No" : v == null || v === "" ? "—" : String(v);
+    box.innerHTML = (d.docs || []).map((doc) => `<section><h4>${esc(doc.title)}</h4><p class="meta">Completed ${when(doc.createdAt)}${doc.onFile ? " · on file from the client's dashboard" : ""}</p>${
+      (doc.fields || []).map((f) => `<div><b>${esc(f.label)}</b><span>${esc(val(f.value))}</span></div>`).join("")}</section>`).join("")
+      || `<p class="meta">No documents received yet.</p>`;
+    box.hidden = false;
+  }
+  const docsChip = (st) => st && st.total ? `<span class="badge docs${st.complete ? " done" : ""}">${st.complete ? "Documents complete ✓" : `Documents ${st.done} of ${st.total}`}</span>` : "";
+
   $("#appts-list").addEventListener("click", run(async (e) => {
     const card = e.target.closest(".appt");
     if (card && e.target.matches("[data-intake]")) {
       const box = $(".intake-view", card);
       if (!box.hidden) { box.hidden = true; return; }
-      const d = await api("GET", `/api/admin/appointments/${card.dataset.id}/intake`);
-      // One section per completed document; answers arrive as strings, numbers, booleans or arrays
-      const val = (v) => Array.isArray(v) ? v.join(", ") : v === true ? "Yes" : v === false ? "No" : v == null || v === "" ? "—" : String(v);
-      box.innerHTML = (d.docs || []).map((doc) => `<section><h4>${esc(doc.title)}</h4><p class="meta">Completed ${when(doc.createdAt)}</p>${
-        (doc.fields || []).map((f) => `<div><b>${esc(f.label)}</b><span>${esc(val(f.value))}</span></div>`).join("")}</section>`).join("")
-        || `<p class="meta">No documents received yet.</p>`;
-      box.hidden = false; return;
+      showDocs(box, await api("GET", `/api/admin/appointments/${card.dataset.id}/intake`));
+      return;
     }
     if (!card || !e.target.matches("[data-save]")) return;
     const status = $("[data-status]", card).value;
@@ -333,11 +339,11 @@
     renderClientTotals();
     const q = $("#client-search").value.trim().toLowerCase();
     const rows = clientsIn(clientPeriod).filter((c) => !q || [c.name, c.email, c.phone].join(" ").toLowerCase().includes(q));
-    table($("#clients-table"), ["Client", "Phone", "Next visit", "Last pain log", "Plan", "Joined"], rows.map((c) => `
+    table($("#clients-table"), ["Client", "Phone", "Next visit", "Last pain log", "Plan", "Docs", "Joined"], rows.map((c) => `
       <tr data-id="${c.id}" class="click-row"><td><b>${esc(c.name)}</b><br><span class="muted">${esc(c.email)}</span></td><td>${esc(c.phone)}</td>
         <td>${c.next ? `${fmtDate(c.next.date)} · ${fmtTime(c.next.time)}` : "—"}</td>
         <td>${c.lastPain ? `${esc(c.lastPain.area)} ${c.lastPain.level}/10 · ${fmtDate(c.lastPain.date)}` : "—"}</td>
-        <td>${c.hasPlan ? "✓" : "—"}</td><td>${when(c.createdAt)}</td></tr>`),
+        <td>${c.hasPlan ? "✓" : "—"}</td><td>${c.documents && c.documents.complete ? "✓" : c.documents && c.documents.done ? `${c.documents.done}/${c.documents.total}` : "—"}</td><td>${when(c.createdAt)}</td></tr>`),
       clientList.length ? "No clients match." : "No client accounts yet. Clients sign up at /login.");
   }
   $("#client-search").addEventListener("input", renderClients);
@@ -355,6 +361,7 @@
       <div class="client-head"><div><h2>${esc(c.name)}</h2>
         <p class="muted"><a href="mailto:${esc(c.email)}">${esc(c.email)}</a>${c.phone ? ` · <a href="tel:${esc(c.phone)}">${esc(c.phone)}</a>` : ""} · joined ${when(c.createdAt)}${c.lastLoginAt ? ` · last login ${when(c.lastLoginAt)}` : ""}</p></div>
         <div class="client-actions"><button type="button" class="mini" data-reset>Send reset code</button><button type="button" class="mini danger" data-delete>Delete account</button></div></div>
+      <p class="client-docs">${docsChip(c.documents)}${c.documents && c.documents.done ? ` <button type="button" class="mini" data-cdocs>View documents</button>` : c.documents ? ` <span class="muted">No intake documents on file yet.</span>` : ""}</p><div class="intake-view" id="client-docs" hidden></div>
       <div class="client-grid">
         <form class="form" id="plan-form" novalidate>
           <h2>Plan</h2>
@@ -377,6 +384,8 @@
     $("#clients-list").hidden = true; box.hidden = false;
 
     $("[data-back]", box).addEventListener("click", run(loadClients));
+    const cd = $("[data-cdocs]", box);
+    if (cd) cd.addEventListener("click", run(async () => { const v = $("#client-docs"); if (!v.hidden) { v.hidden = true; return; } showDocs(v, await api("GET", `/api/admin/clients/${id}/intake`)); }));
     $("[data-reset]", box).addEventListener("click", run(async () => {
       const r = await api("POST", `/api/admin/clients/${id}/send-reset-code`);
       toast(r.message);

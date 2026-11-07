@@ -1207,11 +1207,11 @@
       if (!phone) { $("#book-phone").focus(); throw new Error("Add a phone number so Dr. Jared can reach you about the visit."); }
       const payload = { typeId: bookState.type.id, date: bookState.date, time: bookState.time, name: client.name, email: client.email, phone, notes: $("#book-note").value.trim().slice(0, 400) };
       const r = await apiAuth("POST", "/api/appointments", payload);
-      $("#book-done-info").textContent = `${bookState.type.name} on ${fmtDay(bookState.date)} at ${fmtTime(bookState.time)}. We'll email you a reminder.`;
+      $("#book-done-info").textContent = `${bookState.type.name} on ${fmtDay(bookState.date)} at ${fmtTime(bookState.time)}. Your confirmation is in your email.`;
       $$("#book-flow .book-step").forEach((s) => { s.hidden = s.dataset.step !== "done"; });
       earn("booking");
       await loadAppointments(); renderEvents(); renderNotes();
-      toast("Check your email for your intake documents link.");
+      toast(r.appointment && r.appointment.intakeDone ? "Booked. Your intake documents are already on file." : "Check your email for your intake documents link.");
     } catch (err) { msg.textContent = err.message; btn.disabled = false; }
   });
   $("#book-close-done").addEventListener("click", () => bookDlg.close());
@@ -2577,6 +2577,16 @@
   $("#cal-prev").addEventListener("click", () => { calMonth = monthAdd(calMonth, -1); renderCalendar(); });
   $("#cal-next").addEventListener("click", () => { calMonth = monthAdd(calMonth, 1); renderCalendar(); });
 
+  // ================= Become a patient: intake documents kept on file with the account (filled at /intake?me=1)
+  function loadPatientDocs() {
+    apiAuth("GET", "/api/me/intake").then((p) => {
+      const card = $("#patient-card");
+      card.classList.toggle("done", p.done);
+      if (p.done) { $("#pc-title").textContent = "Documents on file ✓"; $("#pc-sub").textContent = "Your intake documents are on file for every visit."; $("#pc-go").textContent = "Update documents"; }
+      else if (p.completed) { $("#pc-title").textContent = "Become a patient"; $("#pc-sub").textContent = `${p.completed} of ${p.total} intake documents complete.`; $("#pc-go").textContent = "Continue ›"; }
+    }).catch(() => {});
+  }
+
   // ================= Load
   show(location.hash.slice(1) || "home");
   renderProfile(); renderStats(); renderToday(); renderAreas(); renderPlan();
@@ -2593,6 +2603,7 @@
     if (wl.status === "fulfilled") allWorkouts = wl.value;
     apiAuth("GET", "/api/me/vitals").then((v) => { vitals = v; renderPerf(); }).catch(() => renderPerf());
     pollUnread();
+    loadPatientDocs();
     apiAuth("GET", "/api/me/access").then((a) => { access = a; renderToday(); renderAccessBadge(); }).catch(() => {});
     loadContent().then(() => { renderFeaturedPrograms(); const t = location.hash.slice(1).split("/"); if (["programs", "learn", "premium", "tips"].includes(t[0])) renderContent(t[0], t[0] === "programs" ? t.slice(1).join("/") : t[1]); });
     if (lb.status === "fulfilled") { lib = lb.value; renderPrograms(); if (!$("#view-videos").hidden) renderVideos(); }

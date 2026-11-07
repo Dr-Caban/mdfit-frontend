@@ -229,3 +229,14 @@
 .streak .repair-chip svg { width: 14px; height: 14px; fill: currentColor; }
 .streak .repair-chip:hover { background: rgba(255,231,168,.15); }
 .streak .repair-note { margin-top: 8px; padding: 8px 10px; border: 1px dashed rgba(255,231,168,.3); border-radius: 8px; color: rgba(255,231,168,.95); }
+
+/* Become a patient: intake documents on file. Navy call to action until done, then a quiet confirmation. */
+.patient-card { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; align-items: center; text-decoration: none; color: #fff; background: var(--navy); border-color: var(--navy); }
+.patient-card .pc-ic { grid-row: span 2; width: 44px; height: 44px; border-radius: 12px; background: rgba(255,255,255,.12); display: grid; place-items: center; }
+.patient-card .pc-ic svg { width: 24px; height: 24px; fill: currentColor; }
+.patient-card .pc-txt b { display: block; font-size: 17px; }
+.patient-card .pc-txt span { display: block; font-size: 14px; opacity: .85; line-height: 1.4; margin-top: 2px; }
+.patient-card .pc-go { grid-column: 2; font-weight: 700; font-size: 15px; }
+.patient-card.done { background: var(--card); color: var(--navy); border-color: var(--line); }
+.patient-card.done .pc-ic { background: #e3f4ea; color: #2e7d32; }
+.patient-card.done .pc-go { font-weight: 600; font-size: 14px; color: var(--muted); }

@@ -233,3 +233,6 @@ code { background: var(--paper-2); padding: 1px 6px; border-radius: 4px; font-si
 .client-totals .ct span { font-size: 13px; opacity: .75; }
 .client-totals .ct.on { border-color: #0a1a2e; background: #0a1a2e; color: #fff; }
 .client-totals .ct.on span { opacity: .85; }
+
+/* Client profile: intake documents on file */
+.client-docs { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 4px 0 12px; }
