@@ -1917,7 +1917,7 @@
     + (p.weeks ? `<span class="pp-badge">${esc(p.weeks)}-week program</span>` : "") + `</span></span>`;
   function renderFeaturedPrograms() {
     if (!C || !C.programs || !C.programs.length) {
-      ["#featured-progs", "#hero-progs", "#profile-progs"].forEach((s) => { const el = $(s); if (el) el.hidden = true; });
+      ["#featured-progs", "#hero-progs"].forEach((s) => { const el = $(s); if (el) el.hidden = true; });
       return;
     }
     // Pick a spread across categories (rehab, sport, mobility, strength) so patients see the full breadth
@@ -1932,7 +1932,7 @@
     // Hero + profile grids show up to 6 big cards with images; sidebar stays compact at 5 rows.
     const heroList = featured.length ? [...featured, ...C.programs.filter((p) => !featured.includes(p))].slice(0, 6) : C.programs.slice(0, 6);
 
-    const sb = $("#featured-progs"), hero = $("#hero-progs"), prof = $("#profile-progs");
+    const sb = $("#featured-progs"), hero = $("#hero-progs"); // programs live on Home and the Programs tab, not on Profile
     if (sb) {
       sb.hidden = false;
       $("#featured-prog-list").innerHTML = sidebar.map((p) => `
@@ -1950,7 +1950,6 @@
       <span class="hp-go">Start this program →</span>
     </button>`;
     if (hero) { hero.hidden = false; $("#hero-prog-grid").innerHTML = heroList.map(bigCard).join(""); }
-    if (prof) { prof.hidden = false; $("#profile-prog-grid").innerHTML = heroList.map(bigCard).join(""); }
   }
   document.addEventListener("click", (e) => {
     const b = e.target.closest("[data-fp]"); if (!b) return;
