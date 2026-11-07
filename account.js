@@ -324,7 +324,8 @@
   const apptLi = (a, { cancel = false, cal = false } = {}) => `
     <li class="ev" data-appt="${a.id}">${dateBox(a.date, "gold")}
       <div class="ev-info"><b>${esc(a.typeName)}</b><span>${fmtDate(a.date, { weekday: "short" })} · ${fmtTime(a.time)} · ${a.minutes} min</span>
-        ${cal ? `<span><a class="link-sm" href="${ics(a)}" download="mdfit-${a.date}.ics">Add to calendar</a></span>` : ""}</div>
+        ${cal ? `<span><a class="link-sm" href="${ics(a)}" download="mdfit-${a.date}.ics">Add to calendar</a></span>` : ""}
+        ${a.meetingLink && a.status === "booked" && a.date >= todayInTz() ? `<span><a class="link-sm join-link" href="${esc(a.meetingLink)}" target="_blank" rel="noopener">Join video visit</a></span>` : ""}</div>
       ${cancel ? `<button type="button" class="ev-act danger" data-cancel>Cancel</button>` : `<span class="muted tiny">${esc(a.status === "booked" ? "done" : a.status)}</span>`}
     </li>`;
   function renderEvents() {

@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css?v=c75279d6">
-  <link rel="stylesheet" href="admin.css?v=a0aaf4d1">
+  <link rel="stylesheet" href="admin.css?v=ced2ea19">
 </head>
 <body class="admin">
   <section id="login" class="login">
@@ -92,6 +92,8 @@
             <label class="radio"><input type="radio" name="provider" value="builtin"> <span><b>MD Fit built-in</b><small>Uses the hours and appointment types below.</small></span></label>
             <label class="radio"><input type="radio" name="provider" value="cal"> <span><b>Cal.com</b><small>Embeds your Cal.com calendar on /book and the homepage.</small></span></label>
           </div>
+          <label>Video visit link (your telehealth room)<input name="telehealthUrl" type="url" inputmode="url" placeholder="https://zoom.us/j/…"></label>
+          <p class="muted fine">Sent automatically to everyone who books a video visit, in the confirmation email and in their account. Use a HIPAA-covered room (Zoom for Healthcare, Doxy.me, or Google Meet under your Workspace BAA). You can set a different link on any appointment.</p>
           <div class="cal-fields">
             <div class="cal-status" id="cal-status"><span class="muted">Checking Cal.com…</span></div>
             <div class="grid2">
@@ -366,7 +368,7 @@
   <script src="realtime.js?v=c1829e8b"></script>
   <script src="painmuscles.js?v=74e3b348"></script>
   <script src="paintracks.js?v=55ce1cb4"></script>
-  <script src="admin.js?v=f7122692"></script>
+  <script src="admin.js?v=d0a035b6"></script>
 <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>

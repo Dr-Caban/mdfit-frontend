@@ -158,12 +158,14 @@
   }));
 
   // ---- Appointments
+  const VIDEO_TYPES = ["eval-remote", "followup-remote", "session-remote"];
+  const isVideo = (a) => VIDEO_TYPES.includes(a.typeId) || !!a.meetingLink;
   async function loadAppts() {
     const list = await api("GET", "/api/admin/appointments" + ($("#appts-all").checked ? "?all=1" : ""));
     $("#appts-list").innerHTML = list.length ? list.map((a) => `
       <article class="lead appt ${a.status}" data-id="${a.id}">
         <header>
-          <div><h3>${fmtDate(a.date)} · ${fmtTime(a.time)} <span class="badge ${a.status}">${a.status}</span>${["eval-remote","followup-remote"].includes(a.typeId) ? ` <span class="badge remote">Video</span>` : ""}${a.source === "cal" ? ` <span class="badge cal">Cal.com</span>` : ""}</h3>
+          <div><h3>${fmtDate(a.date)} · ${fmtTime(a.time)} <span class="badge ${a.status}">${a.status}</span>${isVideo(a) ? ` <span class="badge remote">Video</span>` : ""}${a.source === "cal" ? ` <span class="badge cal">Cal.com</span>` : ""}</h3>
             <div class="meta">${esc(a.typeName)} · ${a.minutes} min</div></div>
           <div class="meta">Booked ${when(a.createdAt)}</div>
         </header>
@@ -172,6 +174,7 @@
         ${a.notes ? `<p class="msg">${esc(a.notes)}</p>` : ""}
         ${a.documents && a.documents.total ? `<p><span class="badge docs${a.documents.complete ? " done" : ""}">${a.documents.complete ? "Documents complete ✓" : `Documents ${a.documents.done} of ${a.documents.total}`}</span>${
           a.documents.done ? ` <button class="mini" data-intake>View documents</button>` : ""}</p><div class="intake-view" hidden></div>` : ""}
+        ${isVideo(a) ? `<label class="meet-row">Video link <input type="url" inputmode="url" data-meet value="${esc(a.meetingLink || "")}" placeholder="https://zoom.us/j/… (saving a new link emails it to the patient)">${a.meetingLink ? ` <a class="mini" href="${esc(a.meetingLink)}" target="_blank" rel="noopener">Join</a>` : ""}</label>` : ""}
         <textarea rows="2" placeholder="Session notes (private)" data-notes>${esc(a.adminNotes)}</textarea>
         <div class="actions">
           <select data-status>${APPT_STATUSES.map((x) => `<option ${x === a.status ? "selected" : ""}>${x}</option>`).join("")}</select>
@@ -202,7 +205,8 @@
     if (!card || !e.target.matches("[data-save]")) return;
     const status = $("[data-status]", card).value;
     if (status === "cancelled" && !confirm("Cancel this appointment? The time opens up for booking again.")) return;
-    await api("PATCH", `/api/admin/appointments/${card.dataset.id}`, { status, adminNotes: $("[data-notes]", card).value });
+    const meet = $("[data-meet]", card);
+    await api("PATCH", `/api/admin/appointments/${card.dataset.id}`, { status, adminNotes: $("[data-notes]", card).value, ...(meet ? { meetingLink: meet.value.trim() } : {}) });
     toast("Appointment saved."); loadAppts();
   }));
 
@@ -235,7 +239,7 @@
     msg.className = "form-msg"; msg.textContent = "";
     try {
       await api("PUT", "/api/admin/settings", { booking: {
-        provider: cf.provider.value, calUsername: cf.calUsername.value,
+        provider: cf.provider.value, calUsername: cf.calUsername.value, telehealthUrl: cf.telehealthUrl.value.trim(),
         calEventSlugs: cf.calEventSlugs.value.split(",").map((x) => x.trim()).filter(Boolean)
       } });
       msg.className = "form-msg ok";
@@ -269,6 +273,7 @@
     const s = await api("GET", "/api/admin/settings");
     cf.provider.value = s.booking.provider;
     cf.calUsername.value = s.booking.calUsername;
+    cf.telehealthUrl.value = s.booking.telehealthUrl || "";
     cf.calEventSlugs.value = s.booking.calEventSlugs.join(", ");
     calFields();
     if (s.booking.provider === "cal") loadCalStatus().catch(() => {});

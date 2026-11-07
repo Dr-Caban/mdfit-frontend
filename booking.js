@@ -211,7 +211,8 @@
         `&text=${encodeURIComponent(title)}&dates=${icsStamp(start)}/${icsStamp(end)}&location=${encodeURIComponent(biz.address)}&details=${encodeURIComponent(details)}`;
       $("[data-directions]", bookedBox).href = biz.mapsUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(biz.address)}`;
       $(".booked-when", bookedBox).textContent = `${a.typeName} · ${fmtDate(a.date, { weekday: "long", month: "long", day: "numeric" })} at ${fmtTime(a.time)}`;
-      $(".booked-where", bookedBox).textContent = `${biz.address} · ${a.minutes} minutes`;
+      $(".booked-where", bookedBox).textContent = a.meetingLink ? `Video visit · ${a.minutes} minutes` : `${biz.address} · ${a.minutes} minutes`;
+      if (a.meetingLink) $(".booked-where", bookedBox).insertAdjacentHTML("afterend", `<p class="booked-meet">Join at your appointment time: <a href="${esc(a.meetingLink)}" target="_blank" rel="noopener">${esc(a.meetingLink)}</a><br><span class="muted">We also emailed you this link.</span></p>`);
       $(".booked-intake", bookedBox)?.remove();
       if (a.intakeDone) $(".booked-where", bookedBox).insertAdjacentHTML("afterend", `<div class="booked-intake"><p><b>Documents on file ✓</b> Your intake documents are already on file, so there's nothing to fill out before this visit.</p></div>`);
       else if (a.intake) $(".booked-where", bookedBox).insertAdjacentHTML("afterend", `<div class="booked-intake"><p><b>One more step:</b> fill out your intake documents before your visit (${a.intakeDocs || 4} short form${a.intakeDocs === 1 ? "" : "s"}, about ${a.intakeDocs === 1 ? 2 : 10} minutes). We also emailed you the link.</p><a class="btn" href="/intake?id=${encodeURIComponent(a.id)}&token=${encodeURIComponent(a.cancelToken)}">Fill out intake documents</a></div>`);

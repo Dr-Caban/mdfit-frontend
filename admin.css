@@ -236,3 +236,7 @@ code { background: var(--paper-2); padding: 1px 6px; border-radius: 4px; font-si
 
 /* Client profile: intake documents on file */
 .client-docs { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 4px 0 12px; }
+
+/* Video visits: the join link on an appointment card */
+.meet-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; }
+.meet-row input { flex: 1 1 260px; min-width: 0; }
