@@ -1157,7 +1157,7 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
 .chip.sub { font-size: 13px; padding: 6px 12px; }
 .sub-tabs.lvl .chip.sub[aria-selected="true"] { background: var(--gold); border-color: var(--gold); color: var(--navy); }
 /* Global search */
-.qsearch { position: relative; display: flex; align-items: center; margin: 10px 0 6px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 6px 10px 6px 36px; }
+.qsearch { position: relative; display: flex; align-items: center; margin: 10px 0 14px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 6px 10px 6px 36px; }
 .qsearch-ic { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; opacity: .55; }
 .qsearch input { flex: 1; min-width: 0; border: 0; background: transparent; font: 15px var(--body); color: var(--navy); padding: 10px 4px; }
 .qsearch input:focus { outline: none; }
