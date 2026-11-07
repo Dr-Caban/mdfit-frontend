@@ -16,6 +16,7 @@
   --accent-bright: #8EC0E6;/* light blue on navy */
   --accent-soft: #EAF3FA;
   --gold: #C8A763;
+  --gold-hover: #b8954f;
   --gold-soft: #f6efdf;
   --ok: #2e7d4f;
   --err: #c62828;
@@ -73,8 +74,10 @@ svg { fill: currentColor; }
 .btn-blue { background: var(--navy); color: #fff; }
 .btn-blue:hover { background: var(--navy-3); }
 .btn-blue svg, .btn-accent svg { width: 20px; height: 20px; }
-.btn-gold, .btn-accent { background: var(--accent); color: var(--navy); }
-.btn-gold:hover, .btn-accent:hover { background: var(--accent-hover); }
+/* Secondary actions (Save, Send, Copy, Generate) are brand gold with navy text. They used to be pale blue, which read as
+   a disabled button next to the navy ones. */
+.btn-gold, .btn-accent { background: var(--gold); color: var(--navy); }
+.btn-gold:hover, .btn-accent:hover { background: var(--gold-hover); }
 .btn-gold:disabled { background: var(--card-2); color: var(--muted); cursor: default; }
 .btn-ghost { background: var(--card); color: var(--navy); border-color: var(--line); }
 .btn-ghost:hover { border-color: var(--navy); }
@@ -143,7 +146,7 @@ svg { fill: currentColor; }
 .ev-info span { color: var(--muted); font-size: 13px; }
 .ev-info .spots { color: var(--accent-text); font-weight: 600; }
 .ev-info .spots.ok { color: var(--ok); }
-.ev-act { background: var(--accent); border: 0; color: var(--navy); font-weight: 700; font-size: 13px; cursor: pointer; padding: 8px 12px; border-radius: 10px; }
+.ev-act { background: var(--gold); border: 0; color: var(--navy); font-weight: 700; font-size: 13px; cursor: pointer; padding: 8px 12px; border-radius: 10px; }
 .ev-act.danger { background: none; color: var(--err); }
 .act { display: grid; grid-template-columns: 42px minmax(0, 1fr) auto; gap: 12px; align-items: center; }
 .act .check { width: 42px; height: 42px; border-radius: 50%; background: var(--accent-soft); display: grid; place-items: center; color: var(--accent-text); }
@@ -313,7 +316,8 @@ svg { fill: currentColor; }
 .tip span { color: var(--on-navy); }
 .install { background: var(--navy); border-color: var(--navy); color: #fff; }
 .install .label.accent { color: var(--gold); }
-.install .btn-blue { background: var(--accent); color: var(--navy); font-weight: 600; width: 100%; margin-top: .5rem; }
+.install .btn-blue { background: var(--gold); color: var(--navy); font-weight: 700; width: 100%; margin-top: .5rem; }
+.install .btn-blue:hover { background: var(--gold-hover); }
 .install-steps { margin: .5rem 0 0; padding-left: 1.25rem; }
 .install-steps li { margin-bottom: .35rem; line-height: 1.45; }
 .profile-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 18px; margin: 20px 0 10px; font-size: 14px; }
@@ -391,7 +395,7 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
   .side-brand small { display: block; color: var(--on-navy); font-size: 11px; line-height: 1.35; }
   .side-foot { display: grid; gap: 10px; margin-top: auto; padding: 0 6px; font-size: 14px; }
   .side-foot a { color: var(--on-navy); text-decoration: none; }
-  .side-foot .side-book { background: var(--accent); color: var(--navy); font-weight: 700; text-align: center; padding: 12px; border-radius: 10px; }
+  .side-foot .side-book { background: var(--gold); color: var(--navy); font-weight: 700; text-align: center; padding: 12px; border-radius: 10px; }
   .side-tag { margin: 0 0 8px; color: #fff; font: 700 16px/1.4 var(--display); text-align: center; text-transform: uppercase; letter-spacing: 1px; }
   .side-tag::after { content: ""; display: block; width: 60px; height: 3px; background: var(--gold); margin: 10px auto 0; }
 
@@ -773,6 +777,7 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
 .live-card { background: var(--navy) !important; color: #fff; }
 .live-card h2 { color: #fff; font: 700 22px/1.25 var(--display); margin: 6px 0; }
 .live-card .muted { color: var(--on-navy) !important; }
+.live-card .label.accent { color: var(--accent-bright); }
 .live-top { display: flex; align-items: center; gap: 8px; }
 .live-dot { width: 10px; height: 10px; border-radius: 50%; background: #e53935; box-shadow: 0 0 0 4px rgba(229,57,53,.25); animation: pulse 1.6s infinite; }
 @keyframes pulse { 50% { box-shadow: 0 0 0 8px rgba(229,57,53,0); } }
@@ -799,7 +804,8 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
 .tier h3 { font: 700 20px/1.2 var(--display); color: var(--navy); margin: 0; }
 .tier-price { margin: 0; color: var(--muted); }
 .tier-price b { font: 700 30px/1.1 var(--display); color: var(--navy); }
-.tier-meet { margin: 0; font-weight: 700; color: var(--accent-bright, #7AAFD7); font-size: 14px; }
+.tier-meet { margin: 0; font-weight: 700; color: var(--accent-text); font-size: 14px; }
+.tier.featured .tier-meet { color: var(--accent-bright); }
 .tier ul { margin: 6px 0 8px; padding-left: 18px; display: grid; gap: 4px; font-size: 14px; }
 .tier-cur { font-weight: 700; color: var(--gold); }
 .tier .btn-gold, .tier .btn-ghost { justify-self: start; }
@@ -962,7 +968,7 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
 
 /* Referral card */
 .referral-code-row { display: flex; align-items: center; gap: 10px; margin: 10px 0; flex-wrap: wrap; }
-.referral-code { font-size: 18px; font-weight: 700; letter-spacing: .08em; background: var(--bg, #0d2240); color: var(--accent, #E8922A); padding: 8px 14px; border-radius: 8px; user-select: all; flex: 1; text-align: center; }
+.referral-code { font-size: 18px; font-weight: 700; letter-spacing: .08em; background: var(--card-2); color: var(--navy); padding: 8px 14px; border-radius: 8px; user-select: all; flex: 1; text-align: center; }
 .referral-share { margin-top: 8px; }
 
 /* Chat reactions */
