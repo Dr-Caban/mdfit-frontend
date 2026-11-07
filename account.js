@@ -2693,6 +2693,7 @@
     }
     $("#cal").innerHTML = cells.join("");
     renderCalDay();
+    document.dispatchEvent(new CustomEvent("mdfit:calendar", { detail: { month: calMonth } }));
   }
   function renderCalDay() {
     const d = calPick || todayInTz(), items = dayItems(d);

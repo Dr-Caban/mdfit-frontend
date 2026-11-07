@@ -532,3 +532,12 @@
 .hb-card .hb-toggle.hb-head { margin-bottom: 0; flex-wrap: nowrap; }
 /* Progress no longer repeats the gem/XP (it lives in the Home gem card) */
 #view-progress #level-card, #view-progress #rank-card { display: none; }
+
+/* One Calendar: goal days painted on the Progress calendar (gold = goal reached, dashed = repaired, pale = missed) */
+#cal .cal-d.goal-q { background: #c8a663; color: #0A1A2E; }
+#cal .cal-d.goal-q span { font-weight: 800; }
+#cal .cal-d.goal-r { outline: 2px dashed #c8a663; outline-offset: -4px; }
+#cal .cal-d.goal-m { opacity: .55; }
+.hbc-under { margin-top: 10px; }
+.hbc-under .hbc-sum { margin: 0 0 6px; }
+.hbc-key .k { width: 12px !important; height: 12px !important; min-width: 0; flex: 0 0 12px; padding: 0; }

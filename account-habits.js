@@ -76,52 +76,51 @@
     try {
       data = on ? await apiAuth("POST", "/api/me/habits/checkin", { habitId: id }) : await apiAuth("DELETE", `/api/me/habits/checkin/${encodeURIComponent(id)}`);
       if (!before && data.qualifying) toast("Daily goal met. Today counts toward your streak.");
-      monthData = null;
+      monthCache.clear();
       rewardsChanged();
     } catch (err) { toast(err.message); await load().catch(() => {}); }
     finally { busy.delete(id); render(); }
   });
 
-  // ---------- Progress: month calendar of qualifying days ----------
-  const prog = $("#view-progress .col-main");
-  const cal = document.createElement("section");
-  cal.className = "card hb-cal"; cal.id = "habits-cal"; cal.setAttribute("aria-labelledby", "hbc-title");
-  cal.innerHTML = `<div class="hb-head"><h2 class="label accent" id="hbc-title">Goal days</h2>
-    <div class="hbc-nav"><button type="button" class="icon-btn" data-m="-1" aria-label="Previous month">‹</button><b id="hbc-month"></b><button type="button" class="icon-btn" data-m="1" aria-label="Next month">›</button></div></div>
-    <div class="hbc-grid" id="hbc-grid"></div>
-    <p class="hbc-sum" id="hbc-sum"></p>
-    <p class="hbc-key muted"><i class="k q"></i>Goal reached <i class="k r"></i>Repaired <i class="k m"></i>Missed</p>`;
-  if (prog) prog.prepend(cal);
-  const shiftMonth = (m, n) => { const [y, mo] = m.split("-").map(Number), d = new Date(Date.UTC(y, mo - 1 + n, 1)); return d.toISOString().slice(0, 7); };
-  async function loadMonth() {
-    if (!month) month = (data && data.date ? data.date : M.todayInTz()).slice(0, 7);
-    try { monthData = await apiAuth("GET", `/api/me/habits/history?month=${month}`); renderMonth(); }
-    catch { $("#hbc-grid").innerHTML = `<p class="muted">Couldn't load your calendar.</p>`; }
+  // ---------- Progress: goal days painted onto the one Calendar (owner: one calendar, not two) ----------
+  // Gold = daily goal reached, dashed gold = missed but repaired in the streak, pale = missed. The summary line and key
+  // sit under the calendar; the calendar's own arrows change the month.
+  const mainCal = $("#cal"), calCard = mainCal && mainCal.closest(".card");
+  let sum = null;
+  if (calCard) {
+    sum = document.createElement("div"); sum.className = "hbc-under";
+    sum.innerHTML = `<p class="hbc-sum" id="hbc-sum"></p><p class="hbc-key muted"><i class="k q"></i>Goal reached <i class="k r"></i>Repaired <i class="k m"></i>Missed</p>`;
+    mainCal.after(sum);
   }
-  function renderMonth() {
-    const d = monthData; if (!d) return;
-    $("#hbc-month").textContent = fmtDate(d.month + "-15", { month: "long", year: "numeric" });
-    $("[data-m='1']", cal).disabled = d.month >= d.today.slice(0, 7);
-    const lead = (new Date(d.month + "-01T12:00:00Z").getUTCDay() + 6) % 7; // Monday first
-    const cells = ["M", "T", "W", "T", "F", "S", "S"].map((x) => `<span class="hbc-dow" aria-hidden="true">${x}</span>`);
-    for (let i = 0; i < lead; i++) cells.push(`<span></span>`);
+  const monthCache = new Map();
+  async function loadMonth(m) {
+    month = m || month || M.todayInTz().slice(0, 7);
+    if (!mainCal) return;
+    try {
+      if (!monthCache.has(month)) monthCache.set(month, await apiAuth("GET", `/api/me/habits/history?month=${month}`));
+      monthData = monthCache.get(month); paint();
+    } catch { if (sum) $("#hbc-sum").textContent = ""; }
+  }
+  function paint() {
+    const d = monthData; if (!d || !mainCal) return;
     for (const day of d.days) {
-      const n = Number(day.date.slice(8));
-      const cls = day.future ? "fut" : day.qualifying ? "q" : day.repaired ? "r" : day.missed ? "m" : "";
-      const what = day.future ? "" : day.qualifying ? `goal reached, ${day.points} points` : day.repaired ? "missed, repaired in your streak" : day.missed ? `missed, ${day.points} points` : day.today ? `today, ${day.points} points so far` : "";
-      cells.push(`<span class="hbc-d ${cls}${day.today ? " today" : ""}" title="${esc(what)}" aria-label="${esc(fmtDate(day.date, { month: "long", day: "numeric" }))}${what ? ": " + esc(what) : ""}">${n}</span>`);
+      const el = mainCal.querySelector(`[data-day="${day.date}"]`); if (!el) continue;
+      el.classList.remove("goal-q", "goal-r", "goal-m");
+      const cls = day.future ? "" : day.qualifying ? "goal-q" : day.repaired ? "goal-r" : day.missed ? "goal-m" : "";
+      if (cls) el.classList.add(cls);
+      const what = day.future ? "" : day.qualifying ? `daily goal reached, ${day.points} XP` : day.repaired ? "missed, repaired in your streak" : day.missed ? `goal missed, ${day.points} XP` : day.today ? `today, ${day.points} XP so far` : "";
+      if (what) el.title = what;
     }
-    $("#hbc-grid").innerHTML = cells.join("");
     $("#hbc-sum").innerHTML = `<b>${d.qualifyingDays}</b> goal day${d.qualifyingDays === 1 ? "" : "s"} this month · best streak ${d.streak.best} · ${d.streak.lifetimeQualifying} all time`;
   }
-  cal.addEventListener("click", (e) => { const b = e.target.closest("[data-m]"); if (!b || b.disabled) return; month = shiftMonth(month, Number(b.dataset.m)); loadMonth(); });
+  document.addEventListener("mdfit:calendar", (e) => loadMonth(e.detail.month));
 
   // Refresh when Home or Progress is shown and when the app comes back to the front (a workout may have been logged,
   // or the day may have rolled over).
   // account.js switches tabs with pushState (no hashchange), so watch the views' hidden attribute instead.
   const visible = (sel) => { const v = $(sel); return !!v && !v.hidden; };
-  const refresh = () => { if (visible("#view-home")) load(); if (visible("#view-progress")) { monthData = null; loadMonth(); } };
-  const mo = new MutationObserver((list) => { for (const m of list) if (!m.target.hidden) { if (m.target.id === "view-home") load(); else { monthData = null; loadMonth(); } } });
+  const refresh = () => { if (visible("#view-home")) load(); if (visible("#view-progress")) { monthCache.clear(); loadMonth(); } };
+  const mo = new MutationObserver((list) => { for (const m of list) if (!m.target.hidden) { if (m.target.id === "view-home") load(); else { monthCache.clear(); loadMonth(); } } });
   ["#view-home", "#view-progress"].forEach((sel) => { const v = $(sel); if (v) mo.observe(v, { attributes: true, attributeFilter: ["hidden"] }); });
   document.addEventListener("visibilitychange", () => { if (!document.hidden) refresh(); });
   load().then(() => { if (visible("#view-progress")) loadMonth(); });
