@@ -422,3 +422,10 @@ body.admin .form { grid-template-columns: minmax(0, 1fr); } /* a grid form's col
 /* Clients list: subscription picker */
 #clients-table .sub-pick { width: auto; min-width: 110px; max-width: 200px; padding: 6px 8px; font-size: 13.5px; border-radius: 999px; background: #f1efe8; border: 1px solid var(--line); }
 #clients-table .sub-pick.paid { background: #fdf4dc; border-color: #e7c977; color: #6b4e00; font-weight: 600; }
+
+/* Admin calendar: busy times from Google Calendar / SimplePractice (times only), behind MD Fit's own visits */
+.cal-ev.busy { background: repeating-linear-gradient(135deg, #eceae3 0 6px, #e3e0d6 6px 12px); color: #55524a; border-left: 3px solid #9b968a; z-index: 0; pointer-events: auto; }
+.cal-ev.busy.simplepractice { border-left-color: #2f8f83; }
+.cal-ev:not(.busy) { z-index: 1; }
+.cg-allday { display: block; margin-top: 2px; font-size: 11px; font-weight: 600; color: #6b675d; background: #e8e5dc; border-radius: 6px; padding: 1px 4px; }
+.lg.lg-busy { background: repeating-linear-gradient(135deg, #d9d5ca 0 3px, #eceae3 3px 6px); border: 1px solid #9b968a; }

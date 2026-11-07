@@ -218,7 +218,7 @@
       MDFitRT.on("message_reaction", (ev) => { if (openThread && ev.clientId === openThread) showThread(openThread); });
       MDFitRT.on("toast", (ev) => { rtToast(ev.text, TOAST_ICONS[ev.type]); });
       // Google Calendar / SimplePractice changed (the server checks every minute): refresh what's on screen
-      MDFitRT.on("calendar_changed", (ev) => {
+      MDFitRT.on("calendar_changed", (ev) => { busyFrom = "";
         const n = (ev && ev.dates && ev.dates.length) || 0;
         rtToast(`Your calendar changed${n ? ` (${n} day${n === 1 ? "" : "s"})` : ""}. Booking times updated.`);
         if (current === "appts") run(loadAppts)();
@@ -321,11 +321,24 @@
   async function loadCalendar() {
     const [ap, sc] = await Promise.all([api("GET", "/api/admin/appointments?all=1"), api("GET", "/api/schedule?days=14").catch(() => ({ sessions: [] }))]);
     calAppts = ap.filter((a) => a.status !== "cancelled"); calClasses = sc.sessions || []; renderCalendar();
+    loadBusy();
+  }
+  // Google Calendar / SimplePractice busy times for the week on screen (times only), drawn behind MD Fit's own visits
+  let calBusy = [], busyFrom = "";
+  async function loadBusy() {
+    const from = calView === "week" ? mondayOf(calDay) : calDay;
+    if (from === busyFrom) return;
+    busyFrom = from;
+    try { calBusy = (await api("GET", `/api/admin/busy?from=${from}&days=7`)).busy || []; } catch { calBusy = []; }
+    renderCalendar();
   }
   function renderCalendar() {
     const days = calView === "week" ? Array.from({ length: 7 }, (_, i) => addD(mondayOf(calDay), i)) : [calDay];
     const evs = [...calAppts.map((a) => ({ kind: "appt", a, date: a.date, start: toMin(a.time), end: toMin(a.time) + (a.minutes || 60) })),
-      ...calClasses.map((x) => ({ kind: "class", x, date: x.date, start: toMin(x.time), end: toMin(x.time) + (x.durationMin || 60) }))].filter((e) => days.includes(e.date));
+      ...calClasses.map((x) => ({ kind: "class", x, date: x.date, start: toMin(x.time), end: toMin(x.time) + (x.durationMin || 60) })),
+      ...calBusy.filter((b) => !b.allDay).map((b) => ({ kind: "busy", b, date: b.date, start: b.start, end: b.end }))].filter((e) => days.includes(e.date));
+    const allDay = calBusy.filter((b) => b.allDay && days.includes(b.date));
+    const srcName = (x) => x === "simplepractice" ? "SimplePractice" : "Google Calendar";
     const lo = Math.min(7 * 60, ...evs.map((e) => Math.floor(e.start / 60) * 60)), hi = Math.max(19 * 60, ...evs.map((e) => Math.ceil(e.end / 60) * 60));
     const PX = 52 / 60, today = tzDay();
     $("#cal-label").textContent = calView === "week" ? `${fmtDate(days[0], { month: "short", day: "numeric" })} – ${fmtDate(days[6], { month: "short", day: "numeric", year: "numeric" })}` : fmtDate(calDay, { weekday: "long", month: "long", day: "numeric" });
@@ -333,17 +346,20 @@
     const hours = []; for (let m = lo; m < hi; m += 60) hours.push(m);
     const evHtml = (e, i) => {
       const top = (e.start - lo) * PX, h = Math.max(22, (e.end - e.start) * PX - 2);
+      if (e.kind === "busy") return `<div class="cal-ev busy ${e.b.source}" style="top:${top}px;height:${h}px" title="Busy on ${srcName(e.b.source)}"><b>Busy</b><span>${srcName(e.b.source)}</span></div>`;
       if (e.kind === "class") return `<div class="cal-ev class" style="top:${top}px;height:${h}px"><b>${esc(e.x.title)}</b><span>${fmtTime(e.x.time)} · ${e.x.capacity - e.x.spotsLeft}/${e.x.capacity}</span></div>`;
       const a = e.a, cls = a.status === "completed" ? "completed" : a.status === "no-show" ? "noshow" : isVideo(a) ? "video" : "booked";
       return `<button type="button" class="cal-ev ${cls}" style="top:${top}px;height:${h}px" data-ev="${esc(a.id)}"><b>${esc(a.name)}</b><span>${fmtTime(a.time)} · ${esc(a.typeName)}</span></button>`;
     };
     $("#cal-grid").innerHTML = `<div class="cg ${calView}" style="--cols:${days.length}">
-      <div class="cg-corner"></div>${days.map((d) => `<div class="cg-day${d === today ? " today" : ""}">${fmtDate(d, { weekday: "short" })} <b>${Number(d.slice(8))}</b></div>`).join("")}
+      <div class="cg-corner"></div>${days.map((d) => `<div class="cg-day${d === today ? " today" : ""}">${fmtDate(d, { weekday: "short" })} <b>${Number(d.slice(8))}</b>${
+        allDay.some((b) => b.date === d) ? `<small class="cg-allday" title="All-day event on ${allDay.filter((b) => b.date === d).map((b) => srcName(b.source)).join(", ")}">All day busy</small>` : ""}</div>`).join("")}
       <div class="cg-hours" style="height:${(hi - lo) * PX}px">${hours.map((m) => `<span style="top:${(m - lo) * PX}px">${fmtTime(String(m / 60).padStart(2, "0") + ":00").replace(":00", "")}</span>`).join("")}</div>
       ${days.map((d) => `<div class="cg-col${d === today ? " today" : ""}" style="height:${(hi - lo) * PX}px">${hours.map((m) => `<i style="top:${(m - lo) * PX}px"></i>`).join("")}${
         d === today ? (() => { const n = new Date().toLocaleTimeString("en-GB", { timeZone: "America/New_York", hour: "2-digit", minute: "2-digit" }); const nm = toMin(n); return nm >= lo && nm <= hi ? `<em class="cg-now" style="top:${(nm - lo) * PX}px"></em>` : ""; })() : ""}${
         evs.filter((e) => e.date === d).map(evHtml).join("")}</div>`).join("")}</div>
-      ${evs.length ? "" : `<p class="muted cal-empty">Nothing scheduled ${calView === "week" ? "this week" : "this day"}.</p>`}`;
+      ${evs.length || allDay.length ? "" : `<p class="muted cal-empty">Nothing scheduled ${calView === "week" ? "this week" : "this day"}.</p>`}`;
+    loadBusy();
   }
   $("#cal-prev").addEventListener("click", () => { calDay = addD(calDay, calView === "week" ? -7 : -1); renderCalendar(); });
   $("#cal-next").addEventListener("click", () => { calDay = addD(calDay, calView === "week" ? 7 : 1); renderCalendar(); });
