@@ -241,11 +241,12 @@
   };
 
   // ---- Dashboard
+  let emailOn = null; // from /api/admin/me: whether patient emails actually go out
   async function loadDash() {
     const [s, me, st] = await Promise.all([api("GET", "/api/admin/stats"), api("GET", "/api/admin/me"), api("GET", "/api/admin/settings").catch(() => null)]);
     // Telehealth types are offered but no video room link is saved: patients would get no way to join
     $("#video-banner").hidden = !st || !!(st.booking && st.booking.telehealthUrl) || !(st.appointmentTypes || []).some((t) => t.remote);
-    $("#email-banner").hidden = me.emailNotifications;
+    $("#email-banner").hidden = me.emailNotifications; emailOn = me.emailNotifications;
     $(".stats").innerHTML = [
       [s.appointmentsToday, "Appointments today"], [s.appointmentsWeek, "Appointments next 7 days"], [s.leadsNew, "New requests"],
       [s.leads30d, "Requests last 30 days"], [s.bookingsThisWeek, "Class spots booked"], [s.subscribers, "Subscribers"]
@@ -742,7 +743,8 @@
         } else if (f.dataset.care === "consult") {
           if (!f.date.value || !f.time.value) throw new Error("Pick a date and time.");
           const a = await api("POST", `/api/admin/clients/${id}/consult`, { date: f.date.value, time: f.time.value, minutes: Number(f.minutes.value), meetingLink: f.meetingLink.value.trim(), message: f.message.value });
-          msg.textContent = `Scheduled ${fmtDate(a.date)} at ${fmtTime(a.time)}. ${c.name.split(" ")[0]} has been emailed the link.`;
+          if (emailOn === null) emailOn = (await api("GET", "/api/admin/me")).emailNotifications;
+          msg.textContent = `Scheduled ${fmtDate(a.date)} at ${fmtTime(a.time)}. ${emailOn ? `${c.name.split(" ")[0]} has been emailed the link.` : "Email isn't set up, so nothing was emailed: send them the link yourself (it's also in their account under Appointments)."}`;
           c.appointments.unshift(a);
           table($("#client-appts"), ["When", "Type", "Status"], c.appointments.map((x) => `<tr><td>${fmtDate(x.date)} · ${fmtTime(x.time)}</td><td>${esc(x.typeName)}</td><td><span class="badge ${x.status}">${x.status}</span></td></tr>`), "");
         } else {
