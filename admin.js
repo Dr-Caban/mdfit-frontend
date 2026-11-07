@@ -55,7 +55,10 @@
   // on a shared screen (HIPAA automatic logoff). The idle timer signs out after 15 minutes without input.
   function logout() {
     token = ""; session.set(""); $("#app").hidden = true; $("#login").hidden = false; if (window.MDFitRT) MDFitRT.disconnect();
-    $$("#appts-list, #clients-list, #client-totals, #leads-list, #members-list, #msg-thread, #msg-threads, #bc-list, #feedback-list, #reviews-list, #app table tbody").forEach((el) => { el.innerHTML = ""; });
+    $$("#appts-list, #clients-list, #client-totals, #client-detail, #leads-list, #members-list, #msg-thread, #msg-threads, #bc-list, #feedback-list, #reviews-list, #cal-grid, #cal-pop-body, #notif-list, #home-inbox, #app table tbody").forEach((el) => { el.innerHTML = ""; });
+    const pop = $("#cal-pop"); if (pop && pop.open) pop.close();
+    // cached patient data goes too, so nothing is shown again before the next sign-in reloads it
+    clientList = []; calAppts = []; notes = []; contentCache = null; homeThread = null; drafts.clear();
     clearTimeout(idleT);
   }
   $("#logout").addEventListener("click", logout);
@@ -70,8 +73,7 @@
   const NAV = [
     { id: "home", label: "Home", tabs: [["dash", "Calendar"], ["appts", "Appointments"], ["classes", "Classes"], ["bookings", "Class bookings"], ["hours", "Hours & sync"]] },
     { id: "people", label: "Clients", tabs: [["clients", "Clients"], ["leads", "Leads"], ["members", "Members"], ["subs", "Newsletter"]] },
-    { id: "messages", label: "Messages", tabs: [["messages", "Messages"]] },
-    { id: "feedback", label: "Feedback", tabs: [["reviews", "Reviews"], ["feedback", "Bug reports & ideas"]] },
+    { id: "inbox", label: "Inbox", tabs: [["messages", "Messages"], ["reviews", "Reviews"], ["feedback", "Bug reports & ideas"]] },
     { id: "insights", label: "Insights", tabs: [["analytics", "Analytics"], ["audit", "Audit"]] },
     { id: "settings", label: "Settings", tabs: [["settings", "Settings"], ["content", "Content"], ["habits", "Habits"]] }
   ];
@@ -85,7 +87,7 @@
     const sub = $("#subnav");
     sub.hidden = g.tabs.length < 2;
     sub.innerHTML = g.tabs.map(([t, l]) => `<button type="button" role="tab" data-tab="${t}" aria-selected="${t === name}">${l}</button>`).join("");
-    $("#tb-title").textContent = g.tabs.length > 1 ? `${g.label} · ${g.tabs.find(([t]) => t === name)[1]}` : g.label;
+    { const sl = (g.tabs.find(([t]) => t === name) || [])[1]; $("#tb-title").textContent = g.tabs.length > 1 && sl !== g.label ? `${g.label} · ${sl}` : g.label; }
     $$("[data-panel]").forEach((p) => (p.hidden = p.dataset.panel !== name));
     if (location.hash.slice(1) !== name) history.pushState(null, "", "#" + name);
     closeSidebar();
@@ -105,7 +107,7 @@
   // ---- Notifications bell: what patients and visitors did (bookings, messages, documents, leads, reviews...),
   // newest first. "Unread" = newer than the last time the bell was opened on this browser.
   const NOTE = {
-    appointment: ["📅", "New booking", "dash"], appointment_cancelled: ["❌", "Appointment cancelled", "dash"], intake: ["📝", "Intake document completed", "dash"],
+    appointment: ["📅", "New booking", "dash"], appointment_cancelled: ["❌", "Appointment cancelled", "dash"], intake: ["📝", "Intake documents", "appts"],
     lead: ["🎯", "New evaluation request", "leads"], booking: ["🏋️", "Class spot booked", "bookings"], booking_cancelled: ["❌", "Class spot cancelled", "bookings"],
     message: ["💬", "New message", "messages"], subscribe: ["📧", "New newsletter subscriber", "subs"], bug_report: ["🐛", "Bug report", "feedback"],
     suggestion: ["💡", "Suggestion", "feedback"], feedback: ["⭐", "New review", "reviews"], client_signup: ["👤", "New client account", "clients"],
@@ -116,16 +118,45 @@
   const seenAt = () => { try { return localStorage.getItem(SEEN_KEY) || ""; } catch { return ""; } };
   const ago = (t) => { const m = Math.round((Date.now() - Date.parse(t)) / 60000); return m < 1 ? "just now" : m < 60 ? `${m} min ago` : m < 1440 ? `${Math.round(m / 60)} h ago` : when(t); };
   function renderNotes() {
-    const seen = seenAt(), list = notes.filter((n) => NOTE[n.type] || /^cal_booking/.test(n.type)).slice(0, 40);
+    const seen = seenAt(), list = groupNotes(notes.filter((n) => NOTE[n.type] || /^cal_booking/.test(n.type))).slice(0, 40);
     const unread = list.filter((n) => n.time > seen).length;
     $("#bell-count").hidden = !unread; $("#bell-count").textContent = unread > 99 ? "99+" : unread;
     $("#notif-list").innerHTML = list.map((n, i) => {
-      const [ic, label] = NOTE[n.type] || ["📅", "Cal.com booking"];
+      const [ic, base] = NOTE[n.type] || ["📅", "Cal.com booking"];
+      const label = n.type === "intake" ? (n.total && n.completed >= n.total ? "Intake documents completed" : n.total ? `Intake documents: ${n.completed} of ${n.total} done` : base) : base;
       return `<li><button type="button" class="np-item${n.time > seen ? " unread" : ""}" data-note="${i}"><span class="np-ic" aria-hidden="true">${ic}</span>
         <span class="np-txt"><b>${esc(label)}</b>${n.email ? `<span>${esc(n.email)}</span>` : ""}<small>${esc(ago(n.time))}</small></span></button></li>`;
     }).join("") || `<li class="np-empty">Nothing new yet.</li>`;
     $("#notif-list").dataset.items = "";
     renderNotes.list = list;
+  }
+  // One line per thing that happened: the forms of one intake packet (saved one at a time) collapse into a single
+  // "Intake documents" item, and the same event arriving twice (live + reload) shows once.
+  function groupNotes(list) {
+    const out = [], seenKeys = new Set();
+    for (const n of list) {
+      const key = n.type === "intake" ? `intake|${n.appointmentId || n.email || ""}|${String(n.time).slice(0, 10)}`
+        : `${n.type}|${n.email || ""}|${n.id || n.appointmentId || ""}|${String(n.time).slice(0, 16)}`;
+      if (seenKeys.has(key)) continue;
+      seenKeys.add(key); out.push(n);
+    }
+    return out;
+  }
+  // Open the documents an intake notification is about: the visit's card in Appointments, or the client's profile
+  async function openIntake(n) {
+    if (n.appointmentId) {
+      openTab("appts", { load: false });
+      await loadAppts();
+      let card = $(`#appts-list .appt[data-id="${CSS.escape(n.appointmentId)}"]`);
+      if (!card && !$("#appts-all").checked) { $("#appts-all").checked = true; await loadAppts(); card = $(`#appts-list .appt[data-id="${CSS.escape(n.appointmentId)}"]`); }
+      const btn = card && $("[data-intake]", card);
+      if (card) card.scrollIntoView({ block: "start", behavior: "smooth" });
+      if (btn) btn.click();
+      if (card) return;
+    }
+    const who = n.email && clientList.find((c) => c.email === n.email);
+    if (who) { await goClient(who.id); const b = $("[data-cdocs]"); if (b) { b.click(); b.scrollIntoView({ block: "center" }); } return; }
+    openTab("appts");
   }
   async function loadNotes() { try { notes = await api("GET", "/api/admin/activity"); renderNotes(); } catch {} }
   function toggleNotes(open) {
@@ -143,6 +174,7 @@
     try { if (n.time > seenAt()) localStorage.setItem(SEEN_KEY, n.time); } catch {}
     const target = (NOTE[n.type] || [, , "dash"])[2];
     const who = n.email && clientList.find((c) => c.email === n.email);
+    if (n.type === "intake") return openIntake(n);
     if (target === "messages" && who) return goThread(who.id);
     if (target === "clients" && who) return goClient(who.id);
     openTab(target);
@@ -179,13 +211,14 @@
         if (ev.type === "feedback" || ev.type === "bug_report" || ev.type === "suggestion") { if (current === "feedback") run(loadFeedback)(); pollBadges(); }
       });
       MDFitRT.on("new_message", () => {
+        if (current === "dash") run(() => (homeThread ? openHomeThread(homeThread) : loadHomeInbox()))();
         if (current === "messages") run(loadThreads)();
         else pollBadges();
       });
       MDFitRT.on("message_reaction", (ev) => { if (openThread && ev.clientId === openThread) showThread(openThread); });
       MDFitRT.on("toast", (ev) => { rtToast(ev.text, TOAST_ICONS[ev.type]); });
       // Google Calendar / SimplePractice changed (the server checks every minute): refresh what's on screen
-      MDFitRT.on("calendar_changed", (ev) => {
+      MDFitRT.on("calendar_changed", (ev) => { busyFrom = "";
         const n = (ev && ev.dates && ev.dates.length) || 0;
         rtToast(`Your calendar changed${n ? ` (${n} day${n === 1 ? "" : "s"})` : ""}. Booking times updated.`);
         if (current === "appts") run(loadAppts)();
@@ -208,9 +241,12 @@
   };
 
   // ---- Dashboard
+  let emailOn = null; // from /api/admin/me: whether patient emails actually go out
   async function loadDash() {
-    const [s, me] = await Promise.all([api("GET", "/api/admin/stats"), api("GET", "/api/admin/me")]);
-    $("#email-banner").hidden = me.emailNotifications;
+    const [s, me, st] = await Promise.all([api("GET", "/api/admin/stats"), api("GET", "/api/admin/me"), api("GET", "/api/admin/settings").catch(() => null)]);
+    // Telehealth types are offered but no video room link is saved: patients would get no way to join
+    $("#video-banner").hidden = !st || !!(st.booking && st.booking.telehealthUrl) || !(st.appointmentTypes || []).some((t) => t.remote);
+    $("#email-banner").hidden = me.emailNotifications; emailOn = me.emailNotifications;
     $(".stats").innerHTML = [
       [s.appointmentsToday, "Appointments today"], [s.appointmentsWeek, "Appointments next 7 days"], [s.leadsNew, "New requests"],
       [s.leads30d, "Requests last 30 days"], [s.bookingsThisWeek, "Class spots booked"], [s.subscribers, "Subscribers"]
@@ -223,9 +259,56 @@
     table($("#upcoming"), ["When", "Class", "Booked"], s.upcoming.map((x) =>
       `<tr><td>${fmtDate(x.date)} · ${fmtTime(x.time)}</td><td>${esc(x.title)}</td><td>${x.capacity - x.spotsLeft} / ${x.capacity}</td></tr>`),
       "No classes in the next 7 days. Add some under Classes.");
-    calClasses = s.upcoming || [];
-    await loadCalendar();
+    await Promise.all([loadCalendar(), homeThread ? openHomeThread(homeThread) : loadHomeInbox()]);
   }
+
+  // ---- Home inbox: message threads beside the calendar; a tap opens the conversation right here, with a reply box
+  let homeThread = null;
+  async function loadHomeInbox() {
+    homeThread = null;
+    const d = await api("GET", "/api/admin/messages");
+    const hc = $("#home-inbox-count"); hc.hidden = !d.unread; hc.textContent = d.unread;
+    const list = d.threads.slice().sort((x, y) => (y.unread > 0) - (x.unread > 0)).slice(0, 8);
+    $("#home-inbox").innerHTML = list.length ? `<ul class="hi-list">${list.map((t) => `<li><button type="button" class="hi-row${t.unread ? " unread" : ""}" data-hthread="${esc(t.clientId)}">
+        <span class="hi-name"><b>${esc(t.name)}</b>${t.unread ? `<span class="pill pending">${t.unread}</span>` : ""}</span>
+        <span class="hi-last">${t.last ? `${t.last.from === "doctor" ? "You: " : ""}${esc(t.last.body)}` : ""}</span>
+        <small class="muted">${t.last ? esc(when(t.last.at)) : ""}</small></button></li>`).join("")}</ul>` : `<p class="muted">No messages yet. Members can message you from the app.</p>`;
+  }
+  async function openHomeThread(cid) {
+    homeThread = cid;
+    const d = await api("GET", `/api/admin/messages/${cid}`);
+    const first = esc(d.client.name.split(" ")[0]);
+    $("#home-inbox").innerHTML = `<div class="hi-thread">
+        <div class="hi-top"><button type="button" class="mini" data-hback>‹ Inbox</button><b>${esc(d.client.name)}</b>
+          <span class="hi-actions"><button type="button" class="link" data-hclient="${esc(cid)}">Profile</button></span></div>
+        <div class="msg-log hi-log">${d.messages.map((m) => `<div class="mb ${m.from}"><p>${esc(m.body).replace(/\n/g, "<br>")}</p><small>${m.from === "doctor" ? "You" : first} · ${when(m.at)}</small></div>`).join("") || `<p class="muted">No messages yet.</p>`}</div>
+        <form class="msg-reply hi-reply"><textarea name="body" rows="2" maxlength="2000" placeholder="Reply to ${first}…"></textarea><button class="btn btn-sm" type="submit">Send</button></form>
+      </div>`;
+    const log = $(".hi-log"); log.scrollTop = log.scrollHeight;
+    const ta = $(".hi-reply textarea"); ta.value = drafts.get(cid) || ""; ta.addEventListener("input", () => drafts.set(cid, ta.value));
+    pollBadges(); // opening a thread marks it read
+  }
+  $("#home-inbox").addEventListener("click", run(async (e) => {
+    const t = e.target.closest("[data-hthread]"), back = e.target.closest("[data-hback]"), prof = e.target.closest("[data-hclient]");
+    if (t) await openHomeThread(t.dataset.hthread);
+    else if (back) await loadHomeInbox();
+    else if (prof) await goClient(prof.dataset.hclient);
+  }));
+  $("#home-inbox").addEventListener("submit", run(async (e) => {
+    e.preventDefault();
+    const f = e.target, body = f.body.value.trim(), btn = $("button[type=submit]", f); if (!body || btn.disabled || !homeThread) return;
+    btn.disabled = true; // one tap = one message (and one email)
+    try { await api("POST", `/api/admin/messages/${homeThread}`, { body }); } finally { btn.disabled = false; }
+    drafts.delete(homeThread);
+    toast("Sent. They'll get an email that you replied."); await openHomeThread(homeThread);
+  }));
+  $("#video-banner-go").addEventListener("click", () => { openTab("hours"); setTimeout(() => { const f = $('#cal-form [name="telehealthUrl"]'); if (f) { f.scrollIntoView({ block: "center" }); f.focus(); } }, 400); });
+  $("#home-inbox-card").addEventListener("click", (e) => { const l = e.target.closest("[data-tab-link]"); if (l) openTab(l.dataset.tabLink); });
+  // Phones/tablets: Calendar and Inbox share Home, one at a time
+  $$("[data-homeview]").forEach((b) => b.addEventListener("click", () => {
+    $(".home-grid").dataset.show = b.dataset.homeview; $('[data-panel="dash"]').dataset.show = b.dataset.homeview;
+    $$("[data-homeview]").forEach((x) => x.setAttribute("aria-checked", x === b));
+  }));
 
   // ---- Calendar (Home): appointments and classes on a week or day grid, 7 AM to 7 PM (stretches for earlier/later
   // visits). Tap a visit for the details, the client's profile and the video link.
@@ -234,11 +317,28 @@
   const mondayOf = (d) => addD(d, -((new Date(d + "T12:00:00Z").getUTCDay() + 6) % 7));
   let calView = matchMedia("(max-width: 700px)").matches ? "day" : "week", calDay = tzDay(), calAppts = [], calClasses = [];
   const toMin = (t) => Number(t.slice(0, 2)) * 60 + Number(t.slice(3, 5));
-  async function loadCalendar() { calAppts = (await api("GET", "/api/admin/appointments?all=1")).filter((a) => a.status !== "cancelled"); renderCalendar(); }
+  // Classes come from the public schedule (14 days ahead; the dashboard's "upcoming" list stops at 10 sessions)
+  async function loadCalendar() {
+    const [ap, sc] = await Promise.all([api("GET", "/api/admin/appointments?all=1"), api("GET", "/api/schedule?days=14").catch(() => ({ sessions: [] }))]);
+    calAppts = ap.filter((a) => a.status !== "cancelled"); calClasses = sc.sessions || []; renderCalendar();
+    loadBusy();
+  }
+  // Google Calendar / SimplePractice busy times for the week on screen (times only), drawn behind MD Fit's own visits
+  let calBusy = [], busyFrom = "";
+  async function loadBusy() {
+    const from = calView === "week" ? mondayOf(calDay) : calDay;
+    if (from === busyFrom) return;
+    busyFrom = from;
+    try { calBusy = (await api("GET", `/api/admin/busy?from=${from}&days=7`)).busy || []; } catch { calBusy = []; }
+    renderCalendar();
+  }
   function renderCalendar() {
     const days = calView === "week" ? Array.from({ length: 7 }, (_, i) => addD(mondayOf(calDay), i)) : [calDay];
     const evs = [...calAppts.map((a) => ({ kind: "appt", a, date: a.date, start: toMin(a.time), end: toMin(a.time) + (a.minutes || 60) })),
-      ...calClasses.map((x) => ({ kind: "class", x, date: x.date, start: toMin(x.time), end: toMin(x.time) + (x.minutes || 60) }))].filter((e) => days.includes(e.date));
+      ...calClasses.map((x) => ({ kind: "class", x, date: x.date, start: toMin(x.time), end: toMin(x.time) + (x.durationMin || 60) })),
+      ...calBusy.filter((b) => !b.allDay).map((b) => ({ kind: "busy", b, date: b.date, start: b.start, end: b.end }))].filter((e) => days.includes(e.date));
+    const allDay = calBusy.filter((b) => b.allDay && days.includes(b.date));
+    const srcName = (x) => x === "simplepractice" ? "SimplePractice" : "Google Calendar";
     const lo = Math.min(7 * 60, ...evs.map((e) => Math.floor(e.start / 60) * 60)), hi = Math.max(19 * 60, ...evs.map((e) => Math.ceil(e.end / 60) * 60));
     const PX = 52 / 60, today = tzDay();
     $("#cal-label").textContent = calView === "week" ? `${fmtDate(days[0], { month: "short", day: "numeric" })} – ${fmtDate(days[6], { month: "short", day: "numeric", year: "numeric" })}` : fmtDate(calDay, { weekday: "long", month: "long", day: "numeric" });
@@ -246,17 +346,20 @@
     const hours = []; for (let m = lo; m < hi; m += 60) hours.push(m);
     const evHtml = (e, i) => {
       const top = (e.start - lo) * PX, h = Math.max(22, (e.end - e.start) * PX - 2);
+      if (e.kind === "busy") return `<div class="cal-ev busy ${e.b.source}" style="top:${top}px;height:${h}px" title="Busy on ${srcName(e.b.source)}"><b>Busy</b><span>${srcName(e.b.source)}</span></div>`;
       if (e.kind === "class") return `<div class="cal-ev class" style="top:${top}px;height:${h}px"><b>${esc(e.x.title)}</b><span>${fmtTime(e.x.time)} · ${e.x.capacity - e.x.spotsLeft}/${e.x.capacity}</span></div>`;
       const a = e.a, cls = a.status === "completed" ? "completed" : a.status === "no-show" ? "noshow" : isVideo(a) ? "video" : "booked";
       return `<button type="button" class="cal-ev ${cls}" style="top:${top}px;height:${h}px" data-ev="${esc(a.id)}"><b>${esc(a.name)}</b><span>${fmtTime(a.time)} · ${esc(a.typeName)}</span></button>`;
     };
     $("#cal-grid").innerHTML = `<div class="cg ${calView}" style="--cols:${days.length}">
-      <div class="cg-corner"></div>${days.map((d) => `<div class="cg-day${d === today ? " today" : ""}">${fmtDate(d, { weekday: "short" })} <b>${Number(d.slice(8))}</b></div>`).join("")}
+      <div class="cg-corner"></div>${days.map((d) => `<div class="cg-day${d === today ? " today" : ""}">${fmtDate(d, { weekday: "short" })} <b>${Number(d.slice(8))}</b>${
+        allDay.some((b) => b.date === d) ? `<small class="cg-allday" title="All-day event on ${allDay.filter((b) => b.date === d).map((b) => srcName(b.source)).join(", ")}">All day busy</small>` : ""}</div>`).join("")}
       <div class="cg-hours" style="height:${(hi - lo) * PX}px">${hours.map((m) => `<span style="top:${(m - lo) * PX}px">${fmtTime(String(m / 60).padStart(2, "0") + ":00").replace(":00", "")}</span>`).join("")}</div>
       ${days.map((d) => `<div class="cg-col${d === today ? " today" : ""}" style="height:${(hi - lo) * PX}px">${hours.map((m) => `<i style="top:${(m - lo) * PX}px"></i>`).join("")}${
         d === today ? (() => { const n = new Date().toLocaleTimeString("en-GB", { timeZone: "America/New_York", hour: "2-digit", minute: "2-digit" }); const nm = toMin(n); return nm >= lo && nm <= hi ? `<em class="cg-now" style="top:${(nm - lo) * PX}px"></em>` : ""; })() : ""}${
         evs.filter((e) => e.date === d).map(evHtml).join("")}</div>`).join("")}</div>
-      ${evs.length ? "" : `<p class="muted cal-empty">Nothing scheduled ${calView === "week" ? "this week" : "this day"}.</p>`}`;
+      ${evs.length || allDay.length ? "" : `<p class="muted cal-empty">Nothing scheduled ${calView === "week" ? "this week" : "this day"}.</p>`}`;
+    loadBusy();
   }
   $("#cal-prev").addEventListener("click", () => { calDay = addD(calDay, calView === "week" ? -7 : -1); renderCalendar(); });
   $("#cal-next").addEventListener("click", () => { calDay = addD(calDay, calView === "week" ? 7 : 1); renderCalendar(); });
@@ -274,10 +377,27 @@
       ${a.documents && a.documents.total ? `<p>${docsChip(a.documents)}</p>` : ""}
       <div class="actions">${a.meetingLink ? `<a class="btn btn-sm" href="${esc(a.meetingLink)}" target="_blank" rel="noopener">Join video</a>` : ""}
         ${who ? `<button type="button" class="btn btn-sm btn-line" data-pop-client="${esc(who.id)}">Open client</button><button type="button" class="btn btn-sm btn-line" data-pop-msg="${esc(who.id)}">Message</button>` : ""}
-        <button type="button" class="btn btn-sm btn-line" data-pop-appts>All appointments</button></div>`;
+        <button type="button" class="btn btn-sm btn-line" data-pop-appts>All appointments</button></div>
+      <div class="actions pop-status" data-pop-id="${esc(a.id)}">${a.status === "completed" ? "" : `<button type="button" class="btn btn-sm btn-line" data-pop-status="completed">Mark completed</button>`}${
+        a.status === "no-show" ? "" : `<button type="button" class="btn btn-sm btn-line" data-pop-status="no-show">No-show</button>`}${a.status === "booked" ? "" : `<button type="button" class="btn btn-sm btn-line" data-pop-status="booked">Back to booked</button>`}</div>
+      ${isVideo(a) ? `<label class="meet-row">Video link <input type="url" inputmode="url" data-pop-meet value="${esc(a.meetingLink || "")}" placeholder="https://zoom.us/j/…"></label>
+        <div class="actions"><button type="button" class="btn btn-sm" data-pop-meet-save>Save video link</button></div><p class="fine muted">A new link is emailed to the patient.</p>` : ""}`;
     $("#cal-pop").showModal();
   }));
   $("#cal-pop").addEventListener("click", run(async (e) => {
+    // Status and video link: saved straight away, then the calendar redraws
+    const st = e.target.closest("[data-pop-status]"), ms = e.target.closest("[data-pop-meet-save]");
+    if (st || ms) {
+      const id = $("[data-pop-id]", $("#cal-pop")).dataset.popId, btn = st || ms;
+      btn.disabled = true;
+      try {
+        const body = st ? { status: st.dataset.popStatus } : { meetingLink: $("[data-pop-meet]", $("#cal-pop")).value.trim() };
+        const r = await api("PATCH", `/api/admin/appointments/${id}`, body);
+        calAppts = calAppts.map((x) => (x.id === id ? { ...x, ...r } : x)); renderCalendar(); $("#cal-pop").close();
+        toast(st ? `Marked ${r.status}.` : "Video link saved.");
+      } finally { btn.disabled = false; }
+      return;
+    }
     const c = e.target.closest("[data-pop-client]"), m = e.target.closest("[data-pop-msg]"), l = e.target.closest("[data-pop-appts]");
     if (c || m || l) $("#cal-pop").close();
     if (c) await goClient(c.dataset.popClient); else if (m) await goThread(m.dataset.popMsg); else if (l) openTab("appts");
@@ -395,12 +515,25 @@
       ${st.live && st.live.everySec && (g || sp) ? `<p class="muted small">Live: checks every ${st.live.everySec >= 60 ? `${Math.round(st.live.everySec / 60)} min` : `${st.live.everySec} sec`} and updates open booking pages instantly${st.live.lastCheck ? ` · last check ${when(st.live.lastCheck)}` : ""}${st.live.lastChange ? ` · last change ${when(st.live.lastChange)}` : ""}</p>` : ""}
       ${st.lastSync ? `<p class="muted small">Last sync ${when(st.lastSync)}</p>` : ""}${st.lastError ? `<p class="form-msg err">${esc(st.lastError)}</p>` : ""}${st.busyNext14Days !== undefined ? `<p class="muted small">Busy blocks in the next 14 days: ${st.busyNext14Days} ${Object.entries(st.bySource || {}).map(([k, v]) => `(${k}: ${v})`).join(" ")}</p>` : ""}`;
   };
-  const loadSync = () => api("GET", "/api/admin/calsync").then(showSync).catch(() => {});
-  syncF.addEventListener("submit", run(async (e) => {
-    e.preventDefault(); const msg = $(".form-msg", syncF);
-    try { await api("PUT", "/api/admin/calsync", { icsUrl: syncF.icsUrl.value.trim() }); syncF.icsUrl.value = ""; msg.className = "form-msg ok"; msg.textContent = "Saved."; loadSync(); }
+  // The saved SimplePractice link is private, so the server only shows it masked: the box stays empty after a reload and
+  // saving it empty must not wipe the link on file (only "Remove link" does).
+  let spOn = false;
+  const loadSync = () => api("GET", "/api/admin/calsync").then((st) => {
+    spOn = st.simplepractice === "configured"; $("#sync-clear").hidden = !spOn;
+    syncF.icsUrl.placeholder = spOn ? "Link saved. Paste a new one to replace it" : "Paste the link from SimplePractice → Settings → Calendar → Calendar sync";
+    showSync(st);
+  }).catch(() => {});
+  const saveSp = async (icsUrl, done) => {
+    const msg = $(".form-msg", syncF);
+    try { await api("PUT", "/api/admin/calsync", { icsUrl }); msg.className = "form-msg ok"; msg.textContent = done; loadSync(); }
     catch (err) { msg.className = "form-msg err"; msg.textContent = err.message; }
+  };
+  syncF.addEventListener("submit", run(async (e) => {
+    e.preventDefault(); const u = syncF.icsUrl.value.trim(), msg = $(".form-msg", syncF);
+    if (!u) { msg.className = "form-msg err"; msg.textContent = spOn ? "Your link is already saved. Paste a new one to replace it, or use Remove link." : "Paste your SimplePractice calendar link first."; return; }
+    await saveSp(u, "Saved.");
   }));
+  $("#sync-clear").addEventListener("click", run(async () => { syncF.icsUrl.value = ""; await saveSp("", "Link removed."); }));
   $("#sync-test").addEventListener("click", run(async () => showSync(await api("POST", "/api/admin/calsync/test"))));
 
   async function loadHours() {
@@ -417,6 +550,7 @@
     hf.slotStepMin.value = String(sch.slotStepMin);
     hf.minNoticeHours.value = sch.minNoticeHours;
     hf.daysAhead.value = sch.daysAhead;
+    hf.lastStart.value = sch.lastStart || "";
     hf.blockedDates.value = sch.blockedDates.join("\n");
     hf.appointmentTypes.value = s.appointmentTypes.map((t) => [t.id, t.name, t.minutes, t.description].join(" | ")).join("\n");
     origApptTypes = s.appointmentTypes;
@@ -438,7 +572,7 @@
       });
       await api("PUT", "/api/admin/settings", {
         scheduling: {
-          hours, slotStepMin: Number(hf.slotStepMin.value), minNoticeHours: Number(hf.minNoticeHours.value), daysAhead: Number(hf.daysAhead.value),
+          hours, slotStepMin: Number(hf.slotStepMin.value), minNoticeHours: Number(hf.minNoticeHours.value), daysAhead: Number(hf.daysAhead.value), lastStart: hf.lastStart.value,
           blockedDates: hf.blockedDates.value.split(/[\s,]+/).filter(Boolean)
         },
         appointmentTypes
@@ -453,11 +587,23 @@
   let clientList = [];
   async function loadClients() {
     $("#client-detail").hidden = true; $("#clients-list").hidden = false;
-    clientList = await api("GET", "/api/admin/clients");
+    const [list, ct] = await Promise.all([api("GET", "/api/admin/clients"), contentCache || api("GET", "/api/admin/content")]);
+    clientList = list; contentCache = ct; subTiers = ct.tiers || [];
     renderClients();
   }
   // Totals across the top: tap one to show only those clients (tap again, or "All clients", to show everyone)
   let clientPeriod = "all";
+  // Subscription types (membership tiers from Admin → Content). "Free" = no active membership.
+  let subTiers = [];
+  const tierName = (id) => (subTiers.find((t) => t.id === id) || {}).name || id;
+  const subCell = (c) => {
+    const cur = (c.membership && c.membership.tier) || "";
+    const opts = [["", "Free"], ...subTiers.map((t) => [t.id, t.name])];
+    if (cur && !subTiers.some((t) => t.id === cur)) opts.push([cur, cur]);
+    return `<select class="sub-pick${cur ? " paid" : ""}" data-sub="${c.id}" aria-label="${esc(c.name)}: membership">${opts.map(([v, l]) => `<option value="${esc(v)}" ${v === cur ? "selected" : ""}>${esc(l)}</option>`).join("")}</select>${
+      c.membership && c.membership.until ? `<br><span class="muted fine">through ${fmtDate(c.membership.until)}</span>` : ""}${
+      c.requestedTier && c.requestedTier !== cur ? `<br><span class="badge docs">Requested ${esc(tierName(c.requestedTier))}</span>` : ""}`;
+  };
   const clinicDay = (iso) => new Date(iso).toLocaleDateString("en-CA", { timeZone: "America/New_York" });
   function clientsIn(period) {
     const today = clinicDay(new Date().toISOString());
@@ -465,10 +611,12 @@
     const from = { today, week: daysAgo(6), month: today.slice(0, 8) + "01" }[period];
     if (period === "plan") return clientList.filter((c) => c.hasPlan);
     if (period === "inpatient") return clientList.filter((c) => c.clientType === "inpatient");
+    if (period === "subscribed") return clientList.filter((c) => c.membership);
+    if (period.startsWith("tier:")) return clientList.filter((c) => c.membership && c.membership.tier === period.slice(5));
     return from ? clientList.filter((c) => c.createdAt && clinicDay(c.createdAt) >= from) : clientList;
   }
   function renderClientTotals() {
-    const chips = [["all", "All clients"], ["today", "Joined today"], ["week", "Last 7 days"], ["month", "This month"], ["inpatient", "Inpatients"], ["plan", "Have a plan"]];
+    const chips = [["all", "All clients"], ["today", "Joined today"], ["week", "Last 7 days"], ["month", "This month"], ["inpatient", "Inpatients"], ["plan", "Have a plan"], ["subscribed", "Members (paid)"], ...subTiers.map((t) => [`tier:${t.id}`, t.name])];
     $("#client-totals").innerHTML = chips.map(([k, label]) => `<button type="button" class="ct${k === clientPeriod ? " on" : ""}" data-period="${k}" aria-pressed="${k === clientPeriod}"><b>${clientsIn(k).length.toLocaleString()}</b><span>${label}</span></button>`).join("");
   }
   $("#client-totals").addEventListener("click", (e) => {
@@ -480,8 +628,8 @@
     renderClientTotals();
     const q = $("#client-search").value.trim().toLowerCase();
     const rows = clientsIn(clientPeriod).filter((c) => !q || [c.name, c.email, c.phone].join(" ").toLowerCase().includes(q));
-    table($("#clients-table"), ["Client", "Type", "Phone", "Next visit", "Last pain log", "Plan", "Docs", "Joined"], rows.map((c) => `
-      <tr data-id="${c.id}" class="click-row"><td><b>${esc(c.name)}</b><br><span class="muted">${esc(c.email)}</span></td><td><button type="button" class="badge ctype type-toggle ${c.clientType === "inpatient" ? "in" : "out"}" data-type-toggle="${c.id}" title="Click to switch to ${c.clientType === "inpatient" ? "outpatient" : "inpatient"}" aria-label="${esc(c.name)}: ${c.clientType === "inpatient" ? "Inpatient" : "Outpatient"}. Click to switch.">${c.clientType === "inpatient" ? "Inpatient" : "Outpatient"} <span aria-hidden="true">⇄</span></button></td><td>${esc(c.phone)}</td>
+    table($("#clients-table"), ["Client", "Type", "Membership", "Phone", "Next visit", "Last pain log", "Plan", "Docs", "Joined"], rows.map((c) => `
+      <tr data-id="${c.id}" class="click-row"><td><b>${esc(c.name)}</b><br><span class="muted">${esc(c.email)}</span></td><td><button type="button" class="badge ctype type-toggle ${c.clientType === "inpatient" ? "in" : "out"}" data-type-toggle="${c.id}" title="Click to switch to ${c.clientType === "inpatient" ? "outpatient" : "inpatient"}" aria-label="${esc(c.name)}: ${c.clientType === "inpatient" ? "Inpatient" : "Outpatient"}. Click to switch.">${c.clientType === "inpatient" ? "Inpatient" : "Outpatient"} <span aria-hidden="true">⇄</span></button></td><td>${subCell(c)}</td><td>${esc(c.phone)}</td>
         <td>${c.next ? `${fmtDate(c.next.date)} · ${fmtTime(c.next.time)}` : "—"}</td>
         <td>${c.lastPain ? `${esc(c.lastPain.area)} ${c.lastPain.level}/10 · ${fmtDate(c.lastPain.date)}` : "—"}</td>
         <td>${c.hasPlan ? "✓" : "—"}</td><td>${c.documents && c.documents.complete ? "✓" : c.documents && c.documents.done ? `${c.documents.done}/${c.documents.total}` : "—"}</td><td>${when(c.createdAt)}</td></tr>`),
@@ -499,8 +647,20 @@
       toast(`${c.name.split(" ")[0]} is now an ${r.clientType}.`);
       return;
     }
+    if (e.target.closest("[data-sub]")) return; // the subscription picker saves on change, it doesn't open the profile
     const row = e.target.closest("tr[data-id]");
     if (row) openClient(row.dataset.id);
+  }));
+  // Change a client's subscription right from the list (keeps "paid through" and any Stripe details)
+  $("#clients-table").addEventListener("change", run(async (e) => {
+    const sel = e.target.closest("[data-sub]"); if (!sel) return;
+    const c = clientList.find((x) => x.id === sel.dataset.sub); if (!c) return;
+    sel.disabled = true;
+    try {
+      const r = await api("PUT", `/api/admin/clients/${c.id}/membership`, { tier: sel.value, until: (c.membership && c.membership.until) || "" });
+      c.membership = r.membership; if (r.membership && c.requestedTier === r.membership.tier) c.requestedTier = "";
+      toast(`${c.name.split(" ")[0]}: ${sel.value ? tierName(sel.value) : "Free"}.`);
+    } finally { renderClients(); }
   }));
 
   // Client type: inpatients (in-clinic) never pay for video calls or consultations; everyone else is an outpatient
@@ -625,7 +785,8 @@
         } else if (f.dataset.care === "consult") {
           if (!f.date.value || !f.time.value) throw new Error("Pick a date and time.");
           const a = await api("POST", `/api/admin/clients/${id}/consult`, { date: f.date.value, time: f.time.value, minutes: Number(f.minutes.value), meetingLink: f.meetingLink.value.trim(), message: f.message.value });
-          msg.textContent = `Scheduled ${fmtDate(a.date)} at ${fmtTime(a.time)}. ${c.name.split(" ")[0]} has been emailed the link.`;
+          if (emailOn === null) emailOn = (await api("GET", "/api/admin/me")).emailNotifications;
+          msg.textContent = `Scheduled ${fmtDate(a.date)} at ${fmtTime(a.time)}. ${emailOn ? `${c.name.split(" ")[0]} has been emailed the link.` : "Email isn't set up, so nothing was emailed: send them the link yourself (it's also in their account under Appointments)."}`;
           c.appointments.unshift(a);
           table($("#client-appts"), ["When", "Type", "Status"], c.appointments.map((x) => `<tr><td>${fmtDate(x.date)} · ${fmtTime(x.time)}</td><td>${esc(x.typeName)}</td><td><span class="badge ${x.status}">${x.status}</span></td></tr>`), "");
         } else {
@@ -678,6 +839,14 @@
       </article>`).join("") : `<p class="muted">No leads yet.</p>`;
   }
   $("#lead-filter").addEventListener("change", run(loadLeads));
+  // Picking a status saves it right away (with the notes as typed); it used to wait for the Save button and was lost on reload
+  $("#leads-list").addEventListener("change", run(async (e) => {
+    if (!e.target.matches("[data-status]")) return;
+    const card = e.target.closest(".lead");
+    const r = await api("PATCH", `/api/admin/leads/${card.dataset.id}`, { status: e.target.value });
+    const badge = $("h3 .badge", card); if (badge) { badge.className = `badge ${r.status}`; badge.textContent = r.status; }
+    toast("Lead saved."); // no re-render, so notes being typed aren't wiped
+  }));
   $("#leads-list").addEventListener("click", run(async (e) => {
     const card = e.target.closest(".lead");
     if (!card) return;
@@ -898,7 +1067,9 @@
       $("#bc-pick").hidden = f.to.value !== "selected";
       const n = audience().length;
       $("#bc-count").textContent = n ? `${n} ${n === 1 ? "person" : "people"} will get this.` : f.to.value === "selected" ? "Pick at least one person." : "Nobody matches this choice yet.";
-      $("#bc-send").textContent = n ? `Send to ${n}` : "Send";
+      // Only touch the label when it changes: typing the message then tapping Send fires "change" on the way, and
+      // Safari drops the click if the button's text is replaced between press and release
+      const label = n ? `Send to ${n}` : "Send"; if ($("#bc-send").textContent !== label) $("#bc-send").textContent = label;
       $("#bc-send").disabled = !n;
     };
     f.addEventListener("change", (e) => {
@@ -1113,11 +1284,14 @@
       if (kind === "tracks") {
         o.pts = [...$("[data-f=pts]", r).selectedOptions].map((op) => op.value);
         o.img = o.img.split("\n").map((x) => x.trim()).filter(Boolean);
-        const levels = [];
+        const levels = [], oldVids = (orig.levels || []).flatMap((l) => l.videos || []);
         o.levels.split("\n").map((x) => x.trim()).filter(Boolean).forEach((line) => {
           const i = line.indexOf("|");
           if (i < 0) levels.push({ title: line, videos: [] });
-          else { if (!levels.length) levels.push({ title: "Level 1", videos: [] }); levels[levels.length - 1].videos.push({ name: line.slice(0, i).trim(), id: line.slice(i + 1).trim() }); }
+          else { if (!levels.length) levels.push({ title: "Level 1", videos: [] }); const name = line.slice(0, i).trim(), id = line.slice(i + 1).trim();
+            // keep fields the editor doesn't show (a video's uploaded `file`) by matching the original video by name
+            const { id: _oldId, ...keep } = oldVids.find((v) => v.name === name) || {};
+            levels[levels.length - 1].videos.push({ ...keep, name, id }); }
         });
         o.levels = levels;
       }

@@ -139,6 +139,8 @@
     if (tab === "messages") openMessages(); else clearInterval(msgPoll);
     $("#more-btn").classList.toggle("on", $$(".tabbar .ov").some((b) => b.dataset.tab === tab));
     const ms = $("#more-sheet"); if (ms.open) ms.close();
+    // Back/forward or a link away from the Pain Tool must not leave its pattern sheet open over the next screen
+    if (tab !== "pain") $$("dialog.pm-sheet[open]").forEach((d) => d.close());
     window.scrollTo(0, 0);
   }
   const go = (tab) => { if (location.hash !== "#" + tab) history.pushState(null, "", "#" + tab); show(tab); };
@@ -326,7 +328,7 @@
       <div class="ev-info"><b>${esc(a.typeName)}</b><span>${fmtDate(a.date, { weekday: "short" })} · ${fmtTime(a.time)} · ${a.minutes} min</span>
         ${cal ? `<span><a class="link-sm" href="${ics(a)}" download="mdfit-${a.date}.ics">Add to calendar</a></span>` : ""}
         ${a.meetingLink && a.status === "booked" && a.date >= todayInTz() ? `<span><a class="link-sm join-link" href="${esc(a.meetingLink)}" target="_blank" rel="noopener">Join video visit</a></span>` : ""}</div>
-      ${cancel ? `<button type="button" class="ev-act danger" data-cancel>Cancel</button>` : `<span class="muted tiny">${esc(a.status === "booked" ? "done" : a.status)}</span>`}
+      ${cancel ? `<button type="button" class="ev-act danger" data-cancel>Cancel</button>` : `<span class="muted tiny">${esc(a.status === "booked" ? (a.date >= todayInTz() ? "booked" : "done") : a.status)}</span>`}
     </li>`;
   function renderEvents() {
     const mine = appts.upcoming.slice(0, 3).map((a) => apptLi(a));
@@ -1144,6 +1146,7 @@
   async function openBook() {
     bookState.type = null; bookState.date = ""; bookState.time = "";
     $("#book-msg").textContent = ""; $("#book-note").value = "";
+    $("#book-confirm").disabled = false; // a finished booking left it disabled; the next booking needs it again
     $$("#book-flow .book-step").forEach((s) => { s.hidden = s.dataset.step !== "type"; });
     if (!bookState.types) {
       const site = await window.MDFit.loadSite().catch(() => null);
@@ -1972,7 +1975,8 @@
     "Dumbbell Rows": "Dumbbell Row", "Incline DB Press": "Incline Bench Press", "Face Pulls": "Face Pull", "Mobility Flow": "Seated Mobility Flow Beginner",
     "Stretch & Mobility": "Seated Mobility Flow Beginner", "Breath Work": "Box Breathing", "Sumo Deadlifts": "Sumo Deadlift", "Step-Ups": "Step Up",
     "Cable Pull-Throughs": "Cable Pull Through", "Glute Kickbacks": "Quadruped Glute Kick", "Landmine Press": "Landmine Press Twist",
-    "Seated Cable Row": "Row", "Banded Row": "Row", "Lateral Raises": "Lateral Raise", "Plank Variation": "Dynamic Plank", "Sled Push": "Sled Push Pull",
+    "Seated Cable Row": "Dumbbell Row", "Banded Row": "Dumbbell Row", // "Row" is the rowing machine
+    "Lateral Raises": "Lateral Raise", "Plank Variation": "Dynamic Plank", "Sled Push": "Sled Push Pull",
     "Kettlebell Swings": "Kettlebell Swing", "Farmer Carries": "Farmer Carry", "Med Ball Slams": "Med Ball Slam", "Scalene Release": "Standing Scalene Stretch",
     "Rotator Cuff Int/Ext Rotation": "Rotator Cuff External Rotation", "Repeated Shoulder Drop Stretch": "Shoulder Drop Hold",
     "Shoulder Packing Drill": "Floor Slide Scapular Retract", "Scapular Retraction": "Floor Slide Scapular Retract",
@@ -2547,7 +2551,8 @@
   function dayItems(d) {
     return [
       ...allWorkouts.filter((w) => w.date === d).map((w) => ({ k: "workout", t: w.title, s: `${w.minutes} min · ${w.exercises} exercises` })),
-      ...[...appts.upcoming, ...appts.past].filter((a) => a.date === d && a.status !== "cancelled").map((a) => ({ k: "visit", t: a.typeName, s: `${fmtTime(a.time)} · ${a.minutes} min${a.status === "booked" && d >= todayInTz() ? " · upcoming" : ""}` })),
+      ...[...appts.upcoming, ...appts.past].filter((a) => a.date === d && a.status !== "cancelled").map((a) => ({ k: "visit", t: a.typeName, s: `${fmtTime(a.time)} · ${a.minutes} min${a.status === "booked" && d >= todayInTz() ? " · upcoming" : ""}`,
+        link: a.status === "booked" && d >= todayInTz() ? a.meetingLink || "" : "", video: /telehealth|video|remote|online/i.test(a.typeName + " " + a.typeId) })),
       ...painLog.filter((p) => p.date === d).map((p) => ({ k: "pain", t: `${p.area} pain ${p.level}/10`, s: p.note || "Pain log" }))
     ];
   }
@@ -2572,7 +2577,8 @@
     const alreadyRepaired = repairs && repairs.usedDates && repairs.usedDates.includes(d);
     const canRepair = d < t && !items.length && repairs && repairs.available >= 1 && !alreadyRepaired;
     $("#cal-day").innerHTML = `<p class="label">${d === t ? "Today" : fmtDate(d, { weekday: "long", month: "short", day: "numeric" })}</p>` + (items.length
-      ? `<ul class="activity">${items.map((x) => `<li class="act"><span class="check k-bg-${x.k}"></span><div><b>${esc(x.t)}</b><span>${esc(x.s)}</span></div></li>`).join("")}</ul>`
+      ? `<ul class="activity">${items.map((x) => `<li class="act"><span class="check k-bg-${x.k}"></span><div><b>${esc(x.t)}</b><span>${esc(x.s)}</span>${
+          x.link ? `<a class="btn-blue sm join-link" href="${esc(x.link)}" target="_blank" rel="noopener">Join video visit</a>` : x.video && x.s.includes("upcoming") ? `<span class="muted small">Your video link will be emailed before the visit.</span>` : ""}</div></li>`).join("")}</ul>`
       : `<p class="muted small">Nothing logged. ${d === t ? "A quick workout keeps your streak alive." : ""}</p>`)
       + (alreadyRepaired ? `<p class="muted small"><b>Streak repair applied</b> — this missed day is bridged for your streak.</p>` : "")
       + (canRepair ? `<button type="button" class="btn-gold sm" data-repair="${d}">Use 1 repair to bridge this day</button>` : "");

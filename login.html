@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css?v=c75279d6">
-  <link rel="stylesheet" href="account.css?v=7187f636">
+  <link rel="stylesheet" href="account.css?v=0a3d9c00">
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <link rel="stylesheet" href="/site-header.css?v=cb0c2bf1">
   <script src="/site-header.js?v=9d8f5351" defer></script>
@@ -112,8 +112,8 @@
     (() => {
       const { $, $$, api, auth, wire } = window.MDFit;
       const q = new URLSearchParams(location.search);
-      // Same-site paths only, optionally with an app deep link like /account#pain/muscle/ql
-      const next = /^\/[a-z]*(#[a-z0-9/-]*)?$/.test(q.get("next") || "") ? q.get("next") : "/account";
+      // Same-site paths only, optionally with an app deep link like /account#pain/muscle/ql (or /intake?me=1, "Become a patient")
+      const next = /^\/[a-z]*(\?me=1)?(#[a-z0-9/-]*)?$/.test(q.get("next") || "") ? q.get("next") : "/account";
       if (auth.get() && !q.get("reset")) { location.replace(next); return; }
 
       let resetEmail = "";

@@ -35,6 +35,9 @@ td.empty { color: var(--muted); text-align: center; padding: 28px; }
 
 .stack { display: grid; gap: 12px; }
 .lead { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; display: grid; gap: 10px; }
+/* The public site's hero ".lead" paragraph (white, centered, big) shares this class name: undo it for Admin cards */
+body.admin .lead { color: var(--text); font-size: 15px; max-width: none; margin: 0; text-align: left; }
+body.admin .intake-view h4 { color: var(--ink); }
 .lead header { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .lead h3 { margin: 0; font-size: 17px; }
 .lead .meta { color: var(--muted); font-size: 14px; }
@@ -107,7 +110,7 @@ code { background: var(--paper-2); padding: 1px 6px; border-radius: 4px; font-si
 .client-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 .client-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; align-items: start; }
 .guide-picks { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; font-size: 14px; font-weight: 500; }
-@media (max-width: 860px) { .client-grid { grid-template-columns: 1fr; } .guide-picks { grid-template-columns: 1fr; } }
+@media (max-width: 860px) { .client-grid { grid-template-columns: minmax(0, 1fr); } .client-grid > * { min-width: 0; } .client-grid code { white-space: normal; overflow-wrap: anywhere; } .guide-picks { grid-template-columns: 1fr; } }
 .guide-picks label.check { display: flex; gap: 8px; align-items: center; font-weight: 500; }
 .guide-picks label.check input { width: auto; margin: 0; }
 .svc-rows { display: grid; gap: 10px; margin-bottom: 10px; }
@@ -168,7 +171,7 @@ code { background: var(--paper-2); padding: 1px 6px; border-radius: 4px; font-si
 .mfa-secret { font-size: 15px; background: #f6f4ee; padding: 3px 8px; border-radius: 6px; letter-spacing: 1px; }
 .mfa-recovery { background: #f6f4ee; padding: 12px; border-radius: 8px; font-size: 15px; letter-spacing: 1px; }
 .intake-view { display: grid; gap: 6px; padding: 12px 14px; margin: 6px 0 10px; background: #f6f4ee; border-radius: 10px; font-size: 14px; }
-.intake-view div { display: grid; grid-template-columns: 140px 1fr; gap: 10px; }
+.intake-view div { display: grid; grid-template-columns: minmax(140px, 260px) 1fr; gap: 12px; }
 .intake-view b { color: #0A1A2E; }
 @media (max-width: 600px) { .intake-view div { grid-template-columns: 1fr; gap: 2px; } }
 /* Documents packet: one section per form inside the intake box; amber chip until every form is in */
@@ -391,3 +394,49 @@ body.admin .form { grid-template-columns: minmax(0, 1fr); } /* a grid form's col
 .hba-habits small { display: block; margin-top: 4px; font-size: 12px; }
 .hba-cats td:nth-child(2) { width: 160px; }
 .hba-actions { margin: 12px 0; }
+/* ================= Home inbox (beside the calendar) ================= */
+.card-lite { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; margin-bottom: 16px; }
+.hi-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.hi-head h2 { margin: 0 0 8px !important; }
+.link { background: none; border: 0; padding: 0; font: 600 13.5px/1.3 var(--body); color: var(--accent-text, #2a6aa8); cursor: pointer; }
+.hi-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.hi-row { display: grid; gap: 2px; width: 100%; text-align: left; background: none; border: 0; border-radius: 10px; padding: 8px 10px; font: inherit; color: inherit; cursor: pointer; }
+.hi-row:hover { background: var(--paper-2); }
+.hi-row.unread { background: #eef5fc; }
+.hi-name { display: flex; align-items: center; gap: 6px; }
+.hi-last { color: var(--muted); font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hi-row.unread .hi-last { color: var(--text); font-weight: 600; }
+.hi-more { margin: 10px 0 0; font-size: 13.5px; }
+.hi-thread { display: grid; gap: 8px; }
+.hi-top { display: flex; align-items: center; gap: 8px; }
+.hi-top .hi-actions { margin-left: auto; }
+.hi-log { max-height: 340px; overflow-y: auto; }
+.hi-reply { display: grid; gap: 6px; }
+.home-switch { display: none; margin: 0 0 12px; }
+@media (max-width: 1100px) {
+  .home-switch { display: inline-flex; }
+  .home-grid[data-show="cal"] .agenda { display: none; }
+  .home-grid[data-show="inbox"] .cal-card { display: none; }
+}
+@media (max-width: 1100px) {
+  section[data-panel="dash"][data-show="inbox"] > .banner, section[data-panel="dash"][data-show="inbox"] > .home-strip, section[data-panel="dash"][data-show="inbox"] > .stats { display: none; }
+}
+@media (max-width: 640px) {
+  body.admin .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  body.admin .stat { padding: 8px 10px; }
+  body.admin .stat strong { font-size: 20px; }
+  body.admin .stat span { font-size: 12px; line-height: 1.25; display: block; }
+  .home-switch { width: 100%; }
+  .home-switch button { flex: 1; }
+}
+
+/* Clients list: subscription picker */
+#clients-table .sub-pick { width: auto; min-width: 110px; max-width: 200px; padding: 6px 8px; font-size: 13.5px; border-radius: 999px; background: #f1efe8; border: 1px solid var(--line); }
+#clients-table .sub-pick.paid { background: #fdf4dc; border-color: #e7c977; color: #6b4e00; font-weight: 600; }
+
+/* Admin calendar: busy times from Google Calendar / SimplePractice (times only), behind MD Fit's own visits */
+.cal-ev.busy { background: repeating-linear-gradient(135deg, #eceae3 0 6px, #e3e0d6 6px 12px); color: #55524a; border-left: 3px solid #9b968a; z-index: 0; pointer-events: auto; }
+.cal-ev.busy.simplepractice { border-left-color: #2f8f83; }
+.cal-ev:not(.busy) { z-index: 1; }
+.cg-allday { display: block; margin-top: 2px; font-size: 11px; font-weight: 600; color: #6b675d; background: #e8e5dc; border-radius: 6px; padding: 1px 4px; }
+.lg.lg-busy { background: repeating-linear-gradient(135deg, #d9d5ca 0 3px, #eceae3 3px 6px); border: 1px solid #9b968a; }

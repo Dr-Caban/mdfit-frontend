@@ -124,7 +124,7 @@
 .app-painmap .painmap-figure { background: var(--paper); border-radius: 14px; overflow: hidden; margin: 0 16px; }
 .app-painmap .pm-toggle { display: flex; justify-content: center; gap: 6px; padding: 10px 0 4px; }
 .app-painmap .pm-toggle button { background: var(--paper-2); border: 1px solid var(--line); border-radius: 20px; padding: 6px 18px; font: 600 13px var(--body); color: var(--muted); cursor: pointer; }
-.app-painmap .pm-toggle button[aria-pressed="true"] { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+.app-painmap .pm-toggle button[aria-pressed="true"] { background: var(--gold); color: var(--navy); border-color: var(--gold); }
 .app-painmap .pm-viewport { overflow: hidden; }
 .app-painmap .pm-stage { position: relative; }
 .app-painmap .pm-stage img.pm-figures { width: 100%; height: auto; display: block; }
@@ -163,7 +163,8 @@
 .featured-progs .fp-item .fp-ic.strength { background: linear-gradient(135deg, rgba(220,80,80,.3), rgba(120,30,30,.4)); }
 .featured-progs .fp-item .fp-body { display: flex; flex-direction: column; min-width: 0; flex: 1; }
 .featured-progs .fp-item b { font-size: 14px; line-height: 1.2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.featured-progs .fp-cta { margin-top: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 4px; }
+.featured-progs .fp-cta { color: var(--navy); border-color: var(--line); margin-top: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 4px; }
+.featured-progs .fp-cta:hover { border-color: var(--navy); }
 .featured-progs .fp-cta svg { width: 14px; height: 14px; fill: currentColor; }
 
 /* Hero/Profile programs showcase — full-width card with image-forward grid of 6 programs.
@@ -230,16 +231,18 @@
 .streak .repair-chip:hover { background: rgba(255,231,168,.15); }
 .streak .repair-note { margin-top: 8px; padding: 8px 10px; border: 1px dashed rgba(255,231,168,.3); border-radius: 8px; color: rgba(255,231,168,.95); }
 
-/* Become a patient: intake documents on file. Navy call to action until done, then a quiet confirmation. */
-.patient-card { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; align-items: center; text-decoration: none; color: #fff; background: var(--navy); border-color: var(--navy); }
-.patient-card .pc-ic { grid-row: span 2; width: 44px; height: 44px; border-radius: 12px; background: rgba(255,255,255,.12); display: grid; place-items: center; }
+/* Become a patient: intake documents on file. A warm gold call to action at the top of Home (the streak below is the navy
+   card), with a real button; once the documents are on file it turns into a quiet confirmation. */
+.patient-card { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px 14px; align-items: start; text-decoration: none; color: var(--navy); background: var(--gold-soft); border-color: #e6d5ad; }
+.patient-card .pc-ic { grid-row: span 2; width: 44px; height: 44px; border-radius: 12px; background: var(--navy); color: var(--gold); display: grid; place-items: center; }
 .patient-card .pc-ic svg { width: 24px; height: 24px; fill: currentColor; }
-.patient-card .pc-txt b { display: block; font-size: 17px; }
-.patient-card .pc-txt span { display: block; font-size: 14px; opacity: .85; line-height: 1.4; margin-top: 2px; }
-.patient-card .pc-go { grid-column: 2; font-weight: 700; font-size: 15px; }
-.patient-card.done { background: var(--card); color: var(--navy); border-color: var(--line); }
+.patient-card .pc-txt b { display: block; font: 700 18px/1.25 var(--display); color: var(--navy); }
+.patient-card .pc-txt span { display: block; font-size: 14px; color: var(--text); line-height: 1.45; margin-top: 4px; }
+.patient-card .pc-go { grid-column: 2; justify-self: start; display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 12px; background: var(--navy); color: #fff; font-weight: 700; font-size: 14px; }
+.patient-card:hover .pc-go { background: var(--navy-3); }
+.patient-card.done { background: var(--card); color: var(--navy); border-color: var(--line); align-items: center; }
 .patient-card.done .pc-ic { background: #e3f4ea; color: #2e7d32; }
-.patient-card.done .pc-go { font-weight: 600; font-size: 14px; color: var(--muted); }
+.patient-card.done .pc-go { min-height: 0; padding: 0; background: none; font-weight: 600; font-size: 14px; color: var(--accent-text); }
 
 /* Programs without a photo: the poster draws on its own (navy, soft accent glow) instead of a blank box */
 .prog-poster.pp-blank { background: radial-gradient(120% 90% at 85% 10%, rgba(126,178,221,.35), transparent 60%), linear-gradient(135deg, #16314f, #0A1A2E); }
@@ -315,3 +318,42 @@
 .hbc-key .k.q { background: var(--gold); }
 .hbc-key .k.r { border: 2px dashed var(--gold); }
 .hbc-key .k.m { background: var(--paper-2, #efece4); }
+/* Progress calendar: join button for an upcoming video visit */
+#cal-day .join-link { display: inline-flex; width: auto; margin-top: 8px; padding: 10px 16px; }
+
+/* Home: one clear order on the phone. Become a patient (gold) -> From Dr. Jared / My saved plans -> streak with your
+   totals (navy) -> today's workout. The compact programs list is the desktop side column; on a phone the big programs
+   card above Quick actions already shows the same plans, so it isn't repeated. */
+.my-plans .label { display: block; }
+.streak .tiles { margin: 16px 0 0; padding-top: 14px; border-top: 1px solid var(--navy-3); gap: 0; }
+.streak .tile { background: none; border: 0; box-shadow: none; padding: 0 4px; border-radius: 0; gap: 2px; }
+.streak .tile + .tile { border-left: 1px solid var(--navy-3); }
+.streak .tile .ic { width: 22px; height: 22px; }
+.streak .tile .ic.blue { color: var(--accent-bright); }
+.streak .tile .ic.green { color: #7fd1a3; }
+.streak .tile b { color: #fff; font-size: 22px; }
+.streak .tile span { color: var(--on-navy); font-size: 12.5px; }
+.hero-progs { margin-bottom: 14px; }
+.quick .q { align-content: start; }
+.quick .q b { line-height: 1.25; }
+@media (max-width: 999px) { #featured-progs { display: none; } }
+
+/* Gemstone rank card sits on a white card (its first styles assumed navy): solid borders, readable locked ranks */
+.rank-card .rl { opacity: 1; border-color: var(--line); background: var(--card-2); }
+.rank-card .rl:not(.done):not(.cur) .rl-gem { opacity: .5; }
+.rank-card .rl:not(.done):not(.cur) b { color: var(--muted); }
+.rank-card .rl.cur { border-color: var(--gold); background: var(--gold-soft); box-shadow: none; }
+.rank-card .rank-next .rk-max { color: var(--accent-text); }
+/* Progress: the week bars sat under a tall empty gap when there was nothing logged yet */
+.level-card .xp-week { height: 92px; margin-top: 22px; }
+/* Profile: the name lined up with the email under it (it picked up a stray side padding) */
+.profile-head .name { padding: 0; }
+/* Page titles: the gold half never splits mid-phrase ("1- / on-1") */
+.hero h1 em { white-space: nowrap; }
+/* Tips: while a protocol sheet loads (or if it can't), show a navy poster instead of a broken-image icon and alt text */
+.tip-card img { min-height: 140px; color: transparent; background: radial-gradient(120% 90% at 85% 10%, rgba(126,178,221,.35), transparent 60%), linear-gradient(135deg, #16314f, #0A1A2E); }
+/* Compare workouts before any workout is logged: hide the two empty dropdowns and show the hint as a proper empty state */
+.cmp-pick:has(#cmp-a:empty) { display: none; }
+.cmp-table > p.muted:only-child { margin: 8px 0 0; padding: 18px 14px; text-align: center; background: var(--card-2); border-radius: 12px; }
+/* Daily XP bars: a faint track behind each day so an empty week reads as a chart, not a blank gap */
+.level-card .xw { background: linear-gradient(rgba(255,255,255,.07), rgba(255,255,255,.07)) no-repeat 50% 16px / min(60%, 26px) calc(100% - 32px); }
