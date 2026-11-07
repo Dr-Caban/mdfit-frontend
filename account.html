@@ -19,8 +19,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="app/app.css?v=60ba0419">
-  <link rel="stylesheet" href="account.css?v=12b48f29">
+  <link rel="stylesheet" href="app/app.css?v=dc7cc999">
+  <link rel="stylesheet" href="account.css?v=7efebf06">
   <link rel="stylesheet" href="guides.css?v=0a19199b">
 </head>
 <body class="mdapp">
@@ -44,7 +44,7 @@
 
       <div class="qsearch">
         <svg class="qsearch-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 2a8 8 0 1 1-5.3 14l-3.6 3.6-1.4-1.4L3.3 14.7A8 8 0 0 1 10 2zm0 2a6 6 0 1 0 0 12 6 6 0 0 0 0-12z"/></svg>
-        <input type="search" id="qsearch" placeholder="What hurts? Search exercises, pain, programs, articles" aria-label="Search MD Fit" autocomplete="off">
+        <input type="search" id="qsearch" placeholder="What hurts? Search anything" aria-label="Search MD Fit" autocomplete="off">
         <button type="button" class="qsearch-x" id="qsearch-x" aria-label="Clear" hidden>&times;</button>
       </div>
       <div class="qsearch-results" id="qsearch-results" hidden></div>
@@ -67,12 +67,11 @@
         </div>
         <ol class="week" id="week"></ol>
         <div class="repair-note" id="repair-note" hidden></div>
-      </div>
-
-      <div class="tiles">
-        <div class="tile card"><svg viewBox="0 0 24 24" class="ic gold"><path d="M19 4h-2V2H7v2H5a2 2 0 0 0-2 2v1a5 5 0 0 0 4.4 4.96A5 5 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5 5 0 0 0 3.6-3.94A5 5 0 0 0 21 7V6a2 2 0 0 0-2-2zM5 7V6h2v3.8A3 3 0 0 1 5 7zm14 0a3 3 0 0 1-2 2.8V6h2z"/></svg><b id="best-n">0</b><span>Best Streak</span></div>
-        <div class="tile card"><svg viewBox="0 0 24 24" class="ic blue"><path d="M13.5 5.5a2 2 0 1 0-2-2 2 2 0 0 0 2 2zM9.8 8.9 7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3A7.3 7.3 0 0 0 19 13v-2a5.2 5.2 0 0 1-4.5-2.5l-1-1.6a2 2 0 0 0-1.7-1 2 2 0 0 0-.8.2L6 8.3V13h2V9.6z"/></svg><b id="workouts-n">0</b><span>Workouts</span></div>
-        <div class="tile card"><svg viewBox="0 0 24 24" class="ic green"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm4.2 14.2L11 13V7h1.5v5.2l4.5 2.7z"/></svg><b id="hours-n">0.0</b><span>Hours</span></div>
+        <div class="tiles" aria-label="Your totals">
+          <div class="tile"><svg viewBox="0 0 24 24" class="ic gold"><path d="M19 4h-2V2H7v2H5a2 2 0 0 0-2 2v1a5 5 0 0 0 4.4 4.96A5 5 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5 5 0 0 0 3.6-3.94A5 5 0 0 0 21 7V6a2 2 0 0 0-2-2zM5 7V6h2v3.8A3 3 0 0 1 5 7zm14 0a3 3 0 0 1-2 2.8V6h2z"/></svg><b id="best-n">0</b><span>Best Streak</span></div>
+          <div class="tile"><svg viewBox="0 0 24 24" class="ic blue"><path d="M13.5 5.5a2 2 0 1 0-2-2 2 2 0 0 0 2 2zM9.8 8.9 7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3A7.3 7.3 0 0 0 19 13v-2a5.2 5.2 0 0 1-4.5-2.5l-1-1.6a2 2 0 0 0-1.7-1 2 2 0 0 0-.8.2L6 8.3V13h2V9.6z"/></svg><b id="workouts-n">0</b><span>Workouts</span></div>
+          <div class="tile"><svg viewBox="0 0 24 24" class="ic green"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm4.2 14.2L11 13V7h1.5v5.2l4.5 2.7z"/></svg><b id="hours-n">0.0</b><span>Hours</span></div>
+        </div>
       </div>
 
       <div class="card today" id="today-card">
