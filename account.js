@@ -84,7 +84,7 @@
     $("#ms-lb-title").textContent = d.me.rank === 1 ? "You're #1 this week!" : `You're #${d.me.rank} this week`;
     const rows = d.top.slice(0, 5);
     if (!rows.some((r) => r.me)) rows.push({ rank: d.me.rank, name: client.name || "You", score: d.me.score, level: reward ? reward.level : 1, me: true });
-    $("#ms-lb-list").innerHTML = rows.map((r, i) => `<li class="${r.me ? "me" : ""}" style="animation-delay:${i * 70}ms"><span class="rk rk-${r.rank}">${r.rank <= 3 ? ["🥇", "🥈", "🥉"][r.rank - 1] : r.rank}</span><span class="nm">${esc(r.name)}${r.me ? " (you)" : ""}<small>Lv ${r.level}</small></span><b>${r.score.toLocaleString()}</b></li>`).join("");
+    $("#ms-lb-list").innerHTML = rows.map((r, i) => `<li class="${r.me ? "me" : ""}" style="animation-delay:${i * 70}ms"><span class="rk rk-${r.rank}">${r.rank <= 3 ? ["🥇", "🥈", "🥉"][r.rank - 1] : r.rank}</span><span class="nm">${esc(r.name)}${r.me ? " (you)" : ""}<small>${esc((r.gem && r.gem.name) || (reward && reward.title) || "")}</small></span><b>${r.score.toLocaleString()}</b></li>`).join("");
     $("#ms-lb").hidden = false;
   }
   $("#ms-lb-go").addEventListener("click", () => { $("#ms-lb").hidden = true; });
@@ -98,8 +98,8 @@
       badgeCount++; if (badgeCount % 3 === 0) msShowBoard = true;
     });
     if (lvl !== null && r.level > lvl) {
-      notify({ kind: "level", title: `Level ${r.level}: ${r.title}`, body: "You leveled up. Keep it going!", action: "View", go: "#progress" });
-      milestone({ icon: `<span class="ms-lv">${r.level}</span>`, kicker: "Level up!", title: r.title, desc: r.level === 5 ? "Welcome to the Olympic League." : `You reached level ${r.level}.`, xp: 0 });
+      notify({ kind: "level", title: `New gem: ${r.title}`, body: "You reached a new gem level. Keep it going!", action: "View", go: "#progress" });
+      milestone({ icon: `<span class="ms-lv">${r.level}</span>`, kicker: "New gem!", title: r.title, desc: r.level === (r.olympicLevel || 4) ? "Welcome to the Olympic League." : `You reached ${r.title}, gem level ${r.level} of 8.`, xp: 0 });
       msShowBoard = true;
     }
     if (msShowBoard && !msBusy && !msQueue.length) { msShowBoard = false; showBoardPopup(); }
@@ -1560,6 +1560,7 @@
       numbersForm($("#done-form"), r.workout, "How hard was that?");
       renderStats(); renderActivity(); renderNotes(); renderCalendar(); renderPerf();
       loadRewards(true);
+      document.dispatchEvent(new CustomEvent("mdfit:workout", { detail: r.workout }));
     } catch (err) { $("#done-msg").textContent = "Couldn't save this workout: " + err.message; }
   }
 
@@ -2450,11 +2451,13 @@
     $("#board-reset").textContent = d.resetsOn ? `${d.period === "day" ? "Resets at midnight" : `Resets ${fmtDate(d.resetsOn, { weekday: "long", month: "short", day: "numeric" })}`}${d.period === "day" ? "" : " at midnight"} · everyone starts from zero` : "Lifetime XP. Never resets.";
     boardLeague = d.league;
     $$("#board [data-league]").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.league === d.league)));
-    const lname = d.league === "olympic" ? "Olympic League" : "Pro League";
-    $("#board-sub").textContent = d.myLeague === d.league
-      ? (d.league === "olympic" ? "You're in the Olympic League, the top tier. Defend your spot." : `You're in the Pro League. Reach level ${d.olympicLevel} to move up to the Olympic League.`)
-      : (d.league === "olympic" ? `Reach level ${d.olympicLevel} to compete here.` : "Where everyone starts.");
-    $("#board-list").innerHTML = d.top.length ? d.top.map((r) => `<li class="${r.me ? "me" : ""}"><span class="rk rk-${r.rank}">${r.rank <= 3 ? ["🥇", "🥈", "🥉"][r.rank - 1] : r.rank}</span><span class="nm">${esc(r.name)}${r.me ? " (you)" : ""}<small>Lv ${r.level}</small></span><b>${r.score.toLocaleString()}</b></li>`).join("")
+    const lname = d.league === "olympic" ? "Olympic League" : d.league === "all" ? "overall ranking" : "Pro League";
+    const og = d.olympicGem || `level ${d.olympicLevel}`;
+    $("#board-sub").textContent = d.league === "all" ? "Everyone, both leagues, ranked together. This is your #overall rank on Home."
+      : d.myLeague === d.league
+      ? (d.league === "olympic" ? "You're in the Olympic League, the top tier. Defend your spot." : `You're in the Pro League. Reach ${og} to move up to the Olympic League.`)
+      : (d.league === "olympic" ? `Reach ${og} to compete here.` : "Where everyone starts.");
+    $("#board-list").innerHTML = d.top.length ? d.top.map((r) => `<li class="${r.me ? "me" : ""}"><span class="rk rk-${r.rank}">${r.rank <= 3 ? ["🥇", "🥈", "🥉"][r.rank - 1] : r.rank}</span><span class="nm">${esc(r.name)}${r.me ? " (you)" : ""}<small>${r.gem ? `${GEM_ICON(r.gem.color, 12)} ${esc(r.gem.name)}` : `Lv ${r.level}`}</small></span><b>${r.score.toLocaleString()}</b></li>`).join("")
       : `<li class="empty muted small">No one in the ${lname} has XP ${PERIOD_EMPTY[d.period] || "yet"}.${d.myLeague === d.league ? " Log a workout, check-in or pain entry to take #1." : ""}</li>`;
     $("#board-me").textContent = d.hidden ? "You're hidden from the leaderboard." : d.me ? (d.me.rank > 10 ? `You're #${d.me.rank} of ${d.total} with ${d.me.score.toLocaleString()} ${unit}.` : "") : "Log anything to join the rankings.";
     $("#board-hide").checked = d.hidden;
@@ -2470,7 +2473,7 @@
   function renderRewards() {
     const r = reward;
     if (!r) return;
-    $("#chip-lv").textContent = `Lv ${r.level}`;
+    $("#chip-lv").textContent = r.title;
     $("#chip-xp").textContent = `${r.xp.toLocaleString()} XP`;
     // Gemstone rank card in the Progress view
     if (r.rank) {
@@ -2501,10 +2504,10 @@
     $("#lv-n").textContent = r.level;
     $("#lv-title").textContent = r.title;
     $("#lv-xp").textContent = `${r.xp.toLocaleString()} XP total`;
-    const pct = Math.round(((r.xp - r.levelStart) / (r.nextLevel - r.levelStart)) * 100);
+    const pct = r.nextLevel ? Math.round(((r.xp - r.levelStart) / (r.nextLevel - r.levelStart)) * 100) : 100;
     $("#lv-bar").style.width = pct + "%";
     $("#lv-bar-wrap").setAttribute("aria-valuenow", pct);
-    $("#lv-next").textContent = `${(r.nextLevel - r.xp).toLocaleString()} XP to level ${r.level + 1}`;
+    $("#lv-next").textContent = r.nextLevel && r.rank && r.rank.next ? `${(r.nextLevel - r.xp).toLocaleString()} XP to ${r.rank.next.name}` : "Top gem reached";
     // Daily goal ring
     const g = Math.min(1, r.todayXp / r.dailyGoal), C = 2 * Math.PI * 26;
     $("#goal-ring").innerHTML = `<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="26" class="ring-bg"/><circle cx="32" cy="32" r="26" class="ring-fg" stroke-dasharray="${C}" stroke-dashoffset="${C * (1 - g)}" transform="rotate(-90 32 32)"/></svg>
@@ -2528,11 +2531,12 @@
     try {
       const prev = reward, next = await apiAuth("GET", "/api/me/rewards");
       reward = next; loadBoard(); notifyRewards(next); renderRewards();
+      document.dispatchEvent(new CustomEvent("mdfit:rewards", { detail: next })); // gem card, rank (account-xp.js)
       if (!celebrate || !prev) return;
       const gained = next.xp - prev.xp, newBadges = next.badges.filter((b) => b.earned && !prev.badges.find((x) => x.id === b.id).earned);
       const msgs = [];
       if (gained > 0) msgs.push(`+${gained} XP`);
-      if (next.level > prev.level) msgs.push(`Level up! You're now level ${next.level}: ${next.title}`);
+      if (next.level > prev.level) msgs.push(`New gem! You're now ${next.title}`);
       newBadges.forEach((b) => msgs.push(`Badge unlocked: ${b.title}`));
       if (prev.todayXp < prev.dailyGoal && next.todayXp >= next.dailyGoal) msgs.push("Daily goal reached!");
       if (msgs.length) celebrateToast(msgs);
@@ -2630,6 +2634,10 @@
     } catch (err) { toast(err.message); }
     b.disabled = false;
   });
+
+  // ================= Hooks for the XP add-ons (account-xp.js: gem card, workout builder, challenges)
+  window.MDFitApp = { startPlayer, go, loadRewards, toast, celebrateToast, exMeta, byId, gemIcon: GEM_ICON, rewards: () => reward,
+    showBoard: (period, league) => { boardPeriod = period; boardLeague = league; if (location.hash === "#leaders") loadBoard(); else go("leaders"); } };
 
   // ================= Load
   show(location.hash.slice(1) || "home");
