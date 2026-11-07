@@ -297,3 +297,16 @@
 .cmp-table > p.muted:only-child { margin: 8px 0 0; padding: 18px 14px; text-align: center; background: var(--card-2); border-radius: 12px; }
 /* Daily XP bars: a faint track behind each day so an empty week reads as a chart, not a blank gap */
 .level-card .xw { background: linear-gradient(rgba(255,255,255,.07), rgba(255,255,255,.07)) no-repeat 50% 16px / min(60%, 26px) calc(100% - 32px); }
+
+/* Assigned programs: Dr. Jared's note on Home and on the program, its resources, and where to pick up */
+.mp-note { display: block; margin: 2px 0; font-size: 13.5px; color: var(--heading, #1d2b3a); overflow-wrap: anywhere; }
+.mp-note::before { content: "“"; } .mp-note::after { content: "”"; }
+.prog-assigned { border-left: 4px solid var(--accent, #2a6aa8); }
+.prog-assigned p { margin: 6px 0 0; overflow-wrap: anywhere; }
+.prog-res ul { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 6px; }
+.pr-link { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 10px; align-items: center; width: 100%; text-align: left; font: inherit; color: inherit; background: none; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; cursor: pointer; min-height: 44px; }
+.pr-link b { color: var(--navy); overflow-wrap: anywhere; }
+.pr-link .muted { grid-column: 1; }
+.pr-link > span[aria-hidden] { grid-column: 2; grid-row: 1 / span 2; font-size: 22px; color: var(--accent-text, #2a6aa8); }
+.proto-next { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; }
+.proto-next .btn-blue { width: auto; }
