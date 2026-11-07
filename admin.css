@@ -107,7 +107,7 @@ code { background: var(--paper-2); padding: 1px 6px; border-radius: 4px; font-si
 .client-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 .client-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; align-items: start; }
 .guide-picks { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; font-size: 14px; font-weight: 500; }
-@media (max-width: 860px) { .client-grid { grid-template-columns: 1fr; } .guide-picks { grid-template-columns: 1fr; } }
+@media (max-width: 860px) { .client-grid { grid-template-columns: minmax(0, 1fr); } .client-grid > * { min-width: 0; } .client-grid code { white-space: normal; overflow-wrap: anywhere; } .guide-picks { grid-template-columns: 1fr; } }
 .guide-picks label.check { display: flex; gap: 8px; align-items: center; font-weight: 500; }
 .guide-picks label.check input { width: auto; margin: 0; }
 .svc-rows { display: grid; gap: 10px; margin-bottom: 10px; }

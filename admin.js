@@ -87,7 +87,7 @@
     const sub = $("#subnav");
     sub.hidden = g.tabs.length < 2;
     sub.innerHTML = g.tabs.map(([t, l]) => `<button type="button" role="tab" data-tab="${t}" aria-selected="${t === name}">${l}</button>`).join("");
-    $("#tb-title").textContent = g.tabs.length > 1 ? `${g.label} · ${g.tabs.find(([t]) => t === name)[1]}` : g.label;
+    { const sl = (g.tabs.find(([t]) => t === name) || [])[1]; $("#tb-title").textContent = g.tabs.length > 1 && sl !== g.label ? `${g.label} · ${sl}` : g.label; }
     $$("[data-panel]").forEach((p) => (p.hidden = p.dataset.panel !== name));
     if (location.hash.slice(1) !== name) history.pushState(null, "", "#" + name);
     closeSidebar();
