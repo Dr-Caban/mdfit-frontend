@@ -379,3 +379,15 @@ body.admin .form { grid-template-columns: minmax(0, 1fr); } /* a grid form's col
 .type-toggle:hover { border-color: currentColor; }
 .type-toggle:hover span { opacity: 1; }
 .type-toggle:focus-visible { outline: 3px solid #0A1A2E; outline-offset: 2px; }
+
+/* ==== Settings → Habits (admin-habits.js) ==== */
+.hba table input, .hba table select, .hba table textarea { width: 100%; min-width: 0; font-size: 14px; padding: 6px 8px; }
+.hba table input[type="checkbox"] { width: auto; }
+.hba-habits td:nth-child(2) { min-width: 180px; }
+.hba-habits td:nth-child(3) { min-width: 150px; }
+.hba-habits td:nth-child(4) { width: 80px; }
+.hba-habits td:nth-child(6) { min-width: 240px; }
+.hba-habits td:nth-child(6) input { margin-top: 6px; }
+.hba-habits small { display: block; margin-top: 4px; font-size: 12px; }
+.hba-cats td:nth-child(2) { width: 160px; }
+.hba-actions { margin: 12px 0; }

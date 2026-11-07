@@ -64,7 +64,7 @@
   ["pointerdown", "keydown", "scroll", "touchstart"].forEach((t) => document.addEventListener(t, idleBump, { passive: true }));
 
   // ---- Tabs
-  const loaders = { dash: loadDash, clients: loadClients, appts: loadAppts, hours: loadHours, leads: loadLeads, classes: loadClasses, bookings: loadBookings, subs: loadSubs, reviews: loadReviews, audit: loadAudit, messages: loadThreads, members: loadMembers, content: loadContent, settings: loadSettings, feedback: loadFeedback, analytics: loadAnalytics };
+  const loaders = { dash: loadDash, clients: loadClients, appts: loadAppts, hours: loadHours, leads: loadLeads, classes: loadClasses, bookings: loadBookings, subs: loadSubs, reviews: loadReviews, audit: loadAudit, messages: loadThreads, members: loadMembers, content: loadContent, settings: loadSettings, feedback: loadFeedback, analytics: loadAnalytics, habits: loadHabits };
   // ---- Navigation: six sections in the sidebar; screens that used to be separate tabs are sub-tabs of a section.
   // Every screen keeps its own #hash so reload and the back button return to it.
   const NAV = [
@@ -73,7 +73,7 @@
     { id: "messages", label: "Messages", tabs: [["messages", "Messages"]] },
     { id: "feedback", label: "Feedback", tabs: [["reviews", "Reviews"], ["feedback", "Bug reports & ideas"]] },
     { id: "insights", label: "Insights", tabs: [["analytics", "Analytics"], ["audit", "Audit"]] },
-    { id: "settings", label: "Settings", tabs: [["settings", "Settings"], ["content", "Content"]] }
+    { id: "settings", label: "Settings", tabs: [["settings", "Settings"], ["content", "Content"], ["habits", "Habits"]] }
   ];
   const groupOf = (tab) => NAV.find((g) => g.tabs.some(([t]) => t === tab)) || NAV[0];
   const fromHash = () => { const t = location.hash.slice(1); return NAV.some((g) => g.tabs.some(([x]) => x === t)) ? t : "dash"; };
