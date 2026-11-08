@@ -44,8 +44,23 @@
   const NOTIF_ICONS = { reward: "🏆", level: "⭐", message: "💬", visit: "📅" };
   const inbox = { items: seenStore.get("inbox") || [], unseen: seenStore.get("inbox-unseen") || 0 };
   function saveInbox() { inbox.items = inbox.items.slice(0, 25); seenStore.set("inbox", inbox.items); seenStore.set("inbox-unseen", inbox.unseen); if (typeof renderNotes === "function" && $("#notes")) renderNotes(); }
+  // Red dot on the bottom tab a notification is about (and on "More" when that tab is tucked away); cleared when the tab is opened
+  const tabDots = new Set();
+  function renderDots() {
+    $$(".tabbar [data-tab]").forEach((b) => b.classList.toggle("has-dot", tabDots.has(b.dataset.tab) && b.dataset.tab !== "messages"));
+    const hiddenDot = $$(".tabbar .ov").some((b) => tabDots.has(b.dataset.tab) && b.dataset.tab !== "messages");
+    $("#more-btn").classList.toggle("has-dot", hiddenDot);
+    $$("#more-list [data-goto]").forEach((a) => a.classList.toggle("has-dot", tabDots.has(a.dataset.goto) && a.dataset.goto !== "messages"));
+  }
+  function dotFor(go) {
+    const tab = String(go || "").replace(/^#/, "").split("/")[0];
+    const view = tab && $(`[data-view="${tab}"]`);
+    if (!view || !view.hidden) return;
+    tabDots.add(tab); renderDots();
+  }
   function notify({ kind, title, body, action, go }) {
     inbox.items.unshift({ kind, title, body: body || "", action: action || "", go: go || "", at: Date.now() }); inbox.unseen++; saveInbox();
+    dotFor(go);
     const box = $("#notifs"); if (!box) return;
     while (box.children.length >= 3) box.firstElementChild.remove();
     const n = document.createElement("div");
@@ -131,6 +146,7 @@
     else if (tab === "pain" && !$("#muscle-report").hidden) setMode(reportFrom);
     $$("[data-view]").forEach((v) => (v.hidden = v.dataset.view !== tab));
     $$(".tabbar [data-tab]").forEach((b) => (b.dataset.tab === tab ? b.setAttribute("aria-current", "page") : b.removeAttribute("aria-current")));
+    if (tabDots.delete(tab)) renderDots();
     if (tab === "videos") renderVideos();
     if (tab === "pain" && !show.painMap) { show.painMap = true; if (window.MDFitPainMap) window.MDFitPainMap.init($("[data-painmap='app']")); }
     if (tab === "progress") renderCalendar();
@@ -163,6 +179,7 @@
   const topHtml = topLinks.map((x) => `<button type="button" class="more-top" ${x.tab ? `data-goto="${x.tab}"` : `data-action="${x.action}"`}>${x.icon}<span>${x.label}</span></button>`).join("");
   const restHtml = $$(".tabbar .ov").map((b) => `<button type="button" data-goto="${b.dataset.tab}">${b.querySelector("svg").outerHTML}<span>${b.querySelector(".long").innerHTML}</span></button>`).join("");
   $("#more-list").innerHTML = topHtml + `<div class="more-sep"></div>` + restHtml;
+  if (typeof renderDots === "function") renderDots();
   $("#more-btn").addEventListener("click", () => $("#more-sheet").showModal());
 
   // ================= Dialogs: exercise videos, guides, intros
@@ -419,7 +436,10 @@
     const soon = appts.upcoming.find((a) => a.status !== "cancelled" && a.date <= addDays(t, 2));
     if (soon) live.push({ kind: "visit", title: `Visit ${soon.date === t ? "today" : soon.date === addDays(t, 1) ? "tomorrow" : fmtDate(soon.date, { weekday: "long" })} at ${fmtTime(soon.time)}`, body: soon.typeName, action: "Details", go: "#profile" });
     const p = client.plan;
-    if (p && p.updatedAt && p.updatedAt.slice(0, 10) >= addDays(t, -7)) live.push({ kind: "plan", title: "Dr. Jared updated your plan", body: "See \u201cFrom Dr. Jared\u201d on Home." });
+    if (p && p.updatedAt && p.updatedAt.slice(0, 10) >= addDays(t, -7)) {
+      live.push({ kind: "plan", title: "Dr. Jared updated your plan", body: "See \u201cFrom Dr. Jared\u201d on Home.", action: "Open", go: "#home" });
+      if (seenStore.get("plan-dot") !== p.updatedAt) { seenStore.set("plan-dot", p.updatedAt); dotFor("#home"); }
+    }
     if (stats && stats.streak > 0 && !stats.week[stats.todayIndex]) live.push({ kind: "streak", title: `Keep your ${stats.streak}-day streak going`, body: "Do a workout today.", action: "Start", go: "#generate" });
     const icon = (k) => ({ reward: "🏆", level: "⭐", message: "💬", visit: "📅", plan: "📋", streak: "🔥" })[k] || "🔔";
     const row = (n, i, src) => `<div class="note-row${src === "h" && i < inbox.unseen ? " new" : ""}"><span class="notif-ic">${icon(n.kind)}</span><div class="note-txt"><b>${esc(n.title)}</b>${n.body ? `<span>${esc(n.body)}</span>` : ""}${n.at ? `<em>${agoMs(n.at)}</em>` : ""}</div>${n.go ? `<button type="button" class="note-go" data-go="${esc(n.go)}">${esc(n.action || "Open")}</button>` : ""}</div>`;
@@ -2772,6 +2792,7 @@
 
   // ================= Load
   show(location.hash.slice(1) || "home");
+  if (new URLSearchParams(location.search).get("notes") === "1") { history.replaceState(null, "", location.pathname + location.hash); $("#bell").click(); }
   renderProfile(); renderStats(); renderToday(); renderAreas(); renderPlan();
   (async () => {
     try {
