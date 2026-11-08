@@ -3,7 +3,7 @@
 //     today's XP, and links to the daily activities and the workout builder. Profile shows the gem and rank too.
 //   - Workout builder ("My workouts"): pick exercises from the library (search, region, category), sets with reps or
 //     time, order, name, save on the account, start in the workout player (logged as "custom-<id>": 35 XP).
-//   - Challenges: send a saved workout to a member from the ranking pool (+5 XP once a day); challenges sent to you
+//   - Challenges: send a saved workout to any other member, ranked or not (+5 XP once a day; members only); challenges sent to you
 //     show on Home and play in the player (logged as "challenge-<id>": 30 + 10 XP).
 // Uses window.MDFitApp (account.js) for the player, navigation, toasts and the rewards reload. The server decides all XP.
 (() => {
@@ -16,9 +16,11 @@
   let reward = A.rewards(), mine = [], ch = { open: [], done: [], sent: [] };
 
   const plural = (n, w) => `${n} ${w}${n === 1 ? "" : "s"}`;
-  const rx = (x) => (x.seconds ? `${x.sets} × ${x.seconds} sec` : `${x.sets} × ${x.reps} reps`);
+  // Owner: every movement is a rep count, never a time (older saved rows with seconds are shown as reps)
+  const repsOf = (x) => x.reps || Math.max(5, Math.min(100, Math.round((x.seconds || 30) / 3)));
+  const rx = (x) => `${x.sets} × ${repsOf(x)} reps`;
   // About 3 s a rep or the set time, plus 30 s between sets
-  const minutesOf = (w) => Math.max(1, Math.round(w.exercises.reduce((n, x) => n + x.sets * ((x.seconds || (x.reps || 10) * 3) + 30), 0) / 60));
+  const minutesOf = (w) => Math.max(1, Math.round(w.exercises.reduce((n, x) => n + x.sets * (repsOf(x) * 3 + 30), 0) / 60));
   // A saved workout (or a challenge's copy) as the player expects it
   function playerWorkout(w, key) {
     const list = w.exercises.map((x) => { const e = byId.get(x.id); return e ? { ...e, sets: rx(x), block: "Circuit" } : null; }).filter(Boolean);
@@ -83,9 +85,11 @@
       setTimeout(() => c.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
       return;
     }
-    if (e.target.closest("[data-build-workout]")) openBuilder();
+    if (e.target.closest("[data-build-workout]")) membersOnly("Building your own workouts and sending challenges is part of membership. You can still receive and do challenges.").then((ok) => ok && openBuilder());
   });
   renderGem();
+  // Owner: anyone can be challenged (paid or not, ranked or not), but only paying members build workouts and send them
+  async function membersOnly(reason) { if (await A.isPaid()) return true; A.showPaywall(reason); return false; }
 
   // ================= My workouts (Home + Workout tab) =================
   function myCard(id, where) {
@@ -105,23 +109,27 @@
         <div class="mw-txt"><b>${esc(w.name)}</b><span>${plural(w.exercises.length, "exercise")} · about ${minutesOf(w)} min · <em>+35 XP</em></span></div>
         <div class="mw-acts"><button type="button" class="btn-blue sm" data-mw-start>Start</button><button type="button" class="btn-ghost sm" data-mw-send>Send as challenge</button>
           <button type="button" class="link-sm" data-mw-edit>Edit</button><button type="button" class="link-sm mw-del" data-mw-del>Delete</button></div></li>`).join("");
-    const intro = `<p class="muted small mw-intro">Pick exercises from Dr. Jared's library, set your sets and reps, and save it. Doing your own workout is worth <b>35 XP</b> (30 + 5), and you can send it to another member as a challenge.</p>`;
+    const intro = isPaidNow === false
+      ? `<p class="muted small mw-intro">Members build their own workouts from Dr. Jared's library (worth <b>35 XP</b>) and send them to anyone as a challenge. You can still receive and do challenges for <b>40 XP</b>. <button type="button" class="link-sm" data-paywall>Unlock with a membership</button></p>`
+      : `<p class="muted small mw-intro">Pick exercises from Dr. Jared's library, set your sets and reps, and save it. Doing your own workout is worth <b>35 XP</b> (30 + 5), and you can send it to anyone as a challenge.</p>`;
     const sent = ch.sent.slice(0, 4).map((s) => `<li>${esc(s.workout.name)} → ${esc(s.to)} <span class="${s.status === "done" ? "mw-ok" : "muted"}">${s.status === "done" ? "done ✓" : "waiting"}</span></li>`).join("");
     for (const card of [homeMy, genMy]) {
       if (!card) continue;
       $(".mw-body", card).innerHTML = (mine.length ? `<ul class="mw-list">${rows}</ul>` : intro) + (sent ? `<p class="label mw-sent-h">Challenges you sent</p><ul class="mw-sent small">${sent}</ul>` : "");
     }
   }
+  let isPaidNow = null;
   async function loadMine() {
     try { mine = (await apiAuth("GET", "/api/me/custom-workouts")).workouts || []; } catch {}
+    try { isPaidNow = await A.isPaid(); } catch {}
     renderMine();
   }
   document.addEventListener("click", async (e) => {
     const li = e.target.closest("[data-mw]"); if (!li) return;
     const w = mine.find((x) => x.id === li.dataset.mw); if (!w) return;
     if (e.target.closest("[data-mw-start]")) A.startPlayer(playerWorkout(w, "custom-" + w.id));
-    else if (e.target.closest("[data-mw-edit]")) openBuilder(w);
-    else if (e.target.closest("[data-mw-send]")) openSend(w);
+    else if (e.target.closest("[data-mw-edit]")) { if (await membersOnly("Editing workouts is part of membership.")) openBuilder(w); }
+    else if (e.target.closest("[data-mw-send]")) { if (await membersOnly("Sending challenges is part of membership. You can still receive and do challenges.")) openSend(w); }
     else if (e.target.closest("[data-mw-del]")) {
       if (!confirm(`Delete "${w.name}"?`)) return;
       try { mine = (await apiAuth("DELETE", `/api/me/custom-workouts/${encodeURIComponent(w.id)}`)).workouts; renderMine(); A.toast("Deleted."); } catch (err) { A.toast(err.message); }
@@ -170,8 +178,7 @@
       <div class="bw-row1"><b>${i + 1}. ${esc(e.name)}</b>
         <span class="bw-move"><button type="button" class="bw-ib" data-up aria-label="Move ${esc(e.name)} up"${i ? "" : " disabled"}>↑</button><button type="button" class="bw-ib" data-down aria-label="Move ${esc(e.name)} down"${i < B.items.length - 1 ? "" : " disabled"}>↓</button><button type="button" class="bw-ib" data-rm aria-label="Remove ${esc(e.name)}">×</button></span></div>
       <div class="bw-row2"><label>Sets<input type="number" inputmode="numeric" min="1" max="10" data-f="sets" value="${x.sets}"></label>
-        <label>By<select data-f="mode"><option value="reps"${x.seconds ? "" : " selected"}>Reps</option><option value="time"${x.seconds ? " selected" : ""}>Time</option></select></label>
-        ${x.seconds ? `<label>Seconds<input type="number" inputmode="numeric" min="5" max="600" data-f="seconds" value="${x.seconds}"></label>` : `<label>Reps<input type="number" inputmode="numeric" min="1" max="100" data-f="reps" value="${x.reps}"></label>`}</div></li>`; }).join("")
+        <label>Reps<input type="number" inputmode="numeric" min="1" max="100" data-f="reps" value="${repsOf(x)}"></label></div></li>`; }).join("")
       : `<li class="bw-empty muted small">Nothing yet. Add exercises from the library${matchMedia("(min-width: 900px)").matches ? " on the left" : " above"}.</li>`;
     $("#bw-est").textContent = B.items.length ? `About ${minutesOf({ exercises: B.items })} minutes · worth 35 XP when you finish it` : "";
   }
@@ -189,8 +196,9 @@
     const b = e.target.closest("[data-add]"); if (!b) return;
     if (B.items.length >= 30) { $("#bw-msg").textContent = "Up to 30 exercises."; return; }
     const ex = byId.get(b.dataset.add);
-    const timed = ex && /stretch|hold|plank|breath|release/i.test(ex.name + " " + (ex.cat || ""));
-    B.items.push(timed ? { id: b.dataset.add, sets: 2, seconds: 30 } : { id: b.dataset.add, sets: 3, reps: 10 });
+    // Rep counts only (owner): stretches and holds start at 2 × 8 slow reps, everything else 3 × 10
+    const slow = ex && /stretch|hold|plank|breath|release/i.test(ex.name + " " + (ex.cat || ""));
+    B.items.push(slow ? { id: b.dataset.add, sets: 2, reps: 8 } : { id: b.dataset.add, sets: 3, reps: 10 });
     renderList(); renderResults();
   });
   $("#bw-list").addEventListener("click", (e) => {
@@ -205,10 +213,8 @@
     const li = e.target.closest("[data-i]"), f = e.target.dataset.f; if (!li || !f) return;
     const x = B.items[Number(li.dataset.i)], n = Math.round(Number(e.target.value));
     const clamp = (v, lo, hi, d) => (Number.isFinite(v) ? Math.max(lo, Math.min(hi, v)) : d);
-    if (f === "mode") { if (e.target.value === "time") { delete x.reps; x.seconds = 30; } else { delete x.seconds; x.reps = 10; } renderList(); return; }
     if (f === "sets") x.sets = clamp(n, 1, 10, 3);
-    if (f === "reps") x.reps = clamp(n, 1, 100, 10);
-    if (f === "seconds") x.seconds = clamp(n, 5, 600, 30);
+    if (f === "reps") { x.reps = clamp(n, 1, 100, 10); delete x.seconds; }
     e.target.value = x[f];
     $("#bw-est").textContent = `About ${minutesOf({ exercises: B.items })} minutes · worth 35 XP when you finish it`;
   });
@@ -236,7 +242,7 @@
     <p class="small" id="sc-what"></p>
     <input type="search" id="sc-q" placeholder="Find a member" aria-label="Find a member" autocomplete="off">
     <ul class="sc-list" id="sc-list"><li class="muted small">Loading…</li></ul>
-    <p class="muted small">Only members on the leaderboard can get challenges (anyone can hide in Leaderboard settings). They see your first name, last initial and the workout. Nothing else.</p>`;
+    <p class="muted small">Anyone with an MD Fit account can get a challenge, on the leaderboard or not (members who hid themselves in Leaderboard settings are the exception). They see your first name, last initial and the workout. Nothing else.</p>`;
   document.body.appendChild(sd);
   $("[data-close]", sd).addEventListener("click", () => sd.close());
   let members = [], sending = null;
@@ -244,7 +250,7 @@
     const q = $("#sc-q").value.trim().toLowerCase();
     const list = members.filter((m) => !q || m.name.toLowerCase().includes(q));
     $("#sc-list").innerHTML = list.length ? list.map((m) => `<li><span class="sc-gem">${m.gem ? gem(m.gem.color, 18) : ""}</span><b>${esc(m.name)}</b><button type="button" class="btn-blue sm" data-to="${esc(m.id)}">Send</button></li>`).join("")
-      : `<li class="muted small">${members.length ? "No one matches." : "No other members on the leaderboard yet."}</li>`;
+      : `<li class="muted small">${members.length ? "No one matches." : "No other members yet."}</li>`;
   }
   async function openSend(w) {
     sending = w;

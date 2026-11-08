@@ -2787,7 +2787,9 @@
   });
 
   // ================= Hooks for the XP add-ons (account-xp.js: gem card, workout builder, challenges)
-  window.MDFitApp = { startPlayer, go, loadRewards, toast, celebrateToast, exMeta, byId, gemIcon: GEM_ICON, rewards: () => reward,
+  // Paid membership? (content access "member"/"premium"; "free" otherwise). Loads the content once if needed.
+  const isPaid = async () => { if (!C) await (contentLoading || loadContent()).catch(() => {}); return !!(C && C.access && C.access !== "free"); };
+  window.MDFitApp = { startPlayer, go, loadRewards, toast, celebrateToast, exMeta, byId, gemIcon: GEM_ICON, rewards: () => reward, isPaid, showPaywall,
     showBoard: (period, league) => { boardPeriod = period; boardLeague = league; if (location.hash === "#leaders") loadBoard(); else go("leaders"); } };
 
   // ================= Load

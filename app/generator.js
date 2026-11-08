@@ -1,6 +1,7 @@
 // Workout generator: builds a session from Dr. Jared's exercise library.
 // Structure: optional warm-up → a circuit (exercises per round × rounds, with rest) → optional cool-down.
-// Reps/holds live in PRESCRIBE so they can be tuned in one place.
+// Reps live in PRESCRIBE so they can be tuned in one place. Owner (Nov 2026): every movement is a rep count, never
+// "do this for 60 seconds"; holds and stretches are written as slow reps with a short pause.
 (() => {
   const EX = window.MDFIT_EXERCISES || [];
 
@@ -44,26 +45,25 @@
     Strength: { beginner: "10 reps", intermediate: "10 reps", advanced: "8 reps", elite: "6 reps" },
     Power: { beginner: "6 reps", intermediate: "6 reps", advanced: "5 reps", elite: "4 reps" },
     Activation: { beginner: "10 reps", intermediate: "12 reps", advanced: "12 reps", elite: "15 reps" },
-    Mobility: { beginner: "30 sec", intermediate: "45 sec", advanced: "60 sec", elite: "45 sec" },
+    Mobility: { beginner: "8 slow reps", intermediate: "10 slow reps", advanced: "12 slow reps", elite: "12 slow reps" },
     Rehab: { beginner: "8 slow reps", intermediate: "8 slow reps", advanced: "10 slow reps", elite: "12 slow reps" },
     Neuroglide: { beginner: "6 gentle reps", intermediate: "8 gentle reps", advanced: "10 gentle reps", elite: "10 gentle reps" },
-    Posture: { beginner: "2 min", intermediate: "2 min", advanced: "3 min", elite: "3 min" },
+    Posture: { beginner: "10 slow reps", intermediate: "10 slow reps", advanced: "12 slow reps", elite: "12 slow reps" },
     Lifestyle: { beginner: "Daily habit", intermediate: "Daily habit", advanced: "Daily habit", elite: "Daily habit" },
     "Desk & posture": { beginner: "Set up once", intermediate: "Set up once", advanced: "Set up once", elite: "Set up once" }
   };
   const prescription = (ex, level) => (PRESCRIBE[ex.cat] || PRESCRIBE.Mobility)[level] || "10 reps";
   // One-round workouts: a single long round with high reps (e.g. 20 min, elite: 35 thrusters, 30 muscle-ups, 35 Bulgarians...).
   // Each movement gets an equal share of the time; reps = that time / seconds per rep, scaled down for lower levels.
-  const SEC_PER_REP = { Strength: 8, Power: 10, Activation: 5 };
+  const SEC_PER_REP = { Strength: 8, Power: 10, Activation: 5, Mobility: 6, Posture: 6, Rehab: 6, Neuroglide: 6 };
   const LEVEL_SHARE = { beginner: 0.45, intermediate: 0.65, advanced: 0.85, elite: 1 };
   const round5 = (n) => Math.max(5, Math.round(n / 5) * 5);
   function chipperRx(ex, level, secs) {
     const f = LEVEL_SHARE[level] || 0.65;
-    if (/sec|min/.test(prescription(ex, level))) { const t = Math.min(300, round5(secs * f * 0.8)); return t >= 120 && t % 60 === 0 ? `${t / 60} min` : `${t} sec`; }
     return `${Math.max(10, round5((secs / (SEC_PER_REP[ex.cat] || 8)) * f))} reps`;
   }
-  // Rough seconds one set takes, for the time estimate
-  const workSecs = (rx) => { const m = rx.match(/(\d+)\s*(sec|min)/); return m ? Number(m[1]) * (m[2] === "min" ? 60 : 1) : 45; };
+  // Rough seconds one set takes, for the time estimate (reps at ~4 s each, slow/gentle ~6 s)
+  const workSecs = (rx) => { const r = String(rx).match(/(\d+)\s*(slow|gentle)?\s*reps?/); return r ? Math.max(30, Number(r[1]) * (r[2] ? 6 : 4)) : 45; };
 
   // Exercises that need gym equipment (when the filename doesn't say home/gym)
   const EQUIP = /\b(DB|KB|Cable|Bench|Barbell|Sled|Erg|Bike|Pulldown|Landmine|GHD|TRX|Rack|Med Ball|Heavy Bag|Pole|Box|Pull Up|Muscle Up|Deadlift|Swing|Wall Ball|Farmer|Clean|Thruster|Strict Press|Push Press|Kettlebell|Dumbbell|Row|Fly|Curl To Press|Lat)\b/i;
@@ -116,12 +116,13 @@
   const isEx = (e) => LIBK()(e) === "Exercise", isRehab = (e) => LIBK()(e) === "Rehab";
   function rehabRx(e) {
     const n = e.name;
-    if (/hold|engagement|brace/i.test(n)) return "3 × 30-sec hold";
-    if (/eccentric|drop/i.test(n)) return "3 × 8 slow (3-sec lowering)";
-    if (/stretch|release|surrender|child|fold|breathing|open book|thread/i.test(n)) return "2 × 30 sec each side";
-    if (/cars|circles|liftoff|neuroglide|rotation|switch|cat cow|flow/i.test(n)) return "2 × 8 slow each side";
-    if (/walk|march|balance/i.test(n)) return "2 × 30 sec";
-    return "2 × 12 controlled";
+    // Rep counts only (owner): holds and stretches are slow reps with a short pause, never a time
+    if (/hold|engagement|brace/i.test(n)) return "3 × 10 slow reps (pause at the top)";
+    if (/eccentric|drop/i.test(n)) return "3 × 8 slow reps (slow lowering)";
+    if (/stretch|release|surrender|child|fold|breathing|open book|thread/i.test(n)) return "2 × 8 slow reps each side";
+    if (/cars|circles|liftoff|neuroglide|rotation|switch|cat cow|flow/i.test(n)) return "2 × 8 slow reps each side";
+    if (/walk|march|balance/i.test(n)) return "2 × 20 reps";
+    return "2 × 12 controlled reps";
   }
   const TYPES = [{ id: "workout", label: "Workout", hint: "Strength, power and conditioning" }, { id: "rehab", label: "Rehab session", hint: "Corrective work for pain and recovery" }];
 
