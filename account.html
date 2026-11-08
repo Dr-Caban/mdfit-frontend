@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="app/app.css?v=64dde34c">
-  <link rel="stylesheet" href="account.css?v=da2829a9">
+  <link rel="stylesheet" href="account.css?v=d8489231">
   <link rel="stylesheet" href="guides.css?v=704fb203">
 </head>
 <body class="mdapp">
@@ -468,6 +468,7 @@
         <div class="card-head"><span class="label">Membership</span><button type="button" class="btn-gold sm" id="p-mem-go" data-goto="premium">Upgrade membership</button></div>
         <p id="p-mem-now"><b>Free account</b></p>
         <p class="muted small" id="p-mem-note">Everything in the app is included free. Membership adds your own workout builder and challenges, and the 1-on-1 tiers add monthly video calls with Dr. Jared.</p>
+        <p class="small p-mem-offer" id="p-mem-offer" hidden><b>30% off your first month</b> for a quick, honest review. <button type="button" class="link-sm" data-review>Leave a review</button></p>
       </div>
 
       <a class="card patient-card" href="/intake?me=1"><span class="pc-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zm-1 7V3.5L18.5 9zM8 13h8v2H8zm0 4h5v2H8z"/></svg></span><span class="pc-txt"><b class="pc-title">Become a patient</b><span class="pc-sub">Fill out your intake documents once, before your first visit. They stay on file for every appointment.</span></span><span class="pc-go">Start intake documents ›</span></a>
@@ -581,10 +582,10 @@
   </nav>
 
   <dialog class="sheet paywall" id="paywall" aria-label="Become a member">
-    <div class="sheet-head"><b>Unlock everything</b><button type="button" class="icon-btn" data-close aria-label="Close"><svg viewBox="0 0 24 24"><path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/></svg></button></div>
+    <div class="sheet-head"><b>Membership</b><button type="button" class="icon-btn" data-close aria-label="Close"><svg viewBox="0 0 24 24"><path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/></svg></button></div>
     <p class="pw-reason" id="pw-reason"></p>
-    <ul class="pw-perks"><li>Unlimited workouts and custom plans</li><li>Every premade program</li><li>Lectures and the monthly live Q&amp;A</li><li>Message Dr. Jared directly</li></ul>
-    <p class="muted small">The pain tools, pain tracks and guides stay free for everyone.</p>
+    <ul class="pw-perks"><li>Build your own workouts and send challenges to anyone</li><li>Every premade program and the lecture library</li><li>Monthly live Q&amp;A with Dr. Jared</li><li>1-on-1 tiers: monthly video calls with Dr. Jared</li></ul>
+    <p class="muted small">The pain tools, pain tracks, guides and generated workouts stay free for everyone.</p>
     <p class="pw-price" id="pw-price"></p>
     <form id="pw-form" class="pw-review nums-form" novalidate>
       <p class="pw-offer"><b>Get 30% off your first month:</b> leave a quick, honest review. Any rating counts.</p>
@@ -720,7 +721,7 @@
   <script src="musclereports.js?v=cd9ced26"></script>
   <script src="guides.js?v=4608523e"></script>
   <script src="stripe-checkout.js?v=087989ec"></script>
-  <script src="account.js?v=b67531c2"></script>
+  <script src="account.js?v=a14448fa"></script>
   <script src="account-xp.js?v=5f3c6968"></script>
   <script src="account-habits.js?v=294905ab"></script>
 <script defer src="/_vercel/insights/script.js"></script>

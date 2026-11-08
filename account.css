@@ -560,3 +560,8 @@
 .patient-card.pain-patient { margin: 18px 16px 0; }
 #p-membership #p-mem-now { margin: 4px 0 6px; font-size: 16px; }
 .patient-card.slim .pc-go { grid-column: 3; }
+
+/* Review offer: 30% off the first month (membership page card + Profile line) */
+.review-offer { margin: 0 0 14px; }
+.review-offer p { margin: 6px 0 10px; }
+.p-mem-offer { margin: 8px 0 0; }
