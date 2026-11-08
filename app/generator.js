@@ -68,6 +68,11 @@
   // Exercises that need gym equipment (when the filename doesn't say home/gym)
   const EQUIP = /\b(DB|KB|Cable|Bench|Barbell|Sled|Erg|Bike|Pulldown|Landmine|GHD|TRX|Rack|Med Ball|Heavy Bag|Pole|Box|Pull Up|Muscle Up|Deadlift|Swing|Wall Ball|Farmer|Clean|Thruster|Strict Press|Push Press|Kettlebell|Dumbbell|Row|Fly|Curl To Press|Lat)\b/i;
   const needsGym = (e) => e.loc === "gym" || (e.loc === "any" && EQUIP.test(e.name));
+  // Owner (Nov 2026): outdoor workouts and the "No equipment" add-on mean nothing at all in hand, not even household
+  // props (towel, chair, couch, dowel, band). Sport-style outdoor movements (running, rowing, biking...) come later.
+  const GEAR = /\b(DB|KB|Dumbbell|Kettlebell|Cable|Band|Barbell|Bench|Box Jump|Rope|Dowel|Pole|Broom|Towel|Pillow|Belt|Chair|Table|Couch|Weighted|Plate|Med Ball|Wall Ball|Sled|Erg|Bike|TRX|Rack|Dips?|Pull Up|Pulldown|Curl|Tricep|Row|Press|Fly|Thrust|Thruster|Turkish|Landmine|GHD|Pushdown|Vibration|Carry|Swing|Slam|Step Up|Rotator Cuff|Abducted (?:External|Internal) Rotation|Blaster|Deadlift|Clean|Snatch)\b/i;
+  const GEAR_NAMES = new Set(["Jump Rope", "Eccentric Wrist Drops", "Eccentric Wrist Pronator"]); // gear the name doesn't say
+  const noGear = (e) => e.loc !== "gym" && !EQUIP.test(e.name) && !GEAR.test(e.name) && !GEAR_NAMES.has(e.name);
   const BALANCE = /balance|single leg|march|heel walk|toe walk/i;
   const WARM = ["Mobility", "Activation", "Neuroglide"];
   const COOL = ["Mobility", "Rehab", "Neuroglide"];
@@ -75,7 +80,7 @@
 
   function byLocation(loc) {
     if (loc === "gym") return EX.slice();
-    if (loc === "outdoor") return EX.filter((e) => e.loc === "outdoor" || (!needsGym(e) && !e.seated));
+    if (loc === "outdoor") return EX.filter((e) => noGear(e) && (e.loc === "outdoor" || !e.seated));
     if (loc === "office") return EX.filter((e) => !needsGym(e) && (e.seated || ["NK", "ERG", "SP", "SH", "WR"].includes(e.rc)) && e.cat !== "Power");
     return EX.filter((e) => !needsGym(e) && e.loc !== "outdoor"); // home
   }
@@ -135,8 +140,10 @@
     const perRound = Math.min(rehab ? 6 : 10, Math.max(1, Number(o.perRound) || 5)), rounds = Math.min(rehab ? 3 : 10, Math.max(1, Number(o.rounds) || 1));
     const rand = rng(o.seed), taken = new Set();
     let pool = byLocation(o.location);
-    if (o.addons.bodyweight) pool = pool.filter((e) => !needsGym(e));
-    if (pool.length < perRound + 4) pool = EX.filter((e) => !needsGym(e));
+    const strict = o.location === "outdoor" || o.addons.bodyweight; // nothing in hand at all
+    if (o.addons.bodyweight) pool = pool.filter(noGear);
+    const fallback = EX.filter((e) => (strict ? noGear(e) : !needsGym(e)));
+    if (pool.length < perRound + 4) pool = fallback;
     const inRegion = (e) => !G.regions || G.regions.includes(e.rc) || (G.id === "full" && e.rc === "FB");
     const inBand = (e, lo = L.min, hi = L.max) => e.level >= lo && e.level <= hi;
     const easy = (e) => e.level <= Math.min(L.max, 4);
@@ -172,7 +179,7 @@
       // Not enough at this level/location: widen the level band, then any region (still exercise only)
       if (need() > 0) slot(pick(pool.filter((e) => isEx(e) && inRegion(e)), need(), rand, taken));
       if (need() > 0) slot(pick(pool.filter((e) => isEx(e) && e.level <= L.max), need(), rand, taken));
-      if (need() > 0) slot(pick(EX.filter((e) => isEx(e) && !needsGym(e) && e.level <= L.max), need(), rand, taken));
+      if (need() > 0) slot(pick(fallback.filter((e) => isEx(e) && e.level <= L.max), need(), rand, taken));
     }
 
     // Cool-down: stretching / mobility from the rehab side
@@ -218,7 +225,7 @@
     const L = LEVELS.find((l) => l.id === w.level) || LEVELS[1];
     const used = new Set([...w.warmup, ...w.circuit, ...w.cooldown].map((e) => e.id));
     let pool = byLocation(w.location).filter((e) => !used.has(e.id) && e.name !== old.name);
-    if (w.addons && w.addons.bodyweight) pool = pool.filter((e) => !needsGym(e));
+    if (w.addons && w.addons.bodyweight) pool = pool.filter(noGear);
     const easy = (e) => e.level <= Math.min(L.max, 4);
     const tiers = key === "warmup" ? [(e) => WARM.includes(e.cat) && easy(e) && e.rc === old.rc, (e) => WARM.includes(e.cat) && easy(e)]
       : key === "cooldown" ? [(e) => COOL.includes(e.cat) && easy(e) && e.rc === old.rc, (e) => COOL.includes(e.cat) && easy(e)]
@@ -245,5 +252,5 @@
     return w;
   }
 
-  window.MDFitGen = { TYPES, rehabRx, byLocation, swap, stepSecs, GOALS, LOCATIONS, LEVELS, LENGTHS, PER_ROUND, ROUNDS, REST_EX, REST_ROUND, ADDONS, DEFAULTS, generate, presetFor, estimate, prescription, needsGym };
+  window.MDFitGen = { TYPES, rehabRx, byLocation, swap, stepSecs, GOALS, LOCATIONS, LEVELS, LENGTHS, PER_ROUND, ROUNDS, REST_EX, REST_ROUND, ADDONS, DEFAULTS, generate, presetFor, estimate, prescription, needsGym, noGear };
 })();
