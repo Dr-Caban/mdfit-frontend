@@ -773,8 +773,16 @@
     const p = c.plan;
     box.innerHTML = `
       <button type="button" class="mini" data-back>← All clients</button>
-      <div class="client-head"><div><h2>${esc(c.name)}</h2>
+      <div class="client-head"><div class="client-id">
+        <div class="client-id-view"><h2>${esc(c.name)} <button type="button" class="pen" data-edit-contact aria-label="Edit name, email or phone" title="Edit name, email or phone"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.8 9.94l-3.75-3.75zm17.7-10.2a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75z"/></svg></button></h2>
         <p class="muted"><a href="mailto:${esc(c.email)}">${esc(c.email)}</a>${c.phone ? ` · <a href="tel:${esc(c.phone)}">${esc(c.phone)}</a>` : ""} · joined ${when(c.createdAt)}${c.lastLoginAt ? ` · last login ${when(c.lastLoginAt)}` : ""}</p></div>
+        <form class="form client-id-edit" id="contact-form" hidden novalidate>
+          <label>Name<input name="name" value="${esc(c.name)}" required maxlength="100"></label>
+          <label>Email<input name="email" type="email" value="${esc(c.email)}" required></label>
+          <label>Phone<input name="phone" type="tel" value="${esc(c.phone || "")}" maxlength="30"></label>
+          <div class="row"><button class="btn btn-sm" type="submit">Save</button><button type="button" class="mini" data-cancel-contact>Cancel</button></div>
+          <p class="form-msg" role="status"></p>
+        </form></div>
         <div class="client-actions"><button type="button" class="mini" data-cmsg>Message</button><button type="button" class="mini" data-reset>Send reset code</button><button type="button" class="mini danger" data-delete>Delete account</button></div></div>
       ${clientOverview(c)}
       <p class="client-docs">${docsChip(c.documents)}${c.documents && c.documents.done ? ` <button type="button" class="mini" data-cdocs>View documents</button>` : c.documents ? ` <span class="muted">No intake documents on file yet.</span>` : ""}</p><div class="intake-view" id="client-docs" hidden></div>
@@ -804,6 +812,16 @@
     $("[data-cmsg]", box).addEventListener("click", run(() => goThread(id)));
     const cd = $("[data-cdocs]", box);
     if (cd) cd.addEventListener("click", run(async () => { const v = $("#client-docs"); if (!v.hidden) { v.hidden = true; return; } showDocs(v, await api("GET", `/api/admin/clients/${id}/intake`)); }));
+    // Pen: edit name / email / phone in place
+    $("[data-edit-contact]", box).addEventListener("click", () => { $(".client-id-view", box).hidden = true; $("#contact-form").hidden = false; $("#contact-form [name=email]").focus(); });
+    $("[data-cancel-contact]", box).addEventListener("click", () => { $("#contact-form").hidden = true; $(".client-id-view", box).hidden = false; });
+    $("#contact-form").addEventListener("submit", run(async (e) => {
+      e.preventDefault();
+      const f = e.target, d = Object.fromEntries(new FormData(f));
+      if (d.email.trim().toLowerCase() !== c.email && !confirm(`Change ${c.name}'s login email to ${d.email.trim()}? They'll sign in with the new address from now on.`)) return;
+      await api("PUT", `/api/admin/clients/${id}/contact`, { name: d.name.trim(), email: d.email.trim(), phone: d.phone.trim() });
+      toast("Contact details saved."); openClient(id);
+    }));
     $("[data-reset]", box).addEventListener("click", run(async () => {
       const r = await api("POST", `/api/admin/clients/${id}/send-reset-code`);
       toast(r.message);

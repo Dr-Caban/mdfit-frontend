@@ -106,7 +106,12 @@ code { background: var(--paper-2); padding: 1px 6px; border-radius: 4px; font-si
 .click-row:hover td { background: var(--cream); }
 #client-search { max-width: 360px; }
 .client-head { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; align-items: flex-start; margin: 14px 0 6px; }
-.client-head h2 { margin: 0 0 4px !important; font-size: 26px !important; }
+.client-head h2 { margin: 0 0 4px !important; font-size: 26px !important; display: flex; align-items: center; gap: 8px; }
+.pen { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--line); background: #fff; color: var(--ink, #0A1A2E); display: inline-grid; place-items: center; cursor: pointer; padding: 0; }
+.pen svg { width: 15px; height: 15px; fill: currentColor; }
+.pen:hover { background: #f1f3f6; }
+.client-id-edit { max-width: 420px; margin: 4px 0 10px; }
+.client-id-edit .row { display: flex; gap: 10px; align-items: center; }
 .client-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 .client-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; align-items: start; }
 .guide-picks { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; font-size: 14px; font-weight: 500; }
