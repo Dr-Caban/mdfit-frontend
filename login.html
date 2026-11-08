@@ -113,7 +113,9 @@
       const q = new URLSearchParams(location.search);
       // Same-site paths only, optionally with an app deep link like /account#pain/muscle/ql (or /intake?me=1, "Become a patient")
       const next = /^\/[a-z]*(\?me=1)?(#[a-z0-9/-]*)?$/.test(q.get("next") || "") ? q.get("next") : "/account";
-      if (auth.get() && !q.get("reset")) { location.replace(next); return; }
+      // Opened by the MD Fit app in the browser (?app=1) while this browser is already signed in: hand that session
+      // straight back to the app instead of showing the site here. Handled below (done() does the hand-off).
+      if (auth.get() && !q.get("reset") && q.get("app") !== "1") { location.replace(next); return; }
 
       let resetEmail = "";
       let resetToken = "";
@@ -139,6 +141,7 @@
         }
         auth.set(sess); location.replace(next); return { message: "Logged in. Loading your account…" };
       };
+      if (forApp && auth.get() && !q.get("handoff")) { try { done(auth.get()); } catch (e) {} }
       // ?handoff=<code>: the app coming back from the browser sign-in
       if (q.get("handoff")) {
         api("/api/clients/handoff/exchange", { code: q.get("handoff") }).then(done)
