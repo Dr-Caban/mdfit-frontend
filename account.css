@@ -14,7 +14,10 @@
 .auth-form .muted { margin: -4px 0 0; }
 .link-btn { background: none; border: 0; padding: 0; color: var(--accent-text); font: 600 14px var(--body); cursor: pointer; justify-self: start; text-decoration: underline; text-underline-offset: 3px; }
 .link-btn.danger { color: var(--err); }
-.google-signin-wrap { display: flex; justify-content: center; margin: 16px 0 0; }
+.sso-wrap { display: flex; justify-content: center; margin: 16px 0 0; }
+.apple-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; max-width: 320px; height: 46px; border: 0; border-radius: 23px; background: #000; color: #fff; font: 600 16px/1 -apple-system, system-ui, "Montserrat", sans-serif; cursor: pointer; }
+.apple-btn svg { width: 18px; height: 18px; fill: #fff; }
+.apple-btn:hover { background: #1a1a1a; }
 .auth-divider { display: flex; align-items: center; gap: 12px; margin: 14px 0 2px; color: var(--muted); font: 500 13px var(--body); text-transform: uppercase; letter-spacing: .5px; }
 .auth-divider::before, .auth-divider::after { content: ""; flex: 1; height: 1px; background: var(--line); }
 .auth-foot { text-align: center; color: rgba(255,255,255,.65); font-size: 14px; margin: 0; }

@@ -234,3 +234,10 @@
 .pm-sheet-head { display: grid; grid-template-columns: 96px 1fr; gap: 18px; align-items: center; }
 .pm-thumb { width: 96px; height: 120px; border-radius: 12px; border: 1px solid #e4ded1; background: #fff; }
 @media (max-width: 640px) { .pm-sheet-head { grid-template-columns: 72px 1fr; gap: 12px; } .pm-thumb { width: 72px; height: 90px; } }
+/* The pattern picker has no thumbnail: one centred title, never squeezed into the thumbnail column */
+.pm-sheet-head.pm-sheet-head--minimal { display: block; grid-template-columns: none; text-align: center; padding: 0 50px; }
+/* Full-screen on phones: keep the close button and title clear of the status bar / notch */
+@media (max-width: 640px) {
+  .pm-sheet-close { top: calc(12px + env(safe-area-inset-top, 0px)); }
+  .pm-sheet-body { padding-top: calc(20px + env(safe-area-inset-top, 0px)); padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px)); }
+}
