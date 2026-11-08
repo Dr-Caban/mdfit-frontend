@@ -135,9 +135,9 @@
 .app-painmap .pm-region { fill: rgba(0,0,0,0); pointer-events: all; stroke: transparent; stroke-width: 0; vector-effect: non-scaling-stroke; cursor: pointer; transition: fill .15s, stroke .15s; outline: none; }
 .app-painmap .pm-region:hover, .app-painmap .pm-region:focus-visible, .app-painmap .pm-region[aria-pressed="true"] { fill: rgba(232,192,98,.88); stroke: #FFE7A8; stroke-width: 2.4; filter: url(#pm-glow-app); }
 @media (max-width: 600px) {
-  .app-painmap .pm-stage { width: 227.3%; }
-  .app-painmap .pm-stage[data-pmside="front"] { transform: translateX(0); }
-  .app-painmap .pm-stage[data-pmside="back"] { transform: translateX(-56%); }
+  .app-painmap .pm-stage { width: 197%; }
+  .app-painmap .pm-stage[data-pmside="front"] { transform: translateX(1.7%); }
+  .app-painmap .pm-stage[data-pmside="back"] { transform: translateX(-51.6%); }
 }
 
 .pain-secondary { margin-top: 20px; }
