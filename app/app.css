@@ -100,7 +100,8 @@ svg { fill: currentColor; }
 .hero-tag b { color: var(--gold); }
 
 /* ---- Home */
-.app-top { display: flex; justify-content: space-between; align-items: center; background: var(--navy); color: #fff; margin: -16px -16px 0; padding: calc(10px + env(safe-area-inset-top)) 16px 10px; }
+.app-top { display: flex; justify-content: space-between; align-items: center; background: var(--navy); color: #fff; margin: 0 -16px; padding: calc(10px + env(safe-area-inset-top)) 16px 10px; position: sticky; top: 0; z-index: 30; }
+.notes-panel { position: sticky; top: calc(84px + env(safe-area-inset-top)); z-index: 29; }
 .app-logo { width: 64px; height: auto; }
 .bell .dot { position: absolute; top: 8px; right: 9px; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); }
 .notes-panel { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 4px 14px; margin: 12px 0; }
@@ -404,7 +405,8 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
   .hero-tag { display: block; font-size: 12px; }
 
   /* Home */
-  .app-top { margin: 0 0 -44px; padding: 0; background: none; color: var(--navy); justify-content: flex-end; }
+  .app-top { margin: 0 0 -8px; padding: 8px 0 0; background: none; color: var(--navy); justify-content: flex-end; position: static; }
+  .notes-panel { position: relative; top: auto; }
   .app-top .app-logo { display: none; }
   .hello { margin-top: 0; }
   .hello-row { padding-right: 56px; }
@@ -985,7 +987,8 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
 .tab-badge { position: absolute; top: 2px; right: 22%; min-width: 16px; height: 16px; border-radius: 8px; background: #c62828; color: #fff; font: 700 10px/16px var(--body, inherit); font-style: normal; text-align: center; padding: 0 4px; }
 .tabbar button { position: relative; }
 .more-btn { position: relative; }
-.more-btn.has-badge::after { content: ""; position: absolute; top: 4px; right: 30%; width: 9px; height: 9px; border-radius: 50%; background: #c62828; }
+.more-btn.has-badge::after, .more-btn.has-dot::after, .tabbar [data-tab].has-dot::after { content: ""; position: absolute; top: 3px; right: 28%; width: 10px; height: 10px; border-radius: 50%; background: #e5484d; border: 2px solid var(--navy); box-sizing: content-box; }
+.more-list [data-goto].has-dot::after { content: ""; margin-left: auto; width: 9px; height: 9px; border-radius: 50%; background: #e5484d; flex: none; }
 .more-list [data-badge]:not([data-badge=""])::after { content: attr(data-badge); margin-left: auto; background: #c62828; color: #fff; border-radius: 10px; padding: 1px 8px; font-size: 12px; }
 @media (min-width: 1000px) { .tab-badge { position: static; margin-left: auto; } }
 .my-payments { display: grid; gap: 10px; margin-bottom: 12px; }
