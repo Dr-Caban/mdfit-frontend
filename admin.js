@@ -783,7 +783,7 @@
           <div class="row"><button class="btn btn-sm" type="submit">Save</button><button type="button" class="mini" data-cancel-contact>Cancel</button></div>
           <p class="form-msg" role="status"></p>
         </form></div>
-        <div class="client-actions"><button type="button" class="mini" data-cmsg>Message</button><button type="button" class="mini" data-reset>Send reset code</button><button type="button" class="mini danger" data-delete>Delete account</button></div></div>
+        <div class="client-actions"><button type="button" class="mini" data-cmsg>Message</button><button type="button" class="mini" data-reset>Send password reset email</button><button type="button" class="mini danger" data-delete>Delete account</button></div></div>
       ${clientOverview(c)}
       <p class="client-docs">${docsChip(c.documents)}${c.documents && c.documents.done ? ` <button type="button" class="mini" data-cdocs>View documents</button>` : c.documents ? ` <span class="muted">No intake documents on file yet.</span>` : ""}</p><div class="intake-view" id="client-docs" hidden></div>
       ${careBox(c, st.appointmentTypes || [], ct.programs || [], (st.booking || {}).telehealthUrl)}
