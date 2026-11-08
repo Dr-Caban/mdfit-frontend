@@ -2479,7 +2479,10 @@
   }
   document.addEventListener("click", async (e) => {
     if (!e.target.closest("#manage-billing")) return;
-    try { location.href = (await apiAuth("POST", "/api/me/billing-portal", {})).url; } catch (err) { toast(err.message); }
+    try {
+      const r = await apiAuth("POST", "/api/me/billing-portal", { ui: window.MDFitNative ? "app" : "web" });
+      if (window.MDFitNative) window.MDFitNative.checkout(r.url, "billing"); else location.href = r.url;
+    } catch (err) { toast(err.message); }
   });
   $("#tier-grid").addEventListener("click", async (e) => {
     const b = e.target.closest("[data-tier]"); if (!b) return;
@@ -2489,8 +2492,10 @@
       // Stripe's own checkout, mounted inside MD Fit (no trip to another site); Apple Pay / Google Pay / Link / card
       const label = b.textContent; b.textContent = "Opening secure checkout…";
       try {
-        const r = await apiAuth("POST", "/api/me/checkout/membership", { tier: t.id, ui: "embedded", rewardCode: access.reviewCode || store.get("mdfit_review_code", null) || undefined });
-        if (r.clientSecret && window.MDFitStripe) {
+        // In the MD Fit app, Stripe's page opens in a native sheet so Apple Pay / Google Pay are available
+        const r = await apiAuth("POST", "/api/me/checkout/membership", { tier: t.id, ui: window.MDFitNative ? "app" : "embedded", rewardCode: access.reviewCode || store.get("mdfit_review_code", null) || undefined });
+        if (r.url && window.MDFitNative) { window.MDFitNative.checkout(r.url, "membership"); }
+        else if (r.clientSecret && window.MDFitStripe) {
           try { await window.MDFitStripe.open({ clientSecret: r.clientSecret, publishableKey: stripePub }); }
           catch { try { window.MDFitStripe.close(); } catch {} throw new Error("Secure checkout couldn't load. Check your connection or ad blocker and try again, or call 941-313-0562."); }
         } else if (r.url) location.href = r.url;
