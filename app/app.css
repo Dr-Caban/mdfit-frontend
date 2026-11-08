@@ -100,7 +100,8 @@ svg { fill: currentColor; }
 .hero-tag b { color: var(--gold); }
 
 /* ---- Home */
-.app-top { display: flex; justify-content: space-between; align-items: center; background: var(--navy); color: #fff; margin: 0 -16px; padding: calc(10px + env(safe-area-inset-top)) 16px 10px; }
+.app-top { display: flex; justify-content: space-between; align-items: center; background: var(--navy); color: #fff; margin: 0 -16px; padding: calc(10px + env(safe-area-inset-top)) 16px 10px; position: sticky; top: 0; z-index: 30; }
+.notes-panel { position: sticky; top: calc(84px + env(safe-area-inset-top)); z-index: 29; }
 .app-logo { width: 64px; height: auto; }
 .bell .dot { position: absolute; top: 8px; right: 9px; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); }
 .notes-panel { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 4px 14px; margin: 12px 0; }
@@ -404,7 +405,8 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
   .hero-tag { display: block; font-size: 12px; }
 
   /* Home */
-  .app-top { margin: 0 0 -8px; padding: 8px 0 0; background: none; color: var(--navy); justify-content: flex-end; }
+  .app-top { margin: 0 0 -8px; padding: 8px 0 0; background: none; color: var(--navy); justify-content: flex-end; position: static; }
+  .notes-panel { position: relative; top: auto; }
   .app-top .app-logo { display: none; }
   .hello { margin-top: 0; }
   .hello-row { padding-right: 56px; }
