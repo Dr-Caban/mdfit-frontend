@@ -113,9 +113,7 @@
       const q = new URLSearchParams(location.search);
       // Same-site paths only, optionally with an app deep link like /account#pain/muscle/ql (or /intake?me=1, "Become a patient")
       const next = /^\/[a-z]*(\?me=1)?(#[a-z0-9/-]*)?$/.test(q.get("next") || "") ? q.get("next") : "/account";
-      // Opened by the MD Fit app in the browser (?app=1) while this browser is already signed in: hand that session
-      // straight back to the app instead of showing the site here. Handled below (done() does the hand-off).
-      if (auth.get() && !q.get("reset") && q.get("app") !== "1") { location.replace(next); return; }
+      if (auth.get() && !q.get("reset")) { location.replace(next); return; }
 
       let resetEmail = "";
       let resetToken = "";
@@ -128,26 +126,7 @@
         if (first) first.focus();
       }
       document.addEventListener("click", (e) => { const b = e.target.closest("[data-mode]"); if (b) mode(b.dataset.mode); });
-      // ?app=1: this page was opened by the MD Fit app in the phone's browser (Google won't sign in inside apps).
-      // Instead of saving the session here, hand it back to the app with a one-time code.
-      const forApp = q.get("app") === "1";
-      const done = (sess) => {
-        if (!sess || !sess.token) throw new Error("Something went wrong. Please try again, or call 941-313-0562.");
-        if (forApp) {
-          fetch(API + "/api/clients/handoff", { method: "POST", headers: { Authorization: "Bearer " + sess.token } })
-            .then((r) => r.json()).then((h) => { location.replace("mdfit://auth?code=" + encodeURIComponent(h.code)); })
-            .catch(() => { auth.set(sess); location.replace(next); });
-          return { message: "Signed in. Returning to the app…" };
-        }
-        auth.set(sess); location.replace(next); return { message: "Logged in. Loading your account…" };
-      };
-      if (forApp && auth.get() && !q.get("handoff")) { try { done(auth.get()); } catch (e) {} }
-      // ?handoff=<code>: the app coming back from the browser sign-in
-      if (q.get("handoff")) {
-        api("/api/clients/handoff/exchange", { code: q.get("handoff") }).then(done)
-          .catch((e) => { const msg = $("[data-panel]:not([hidden]) .form-msg"); if (msg) { msg.className = "form-msg err"; msg.textContent = e.message; } });
-      }
-      if (forApp) { document.documentElement.classList.add("for-app"); const h = $(".auth-card h1, .auth h1, h1"); if (h) h.textContent = "Sign in to the MD Fit app"; }
+      const done = (sess) => { if (!sess || !sess.token) throw new Error("Something went wrong. Please try again, or call 941-313-0562."); auth.set(sess); location.replace(next); return { message: "Logged in. Loading your account…" }; };
 
       const ref = q.get("ref") || "";
       wire($("#login-form"), async (d) => done(await api("/api/clients/login", d)), { reset: false });
@@ -198,7 +177,6 @@
             if (el) { el.hidden = false; google.accounts.id.renderButton(el, { theme: "outline", size: "large", width: 320, text: "continue_with" }); }
           });
           ["auth-divider-login", "auth-divider-signup"].forEach((id) => { const el = document.getElementById(id); if (el) el.hidden = false; });
-          if (forApp && q.get("google") === "1") { try { google.accounts.id.prompt(); } catch (e) {} }
         };
         document.head.appendChild(s);
       }).catch(() => {});
