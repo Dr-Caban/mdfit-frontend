@@ -565,3 +565,7 @@
 .review-offer { margin: 0 0 14px; }
 .review-offer p { margin: 6px 0 10px; }
 .p-mem-offer { margin: 8px 0 0; }
+
+/* Become a patient as a Quick-actions tile on Home */
+.patient-tile { text-decoration: none; }
+.patient-tile.done .ic { color: #2e7d32; }

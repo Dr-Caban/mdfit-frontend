@@ -1161,6 +1161,7 @@
 
   async function loadAppointments() {
     appts = await apiAuth("GET", "/api/me/appointments");
+    if (typeof renderPatient === "function") renderPatient();
     $("#p-appts").innerHTML = appts.upcoming.map((a) => apptLi(a, { cancel: true, cal: true })).join("") ||
       `<li class="muted small">No visits booked. <button type="button" class="link" id="p-book-empty">Book one</button></li>`;
     $("#p-history").innerHTML = appts.past.slice(0, 20).map((a) => apptLi(a)).join("") || `<li class="muted small">Past visits show up here.</li>`;
@@ -2769,16 +2770,39 @@
   $("#cal-next").addEventListener("click", () => { calMonth = monthAdd(calMonth, 1); renderCalendar(); });
 
   // ================= Become a patient: intake documents kept on file with the account (filled at /intake?me=1)
-  function loadPatientDocs() {
-    apiAuth("GET", "/api/me/intake").then((p) => {
-      // The card appears on the Profile, as a slim line on Home and at the bottom of the Pain tool: same state everywhere
-      for (const card of $$(".patient-card")) {
-        card.classList.toggle("done", p.done);
-        const set = (sel, t) => { const el = $(sel, card); if (el) el.textContent = t; };
-        if (p.done) { set(".pc-title", "Documents on file ✓"); set(".pc-sub", "Your intake documents are on file for every visit."); set(".pc-go", "Update documents"); }
-        else if (p.completed) { set(".pc-title", "Become a patient"); set(".pc-sub", `${p.completed} of ${p.total} intake documents complete.`); set(".pc-go", "Continue ›"); }
+  let patientDocs = null;
+  function renderPatient() {
+    const p = patientDocs; if (!p) return;
+    // Full cards on the Profile and at the bottom of the Pain tool: same state everywhere
+    for (const card of $$(".patient-card:not(#patient-urgent)")) {
+      card.classList.toggle("done", p.done);
+      const set = (sel, t) => { const el = $(sel, card); if (el) el.textContent = t; };
+      if (p.done) { set(".pc-title", "Documents on file ✓"); set(".pc-sub", "Your intake documents are on file for every visit."); set(".pc-go", "Update documents"); }
+      else if (p.completed) { set(".pc-title", "Become a patient"); set(".pc-sub", `${p.completed} of ${p.total} intake documents complete.`); set(".pc-go", "Continue ›"); }
+    }
+    // Home: a tile in Quick actions
+    const tile = $("#patient-tile");
+    if (tile) {
+      tile.classList.toggle("done", p.done);
+      if (p.done) { $("#pt-title").textContent = "Documents on file"; $("#pt-sub").textContent = "Ready for every visit ✓"; }
+      else if (p.completed) { $("#pt-title").textContent = "Finish documents"; $("#pt-sub").textContent = `${p.completed} of ${p.total} done`; }
+      else { $("#pt-title").textContent = "Become a patient"; $("#pt-sub").textContent = "Intake documents"; }
+    }
+    // Home: the big card at the top only when a visit is booked and the documents aren't done (that's when it's urgent)
+    const urgent = $("#patient-urgent");
+    if (urgent) {
+      const t = todayInTz();
+      const visit = !p.done && (appts.upcoming || []).find((a) => a.status !== "cancelled" && a.date >= t);
+      urgent.hidden = !visit;
+      if (visit) {
+        const when = visit.date === t ? "today" : visit.date === addDays(t, 1) ? "tomorrow" : fmtDate(visit.date, { weekday: "long" });
+        $("#pu-sub").textContent = `Your ${visit.typeName || "visit"} is ${when} at ${fmtTime(visit.time)}. The intake documents take about 10 minutes${p.completed ? ` (${p.completed} of ${p.total} done)` : ""}.`;
+        $("#pu-go").textContent = p.completed ? "Continue documents ›" : "Start documents ›";
       }
-    }).catch(() => {});
+    }
+  }
+  function loadPatientDocs() {
+    apiAuth("GET", "/api/me/intake").then((p) => { patientDocs = p; renderPatient(); }).catch(() => {});
   }
 
   // ================= My plans on Home: programs Dr. Jared assigned ("From Dr. Jared") + programs the member saved
