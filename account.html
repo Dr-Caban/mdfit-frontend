@@ -19,24 +19,26 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="app/app.css?v=48992047">
+  <link rel="stylesheet" href="app/app.css?v=5b4d8442">
   <link rel="stylesheet" href="account.css?v=3edf13e1">
   <link rel="stylesheet" href="guides.css?v=0a19199b">
 </head>
 <body class="mdapp">
   <div class="app">
 
+    <!-- Shared header: logo + notifications, on every tab -->
+    <header class="app-top">
+      <img class="app-logo" src="assets/logo.webp" alt="MD Fit" width="160" height="160">
+      <button type="button" class="icon-btn bell" id="bell" aria-label="Notifications">
+        <svg viewBox="0 0 24 24"><path d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22zm7-6V11a7 7 0 0 0-5.5-6.84V3.5a1.5 1.5 0 0 0-3 0v.66A7 7 0 0 0 5 11v5l-2 2v1h18v-1z"/></svg>
+        <span class="dot" hidden></span>
+        <span class="bell-count" hidden></span>
+      </button>
+    </header>
+    <div class="notes-panel" id="notes" hidden></div>
+
     <!-- ================= HOME ================= -->
     <section class="view" id="view-home" data-view="home">
-      <header class="app-top">
-        <img class="app-logo" src="assets/logo.webp" alt="MD Fit" width="160" height="160">
-        <button type="button" class="icon-btn bell" id="bell" aria-label="Notifications">
-          <svg viewBox="0 0 24 24"><path d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22zm7-6V11a7 7 0 0 0-5.5-6.84V3.5a1.5 1.5 0 0 0-3 0v.66A7 7 0 0 0 5 11v5l-2 2v1h18v-1z"/></svg>
-          <span class="dot" hidden></span>
-          <span class="bell-count" hidden></span>
-        </button>
-      </header>
-      <div class="notes-panel" id="notes" hidden></div>
       <div class="hello-row"><p class="hello">Welcome back</p>
         <button type="button" class="xp-chip" data-goto="home" data-gem-jump id="xp-chip"><b id="chip-lv">Lv 1</b><span id="chip-xp">0 XP</span></button>
       </div>
