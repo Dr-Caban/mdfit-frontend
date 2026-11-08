@@ -1070,6 +1070,18 @@
     const f = $("#profile-form");
     f.name.value = client.name; f.email.value = client.email; f.phone.value = client.phone || "";
     renderReferral();
+    renderProfileMembership();
+  }
+  // Profile → Membership: the plan you're on and the way up (owner: free includes everything but the 1-on-1 calls)
+  async function renderProfileMembership() {
+    const box = $("#p-membership"); if (!box) return;
+    if (!C) await (contentLoading || loadContent()).catch(() => {});
+    const m = C && C.membership, cur = m && (C.tiers || []).find((t) => t.id === m.tier), paid = !!(cur && C.access !== "free");
+    $("#p-mem-now").innerHTML = paid ? `<b>${esc(cur.name)}</b> · ${money(cur.price)}/month${m.until ? ` · paid through ${esc(m.until)}` : ""}` : `<b>Free account</b>`;
+    $("#p-mem-note").textContent = paid
+      ? (cur.meetings ? `${cur.meetings} remote 1-on-1 sessions with Dr. Jared a month. Change or cancel any time.` : "Membership: your own workout builder and challenges, every program and lecture. Upgrade to a 1-on-1 tier for monthly video calls with Dr. Jared.")
+      : "Everything in the app is included free. Membership adds your own workout builder and challenges, and the 1-on-1 tiers add monthly video calls with Dr. Jared.";
+    $("#p-mem-go").textContent = paid ? (cur.meetings ? "Manage membership" : "Upgrade membership") : "Upgrade membership";
   }
   wire($("#profile-form"), async (d) => {
     const r = await apiAuth("PUT", "/api/me", { name: d.name, phone: d.phone }); earn("profile");
@@ -2406,13 +2418,14 @@
       ? `<div class="card mem-on"><span class="label accent">Your membership</span><h2>${esc(cur.name)}</h2><p class="muted small">Member since ${esc(m.since)}${m.until ? ` · paid through ${esc(m.until)}` : ""}</p></div><div id="accountability-tracker"></div>`
       : payOn ? `<p class="muted mem-pitch">Pick a membership below. Secure checkout by Stripe; cancel any time from Manage billing.</p>`
       : `<p class="muted mem-pitch">Pick a membership below and tap <b>Request</b>. Dr. Jared confirms it and sends payment details.</p>`;
-    if (cur && cur.id === "member" && C.access !== "free") {
+    if (cur && cur.accountability && C.access !== "free") {
       apiAuth("GET", "/api/me/accountability").then((a) => {
-        const el = $("#accountability-tracker"); if (!el) return;
-        const pct = Math.min(100, Math.round((a.activeDays / a.threshold) * 100));
+        const el = $("#accountability-tracker"); if (!el || !a.enabled) return;
+        const pct = Math.min(100, Math.round((a.activeDays / a.threshold) * 100)), left = a.threshold - a.activeDays;
         el.innerHTML = `<div class="card acct-card"><span class="label accent">Accountability tracker · ${esc(a.month)}</span>
           <div class="acct-progress"><div class="acct-bar"><i style="width:${pct}%"></i></div><span>${a.activeDays} of ${a.threshold} days</span></div>
-          ${a.free ? `<p class="acct-free">You hit ${a.threshold} days! This month is <b>free</b>.</p>` : `<p class="acct-owed">$${a.credit.toFixed(2)} off so far · $${a.owed.toFixed(2)} remaining · ${a.threshold - a.activeDays} more day${a.threshold - a.activeDays === 1 ? "" : "s"} to go free</p>`}
+          ${a.free ? `<p class="acct-free">You hit ${a.threshold} days! This month is <b>free</b>.</p>` : a.atFloor ? `<p class="acct-free">You hit ${a.threshold} days! This month is just <b>$${a.owed.toFixed(2)}</b>.</p>`
+            : `<p class="acct-owed">$${a.credit.toFixed(2)} off so far · $${a.owed.toFixed(2)} this month · ${left} more day${left === 1 ? "" : "s"} to get it down to $${Number(a.floor || 0).toFixed(2)}</p>`}
         </div>`;
       }).catch(() => {});
     }
@@ -2421,7 +2434,7 @@
     $("#tier-grid").innerHTML = C.tiers.map((t, i) => `<article class="tier${i === 1 ? " featured" : ""}${cur && cur.id === t.id ? " current" : ""}">
       ${i === 1 ? `<span class="tag">Most popular</span>` : ""}
       <h3>${esc(t.name)}</h3><p class="tier-price"><b>${money(t.price)}</b>/month</p>${rc && C.access === "free" ? `<p class="tier-first">First month ${money(Math.round(t.price * 70) / 100)} with your review code</p>` : ""}
-      ${t.meetings ? `<p class="tier-meet">${t.meetings} remote 1-on-1 sessions a month · ${t.meetingMinutes} min each</p>` : ""}
+      ${t.meetings ? `<p class="tier-meet">${t.meetings} remote 1-on-1 sessions a month · ${t.meetingMinutes} min each</p>` : t.accountability ? `<p class="tier-meet">$1 off per active day · 20 active days = <b>${money(t.floor || 0)}</b> that month</p>` : ""}
       <ul>${t.perks.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>
       ${cur && cur.id === t.id ? `<span class="tier-cur">Your plan</span>` : `<button type="button" class="${i === 1 ? "btn-gold" : "btn-ghost"} sm" data-tier="${t.id}">${payOn ? "Subscribe" : "Request"} ${esc(t.name)}</button>`}
     </article>`).join("");
@@ -2750,10 +2763,13 @@
   // ================= Become a patient: intake documents kept on file with the account (filled at /intake?me=1)
   function loadPatientDocs() {
     apiAuth("GET", "/api/me/intake").then((p) => {
-      const card = $("#patient-card");
-      card.classList.toggle("done", p.done);
-      if (p.done) { $("#pc-title").textContent = "Documents on file ✓"; $("#pc-sub").textContent = "Your intake documents are on file for every visit."; $("#pc-go").textContent = "Update documents"; }
-      else if (p.completed) { $("#pc-title").textContent = "Become a patient"; $("#pc-sub").textContent = `${p.completed} of ${p.total} intake documents complete.`; $("#pc-go").textContent = "Continue ›"; }
+      // The card appears on the Profile, as a slim line on Home and at the bottom of the Pain tool: same state everywhere
+      for (const card of $$(".patient-card")) {
+        card.classList.toggle("done", p.done);
+        const set = (sel, t) => { const el = $(sel, card); if (el) el.textContent = t; };
+        if (p.done) { set(".pc-title", "Documents on file ✓"); set(".pc-sub", "Your intake documents are on file for every visit."); set(".pc-go", "Update documents"); }
+        else if (p.completed) { set(".pc-title", "Become a patient"); set(".pc-sub", `${p.completed} of ${p.total} intake documents complete.`); set(".pc-go", "Continue ›"); }
+      }
     }).catch(() => {});
   }
 

@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="app/app.css?v=64dde34c">
-  <link rel="stylesheet" href="account.css?v=b4bb51d1">
+  <link rel="stylesheet" href="account.css?v=da2829a9">
   <link rel="stylesheet" href="guides.css?v=704fb203">
 </head>
 <body class="mdapp">
@@ -52,11 +52,6 @@
       <div class="qsearch-results" id="qsearch-results" hidden></div>
 
       <div class="home-grid"><div class="col-main">
-      <a class="card patient-card" id="patient-card" href="/intake?me=1">
-        <span class="pc-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zm-1 7V3.5L18.5 9zM8 13h8v2H8zm0 4h5v2H8z"/></svg></span>
-        <span class="pc-txt"><b id="pc-title">Become a patient</b><span id="pc-sub">Fill out your intake documents once, before your first visit. They stay on file for every appointment.</span></span>
-        <span class="pc-go" id="pc-go">Start intake documents ›</span>
-      </a>
       <div class="card my-plans" id="my-plans" hidden>
         <div id="mp-assigned"></div>
         <div id="mp-saved"></div>
@@ -108,6 +103,7 @@
         <a class="card q" href="/book"><svg viewBox="0 0 24 24" class="ic green"><path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 16H5V9h14zM7 11h2v2H7zm4 0h2v2h-2zm4 0h2v2h-2zm-8 4h2v2H7zm4 0h2v2h-2z"/></svg><b>Book a Visit</b><span>See Dr. Jared</span></a>
       </div>
 
+      <a class="card patient-card slim" href="/intake?me=1" aria-label="Become a patient: intake documents"><span class="pc-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zm-1 7V3.5L18.5 9zM8 13h8v2H8zm0 4h5v2H8z"/></svg></span><span class="pc-txt"><b class="pc-title">Become a patient</b><span class="pc-sub">Intake documents, once, before your first visit.</span></span><span class="pc-go">Start ›</span></a>
       </div><div class="col-side">
       <div class="card featured-progs" id="featured-progs">
         <div class="card-head"><span class="label accent">Dr. Jared's Programs</span><button type="button" class="link-sm" data-goto="programs">See all</button></div>
@@ -339,6 +335,7 @@
       </div>
 
       <div id="muscle-report" hidden></div>
+      <a class="card patient-card slim pain-patient" href="/intake?me=1" aria-label="Become a patient: intake documents"><span class="pc-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zm-1 7V3.5L18.5 9zM8 13h8v2H8zm0 4h5v2H8z"/></svg></span><span class="pc-txt"><b class="pc-title">Want Dr. Jared to look at this in person?</b><span class="pc-sub">Become a patient: intake documents, once, before your first visit.</span></span><span class="pc-go">Start ›</span></a>
       <p class="fine center" style="margin:8px 16px 0;opacity:.55">Educational only, not a diagnosis.</p>
     </section>
 
@@ -466,6 +463,14 @@
         <div class="hb-norm p-goal" id="p-goal" role="radiogroup" aria-label="My daily XP goal"></div>
         <p class="muted small" id="p-goal-now"></p>
       </div>
+
+      <div class="card" id="p-membership">
+        <div class="card-head"><span class="label">Membership</span><button type="button" class="btn-gold sm" id="p-mem-go" data-goto="premium">Upgrade membership</button></div>
+        <p id="p-mem-now"><b>Free account</b></p>
+        <p class="muted small" id="p-mem-note">Everything in the app is included free. Membership adds your own workout builder and challenges, and the 1-on-1 tiers add monthly video calls with Dr. Jared.</p>
+      </div>
+
+      <a class="card patient-card" href="/intake?me=1"><span class="pc-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zm-1 7V3.5L18.5 9zM8 13h8v2H8zm0 4h5v2H8z"/></svg></span><span class="pc-txt"><b class="pc-title">Become a patient</b><span class="pc-sub">Fill out your intake documents once, before your first visit. They stay on file for every appointment.</span></span><span class="pc-go">Start intake documents ›</span></a>
 
       <div class="card list-card">
         <div class="card-head"><span class="label">My appointments</span><button type="button" class="btn-blue sm" id="p-book-open">Book an evaluation</button></div>
@@ -715,7 +720,7 @@
   <script src="musclereports.js?v=cd9ced26"></script>
   <script src="guides.js?v=4608523e"></script>
   <script src="stripe-checkout.js?v=087989ec"></script>
-  <script src="account.js?v=1b1906ff"></script>
+  <script src="account.js?v=b67531c2"></script>
   <script src="account-xp.js?v=5f3c6968"></script>
   <script src="account-habits.js?v=294905ab"></script>
 <script defer src="/_vercel/insights/script.js"></script>

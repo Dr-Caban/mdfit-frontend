@@ -1293,6 +1293,8 @@
       <label>Price per month ($)<input data-f="price" type="number" min="0" step="0.01" value="${x.price}"></label>
       <label>1-on-1 sessions per month<input data-f="meetings" type="number" min="0" max="31" value="${x.meetings}"></label>
       <label>Session length (min)<input data-f="meetingMinutes" type="number" min="0" max="180" value="${x.meetingMinutes}"></label>
+      <label><input data-f="accountability" type="checkbox"${x.accountability ? " checked" : ""}> Accountability credit ($1 off per active day, 20 days max)</label>
+      <label>Lowest price after credits ($)<input data-f="floor" type="number" min="0" step="0.01" value="${x.floor ?? 0}"></label>
       <label class="wide">Perks, one per line<textarea data-f="perks" rows="3">${esc(x.perks.join("\n"))}</textarea></label>` },
     tracks: { blank: { id: "", title: "", region: "", img: [], pts: [], note: "", levels: [{ title: "Level 1", videos: [] }] }, html: (x) => {
       const MUS = (window.MDFitMuscles || {}).MUSCLES || {};

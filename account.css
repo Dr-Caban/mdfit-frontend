@@ -549,3 +549,14 @@
 #p-goal-card .p-goal { margin: 10px 0 8px; }
 #p-goal-card .p-goal button { min-height: 56px; font-size: 14px; }
 #p-goal-card .p-goal button small { font-size: 12px; }
+
+/* Become a patient: slim one-line version (bottom of Home, bottom of the Pain tool) */
+.patient-card.slim { grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; padding: 10px 14px; margin-top: 14px; }
+.patient-card.slim .pc-ic { grid-row: auto; width: 34px; height: 34px; border-radius: 10px; }
+.patient-card.slim .pc-ic svg { width: 18px; height: 18px; }
+.patient-card.slim .pc-txt b { font-size: 15px; }
+.patient-card.slim .pc-txt span { font-size: 12.5px; margin-top: 1px; }
+.patient-card.slim .pc-go { white-space: nowrap; font-size: 13px; }
+.patient-card.pain-patient { margin: 18px 16px 0; }
+#p-membership #p-mem-now { margin: 4px 0 6px; font-size: 16px; }
+.patient-card.slim .pc-go { grid-column: 3; }
