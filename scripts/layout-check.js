@@ -128,7 +128,9 @@ function measure() {
 (async () => {
   const files = htmlFiles();
   missingAssets(files);
-  const pages = files.map(routeOf).filter((r) => r !== "/account");
+  // /account has its own screen loop below; /app-return immediately bounces to the mdfit:// app scheme, which a
+  // headless browser can't follow, so "load" never fires
+  const pages = files.map(routeOf).filter((r) => r !== "/account" && r !== "/app-return");
   const dataDir = fs.mkdtempSync(path.join(os.tmpdir(), "mdfit-layout-"));
   const server = serveSite(), api = await startApi(dataDir), browser = await chromium.launch();
   try {
