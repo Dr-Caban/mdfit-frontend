@@ -8,8 +8,8 @@ Generated 2026-11-09 by `node scripts/seo/overview.js` from the files in this re
 |---|---|---|---|---|---|---|---|---|
 | Homepage | 1 | 919 | 919 | 56 | 407 | 0 | 0 | 1/1 |
 | Conditions | 55 | 1137 | 450 | 60 | 55 | 0 | 30 | 55/55 |
-| Treatments | 7 | 931 | 152 | 57 | 25 | 0 | 0 | 7/7 |
-| Service areas | 6 | 1056 | 516 | 59 | 14 | 0 | 0 | 6/6 |
+| Treatments | 7 | 985 | 613 | 57 | 26 | 0 | 0 | 7/7 |
+| Service areas | 6 | 967 | 516 | 59 | 14 | 0 | 0 | 6/6 |
 | Local landing pages | 6 | 1456 | 1375 | 53 | 9 | 0 | 6 | 6/6 |
 | Activities & audiences | 9 | 1425 | 334 | 60 | 12 | 0 | 9 | 9/9 |
 | Muscle library | 68 | 1388 | 1005 | 58 | 18 | 0 | 68 | 68/68 |
@@ -17,7 +17,7 @@ Generated 2026-11-09 by `node scripts/seo/overview.js` from the files in this re
 | Guides | 7 | 476 | 368 | 56 | 22 | 0 | 0 | 7/7 |
 | Blog | 15 | 716 | 396 | 60 | 12 | 0 | 4 | 15/15 |
 | Other | 4 | 571 | 19 | 37 | 310 | 0 | 0 | 4/4 |
-| **Total** | **237** | 1206 | | | | 0 | 176 | 237/237 |
+| **Total** | **237** | 1205 | | | | 0 | 176 | 237/237 |
 
 Words = text inside the page's main content (header, footer and menus excluded). Inbound links = other pages on this site linking to the page. "Awaiting clinical review" = generated from Dr. Jared's data and marked draft until he signs off.
 
@@ -36,7 +36,7 @@ Words = text inside the page's main content (header, footer and menus excluded).
 
 | URL | Title | Title len | Desc len | Words | Inbound | Schema | Status |
 |---|---|---|---|---|---|---|---|
-| /conditions/ | Pain & Rehab Conditions We Treat in Sarasota \| MD Fit | 53 | 158 | 1266 | 122 | Physician, CollectionPage | live |
+| /conditions/ | Pain & Rehab Conditions We Treat in Sarasota \| MD Fit | 53 | 158 | 1266 | 123 | Physician, CollectionPage | live |
 | /conditions/achilles-tendon-pain | Achilles Tendon Pain Treatment in Sarasota, FL \| MD Fit | 55 | 155 | 588 | 83 | MedicalWebPage, FAQPage, BreadcrumbList | live |
 | /conditions/acl-reconstruction-recovery | ACL Reconstruction Recovery in Sarasota \| MD Fit | 48 | 158 | 1614 | 36 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
 | /conditions/ankle-sprain | Ankle Sprain Rehab in Sarasota, FL \| MD Fit | 43 | 151 | 1642 | 34 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
@@ -96,24 +96,24 @@ Words = text inside the page's main content (header, footer and menus excluded).
 
 | URL | Title | Title len | Desc len | Words | Inbound | Schema | Status |
 |---|---|---|---|---|---|---|---|
-| /treatments/ | Treatments: Rehab, Medical Massage & Strength \| MD Fit | 54 | 157 | 152 | 66 | Physician, CollectionPage | live |
-| /treatments/chronic-pain-program | Chronic Pain Program in Sarasota, FL \| MD Fit | 45 | 157 | 1029 | 4 | Physician, MedicalWebPage, Service, FAQPage, BreadcrumbList | live |
-| /treatments/clinical-exercise-physiology | Clinical Exercise Physiology in Sarasota, FL \| MD Fit | 53 | 155 | 1060 | 12 | Physician, MedicalWebPage, Service, FAQPage, BreadcrumbList | live |
-| /treatments/functional-mobility | Functional Mobility in Sarasota, FL \| MD Fit | 44 | 159 | 1055 | 18 | Physician, MedicalWebPage, Service, FAQPage, BreadcrumbList | live |
-| /treatments/medical-massage | Medical Massage in Sarasota, FL \| MD Fit | 40 | 160 | 1044 | 53 | Physician, MedicalWebPage, Service, FAQPage, BreadcrumbList | live |
-| /treatments/post-op-rehab-timelines | Post-Op Rehabilitation Timelines in Sarasota, FL \| MD Fit | 57 | 155 | 1120 | 8 | Physician, MedicalWebPage, Service, FAQPage, BreadcrumbList | live |
-| /treatments/strength-and-performance | Strength & Performance Training in Sarasota, FL \| MD Fit | 56 | 160 | 1055 | 15 | Physician, MedicalWebPage, Service, FAQPage, BreadcrumbList | live |
+| /treatments/ | Treatments: Rehab, Medical Massage & Strength \| MD Fit | 54 | 153 | 613 | 66 | Physician, CollectionPage | live |
+| /treatments/chronic-pain-program | Chronic Pain Program in Sarasota, FL \| MD Fit | 45 | 157 | 1029 | 5 | Physician, MedicalWebPage, Service, FAQPage, BreadcrumbList | live |
+| /treatments/clinical-exercise-physiology | Clinical Exercise Physiology in Sarasota, FL \| MD Fit | 53 | 155 | 1050 | 13 | Physician, MedicalWebPage, Service, FAQPage, BreadcrumbList | live |
+| /treatments/functional-mobility | Functional Mobility in Sarasota, FL \| MD Fit | 44 | 159 | 1055 | 19 | Physician, MedicalWebPage, Service, FAQPage, BreadcrumbList | live |
+| /treatments/medical-massage | Medical Massage in Sarasota, FL \| MD Fit | 40 | 160 | 1044 | 54 | Physician, MedicalWebPage, Service, FAQPage, BreadcrumbList | live |
+| /treatments/post-op-rehab-timelines | Post-Op Rehabilitation Timelines in Sarasota, FL \| MD Fit | 57 | 155 | 1051 | 9 | Physician, MedicalWebPage, Service, FAQPage, BreadcrumbList | live |
+| /treatments/strength-and-performance | Strength & Performance Training in Sarasota, FL \| MD Fit | 56 | 160 | 1055 | 16 | Physician, MedicalWebPage, Service, FAQPage, BreadcrumbList | live |
 
 ## Service areas (6)
 
 | URL | Title | Title len | Desc len | Words | Inbound | Schema | Status |
 |---|---|---|---|---|---|---|---|
 | /areas/ | Areas We Serve: Sarasota, Bradenton, Venice & More \| MD Fit | 59 | 159 | 516 | 66 | Physician, CollectionPage | live |
-| /areas/bradenton | Physical Rehab & Pain Treatment near Bradenton \| MD Fit | 55 | 137 | 1244 | 3 | Physician, MedicalWebPage, FAQPage, BreadcrumbList | live |
-| /areas/lakewood-ranch | Physical Rehab & Pain Treatment, Lakewood Ranch \| MD Fit | 56 | 153 | 1146 | 3 | Physician, MedicalWebPage, FAQPage, BreadcrumbList | live |
-| /areas/osprey | Physical Rehab & Pain Treatment near Osprey, FL \| MD Fit | 56 | 142 | 1043 | 3 | Physician, MedicalWebPage, FAQPage, BreadcrumbList | live |
-| /areas/sarasota | Physical Rehab & Pain Treatment in Sarasota, FL \| MD Fit | 56 | 155 | 1300 | 3 | Physician, MedicalWebPage, FAQPage, BreadcrumbList | live |
-| /areas/venice | Physical Rehab & Pain Treatment near Venice, FL \| MD Fit | 56 | 152 | 1086 | 3 | Physician, MedicalWebPage, FAQPage, BreadcrumbList | live |
+| /areas/bradenton | Physical Rehab & Pain Treatment near Bradenton \| MD Fit | 55 | 137 | 1100 | 3 | Physician, MedicalWebPage, FAQPage, BreadcrumbList | live |
+| /areas/lakewood-ranch | Physical Rehab & Pain Treatment, Lakewood Ranch \| MD Fit | 56 | 153 | 1018 | 3 | Physician, MedicalWebPage, FAQPage, BreadcrumbList | live |
+| /areas/osprey | Physical Rehab & Pain Treatment near Osprey, FL \| MD Fit | 56 | 142 | 997 | 3 | Physician, MedicalWebPage, FAQPage, BreadcrumbList | live |
+| /areas/sarasota | Physical Rehab & Pain Treatment in Sarasota, FL \| MD Fit | 56 | 155 | 1136 | 3 | Physician, MedicalWebPage, FAQPage, BreadcrumbList | live |
+| /areas/venice | Physical Rehab & Pain Treatment near Venice, FL \| MD Fit | 56 | 152 | 1036 | 3 | Physician, MedicalWebPage, FAQPage, BreadcrumbList | live |
 
 ## Local landing pages (6)
 
@@ -144,7 +144,7 @@ Words = text inside the page's main content (header, footer and menus excluded).
 
 | URL | Title | Title len | Desc len | Words | Inbound | Schema | Status |
 |---|---|---|---|---|---|---|---|
-| /muscles/ | Muscle Pain Library: 67 Muscles Explained \| MD Fit | 50 | 146 | 1317 | 69 | CollectionPage, BreadcrumbList | draft |
+| /muscles/ | Muscle Pain Library: 67 Muscles Explained \| MD Fit | 50 | 146 | 1317 | 70 | CollectionPage, BreadcrumbList | draft |
 | /muscles/adductor-longus-brevis | Adductor longus & brevis Pain & Trigger Points \| MD Fit | 55 | 158 | 1174 | 19 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
 | /muscles/adductor-magnus | Adductor magnus Pain & Trigger Points \| MD Fit | 46 | 149 | 1052 | 10 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
 | /muscles/anterior-deltoid | Anterior deltoid Pain & Trigger Points \| MD Fit | 47 | 150 | 1434 | 18 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
@@ -217,7 +217,7 @@ Words = text inside the page's main content (header, footer and menus excluded).
 
 | URL | Title | Title len | Desc len | Words | Inbound | Schema | Status |
 |---|---|---|---|---|---|---|---|
-| /pain/ | Where Does It Hurt? Pain by Location \| MD Fit | 45 | 159 | 1759 | 60 | CollectionPage, BreadcrumbList | draft |
+| /pain/ | Where Does It Hurt? Pain by Location \| MD Fit | 45 | 159 | 1759 | 61 | CollectionPage, BreadcrumbList | draft |
 | /pain/along-one-rib | Pain at the Along One Rib: Causes & Relief \| MD Fit | 51 | 160 | 1307 | 10 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
 | /pain/around-the-ear | Pain at the Ear Area: Causes & Relief \| MD Fit | 46 | 160 | 1232 | 10 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
 | /pain/back-of-head | Pain at the Back of the Head: Causes & Relief \| MD Fit | 54 | 160 | 1218 | 10 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
