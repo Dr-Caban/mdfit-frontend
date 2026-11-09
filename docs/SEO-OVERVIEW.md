@@ -6,40 +6,26 @@ Generated 2026-11-09 by `node scripts/seo/overview.js` from the files in this re
 
 | Group | Pages | Avg words | Min words | Longest title | Avg inbound links | Orphans | Awaiting clinical review | In sitemap |
 |---|---|---|---|---|---|---|---|---|
-| Homepage | 1 | 898 | 898 | 56 | 935 | 0 | 0 | 1/1 |
-| Conditions | 55 | 981 | 409 | 60 | 28 | 0 | 30 | 55/55 |
-| Treatments | 7 | 389 | 152 | 57 | 50 | 0 | 0 | 7/7 |
-| Service areas | 6 | 385 | 82 | 59 | 41 | 0 | 0 | 6/6 |
-| Local landing pages | 6 | 1396 | 1305 | 53 | 3 | 1 | 6 | 6/6 |
-| Activities & audiences | 9 | 1298 | 262 | 60 | 3 | 0 | 9 | 9/9 |
+| Homepage | 1 | 898 | 898 | 56 | 611 | 0 | 0 | 1/1 |
+| Conditions | 55 | 1081 | 409 | 60 | 55 | 0 | 30 | 55/55 |
+| Treatments | 7 | 389 | 152 | 57 | 34 | 0 | 0 | 7/7 |
+| Service areas | 6 | 385 | 82 | 59 | 25 | 0 | 0 | 6/6 |
+| Local landing pages | 6 | 1396 | 1305 | 53 | 9 | 0 | 6 | 6/6 |
+| Activities & audiences | 9 | 1362 | 326 | 60 | 10 | 0 | 9 | 9/9 |
 | Muscle library | 68 | 1318 | 935 | 58 | 18 | 0 | 68 | 68/68 |
-| Pain locations | 59 | 1239 | 1041 | 60 | 15 | 0 | 59 | 59/59 |
+| Pain locations | 59 | 1240 | 1041 | 60 | 15 | 0 | 59 | 59/59 |
 | Guides | 7 | 476 | 368 | 56 | 22 | 0 | 0 | 7/7 |
-| Blog | 15 | 700 | 396 | 60 | 23 | 0 | 4 | 15/15 |
-| Other | 4 | 566 | 19 | 37 | 398 | 0 | 0 | 4/4 |
-| **Total** | **237** | 1092 | | | | 1 | 176 | 237/237 |
+| Blog | 15 | 714 | 396 | 60 | 17 | 0 | 4 | 15/15 |
+| Other | 4 | 566 | 19 | 37 | 344 | 0 | 0 | 4/4 |
+| **Total** | **237** | 1119 | | | | 0 | 176 | 237/237 |
 
 Words = text inside the page's main content (header, footer and menus excluded). Inbound links = other pages on this site linking to the page. "Awaiting clinical review" = generated from Dr. Jared's data and marked draft until he signs off.
 
-## Issues to fix (48)
+## Issues to fix (31)
 
-- /activities/: description 166 chars
-- /activities/postpartum-return-to-exercise: only 1 internal link pointing at it
-- /activities/weightlifting-crossfit: only 1 internal link pointing at it
-- /areas/bradenton: only 1 internal link pointing at it
-- /areas/lakewood-ranch: only 1 internal link pointing at it
-- /areas/osprey: only 1 internal link pointing at it
-- /areas/sarasota: only 1 internal link pointing at it
-- /areas/venice: only 1 internal link pointing at it
-- /best-rehab-near-me-sarasota: only 0 internal links pointing at it
 - /blog/golf-back-pain-hip-problem: description 85 chars
-- /blog/headache-that-starts-in-neck: only 1 internal link pointing at it
-- /blog/pain-behind-the-knee: only 1 internal link pointing at it
-- /blog/ql-catching-low-back-pain: only 1 internal link pointing at it
 - /blog/running-over-50: description 102 chars
 - /blog/sciatica-or-glute: description 106 chars
-- /blog/snowbird-season-restart-safely: only 1 internal link pointing at it
-- /blog/what-is-a-cep: only 1 internal link pointing at it
 - /book: description 167 chars
 - /conditions/achilles-tendon-pain: description 168 chars
 - /conditions/balance-fall-prevention: description 173 chars
@@ -62,87 +48,84 @@ Words = text inside the page's main content (header, footer and menus excluded).
 - /conditions/scoliosis-support: description 180 chars
 - /conditions/shin-splints: description 177 chars
 - /conditions/shoulder-pain: description 176 chars
-- /conditions/spinal-stenosis: only 1 internal link pointing at it
 - /conditions/sports-injury-rehab: description 176 chars
 - /conditions/tennis-elbow: description 184 chars
 - /guides/calf: description 108 chars
 - /guides/rotator-cuff: description 108 chars
 - /: description 173 chars
-- /post-op-knee-rehab-sarasota: only 1 internal link pointing at it
-- /post-op-shoulder-rehab-sarasota: only 1 internal link pointing at it
 - /treatments/: description 167 chars
 
 ## Homepage (1)
 
 | URL | Title | Title len | Desc len | Words | Inbound | Schema | Status |
 |---|---|---|---|---|---|---|---|
-| / | MD Fit \| Pain Treatment & Physical Rehab in Sarasota, FL | 56 | 173 | 898 | 935 | WebSite, Physician, FAQPage | live |
+| / | MD Fit \| Pain Treatment & Physical Rehab in Sarasota, FL | 56 | 173 | 898 | 611 | WebSite, Physician, FAQPage | live |
 
 ## Conditions (55)
 
 | URL | Title | Title len | Desc len | Words | Inbound | Schema | Status |
 |---|---|---|---|---|---|---|---|
-| /conditions/ | Pain & Rehab Conditions We Treat in Sarasota \| MD Fit | 53 | 170 | 1241 | 298 | Physician, CollectionPage | live |
-| /conditions/achilles-tendon-pain | Achilles Tendon Pain Treatment in Sarasota, FL \| MD Fit | 55 | 168 | 547 | 50 | MedicalWebPage, FAQPage, BreadcrumbList | live |
-| /conditions/acl-reconstruction-recovery | ACL Reconstruction Recovery in Sarasota \| MD Fit | 48 | 158 | 1361 | 5 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /conditions/ankle-sprain | Ankle Sprain Rehab in Sarasota, FL \| MD Fit | 43 | 151 | 1389 | 2 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /conditions/balance-fall-prevention | Balance & Fall Prevention Treatment in Sarasota, FL \| MD Fit | 60 | 173 | 409 | 39 | MedicalWebPage, FAQPage, BreadcrumbList | live |
-| /conditions/biceps-tendinopathy | Biceps Tendinopathy Treatment in Sarasota, FL \| MD Fit | 54 | 159 | 1418 | 3 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /conditions/carpal-tunnel-wrist-pain | Carpal Tunnel & Wrist Pain Treatment, Sarasota \| MD Fit | 55 | 174 | 457 | 33 | MedicalWebPage, FAQPage, BreadcrumbList | live |
-| /conditions/cervicogenic-headache | Cervicogenic Headache Care in Sarasota \| MD Fit | 47 | 152 | 1320 | 7 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /conditions/chest-wall-pain | Chest Wall Pain Care in Sarasota, FL \| MD Fit | 45 | 154 | 1400 | 3 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /conditions/chronic-ankle-instability | Chronic Ankle Instability Treatment in Sarasota \| MD Fit | 56 | 153 | 1405 | 3 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /conditions/chronic-pain | Chronic Pain Treatment in Sarasota, FL \| MD Fit | 47 | 160 | 440 | 40 | MedicalWebPage, FAQPage, BreadcrumbList | live |
-| /conditions/de-quervains | De Quervain's Thumb & Wrist Pain in Sarasota \| MD Fit | 53 | 154 | 1368 | 6 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /conditions/desk-neck-pain | Desk Neck Pain Relief in Sarasota, FL \| MD Fit | 46 | 154 | 1337 | 11 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /conditions/frozen-shoulder | Frozen Shoulder Treatment in Sarasota, FL \| MD Fit | 50 | 185 | 466 | 38 | MedicalWebPage, FAQPage, BreadcrumbList | live |
-| /conditions/golfers-elbow | Golfer's Elbow Treatment in Sarasota, FL \| MD Fit | 49 | 185 | 570 | 45 | MedicalWebPage, FAQPage, BreadcrumbList | live |
-| /conditions/groin-strain | Groin Strain Treatment in Sarasota, FL \| MD Fit | 47 | 147 | 1346 | 4 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /conditions/hamstring-strain | Hamstring Strain Recovery in Sarasota, FL \| MD Fit | 50 | 153 | 1363 | 6 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /conditions/herniated-disc | Herniated Disc Treatment in Sarasota, FL \| MD Fit | 49 | 187 | 465 | 29 | MedicalWebPage, FAQPage, BreadcrumbList | live |
-| /conditions/hip-bursitis | Hip Bursitis & Outer Hip Pain in Sarasota, FL \| MD Fit | 54 | 145 | 1423 | 5 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /conditions/hip-labral-tear | Hip Labral Tear Relief in Sarasota, FL \| MD Fit | 47 | 152 | 1386 | 5 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /conditions/hip-osteoarthritis | Hip Osteoarthritis Relief in Sarasota, FL \| MD Fit | 50 | 146 | 1384 | 12 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /conditions/hip-pain | Hip Pain Treatment in Sarasota, FL \| MD Fit | 43 | 156 | 431 | 52 | MedicalWebPage, FAQPage, BreadcrumbList | live |
-| /conditions/hip-replacement-rehab | Hip Replacement Rehab in Sarasota, FL \| MD Fit | 46 | 152 | 1438 | 4 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /conditions/it-band-syndrome | IT Band Syndrome Treatment in Sarasota, FL \| MD Fit | 51 | 164 | 452 | 31 | MedicalWebPage, FAQPage, BreadcrumbList | live |
-| /conditions/jaw-tmj-pain | Jaw Pain & TMJ Treatment in Sarasota, FL \| MD Fit | 49 | 174 | 533 | 41 | MedicalWebPage, FAQPage, BreadcrumbList | live |
-| /conditions/knee-osteoarthritis | Knee Osteoarthritis Relief in Sarasota, FL \| MD Fit | 51 | 156 | 1376 | 15 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /conditions/knee-pain | Knee Pain & Knee Surgery Recovery, Sarasota \| MD Fit | 52 | 181 | 441 | 48 | MedicalWebPage, FAQPage, BreadcrumbList | live |
-| /conditions/knee-replacement-rehab | Knee Replacement Rehab in Sarasota, FL \| MD Fit | 47 | 149 | 1335 | 6 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /conditions/low-back-pain | Low Back Pain Treatment in Sarasota, FL \| MD Fit | 48 | 161 | 629 | 82 | MedicalWebPage, FAQPage, BreadcrumbList | live |
-| /conditions/meniscus-tear-recovery | Meniscus Tear Recovery in Sarasota, FL \| MD Fit | 47 | 157 | 1403 | 7 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /conditions/neck-pain | Neck Pain & Tension Headache Treatment, Sarasota \| MD Fit | 57 | 177 | 443 | 53 | MedicalWebPage, FAQPage, BreadcrumbList | live |
-| /conditions/patellar-tendinopathy | Patellar Tendinopathy in Sarasota, FL \| MD Fit | 46 | 159 | 1344 | 14 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /conditions/patellofemoral-pain | Patellofemoral Pain (Runner's Knee) in Sarasota \| MD Fit | 56 | 153 | 1416 | 6 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /conditions/pelvic-floor-rehab | Pelvic Floor & Core Rehab in Sarasota, FL \| MD Fit | 50 | 181 | 456 | 29 | MedicalWebPage, FAQPage, BreadcrumbList | live |
-| /conditions/piriformis-syndrome | Piriformis Syndrome Treatment in Sarasota, FL \| MD Fit | 54 | 183 | 458 | 30 | MedicalWebPage, FAQPage, BreadcrumbList | live |
-| /conditions/plantar-fasciitis | Plantar Fasciitis & Heel Pain Treatment, Sarasota \| MD Fit | 58 | 177 | 590 | 43 | MedicalWebPage, FAQPage, BreadcrumbList | live |
-| /conditions/post-surgical-rehab | Post-Surgical Rehabilitation in Sarasota, FL \| MD Fit | 53 | 176 | 412 | 48 | MedicalWebPage, FAQPage, BreadcrumbList | live |
-| /conditions/postural-kyphosis | Postural Kyphosis Correction in Sarasota \| MD Fit | 49 | 157 | 1344 | 7 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /conditions/rotator-cuff-repair-rehab | Rotator Cuff Repair Rehab in Sarasota, FL \| MD Fit | 50 | 152 | 1442 | 3 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /conditions/rotator-cuff-tear | Rotator Cuff Tear Treatment in Sarasota, FL \| MD Fit | 52 | 180 | 445 | 47 | MedicalWebPage, FAQPage, BreadcrumbList | live |
-| /conditions/sciatica | Sciatica-Type Pain Treatment in Sarasota, FL \| MD Fit | 53 | 166 | 554 | 64 | MedicalWebPage, FAQPage, BreadcrumbList | live |
-| /conditions/scoliosis-support | Scoliosis Support & Posture Care in Sarasota \| MD Fit | 53 | 180 | 443 | 25 | MedicalWebPage, FAQPage, BreadcrumbList | live |
-| /conditions/shin-splints | Shin Splints Treatment in Sarasota, FL \| MD Fit | 47 | 177 | 558 | 46 | MedicalWebPage, FAQPage, BreadcrumbList | live |
-| /conditions/shoulder-bursitis | Shoulder Bursitis Treatment in Sarasota, FL \| MD Fit | 52 | 153 | 1397 | 3 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /conditions/shoulder-impingement | Shoulder Impingement Treatment in Sarasota, FL \| MD Fit | 55 | 156 | 1425 | 16 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /conditions/shoulder-pain | Shoulder Pain Treatment in Sarasota, FL \| MD Fit | 48 | 176 | 441 | 47 | MedicalWebPage, FAQPage, BreadcrumbList | live |
-| /conditions/si-joint-pain | SI Joint Pain Treatment in Sarasota, FL \| MD Fit | 48 | 156 | 1274 | 8 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /conditions/spinal-stenosis | Spinal Stenosis Exercise Care in Sarasota \| MD Fit | 50 | 159 | 1307 | 1 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /conditions/sports-injury-rehab | Sports Injury Rehabilitation in Sarasota, FL \| MD Fit | 53 | 176 | 410 | 49 | MedicalWebPage, FAQPage, BreadcrumbList | live |
-| /conditions/tennis-elbow | Tennis Elbow Treatment in Sarasota, FL \| MD Fit | 47 | 184 | 607 | 52 | MedicalWebPage, FAQPage, BreadcrumbList | live |
-| /conditions/tension-headache | Tension Headache Relief in Sarasota, FL \| MD Fit | 48 | 151 | 1307 | 9 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /conditions/thoracic-outlet-symptoms | Thoracic Outlet Symptoms in Sarasota \| MD Fit | 45 | 155 | 1352 | 4 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /conditions/trigger-finger | Trigger Finger Treatment in Sarasota, FL \| MD Fit | 49 | 152 | 1344 | 2 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /conditions/upper-back-rhomboid-pain | Upper Back & Rhomboid Pain in Sarasota \| MD Fit | 47 | 155 | 1272 | 4 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /conditions/whiplash | Whiplash Recovery in Sarasota, FL \| MD Fit | 42 | 156 | 1385 | 2 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /conditions/ | Pain & Rehab Conditions We Treat in Sarasota \| MD Fit | 53 | 170 | 1266 | 190 | Physician, CollectionPage | live |
+| /conditions/achilles-tendon-pain | Achilles Tendon Pain Treatment in Sarasota, FL \| MD Fit | 55 | 168 | 547 | 80 | MedicalWebPage, FAQPage, BreadcrumbList | live |
+| /conditions/acl-reconstruction-recovery | ACL Reconstruction Recovery in Sarasota \| MD Fit | 48 | 158 | 1544 | 34 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /conditions/ankle-sprain | Ankle Sprain Rehab in Sarasota, FL \| MD Fit | 43 | 151 | 1572 | 31 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /conditions/balance-fall-prevention | Balance & Fall Prevention Treatment in Sarasota, FL \| MD Fit | 60 | 173 | 409 | 69 | MedicalWebPage, FAQPage, BreadcrumbList | live |
+| /conditions/biceps-tendinopathy | Biceps Tendinopathy Treatment in Sarasota, FL \| MD Fit | 54 | 159 | 1602 | 32 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /conditions/carpal-tunnel-wrist-pain | Carpal Tunnel & Wrist Pain Treatment, Sarasota \| MD Fit | 55 | 174 | 457 | 63 | MedicalWebPage, FAQPage, BreadcrumbList | live |
+| /conditions/cervicogenic-headache | Cervicogenic Headache Care in Sarasota \| MD Fit | 47 | 152 | 1503 | 36 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /conditions/chest-wall-pain | Chest Wall Pain Care in Sarasota, FL \| MD Fit | 45 | 154 | 1582 | 32 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /conditions/chronic-ankle-instability | Chronic Ankle Instability Treatment in Sarasota \| MD Fit | 56 | 153 | 1588 | 32 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /conditions/chronic-pain | Chronic Pain Treatment in Sarasota, FL \| MD Fit | 47 | 160 | 440 | 70 | MedicalWebPage, FAQPage, BreadcrumbList | live |
+| /conditions/de-quervains | De Quervain's Thumb & Wrist Pain in Sarasota \| MD Fit | 53 | 154 | 1551 | 35 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /conditions/desk-neck-pain | Desk Neck Pain Relief in Sarasota, FL \| MD Fit | 46 | 154 | 1519 | 40 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /conditions/frozen-shoulder | Frozen Shoulder Treatment in Sarasota, FL \| MD Fit | 50 | 185 | 466 | 68 | MedicalWebPage, FAQPage, BreadcrumbList | live |
+| /conditions/golfers-elbow | Golfer's Elbow Treatment in Sarasota, FL \| MD Fit | 49 | 185 | 570 | 75 | MedicalWebPage, FAQPage, BreadcrumbList | live |
+| /conditions/groin-strain | Groin Strain Treatment in Sarasota, FL \| MD Fit | 47 | 147 | 1530 | 33 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /conditions/hamstring-strain | Hamstring Strain Recovery in Sarasota, FL \| MD Fit | 50 | 153 | 1546 | 35 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /conditions/herniated-disc | Herniated Disc Treatment in Sarasota, FL \| MD Fit | 49 | 187 | 465 | 59 | MedicalWebPage, FAQPage, BreadcrumbList | live |
+| /conditions/hip-bursitis | Hip Bursitis & Outer Hip Pain in Sarasota, FL \| MD Fit | 54 | 145 | 1604 | 34 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /conditions/hip-labral-tear | Hip Labral Tear Relief in Sarasota, FL \| MD Fit | 47 | 152 | 1568 | 34 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /conditions/hip-osteoarthritis | Hip Osteoarthritis Relief in Sarasota, FL \| MD Fit | 50 | 146 | 1567 | 41 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /conditions/hip-pain | Hip Pain Treatment in Sarasota, FL \| MD Fit | 43 | 156 | 431 | 82 | MedicalWebPage, FAQPage, BreadcrumbList | live |
+| /conditions/hip-replacement-rehab | Hip Replacement Rehab in Sarasota, FL \| MD Fit | 46 | 152 | 1621 | 33 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /conditions/it-band-syndrome | IT Band Syndrome Treatment in Sarasota, FL \| MD Fit | 51 | 164 | 452 | 61 | MedicalWebPage, FAQPage, BreadcrumbList | live |
+| /conditions/jaw-tmj-pain | Jaw Pain & TMJ Treatment in Sarasota, FL \| MD Fit | 49 | 174 | 533 | 71 | MedicalWebPage, FAQPage, BreadcrumbList | live |
+| /conditions/knee-osteoarthritis | Knee Osteoarthritis Relief in Sarasota, FL \| MD Fit | 51 | 156 | 1559 | 44 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /conditions/knee-pain | Knee Pain & Knee Surgery Recovery, Sarasota \| MD Fit | 52 | 181 | 441 | 78 | MedicalWebPage, FAQPage, BreadcrumbList | live |
+| /conditions/knee-replacement-rehab | Knee Replacement Rehab in Sarasota, FL \| MD Fit | 47 | 149 | 1518 | 35 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /conditions/low-back-pain | Low Back Pain Treatment in Sarasota, FL \| MD Fit | 48 | 161 | 629 | 112 | MedicalWebPage, FAQPage, BreadcrumbList | live |
+| /conditions/meniscus-tear-recovery | Meniscus Tear Recovery in Sarasota, FL \| MD Fit | 47 | 157 | 1586 | 36 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /conditions/neck-pain | Neck Pain & Tension Headache Treatment, Sarasota \| MD Fit | 57 | 177 | 443 | 83 | MedicalWebPage, FAQPage, BreadcrumbList | live |
+| /conditions/patellar-tendinopathy | Patellar Tendinopathy in Sarasota, FL \| MD Fit | 46 | 159 | 1526 | 43 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /conditions/patellofemoral-pain | Patellofemoral Pain (Runner's Knee) in Sarasota \| MD Fit | 56 | 153 | 1599 | 35 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /conditions/pelvic-floor-rehab | Pelvic Floor & Core Rehab in Sarasota, FL \| MD Fit | 50 | 181 | 456 | 59 | MedicalWebPage, FAQPage, BreadcrumbList | live |
+| /conditions/piriformis-syndrome | Piriformis Syndrome Treatment in Sarasota, FL \| MD Fit | 54 | 183 | 458 | 60 | MedicalWebPage, FAQPage, BreadcrumbList | live |
+| /conditions/plantar-fasciitis | Plantar Fasciitis & Heel Pain Treatment, Sarasota \| MD Fit | 58 | 177 | 590 | 73 | MedicalWebPage, FAQPage, BreadcrumbList | live |
+| /conditions/post-surgical-rehab | Post-Surgical Rehabilitation in Sarasota, FL \| MD Fit | 53 | 176 | 412 | 78 | MedicalWebPage, FAQPage, BreadcrumbList | live |
+| /conditions/postural-kyphosis | Postural Kyphosis Correction in Sarasota \| MD Fit | 49 | 157 | 1527 | 36 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /conditions/rotator-cuff-repair-rehab | Rotator Cuff Repair Rehab in Sarasota, FL \| MD Fit | 50 | 152 | 1624 | 32 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /conditions/rotator-cuff-tear | Rotator Cuff Tear Treatment in Sarasota, FL \| MD Fit | 52 | 180 | 445 | 77 | MedicalWebPage, FAQPage, BreadcrumbList | live |
+| /conditions/sciatica | Sciatica-Type Pain Treatment in Sarasota, FL \| MD Fit | 53 | 166 | 554 | 94 | MedicalWebPage, FAQPage, BreadcrumbList | live |
+| /conditions/scoliosis-support | Scoliosis Support & Posture Care in Sarasota \| MD Fit | 53 | 180 | 443 | 55 | MedicalWebPage, FAQPage, BreadcrumbList | live |
+| /conditions/shin-splints | Shin Splints Treatment in Sarasota, FL \| MD Fit | 47 | 177 | 558 | 76 | MedicalWebPage, FAQPage, BreadcrumbList | live |
+| /conditions/shoulder-bursitis | Shoulder Bursitis Treatment in Sarasota, FL \| MD Fit | 52 | 153 | 1581 | 32 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /conditions/shoulder-impingement | Shoulder Impingement Treatment in Sarasota, FL \| MD Fit | 55 | 156 | 1609 | 45 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /conditions/shoulder-pain | Shoulder Pain Treatment in Sarasota, FL \| MD Fit | 48 | 176 | 441 | 77 | MedicalWebPage, FAQPage, BreadcrumbList | live |
+| /conditions/si-joint-pain | SI Joint Pain Treatment in Sarasota, FL \| MD Fit | 48 | 156 | 1457 | 37 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /conditions/spinal-stenosis | Spinal Stenosis Exercise Care in Sarasota \| MD Fit | 50 | 159 | 1489 | 30 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /conditions/sports-injury-rehab | Sports Injury Rehabilitation in Sarasota, FL \| MD Fit | 53 | 176 | 410 | 79 | MedicalWebPage, FAQPage, BreadcrumbList | live |
+| /conditions/tennis-elbow | Tennis Elbow Treatment in Sarasota, FL \| MD Fit | 47 | 184 | 607 | 82 | MedicalWebPage, FAQPage, BreadcrumbList | live |
+| /conditions/tension-headache | Tension Headache Relief in Sarasota, FL \| MD Fit | 48 | 151 | 1490 | 38 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /conditions/thoracic-outlet-symptoms | Thoracic Outlet Symptoms in Sarasota \| MD Fit | 45 | 155 | 1535 | 33 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /conditions/trigger-finger | Trigger Finger Treatment in Sarasota, FL \| MD Fit | 49 | 152 | 1528 | 31 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /conditions/upper-back-rhomboid-pain | Upper Back & Rhomboid Pain in Sarasota \| MD Fit | 47 | 155 | 1453 | 33 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /conditions/whiplash | Whiplash Recovery in Sarasota, FL \| MD Fit | 42 | 156 | 1569 | 31 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
 
 ## Treatments (7)
 
 | URL | Title | Title len | Desc len | Words | Inbound | Schema | Status |
 |---|---|---|---|---|---|---|---|
-| /treatments/ | Treatments: Rehab, Medical Massage & Strength \| MD Fit | 54 | 167 | 152 | 242 | Physician, CollectionPage | live |
+| /treatments/ | Treatments: Rehab, Medical Massage & Strength \| MD Fit | 54 | 167 | 152 | 134 | Physician, CollectionPage | live |
 | /treatments/chronic-pain-program | Chronic Pain Program in Sarasota, FL \| MD Fit | 45 | 125 | 397 | 4 | Physician, MedicalWebPage, Service, FAQPage, BreadcrumbList | live |
 | /treatments/clinical-exercise-physiology | Clinical Exercise Physiology in Sarasota, FL \| MD Fit | 53 | 133 | 385 | 11 | Physician, MedicalWebPage, Service, FAQPage, BreadcrumbList | live |
 | /treatments/functional-mobility | Functional Mobility in Sarasota, FL \| MD Fit | 44 | 124 | 415 | 17 | Physician, MedicalWebPage, Service, FAQPage, BreadcrumbList | live |
@@ -154,37 +137,37 @@ Words = text inside the page's main content (header, footer and menus excluded).
 
 | URL | Title | Title len | Desc len | Words | Inbound | Schema | Status |
 |---|---|---|---|---|---|---|---|
-| /areas/ | Areas We Serve: Sarasota, Bradenton, Venice & More \| MD Fit | 59 | 159 | 82 | 241 | Physician, CollectionPage | live |
-| /areas/bradenton | Physical Rehab & Pain Treatment near Bradenton \| MD Fit | 55 | 139 | 466 | 1 | Physician, MedicalWebPage, FAQPage, BreadcrumbList | live |
-| /areas/lakewood-ranch | Physical Rehab & Pain Treatment, Lakewood Ranch \| MD Fit | 56 | 144 | 430 | 1 | Physician, MedicalWebPage, FAQPage, BreadcrumbList | live |
-| /areas/osprey | Physical Rehab & Pain Treatment near Osprey, FL \| MD Fit | 56 | 136 | 401 | 1 | Physician, MedicalWebPage, FAQPage, BreadcrumbList | live |
-| /areas/sarasota | Physical Rehab & Pain Treatment in Sarasota, FL \| MD Fit | 56 | 138 | 501 | 1 | Physician, MedicalWebPage, FAQPage, BreadcrumbList | live |
-| /areas/venice | Physical Rehab & Pain Treatment near Venice, FL \| MD Fit | 56 | 136 | 432 | 1 | Physician, MedicalWebPage, FAQPage, BreadcrumbList | live |
+| /areas/ | Areas We Serve: Sarasota, Bradenton, Venice & More \| MD Fit | 59 | 159 | 82 | 134 | Physician, CollectionPage | live |
+| /areas/bradenton | Physical Rehab & Pain Treatment near Bradenton \| MD Fit | 55 | 139 | 466 | 3 | Physician, MedicalWebPage, FAQPage, BreadcrumbList | live |
+| /areas/lakewood-ranch | Physical Rehab & Pain Treatment, Lakewood Ranch \| MD Fit | 56 | 144 | 430 | 3 | Physician, MedicalWebPage, FAQPage, BreadcrumbList | live |
+| /areas/osprey | Physical Rehab & Pain Treatment near Osprey, FL \| MD Fit | 56 | 136 | 401 | 3 | Physician, MedicalWebPage, FAQPage, BreadcrumbList | live |
+| /areas/sarasota | Physical Rehab & Pain Treatment in Sarasota, FL \| MD Fit | 56 | 138 | 501 | 3 | Physician, MedicalWebPage, FAQPage, BreadcrumbList | live |
+| /areas/venice | Physical Rehab & Pain Treatment near Venice, FL \| MD Fit | 56 | 136 | 432 | 3 | Physician, MedicalWebPage, FAQPage, BreadcrumbList | live |
 
 ## Local landing pages (6)
 
 | URL | Title | Title len | Desc len | Words | Inbound | Schema | Status |
 |---|---|---|---|---|---|---|---|
-| /best-rehab-near-me-sarasota | Best-Rated Rehabilitation Clinic in Sarasota \| MD Fit | 53 | 154 | 1390 | 0 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /golf-performance-sarasota | Golf Performance & Injury Rehab in Sarasota \| MD Fit | 52 | 156 | 1442 | 5 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /pickleball-injury-rehab-sarasota | Pickleball Injury Rehab in Sarasota \| MD Fit | 44 | 153 | 1445 | 8 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /post-op-knee-rehab-sarasota | Post-Op Knee Rehab in Sarasota \| MD Fit | 39 | 151 | 1305 | 1 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /post-op-shoulder-rehab-sarasota | Post-Op Shoulder Rehab in Sarasota \| MD Fit | 43 | 151 | 1368 | 1 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /running-injury-sarasota | Running Injury Treatment in Sarasota \| MD Fit | 45 | 158 | 1427 | 2 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /best-rehab-near-me-sarasota | Best-Rated Rehabilitation Clinic in Sarasota \| MD Fit | 53 | 154 | 1390 | 3 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /golf-performance-sarasota | Golf Performance & Injury Rehab in Sarasota \| MD Fit | 52 | 156 | 1442 | 15 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /pickleball-injury-rehab-sarasota | Pickleball Injury Rehab in Sarasota \| MD Fit | 44 | 153 | 1445 | 18 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /post-op-knee-rehab-sarasota | Post-Op Knee Rehab in Sarasota \| MD Fit | 39 | 151 | 1305 | 3 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /post-op-shoulder-rehab-sarasota | Post-Op Shoulder Rehab in Sarasota \| MD Fit | 43 | 151 | 1368 | 3 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /running-injury-sarasota | Running Injury Treatment in Sarasota \| MD Fit | 45 | 158 | 1427 | 12 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
 
 ## Activities & audiences (9)
 
 | URL | Title | Title len | Desc len | Words | Inbound | Schema | Status |
 |---|---|---|---|---|---|---|---|
-| /activities/ | Rehab & Performance by Sport and Lifestyle \| MD Fit | 51 | 166 | 262 | 9 | CollectionPage, BreadcrumbList | draft |
-| /activities/cycling | Cycling Pain & Injury Care in Sarasota, FL \| MD Fit | 51 | 151 | 1428 | 2 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /activities/desk-workers | Desk Worker Neck, Back & Wrist Pain in Sarasota \| MD Fit | 56 | 152 | 1445 | 2 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /activities/postpartum-return-to-exercise | Postpartum Return to Exercise in Sarasota \| MD Fit | 50 | 150 | 1416 | 1 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /activities/seniors-strength-balance | Strength & Balance Training for Seniors in Sarasota \| MD Fit | 60 | 160 | 1410 | 3 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /activities/snowbirds | Snowbird Pain & Mobility Care in Sarasota \| MD Fit | 50 | 155 | 1423 | 7 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /activities/swimming | Swimmer's Shoulder & Swimming Injuries in Sarasota \| MD Fit | 59 | 159 | 1423 | 2 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /activities/tennis | Tennis Injury Rehab & Performance in Sarasota \| MD Fit | 54 | 154 | 1440 | 3 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
-| /activities/weightlifting-crossfit | Weightlifting & CrossFit Injury Rehab in Sarasota \| MD Fit | 58 | 157 | 1431 | 1 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /activities/ | Rehab & Performance by Sport and Lifestyle \| MD Fit | 51 | 154 | 326 | 9 | CollectionPage, BreadcrumbList | draft |
+| /activities/cycling | Cycling Pain & Injury Care in Sarasota, FL \| MD Fit | 51 | 151 | 1495 | 9 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /activities/desk-workers | Desk Worker Neck, Back & Wrist Pain in Sarasota \| MD Fit | 56 | 152 | 1507 | 9 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /activities/postpartum-return-to-exercise | Postpartum Return to Exercise in Sarasota \| MD Fit | 50 | 150 | 1481 | 8 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /activities/seniors-strength-balance | Strength & Balance Training for Seniors in Sarasota \| MD Fit | 60 | 160 | 1474 | 10 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /activities/snowbirds | Snowbird Pain & Mobility Care in Sarasota \| MD Fit | 50 | 155 | 1487 | 14 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /activities/swimming | Swimmer's Shoulder & Swimming Injuries in Sarasota \| MD Fit | 59 | 159 | 1488 | 9 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /activities/tennis | Tennis Injury Rehab & Performance in Sarasota \| MD Fit | 54 | 154 | 1505 | 10 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
+| /activities/weightlifting-crossfit | Weightlifting & CrossFit Injury Rehab in Sarasota \| MD Fit | 58 | 157 | 1496 | 8 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
 
 ## Muscle library (68)
 
@@ -263,7 +246,7 @@ Words = text inside the page's main content (header, footer and menus excluded).
 
 | URL | Title | Title len | Desc len | Words | Inbound | Schema | Status |
 |---|---|---|---|---|---|---|---|
-| /pain/ | Where Does It Hurt? Pain by Location \| MD Fit | 45 | 159 | 1718 | 60 | CollectionPage, BreadcrumbList | draft |
+| /pain/ | Where Does It Hurt? Pain by Location \| MD Fit | 45 | 159 | 1751 | 60 | CollectionPage, BreadcrumbList | draft |
 | /pain/along-one-rib | Pain at the Along One Rib: Causes & Relief \| MD Fit | 51 | 160 | 1237 | 10 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
 | /pain/around-the-ear | Pain at the Ear Area: Causes & Relief \| MD Fit | 46 | 160 | 1162 | 10 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
 | /pain/back-of-head | Pain at the Back of the Head: Causes & Relief \| MD Fit | 54 | 160 | 1148 | 10 | MedicalWebPage, FAQPage, BreadcrumbList | draft |
@@ -339,28 +322,28 @@ Words = text inside the page's main content (header, footer and menus excluded).
 
 | URL | Title | Title len | Desc len | Words | Inbound | Schema | Status |
 |---|---|---|---|---|---|---|---|
-| /blog/ | MD Fit Blog: Pain, Rehab & Movement by Dr. Jared Caban | 54 | 110 | 473 | 250 | Physician, Blog | live |
+| /blog/ | MD Fit Blog: Pain, Rehab & Movement by Dr. Jared Caban | 54 | 110 | 473 | 142 | Physician, Blog | live |
 | /blog/desk-worker-5-fixes | Sitting All Day? 5 Fixes for Desk Workers \| MD Fit | 50 | 142 | 469 | 10 | Physician, Article, BreadcrumbList | live |
 | /blog/golf-back-pain-hip-problem | Golf back pain: it's usually a hip problem \| MD Fit Sarasota | 60 | 85 | 434 | 9 | Physician, Article, BreadcrumbList | live |
-| /blog/headache-that-starts-in-neck | The Headache That Starts in Your Neck \| MD Fit | 46 | 156 | 1396 | 1 | BlogPosting, FAQPage, BreadcrumbList | draft |
+| /blog/headache-that-starts-in-neck | The Headache That Starts in Your Neck \| MD Fit | 46 | 156 | 1449 | 4 | BlogPosting, FAQPage, BreadcrumbList | draft |
 | /blog/knee-replacement-12-week-comeback | After Knee Replacement: A Safe 12-Week Comeback \| MD Fit | 56 | 141 | 478 | 10 | Physician, Article, BreadcrumbList | live |
 | /blog/low-back-pain-hips | Why Your Low Back Pain Comes From Your Hips \| MD Fit | 52 | 130 | 555 | 10 | Physician, Article, BreadcrumbList | live |
-| /blog/pain-behind-the-knee | Pain Behind the Knee: Popliteus, Calf or Hamstring? \| MD Fit | 60 | 157 | 1340 | 1 | BlogPosting, FAQPage, BreadcrumbList | draft |
+| /blog/pain-behind-the-knee | Pain Behind the Knee: Popliteus, Calf or Hamstring? \| MD Fit | 60 | 157 | 1393 | 4 | BlogPosting, FAQPage, BreadcrumbList | draft |
 | /blog/pickleball-injuries-sarasota | Pickleball Injuries We See Most in Sarasota \| MD Fit | 52 | 144 | 446 | 10 | Physician, Article, BreadcrumbList | live |
-| /blog/ql-catching-low-back-pain | Low Back Catches Rolling Over in Bed? Check the QL \| MD Fit | 59 | 160 | 1389 | 1 | BlogPosting, FAQPage, BreadcrumbList | draft |
+| /blog/ql-catching-low-back-pain | Low Back Catches Rolling Over in Bed? Check the QL \| MD Fit | 59 | 160 | 1441 | 4 | BlogPosting, FAQPage, BreadcrumbList | draft |
 | /blog/running-over-50 | Running without pain over 50 \| MD Fit Sarasota | 46 | 102 | 425 | 10 | Physician, Article, BreadcrumbList | live |
 | /blog/sciatica-or-glute | Sciatica or glute pain? How to tell \| MD Fit Sarasota | 53 | 106 | 396 | 10 | Physician, Article, BreadcrumbList | live |
 | /blog/shoulder-clicks-when-to-worry | Shoulder Clicks: When to Worry, When Not To \| MD Fit | 52 | 141 | 402 | 10 | Physician, Article, BreadcrumbList | live |
-| /blog/snowbird-season-restart-safely | Snowbird Season: Restart Golf and Pickleball Safely \| MD Fit | 60 | 160 | 1389 | 1 | BlogPosting, FAQPage, BreadcrumbList | draft |
+| /blog/snowbird-season-restart-safely | Snowbird Season: Restart Golf and Pickleball Safely \| MD Fit | 60 | 160 | 1440 | 4 | BlogPosting, FAQPage, BreadcrumbList | draft |
 | /blog/three-muscles-knee-pain | The 3 muscles behind most knee pain \| MD Fit Sarasota | 53 | 135 | 462 | 10 | Physician, Article, BreadcrumbList | live |
-| /blog/what-is-a-cep | What Is a Clinical Exercise Physiologist (CEP)? \| MD Fit | 56 | 151 | 446 | 1 | Physician, Article, BreadcrumbList | live |
+| /blog/what-is-a-cep | What Is a Clinical Exercise Physiologist (CEP)? \| MD Fit | 56 | 151 | 446 | 5 | Physician, Article, BreadcrumbList | live |
 
 ## Other (4)
 
 | URL | Title | Title len | Desc len | Words | Inbound | Schema | Status |
 |---|---|---|---|---|---|---|---|
-| /book | Book an Appointment \| MD Fit Sarasota | 37 | 167 | 83 | 898 |  | live |
-| /events | Events \| MD Fit Sarasota | 24 | 142 | 19 | 236 |  | live |
+| /book | Book an Appointment \| MD Fit Sarasota | 37 | 167 | 83 | 790 |  | live |
+| /events | Events \| MD Fit Sarasota | 24 | 142 | 19 | 128 |  | live |
 | /privacy-policy | Privacy Policy \| MD Fit | 23 | 123 | 1147 | 230 |  | live |
 | /terms | Terms of Service \| MD Fit | 25 | 112 | 1014 | 229 |  | live |
 
