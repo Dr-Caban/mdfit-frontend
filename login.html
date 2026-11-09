@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css?v=45de4d22">
-  <link rel="stylesheet" href="account.css?v=a0c13de8">
+  <link rel="stylesheet" href="account.css?v=c0514bd6">
   <link rel="stylesheet" href="/site-header.css?v=44ac3f0e">
   <script src="/site-header.js?v=312f6631" defer></script>
 </head>
@@ -49,7 +49,7 @@
 
       <form id="login-form" class="form auth-form" data-panel="login" novalidate>
         <h1>Welcome back</h1>
-        <div class="sso-wrap" id="sso-login" hidden><button type="button" class="apple-btn" data-apple><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.37 12.77c.03 2.86 2.5 3.81 2.53 3.82-.02.07-.4 1.36-1.3 2.7-.79 1.15-1.6 2.3-2.89 2.33-1.26.02-1.67-.75-3.11-.75s-1.9.72-3.09.77c-1.24.05-2.19-1.25-2.98-2.4C3.9 16.9 2.66 12.6 4.33 9.68c.83-1.45 2.31-2.37 3.92-2.4 1.22-.02 2.37.83 3.11.83.74 0 2.14-1.02 3.61-.87.62.03 2.34.25 3.45 1.88-.09.06-2.06 1.2-2.05 3.65zM14 5.7c.66-.8 1.1-1.9.98-3-.95.04-2.09.63-2.77 1.43-.61.7-1.14 1.83-1 2.91 1.06.08 2.13-.54 2.79-1.34z"/></svg>Continue with Apple</button></div>
+        <div class="sso-wrap" id="sso-login" hidden><button type="button" class="apple-btn" data-apple hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.37 12.77c.03 2.86 2.5 3.81 2.53 3.82-.02.07-.4 1.36-1.3 2.7-.79 1.15-1.6 2.3-2.89 2.33-1.26.02-1.67-.75-3.11-.75s-1.9.72-3.09.77c-1.24.05-2.19-1.25-2.98-2.4C3.9 16.9 2.66 12.6 4.33 9.68c.83-1.45 2.31-2.37 3.92-2.4 1.22-.02 2.37.83 3.11.83.74 0 2.14-1.02 3.61-.87.62.03 2.34.25 3.45 1.88-.09.06-2.06 1.2-2.05 3.65zM14 5.7c.66-.8 1.1-1.9.98-3-.95.04-2.09.63-2.77 1.43-.61.7-1.14 1.83-1 2.91 1.06.08 2.13-.54 2.79-1.34z"/></svg>Continue with Apple</button><div id="google-btn-login" class="google-signin-wrap" hidden></div></div>
         <div class="auth-divider" id="auth-divider-login" hidden><span>or</span></div>
         <label>Email<input name="email" type="email" required autocomplete="username"></label>
         <label>Password<input name="password" type="password" required minlength="8" autocomplete="current-password"></label>
@@ -61,7 +61,7 @@
       <form id="signup-form" class="form auth-form" data-panel="signup" novalidate hidden>
         <h1>Create your account</h1>
         <p class="muted">See your appointments, your plan from Dr. Jared, and track your progress.</p>
-        <div class="sso-wrap" id="sso-signup" hidden><button type="button" class="apple-btn" data-apple><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.37 12.77c.03 2.86 2.5 3.81 2.53 3.82-.02.07-.4 1.36-1.3 2.7-.79 1.15-1.6 2.3-2.89 2.33-1.26.02-1.67-.75-3.11-.75s-1.9.72-3.09.77c-1.24.05-2.19-1.25-2.98-2.4C3.9 16.9 2.66 12.6 4.33 9.68c.83-1.45 2.31-2.37 3.92-2.4 1.22-.02 2.37.83 3.11.83.74 0 2.14-1.02 3.61-.87.62.03 2.34.25 3.45 1.88-.09.06-2.06 1.2-2.05 3.65zM14 5.7c.66-.8 1.1-1.9.98-3-.95.04-2.09.63-2.77 1.43-.61.7-1.14 1.83-1 2.91 1.06.08 2.13-.54 2.79-1.34z"/></svg>Continue with Apple</button></div>
+        <div class="sso-wrap" id="sso-signup" hidden><button type="button" class="apple-btn" data-apple hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.37 12.77c.03 2.86 2.5 3.81 2.53 3.82-.02.07-.4 1.36-1.3 2.7-.79 1.15-1.6 2.3-2.89 2.33-1.26.02-1.67-.75-3.11-.75s-1.9.72-3.09.77c-1.24.05-2.19-1.25-2.98-2.4C3.9 16.9 2.66 12.6 4.33 9.68c.83-1.45 2.31-2.37 3.92-2.4 1.22-.02 2.37.83 3.11.83.74 0 2.14-1.02 3.61-.87.62.03 2.34.25 3.45 1.88-.09.06-2.06 1.2-2.05 3.65zM14 5.7c.66-.8 1.1-1.9.98-3-.95.04-2.09.63-2.77 1.43-.61.7-1.14 1.83-1 2.91 1.06.08 2.13-.54 2.79-1.34z"/></svg>Continue with Apple</button><div id="google-btn-signup" class="google-signin-wrap" hidden></div></div>
         <div class="auth-divider" id="auth-divider-signup" hidden><span>or</span></div>
         <label>Full name<input name="name" required minlength="2" maxlength="100" autocomplete="name"></label>
         <label>Email<input name="email" type="email" required autocomplete="email"></label>
@@ -150,6 +150,37 @@
       if (q.get("reset")) { auth.clear(); resetToken = q.get("reset"); mode("reset"); }
       else if (q.get("signup") !== null || ref) mode("signup");
 
+      // Sign in with Google (website only; the apps use Sign in with Apple). Needs GOOGLE_CLIENT_ID on the server.
+      const showSso = () => ["sso-login", "sso-signup", "auth-divider-login", "auth-divider-signup"].forEach((id) => { const el = document.getElementById(id); if (el) el.hidden = false; });
+      api("/api/app/config", null, "GET").then((cfg) => {
+        if (!cfg.googleClientId) return;
+        const s = document.createElement("script");
+        s.src = "https://accounts.google.com/gsi/client";
+        s.async = true;
+        s.onload = () => {
+          google.accounts.id.initialize({
+            client_id: cfg.googleClientId,
+            callback: async (resp) => {
+              try {
+                const refInput = $("#signup-form [name=referralCode]");
+                const body = { credential: resp.credential };
+                if (refInput && refInput.value) body.referralCode = refInput.value;
+                done(await api("/api/clients/google", body));
+              } catch (e) {
+                const msg = $("[data-panel]:not([hidden]) .form-msg");
+                if (msg) { msg.className = "form-msg err"; msg.textContent = e.message || "Google sign-in failed."; }
+              }
+            }
+          });
+          showSso();
+          ["google-btn-login", "google-btn-signup"].forEach((id) => {
+            const el = document.getElementById(id);
+            if (el) { el.hidden = false; google.accounts.id.renderButton(el, { theme: "outline", size: "large", width: 320, text: "continue_with" }); }
+          });
+        };
+        document.head.appendChild(s);
+      }).catch(() => {});
+
       // Sign in with Apple (website). Needs APPLE_SERVICES_ID on the server; otherwise the button stays hidden.
       api("/api/app/config", null, "GET").then((cfg) => {
         if (!cfg.appleServicesId) return;
@@ -158,7 +189,7 @@
         s.async = true;
         s.onload = () => {
           AppleID.auth.init({ clientId: cfg.appleServicesId, scope: "name email", redirectURI: location.origin + "/login", usePopup: true });
-          ["sso-login", "sso-signup", "auth-divider-login", "auth-divider-signup"].forEach((id) => { const el = document.getElementById(id); if (el) el.hidden = false; });
+          showSso(); $$("[data-apple]").forEach((b) => (b.hidden = false));
           $$("[data-apple]").forEach((b) => b.addEventListener("click", async () => {
             const msg = $("[data-panel]:not([hidden]) .form-msg");
             try {

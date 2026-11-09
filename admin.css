@@ -485,3 +485,26 @@ body.admin .form { grid-template-columns: minmax(0, 1fr); } /* a grid form's col
   #client-totals .ct { flex: 0 0 auto; min-width: 104px; padding: 8px 12px; }
   #client-totals .ct b { font-size: 20px; }
 }
+
+/* Clients: activity (30 days) column and the per-client activity chart */
+.act-cell { display: inline-flex; flex-direction: column; gap: 3px; min-width: 110px; font-size: 13px; }
+.act-bar { display: block; width: 110px; height: 6px; border-radius: 3px; background: #e9e4d8; overflow: hidden; }
+.act-bar i { display: block; height: 100%; background: #7AAFD7; border-radius: 3px; }
+.act-cell.hi .act-bar i { background: #C8A763; } .act-cell.lo .act-bar i { background: #b9c7d6; }
+.activity-card { margin: 0 0 16px; padding: 14px 16px 10px; }
+.act-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.act-head h2 { margin: 0; font-size: 18px; }
+.act-range { display: inline-flex; border: 1px solid #d9d2c2; border-radius: 999px; overflow: hidden; }
+.act-range button { border: 0; background: #fff; color: #0A1A2E; padding: 6px 12px; font: 600 12.5px var(--body, inherit); cursor: pointer; }
+.act-range button[aria-selected="true"] { background: #0A1A2E; color: #fff; }
+.act-sum { margin: 8px 0 6px; font-size: 14px; }
+.act-chart { display: block; width: 100%; height: 150px; }
+.act-chart rect { fill: #e2ddd0; } .act-chart g.a rect { fill: #7AAFD7; } .act-chart g.q rect { fill: #C8A763; }
+.act-chart .dw { fill: #0A1A2E; } .act-chart .dp { fill: #d9534f; }
+.act-chart .goal { stroke: #0A1A2E; stroke-width: 1; stroke-dasharray: 4 4; opacity: .5; }
+.act-chart text { font: 10px var(--body, sans-serif); fill: #6b6b70; }
+.act-key { margin: 6px 0 0; font-size: 12px; display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: center; }
+.act-key .k { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; background: #e2ddd0; }
+.act-key .k.q { background: #C8A763; } .act-key .k.a { background: #7AAFD7; } .act-key .k.dw { background: #0A1A2E; border-radius: 50%; } .act-key .k.dp { background: #d9534f; border-radius: 50%; }
+.act-key .k.g { background: none; border-top: 2px dashed #0A1A2E; height: 0; width: 14px; }
+@media (max-width: 860px) { .act-chart { height: 120px; } .act-cell { min-width: 0; } }

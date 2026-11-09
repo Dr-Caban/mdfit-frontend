@@ -630,8 +630,10 @@
     const rows = clientsIn(clientPeriod).filter((c) => !q || [c.name, c.email, c.phone].join(" ").toLowerCase().includes(q));
     // Plain words instead of dashes, and a data-label on every cell so phones can show each client as a labelled card
     const none = (t) => `<span class="muted none">${t}</span>`;
-    table($("#clients-table"), ["Client", "Type", "Membership", "Phone", "Next visit", "Last pain log", "Plan", "Docs", "Joined"], rows.map((c) => `
+    const act = (n) => { const v = Number(n) || 0, cls = v >= 20 ? "hi" : v >= 8 ? "mid" : v ? "lo" : ""; return `<span class="act-cell ${cls}"><span class="act-bar"><i style="width:${Math.round((v / 30) * 100)}%"></i></span>${v ? `${v} of 30 days` : none("No activity")}</span>`; };
+    table($("#clients-table"), ["Client", "Type", "Membership", "Activity (30 days)", "Phone", "Next visit", "Last pain log", "Plan", "Docs", "Joined"], rows.map((c) => `
       <tr data-id="${c.id}" class="click-row"><td data-label="Client" class="c-name"><b>${esc(c.name)}</b><br><span class="muted">${esc(c.email)}</span></td><td data-label="Type"><button type="button" class="badge ctype type-toggle ${c.clientType === "inpatient" ? "in" : "out"}" data-type-toggle="${c.id}" title="Click to switch to ${c.clientType === "inpatient" ? "outpatient" : "inpatient"}" aria-label="${esc(c.name)}: ${c.clientType === "inpatient" ? "Inpatient" : "Outpatient"}. Click to switch.">${c.clientType === "inpatient" ? "Inpatient" : "Outpatient"} <span aria-hidden="true">⇄</span></button></td><td data-label="Membership">${subCell(c)}</td>
+        <td data-label="Activity (30 days)">${act(c.active30)}</td>
         <td data-label="Phone">${c.phone ? `<a href="tel:${esc(c.phone)}" data-nolink>${esc(c.phone)}</a>` : none("No phone")}</td>
         <td data-label="Next visit">${c.next ? `${fmtDate(c.next.date)} · ${fmtTime(c.next.time)}` : none("Not booked")}</td>
         <td data-label="Last pain log">${c.lastPain ? `${esc(c.lastPain.area)} ${c.lastPain.level}/10 · ${fmtDate(c.lastPain.date)}` : none("None logged")}</td>
@@ -766,11 +768,37 @@
     </div>`;
   }
 
+  // Activity chart: one bar per day (XP), gold when the daily goal was met, blue when active under the goal; dots for
+  // workouts and pain check-ins. Admin can switch 30 days / 90 days / a year.
+  async function loadActivity(id, days) {
+    const box = $("#client-activity"); if (!box || box.dataset.client !== id) return;
+    $$(".act-range button", box).forEach((b) => b.setAttribute("aria-selected", String(Number(b.dataset.days) === days)));
+    const body = $(".act-body", box); body.className = "act-body muted"; body.textContent = "Loading…";
+    let d; try { d = await api("GET", `/api/admin/clients/${id}/activity?days=${days}`); } catch (e) { body.textContent = e.message; return; }
+    if (box.dataset.client !== id) return;
+    const S = d.summary, W = 720, H = 140, pad = 4, n = d.days.length, bw = (W - pad * 2) / n, max = Math.max(50, ...d.days.map((x) => x.xp));
+    const y = (v) => H - 26 - (v / max) * (H - 46);
+    const months = []; d.days.forEach((x, i) => { if (x.date.endsWith("-01") || i === 0) months.push({ i, label: new Date(x.date + "T12:00:00").toLocaleDateString("en-US", { month: "short" }) }); });
+    const bars = d.days.map((x, i) => { const h = x.xp ? Math.max(3, (x.xp / max) * (H - 46)) : (x.active ? 3 : 1);
+      const cls = x.qualifying ? "q" : x.active ? "a" : "z";
+      const title = `${fmtDate(x.date)}: ${x.xp} XP${x.workouts ? ` · ${x.workouts} workout${x.workouts === 1 ? "" : "s"}` : ""}${x.pain ? ` · pain check-in` : ""}${x.goal ? ` · goal ${x.goal}${x.qualifying ? " met" : ""}` : ""}`;
+      const cx = (pad + i * bw + bw / 2).toFixed(1), r = Math.min(2.6, bw / 3).toFixed(1);
+      return `<g class="${cls}"><title>${esc(title)}</title><rect x="${(pad + i * bw).toFixed(1)}" y="${(H - 26 - h).toFixed(1)}" width="${Math.max(1, bw - 1.2).toFixed(1)}" height="${h.toFixed(1)}" rx="1"/>` +
+        (x.workouts ? `<circle class="dw" cx="${cx}" cy="${H - 18}" r="${r}"/>` : "") + (x.pain ? `<circle class="dp" cx="${cx}" cy="${H - 10}" r="${r}"/>` : "") + `</g>`; }).join("");
+    const labels = months.filter((m, j) => j === 0 || m.i - months[j - 1].i > n / 14).map((m) => `<text x="${(pad + m.i * bw).toFixed(1)}" y="${H - 1}">${m.label}</text>`).join("");
+    const g = d.days[n - 1] && d.days[n - 1].goal, goalLine = g ? `<line class="goal" x1="${pad}" x2="${W - pad}" y1="${y(g).toFixed(1)}" y2="${y(g).toFixed(1)}"/>` : "";
+    body.className = "act-body";
+    body.innerHTML = `<p class="act-sum"><b>${S.active30}</b> of 30 days active · <b>${S.qualifying30}</b> goal days · <b>${Number(S.xp30).toLocaleString()}</b> XP · <b>${S.workouts30}</b> workouts this month${S.lastActive ? ` · last active ${fmtDate(S.lastActive)}` : " · no activity yet"}${days > 30 ? ` · <b>${S.activeAll}</b> of ${n} days active in this range` : ""}</p>
+      <svg class="act-chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Daily XP for the last ${n} days">${goalLine}${bars}${labels}</svg>
+      <p class="act-key muted"><i class="k q"></i>Daily goal met <i class="k a"></i>Active, under goal <i class="k dw"></i>Workout <i class="k dp"></i>Pain check-in <i class="k g"></i>Current daily goal</p>`;
+  }
+  document.addEventListener("click", (e) => { const b = e.target.closest("#client-activity [data-days]"); if (b) loadActivity(b.closest("#client-activity").dataset.client, Number(b.dataset.days)); });
   async function openClient(id) {
     const [c, st, ct, pidx] = await Promise.all([api("GET", `/api/admin/clients/${id}`), api("GET", "/api/admin/settings"), contentCache ? contentCache : api("GET", "/api/admin/content"), loadProtoIdx()]);
     contentCache = ct; c._protoIdx = pidx;
     const box = $("#client-detail");
     const p = c.plan;
+    setTimeout(() => loadActivity(id, 90), 0);
     box.innerHTML = `
       <button type="button" class="mini" data-back>← All clients</button>
       <div class="client-head"><div class="client-id">
@@ -785,6 +813,10 @@
         </form></div>
         <div class="client-actions"><button type="button" class="mini" data-cmsg>Message</button><button type="button" class="mini" data-reset>Send password reset email</button><button type="button" class="mini danger" data-delete>Delete account</button></div></div>
       ${clientOverview(c)}
+      <section class="card activity-card" id="client-activity" data-client="${esc(c.id)}">
+        <div class="act-head"><h2>Activity</h2><div class="act-range" role="tablist" aria-label="Range">${[30, 90, 365].map((d) => `<button type="button" role="tab" data-days="${d}" aria-selected="${d === 90}">${d === 365 ? "Year" : d + " days"}</button>`).join("")}</div></div>
+        <div class="act-body muted">Loading…</div>
+      </section>
       <p class="client-docs">${docsChip(c.documents)}${c.documents && c.documents.done ? ` <button type="button" class="mini" data-cdocs>View documents</button>` : c.documents ? ` <span class="muted">No intake documents on file yet.</span>` : ""}</p><div class="intake-view" id="client-docs" hidden></div>
       ${careBox(c, st.appointmentTypes || [], ct.programs || [], (st.booking || {}).telehealthUrl)}
       <div class="client-grid">
