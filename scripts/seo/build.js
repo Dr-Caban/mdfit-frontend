@@ -172,7 +172,9 @@ function buildPain(p) {
   const lead4 = [...owned, ...ranked.filter((m) => !owned.includes(m))].slice(0, 4);
   // tracks ranked by how many of this page's leading muscles they cover (owned muscles count double)
   const cover = (t) => t.pts.reduce((n, id) => n + (owned.some((m) => m.id === id) ? 2 : lead4.some((m) => m.id === id) ? 1 : 0), 0);
-  const trk = tracks.filter((t) => cover(t) > 0).sort((a, b) => cover(b) - cover(a)).filter((t, i) => i === 0 || cover(t) >= 2);
+  const sortedTracks = tracks.filter((t) => cover(t) > 0).sort((a, b) => cover(b) - cover(a));
+  const ownedTracks = sortedTracks.filter((t) => t.pts.some((id) => owned.some((m) => m.id === id))).slice(0, 2);
+  const trk = ownedTracks.length ? ownedTracks : sortedTracks.slice(0, 1);
   const aggr = [...new Set((owned.length ? owned : ranked.slice(0, 2)).flatMap((m) => m.worse))];
   const lower = p.name.toLowerCase();
   const at = /^(where|right )/i.test(lower) ? lower : `at the ${lower}`; // "pain where the neck meets the shoulder"

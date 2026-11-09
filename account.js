@@ -1,6 +1,6 @@
 // MD Fit client app (/account): Home, Generate, Videos, Pain Tool, Profile, plus the workout player.
 (() => {
-  const { $, $$, esc, auth, apiAuth, api, wire, fmtDate, fmtTime, todayInTz, addDays, zonedToUtc, icsStamp, AREAS, loadSite } = window.MDFit;
+  const { $, $$, esc, auth, apiAuth, api, wire, fmtDate, fmtTime, todayInTz, addDays, zonedToUtc, icsStamp, AREAS, loadSite, API } = window.MDFit;
   if (!auth.get()) { location.replace("/login?next=" + encodeURIComponent("/account" + location.hash)); return; }
   // Live updates; the new_message handler is registered once, with the Messages code below.
   if (window.MDFitRT) MDFitRT.connect({ namespace: "/member", token: auth.get().token });
@@ -1912,13 +1912,32 @@
   try { localStorage.removeItem("mdfit_review_code"); } catch {} // retired review-reward codes saved by older app versions
   $("#pw-subscribe").addEventListener("click", () => { $("#paywall").close(); go("premium"); });
 
+  // ================= Time in app: a heartbeat while the app is open (every 60 s, when the tab is hidden, when the page
+  // is left). Only seconds since the last beat, which tab was showing and the platform; nothing about content. Powers
+  // "time in app" in Admin → Clients. fetch keepalive lets the last beat finish while the page closes.
+  (() => {
+    let last = Date.now(), timer = 0;
+    const view = () => (location.hash.slice(1).split("/")[0] || "home").toLowerCase();
+    const send = (seconds) => {
+      const sess = auth.get(); if (!sess || !sess.token) return;
+      const body = JSON.stringify({ seconds: Math.max(0, Math.min(120, seconds)), view: view(), platform: window.MDFitNative ? "ios" : "web" });
+      fetch(API + "/api/me/presence", { method: "POST", keepalive: true, headers: { "content-type": "application/json", authorization: "Bearer " + sess.token }, body }).catch(() => {});
+    };
+    const beat = () => { const now = Date.now(); const secs = Math.round((now - last) / 1000); last = now; if (secs >= 1) send(secs); };
+    const start = () => { last = Date.now(); clearInterval(timer); timer = setInterval(beat, 60000); };
+    document.addEventListener("visibilitychange", () => { if (document.hidden) { beat(); clearInterval(timer); } else start(); });
+    window.addEventListener("pagehide", beat);
+    start(); send(0); // opening the app starts a session even if it's closed within the minute
+  })();
+
   // ================= Member content: programs, lectures + live Q&A, membership & 1-on-1, health tips
   let C = null, contentLoading = null;
   // Programs saved without a photo borrow the closest existing one; the rest draw a branded poster (never a blank box)
   const PROG_ART = [[/mobility/i, "assets/programs/mobility-ladder-new.png"], [/low back|mid-back|lumbar/i, "assets/programs/low-back-new.png"],
     [/hip/i, "assets/programs/hip-new.png"], [/shoulder|rotator/i, "assets/programs/shoulder-new.png"], [/golf/i, "assets/programs/golf-new.png"],
     [/pickleball/i, "assets/programs/pickleball.png"], [/marathon/i, "assets/programs/marathon-new.png"], [/running/i, "assets/programs/running-new.png"],
-    [/\bski/i, "assets/programs/ski.png", true]]; // true = the poster already carries its title text; draw nothing over it
+    [/\bski/i, "assets/programs/ski.png", true], [/knee/i, "assets/programs/knee.png", true], [/plantar/i, "assets/programs/plantar.png", true],
+    [/lateral|tennis elbow/i, "assets/programs/tennis-elbow.png", true], [/medial|golfer/i, "assets/programs/golfers-elbow.png", true]]; // true = the poster already carries its title text; draw nothing over it
   const COMPLETE_POSTERS = new Set([...PROG_ART.filter((x) => x[2]).map((x) => x[1]), "assets/programs/mobility-ladder-poster.png"]);
   const withArt = (d) => { (d && d.programs || []).forEach((p) => { if (!p.image) { const m = PROG_ART.find(([re]) => re.test(p.title || "")); if (m) p.image = m[1]; } }); return d; };
   const loadContent = () => (contentLoading = apiAuth("GET", "/api/me/content").then((d) => (C = withArt(d))).catch(() => api("/api/content").then((d) => (C = withArt({ ...d, access: "free" })))));
@@ -2451,12 +2470,60 @@
     const refresh = async () => {
       try { const r = await apiAuth("GET", "/api/me"); client = r.client; auth.set({ ...auth.get(), client }); renderProfile(); } catch {}
       try { access = await apiAuth("GET", "/api/me/access"); renderAccessBadge(); } catch {}
-      await loadContent().catch(() => {}); renderContent("premium"); renderPayments().catch(() => {});
+      await loadContent().catch(() => {}); renderContent("premium"); renderPayments().catch(() => {}); loadCarePlan();
     };
+    if (new URLSearchParams(location.search).get("kind") === "service") toast("Payment received. Dr. Jared will schedule your video visit and the link will show on Home.");
     (sid ? apiAuth("POST", "/api/me/checkout/confirm", { session_id: sid }).catch(() => null) : Promise.resolve(null))
       .then((r) => { if (r && r.paid && r.membership) toast("You're a member now. Welcome!"); return refresh(); })
       .then(() => setTimeout(refresh, 6000));
   }
+  // ---- Care plan (owner, Nov 2026): what Dr. Jared left for a patient. Notes and prescribed movements (each opens its
+  // video), the video visits they paid for or have coming up, and Stripe buttons to pay for an online evaluation or
+  // follow-up. Shown on Home as "What to do next" and on the Profile as "My care plan"; hidden for non-patients.
+  let carePlan = null;
+  function carePlanHtml() {
+    const ch = carePlan; if (!ch) return "";
+    const money0 = (n) => `$${Number(n).toFixed(Number(n) % 1 ? 2 : 0)}`;
+    const notes = ch.notes.map((n) => `<div class="plan-notes care-note"><span class="muted small">${shortDate(n.at.slice(0, 10))}</span><p>${esc(n.text).replace(/\n/g, "<br>")}</p></div>`).join("");
+    const moves = ch.movements.length ? `<p class="care-sub"><b>Your movements</b> <span class="muted small">tap one to watch it</span></p><ul class="care-moves">${ch.movements.map((m) => {
+      const ex = byId.get(m.videoId);
+      return `<li><button type="button" class="care-move" data-care-video="${esc(m.videoId)}" data-care-name="${esc(m.name)}">${thumbImg(m.videoId)}<span class="cm-txt"><b>${esc(m.name)}</b>${m.dose ? `<span class="cm-dose">${esc(m.dose)}</span>` : ""}${m.cue ? `<span class="cm-cue">${esc(m.cue)}</span>` : ex ? `<span class="muted small">${esc(ex.region)} · ${esc(ex.cat)}</span>` : ""}</span><svg viewBox="0 0 24 24" class="cm-play"><path d="M8 5v14l11-7z"/></svg></button></li>`; }).join("")}</ul>` : "";
+    const paid = ch.paidVisits.map((v) => `<li class="care-visit"><b>${esc(v.name || "Video visit")}</b><span class="muted small">Paid ${shortDate(v.paidAt.slice(0, 10))}. Dr. Jared will schedule it; the video link will show here and under Appointments.</span></li>`).join("");
+    const upcoming = ch.visits.map((v) => `<li class="care-visit"><b>${esc(v.typeName)}</b><span class="muted small">${fmtDate(v.date, { weekday: "long" })} at ${fmtTime(v.time)} · ${v.minutes} min</span>${v.meetingLink ? `<a class="btn-blue sm" href="${esc(v.meetingLink)}" target="_blank" rel="noopener">Join video visit</a>` : ""}</li>`).join("");
+    const pay = ch.patient && !ch.inpatient && ch.services.length ? `<div class="care-pay"><p class="care-sub"><b>Video visits with Dr. Jared</b></p>
+        <div class="care-pay-row">${ch.services.map((s) => `<button type="button" class="${s.id === "eval-remote" ? "btn-gold" : "btn-ghost"} sm" data-pay-service="${esc(s.id)}" ${ch.payOn ? "" : "disabled"}>${esc(s.name.replace(/\s*\(Telehealth\)/i, ""))} · ${money0(s.rate)}</button>`).join("")}</div>
+        <p class="muted small">${ch.payOn ? "Secure payment through Stripe. Dr. Jared then schedules your visit and you get the video link." : "Online payment isn't switched on yet. Call 941-313-0562 to book."}</p></div>` : "";
+    const visits = paid || upcoming ? `<p class="care-sub"><b>Video visits</b></p><ul class="care-visits">${paid}${upcoming}</ul>` : "";
+    const empty = !notes && !moves && !visits ? `<p class="muted">Dr. Jared hasn't left anything here yet. After your visit, your notes and movements will show up here.</p>` : "";
+    return `${notes}${moves}${visits}${empty}${pay}`;
+  }
+  function renderCarePlan() {
+    const ch = carePlan;
+    const show = !!(ch && (ch.patient || ch.notes.length || ch.movements.length || ch.paidVisits.length || ch.visits.length));
+    const html = show ? carePlanHtml() : "";
+    const date = ch && ch.updatedAt ? "Updated " + shortDate(ch.updatedAt.slice(0, 10)) : "";
+    for (const [card, body, dt] of [["#next-card", "#next-body", "#next-date"], ["#p-care", "#p-care-body", "#p-care-date"]]) {
+      const el = $(card); if (!el) continue;
+      el.hidden = !show; if (show) { $(body).innerHTML = html; $(dt).textContent = date; }
+    }
+  }
+  function loadCarePlan() { return apiAuth("GET", "/api/me/chart").then((c) => { carePlan = c; renderCarePlan(); }).catch(() => {}); }
+  document.addEventListener("click", async (e) => {
+    const v = e.target.closest("[data-care-video]");
+    if (v) { const x = byId.get(v.dataset.careVideo); playVideo(v.dataset.careVideo, x ? x.name : v.dataset.careName, x ? exMeta(x) : "Prescribed by Dr. Jared"); return; }
+    const b = e.target.closest("[data-pay-service]"); if (!b || b.disabled) return;
+    b.disabled = true; const label = b.textContent; b.textContent = "Opening secure checkout…";
+    try {
+      const r = await apiAuth("POST", "/api/me/checkout/service", { service: b.dataset.payService, ui: window.MDFitNative ? "app" : "embedded" });
+      if (r.url && window.MDFitNative) { window.MDFitNative.checkout(r.url, "service"); }
+      else if (r.clientSecret && window.MDFitStripe) {
+        try { await window.MDFitStripe.open({ clientSecret: r.clientSecret, publishableKey: stripePub }); }
+        catch { try { window.MDFitStripe.close(); } catch {} throw new Error("Secure checkout couldn't load. Check your connection or ad blocker and try again, or call 941-313-0562."); }
+      } else if (r.url) location.href = r.url;
+    } catch (err) { toast(err.message); }
+    b.disabled = false; b.textContent = label;
+  });
+
   async function renderPayments() {
     const host = $("#my-payments"); if (!host) return;
     pays = await apiAuth("GET", "/api/me/payments").catch(() => null);
@@ -2850,7 +2917,7 @@
     if (wl.status === "fulfilled") allWorkouts = wl.value;
     apiAuth("GET", "/api/me/vitals").then((v) => { vitals = v; renderPerf(); }).catch(() => renderPerf());
     pollUnread();
-    loadPatientDocs();
+    loadPatientDocs(); loadCarePlan();
     apiAuth("GET", "/api/me/access").then((a) => { access = a; renderToday(); renderAccessBadge(); }).catch(() => {});
     loadContent().then(() => { renderFeaturedPrograms(); renderMyPlans(); const t = location.hash.slice(1).split("/"); if (["programs", "learn", "premium", "tips"].includes(t[0])) renderContent(t[0], t[0] === "programs" ? t.slice(1).join("/") : t[1]); });
     if (lb.status === "fulfilled") { lib = lb.value; renderPrograms(); if (!$("#view-videos").hidden) renderVideos(); }

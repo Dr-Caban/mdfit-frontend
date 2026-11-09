@@ -9,6 +9,7 @@
   const APPT_STATUSES = ["booked", "completed", "no-show", "cancelled"];
   const when = (iso) => new Date(iso).toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
   const fmtTime = (t) => { const [h, m] = t.split(":").map(Number); return `${((h + 11) % 12) + 1}:${String(m).padStart(2, "0")} ${h < 12 ? "AM" : "PM"}`; };
+  const fmtMins = (m) => (m >= 60 ? `${Math.floor(m / 60)}h ${m % 60 ? `${m % 60}m` : ""}`.trim() : `${m}m`);
   const fmtDate = (d) => new Date(d + "T12:00:00Z").toLocaleDateString("en-US", { timeZone: "UTC", weekday: "short", month: "short", day: "numeric" });
 
   const session = {
@@ -55,7 +56,7 @@
   // on a shared screen (HIPAA automatic logoff). The idle timer signs out after 15 minutes without input.
   function logout() {
     token = ""; session.set(""); $("#app").hidden = true; $("#login").hidden = false; if (window.MDFitRT) MDFitRT.disconnect();
-    $$("#appts-list, #clients-list, #client-totals, #client-detail, #leads-list, #members-list, #msg-thread, #msg-threads, #bc-list, #feedback-list, #reviews-list, #cal-grid, #cal-pop-body, #notif-list, #home-inbox, #app table tbody").forEach((el) => { el.innerHTML = ""; });
+    $$("#appts-list, #clients-list, #client-totals, #client-detail, #emr-list .table-wrap, #emr-detail, #leads-list, #members-list, #msg-thread, #msg-threads, #bc-list, #feedback-list, #reviews-list, #cal-grid, #cal-pop-body, #notif-list, #home-inbox, #app table tbody").forEach((el) => { el.innerHTML = ""; });
     const pop = $("#cal-pop"); if (pop && pop.open) pop.close();
     // cached patient data goes too, so nothing is shown again before the next sign-in reloads it
     clientList = []; calAppts = []; notes = []; contentCache = null; homeThread = null; drafts.clear();
@@ -67,12 +68,13 @@
   ["pointerdown", "keydown", "scroll", "touchstart"].forEach((t) => document.addEventListener(t, idleBump, { passive: true }));
 
   // ---- Tabs
-  const loaders = { dash: loadDash, clients: loadClients, appts: loadAppts, hours: loadHours, leads: loadLeads, classes: loadClasses, bookings: loadBookings, subs: loadSubs, reviews: loadReviews, audit: loadAudit, messages: loadThreads, members: loadMembers, content: loadContent, settings: loadSettings, feedback: loadFeedback, analytics: loadAnalytics, habits: loadHabits };
+  const loaders = { dash: loadDash, clients: loadClients, appts: loadAppts, hours: loadHours, leads: loadLeads, classes: loadClasses, bookings: loadBookings, subs: loadSubs, reviews: loadReviews, audit: loadAudit, messages: loadThreads, members: loadMembers, content: loadContent, settings: loadSettings, feedback: loadFeedback, analytics: loadAnalytics, habits: loadHabits, emr: loadEmr };
   // ---- Navigation: six sections in the sidebar; screens that used to be separate tabs are sub-tabs of a section.
   // Every screen keeps its own #hash so reload and the back button return to it.
   const NAV = [
     { id: "home", label: "Home", tabs: [["dash", "Calendar"], ["appts", "Appointments"], ["classes", "Classes"], ["bookings", "Class bookings"], ["hours", "Hours & sync"]] },
     { id: "people", label: "Clients", tabs: [["clients", "Clients"], ["leads", "Leads"], ["members", "Members"], ["subs", "Newsletter"]] },
+    { id: "emr", label: "Medical record", tabs: [["emr", "Patients"]] },
     { id: "inbox", label: "Inbox", tabs: [["messages", "Messages"], ["reviews", "Reviews"], ["feedback", "Bug reports & ideas"]] },
     { id: "insights", label: "Insights", tabs: [["analytics", "Analytics"], ["audit", "Audit"]] },
     { id: "settings", label: "Settings", tabs: [["settings", "Settings"], ["content", "Content"], ["habits", "Activities"]] }
@@ -630,10 +632,10 @@
     const rows = clientsIn(clientPeriod).filter((c) => !q || [c.name, c.email, c.phone].join(" ").toLowerCase().includes(q));
     // Plain words instead of dashes, and a data-label on every cell so phones can show each client as a labelled card
     const none = (t) => `<span class="muted none">${t}</span>`;
-    const act = (n) => { const v = Number(n) || 0, cls = v >= 20 ? "hi" : v >= 8 ? "mid" : v ? "lo" : ""; return `<span class="act-cell ${cls}"><span class="act-bar"><i style="width:${Math.round((v / 30) * 100)}%"></i></span>${v ? `${v} of 30 days` : none("No activity")}</span>`; };
+    const act = (n, mins) => { const v = Number(n) || 0, cls = v >= 20 ? "hi" : v >= 8 ? "mid" : v ? "lo" : ""; return `<span class="act-cell ${cls}"><span class="act-bar"><i style="width:${Math.round((v / 30) * 100)}%"></i></span>${v ? `${v} of 30 days` : none("No activity")}${mins ? `<span class="muted">${fmtMins(mins)} in app</span>` : ""}</span>`; };
     table($("#clients-table"), ["Client", "Type", "Membership", "Activity (30 days)", "Phone", "Next visit", "Last pain log", "Plan", "Docs", "Joined"], rows.map((c) => `
       <tr data-id="${c.id}" class="click-row"><td data-label="Client" class="c-name"><b>${esc(c.name)}</b><br><span class="muted">${esc(c.email)}</span></td><td data-label="Type"><button type="button" class="badge ctype type-toggle ${c.clientType === "inpatient" ? "in" : "out"}" data-type-toggle="${c.id}" title="Click to switch to ${c.clientType === "inpatient" ? "outpatient" : "inpatient"}" aria-label="${esc(c.name)}: ${c.clientType === "inpatient" ? "Inpatient" : "Outpatient"}. Click to switch.">${c.clientType === "inpatient" ? "Inpatient" : "Outpatient"} <span aria-hidden="true">⇄</span></button></td><td data-label="Membership">${subCell(c)}</td>
-        <td data-label="Activity (30 days)">${act(c.active30)}</td>
+        <td data-label="Activity (30 days)">${act(c.active30, c.minutes30)}</td>
         <td data-label="Phone">${c.phone ? `<a href="tel:${esc(c.phone)}" data-nolink>${esc(c.phone)}</a>` : none("No phone")}</td>
         <td data-label="Next visit">${c.next ? `${fmtDate(c.next.date)} · ${fmtTime(c.next.time)}` : none("Not booked")}</td>
         <td data-label="Last pain log">${c.lastPain ? `${esc(c.lastPain.area)} ${c.lastPain.level}/10 · ${fmtDate(c.lastPain.date)}` : none("None logged")}</td>
@@ -784,13 +786,13 @@
     const months = []; d.days.forEach((x, i) => { if (x.date.endsWith("-01") || i === 0) months.push({ i, label: new Date(x.date + "T12:00:00").toLocaleDateString("en-US", { month: "short" }) }); });
     const bars = d.days.map((x, i) => { const h = x.xp ? Math.max(3, (x.xp / max) * (H - 46)) : (x.active ? 3 : 1);
       const cls = x.qualifying ? "q" : x.active ? "a" : "z";
-      const title = `${fmtDate(x.date)}: ${x.xp} XP${x.workouts ? ` · ${x.workouts} workout${x.workouts === 1 ? "" : "s"}` : ""}${x.pain ? ` · pain check-in` : ""}${x.goal ? ` · goal ${x.goal}${x.qualifying ? " met" : ""}` : ""}`;
+      const title = `${fmtDate(x.date)}: ${x.xp} XP${x.workouts ? ` · ${x.workouts} workout${x.workouts === 1 ? "" : "s"}` : ""}${x.pain ? ` · pain check-in` : ""}${x.minutes ? ` · ${fmtMins(x.minutes)} in app` : x.opened ? " · opened the app" : ""}${x.goal ? ` · goal ${x.goal}${x.qualifying ? " met" : ""}` : ""}`;
       const cx = (pad + i * bw + bw / 2).toFixed(1), r = Math.min(2.6, bw / 3).toFixed(1);
       return `<g class="${cls}"><title>${esc(title)}</title><rect x="${(pad + i * bw).toFixed(1)}" y="${(H - 26 - h).toFixed(1)}" width="${Math.max(1, bw - 1.2).toFixed(1)}" height="${h.toFixed(1)}" rx="1"/>` +
         (x.workouts ? `<circle class="dw" cx="${cx}" cy="${H - 18}" r="${r}"/>` : "") + (x.pain ? `<circle class="dp" cx="${cx}" cy="${H - 10}" r="${r}"/>` : "") + `</g>`; }).join("");
     const labels = months.filter((m, j) => j === 0 || m.i - months[j - 1].i > n / 14).map((m) => `<text x="${(pad + m.i * bw).toFixed(1)}" y="${H - 1}">${m.label}</text>`).join("");
     const g = d.days[n - 1] && d.days[n - 1].goal, goalLine = g ? `<line class="goal" x1="${pad}" x2="${W - pad}" y1="${y(g).toFixed(1)}" y2="${y(g).toFixed(1)}"/>` : "";
-    return `<p class="act-sum"><b>${S.active30}</b> of 30 days active · <b>${S.qualifying30}</b> goal days · <b>${Number(S.xp30).toLocaleString()}</b> XP · <b>${S.workouts30}</b> workouts this month${S.lastActive ? ` · last active ${fmtDate(S.lastActive)}` : " · no activity yet"}${days > 30 ? ` · <b>${S.activeAll}</b> of ${n} days active in this range` : ""}</p>
+    return `<p class="act-sum"><b>${S.active30}</b> of 30 days active · <b>${S.qualifying30}</b> goal days · <b>${Number(S.xp30).toLocaleString()}</b> XP · <b>${S.workouts30}</b> workouts this month${S.lastActive ? ` · last active ${fmtDate(S.lastActive)}` : " · no activity yet"} · <b>${fmtMins(S.minutes30 || 0)}</b> in app this month (${S.opened30 || 0} days opened)${days > 30 ? ` · <b>${S.activeAll}</b> of ${n} days active, <b>${fmtMins(S.minutesAll || 0)}</b> in app in this range` : ""}</p>
       <svg class="act-chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Daily XP for the last ${n} days">${goalLine}${bars}${labels}</svg>
       <p class="act-key muted"><i class="k q"></i>Daily goal met <i class="k a"></i>Active, under goal <i class="k dw"></i>Workout <i class="k dp"></i>Pain check-in <i class="k g"></i>Current daily goal</p>`;
   }
@@ -823,6 +825,7 @@
         ${tile("Active days", `${o.activity ? o.activity.summary.active30 : 0} of 30`, o.activity && o.activity.summary.lastActive ? `last active ${fmtDate(o.activity.summary.lastActive)} · ${o.activity.summary.qualifying30} goal days` : "no activity yet")}
         ${tile("Streak", hb ? `${hb.streak.current} day${hb.streak.current === 1 ? "" : "s"}` : `${ws.streak || 0} days`, hb ? `best ${hb.streak.best} · daily goal ${hb.goal} XP (${esc(hb.goalLevel)}) · today ${hb.todayPoints} XP${hb.qualifyingToday ? " ✓" : ""}` : "")}
         ${tile("Workouts", w.total, `${w.thisMonth} this month · ${ws.hours || 0} h total · best streak ${ws.bestStreak || 0}`)}
+        ${o.time ? tile("Time in app", fmtMins(o.time.last30.minutes), `${o.time.last30.sessions} session${o.time.last30.sessions === 1 ? "" : "s"} · ${o.time.last30.daysOpened} day${o.time.last30.daysOpened === 1 ? "" : "s"} opened · ${o.time.last30.avgMinutesPerDay}m per day${o.time.last30.lastSeenAt ? ` · last seen ${when(o.time.last30.lastSeenAt)}${o.time.last30.lastPlatform ? ` (${o.time.last30.lastPlatform})` : ""}` : ""}${o.time.last30.views.length ? ` · mostly ${esc(o.time.last30.views[0].view)}` : ""}`) : ""}
         ${tile("Pain", pn.last ? `${pn.last.level}/10` : "None logged", pn.last ? `${esc(pn.last.area)} · ${pn.trend ? esc(pn.trend) : fmtDate(pn.last.date)} · ${pn.entries} entries` : "")}
         ${tile("Visits", ap.completed, `${ap.booked} booked · ${ap.noShow} no-show · ${ap.cancelled} cancelled${ap.next ? ` · next ${fmtDate(ap.next.date)} ${fmtTime(ap.next.time)}` : ""}`)}
         ${tile("Documents", dc.complete ? "Complete" : `${dc.done} of ${dc.total}`, dc.complete ? "intake on file" : dc.done ? "in progress" : "not started")}
@@ -989,6 +992,175 @@
         });
         msg.className = "form-msg ok"; msg.textContent = "Saved. It's on their dashboard now.";
       } catch (err) { msg.className = "form-msg err"; msg.textContent = err.message; }
+    }));
+  }
+
+  // ---- Medical record (owner, Nov 2026): active patients and members waiting to be converted; each chart has the
+  // patient's documents, dated notes the patient can read, prescribed movements linked to library videos, and the
+  // video visits they paid for through Stripe that still need a time.
+  let emrRows = { patients: [], waiting: [] };
+  const EXERCISES = window.MDFIT_EXERCISES || [];
+  const exById = new Map(EXERCISES.map((e) => [e.id, e]));
+  const emrRow = (r) => `<tr data-id="${esc(r.id)}" class="emr-row">
+      <td data-label="Name"><b class="c-name">${esc(r.name)}</b><br><span class="muted small">${esc(r.email)}${r.phone ? ` · ${esc(r.phone)}` : ""}</span></td>
+      <td data-label="Documents">${r.documents.complete ? `<span class="badge docs done">Complete ✓</span>` : `<span class="badge docs">${r.documents.done} of ${r.documents.total}</span>`}</td>
+      <td data-label="Chart">${r.notes || r.movements ? `${r.notes} note${r.notes === 1 ? "" : "s"} · ${r.movements} movement${r.movements === 1 ? "" : "s"}` : `<span class="muted">Empty</span>`}</td>
+      <td data-label="Visits">${r.paidVisits ? `<span class="badge pending">${r.paidVisits} paid, needs a time</span> ` : ""}${r.nextVisit ? `Next ${fmtDate(r.nextVisit.date)} ${fmtTime(r.nextVisit.time)}` : r.lastVisit ? `<span class="muted">Last ${fmtDate(r.lastVisit)}</span>` : `<span class="muted">None yet</span>`}</td>
+      <td data-label="${r.patient ? "Patient since" : "Documents done"}">${r.patient && r.since ? when(r.since) : r.documentsAt ? when(r.documentsAt) : "—"}</td>
+    </tr>`;
+  function renderEmr() {
+    const q = ($("#emr-search").value || "").trim().toLowerCase().split(/\s+/).filter(Boolean);
+    const hit = (r) => q.every((w) => `${r.name} ${r.email} ${r.phone}`.toLowerCase().includes(w));
+    const act = emrRows.patients.filter(hit), wait = emrRows.waiting.filter(hit);
+    const head = ["Patient", "Documents", "Chart", "Video visits", "Since"];
+    table($("#emr-active"), head, act.map(emrRow), emrRows.patients.length ? "No match." : "No active patients yet. Convert someone from the waiting list.");
+    table($("#emr-waiting"), ["Member", "Documents", "Chart", "Video visits", "Documents done"], wait.map(emrRow), emrRows.waiting.length ? "No match." : "Nobody is waiting. Members appear here once they finish their new patient documents.");
+    $("#emr-n-active").textContent = emrRows.patients.length ? `(${emrRows.patients.length})` : "";
+    $("#emr-n-wait").textContent = emrRows.waiting.length ? `(${emrRows.waiting.length})` : "";
+    const pill = $("#emr-wait-count"); pill.textContent = emrRows.waiting.length; pill.hidden = !emrRows.waiting.length;
+  }
+  async function loadEmr() {
+    $("#emr-detail").hidden = true; $("#emr-list").hidden = false;
+    emrRows = await api("GET", "/api/admin/emr");
+    renderEmr();
+  }
+  $("#emr-search").addEventListener("input", renderEmr);
+  $("#emr-list").addEventListener("click", (e) => { const tr = e.target.closest("tr[data-id]"); if (tr) run(openChart)(tr.dataset.id); });
+
+  const noteItem = (n) => `<li class="chart-note" data-note="${esc(n.id)}"><div class="cn-head"><span class="muted small">${when(n.at)}</span><button type="button" class="mini" data-rm-note="${esc(n.id)}">Remove</button></div><p>${esc(n.text).replace(/\n/g, "<br>")}</p></li>`;
+  const moveItem = (m) => { const ex = exById.get(m.videoId); return `<li class="chart-move" data-move="${esc(m.id)}">
+      <img class="mv-thumb" src="https://drive.google.com/thumbnail?id=${encodeURIComponent(m.videoId)}&sz=w160" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.visibility='hidden'">
+      <div class="mv-body"><b>${esc(m.name)}</b>${m.dose ? ` <span class="mv-dose">${esc(m.dose)}</span>` : ""}<span class="muted small">${ex ? `${esc(ex.region)} · ${esc(ex.cat)} · level ${ex.level}` : "library video"} · added ${when(m.at)}</span>${m.cue ? `<p class="mv-cue">${esc(m.cue)}</p>` : ""}</div>
+      <button type="button" class="mini" data-rm-move="${esc(m.id)}">Remove</button></li>`; };
+  const svcName = { "eval-remote": "Online evaluation", "followup-remote": "Online follow-up" };
+  function chartVisits(d) {
+    return `${d.paidVisits.length ? `<ul class="chart-paid">${d.paidVisits.map((v) => `<li><b>${esc(v.name || svcName[v.service] || v.service)}</b> <span class="badge pending">Paid, needs a time</span><span class="muted small">paid ${when(v.paidAt)}${v.amount != null ? ` · $${(v.amount / 100).toFixed(2)}` : ""}</span></li>`).join("")}</ul>` : ""}
+      ${d.visits.length ? `<ul class="chart-paid">${d.visits.map((v) => `<li><b>${esc(v.typeName)}</b> ${v.payment === "paid" ? `<span class="badge done">Paid</span>` : v.payment === "exempt" ? `<span class="badge">Inpatient</span>` : ""}<span class="muted small">${fmtDate(v.date)} ${fmtTime(v.time)} · ${v.minutes} min${v.meetingLink ? ` · <a href="${esc(v.meetingLink)}" target="_blank" rel="noopener">video link</a>` : ""}</span></li>`).join("")}</ul>` : `<p class="muted small">No video visit on the calendar.</p>`}`;
+  }
+  let chartId = null;
+  async function openChart(id) {
+    chartId = id;
+    const d = await api("GET", `/api/admin/emr/${id}`);
+    const box = $("#emr-detail"), first = d.name.split(" ")[0];
+    const today = new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" });
+    box.innerHTML = `
+      <button type="button" class="mini" data-back>← Medical record</button>
+      <div class="client-head"><div>
+        <h2>${esc(d.name)} ${d.patient ? `<span class="badge done">Active patient</span>` : `<span class="badge pending">Waiting</span>`}</h2>
+        <p class="muted"><a href="mailto:${esc(d.email)}">${esc(d.email)}</a>${d.phone ? ` · <a href="tel:${esc(d.phone)}">${esc(d.phone)}</a>` : ""} · ${d.clientType === "inpatient" ? "inpatient" : "outpatient"} · joined ${when(d.createdAt)}${d.since ? ` · patient since ${when(d.since)}` : ""}</p></div>
+        <div class="client-actions">
+          <button type="button" class="btn btn-sm${d.patient ? " ghost" : ""}" data-convert="${d.patient ? "0" : "1"}">${d.patient ? "Mark as not a patient" : "Convert to active patient"}</button>
+          <button type="button" class="mini" data-profile>Full profile</button><button type="button" class="mini" data-cmsg>Message</button></div></div>
+      <div class="ov-tiles chart-tiles">
+        <div class="ov-tile"><b>${d.documents.done}/${d.documents.total}</b><span>Documents</span></div>
+        <div class="ov-tile"><b>${d.notes.length}</b><span>Notes</span></div>
+        <div class="ov-tile"><b>${d.movements.length}</b><span>Movements</span></div>
+        <div class="ov-tile"><b>${d.paidVisits.length}</b><span>Paid, unscheduled</span></div>
+        <div class="ov-tile"><b>${d.lastLoginAt ? when(d.lastLoginAt) : "—"}</b><span>Last sign-in</span></div>
+      </div>
+      <section class="card chart-sect"><div class="card-head"><h2>Documents</h2>${d.documents.done ? `<button type="button" class="mini" data-cdocs>View documents</button>` : `<span class="muted small">None on file yet.</span>`}</div><div class="intake-view" id="chart-docs" hidden></div></section>
+      <div class="chart-grid">
+        <section class="card chart-sect"><div class="card-head"><h2>Notes for ${esc(first)}</h2><span class="muted small">${first} reads these on Home</span></div>
+          <form class="form" id="chart-note-form" novalidate>
+            <label class="sr-only" for="chart-note-text">New note</label>
+            <textarea id="chart-note-text" name="text" rows="3" maxlength="4000" placeholder="What ${esc(first)} should know or do next…" required></textarea>
+            <div class="row"><button class="btn btn-sm" type="submit">Add note</button><span class="form-msg" role="status"></span></div>
+          </form>
+          <ul class="chart-notes" id="chart-notes">${d.notes.map(noteItem).join("") || `<li class="muted none">No notes yet.</li>`}</ul></section>
+        <section class="card chart-sect"><div class="card-head"><h2>Movements for ${esc(first)}</h2><span class="muted small">Each one plays its video in the app</span></div>
+          <div class="mv-add">
+            <input type="search" id="mv-search" placeholder="Search the video library (e.g. hip hinge, calf, dead bug)" aria-label="Search movements" autocomplete="off">
+            <ul class="mv-results" id="mv-results" hidden></ul>
+            <form class="form mv-form" id="mv-form" hidden novalidate>
+              <p class="mv-picked"><img id="mv-pick-thumb" alt="" width="64" height="40" referrerpolicy="no-referrer"><b id="mv-pick-name"></b> <span class="muted small" id="mv-pick-meta"></span><input type="hidden" name="videoId"><input type="hidden" name="name"></p>
+              <div class="row wrap"><label>Sets × reps<input name="dose" maxlength="120" placeholder="3 × 12" list="mv-doses"></label>
+                <datalist id="mv-doses"><option value="3 × 12"><option value="3 × 10"><option value="2 × 15"><option value="3 × 8 each side"><option value="2 × 30 seconds"><option value="Daily, 2 rounds"></datalist>
+                <label class="grow">Cue (optional)<input name="cue" maxlength="300" placeholder="Slow on the way down, stop before pain"></label></div>
+              <div class="row"><button class="btn btn-sm" type="submit">Add to ${esc(first)}'s plan</button><button type="button" class="mini" data-mv-cancel>Cancel</button><span class="form-msg" role="status"></span></div>
+            </form>
+          </div>
+          <ul class="chart-moves" id="chart-moves">${d.movements.map(moveItem).join("") || `<li class="muted none">No movements prescribed yet.</li>`}</ul></section>
+      </div>
+      <section class="card chart-sect"><div class="card-head"><h2>Video visits</h2><span class="muted small">Paid through Stripe from the app; schedule them here</span></div>
+        <div id="chart-visits">${chartVisits(d)}</div>
+        <details class="care"><summary>Schedule a video visit</summary>
+          <form class="form care-form" id="chart-consult" novalidate>
+            <div class="row wrap"><label>Date<input type="date" name="date" min="${today}" required></label><label>Time<input type="time" name="time" step="900" required></label>
+              <label>Length<select name="minutes"><option value="30">30 min</option><option value="60" selected>60 min</option><option value="45">45 min</option><option value="90">90 min</option></select></label>
+              <label class="grow">Title<input name="title" maxlength="80" value="${esc(d.paidVisits[0] ? (d.paidVisits[0].name || "Video visit") : "Video visit")}"></label></div>
+            <label>Video link <span class="muted fine">(blank = your Video visit room)</span><input name="meetingLink" type="url" placeholder="https://"></label>
+            <label>Note in the email (optional)<input name="message" maxlength="500"></label>
+            <div class="row"><button class="btn btn-sm" type="submit">Schedule</button><span class="form-msg" role="status"></span></div>
+          </form></details></section>`;
+    $("#emr-list").hidden = true; box.hidden = false; window.scrollTo(0, 0);
+
+    $("[data-back]", box).addEventListener("click", run(loadEmr));
+    $("[data-profile]", box).addEventListener("click", () => { openTab("clients", { load: false }); run(openClient)(id); });
+    $("[data-cmsg]", box).addEventListener("click", run(() => goThread(id)));
+    $("[data-convert]", box).addEventListener("click", run(async (e) => {
+      const r = await api("PUT", `/api/admin/emr/${id}/patient`, { active: e.currentTarget.dataset.convert === "1" });
+      toast(r.patient ? `${first} is an active patient now.` : `${first} is no longer marked as a patient.`);
+      openChart(id);
+    }));
+    const cd = $("[data-cdocs]", box);
+    if (cd) cd.addEventListener("click", run(async () => { const v = $("#chart-docs"); if (!v.hidden) { v.hidden = true; return; } showDocs(v, await api("GET", `/api/admin/clients/${id}/intake`)); }));
+    // Notes
+    const nf = $("#chart-note-form", box);
+    nf.addEventListener("submit", run(async (e) => {
+      e.preventDefault(); const msg = $(".form-msg", nf); msg.className = "form-msg"; msg.textContent = "";
+      const text = nf.text.value.trim(); if (!text) { msg.className = "form-msg err"; msg.textContent = "Write the note first."; return; }
+      try {
+        const n = await api("POST", `/api/admin/emr/${id}/notes`, { text });
+        const ul = $("#chart-notes"); $(".none", ul)?.remove(); ul.insertAdjacentHTML("afterbegin", noteItem(n));
+        nf.reset(); msg.className = "form-msg ok"; msg.textContent = `Added. ${first} will see it on Home.`;
+      } catch (err) { msg.className = "form-msg err"; msg.textContent = err.message; }
+    }));
+    $("#chart-notes", box).addEventListener("click", run(async (e) => {
+      const b = e.target.closest("[data-rm-note]"); if (!b) return;
+      await api("DELETE", `/api/admin/emr/${id}/notes/${b.dataset.rmNote}`); b.closest("li").remove(); toast("Note removed.");
+    }));
+    // Movements: search the library, pick one, set the dose
+    const ms = $("#mv-search", box), mr = $("#mv-results", box), mf = $("#mv-form", box);
+    const score = (e, q) => q.every((w) => `${e.name} ${e.region} ${e.cat}`.toLowerCase().includes(w));
+    ms.addEventListener("input", () => {
+      const q = ms.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+      if (!q.length) { mr.hidden = true; mr.innerHTML = ""; return; }
+      const hits = EXERCISES.filter((e) => score(e, q)).slice(0, 12);
+      mr.innerHTML = hits.map((e) => `<li><button type="button" data-pick="${esc(e.id)}"><img src="https://drive.google.com/thumbnail?id=${encodeURIComponent(e.id)}&sz=w120" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.visibility='hidden'"><span><b>${esc(e.name)}</b><span class="muted small">${esc(e.region)} · ${esc(e.cat)} · level ${e.level}</span></span></button></li>`).join("") || `<li class="muted none">No movement matches "${esc(ms.value.trim())}".</li>`;
+      mr.hidden = false;
+    });
+    mr.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-pick]"); if (!b) return;
+      const ex = exById.get(b.dataset.pick); if (!ex) return;
+      mf.videoId.value = ex.id; mf.name.value = ex.name;
+      $("#mv-pick-name").textContent = ex.name; $("#mv-pick-meta").textContent = `${ex.region} · ${ex.cat} · level ${ex.level}`;
+      $("#mv-pick-thumb").src = `https://drive.google.com/thumbnail?id=${encodeURIComponent(ex.id)}&sz=w160`;
+      mr.hidden = true; mf.hidden = false; mf.dose.focus();
+    });
+    $("[data-mv-cancel]", mf).addEventListener("click", () => { mf.hidden = true; mf.reset(); ms.value = ""; ms.focus(); });
+    mf.addEventListener("submit", run(async (e) => {
+      e.preventDefault(); const msg = $(".form-msg", mf); msg.className = "form-msg"; msg.textContent = "";
+      try {
+        const m = await api("POST", `/api/admin/emr/${id}/movements`, { videoId: mf.videoId.value, name: mf.name.value, dose: mf.dose.value.trim(), cue: mf.cue.value.trim() });
+        const ul = $("#chart-moves"); $(".none", ul)?.remove(); ul.insertAdjacentHTML("beforeend", moveItem(m));
+        mf.hidden = true; mf.reset(); ms.value = ""; toast(`${m.name} added to ${first}'s plan.`); ms.focus();
+      } catch (err) { msg.className = "form-msg err"; msg.textContent = err.message; }
+    }));
+    $("#chart-moves", box).addEventListener("click", run(async (e) => {
+      const b = e.target.closest("[data-rm-move]"); if (!b) return;
+      await api("DELETE", `/api/admin/emr/${id}/movements/${b.dataset.rmMove}`); b.closest("li").remove(); toast("Movement removed.");
+    }));
+    // Video visit scheduling (same endpoint as the client profile; a paid visit is used up by it)
+    const cf = $("#chart-consult", box);
+    cf.addEventListener("submit", run(async (e) => {
+      e.preventDefault(); const msg = $(".form-msg", cf), btn = $("button[type=submit]", cf); msg.className = "form-msg"; msg.textContent = ""; btn.disabled = true;
+      try {
+        if (!cf.date.value || !cf.time.value) throw new Error("Pick a date and time.");
+        const a = await api("POST", `/api/admin/clients/${id}/consult`, { date: cf.date.value, time: cf.time.value, minutes: Number(cf.minutes.value), title: cf.title.value.trim(), meetingLink: cf.meetingLink.value.trim(), message: cf.message.value });
+        msg.className = "form-msg ok"; msg.textContent = `Scheduled ${fmtDate(a.date)} at ${fmtTime(a.time)}${a.payment === "paid" ? " · paid visit used" : ""}. ${first} has the link in their account.`;
+        const fresh = await api("GET", `/api/admin/emr/${id}`); $("#chart-visits").innerHTML = chartVisits(fresh); cf.reset();
+      } catch (err) { msg.className = "form-msg err"; msg.textContent = err.message; }
+      btn.disabled = false;
     }));
   }
 

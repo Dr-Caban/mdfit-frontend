@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css?v=45de4d22">
-  <link rel="stylesheet" href="admin.css?v=5d167397">
+  <link rel="stylesheet" href="admin.css?v=1cee17dc">
 </head>
 <body class="admin">
   <section id="login" class="login">
@@ -47,6 +47,7 @@
       <nav aria-label="Admin sections">
         <button type="button" data-nav="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 16H5V9h14zM7 11h5v5H7z"/></svg><span>Home</span></button>
         <button type="button" data-nav="people"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 11a3 3 0 1 0-3-3 3 3 0 0 0 3 3zm-8 0a3 3 0 1 0-3-3 3 3 0 0 0 3 3zm0 2c-2.3 0-7 1.2-7 3.5V19h14v-2.5C15 14.2 10.3 13 8 13zm8 0c-.3 0-.6 0-1 .1a4.2 4.2 0 0 1 2 3.4V19h6v-2.5c0-2.3-4.7-3.5-7-3.5z"/></svg><span>Clients</span></button>
+        <button type="button" data-nav="emr"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 3h-4.2a3 3 0 0 0-5.6 0H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-7 0a1 1 0 1 1-1 1 1 1 0 0 1 1-1zm3 13h-2v2h-2v-2H9v-2h2v-2h2v2h2zm0-6H9V8h6z"/></svg><span>Medical record</span> <span class="pill pending" id="emr-wait-count" hidden></span></button>
         <button type="button" data-nav="inbox"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM6 9h12v2H6zm8 5H6v-2h8zm4-6H6V6h12z"/></svg><span>Inbox</span> <span class="pill pending" id="admin-msg-count" hidden></span></button>
         <button type="button" data-nav="insights"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z"/></svg><span>Insights</span></button>
         <button type="button" data-nav="settings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.1 12.9a7 7 0 0 0 0-1.8l2-1.5-2-3.4-2.3.9a7 7 0 0 0-1.6-.9L14.9 4h-4l-.4 2.2a7 7 0 0 0-1.5.9l-2.4-.9-2 3.4 2 1.5a7 7 0 0 0 0 1.8l-2 1.5 2 3.4 2.4-.9a7 7 0 0 0 1.5.9l.4 2.2h4l.3-2.2a7 7 0 0 0 1.6-.9l2.3.9 2-3.4zM12.9 15a3 3 0 1 1 3-3 3 3 0 0 1-3 3z"/></svg><span>Settings</span></button>
@@ -165,6 +166,17 @@
           <div class="table-wrap"><table id="clients-table"></table></div>
         </div>
         <div id="client-detail" hidden></div>
+      </section>
+
+      <section data-panel="emr" hidden>
+        <div id="emr-list">
+          <div class="bar"><input id="emr-search" type="search" placeholder="Search patients by name, email or phone" aria-label="Search patients"></div>
+          <div class="emr-cols">
+            <div class="card emr-col"><div class="card-head"><h2>Active patients <span class="muted" id="emr-n-active"></span></h2></div><div class="table-wrap"><table id="emr-active"></table></div></div>
+            <div class="card emr-col"><div class="card-head"><h2>Waiting to be converted <span class="muted" id="emr-n-wait"></span></h2><p class="muted fine">Members who finished their new patient documents. Open one and tap Convert to make them an active patient.</p></div><div class="table-wrap"><table id="emr-waiting"></table></div></div>
+          </div>
+        </div>
+        <div id="emr-detail" hidden></div>
       </section>
 
       <section data-panel="leads" hidden>
@@ -394,6 +406,7 @@
   <script src="realtime.js?v=c1829e8b"></script>
   <script src="painmuscles.js?v=74e3b348"></script>
   <script src="paintracks.js?v=55ce1cb4"></script>
+  <script src="app/exercises.js?v=606cb391"></script>
   <script src="admin-habits.js?v=57506dba"></script>
   <!-- Tap a client: everything about them in one pop-up (data-collection month) -->
   <dialog class="ov-pop" id="client-pop" aria-label="Client overview">
@@ -401,7 +414,7 @@
       <div class="ov-head-actions"><button type="button" class="btn btn-sm" id="cp-open">Open full profile</button><button type="button" class="icon-x" id="cp-close" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/></svg></button></div></div>
     <div class="ov-body" id="cp-body"></div>
   </dialog>
-  <script src="admin.js?v=c75bf8f1"></script>
+  <script src="admin.js?v=9fad1efa"></script>
 <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
