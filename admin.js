@@ -1288,7 +1288,7 @@
         <div class="item-head"><b>${esc(f.name)}</b> <span class="stars">${"★".repeat(f.rating)}${"☆".repeat(5 - f.rating)}</span>
           <span class="pill ${f.status}">${f.status}</span> <span class="muted">${when(f.createdAt)}</span></div>
         <p>${esc(f.text)}</p>
-        <p class="muted small">${esc(f.email)} · ${f.publish ? "OK to publish" : "Private, do not publish"} · Reward ${esc(f.rewardCode)} ${f.rewardUsedAt ? `(booked ${when(f.rewardUsedAt)})` : "(not used yet)"}</p>
+        <p class="muted small">${esc(f.email)} · ${f.publish ? "OK to publish" : "Private, do not publish"}</p>
         <div class="row-actions">${f.publish && f.status !== "approved" ? `<button class="mini" data-st="approved">Show on website</button>` : ""}
           ${f.status !== "hidden" ? `<button class="mini danger" data-st="hidden">Hide</button>` : `<button class="mini" data-st="pending">Restore</button>`}</div>
       </article>`).join("") : `<p class="muted">No reviews yet. The form is in the Reviews section of the homepage.</p>`;

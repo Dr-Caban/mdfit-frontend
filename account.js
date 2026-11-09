@@ -1083,10 +1083,7 @@
       ? (cur.meetings ? `${cur.meetings} remote 1-on-1 sessions with Dr. Jared a month. Change or cancel any time.` : "Membership: your own workout builder and challenges, every program and lecture. Upgrade to a 1-on-1 tier for monthly video calls with Dr. Jared.")
       : "Everything in the app is included free. Membership adds your own workout builder and challenges, and the 1-on-1 tiers add monthly video calls with Dr. Jared.";
     $("#p-mem-go").textContent = paid ? (cur.meetings ? "Manage membership" : "Upgrade membership") : "Upgrade membership";
-    // The review offer (30% off the first month) shows to free members who haven't left one yet
-    const offer = $("#p-mem-offer"); if (offer) offer.hidden = paid || !!(access.reviewCode || store.get("mdfit_review_code", null));
   }
-  document.addEventListener("click", (e) => { if (e.target.closest("[data-review]")) showPaywall("Leave a quick, honest review and your first month is 30% off."); });
   wire($("#profile-form"), async (d) => {
     const r = await apiAuth("PUT", "/api/me", { name: d.name, phone: d.phone }); earn("profile");
     client = r.client; auth.set({ ...auth.get(), client }); renderProfile();
@@ -1896,7 +1893,7 @@
   });
   $("#chat-form textarea").addEventListener("keydown", (e) => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) $("#chat-form").requestSubmit(); });
 
-  // ================= Paywall: subscribe, with 30% off the first month for leaving a review
+  // ================= Paywall: what membership adds, and the way to the plans (no review incentive: owner, Nov 2026)
   function renderAccessBadge() {
     const b = $("#free-badge"); if (!b) return;
     b.hidden = access.member;
@@ -1907,25 +1904,12 @@
   document.addEventListener("click", (e) => { if (e.target.closest("[data-paywall]")) showPaywall(); });
   async function showPaywall(reason) {
     if (!C) await (contentLoading || loadContent()).catch(() => {});
-    const d = $("#paywall"), tier = C && C.tiers && C.tiers[0], pct = 30;
-    const code = access.reviewCode || store.get("mdfit_review_code", null);
-    $("#pw-reason").textContent = reason || "You've used your free workout.";
-    $("#pw-price").innerHTML = tier ? `Membership from <b>$${tier.price}/month</b>${code ? ` · <span class="pw-deal">$${(tier.price * (100 - pct) / 100).toFixed(2)} your first month</span>` : ""}` : "";
-    $("#pw-form").hidden = !!code;
-    $("#pw-have").hidden = !code;
-    if (code) $("#pw-code").textContent = code;
+    const d = $("#paywall"), tier = C && C.tiers && C.tiers[0];
+    $("#pw-reason").textContent = reason || "This is part of membership.";
+    $("#pw-price").innerHTML = tier ? `Membership from <b>$${tier.price}/month</b>` : "";
     d.showModal();
   }
-  $("#pw-form").addEventListener("submit", async (e) => {
-    e.preventDefault(); const f = e.target, msg = $(".nums-msg", f);
-    const rating = Number((f.querySelector("[name=pwrating]:checked") || {}).value || 0);
-    if (!rating) { msg.textContent = "Tap the stars first."; return; }
-    try {
-      const r = await api("/api/feedback", { name: client.name, email: client.email, rating, text: f.text.value, publish: f.publish.checked });
-      access.reviewCode = r.rewardCode; store.set("mdfit_review_code", r.rewardCode);
-      showPaywall($("#pw-reason").textContent);
-    } catch (err) { msg.textContent = err.message; }
-  });
+  try { localStorage.removeItem("mdfit_review_code"); } catch {} // retired review-reward codes saved by older app versions
   $("#pw-subscribe").addEventListener("click", () => { $("#paywall").close(); go("premium"); });
 
   // ================= Member content: programs, lectures + live Q&A, membership & 1-on-1, health tips
@@ -1939,8 +1923,6 @@
   const withArt = (d) => { (d && d.programs || []).forEach((p) => { if (!p.image) { const m = PROG_ART.find(([re]) => re.test(p.title || "")); if (m) p.image = m[1]; } }); return d; };
   const loadContent = () => (contentLoading = apiAuth("GET", "/api/me/content").then((d) => (C = withArt(d))).catch(() => api("/api/content").then((d) => (C = withArt({ ...d, access: "free" })))));
   const money = (n) => "$" + Number(n).toLocaleString("en-US");
-  // 30% off the first month, shown with cents when they aren't zero ($244.30, not $244.3)
-  const firstMonth = (price) => { const n = Math.round(price * 70) / 100; return "$" + n.toLocaleString("en-US", { minimumFractionDigits: Number.isInteger(n) ? 0 : 2, maximumFractionDigits: 2 }); };
   const lockBadge = `<span class="lock" title="Members"><svg viewBox="0 0 24 24"><path d="M17 9h-1V7a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2zm-7-2a2 2 0 0 1 4 0v2h-4z"/></svg> Members</span>`;
   const unlockBtn = (what) => `<button type="button" class="btn-gold sm" data-goto="premium">Unlock ${what} with a membership</button>`;
   async function renderContent(tab, sub) {
@@ -2436,13 +2418,9 @@
         </div>`;
       }).catch(() => {});
     }
-    const rc = access.reviewCode || store.get("mdfit_review_code", null);
-    if (rc && C.access === "free") $("#my-membership").insertAdjacentHTML("beforeend", `<div class="pw-applied">Your review code <b>${esc(rc)}</b> takes <b>30% off your first month</b>. It's applied automatically when you request a membership.</div>`);
-    // No code yet: the offer sits above the plans, not only inside the paywall pop-up
-    else if (C.access === "free") $("#my-membership").insertAdjacentHTML("beforeend", `<div class="card review-offer"><span class="label accent">30% off your first month</span><p>Leave a quick, honest review of MD Fit. Any rating counts, and the discount is applied automatically to whichever plan you pick.</p><button type="button" class="btn-gold sm" data-review>Leave a review, get 30% off</button></div>`);
     $("#tier-grid").innerHTML = C.tiers.map((t, i) => `<article class="tier${i === 1 ? " featured" : ""}${cur && cur.id === t.id ? " current" : ""}">
       ${i === 1 ? `<span class="tag">Most popular</span>` : ""}
-      <h3>${esc(t.name)}</h3><p class="tier-price"><b>${money(t.price)}</b>/month</p>${rc && C.access === "free" ? `<p class="tier-first">First month ${firstMonth(t.price)} with your review code</p>` : ""}
+      <h3>${esc(t.name)}</h3><p class="tier-price"><b>${money(t.price)}</b>/month</p>
       ${t.meetings ? `<p class="tier-meet">${t.meetings} remote 1-on-1 sessions a month · ${t.meetingMinutes} min each</p>` : t.accountability ? `<p class="tier-meet">$1 off per active day · 20 active days = <b>${money(t.floor || 0)}</b> that month</p>` : ""}
       <ul>${t.perks.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>
       ${cur && cur.id === t.id ? `<span class="tier-cur">Your plan</span>` : `<button type="button" class="${i === 1 ? "btn-gold" : "btn-ghost"} sm" data-tier="${t.id}">${payOn ? "Subscribe" : "Request"} ${esc(t.name)}</button>`}
@@ -2503,7 +2481,7 @@
       const label = b.textContent; b.textContent = "Opening secure checkout…";
       try {
         // In the MD Fit app, Stripe's page opens in a native sheet so Apple Pay / Google Pay are available
-        const r = await apiAuth("POST", "/api/me/checkout/membership", { tier: t.id, ui: window.MDFitNative ? "app" : "embedded", rewardCode: access.reviewCode || store.get("mdfit_review_code", null) || undefined });
+        const r = await apiAuth("POST", "/api/me/checkout/membership", { tier: t.id, ui: window.MDFitNative ? "app" : "embedded" || undefined });
         if (r.url && window.MDFitNative) { window.MDFitNative.checkout(r.url, "membership"); }
         else if (r.clientSecret && window.MDFitStripe) {
           try { await window.MDFitStripe.open({ clientSecret: r.clientSecret, publishableKey: stripePub }); }

@@ -133,11 +133,10 @@
     const btn = $("button[type=submit]", f); btn.disabled = true;
     try {
       const out = await api("/api/feedback", { name: f.name.value, email: f.email.value, rating, text: f.text.value, publish: f.publish.checked, mdfit_hp: f.mdfit_hp.value });
-      if (!out || !out.rewardCode) throw new Error("We couldn't save your review. Please try again.");
+      if (!out || !out.ok) throw new Error("We couldn't save your review. Please try again.");
       f.hidden = true;
       const done = $(".lr-done"); done.hidden = false;
-      $(".lr-code", done).textContent = out.rewardCode;
-      try { localStorage.setItem("mdfit_review_code", JSON.stringify(out.rewardCode)); } catch {}
+      const g = $(".lr-google a"); if (g && g.href && !$(".lr-google").hidden) { const d = $(".lr-google-done", done); d.hidden = false; d.querySelector("a").href = g.href; }
     } catch (err) { msg.className = "form-msg err"; msg.textContent = err.message; }
     finally { btn.disabled = false; }
   });
