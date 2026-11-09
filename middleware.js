@@ -12,9 +12,15 @@ const apiOrigin = () => (process.env.API_ORIGIN || DEFAULT_API).replace(/\/+$/, 
 // Commit this deployment was built from, on every response, so a domain stuck on an old build is easy to spot.
 const build = () => (process.env.VERCEL_GIT_COMMIT_SHA || "dev").slice(0, 12);
 const ALLOWED = new Set(["US", "PR", "GU", "VI", "AS", "MP", "UM"]);
-const BAD_UA = /(curl|wget|python-requests|python-urllib|aiohttp|httpx|go-http-client|java\/|okhttp|libwww|scrapy|httpclient|node-fetch|axios|postman|insomnia|headless|phantomjs|selenium|puppeteer|playwright|crawler|spider|scraper|gptbot|chatgpt-user|oai-searchbot|ccbot|claudebot|claude-web|anthropic-ai|bytespider|petalbot|semrushbot|ahrefsbot|mj12bot|dotbot|dataforseo|amazonbot|perplexitybot|youbot|diffbot|imagesiftbot|omgili|zgrab|masscan|nmap|nikto|sqlmap|wpscan)/i;
-const SEARCH = /(googlebot|bingbot|duckduckbot|applebot)/i;
+// AI *training* crawlers stay blocked. AI *search* bots (OAI-SearchBot, ChatGPT-User, PerplexityBot, Perplexity-User,
+// Claude-SearchBot, Claude-User) are allowed on public pages so MD Fit can be cited in AI search answers (owner, Nov 2026).
+const BAD_UA = /(curl|wget|python-requests|python-urllib|aiohttp|httpx|go-http-client|java\/|okhttp|libwww|scrapy|httpclient|node-fetch|axios|postman|insomnia|headless|phantomjs|selenium|puppeteer|playwright|crawler|spider|scraper|gptbot|ccbot|claudebot|claude-web|anthropic-ai|bytespider|petalbot|semrushbot|ahrefsbot|mj12bot|dotbot|dataforseo|amazonbot|youbot|diffbot|imagesiftbot|omgili|zgrab|masscan|nmap|nikto|sqlmap|wpscan)/i;
+const SEARCH = /(googlebot|bingbot|duckduckbot|applebot|oai-searchbot|chatgpt-user|perplexitybot|perplexity-user|claude-searchbot|claude-user)/i;
 const PRIVATE = /^\/(account|admin|api|login|cancel|intake)/;
+// Public, read-only API calls the homepage makes while it renders (business info, Google rating, published reviews,
+// video catalog). Search engines that render JavaScript (Googlebot, Bingbot) may GET these so they index the real
+// page instead of placeholders. Everything else under /api stays closed to bots.
+const PUBLIC_API = /^\/api\/(site|reviews|feedback|videos)$/;
 
 const page = (status, title, text) => new Response(
   `<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>${title}</title>` +
@@ -32,7 +38,8 @@ export default async function middleware(request) {
 
   // 2. Bots and scrapers. Search engines may read the public homepage only.
   if (!ua || BAD_UA.test(ua)) return page(403, "Automated access isn't allowed", "This site can only be used in a web browser or the MD Fit app.");
-  if (SEARCH.test(ua) && PRIVATE.test(url.pathname)) return page(403, "Private", "This page is private.");
+  const publicRead = request.method === "GET" && PUBLIC_API.test(url.pathname);
+  if (SEARCH.test(ua) && PRIVATE.test(url.pathname) && !publicRead) return page(403, "Private", "This page is private.");
 
   // 3. API proxy with the edge secret and the visitor's real IP (for rate limiting)
   if (url.pathname.startsWith("/api/")) {

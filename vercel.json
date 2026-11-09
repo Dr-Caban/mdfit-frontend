@@ -122,6 +122,26 @@
   ],
   "redirects": [
     {
+      "source": "/sciatica-treatment-sarasota",
+      "destination": "/conditions/sciatica",
+      "permanent": true
+    },
+    {
+      "source": "/medical-massage-sarasota",
+      "destination": "/treatments/medical-massage",
+      "permanent": true
+    },
+    {
+      "source": "/chronic-pain-sarasota",
+      "destination": "/conditions/chronic-pain",
+      "permanent": true
+    },
+    {
+      "source": "/conditions/medical-massage",
+      "destination": "/treatments/medical-massage",
+      "permanent": true
+    },
+    {
       "source": "/privacy",
       "destination": "/privacy-policy",
       "permanent": true
