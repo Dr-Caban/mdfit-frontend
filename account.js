@@ -1936,7 +1936,8 @@
   const PROG_ART = [[/mobility/i, "assets/programs/mobility-ladder-new.png"], [/low back|mid-back|lumbar/i, "assets/programs/low-back-new.png"],
     [/hip/i, "assets/programs/hip-new.png"], [/shoulder|rotator/i, "assets/programs/shoulder-new.png"], [/golf/i, "assets/programs/golf-new.png"],
     [/pickleball/i, "assets/programs/pickleball.png"], [/marathon/i, "assets/programs/marathon-new.png"], [/running/i, "assets/programs/running-new.png"],
-    [/\bski/i, "assets/programs/ski.png", true]]; // true = the poster already carries its title text; draw nothing over it
+    [/\bski/i, "assets/programs/ski.png", true], [/knee/i, "assets/programs/knee.png", true], [/plantar/i, "assets/programs/plantar.png", true],
+    [/lateral|tennis elbow/i, "assets/programs/tennis-elbow.png", true], [/medial|golfer/i, "assets/programs/golfers-elbow.png", true]]; // true = the poster already carries its title text; draw nothing over it
   const COMPLETE_POSTERS = new Set([...PROG_ART.filter((x) => x[2]).map((x) => x[1]), "assets/programs/mobility-ladder-poster.png"]);
   const withArt = (d) => { (d && d.programs || []).forEach((p) => { if (!p.image) { const m = PROG_ART.find(([re]) => re.test(p.title || "")); if (m) p.image = m[1]; } }); return d; };
   const loadContent = () => (contentLoading = apiAuth("GET", "/api/me/content").then((d) => (C = withArt(d))).catch(() => api("/api/content").then((d) => (C = withArt({ ...d, access: "free" })))));
