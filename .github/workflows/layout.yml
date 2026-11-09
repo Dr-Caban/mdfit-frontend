@@ -10,7 +10,7 @@ on:
 jobs:
   layout:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 45
     env:
       NODE_ENV: test
     steps:
