@@ -27,7 +27,9 @@ const exists = (href) => {
   return ["", ".html", "/index.html"].some((suf) => fs.existsSync(path.join(root, rel + suf)));
 };
 const text = (h) => h.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>|<svg[\s\S]*?<\/svg>/g, " ").replace(/<[^>]+>/g, " ").replace(/&[a-z#0-9]+;/g, " ").replace(/\s+/g, " ").trim();
-const bodyText = (s) => { const m = s.match(/<main[\s\S]*?<\/main>/); if (!m) return ""; return text(m[0].replace(/<blockquote[\s\S]*?<\/blockquote>/g, " ").replace(/<ul class="cd-links">[\s\S]*?<\/ul>/g, " ").replace(/<div class="cd-cta">[\s\S]*?<\/div>/g, " ").replace(/<ol class="cd-steps">[\s\S]*?<\/ol>/g, (x) => /Assess\./.test(x) ? " " : x)); };
+const bodyText = (s) => { const m = s.match(/<main[\s\S]*?<\/main>/); if (!m) return ""; return text(m[0].replace(/<blockquote[\s\S]*?<\/blockquote>/g, " ").replace(/<ul class="cd-links">[\s\S]*?<\/ul>/g, " ").replace(/<div class="cd-cta">[\s\S]*?<\/div>/g, " ").replace(/<ol class="cd-steps">[\s\S]*?<\/ol>/g, (x) => /Assess\./.test(x) ? " " : x)
+  // the standard self-pay FAQ is deliberately identical everywhere, like the 5-step method and the CTA
+  .replace(/<details class="cd-faq"><summary>Do you take insurance\?<\/summary>[\s\S]*?<\/details>/g, " ")); };
 const shingles = (t) => { const w = t.toLowerCase().match(/[a-z0-9']+/g) || [], out = new Set(); for (let i = 0; i + 4 <= w.length; i++) out.add(w.slice(i, i + 4).join(" ")); return out; };
 const jaccard = (a, b) => { let n = 0; for (const x of a) if (b.has(x)) n++; return n / (a.size + b.size - n || 1); };
 

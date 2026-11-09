@@ -7,7 +7,7 @@
 "use strict";
 const fs = require("fs"), path = require("path"), { execFileSync } = require("child_process");
 const L = require("./lib");
-const { esc, attr, data, muscleUrl, painUrl, findExercise, thumb, quote, REVIEW, RATING, RATING_P, BOOK_ROW, CTA, crumbs, breadcrumbLd, faqLd, faqHtml, linkList, stepsHtml, ABOUT_DR, page, webPage, SITE, TODAY } = L;
+const { esc, attr, data, muscleUrl, painUrl, findExercise, thumb, quote, REVIEW, RATING, RATING_P, BOOK_ROW, CTA, withInsuranceFaq, crumbs, breadcrumbLd, faqLd, faqHtml, linkList, stepsHtml, ABOUT_DR, page, webPage, SITE, TODAY } = L;
 
 const { M, AGGRAVATORS, SPOTS, rank, reports, tracks, patterns, slugs, pain, guides } = data;
 const generated = []; // { url, title, kind, snippet, kw, priority, file }
@@ -47,7 +47,7 @@ function buildMuscle(id) {
   const name = m.name, short = shortName(name), locs = painForMuscle(id), folded = foldedForMuscle(id), trk = tracksForMuscle(id);
   const title = [`${short} Pain & Trigger Points | MD Fit`, `${short} Pain & Relief | MD Fit`, `${short} Pain | MD Fit`].find((t) => t.length <= 60);
   const description = `${short}: where it refers pain, symptoms, self-check and Dr. Jared Caban's 3-phase relief plan with free exercise videos. MD Fit, Sarasota FL.`.slice(0, 160);
-  const faq = muscleFaq(id, m, r, locs);
+  const faq = withInsuranceFaq(muscleFaq(id, m, r, locs));
   const neighbors = [...new Set(trk.flatMap((t) => t.pts))].filter((x) => x !== id && M[x]).slice(0, 6);
   const siblings = neighbors.length ? neighbors : Object.keys(M).filter((x) => x !== id && regionOf(x) === regionOf(id)).slice(0, 6);
   const trail = [{ name: "Home", href: "/" }, { name: "Muscles", href: "/muscles/" }, { name: short, href: url }];
@@ -198,7 +198,7 @@ function buildPain(p) {
     { q: `How long does ${shortName(top.name).toLowerCase()} pain usually take to settle?`, a: sentence(rep.expect) },
     { q: `What makes it more likely to be the ${shortName(top.name).toLowerCase()}?`, a: `It is worse with ${top.worse.map((w) => (AGGRAVATORS[w] || w).toLowerCase()).join(", ")}, and pressing into the muscle reproduces the pain you know. ${sentence(top.refers)}` },
     { q: `When should I book instead of working on it myself?`, a: sentence(rep.seePro) }
-  ];
+  ].concat(withInsuranceFaq([]));
   const trail = [{ name: "Home", href: "/" }, { name: "Pain locations", href: "/pain/" }, { name: p.name, href: url }];
   const body = `    ${crumbs(trail)}
     <h1>Pain ${esc(at)}: What's Causing It</h1>
@@ -303,7 +303,7 @@ function buildContent(p) {
     <ul>${li(p.redFlags)}</ul>
     ${p.guides && p.guides.length ? `<h2>Free guides from Dr. Jared</h2><ul>${p.guides.filter((x) => guides[x]).map((x) => `<li><a href="/guides/${x}">${esc(guides[x])}</a></li>`).join("")}</ul>` : ""}
     ${isBlog ? "" : ABOUT_DR}
-    ${faqHtml(p.faq)}
+    ${faqHtml(isBlog ? p.faq : withInsuranceFaq(p.faq))}
     ${isBlog ? CTA.replace("Ready to get out of pain?", "Want this handled in person?") : CTA}
     ${linkList(locs.map(painUrl), "Where it hurts")}
     ${linkList(p.related, isBlog ? "Read next" : "Related")}
@@ -314,7 +314,7 @@ function buildContent(p) {
   const graph = isBlog
     ? [{ "@type": "BlogPosting", "@id": SITE + url, url: SITE + url, headline: p.h1, description: p.description, datePublished: p.datePublished, dateModified: p.dateModified || p.datePublished,
       author: { "@id": `${SITE}/#dr-jared` }, publisher: { "@id": `${SITE}/#clinic` }, mainEntityOfPage: SITE + url, image: `${SITE}/assets/logo.webp` }, faqLd(p.faq), breadcrumbLd(trail)]
-    : [webPage({ url, title: p.title, description: p.description, about }), faqLd(p.faq), breadcrumbLd(trail)];
+    : [webPage({ url, title: p.title, description: p.description, about }), faqLd(withInsuranceFaq(p.faq)), breadcrumbLd(trail)];
   const file = `${g.dir ? g.dir + "/" : ""}${p.slug}.html`;
   L.write(file, page({ url, title: p.title, description: p.description, body, graph, section: g.section }));
   generated.push({ url, title: p.h1.replace(/ in Sarasota, FL$/, ""), kind: p.group === "conditions" ? "condition" : p.group === "activities" ? "activity" : p.group, snippet: p.lead.slice(0, 150), kw: [...(p.sections || []).slice(0, 4).map((s) => s.h2), ...(p.about ? [p.about.name] : [])], priority: p.group === "blog" ? 0.6 : 0.8, file, date: p.datePublished });

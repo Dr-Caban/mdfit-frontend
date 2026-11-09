@@ -74,7 +74,10 @@ const linkList = (urls, title) => {
   const items = urls.filter((u) => data.titles[u] || /^\/(muscles|pain|activities|conditions|blog)\//.test(u)).map((u) => `<li><a href="${attr(u)}">${esc(data.titles[u] || u)}</a></li>`);
   return items.length ? `<h2>${esc(title)}</h2>\n    <ul class="cd-links">${items.join("")}</ul>` : "";
 };
-const CTA = `<div class="cd-cta"><h2>Ready to get out of pain?</h2><p>Serving Sarasota, Bradenton, Lakewood Ranch, Venice, Siesta Key and Osprey.</p><a class="cd-btn" href="/book?type=eval">Book an evaluation</a> <a class="cd-btn ghost" href="/book?type=call">Free phone consult</a></div>`;
+// MD Fit does not bill insurance. Said the same way everywhere (FAQ + CTA line) so no page implies otherwise.
+const INSURANCE_FAQ = { q: "Do you take insurance?", a: "No. MD Fit is a self-pay practice and does not bill insurance. You pay at the visit and receive an itemized receipt; no referral is needed. An evaluation is $300 (about 90 minutes) and follow-ups are $150. Paying directly is what lets Dr. Jared spend a full session with you, with no visit caps set by an insurer." };
+const withInsuranceFaq = (faq) => (faq || []).some((f) => /insurance/i.test(f.q)) ? faq : [...(faq || []), INSURANCE_FAQ];
+const CTA = `<div class="cd-cta"><h2>Ready to get out of pain?</h2><p>Serving Sarasota, Bradenton, Lakewood Ranch, Venice, Siesta Key and Osprey. Self-pay practice: no insurance paperwork, no referral needed.</p><a class="cd-btn" href="/book?type=eval">Book an evaluation</a> <a class="cd-btn ghost" href="/book?type=call">Free phone consult</a></div>`;
 const BOOK_ROW = `<p><a class="cd-btn" href="/book?type=eval">Book an evaluation</a> <a class="cd-btn ghost" href="tel:+19413130562">Call 941-313-0562</a></p>`;
 const RATING_P = `<p class="cd-rating"><a href="${MAPS_URL}" rel="noopener">${RATING_LINE}</a></p>`;
 const STEPS = [["Assess.", "A hands-on evaluation of how you move and which muscles reproduce your pain."], ["Release.", "Targeted soft-tissue work on the muscle at the source."],
@@ -136,5 +139,5 @@ const webPage = ({ url, title, description, about, lastReviewed }) => ({
 
 const words = (html) => (String(html).replace(/<[^>]+>/g, " ").match(/[A-Za-z0-9][A-Za-z0-9'’-]*/g) || []).length;
 
-module.exports = { root, SITE, MAPS_URL, TODAY, esc, attr, read, readJson, write, data, muscleUrl, painUrl, findExercise, thumb, quote, REVIEW, RATING, RATING_LINE,
+module.exports = { INSURANCE_FAQ, withInsuranceFaq, root, SITE, MAPS_URL, TODAY, esc, attr, read, readJson, write, data, muscleUrl, painUrl, findExercise, thumb, quote, REVIEW, RATING, RATING_LINE,
   crumbs, breadcrumbLd, faqLd, faqHtml, linkList, CTA, BOOK_ROW, RATING_P, stepsHtml, ABOUT_DR, page, webPage, words };
