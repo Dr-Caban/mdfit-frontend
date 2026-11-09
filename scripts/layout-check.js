@@ -145,13 +145,16 @@ function measure() {
         for (const m of await page.evaluate(measure)) fail(`${where} at ${tag}`, m); if (await page.evaluate(() => window.__pwn || document.querySelector("b")?.textContent === "Bold")) fail(`${where} at ${tag}`, "INJECTED HTML RAN");
         errors.forEach((e) => fail(`${where} at ${tag}`, "page error: " + e)); errors = [];
       };
+      // "load" then a bounded wait for quiet: the homepage and app keep a heartbeat / realtime connection open,
+      // so "networkidle" alone never arrives and the whole check used to time out on the first page
+      const open = async (url) => { await page.goto(url, { waitUntil: "load" }); await page.waitForLoadState("networkidle", { timeout: 5000 }).catch(() => {}); };
       for (const r of routes) {
-        await page.goto(`http://localhost:${WEB_PORT}${r}`, { waitUntil: "networkidle" });
+        await open(`http://localhost:${WEB_PORT}${r}`);
         await page.waitForTimeout(300);
         await report(r);
       }
       if (views.length) {
-        await page.goto(`http://localhost:${WEB_PORT}/account`, { waitUntil: "networkidle" });
+        await open(`http://localhost:${WEB_PORT}/account`);
         await page.waitForTimeout(600);
         for (const v of views) {
           if (v === "programs:first") await page.evaluate(() => { const b = document.querySelector("#prog-grid .prog-card"); if (b) b.click(); });
