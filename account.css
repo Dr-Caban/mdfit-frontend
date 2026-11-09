@@ -592,3 +592,8 @@
 .care-visit .btn-blue { justify-self: start; margin-top: 4px; }
 .care-pay { margin-top: 4px; padding-top: 10px; border-top: 1px solid var(--line); display: grid; gap: 6px; }
 .care-pay-row { display: flex; gap: 8px; flex-wrap: wrap; }
+/* Booking a video visit from the care card: the visit, then the day, then the time */
+.care-svcs, .care-days, .care-times { margin-bottom: 0; }
+.care-svcs .chip, .care-days .chip, .care-times .chip { font-size: 13.5px; padding: 7px 12px; }
+.care-svcs .chip[disabled] { opacity: .55; cursor: not-allowed; }
+.care-go { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 2px; }

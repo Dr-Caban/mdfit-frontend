@@ -1038,9 +1038,18 @@
       ${d.visits.length ? `<ul class="chart-paid">${d.visits.map((v) => `<li><b>${esc(v.typeName)}</b> ${v.payment === "paid" ? `<span class="badge done">Paid</span>` : v.payment === "exempt" ? `<span class="badge">Inpatient</span>` : ""}<span class="muted small">${fmtDate(v.date)} ${fmtTime(v.time)} · ${v.minutes} min${v.meetingLink ? ` · <a href="${esc(v.meetingLink)}" target="_blank" rel="noopener">video link</a>` : ""}</span></li>`).join("")}</ul>` : `<p class="muted small">No video visit on the calendar.</p>`}`;
   }
   let chartId = null;
+  // The record, in order: what each entry looks like in the chart
+  const RECORD_LABEL = { joined: "Joined", documents: "Documents", patient: "Patient", note: "Note", movement: "Movement",
+    payment: "Paid", scheduled: "Scheduled", visit: "Visit", cancelled: "Cancelled", lapsed: "Unfinished", removed: "Removed" };
+  // "2026-11-10 15:30 · 60 min" reads better as "Tue, Nov 10 at 3:30 PM · 60 min"
+  const recDetail = (d) => String(d || "").replace(/^(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2})/, (_, dt, tm) => `${fmtDate(dt)} at ${fmtTime(tm)}`);
+  const recordItem = (e) => `<li class="rec rec-${esc(e.kind)}"><span class="rec-when">${when(e.at)}</span><span class="rec-tag">${esc(RECORD_LABEL[e.kind] || e.kind)}</span><span class="rec-txt"><b>${esc(e.title)}</b>${e.detail ? `<span class="muted small">${esc(recDetail(e.detail))}</span>` : ""}</span></li>`;
+  const poolChip = (m) => `<button type="button" class="pool-chip" data-pool="${esc(m.videoId)}" data-name="${esc(m.name)}" data-dose="${esc(m.dose || "")}" data-cue="${esc(m.cue || "")}" title="Prescribed ${m.uses} time${m.uses === 1 ? "" : "s"}${m.dose ? ` · ${m.dose}` : ""}">${esc(m.name)}${m.dose ? ` <span class="muted">${esc(m.dose)}</span>` : ""}</button>`;
+
   async function openChart(id) {
     chartId = id;
-    const d = await api("GET", `/api/admin/emr/${id}`);
+    const [d, pl] = await Promise.all([api("GET", `/api/admin/emr/${id}`), api("GET", "/api/admin/emr/pool").catch(() => ({ pool: [] }))]);
+    const pool = (pl && pl.pool) || [];
     const box = $("#emr-detail"), first = d.name.split(" ")[0];
     const today = new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" });
     box.innerHTML = `
@@ -1068,6 +1077,7 @@
           </form>
           <ul class="chart-notes" id="chart-notes">${d.notes.map(noteItem).join("") || `<li class="muted none">No notes yet.</li>`}</ul></section>
         <section class="card chart-sect"><div class="card-head"><h2>Movements for ${esc(first)}</h2><span class="muted small">Each one plays its video in the app</span></div>
+          ${pool.length ? `<div class="mv-pool"><p class="muted small">Homework videos you prescribe most. One tap adds it to ${esc(first)} with the same dose.</p><div class="pool-row">${pool.slice(0, 14).map(poolChip).join("")}</div></div>` : ""}
           <div class="mv-add">
             <input type="search" id="mv-search" placeholder="Search the video library (e.g. hip hinge, calf, dead bug)" aria-label="Search movements" autocomplete="off">
             <ul class="mv-results" id="mv-results" hidden></ul>
@@ -1091,7 +1101,9 @@
             <label>Video link <span class="muted fine">(blank = your Video visit room)</span><input name="meetingLink" type="url" placeholder="https://"></label>
             <label>Note in the email (optional)<input name="message" maxlength="500"></label>
             <div class="row"><button class="btn btn-sm" type="submit">Schedule</button><span class="form-msg" role="status"></span></div>
-          </form></details></section>`;
+          </form></details></section>
+      <section class="card chart-sect"><div class="card-head"><h2>Record</h2><span class="muted small">Everything for ${esc(first)}, newest first</span></div>
+        <ol class="chart-record" id="chart-record">${(d.record || []).map(recordItem).join("") || `<li class="muted none">Nothing on the record yet.</li>`}</ol></section>`;
     $("#emr-list").hidden = true; box.hidden = false; window.scrollTo(0, 0);
 
     $("[data-back]", box).addEventListener("click", run(loadEmr));
@@ -1145,6 +1157,17 @@
         const ul = $("#chart-moves"); $(".none", ul)?.remove(); ul.insertAdjacentHTML("beforeend", moveItem(m));
         mf.hidden = true; mf.reset(); ms.value = ""; toast(`${m.name} added to ${first}'s plan.`); ms.focus();
       } catch (err) { msg.className = "form-msg err"; msg.textContent = err.message; }
+    }));
+    const mp = $(".mv-pool", box);
+    if (mp) mp.addEventListener("click", run(async (e) => {
+      const b = e.target.closest("[data-pool]"); if (!b) return;
+      b.disabled = true;
+      try {
+        const m = await api("POST", `/api/admin/emr/${id}/movements`, { videoId: b.dataset.pool, name: b.dataset.name, dose: b.dataset.dose, cue: b.dataset.cue });
+        const ul = $("#chart-moves"); $(".none", ul)?.remove(); ul.insertAdjacentHTML("beforeend", moveItem(m));
+        toast(`${m.name} added to ${first}'s plan.`);
+      } catch (err) { toast(err.message); }
+      b.disabled = false;
     }));
     $("#chart-moves", box).addEventListener("click", run(async (e) => {
       const b = e.target.closest("[data-rm-move]"); if (!b) return;

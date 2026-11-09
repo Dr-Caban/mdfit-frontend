@@ -2472,7 +2472,12 @@
       try { access = await apiAuth("GET", "/api/me/access"); renderAccessBadge(); } catch {}
       await loadContent().catch(() => {}); renderContent("premium"); renderPayments().catch(() => {}); loadCarePlan();
     };
-    if (new URLSearchParams(location.search).get("kind") === "service") toast("Payment received. Dr. Jared will schedule your video visit and the link will show on Home.");
+    {
+      const q = new URLSearchParams(location.search);
+      if (q.get("kind") === "service") toast(q.get("visit") === "1"
+        ? "Payment received. Your video visit is booked; the link is in your email and on Home."
+        : "Payment received. Dr. Jared will schedule your video visit and the link will show on Home.");
+    }
     (sid ? apiAuth("POST", "/api/me/checkout/confirm", { session_id: sid }).catch(() => null) : Promise.resolve(null))
       .then((r) => { if (r && r.paid && r.membership) toast("You're a member now. Welcome!"); return refresh(); })
       .then(() => setTimeout(refresh, 6000));
@@ -2490,13 +2495,91 @@
       return `<li><button type="button" class="care-move" data-care-video="${esc(m.videoId)}" data-care-name="${esc(m.name)}">${thumbImg(m.videoId)}<span class="cm-txt"><b>${esc(m.name)}</b>${m.dose ? `<span class="cm-dose">${esc(m.dose)}</span>` : ""}${m.cue ? `<span class="cm-cue">${esc(m.cue)}</span>` : ex ? `<span class="muted small">${esc(ex.region)} · ${esc(ex.cat)}</span>` : ""}</span><svg viewBox="0 0 24 24" class="cm-play"><path d="M8 5v14l11-7z"/></svg></button></li>`; }).join("")}</ul>` : "";
     const paid = ch.paidVisits.map((v) => `<li class="care-visit"><b>${esc(v.name || "Video visit")}</b><span class="muted small">Paid ${shortDate(v.paidAt.slice(0, 10))}. Dr. Jared will schedule it; the video link will show here and under Appointments.</span></li>`).join("");
     const upcoming = ch.visits.map((v) => `<li class="care-visit"><b>${esc(v.typeName)}</b><span class="muted small">${fmtDate(v.date, { weekday: "long" })} at ${fmtTime(v.time)} · ${v.minutes} min</span>${v.meetingLink ? `<a class="btn-blue sm" href="${esc(v.meetingLink)}" target="_blank" rel="noopener">Join video visit</a>` : ""}</li>`).join("");
-    const pay = ch.patient && !ch.inpatient && ch.services.length ? `<div class="care-pay"><p class="care-sub"><b>Video visits with Dr. Jared</b></p>
-        <div class="care-pay-row">${ch.services.map((s) => `<button type="button" class="${s.id === "eval-remote" ? "btn-gold" : "btn-ghost"} sm" data-pay-service="${esc(s.id)}" ${ch.payOn ? "" : "disabled"}>${esc(s.name.replace(/\s*\(Telehealth\)/i, ""))} · ${money0(s.rate)}</button>`).join("")}</div>
-        <p class="muted small">${ch.payOn ? "Secure payment through Stripe. Dr. Jared then schedules your visit and you get the video link." : "Online payment isn't switched on yet. Call 941-313-0562 to book."}</p></div>` : "";
+    const pay = bookHtml();
     const visits = paid || upcoming ? `<p class="care-sub"><b>Video visits</b></p><ul class="care-visits">${paid}${upcoming}</ul>` : "";
     const empty = !notes && !moves && !visits ? `<p class="muted">Dr. Jared hasn't left anything here yet. After your visit, your notes and movements will show up here.</p>` : "";
     return `${notes}${moves}${visits}${empty}${pay}`;
   }
+  // ---- Booking a video visit with Dr. Jared (Nov 2026)
+  //
+  // The patient picks a visit, a day and a time from Dr. Jared's own openings, then pays for it here: the online
+  // evaluation is 60 minutes, the follow-up 30. The time is held while the payment goes through, so nobody else can
+  // take it; closing the checkout hands it straight back. A visit already paid for is booked with no second payment.
+  let visitOpts = null;
+  const book = { service: "", date: "", time: "", days: null, loading: false, busy: false, hold: "" };
+  function loadVisitOptions() {
+    return apiAuth("GET", "/api/me/visits/options").then((o) => { visitOpts = o; renderCarePlan(); }).catch(() => {});
+  }
+  const visitName = (n) => String(n || "").replace(/\s*\(Telehealth\)/i, "");
+  function bookHtml() {
+    const ch = carePlan;
+    if (!ch || ch.inpatient || !visitOpts) return "";
+    const svcs = (visitOpts.services || []).filter((s) => s.eligible || s.id === "followup-remote");
+    if (!svcs.length) return "";
+    const price = (n) => `$${Number(n).toFixed(Number(n) % 1 ? 2 : 0)}`;
+    const picked = svcs.find((s) => s.id === book.service);
+    const row = svcs.map((s) => `<button type="button" class="chip" data-book-service="${esc(s.id)}" aria-selected="${book.service === s.id}"${s.eligible ? "" : ` disabled title="${esc(s.why)}"`}>${esc(visitName(s.name))} · ${s.minutes} min · ${price(s.rate)}</button>`).join("");
+    let pick = "";
+    if (picked) {
+      if (book.loading) pick = `<p class="muted small">Looking for Dr. Jared's open times…</p>`;
+      else if (!book.days) pick = "";
+      else if (!book.days.length) pick = `<p class="muted small">No open times in the next few weeks. Call 941-313-0562 and Dr. Jared will find you one.</p>`;
+      else {
+        const day = book.days.find((d) => d.date === book.date);
+        pick = `<p class="care-sub"><b>Pick a day</b></p><div class="chips care-days">${book.days.slice(0, 21).map((d) => `<button type="button" class="chip" data-book-date="${esc(d.date)}" aria-selected="${book.date === d.date}">${fmtDate(d.date, { weekday: "short" })}</button>`).join("")}</div>` +
+          (day ? `<p class="care-sub"><b>Pick a time</b> <span class="muted small">${esc(visitOpts.timeZone || "")}</span></p><div class="chips care-times">${day.slots.map((t) => `<button type="button" class="chip" data-book-time="${esc(t)}" aria-selected="${book.time === t}">${fmtTime(t)}</button>`).join("")}</div>` : "") +
+          (book.date && book.time ? `<div class="care-go"><button type="button" class="btn-gold" data-book-go="1" ${book.busy ? "disabled" : ""}>${book.busy ? "Working…" : picked.paid ? `Book ${fmtDate(book.date, { weekday: "short" })} at ${fmtTime(book.time)}` : `Pay ${price(picked.rate)} and book ${fmtDate(book.date, { weekday: "short" })} at ${fmtTime(book.time)}`}</button><button type="button" class="btn-ghost sm" data-book-cancel="1">Start over</button></div>` : "");
+      }
+    }
+    const foot = picked && picked.paid ? "You have already paid for this visit, so there is nothing more to pay."
+      : !visitOpts.room ? "Call 941-313-0562 and Dr. Jared will book your video visit."
+      : visitOpts.payOn ? "Payment is taken through Stripe when you book. Your time is held while you pay, and the video link is emailed to you and kept in your account."
+      : "Online payment isn't switched on yet. Call 941-313-0562 to book.";
+    return `<div class="care-pay"><p class="care-sub"><b>Video visits with Dr. Jared</b></p><div class="chips care-svcs">${row}</div>${pick}<p class="muted small">${foot}</p></div>`;
+  }
+  async function openings() {
+    book.loading = true; book.days = null; renderCarePlan();
+    try {
+      const r = await apiAuth("GET", `/api/me/visits/openings?service=${encodeURIComponent(book.service)}&days=21`);
+      book.days = r.days || [];
+      if (book.days.length === 1) book.date = book.days[0].date;
+    } catch (err) { book.days = []; toast(err.message); }
+    book.loading = false; renderCarePlan();
+  }
+  async function placeBooking() {
+    const picked = (visitOpts.services || []).find((s) => s.id === book.service);
+    book.busy = true; renderCarePlan();
+    try {
+      const r = await apiAuth("POST", "/api/me/visits/schedule", { service: book.service, date: book.date, time: book.time, ui: window.MDFitNative ? "app" : "embedded" });
+      if (r.booked) {
+        book.service = book.date = book.time = ""; book.days = null; book.busy = false;
+        toast("Your video visit is booked. The link is in your email and under Appointments.");
+        await Promise.all([loadCarePlan(), loadVisitOptions()]);
+        return;
+      }
+      book.hold = r.holdId || "";
+      if (r.url && window.MDFitNative) { window.MDFitNative.checkout(r.url, "service"); }
+      else if (r.clientSecret && window.MDFitStripe) {
+        try { await window.MDFitStripe.open({ clientSecret: r.clientSecret, publishableKey: stripePub }); }
+        catch { try { window.MDFitStripe.close(); } catch {} throw new Error("Secure checkout couldn't load. Check your connection or ad blocker and try again, or call 941-313-0562."); }
+        // Closing the checkout without paying hands the time back to Dr. Jared's calendar
+        const dlg = document.querySelector("dialog.stripe-dlg");
+        if (dlg) dlg.addEventListener("close", () => releaseHold(), { once: true });
+      } else if (r.url) { location.href = r.url; return; }
+    } catch (err) {
+      toast(err.message);
+      if (/just taken|available/i.test(err.message || "")) { book.time = ""; openings(); }
+    }
+    void picked;
+    book.busy = false; renderCarePlan();
+  }
+  function releaseHold() {
+    const id = book.hold; if (!id) return;
+    book.hold = "";
+    apiAuth("POST", `/api/me/visits/${encodeURIComponent(id)}/release`, {}).catch(() => {});
+    book.time = ""; if (book.service) openings();
+  }
+
   function renderCarePlan() {
     const ch = carePlan;
     const show = !!(ch && (ch.patient || ch.notes.length || ch.movements.length || ch.paidVisits.length || ch.visits.length));
@@ -2507,10 +2590,19 @@
       el.hidden = !show; if (show) { $(body).innerHTML = html; $(dt).textContent = date; }
     }
   }
-  function loadCarePlan() { return apiAuth("GET", "/api/me/chart").then((c) => { carePlan = c; renderCarePlan(); }).catch(() => {}); }
+  function loadCarePlan() { return apiAuth("GET", "/api/me/chart").then((c) => { carePlan = c; renderCarePlan(); loadVisitOptions(); }).catch(() => {}); }
   document.addEventListener("click", async (e) => {
     const v = e.target.closest("[data-care-video]");
     if (v) { const x = byId.get(v.dataset.careVideo); playVideo(v.dataset.careVideo, x ? x.name : v.dataset.careName, x ? exMeta(x) : "Prescribed by Dr. Jared"); return; }
+    const sv = e.target.closest("[data-book-service]");
+    if (sv && !sv.disabled) { book.service = book.service === sv.dataset.bookService ? "" : sv.dataset.bookService; book.date = book.time = ""; book.days = null; if (book.service) openings(); else renderCarePlan(); return; }
+    const dy = e.target.closest("[data-book-date]");
+    if (dy) { book.date = dy.dataset.bookDate; book.time = ""; renderCarePlan(); return; }
+    const tm = e.target.closest("[data-book-time]");
+    if (tm) { book.time = tm.dataset.bookTime; renderCarePlan(); return; }
+    if (e.target.closest("[data-book-cancel]")) { book.service = book.date = book.time = ""; book.days = null; renderCarePlan(); return; }
+    const go = e.target.closest("[data-book-go]");
+    if (go && !go.disabled) { placeBooking(); return; }
     const b = e.target.closest("[data-pay-service]"); if (!b || b.disabled) return;
     b.disabled = true; const label = b.textContent; b.textContent = "Opening secure checkout…";
     try {
