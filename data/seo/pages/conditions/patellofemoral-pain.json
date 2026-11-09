@@ -1,0 +1,84 @@
+{
+  "group": "conditions",
+  "slug": "patellofemoral-pain",
+  "title": "Patellofemoral Pain (Runner's Knee) in Sarasota | MD Fit",
+  "h1": "Patellofemoral Pain Syndrome Treatment in Sarasota, FL",
+  "description": "Aching around or behind the kneecap on stairs, squats or after sitting? MD Fit in Sarasota treats runner's knee by fixing how the quads and hip steer it.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Patellofemoral pain syndrome"
+  },
+  "lead": "Patellofemoral pain is an ache around or behind the kneecap that shows up on stairs, hills, squats and after sitting with bent knees. It is the most common knee complaint in active adults and it is almost always a tracking and loading problem, which means it is very treatable.",
+  "sections": [
+    {
+      "h2": "Recognizing patellofemoral pain",
+      "html": "<p>People point at the kneecap with a flat hand rather than a fingertip; the pain is diffuse, around or underneath the kneecap rather than at one precise spot. Going downstairs is usually worse than going up. Squatting, kneeling, lunging and running downhill provoke it. Sitting through a movie or a long drive with the knee bent produces a stiff ache that eases once you straighten the leg and move, the so-called theater sign. Some people hear grinding or crunching under the kneecap, which on its own is not a sign of damage.</p><p>Onset is usually gradual and tied to a change: more running, a new stair-heavy routine, a hiking trip, more squats in the gym, or a return to sport after months off. It is not usually linked to a single twist or fall; if it was, the look-alikes below matter more.</p>"
+    },
+    {
+      "h2": "Why the kneecap gets irritated",
+      "html": "<p>The kneecap slides in a groove at the end of the thigh bone. It stays centered when the four quadriceps muscles pull evenly and the thigh bone sits squarely under the hip. Two things go wrong:</p><ul><li><b>The pull on the kneecap is uneven.</b> The <a href=\"/muscles/vastus-medialis\">vastus medialis</a> (inner quad) guides the kneecap inward and is often weak or slow to fire after any knee irritation. The <a href=\"/muscles/vastus-lateralis\">vastus lateralis</a> (outer quad) and the <a href=\"/muscles/tensor-fasciae-latae\">TFL</a>, through the IT band, pull it outward and tend to be tight and dominant. A tight <a href=\"/muscles/rectus-femoris\">rectus femoris</a> compresses the kneecap into the groove, especially after long sitting, and refers a deep ache around and behind the kneecap.</li><li><b>The thigh bone rotates under the kneecap.</b> When the <a href=\"/muscles/gluteus-medius\">gluteus medius</a> is weak, the knee drifts inward on every step, squat and landing. The kneecap does not move much, but the groove underneath it turns, and the contact surfaces get loaded unevenly. This is the pattern we see most in runners and in women, and it is why hip strength is central to knee treatment.</li></ul><p>Flat feet that roll inward add to the inward twist from below, and a sudden rise in training volume tips an already uneven system into pain.</p>"
+    },
+    {
+      "h2": "How MD Fit treats it",
+      "html": "<p>Dr. Jared Caban watches you squat, step down from a box and, if you run, run. He is looking for a knee that caves inward, a hip that drops, a foot that collapses and a quad that quivers rather than controls. He tests the strength of the hip and the inner quad, checks the tightness of the rectus femoris, TFL and outer thigh, and presses around the kneecap and tendon to rule out the look-alikes.</p><p>Hands-on release of the outer thigh, TFL and rectus femoris takes the sideways and compressive pull off the kneecap and usually makes stairs feel better quickly. The lasting change comes from the training: waking up the inner quad, strengthening the gluteus medius so the thigh stops rotating, and gradually reloading squats, step-downs and running with better alignment. Sarasota is flat, so for runners that usually means managing Ringling Bridge repeats carefully. Homework lives in the free MD Fit app, with videos in the <a href=\"/guides/quads\">quads</a> and <a href=\"/guides/lateral-hip\">lateral hip</a> guides.</p>"
+    },
+    {
+      "h2": "Steps you can take today",
+      "html": "<ol><li><b>Trim the load that provokes it, do not stop entirely.</b> Cut the hills, the deep squats and the mileage back to a level that leaves the knee no worse the next morning, and keep moving at that level.</li><li><b>Break up long sitting.</b> Straighten and bend the knee a few times every half hour on a drive or at a desk so the kneecap is not compressed in one spot.</li><li><b>Watch your knee in a mirror.</b> During a slow single-leg squat, keep the kneecap pointing over the second toe. If it dives inward, that is the pattern to work on.</li><li><b>Check your shoes.</b> Worn-out or very soft shoes let the foot roll in; a supportive pair is a simple, reversible change.</li></ol>"
+    },
+    {
+      "h2": "When front-of-knee pain is not patellofemoral",
+      "html": "<ul><li><b>Patellar tendinopathy</b>: pain at a precise point just below the kneecap on the tendon, worse with jumping. See <a href=\"/conditions/patellar-tendinopathy\">patellar tendinopathy</a>.</li><li><b>Meniscus tear</b>: pain along the joint line at the side of the knee, often after a twist, with catching or locking. See <a href=\"/conditions/meniscus-tear-recovery\">meniscus tear recovery</a>.</li><li><b>Kneecap instability</b>: the kneecap slipped or dislocated, usually with a pop and large swelling, and may feel like it will slip again.</li><li><b>Knee arthritis</b>: in older adults, morning stiffness, swelling and bony enlargement; the kneecap compartment can be involved. See <a href=\"/conditions/knee-osteoarthritis\">knee osteoarthritis</a>.</li><li><b>Hip joint referral</b> in adolescents and young adults, where knee pain is the first sign of a hip problem. Any young person with knee pain and a limp should have the hip examined.</li></ul>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "The knee is locked and you cannot fully straighten or bend it.",
+    "A pop at the time of injury followed by rapid, large swelling within a few hours.",
+    "You cannot put weight on the leg, or the kneecap is visibly out of place.",
+    "A hot, red, swollen knee, with or without fever, which can mean infection or gout and needs same-day care.",
+    "Knee pain in a child or teenager with a limp or reduced hip motion, which needs the hip examined promptly."
+  ],
+  "faq": [
+    {
+      "q": "Is the grinding under my kneecap damaging it?",
+      "a": "Crepitus on its own, without pain or swelling, is common and not a sign of harm. We pay attention to pain, swelling and function rather than to the noise."
+    },
+    {
+      "q": "Should I stop running with patellofemoral pain?",
+      "a": "Usually not completely. Reduce the volume and the hills to a level the knee tolerates, address the hip and quad imbalance, and build back up. Complete rest tends to weaken the very muscles you need."
+    },
+    {
+      "q": "Why do you keep talking about my hip?",
+      "a": "Because when the gluteus medius is weak the thigh bone rotates inward under the kneecap on every step and squat. Strengthening the hip is often the single most effective part of knee treatment."
+    }
+  ],
+  "muscles": [
+    "vmo",
+    "vastus-lateralis",
+    "rectus-femoris",
+    "tfl",
+    "glute-med"
+  ],
+  "pain": [
+    "below-kneecap",
+    "inside-of-knee",
+    "outside-of-knee"
+  ],
+  "guides": [
+    "quads",
+    "lateral-hip"
+  ],
+  "related": [
+    "/conditions/knee-pain",
+    "/conditions/patellar-tendinopathy",
+    "/conditions/it-band-syndrome",
+    "/conditions/knee-osteoarthritis",
+    "/treatments/strength-and-performance",
+    "/muscles/vastus-medialis",
+    "/muscles/gluteus-medius",
+    "/pain/below-kneecap"
+  ],
+  "reviewStatus": "draft"
+}

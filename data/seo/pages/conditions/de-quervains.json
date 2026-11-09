@@ -1,0 +1,79 @@
+{
+  "group": "conditions",
+  "slug": "de-quervains",
+  "title": "De Quervain's Thumb & Wrist Pain in Sarasota | MD Fit",
+  "h1": "De Quervain's Tenosynovitis Treatment in Sarasota, FL",
+  "description": "Sharp pain on the thumb side of the wrist when you lift, grip or text? MD Fit in Sarasota treats De Quervain's by unloading the thumb tendons and forearm.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "De Quervain's tenosynovitis"
+  },
+  "lead": "De Quervain's is irritation of the two tendons that run along the thumb side of the wrist, inside a tight tunnel at the wrist bone. It makes lifting a child, a pan or a phone surprisingly painful. The tendons are the sore spot, but the forearm muscles that pull on them are usually where the fix lives.",
+  "sections": [
+    {
+      "h2": "What De Quervain's feels like",
+      "html": "<p>The pain sits on the thumb side of the wrist, right where the wrist bone sticks out, and often travels a little way up the forearm or down into the thumb. It is sharpest when you move the thumb away from the hand and then bend the wrist toward the little finger, which is exactly what happens when you lift something with a wide grip, wring out a towel, or hold a phone in one hand and type with the thumb. There may be mild swelling over the tendons and sometimes a creaking or catching feeling as the thumb moves.</p><p>It commonly starts after a change in hand use: a new baby lifted under the arms dozens of times a day, a season of heavy gardening or pickleball, a job with repetitive pinching, or weeks of one-thumb phone use. Hormonal shifts in pregnancy and after delivery make the tendon sheath more vulnerable, which is why new parents are so often affected.</p>"
+    },
+    {
+      "h2": "The forearm muscles upstream of the thumb",
+      "html": "<p>The two inflamed tendons belong to small muscles on the back of the forearm (abductor pollicis longus and extensor pollicis brevis). They rarely act alone. In the clinic we almost always find tight, tender neighbors that increase the pull through the thumb tunnel or refer pain to the same area:</p><ul><li><a href=\"/muscles/wrist-extensors\">Wrist extensors</a>, which steady the wrist in every grip and refer pain to the thumb side of the back of the wrist and hand.</li><li><a href=\"/muscles/brachioradialis\">Brachioradialis</a>, the thick muscle on the thumb side of the forearm; its trigger points send pain into the web of the thumb and are a classic look-alike.</li><li><a href=\"/muscles/supinator\">Supinator</a>, which turns the palm up and refers to the thumb web; often involved when twisting (jar lids, screwdrivers, racquet spin) is the trigger.</li><li><a href=\"/muscles/finger-extensors\">Finger extensors</a>, overloaded by typing, mouse work and repeated grip-and-release.</li></ul><p>Treat the tunnel alone and the pain tends to return. Calm the muscles pulling on it and the tendons have room to settle.</p>"
+    },
+    {
+      "h2": "How we treat it at MD Fit",
+      "html": "<p>Dr. Jared Caban begins by confirming the pattern: where it hurts, which movements reproduce it, and whether the thumb joint, the wrist bones or a nerve are involved instead. He then works through the forearm by hand, releasing the brachioradialis, wrist extensors and supinator and gently mobilizing the tissue around the thumb tunnel.</p><p>The second half of the visit is about why it happened. We look at how you lift, hold your phone, grip a racquet or paddle, and position your wrist at a keyboard, and we change the two or three habits doing the most damage; for Sarasota's pickleball players that is usually grip size, grip pressure and weekly volume. You leave with a short homework routine in the free MD Fit app: tendon gliding, gentle forearm mobility and, as it calms, light strengthening for the wrist and thumb.</p>"
+    },
+    {
+      "h2": "What you can do today",
+      "html": "<ol><li><b>Change the lift.</b> Pick up children, pans and bags with the palm facing up and the elbows close to your body (a scoop), instead of a wide thumb-and-fingers grab from above.</li><li><b>Give the thumb a break from the phone.</b> Type with the other hand or two thumbs, and use voice dictation for a week or two.</li><li><b>A thumb spica splint at night</b> and during the heaviest tasks can take the edge off while the tendons calm down. It is a bridge, not a plan.</li><li><b>Warm the forearm, then move it.</b> Gentle wrist circles and opening and closing the hand after a warm shower keep the tendons gliding.</li></ol>"
+    },
+    {
+      "h2": "Problems that look like De Quervain's",
+      "html": "<ul><li><b>Thumb base (CMC) arthritis</b>: pain is deeper and lower, at the joint where the thumb meets the wrist, and worse with pinching rather than lifting. Common after 50.</li><li><b>Intersection syndrome</b>: a similar tendon irritation but a few finger-widths further up the forearm, often with a squeaky crepitus, common in rowers and weightlifters.</li><li><b>Scaphoid fracture</b>: tenderness in the hollow at the base of the thumb after a fall on an outstretched hand. This needs an X-ray even if the first one looks normal.</li><li><b>Radial nerve irritation</b>: burning or tingling over the back of the thumb and hand rather than a sharp mechanical pain.</li><li><b>Carpal tunnel syndrome</b>: numbness and night-time tingling in the thumb and first fingers rather than pain on the wrist edge. See our <a href=\"/conditions/carpal-tunnel-wrist-pain\">carpal tunnel</a> page.</li></ul>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Wrist pain after a fall onto an outstretched hand with tenderness in the hollow at the base of the thumb, which can be a scaphoid fracture and needs an X-ray.",
+    "A hot, red, swollen thumb or wrist, especially with fever, which can mean infection or gout.",
+    "Numbness or tingling in the thumb and fingers that is constant or wakes you at night.",
+    "A thumb or wrist that locks, or a visible deformity or lump.",
+    "Weakness in straightening the thumb or fingers that comes on suddenly."
+  ],
+  "faq": [
+    {
+      "q": "Is De Quervain's the same as carpal tunnel?",
+      "a": "No. De Quervain's is tendon pain on the thumb edge of the wrist with movement. Carpal tunnel is nerve compression that causes numbness and tingling in the thumb and first fingers, often at night."
+    },
+    {
+      "q": "Do I need a cortisone injection?",
+      "a": "Some people get relief from an injection, and that is a conversation for your physician. In our experience, changing how you load the thumb and releasing the forearm muscles resolves many cases without one, and makes any injection last longer if you do have it."
+    },
+    {
+      "q": "Why does my wrist hurt from holding my baby?",
+      "a": "Lifting a child under the arms with a wide grip puts the thumb tendons in their most loaded position dozens of times a day, and hormonal changes after delivery make the tendon sheath more irritable. Changing the lift to a scoop with palms up is the single most useful fix."
+    }
+  ],
+  "muscles": [
+    "wrist-ext",
+    "brachioradialis",
+    "supinator",
+    "finger-ext"
+  ],
+  "pain": [
+    "thumb-and-index-finger",
+    "back-of-wrist",
+    "forearm"
+  ],
+  "guides": [],
+  "related": [
+    "/conditions/carpal-tunnel-wrist-pain",
+    "/conditions/tennis-elbow",
+    "/conditions/trigger-finger",
+    "/treatments/medical-massage",
+    "/muscles/wrist-extensors",
+    "/muscles/brachioradialis",
+    "/pain/thumb-and-index-finger"
+  ],
+  "reviewStatus": "draft"
+}

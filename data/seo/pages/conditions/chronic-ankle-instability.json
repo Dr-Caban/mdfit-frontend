@@ -1,0 +1,88 @@
+{
+  "group": "conditions",
+  "slug": "chronic-ankle-instability",
+  "title": "Chronic Ankle Instability Treatment in Sarasota | MD Fit",
+  "h1": "Chronic Ankle Instability Treatment in Sarasota, FL",
+  "description": "An ankle that keeps giving way is a strength and balance problem. See how MD Fit in Sarasota retrains the peroneals, hip and foot to stop repeat sprains.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Chronic ankle instability"
+  },
+  "lead": "If you have rolled the same ankle more than once, or feel it wobble on grass or sand, you have chronic ankle instability. It is common after a sprain that was never fully rehabilitated, and it responds well to the right work.",
+  "sections": [
+    {
+      "h2": "The ankle that keeps giving way",
+      "html": "<p>People describe it in similar words: the ankle feels loose, it \"goes\" on uneven ground, it turns over with almost no provocation, and there is a background ache behind the outer ankle bone that never fully leaves. Some notice clicking or snapping on the outside of the ankle. Others have stopped trusting it enough to avoid trails or the lateral shuffles that pickleball and tennis demand.</p><p>Instability has two parts. One is mechanical: the ligaments stretched during earlier sprains and may be genuinely lax. The other is functional: the muscles that should catch the ankle fire late or weakly, and the joint's sense of position was dulled by the original injury. Most people have more of the second than the first, and the second part is trainable.</p>"
+    },
+    {
+      "h2": "Why one sprain turns into many",
+      "html": "<p>The pattern is predictable. The first sprain is treated with rest and maybe a brace, the pain fades in a few weeks, and nobody rebuilds the strength or the balance. Then a slightly uneven step rolls it again, because the muscles guarding it never regained the speed they need to react. Each sprain stretches the ligaments a little more and dulls the protective reflexes a little further.</p><p>The second part happens above the ankle. A weak outer hip lets the knee fall inward on landing, which tips the foot onto its outside edge before the ankle muscles get a vote. Treating only the ankle in that situation is like fixing a wobbly table leg while the floor is tilted.</p>"
+    },
+    {
+      "h2": "The muscles that keep the ankle wobbly",
+      "html": "<ul><li><a href=\"/muscles/peroneals-fibularis\">Peroneals (fibularis)</a> are the most important muscles here. They pull the sole of the foot outward and are the first line of defense against rolling. After repeated sprains they are weak, slow and often knotted, referring pain to the outer ankle and the outside edge of the foot.</li><li><a href=\"/muscles/tibialis-posterior\">Tibialis posterior</a> stabilizes the inner ankle and the arch; overworked by instability, it causes inner-ankle and arch pain.</li><li><a href=\"/muscles/tibialis-anterior\">Tibialis anterior</a> lifts the foot and controls how it lands; it fatigues early in unstable ankles.</li><li><a href=\"/muscles/foot-intrinsic-muscles\">Foot intrinsics</a> shape the arch and tell the brain where the foot is. A flattened, lazy foot is a quiet foot.</li><li><a href=\"/muscles/gluteus-medius\">Gluteus medius</a> keeps the pelvis level on one leg; weakness here is the upstream reason so many people roll an ankle on a perfectly flat court.</li></ul>"
+    },
+    {
+      "h2": "How MD Fit retrains an unstable ankle",
+      "html": "<p>The assessment looks at the whole chain: single-leg balance with eyes open and closed, how the ankle, knee and hip behave during a step-down and a hop, strength of the peroneals and hip against resistance, and the tenderness and trigger points in the calf and outer leg. Dr. Jared also checks ligament laxity and listens for the mechanical clues (deep catching, snapping tendons) that would change the plan.</p><p>Release work on the peroneals, calf and tibialis posterior reduces the guarded, achy feeling and restores ankle motion. Then the training does the heavy lifting: progressive balance drills, banded strengthening for the peroneals and hip, and eventually reactive work such as hopping and direction changes. Your homework lives in the free MD Fit app. We hold off on soft sand and side-to-side sport until your hop and balance tests match the other side; a few consistent minutes a day is what separates the people who stop spraining from those who keep coming back.</p>"
+    },
+    {
+      "h2": "Three things to start now",
+      "html": "<ol><li><b>Single-leg stance, daily.</b> Stand on the unstable side while you brush your teeth. When that is easy, close your eyes or stand on a folded towel.</li><li><b>Be deliberate on uneven ground.</b> Watch where you place your feet on sand, grass and gravel, and wear shoes with real side-to-side support rather than flip-flops for long walks.</li><li><b>Stop sitting on your feet.</b> Sitting with the ankle tucked under you keeps it in the exact rolled position you are trying to avoid.</li></ol>"
+    },
+    {
+      "h2": "When it is more than instability",
+      "html": "<p>A few problems hide behind the label and need a different route:</p><ul><li><b>Peroneal tendon subluxation or tear</b>: a visible or audible snap over the outer ankle bone with each step.</li><li><b>Osteochondral lesion</b>: damage to the cartilage and bone inside the joint, causing deep pain, swelling after activity and catching.</li><li><b>Ankle impingement</b>: pinching at the front or back of the joint on full bend or point, common after many sprains.</li><li><b>True mechanical laxity</b> that does not respond to a well-run strengthening program; a surgical opinion on ligament repair is then reasonable, and the rehab afterwards follows the same principles.</li></ul><p>Our role is to get the muscles, balance and movement right, and to recognize when the problem is structural and point you toward imaging or a specialist.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "A fresh injury where you cannot bear weight for four steps, or the bone at the ankle or outer mid-foot is tender to press, which needs an X-ray.",
+    "A visible deformity, or the ankle locking so it cannot move through its normal range.",
+    "Numbness, tingling or weakness in the foot, or a new inability to lift the foot (foot drop).",
+    "A hot, red, swollen ankle with fever, which can mean infection or gout rather than a sprain.",
+    "Calf swelling, warmth and tenderness after a period of immobility, which can be a blood clot and needs urgent evaluation."
+  ],
+  "faq": [
+    {
+      "q": "Will a brace fix chronic ankle instability?",
+      "a": "A lace-up brace is a useful short-term safety net for sport, but it does not rebuild strength or balance. Use it while you train, not instead of training."
+    },
+    {
+      "q": "Do I need surgery for an unstable ankle?",
+      "a": "Most people do not. A well-run strengthening and balance program resolves the functional part of the problem. If the ankle still gives way after proper rehab, a surgical opinion is reasonable."
+    },
+    {
+      "q": "Why do you work on my hip for an ankle problem?",
+      "a": "Because a weak outer hip lets the knee collapse inward and tips the foot onto its edge before the ankle muscles can react. Fixing the hip removes the setup for the next sprain."
+    }
+  ],
+  "muscles": [
+    "peroneals",
+    "tib-post",
+    "tib-ant",
+    "foot-intrinsics",
+    "glute-med"
+  ],
+  "pain": [
+    "outer-ankle",
+    "inner-ankle-and-arch",
+    "front-of-ankle"
+  ],
+  "guides": [
+    "calf",
+    "lateral-hip"
+  ],
+  "related": [
+    "/conditions/ankle-sprain",
+    "/conditions/balance-fall-prevention",
+    "/conditions/sports-injury-rehab",
+    "/conditions/shin-splints",
+    "/treatments/strength-and-performance",
+    "/muscles/peroneals-fibularis",
+    "/muscles/gluteus-medius",
+    "/pain/outer-ankle"
+  ],
+  "reviewStatus": "draft"
+}

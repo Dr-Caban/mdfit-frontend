@@ -1,0 +1,56 @@
+{
+  "group": "conditions",
+  "slug": "chest-wall-pain",
+  "title": "Chest Wall Pain Care in Sarasota, FL | MD Fit",
+  "h1": "Chest Wall Pain Care in Sarasota, FL",
+  "description": "Chest pain is an emergency until a physician says otherwise. Once heart and lungs are cleared, MD Fit in Sarasota treats muscular chest wall and rib pain.",
+  "about": { "type": "MedicalCondition", "name": "Chest wall pain" },
+  "lead": "If you have chest pain right now with shortness of breath, sweating, nausea, pressure, or pain spreading to the arm, jaw or back, stop reading and call 911. MD Fit sees chest wall pain only after a physician has ruled out the heart, lungs and other internal causes.",
+  "sections": [
+    {
+      "h2": "Read this before anything else",
+      "html": "<p>Chest pain cannot be sorted out by how it feels. Heart attacks, blood clots in the lung, aortic problems and pneumonia can all present with pain that seems muscular, especially in women, older adults and people with diabetes. The rule is simple:</p><ul><li>Chest pain with shortness of breath, sweating, nausea, lightheadedness, or pain in the arm, jaw, neck or back: call 911 now.</li><li>Pressure, squeezing or heaviness in the chest, even if it comes and goes: call 911.</li><li>New chest pain of any kind that you have not had evaluated: see a physician or go to the emergency department first.</li></ul><p>I will not assess chest pain that has not been medically cleared. Bring your clearance and we go from there. Everything below applies only after that step.</p>"
+    },
+    {
+      "h2": "What muscular chest wall pain looks like after clearance",
+      "html": "<p>Once the heart and lungs are cleared, many people are left with pain and no explanation. Musculoskeletal chest wall pain tends to be:</p><ul><li>Reproducible by pressing on a spot in the <a href=\"/pain/front-of-chest\">front of the chest</a>, <a href=\"/pain/side-of-ribs\">side of the ribs</a>, or <a href=\"/pain/along-one-rib\">along one rib</a>.</li><li>Worse with a deep breath, a twist, a cough or a particular arm movement, and better at rest.</li><li>Sharp and local, or a dull ache under the collarbone that creeps down the inner arm.</li><li>Linked to a recent event: a new pressing routine, a bout of coughing, a long drive, a fall, or weeks of hunched laptop work.</li></ul>"
+    },
+    {
+      "h2": "The muscles most often responsible",
+      "html": "<ul><li><a href=\"/muscles/pectoralis-major-lower\">Pectoralis major (sternal head)</a>: refers across the front of the chest and down the inner arm to the ring and little fingers. Common after bench pressing, hugging heavy loads, and in rounded-shoulder posture.</li><li><a href=\"/muscles/pectoralis-minor\">Pectoralis minor</a>: front of the shoulder and chest with tingling in the hand.</li><li><a href=\"/muscles/intercostals\">Intercostals</a>: the small muscles between the ribs. Sharp pain along a rib with breathing, coughing or twisting, often after illness or a side bend gone wrong.</li><li><a href=\"/muscles/serratus-anterior\">Serratus anterior</a>: side of the rib cage and a stitch-like pain under the armpit with deep breaths.</li><li><a href=\"/muscles/scalenes\">Scalenes</a>: neck muscles that refer an ache into the upper chest and are a classic mimic of heart pain, which is exactly why clearance comes first.</li><li><a href=\"/muscles/subclavius\">Subclavius</a>: a thin muscle <a href=\"/pain/under-collarbone\">under the collarbone</a> referring down the front of the arm.</li></ul><p>Costochondritis, irritation of the cartilage where the ribs meet the breastbone, often sits alongside these muscles.</p>"
+    },
+    {
+      "h2": "How MD Fit treats cleared chest wall pain",
+      "html": "<p>I start by confirming your medical clearance and reviewing what was tested. Then I find the muscle or rib joint that reproduces your pain, check how your ribs expand when you breathe, and look at the posture and activities that load the chest. Hands-on release of the pecs, intercostals and scalenes is typically gentle and gives quick relief for muscular pain; a rib joint that is not gliding gets mobility work.</p><p>Correction means restoring lower-rib breathing, opening a rounded upper back, and adjusting whatever caused the strain, such as pressing technique or a workstation. Homework in the free MD Fit app is short and breathing-focused at first. Strengthening balances pushing with pulling and builds the upper back so the chest is no longer doing all the work.</p>"
+    },
+    {
+      "h2": "Gentle steps after you have been cleared",
+      "html": "<ol><li>Breathe slowly into the belly and lower ribs for a few minutes several times a day. Shallow chest breathing keeps the scalenes and intercostals irritated.</li><li>Hug a pillow to your chest when coughing or sneezing if a rib or intercostal is sore.</li><li>Pause heavy pressing and overhead loading until the pain settles, then return gradually.</li><li>Sleep on your back or the pain-free side.</li></ol><p>Any new or changing chest symptom goes back to your physician, not to this page.</p>"
+    },
+    {
+      "h2": "Other causes your physician considers",
+      "html": "<p>Beyond the heart and lungs, chest wall pain can come from acid reflux, gallbladder disease, shingles before the rash appears, rib stress fractures, thoracic spine problems and anxiety. Pain that does not change with movement or pressure, pain with fever, or pain after a fall needs medical evaluation. If your symptoms shift after you have been cleared, get re-checked. It is never a bother.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Chest pain with shortness of breath, sweating, nausea, lightheadedness, or pain into the arm, jaw, neck or back: call 911 immediately.",
+    "Pressure, squeezing, heaviness or tightness in the chest, even if it comes and goes: call 911.",
+    "Sudden sharp chest pain with difficulty breathing, coughing up blood, or a rapid heartbeat: call 911.",
+    "Chest pain that does not change with movement, breathing or pressing on the area.",
+    "Chest pain with fever, a productive cough, or after a fall or blow to the chest.",
+    "Any new chest pain that has not been evaluated by a physician."
+  ],
+  "faq": [
+    { "q": "I have chest pain now. Can I come in?", "a": "No. Chest pain that has not been evaluated needs a physician or emergency department first, and anything with shortness of breath, sweating, nausea or arm or jaw pain is a 911 call. MD Fit treats chest wall pain only after medical clearance." },
+    { "q": "My heart tests were normal but the pain is still there. Is that common?", "a": "Yes. Once serious causes are excluded, muscular and rib-joint pain is a frequent explanation, and it often reproduces when the right spot is pressed." },
+    { "q": "Why would my neck cause chest pain?", "a": "The scalenes in the side of the neck refer pain into the upper chest. It is one of the reasons chest pain must be medically cleared before anyone assumes it is muscular." },
+    { "q": "Is costochondritis a muscle problem?", "a": "It is irritation of rib cartilage, but it usually coexists with tight chest muscles and poor rib movement. Breathing, posture and gentle release often help once a physician has confirmed the diagnosis." }
+  ],
+  "muscles": ["pec-major-stern", "pec-minor", "intercostals", "serratus", "scalenes", "subclavius"],
+  "pain": ["front-of-chest", "side-of-ribs", "along-one-rib", "under-collarbone"],
+  "guides": ["scalenes"],
+  "related": ["/conditions/thoracic-outlet-symptoms", "/conditions/upper-back-rhomboid-pain", "/conditions/shoulder-pain", "/conditions/postural-kyphosis", "/conditions/post-surgical-rehab", "/treatments/medical-massage", "/muscles/intercostals"],
+  "reviewStatus": "draft"
+}

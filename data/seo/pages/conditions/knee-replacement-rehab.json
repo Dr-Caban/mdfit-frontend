@@ -1,0 +1,59 @@
+{
+  "group": "conditions",
+  "slug": "knee-replacement-rehab",
+  "title": "Knee Replacement Rehab in Sarasota, FL | MD Fit",
+  "h1": "Knee Replacement Rehab in Sarasota, FL",
+  "description": "Rehab after a knee replacement in Sarasota. Dr. Jared Caban works within your surgeon's protocol to restore bending, straightening and quad strength.",
+  "about": { "type": "MedicalCondition", "name": "Total knee arthroplasty recovery" },
+  "lead": "The first months after a knee replacement are about two numbers: how straight the knee gets and how far it bends. The muscles around the joint, not the implant, decide both.",
+  "sections": [
+    {
+      "h2": "Why the early weeks are hard",
+      "html": "<p>A total knee replacement is a big operation on a joint you use with every step. Swelling, bruising that can track down the whole shin, and a stiff, hot knee are normal in the first weeks. The quadriceps often refuses to contract properly, sleep is disrupted, and bending feels like pushing into a wall. People are frequently told to expect this and are still surprised by how much work it is.</p><p>What matters most in this phase is motion. Scar tissue forms quickly, and a knee that does not regain its straightening and bending early can stiffen in a way that is difficult to recover later. Your surgeon's protocol will set targets for extension and flexion by week; those targets drive the plan.</p>"
+    },
+    {
+      "h2": "The surgeon's protocol is the framework",
+      "html": "<p>Dr. Jared works inside the written protocol from your orthopedic surgeon. That includes weight-bearing status, use of a walker or cane, any brace or continuous-passive-motion device, wound care, blood-thinner instructions, and the range-of-motion milestones. Nothing in the MD Fit plan replaces or overrides those instructions. If the surgeon has not cleared hands-on work around the incision, it waits.</p>"
+    },
+    {
+      "h2": "Muscles that hold the knee back",
+      "html": "<ul><li><a href=\"/muscles/rectus-femoris\">Rectus femoris</a> runs from the pelvis to the kneecap and resists bending. When it is tight after surgery, flexion stalls and the front of the knee aches deeply.</li><li><a href=\"/muscles/vastus-lateralis\">Vastus lateralis</a> is the big outer quad. It commonly tightens and refers pain to the outside of the knee and thigh, and makes lying on that side painful.</li><li><a href=\"/muscles/vastus-medialis\">Vastus medialis</a> is the inner quad that most often shuts down after surgery; without it the knee feels unstable and buckles on stairs.</li><li><a href=\"/muscles/gastrocnemius\">Gastrocnemius</a> attaches above the knee joint and, when short from limping, blocks the final degrees of straightening and aches behind the knee.</li><li><a href=\"/muscles/biceps-femoris\">Biceps femoris</a> and the other hamstrings guard the back of the knee and can keep it from reaching full extension.</li></ul><p>Hands-on release of these muscles, combined with graded loading, is often what frees up the last stubborn degrees of motion.</p>"
+    },
+    {
+      "h2": "How Dr. Jared works with a replaced knee",
+      "html": "<p>The sequence is assess, release, correct, assign homework, strengthen, applied to a joint that needs patience.</p><ol><li><b>Assess</b> extension and flexion against the week's targets, swelling, kneecap mobility, quad activation and how you walk.</li><li><b>Release</b> the quadriceps, hamstrings, calf and the tissue around the kneecap, with gentle scar and patellar mobilization once the incision is healed and cleared.</li><li><b>Correct</b> walking mechanics so you stop swinging the leg stiffly and start bending the knee with each step.</li><li><b>Homework</b> from the free MD Fit app: short daily videos such as Knee Circles, Step Up and Single Leg Balance, scaled to what the knee can do that week.</li><li><b>Strengthen</b> quads, hamstrings, glutes and calf so the knee is supported for stairs, hills and getting up from low chairs.</li></ol>"
+    },
+    {
+      "h2": "Things you can safely do today",
+      "html": "<ul><li>Work on straightening: lie or sit with the heel propped and let gravity take the knee toward straight for a few minutes, repeated through the day.</li><li>Work on bending: sitting in a chair, slide the foot back under you to a comfortable stretch and hold.</li><li>Do quad sets by gently pressing the back of the knee down and holding, many times a day.</li><li>Walk short distances often with your prescribed aid, focusing on a smooth heel-to-toe step rather than speed.</li></ul>"
+    },
+    {
+      "h2": "Pain that is not the implant",
+      "html": "<p>Most lingering pain after a knee replacement is muscular or tendinous. Pain below the kneecap is often <a href=\"/conditions/patellar-tendinopathy\">patellar tendon</a> irritation; pain behind the knee is usually hamstring or calf; pain on the inner shin can be pes anserine bursitis. Hip weakness and <a href=\"/conditions/hip-pain\">hip pain</a> show up because of the altered walk. A knee that is suddenly hot, red and much more swollen, or that grinds and gives way in a new way, needs the surgeon rather than more exercise.</p>"
+    },
+    {
+      "h2": "A note for Sarasota patients",
+      "html": "<p>Many people have their surgery up north and recover here during the winter, or the other way around. Bring your operative report and protocol with you. Dr. Jared coordinates with your surgical team so the plan stays consistent across both locations.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": "Varies by surgeon's protocol. Most protocols emphasize regaining motion in the first several weeks, with strength and endurance work continuing for months afterward.",
+  "redFlags": [
+    "Calf swelling, warmth, redness or pain, or sudden shortness of breath or chest pain: possible blood clot, call 911 or go to the ER.",
+    "Fever, chills, or increasing redness, heat or drainage from the incision.",
+    "A knee that becomes suddenly much more swollen, hot and painful without a new injury.",
+    "Loss of motion that is getting worse week over week despite doing your exercises.",
+    "A fall, a pop, or a new feeling of the knee giving way under you."
+  ],
+  "faq": [
+    { "q": "How soon after knee replacement can I see Dr. Jared?", "a": "Once your surgeon clears you for outpatient rehab. Early sessions focus on swelling, range of motion and quad activation within the protocol." },
+    { "q": "Is it normal for the knee to still be stiff and warm months later?", "a": "Mild warmth and stiffness can persist for a long time after a knee replacement. A sudden increase in heat, redness or swelling is different and should be reported to your surgeon." },
+    { "q": "Can massage help a replaced knee?", "a": "Soft-tissue release of the quads, hamstrings and calf often helps motion and pain. Work directly around the incision waits until it is healed and the surgeon has cleared it." },
+    { "q": "Why does my knee click?", "a": "Some clicking from the implant components is common and usually painless. Painful clunking or a sense of instability should be checked by your surgeon." }
+  ],
+  "muscles": ["rectus-femoris", "vastus-lateralis", "vmo", "gastroc", "biceps-femoris"],
+  "pain": ["below-kneecap", "behind-the-knee", "front-of-thigh"],
+  "guides": ["quads", "calf"],
+  "related": ["/conditions/post-surgical-rehab", "/conditions/knee-osteoarthritis", "/conditions/knee-pain", "/conditions/hip-replacement-rehab", "/conditions/balance-fall-prevention", "/treatments/post-op-rehab-timelines", "/treatments/clinical-exercise-physiology"],
+  "reviewStatus": "draft"
+}

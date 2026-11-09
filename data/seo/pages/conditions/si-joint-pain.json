@@ -1,0 +1,51 @@
+{
+  "group": "conditions",
+  "slug": "si-joint-pain",
+  "title": "SI Joint Pain Treatment in Sarasota, FL | MD Fit",
+  "h1": "SI Joint Pain Treatment in Sarasota, FL",
+  "description": "Pain at the dimple of the low back that catches when you roll in bed or stand up? Dr. Jared Caban in Sarasota treats the muscles that overload the SI joint.",
+  "about": { "type": "MedicalCondition", "name": "Sacroiliac joint pain" },
+  "lead": "The sacroiliac joints connect the base of the spine to the pelvis. They move very little, but when the muscles around them pull unevenly, the joint becomes irritated and pain settles into one side of the low back and upper buttock.",
+  "sections": [
+    {
+      "h2": "Recognizing SI joint pain",
+      "html": "<p>People usually point with one finger to a spot just inside the back of the hip bone, the dimple at the <a href=\"/pain/si-joint\">SI joint</a>. It is rarely in the middle of the spine. Typical complaints include:</p><ul><li>A catch or stab when rolling over in bed, standing from a low chair, or stepping out of the car.</li><li>Pain that spreads into the <a href=\"/pain/upper-buttock\">upper buttock</a> and sometimes the back of the thigh, but seldom below the knee.</li><li>Trouble standing on one leg to put on pants.</li><li>Soreness after long sitting, a long walk on the beach, or a round of golf.</li><li>A sense that one side of the pelvis is stuck or out of place.</li></ul><p>The joint is not actually dislocated. What has changed is the balance of pull on it.</p>"
+    },
+    {
+      "h2": "Muscles that pull the pelvis out of balance",
+      "html": "<p>Several muscles attach to or cross the SI joint, and several more refer pain to it without being anywhere near it:</p><ul><li><a href=\"/muscles/gluteus-medius\">Gluteus medius</a>: keeps the pelvis level on one leg. When weak or knotted it refers pain along the belt line and over the SI joint. The most common finding I see.</li><li><a href=\"/muscles/quadratus-lumborum\">Quadratus lumborum</a>: the deep flank muscle that hikes the hip. It refers to the SI joint and buttock and hurts rolling in bed or coughing.</li><li><a href=\"/muscles/longissimus\">Longissimus</a>: a back extensor whose referral lands low in the buttock and over the SI joint, far below the muscle itself.</li><li><a href=\"/muscles/multifidus\">Multifidus</a>: deep stabilizers next to the sacrum that produce pinpoint pain beside the spine.</li><li><a href=\"/muscles/piriformis\">Piriformis</a> and <a href=\"/muscles/gluteus-maximus\">gluteus maximus</a>: cross the joint and can lock it down when tight or let it drift when weak.</li></ul><p>Pregnancy, a leg-length difference, a fall onto the buttock, and years of sitting on one hip all shift this balance.</p>"
+    },
+    {
+      "h2": "How I treat it",
+      "html": "<p>Assessment starts with watching you stand on one leg, hinge, and walk. I test whether the pain is coming from the joint, from the muscles that refer to it, or both, and I check the hips and lumbar spine because they often share the blame. Then I palpate the glute medius, QL, longissimus and piriformis to find which ones reproduce your pain.</p><p>Hands-on release of those muscles usually reduces the catching quickly. Correction addresses what loaded them: a hip that does not extend, a pelvis that drops when you walk, a habit of standing on one leg. Your homework in the free MD Fit app rebuilds glute medius control and hip hinge mechanics in a few minutes a day. The strengthening phase is where SI pain stops coming back, with single-leg stability work and hip strength that lets the joint stay quiet under load.</p>"
+    },
+    {
+      "h2": "Four things to try today",
+      "html": "<ol><li>Stand with weight even on both feet instead of parked on one hip, and shift your stance every twenty to thirty minutes.</li><li>Sleep on your side with a pillow between your knees to keep the pelvis level.</li><li>Get up from a chair by scooting to the edge, feet wide, and hinging forward from the hips rather than twisting.</li><li>Walk in short bouts on flat ground. Gentle movement generally helps more than rest once the sharpest pain has passed.</li></ol>"
+    },
+    {
+      "h2": "When it is not the SI joint",
+      "html": "<p>Low back and buttock pain has many sources. A <a href=\"/conditions/herniated-disc\">lumbar disc</a> or facet joint, <a href=\"/conditions/hip-pain\">hip joint arthritis</a>, <a href=\"/conditions/piriformis-syndrome\">piriformis syndrome</a> and true <a href=\"/conditions/sciatica\">sciatica</a> can all overlap with SI pain. Inflammatory conditions such as ankylosing spondylitis cause SI joint pain that is worse in the morning and improves with activity, and need a physician's diagnosis. Kidney pain sits in the flank and comes with fever or urinary changes. If your pain does not fit the movement-related pattern above, see your physician first.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Loss of bladder or bowel control, or numbness in the groin and inner thighs: this is an emergency, go to the ER.",
+    "Progressive leg weakness, foot drop or numbness traveling down the leg.",
+    "Pain with fever, chills, unexplained weight loss, or pain that is severe and constant at rest.",
+    "Pain after a significant fall, or in someone with osteoporosis, where a fracture must be excluded.",
+    "Morning stiffness lasting over an hour with pain that improves with activity, which may suggest an inflammatory cause."
+  ],
+  "faq": [
+    { "q": "Is my SI joint out of place?", "a": "Almost never. The joint is held by some of the strongest ligaments in the body. What changes is muscle tension and control around it, which is what treatment addresses." },
+    { "q": "Should I wear an SI belt?", "a": "A belt can reduce pain short term, especially during pregnancy or an acute flare. It does not replace restoring glute and core control, which is what keeps the joint comfortable long term." },
+    { "q": "Can golf or pickleball cause SI pain?", "a": "Rotational sports load one side of the pelvis repeatedly, and a stiff hip or weak glute medius shifts that load to the SI joint. Addressing the hip usually lets people keep playing." },
+    { "q": "How is this different from sciatica?", "a": "Sciatica follows the nerve down the leg, often past the knee, with tingling or weakness. SI pain stays local to the back of the pelvis and upper buttock, though they can occur together." }
+  ],
+  "muscles": ["glute-med", "ql", "longissimus", "multifidus", "piriformis", "glute-max"],
+  "pain": ["si-joint", "upper-buttock", "beside-the-spine"],
+  "guides": ["lateral-hip"],
+  "related": ["/conditions/low-back-pain", "/conditions/piriformis-syndrome", "/conditions/sciatica", "/conditions/hip-pain", "/conditions/pelvic-floor-rehab", "/treatments/functional-mobility", "/muscles/gluteus-medius"],
+  "reviewStatus": "draft"
+}

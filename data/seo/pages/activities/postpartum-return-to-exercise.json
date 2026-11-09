@@ -1,0 +1,64 @@
+{
+  "group": "activities",
+  "slug": "postpartum-return-to-exercise",
+  "title": "Postpartum Return to Exercise in Sarasota | MD Fit",
+  "h1": "Postpartum Return to Exercise in Sarasota",
+  "description": "A conservative, movement-based return to exercise after pregnancy: common aches, the muscles involved, pelvic floor awareness and when to get checked.",
+  "about": { "type": "Thing", "name": "Postpartum return to exercise" },
+  "lead": "Returning to exercise after having a baby is not a question of willpower or a six-week countdown. It is a question of what the body can currently do, which changes week to week and is different for every person. This page describes how we think about it at MD Fit, starting with the one rule we never skip: clearance from your OB or midwife comes first.",
+  "sections": [
+    {
+      "h2": "Clearance first, then a plan",
+      "html": "<p>Your obstetric provider decides when you are medically ready to begin exercising again, and that decision depends on your delivery, your recovery and factors only they can assess. Nothing on this page replaces that conversation. Once you have been cleared, the question becomes how to return, and that is where movement assessment is useful.</p><p>We also work alongside pelvic health physical therapists rather than instead of them. If your provider has recommended pelvic floor physical therapy, follow that recommendation; our <a href=\"/conditions/pelvic-floor-rehab\">pelvic floor rehab page</a> explains how the two fit together.</p>"
+    },
+    {
+      "h2": "Common complaints in the first year",
+      "html": "<ul><li><b>Low back and SI joint pain</b>, often one-sided, worse carrying the baby on one hip or getting up from the floor. See <a href=\"/conditions/low-back-pain\">low back pain</a>.</li><li><b>Upper back, neck and shoulder tension</b> from feeding, lifting and looking down at a baby for hours. See <a href=\"/conditions/neck-pain\">neck pain</a> and <a href=\"/conditions/desk-neck-pain\">desk neck pain</a>.</li><li><b>Wrist and thumb pain</b> from lifting the baby with the thumbs up and out, commonly called mother's thumb. See <a href=\"/conditions/de-quervains\">De Quervain's</a>.</li><li><b>Hip and outer-hip pain</b> as the pelvis and the muscles around it adjust after pregnancy. See <a href=\"/conditions/hip-pain\">hip pain</a>.</li><li><b>A core that feels disconnected</b>, a visible gap or doming down the midline when sitting up, and pelvic floor symptoms such as heaviness or leaking with coughing or exercise. These belong first with your OB, midwife or a pelvic health therapist.</li></ul>"
+    },
+    {
+      "h2": "Muscles that are usually involved",
+      "html": "<ul><li><a href=\"/muscles/gluteus-medius\">Gluteus medius</a>: the hip stabilizer that keeps the pelvis level on one leg. It is often weak after pregnancy and overworked by carrying a baby on one hip, and refers pain along the belt line and over the SI joint. The <a href=\"/guides/lateral-hip\">lateral hip guide</a> covers it.</li><li><a href=\"/muscles/quadratus-lumborum\">Quadratus lumborum</a>: the deep low-back muscle that hikes the hip; the usual partner to one-sided back pain in new parents.</li><li><a href=\"/muscles/psoas\">Psoas</a> and <a href=\"/muscles/iliacus\">iliacus</a>: hip flexors that spend a lot of time shortened during feeding and sitting and refer to the low back and groin.</li><li><a href=\"/muscles/upper-trapezius\">Upper trapezius</a> and <a href=\"/muscles/levator-scapulae\">levator scapulae</a>: the neck and shoulder muscles that hold a rounded, head-down position for hours a day.</li></ul><p>The deep abdominal wall and the pelvic floor are central as well. They are not on our muscle map and they are assessed by your pelvic health provider; our role is to build the hips, back and shoulders around them in a way that does not overload them.</p>"
+    },
+    {
+      "h2": "How MD Fit approaches the return",
+      "html": "<p>Dr. Jared's assessment is conservative and movement-based. He watches how you breathe, hinge, squat, carry and get up from the floor, checks hip and upper back range, and tests the hip and back muscles above. He asks about pelvic floor symptoms because they change what we program, and he refers to pelvic health physical therapy when those symptoms are present and not yet being addressed.</p><p>Treatment combines hands-on release of the muscles that are guarding, corrective movements that restore range and teach the glutes and deep core to share the load, homework in the free MD Fit app that is realistic for someone with a newborn, and a gradual strengthening progression. Gradual means we build the ability to carry, lift, squat and walk well before we add impact or intensity, and we add those only when symptoms allow and your providers agree.</p>"
+    },
+    {
+      "h2": "Gentle things to do this week, once cleared",
+      "html": "<ol><li>Walk. Start with what feels easy and add a few minutes every few days. A stroller walk along Sarasota's bayfront or a shaded neighborhood loop counts.</li><li>Practice slow breathing lying on your back with knees bent, letting the belly and ribs expand on the inhale and gently drawing in on the exhale.</li><li>Do glute bridges and side-lying leg lifts, a small number of slow, controlled repetitions, stopping well before fatigue.</li><li>Switch the hip you carry the baby on, and when you lift from the floor, hinge from the hips with the baby close to your body.</li></ol><p>Stop and check with your provider if any of this produces pelvic heaviness, leaking, bleeding, doming along the midline or pain that persists afterward.</p>"
+    },
+    {
+      "h2": "When to get checked",
+      "html": "<p>See your OB, midwife or pelvic health therapist first for any pelvic floor symptoms, abdominal separation concerns, pain with intercourse or bleeding that changes. Come to us when you have been cleared and want a structured, supervised return, when back, hip, neck or wrist pain is interfering with caring for your baby, or when you have tried returning to running or classes and something hurts every time.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Heavy bleeding, large clots or bleeding that increases with activity.",
+    "Fever, foul-smelling discharge or increasing pain at an incision or tear site.",
+    "Calf pain with swelling, warmth or redness, or sudden shortness of breath or chest pain: call 911.",
+    "Severe headache, vision changes or swelling of the face and hands in the weeks after delivery.",
+    "Pelvic heaviness, a bulge or leaking that is new or worsening with exercise.",
+    "Thoughts of harming yourself or your baby: contact your provider or emergency services immediately."
+  ],
+  "faq": [
+    { "q": "When can I start exercising after having a baby?", "a": "That is your OB or midwife's decision and depends on your delivery and recovery. Once they have cleared you, we help you decide how to return, not when." },
+    { "q": "Do I need to see a pelvic floor therapist before coming to MD Fit?", "a": "If you have pelvic floor symptoms, yes, or at least alongside us. If you have none and have been cleared, we can start with a movement assessment and refer you if anything comes up." },
+    { "q": "Can I come back to running or CrossFit?", "a": "Many people do. The path usually runs through walking, strength and control first, with impact and intensity added gradually and only when symptoms allow. The timeline varies widely and we do not promise one." }
+  ],
+  "muscles": ["glute-med", "ql", "psoas", "iliacus", "upper-trap", "levator"],
+  "pain": ["si-joint", "outside-of-hip", "where-neck-meets-shoulder", "back-of-wrist"],
+  "guides": ["lateral-hip", "iliopsoas"],
+  "related": [
+    "/conditions/pelvic-floor-rehab",
+    "/conditions/low-back-pain",
+    "/conditions/hip-pain",
+    "/conditions/neck-pain",
+    "/conditions/de-quervains",
+    "/treatments/functional-mobility",
+    "/treatments/medical-massage"
+  ],
+  "programs": [],
+  "reviewStatus": "draft"
+}

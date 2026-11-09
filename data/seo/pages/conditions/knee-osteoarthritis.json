@@ -1,0 +1,55 @@
+{
+  "group": "conditions",
+  "slug": "knee-osteoarthritis",
+  "title": "Knee Osteoarthritis Relief in Sarasota, FL | MD Fit",
+  "h1": "Knee Osteoarthritis Relief in Sarasota, FL",
+  "description": "Knee osteoarthritis in Sarasota: why the X-ray does not predict your pain, the quad and calf muscles that do, and Dr. Jared Caban's movement-first approach.",
+  "about": { "type": "MedicalCondition", "name": "Knee osteoarthritis" },
+  "lead": "If you have been told your knee is bone on bone and the only answer is a replacement someday, here is the part that often gets left out: how much the knee hurts has surprisingly little to do with what the X-ray shows and a great deal to do with the muscles around it.",
+  "sections": [
+    {
+      "h2": "What knee arthritis usually feels like",
+      "html": "<p>Stiffness first thing in the morning or after sitting, which loosens with a few minutes of walking. An ache along the inner joint line that builds through the day. Trouble with stairs, especially going down. A knee that feels swollen and tight after a long walk or a round of golf, and sometimes grinds or crunches when you bend it. Over time the knee may not straighten all the way, the thigh gets thinner, and the leg starts to bow.</p><p>Flares come and go. A bad week does not mean the cartilage changed; it usually means the muscles are irritated, the knee is swollen, or activity changed suddenly.</p>"
+    },
+    {
+      "h2": "Why the muscles matter more than the X-ray",
+      "html": "<p>Cartilage has no nerve supply. The pain of knee arthritis comes from the joint lining, the bone beneath the cartilage, and, very commonly, the muscles and tendons that have been protecting the joint for years. Dr. Jared regularly treats people whose imaging looks severe but whose pain is mostly in the quadriceps and calf, and others whose X-rays are mild yet who hurt constantly because the thigh has become weak.</p><ul><li><a href=\"/muscles/vastus-medialis\">Vastus medialis</a> wastes early in arthritic knees. It refers to the inner knee and kneecap and causes the buckling feeling on stairs.</li><li><a href=\"/muscles/rectus-femoris\">Rectus femoris</a> and <a href=\"/muscles/vastus-lateralis\">vastus lateralis</a> shorten and pull the kneecap tight against the groove, adding front and outer knee ache and pain lying on the side at night.</li><li><a href=\"/muscles/popliteus\">Popliteus</a> refers to the back of the knee and hurts when walking downhill or crouching, a very common complaint in arthritic knees.</li><li><a href=\"/muscles/gastrocnemius\">Gastrocnemius</a> tightens when the knee stays slightly bent and blocks the last bit of straightening, which overloads the joint with every step.</li><li><a href=\"/muscles/gluteus-medius\">Gluteus medius</a> weakness lets the knee drift inward and loads the inner compartment, where most arthritis lives.</li></ul>"
+    },
+    {
+      "h2": "MD Fit's approach to an arthritic knee",
+      "html": "<p>The goal is a knee that moves fully, is supported by strong muscles, and is not being hammered by a stiff hip or ankle. Dr. Jared <b>assesses</b> range of motion, swelling, quad strength, how you walk and squat, and which muscles reproduce your pain when pressed. Hands-on <b>release</b> of the quadriceps, popliteus, calf and hamstrings often takes the edge off immediately and improves straightening. <b>Correction</b> addresses the hips and ankles so the knee stops absorbing all the force. <b>Homework</b> from the free MD Fit app includes videos such as Knee Circles, Step Up and Bodyweight Squat, scaled so they build rather than flare. <b>Strengthening</b> is the long game: a stronger thigh and hip is the most reliable non-surgical tool for arthritic knee pain, and as a clinical exercise physiologist Dr. Jared prescribes it like a medication, with a dose and a progression.</p><p>None of this regrows cartilage, and when a knee replacement is the right choice, going into it strong makes the <a href=\"/conditions/knee-replacement-rehab\">rehab afterward</a> far easier.</p>"
+    },
+    {
+      "h2": "What you can do today",
+      "html": "<ul><li>Move before you stiffen. A few minutes of gentle knee bends and a short walk in the morning beat sitting and waiting for it to loosen.</li><li>Practice full straightening with the heel propped and the knee relaxed.</li><li>Break long walks into shorter ones through the day while the knee is irritable, rather than stopping walking altogether.</li><li>Use a pillow between the knees at night if the inner knee aches when lying on your side.</li></ul>"
+    },
+    {
+      "h2": "Not all knee pain is arthritis",
+      "html": "<p>Because almost every knee over fifty shows some arthritis on imaging, it gets blamed for pain that comes from elsewhere. Inner-knee pain just below the joint line is often pes anserine bursitis. Pain behind the knee may be a Baker's cyst, popliteus or hamstring. Front-of-knee pain is frequently <a href=\"/conditions/patellofemoral-pain\">patellofemoral</a>. Referred pain from the <a href=\"/conditions/hip-osteoarthritis\">hip</a> can land in the knee, and a <a href=\"/conditions/meniscus-tear-recovery\">degenerative meniscus tear</a> commonly coexists. A hot, red, suddenly swollen knee is not osteoarthritis and needs a physician the same day.</p>"
+    },
+    {
+      "h2": "Staying active in Sarasota",
+      "html": "<p>Walking the beach, golf and pool exercise are all friendly to arthritic knees when the muscles are strong. The flat terrain here helps. Pickleball can be fine too, but it loads the knee in twisting, so hip and calf strength matter even more for players.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": "Osteoarthritis is a long-term condition, but pain and function commonly improve over several weeks of consistent release and strengthening, and the gains hold as long as the strength work continues in some form.",
+  "redFlags": [
+    "A knee that becomes suddenly hot, red and swollen, especially with fever: possible infection or gout, see a physician the same day.",
+    "Inability to bear weight after a fall or twist.",
+    "A knee locked in one position that you cannot straighten or bend.",
+    "Calf swelling, warmth or redness with knee pain: possible blood clot, go to the ER.",
+    "Unexplained weight loss or night pain that does not change with position."
+  ],
+  "faq": [
+    { "q": "Will exercise wear out my arthritic knee faster?", "a": "Appropriately dosed strengthening and walking are consistently associated with less pain and better function in knee arthritis, not faster wear. The dose matters, which is why it is prescribed rather than guessed." },
+    { "q": "Is massage helpful for knee osteoarthritis?", "a": "Hands-on release of the quadriceps, calf and popliteus often reduces pain and improves straightening. It works best combined with strengthening." },
+    { "q": "Do I need a knee replacement?", "a": "That is a decision between you and an orthopedic surgeon based on pain, function and how you respond to conservative care. Many people delay or avoid it with strength work." },
+    { "q": "Why does my knee hurt more going downstairs?", "a": "Descending stairs loads the quadriceps eccentrically and compresses the kneecap. Weak or tight quads, especially the vastus medialis, make that step painful." }
+  ],
+  "muscles": ["vmo", "rectus-femoris", "vastus-lateralis", "popliteus", "gastroc", "glute-med"],
+  "pain": ["inside-of-knee", "below-kneecap", "behind-the-knee"],
+  "guides": ["quads", "calf"],
+  "related": ["/conditions/knee-pain", "/conditions/knee-replacement-rehab", "/conditions/meniscus-tear-recovery", "/conditions/hip-osteoarthritis", "/conditions/chronic-pain", "/treatments/chronic-pain-program", "/treatments/clinical-exercise-physiology", "/pain/inside-of-knee"],
+  "reviewStatus": "draft"
+}

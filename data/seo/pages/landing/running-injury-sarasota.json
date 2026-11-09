@@ -1,0 +1,97 @@
+{
+  "group": "landing",
+  "slug": "running-injury-sarasota",
+  "title": "Running Injury Treatment in Sarasota | MD Fit",
+  "h1": "Running Injury Treatment in Sarasota",
+  "description": "Shin splints, IT band pain, plantar fasciitis, Achilles and runner's knee: MD Fit Sarasota finds why your stride loads the wrong tissue and keeps you running.",
+  "about": {
+    "type": "Thing",
+    "name": "Running injury treatment and return-to-running"
+  },
+  "lead": "Shin splints, IT band syndrome, plantar fasciitis, Achilles problems, runner's knee: we see them all, from Legacy Trail regulars to first-time half-marathoners. MD Fit finds why your form is loading the wrong tissue, treats the tissue and rebuilds your mileage on a better pattern.",
+  "sections": [
+    {
+      "h2": "Running in Sarasota has its own injury pattern",
+      "html": "<p>The ground here is flat, hard and hot. The Legacy Trail, the Bayfront and the sidewalks of Palmer Ranch are paved and level, so the same tissues take the same load on every stride with no terrain to vary it. The only real climb for miles is the Ringling Bridge, which runners use for hill repeats and which punishes calves and Achilles tendons that are not ready for it. Siesta Key sand is soft and cambered, a common trigger for Achilles and inner-ankle pain. Add eight months of heat and humidity, and the result is a lot of overuse injury below the knee and a lot of hips that have never had to work.</p>"
+    },
+    {
+      "h2": "The injuries we treat, and what usually drives them",
+      "html": "<ul><li><b><a href=\"/conditions/shin-splints\">Shin splints</a></b>: the <a href=\"/muscles/tibialis-posterior\">tibialis posterior</a> and <a href=\"/muscles/tibialis-anterior\">tibialis anterior</a> overworking to control a collapsing arch or to slow an overstriding foot.</li><li><b><a href=\"/conditions/it-band-syndrome\">IT band syndrome</a></b>: pain on the outside of the knee, driven by a <a href=\"/muscles/tensor-fasciae-latae\">TFL</a> doing the job a weak <a href=\"/muscles/gluteus-medius\">gluteus medius</a> should do, so the pelvis drops and the knee drifts in.</li><li><b><a href=\"/conditions/plantar-fasciitis\">Plantar fasciitis</a></b>: first-step heel pain, usually with a tight <a href=\"/muscles/soleus\">soleus</a> and overloaded <a href=\"/muscles/foot-intrinsic-muscles\">foot intrinsics</a>.</li><li><b><a href=\"/conditions/achilles-tendon-pain\">Achilles tendinopathy</a></b>: a stiff, tender tendon in the morning, common after adding bridge repeats or beach miles too fast.</li><li><b>Runner's knee</b> and <a href=\"/conditions/patellar-tendinopathy\">patellar tendon pain</a>: pain around or below the kneecap, often from quads doing the braking the hips should share.</li><li><b><a href=\"/conditions/hamstring-strain\">Hamstring strains</a></b> and high hamstring tendon pain from speed work on cold tissue.</li></ul>"
+    },
+    {
+      "h2": "How the evaluation works for runners",
+      "html": "<p>Bring your shoes and your training log or watch data; volume jumps explain more injuries than form does. Dr. Jared watches you walk and run, then tests the components: single-leg balance, hip rotation, ankle dorsiflexion, calf endurance on one leg, and glute strength side to side. Hands-on testing finds which muscles reproduce your pain. From there the treatment is the MD Fit method: release the guarded tissue, correct the movement that loaded it, assign the homework as videos in the free app and strengthen progressively. Form cues stay simple: land under your hips, let the glutes push, let the trunk rotate, shoulders down, a slight lean from the ankles.</p>"
+    },
+    {
+      "h2": "Keep running, differently",
+      "html": "<p>Complete rest is rarely the plan; most running injuries tolerate a reduced dose. Typical adjustments: cut volume rather than stopping, shorten the stride and raise the cadence slightly, swap the bridge repeats for flat easy miles for a few weeks, run the hard-packed low-tide sand instead of the soft upper beach, and move one run to the bike or pool. The rule of thumb: pain may be present but must settle within 24 hours and must not change your stride.</p>"
+    },
+    {
+      "h2": "Strength for runners: what the marathon program includes",
+      "html": "<p>MD Fit's <b>Marathon Contingency 12-Week Extension</b> is written for runners carrying a base into a 26.2 build, and its structure is a good template for anyone coming back from injury. Each week has three runs plus an optional recovery run: an easy aerobic run, a quality session of intervals or marathon-pace work, and a long run that grows week to week with a recovery week every fourth week. Two strength sessions a week anchor it: Trap Bar Deadlift, Bulgarian Split Squat, Step-Up with Knee Drive, Hip Thrust, Single-Leg RDL, eccentric Calf Raises, Dead Bug, Side Plank and Pallof Press. A daily mobility routine and a fueling focus round out each week, and the final weeks taper into race day. For injured runners we start with the strength half and reintroduce the running half as the tissue allows.</p>"
+    },
+    {
+      "h2": "Who comes to MD Fit for running injuries",
+      "html": "<p>Masters runners with the same calf or Achilles flare three seasons running. New runners training for the Sarasota Music Half Marathon whose shins gave out when the long run passed eight miles. Triathletes whose run is the leg that hurts. Snowbirds who break down on Sarasota pavement each winter. What they share is a pattern that loads one tissue over and over.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": "Muscle-driven problems such as shin splints and IT band pain often ease within two to four weeks of release, hip strengthening and a reduced running dose. Tendon problems at the Achilles or patella usually take longer, commonly six to twelve weeks of progressive loading, because tendon adapts slowly. Plantar fasciitis varies widely. Most runners keep running at some level throughout; a full return to prior mileage is paced by how the tissue responds, not by the calendar.",
+  "redFlags": [
+    "Pinpoint bone pain on the shin, foot or hip that hurts to hop on and worsens through a run may be a stress fracture: stop running and see a physician for imaging.",
+    "A sudden pop in the calf or Achilles with inability to push off is a possible rupture and needs urgent care.",
+    "Calf swelling, warmth and pain at rest, especially after travel, can be a blood clot: seek care the same day.",
+    "Numbness, tingling or a foot that slaps or drags while running should be assessed before continuing.",
+    "Chest pain, fainting or unusual breathlessness during a run: stop and call 911."
+  ],
+  "faq": [
+    {
+      "q": "How soon can I run again?",
+      "a": "It depends on the injury, but the aim is to keep you running at some level the whole time when it is safe. Pain that settles within 24 hours and does not change your stride is the usual limit."
+    },
+    {
+      "q": "Do I need new shoes or orthotics?",
+      "a": "Sometimes, but shoes rarely fix a hip that does not stabilize or a calf with no endurance. We look at the body first."
+    },
+    {
+      "q": "Should I switch to a midfoot strike?",
+      "a": "Landing closer to under your hips with a slightly quicker cadence often reduces load on the shins and knees. We change form gradually and only as far as your pattern needs, not toward a single ideal."
+    },
+    {
+      "q": "Can I do the strength program while injured?",
+      "a": "Usually yes, with substitutions. The strength half of the program is often where an injured runner starts, with running reintroduced as the tissue tolerates it."
+    }
+  ],
+  "muscles": [
+    "glute-med",
+    "tfl",
+    "soleus",
+    "tib-post",
+    "tib-ant",
+    "foot-intrinsics"
+  ],
+  "pain": [
+    "outside-of-knee",
+    "lower-calf",
+    "inner-ankle-and-arch",
+    "outside-of-hip"
+  ],
+  "guides": [
+    "calf",
+    "lateral-hip"
+  ],
+  "related": [
+    "/conditions/shin-splints",
+    "/conditions/it-band-syndrome",
+    "/conditions/plantar-fasciitis",
+    "/conditions/achilles-tendon-pain",
+    "/conditions/patellar-tendinopathy",
+    "/conditions/hamstring-strain",
+    "/treatments/clinical-exercise-physiology",
+    "/activities/cycling"
+  ],
+  "programs": [
+    "marathon-extension"
+  ],
+  "reviewStatus": "draft"
+}

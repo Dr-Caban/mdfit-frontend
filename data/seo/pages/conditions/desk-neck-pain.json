@@ -1,0 +1,55 @@
+{
+  "group": "conditions",
+  "slug": "desk-neck-pain",
+  "title": "Desk Neck Pain Relief in Sarasota, FL | MD Fit",
+  "h1": "Desk Neck Pain Relief in Sarasota, FL",
+  "description": "Neck that aches by 3 pm, shoulders up around your ears, headaches after a long screen day? MD Fit in Sarasota treats tech neck at the muscle and the desk.",
+  "about": { "type": "MedicalCondition", "name": "Postural neck pain" },
+  "lead": "Call it tech neck, text neck or desk neck: the pattern is the same. A head that drifts forward toward a screen, shoulders that creep upward, and a set of neck muscles that work all day to hold a twelve-pound head in a position it was never meant to stay in.",
+  "sections": [
+    {
+      "h2": "The 3 pm neck",
+      "html": "<p>Desk neck rarely starts with an injury. It arrives gradually. Mornings are fine, then the <a href=\"/pain/back-of-neck\">back of the neck</a> starts to ache, the corner <a href=\"/pain/where-neck-meets-shoulder\">where the neck meets the shoulder</a> tightens into a rock, and by late afternoon there may be a headache rising from the <a href=\"/pain/base-of-skull\">base of the skull</a>. Turning to check a blind spot on the drive home feels stiff. Weekends are better, Mondays are worse. Many people also notice jaw tension, tired eyes, and a habit of holding their breath while they concentrate.</p><p>Every inch the head moves forward adds load to the muscles behind it. Over a workday that is thousands of small, repeated efforts, which is why the muscles eventually object.</p>"
+    },
+    {
+      "h2": "Six muscles that pay for your posture",
+      "html": "<ul><li><a href=\"/muscles/upper-trapezius\">Upper trapezius</a>: carries the shoulders up toward the ears and refers pain up the side of the neck into the temple.</li><li><a href=\"/muscles/levator-scapulae\">Levator scapulae</a>: the stiff-neck muscle at the neck-shoulder corner, overworked by phone cradling and looking down.</li><li><a href=\"/muscles/suboccipitals\">Suboccipitals</a>: tiny muscles at the top of the neck that tilt the eyes up to the screen when the head is forward, and produce the end-of-day headache.</li><li><a href=\"/muscles/sternocleidomastoid\">Sternocleidomastoid</a>: shortens in forward head posture and can refer to the forehead and eye.</li><li><a href=\"/muscles/pectoralis-minor\">Pectoralis minor</a>: rounds the shoulders forward, setting the whole chain in motion.</li><li><a href=\"/muscles/lower-trapezius\">Lower trapezius</a>: the muscle that should anchor the shoulder blades down and is usually too weak to do it, leaving the upper traps to carry the load.</li></ul>"
+    },
+    {
+      "h2": "The MD Fit approach to desk neck",
+      "html": "<p>I want to see two things: your neck and your desk. The assessment checks neck rotation, how your head sits over your shoulders, how your shoulder blades move, whether you breathe with your chest or your belly, and which muscle reproduces your pain under pressure. Then I ask about the actual setup: laptop or monitor, chair, phone habits, how many hours, where the pain lands in the day.</p><p>Hands-on release of the upper traps, levator and suboccipitals brings quick relief and restores rotation. The correction phase is where desk neck is actually solved: screen height, elbow support, a chin glide you can do at your desk, and breathing that drops the shoulders. You get a short daily routine in the free MD Fit app, designed to be done in a chair. Strengthening the deep neck flexors and lower trapezius is the final step so the neck is supported from below rather than hauled up from above.</p>"
+    },
+    {
+      "h2": "Fix the desk today",
+      "html": "<ol><li>Raise the screen so the top third is at eye level. A stack of books under a laptop with an external keyboard works.</li><li>Sit back so the chair supports your mid-back, elbows at your sides on armrests or the desk, shoulders relaxed down.</li><li>Every thirty minutes: stand, look at something far away, glide the chin back ten times, and take three slow belly breaths.</li><li>Use a headset or speakerphone. Never cradle the phone between ear and shoulder.</li></ol><p>None of these needs equipment or clearance from anyone, and together they often cut the afternoon ache in half.</p>"
+    },
+    {
+      "h2": "When neck pain is not posture",
+      "html": "<p>Most desk neck is muscular, but some is not. Pain, numbness or weakness running down the arm in a clear strip suggests a cervical disc or nerve root. Pain with fever, pain that wakes you at night, or pain after a fall or crash needs a physician. Headaches that are sudden and severe, or that come with fever, stiff neck, confusion, weakness or vision changes, are emergencies: call 911. Thyroid, lymph node and dental problems can also produce neck pain. If something about your pain does not fit the slow, screen-related build-up described here, see your physician first.</p>"
+    },
+    {
+      "h2": "Working remotely in Sarasota",
+      "html": "<p>A lot of my desk neck clients work from a kitchen counter, a lanai or a laptop on the couch. The view is better than an office but the ergonomics are worse. A simple laptop stand and separate keyboard, carried from room to room, is the single cheapest fix I recommend.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Numbness, tingling or weakness running down the arm or into the hand.",
+    "Neck pain after a fall, car crash or blow to the head that has not been evaluated by a physician.",
+    "A sudden, severe headache, or headache with fever, stiff neck, confusion, weakness or vision changes: call 911.",
+    "Neck pain with fever, unexplained weight loss, or pain that wakes you at night.",
+    "Trouble swallowing, a lump in the neck, or a change in your voice."
+  ],
+  "faq": [
+    { "q": "Is a standing desk the answer?", "a": "Standing helps the low back and hips more than the neck. A screen at eye level and regular movement breaks matter more than whether you sit or stand." },
+    { "q": "How many hours a day of screen time is too much?", "a": "The total matters less than how long you stay still. Thirty-minute blocks with a short reset between them are tolerated far better than three hours straight." },
+    { "q": "Why does my neck pain cause headaches?", "a": "The suboccipitals and upper trapezius refer pain into the head. A forward head posture loads them all day, so the headache often arrives late afternoon." },
+    { "q": "Can I do the exercises at my desk?", "a": "Yes. The routine Dr. Jared assigns in the free MD Fit app is built for a chair: chin glides, scapular resets, upper trap and levator stretches, and breathing." }
+  ],
+  "muscles": ["upper-trap", "levator", "suboccipitals", "scm", "pec-minor", "lower-trap"],
+  "pain": ["back-of-neck", "where-neck-meets-shoulder", "base-of-skull"],
+  "guides": ["posterior-neck", "scalenes"],
+  "related": ["/conditions/neck-pain", "/conditions/tension-headache", "/conditions/cervicogenic-headache", "/conditions/postural-kyphosis", "/conditions/upper-back-rhomboid-pain", "/conditions/thoracic-outlet-symptoms", "/treatments/functional-mobility", "/muscles/levator-scapulae"],
+  "reviewStatus": "draft"
+}
