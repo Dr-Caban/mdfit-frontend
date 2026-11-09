@@ -1,0 +1,5 @@
+{
+  "_note": "YouTube channel and per-exercise video ids. Add an entry \"<exercise name exactly as in app/exercises.js>\": \"<YouTube video id>\" after each upload, then run node scripts/seo/build.js. Pages show a Watch on YouTube link for every mapped exercise.",
+  "channel": "https://www.youtube.com/@mdfit_jaredcaban",
+  "videos": {}
+}

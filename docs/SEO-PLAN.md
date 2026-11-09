@@ -5,7 +5,7 @@
 
 ## For a new session: read this first
 
-1. Pages in `/muscles`, `/pain`, `/activities`, the new `/conditions/*` and `/blog/*` and the six landing pages are **generated**.
+1. Pages in `/muscles`, `/pain`, `/activities`, `/exercises`, `/programs`, the new `/conditions/*` and `/blog/*`, the six landing pages, `/membership`, `/dr-jared-caban` and `/pain-finder` are **generated** (national pages by `scripts/seo/national.js`).
    Edit the data (`painmuscles.js`, `musclereports.js`, `data/seo/**`) or the generator (`scripts/seo/build.js`), then run
    `node scripts/seo/build.js`. Never edit those HTML files by hand; the next build overwrites them.
 2. Content pages are JSON: `data/seo/pages/<group>/<slug>.json`, format in `docs/SEO-CONTENT-SPEC.md`,
@@ -30,6 +30,14 @@
 | 5 | Blog: 4 new posts; cadence 2–4 a month | **First batch built** | Process below. |
 | 6 | Off-site (Google Business Profile, Search Console, citations, backlinks, reviews, social) | **Owner checklist below** | Nothing here is code. |
 | 7 | Measure and prune | **Process below** | Needs Search Console verified first. |
+| N3 | Exercise library: `/exercises/` + 7 region pages (159 exercises) | **Built (PR)** | Region pages pool Dr. Jared's written cues and doses from `musclereports.js`. **No single-exercise pages yet:** 76 of 159 exercises have no written steps and videos aren't public, so one page per exercise would be thin. Add them when steps are written and YouTube ids exist. |
+| N4 | YouTube | **Site side built (PR); uploads are the owner's** | Channel in `sameAs` (clinic + Dr. Jared) and linked from the hub and author page. Map uploads in `data/youtube.json` (`"<exercise name>": "<video id>"`), rebuild: exercise entries get a "Watch on YouTube" link. Embeds would need a CSP change (`frame-src`), not done. |
+| N6 | Pain finder `/pain-finder` | **Built (PR)** | The homepage pain map copied in at build time (always identical), plus a written guide, red flags and FAQ. |
+| N10 | Author page `/dr-jared-caban` | **Built (PR)** | Bio from the Admin default bio and the homepage credentials. `ProfilePage` → the existing `#dr-jared` node; homepage Physician node now points `url` here. |
+| N11 | `llms.txt` | **Built (PR)** | Experiment, not a ranking factor. |
+| N12 | National funnel: `/membership`, `/programs/` + program pages, national line in every generated page's CTA | **Built (PR)** | Tiers, perks and program titles are a snapshot of live `GET /api/content` in `data/seo/app-content.json`: re-take it when Admin prices change. Program pages show the plan at a glance and **week 1 only**; the full program stays in the app (owner: confirm publishing week 1 is OK). 10 of 17 programs published; 7 held (under 700 words or > 40% like a sibling), listed by the build. |
+| N8 | Spanish | **Not started** | Needs a fluent reviewer for medical content; no unreviewed machine translation. |
+| N7 | Original data report | **Not started** | Needs a privacy/legal review of aggregate app data first. |
 
 ### Release plan (the owner's call)
 
@@ -88,6 +96,19 @@ scaled-content penalty can hit the whole domain.
 | New conditions | 30 | JSON |
 | Activities | 9 | JSON + hub |
 | Blog (new) | 4 | JSON |
-| **Total** | **237** | |
+| Exercises (hub + 7 region pages) | 8 | generated (national.js) |
+| Programs (hub + 10) | 11 | generated (national.js) |
+| Membership, author page, pain finder | 3 | generated (national.js) |
+| **Total** | **259** | |
 
 Appendices (muscle and pain-location URL lists) are the data files: `data/seo/muscle-slugs.json`, `data/seo/pain-locations.json`.
+
+## Known issues (found Nov 9, 2026)
+
+- **Clinical review:** muscle, pain-location, activity and new condition pages are live on `main` while their status above says
+  "awaiting clinical review". Dr. Jared should review them now (chest, abdomen and head pain pages first) or they should be
+  pulled until he does. Same for the exercise and program pages in the national PR.
+- **Muscle hub grouping:** `/muscles/` groups by the first pain track a muscle appears in, so a few land in odd sections
+  (scalenes under "Chest", vastus lateralis under "Glutes"). Cosmetic; fix `regionOf()` in `build.js` if it matters.
+- **Fixed in the national PR:** every generated page's JSON-LD carried a `null` node because `lib.js` only read the first
+  JSON-LD block of `index.html` (the Dr. Jared node is in the second).

@@ -62,9 +62,10 @@ const findExercise = (name) => name ? exByName.get(String(name).toLowerCase()) |
 const thumb = (id, w = 320) => `https://drive.google.com/thumbnail?id=${encodeURIComponent(id)}&sz=w${w}`;
 
 // The clinic node and Dr. Jared node, copied from the live homepage schema so every page shares the same @ids
-const homeGraph = JSON.parse(read("index.html").match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1])["@graph"];
+const homeGraph = [...read("index.html").matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].flatMap((m) => JSON.parse(m[1])["@graph"] || []); // both blocks: the Physician node is in the second
 const CLINIC = homeGraph.find((n) => n["@id"] === `${SITE}/#clinic`);
 const DR = homeGraph.find((n) => n["@id"] === `${SITE}/#dr-jared`);
+if (!CLINIC || !DR) throw new Error("index.html JSON-LD is missing the clinic or Dr. Jared node");
 
 const crumbs = (items) => `<p class="cd-crumbs">${items.map((c, i) => c.href && i < items.length - 1 ? `<a href="${attr(c.href)}">${esc(c.name)}</a>` : esc(c.name)).join(" › ")}</p>`;
 const breadcrumbLd = (items) => ({ "@type": "BreadcrumbList", itemListElement: items.map((c, i) => ({ "@type": "ListItem", position: i + 1, name: c.name, ...(c.href ? { item: SITE + c.href } : {}) })) });
@@ -77,7 +78,7 @@ const linkList = (urls, title) => {
 // MD Fit does not bill insurance. Said the same way everywhere (FAQ + CTA line) so no page implies otherwise.
 const INSURANCE_FAQ = { q: "Do you take insurance?", a: "No. MD Fit is a self-pay practice and does not bill insurance. You pay at the visit and receive an itemized receipt; no referral is needed. An evaluation is $300 (about 90 minutes) and follow-ups are $150. Paying directly is what lets Dr. Jared spend a full session with you, with no visit caps set by an insurer." };
 const withInsuranceFaq = (faq) => (faq || []).some((f) => /insurance/i.test(f.q)) ? faq : [...(faq || []), INSURANCE_FAQ];
-const CTA = `<div class="cd-cta"><h2>Ready to get out of pain?</h2><p>Serving Sarasota, Bradenton, Lakewood Ranch, Venice, Siesta Key and Osprey. Self-pay practice: no insurance paperwork, no referral needed.</p><a class="cd-btn" href="/book?type=eval">Book an evaluation</a> <a class="cd-btn ghost" href="/book?type=call">Free phone consult</a></div>`;
+const CTA = `<div class="cd-cta"><h2>Ready to get out of pain?</h2><p>Serving Sarasota, Bradenton, Lakewood Ranch, Venice, Siesta Key and Osprey. Self-pay practice: no insurance paperwork, no referral needed.</p><a class="cd-btn" href="/book?type=eval">Book an evaluation</a> <a class="cd-btn ghost" href="/book?type=call">Free phone consult</a><p>Not near Sarasota? Follow Dr. Jared's programs and book remote 1-on-1 sessions in the <a href="/membership">MD Fit app</a>, anywhere in the US.</p></div>`;
 const BOOK_ROW = `<p><a class="cd-btn" href="/book?type=eval">Book an evaluation</a> <a class="cd-btn ghost" href="tel:+19413130562">Call 941-313-0562</a></p>`;
 const RATING_P = `<p class="cd-rating"><a href="${MAPS_URL}" rel="noopener">${RATING_LINE}</a></p>`;
 const STEPS = [["Assess.", "A hands-on evaluation of how you move and which muscles reproduce your pain."], ["Release.", "Targeted soft-tissue work on the muscle at the source."],
@@ -90,7 +91,7 @@ const ABOUT_DR = `<h2>About Dr. Jared Caban</h2>
 // Whole page. `graph` is the page-specific JSON-LD nodes (MedicalWebPage etc.); the clinic node is added first.
 function page({ url, title, description, body, graph, section, robots }) {
   if (title.length > 60) throw new Error(`title over 60 chars: ${title}`);
-  const ld = { "@context": "https://schema.org", "@graph": [CLINIC, DR, ...graph] };
+  const ld = { "@context": "https://schema.org", "@graph": [CLINIC, DR, ...graph].filter(Boolean) };
   return `<!doctype html>
 <html lang="en">
 <head>

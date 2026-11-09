@@ -1,0 +1,268 @@
+{
+ "source": "GET https://www.mymdfit.com/api/content",
+ "snapshot": "2026-11-09",
+ "note": "Snapshot of live Admin data used by the membership and program pages. Re-take it when prices, perks or programs change, then rebuild.",
+ "tiers": [
+  {
+   "id": "member",
+   "name": "Membership",
+   "price": 19.95,
+   "meetings": 0,
+   "meetingMinutes": 0,
+   "perks": [
+    "Build your own workouts and send challenges to anyone",
+    "Every premade program",
+    "Full lecture library",
+    "Monthly live Q&A with Dr. Jared",
+    "Progress tracking and workout comparisons"
+   ]
+  },
+  {
+   "id": "accountability",
+   "name": "Accountability Membership",
+   "price": 29.95,
+   "meetings": 0,
+   "meetingMinutes": 0,
+   "perks": [
+    "Everything in Membership",
+    "$1 off for every day you log a workout or pain check-in",
+    "Log 20 active days and that month is just $10"
+   ]
+  },
+  {
+   "id": "premium",
+   "name": "Premium 1-on-1",
+   "price": 200,
+   "meetings": 2,
+   "meetingMinutes": 30,
+   "perks": [
+    "Everything in Membership",
+    "2 scheduled 30-minute remote sessions with Dr. Jared every month",
+    "Text Dr. Jared directly with questions",
+    "Custom program built for you",
+    "Guided website and app walkthrough"
+   ]
+  },
+  {
+   "id": "premium-plus",
+   "name": "Premium Plus",
+   "price": 349,
+   "meetings": 4,
+   "meetingMinutes": 30,
+   "perks": [
+    "Everything in Premium",
+    "4 scheduled 30-minute remote sessions every month",
+    "Priority scheduling"
+   ]
+  }
+ ],
+ "programs": [
+  {
+   "id": "hypertrophy-12",
+   "title": "PSG — State of Perpetual Growth",
+   "category": "Hypertrophy",
+   "level": "intermediate",
+   "location": "gym",
+   "access": "member",
+   "summary": "A continuous progression program for strength, size and mobility. 7-day cycle: upper, mobility, lower, mobility, upper, lower, then Sunday mobility if soreness is low (otherwise rest). Every strength day runs the same 50-40-30-20-10 movements at lighter weight; the heavy Long days are break cycles — rare and far apart."
+  },
+  {
+   "id": "dream-lean-12",
+   "title": "12-Week Dream Lean",
+   "category": "Weight loss",
+   "level": "intermediate",
+   "location": "gym",
+   "access": "member",
+   "summary": "STRONG · FUNCTIONAL · CONFIDENT. The complete system for a lean, toned and powerful you. 7-day training split with strength training 4-6 days per week, daily movement reset, health shots, ice bath protocol and acupressure mat recovery."
+  },
+  {
+   "id": "shoulder-6",
+   "title": "6-Week Shoulder & Rotator Cuff Protocol",
+   "category": "Rehabilitation",
+   "level": "beginner",
+   "location": "home",
+   "access": "member",
+   "summary": "Progressive release and eccentric shoulder/rotator cuff system. The #1 Rule: Shoulders live in your pockets. Phase 1 (Weeks 1-2): Decompression, exploratory range and cuff control. Phase 2 (Weeks 3-4): End-range control and cervical rotation. Phase 3 (Weeks 5-6): Full cervical control and global integration."
+  },
+  {
+   "id": "hip-6",
+   "title": "6-Week Hip Protocol",
+   "category": "Rehabilitation",
+   "level": "beginner",
+   "location": "home",
+   "access": "member",
+   "summary": "Build tolerance, improve control, reduce irritation. Build strong, stable, pain-free hips through controlled movement, glute engagement and core stability. Daily exercises for all 6 weeks with weekly progressions."
+  },
+  {
+   "id": "low-back-6",
+   "title": "Back Stability Protocol",
+   "category": "Rehabilitation",
+   "level": "beginner",
+   "location": "home",
+   "access": "member",
+   "summary": "Foundation & Activation — the starting point for your hip and lower back protocol. Baseline phase with wall-supported hip/glute activation and pelvic floor work, progressing through 12 weeks of dynamic stability. Activate, Connect, Stabilize, Progress."
+  },
+  {
+   "id": "knee-6",
+   "title": "6-Week Knee Protocol",
+   "category": "Rehabilitation",
+   "level": "beginner",
+   "location": "home",
+   "access": "member",
+   "summary": "Build tolerance, improve control, reduce irritation. Week 1: establish daily habits, activate the right muscles, and introduce gentle movement without pain. A new focus every week through week 6."
+  },
+  {
+   "id": "plantar-4",
+   "title": "4-Week Plantar Fasciitis Protocol",
+   "category": "Rehabilitation",
+   "level": "beginner",
+   "location": "home",
+   "access": "member",
+   "summary": "Loosen the tight tissues, gently mobilize the foot and ankle, and start loading the calf with controlled eccentric drops, then build foot and calf strength week by week."
+  },
+  {
+   "id": "tennis-elbow-4",
+   "title": "4-Week Elbow Epicondylitis Protocol: Wrist Flexors",
+   "category": "Rehabilitation",
+   "level": "beginner",
+   "location": "home",
+   "access": "member",
+   "summary": "A 4-week plan to reduce elbow epicondylitis pain and restore strength, built on slow eccentric work for the wrist flexors. Week 1: calm pain, start healing."
+  },
+  {
+   "id": "golfers-elbow-4",
+   "title": "4-Week Elbow Epicondylitis Protocol: Wrist Extensors",
+   "category": "Rehabilitation",
+   "level": "beginner",
+   "location": "home",
+   "access": "member",
+   "summary": "A 4-week plan to reduce elbow epicondylitis pain and restore strength, built on slow eccentric work for the wrist extensors. Week 1: calm pain, start healing."
+  },
+  {
+   "id": "posterior-chain-6",
+   "title": "6-Week Low Back, Mid-Back & Hip Flexor Protocol",
+   "category": "Rehabilitation",
+   "level": "beginner",
+   "location": "home",
+   "access": "member",
+   "summary": "A 6-week progressive eccentric, glute-driven and full-range system to restore mobility and reduce pain in the low back, mid-back, hips and pelvis. The same movements all 6 weeks, taken to greater length, stretch and control as you progress."
+  },
+  {
+   "id": "mobility-12",
+   "title": "12-Week Full Mobility System",
+   "category": "Mobility",
+   "level": "intermediate",
+   "location": "home",
+   "access": "member",
+   "summary": "A dual-track program with weekly integration: Track A (posterior chain eccentric protocol) and Track B (mobility conditioning circuit). Weeks 1-2 lean toward mobility; from week 3 the balance shifts toward strength."
+  },
+  {
+   "id": "mobility-ladder",
+   "title": "Mobility Ladder",
+   "category": "Mobility",
+   "level": "intermediate",
+   "location": "home",
+   "access": "member",
+   "summary": "Dr. Jared's mobility ladder. Same six movements each round. Get as many rounds as you can in under 30 minutes. When you can fit another round in under 30 minutes, add another round. When you can take levels of assistance away, take them away. Increase your depth, not your reps."
+  },
+  {
+   "id": "anti-inflammatory",
+   "title": "Anti-Inflammatory Reset",
+   "category": "Anti-inflammatory",
+   "level": "beginner",
+   "location": "home",
+   "access": "member",
+   "summary": "Gentle full-body strength, mobility and daily walking to calm things down without flaring them up. 3 sessions a week for 4 weeks."
+  },
+  {
+   "id": "golf",
+   "title": "6-Week Beginner Golf Protocol",
+   "category": "Sport Performance",
+   "level": "beginner",
+   "location": "home",
+   "access": "member",
+   "summary": "Improve mobility, build better movement and develop a stronger swing. 3 sessions a week for 6 weeks — mobility first, form always."
+  },
+  {
+   "id": "pickleball",
+   "title": "Pickleball Beginner Protocol",
+   "category": "Sport Performance",
+   "level": "beginner",
+   "location": "home",
+   "access": "member",
+   "summary": "Move better, play longer and lower your injury risk. Mobility, stability, strength, power, endurance and court confidence — 3 sessions a week for 6 weeks."
+  },
+  {
+   "id": "running",
+   "title": "Running Performance",
+   "category": "Sport Performance",
+   "level": "intermediate",
+   "location": "home",
+   "access": "member",
+   "summary": "Hip strength, calf and foot work, and single-leg stability to run faster with fewer injuries. 3 sessions a week to pair with your runs."
+  },
+  {
+   "id": "marathon",
+   "title": "Marathon Prep",
+   "category": "Sport Performance",
+   "level": "advanced",
+   "location": "home",
+   "access": "member",
+   "summary": "A 12-week strength-and-mobility block to carry you through marathon training without breaking down. 4 sessions a week built around your run calendar."
+  },
+  {
+   "id": "pickleball-intermediate",
+   "title": "Pickleball Intermediate Protocol",
+   "category": "Sport Performance",
+   "level": "intermediate",
+   "location": "gym",
+   "access": "member",
+   "summary": "Stability, strength, power, control and court confidence: build lower-body power, rotational control and court-ready movement. 3 workouts a week for 6 weeks."
+  },
+  {
+   "id": "pickleball-advanced",
+   "title": "Pickleball Advanced Protocol",
+   "category": "Sport Performance",
+   "level": "advanced",
+   "location": "gym",
+   "access": "member",
+   "summary": "Power, speed, reaction, resilience and next-level performance. 3 workouts a week for 6 weeks."
+  },
+  {
+   "id": "golf-intermediate",
+   "title": "6-Week Intermediate Golf Program",
+   "category": "Sport Performance",
+   "level": "intermediate",
+   "location": "gym",
+   "access": "member",
+   "summary": "Rotational strength, power and control to build on your beginner foundation and develop a stronger, more consistent swing."
+  },
+  {
+   "id": "golf-advanced",
+   "title": "6-Week Advanced Golf Program",
+   "category": "Sport Performance",
+   "level": "advanced",
+   "location": "gym",
+   "access": "member",
+   "summary": "Advanced power, speed and integrated movement for a faster, more efficient swing."
+  },
+  {
+   "id": "ski-advanced",
+   "title": "Advanced Ski Program",
+   "category": "Sport Performance",
+   "level": "advanced",
+   "location": "gym",
+   "access": "member",
+   "summary": "An 8-week plan for power, single-leg dominance and reactive stability: stronger ankles, more control, less fatigue, bigger days on snow."
+  },
+  {
+   "id": "marathon-extension",
+   "title": "Marathon Contingency: 12-Week Extension",
+   "category": "Sport Performance",
+   "level": "advanced",
+   "location": "outdoor",
+   "access": "member",
+   "summary": "Weeks 9-20 plus the final 3-week taper: build endurance, maintain form, stay healthy and reach 26.2."
+  }
+ ]
+}
