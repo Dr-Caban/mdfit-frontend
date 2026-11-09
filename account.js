@@ -2465,9 +2465,19 @@
     if (payOn && C && $("#tier-grid") && $("#tier-grid").innerHTML) renderPremium().catch(() => {});
   }).catch(() => {});
   if (new URLSearchParams(location.search).get("checkout") === "success") {
+    const sid = new URLSearchParams(location.search).get("session_id");
     toast("Payment received. Thank you! Your account updates in a moment.");
     history.replaceState(null, "", "/account" + location.hash);
-    setTimeout(() => apiAuth("GET", "/api/me/access").then((a) => { access = a; renderAccessBadge(); loadContent().then(() => renderContent("premium")); }).catch(() => {}), 4000);
+    // Confirm with the server right away (it asks Stripe about this checkout), so the membership shows without
+    // waiting for Stripe's webhook; then reload what depends on it.
+    const refresh = async () => {
+      try { const r = await apiAuth("GET", "/api/me"); client = r.client; auth.set({ ...auth.get(), client }); renderProfile(); } catch {}
+      try { access = await apiAuth("GET", "/api/me/access"); renderAccessBadge(); } catch {}
+      await loadContent().catch(() => {}); renderContent("premium"); renderPayments().catch(() => {});
+    };
+    (sid ? apiAuth("POST", "/api/me/checkout/confirm", { session_id: sid }).catch(() => null) : Promise.resolve(null))
+      .then((r) => { if (r && r.paid && r.membership) toast("You're a member now. Welcome!"); return refresh(); })
+      .then(() => setTimeout(refresh, 6000));
   }
   async function renderPayments() {
     const host = $("#my-payments"); if (!host) return;
