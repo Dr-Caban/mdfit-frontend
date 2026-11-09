@@ -1,0 +1,67 @@
+{
+  "group": "activities",
+  "slug": "swimming",
+  "title": "Swimmer's Shoulder & Swimming Injuries in Sarasota | MD Fit",
+  "h1": "Swimmer's Shoulder & Swimming Injuries in Sarasota",
+  "description": "Shoulder, neck, low back and knee pain from pool and open-water swimming in Sarasota. Muscles involved, MD Fit's release and strengthening approach, red flags.",
+  "about": { "type": "Thing", "name": "Swimming" },
+  "lead": "Swimming is the sport people get sent to when everything else hurts, which makes it easy to forget that swimmers get hurt too. The shoulder does the bulk of the work and takes the bulk of the damage, but the neck, low back and knees have their own stories. This page is for lap swimmers, masters athletes, triathletes and Gulf swimmers around Sarasota.",
+  "sections": [
+    {
+      "h2": "A shoulder-first sport",
+      "html": "<p>A lap swimmer's shoulder rotates overhead well over a thousand times in a modest workout. Every stroke asks the rotator cuff to hold the ball of the shoulder centered in its socket while the big movers, the lats and chest, pull the body over the hand. If the shoulder blade does not rotate upward properly, or the upper back is stiff, the tendons on top of the shoulder get pinched against the roof of the joint on every recovery. That repeated pinch is what most people mean by swimmer's shoulder, and it tends to be an <a href=\"/conditions/shoulder-impingement\">impingement pattern</a> rather than a tear, at least at first.</p>"
+    },
+    {
+      "h2": "The injuries we see in swimmers",
+      "html": "<p>In rough order of how often they walk through the door:</p><ol><li>Shoulder pain during the pull or the recovery, often worst in freestyle and butterfly. See <a href=\"/conditions/shoulder-pain\">shoulder pain</a> and <a href=\"/conditions/rotator-cuff-tear\">rotator cuff tear</a> for the two ends of the spectrum.</li><li>Neck pain and headaches from breathing to one side only, or from lifting the head to sight in open water. See <a href=\"/conditions/neck-pain\">neck pain</a>.</li><li>Low back ache, especially in butterfly and breaststroke, where the lumbar spine does the arching the hips and upper back should share. See <a href=\"/conditions/low-back-pain\">low back pain</a>.</li><li>Inner-knee pain in breaststrokers from the whip kick, sometimes called breaststroker's knee.</li></ol>"
+    },
+    {
+      "h2": "Which muscles are usually involved",
+      "html": "<ul><li><a href=\"/muscles/supraspinatus\">Supraspinatus</a>: the rotator cuff tendon most often pinched on the recovery. It refers a deep ache to the top and side of the shoulder that can run toward the elbow and is worse overhead and at night.</li><li><a href=\"/muscles/subscapularis\">Subscapularis</a>: the internal rotator that powers the pull. When it gets tight and overworked it refers to the back of the shoulder and down the arm and can mimic a <a href=\"/conditions/frozen-shoulder\">frozen shoulder</a>.</li><li><a href=\"/muscles/pectoralis-minor\">Pectoralis minor</a>: pulls the shoulder blade forward and down into a rounded position that narrows the space the cuff tendons travel through. Nearly every swimmer with shoulder pain has a tight one.</li><li><a href=\"/muscles/latissimus-dorsi\">Latissimus dorsi</a>: the engine of the pull. Tight lats limit overhead reach and pull the low back into extension.</li><li><a href=\"/muscles/sternocleidomastoid\">Sternocleidomastoid</a>: the neck rotator that works on every breath. Single-side breathers often develop one-sided tightness that refers to the face and head.</li></ul><p>The <a href=\"/guides/rotator-cuff\">rotator cuff guide</a> in the app walks through self-tests for the first two.</p>"
+    },
+    {
+      "h2": "Pool versus Gulf swimming",
+      "html": "<p>Sarasota swimmers have both. Pool swimmers tend toward pure overuse: the same stroke, the same wall push-off, the same breathing side for thousands of yards. Open-water swimmers off Lido and Siesta deal with sighting, which means lifting the head and extending the neck every few strokes, and with current and chop that turn a smooth stroke into a fight. Open water also means cold-ish winter mornings and warm summer water, both of which change how quickly muscles fatigue and cramp. When we see an open-water swimmer with neck pain, sighting technique and breathing symmetry are the first things we ask about.</p>"
+    },
+    {
+      "h2": "How we handle swimmer's shoulder at MD Fit",
+      "html": "<p>Dr. Jared's first step is to figure out why the space in the shoulder has gotten tight. He measures shoulder rotation on both sides, watches the shoulder blade move as the arm goes overhead, checks the upper back for stiffness and tests each rotator cuff muscle individually. The answer is usually some mix of a tight front (pec minor, subscapularis, lats) and a weak back (lower trapezius, serratus, external rotators).</p><p>Treatment is hands-on release of the muscles that are shortening the space, followed by corrective movement that teaches the shoulder blade to rotate upward again. You get a short video list in the free MD Fit app for daily homework. Once the shoulder stops pinching, the program moves to loaded rotator cuff and scapular strength so that the volume you want to swim is volume your shoulder can support.</p>"
+    },
+    {
+      "h2": "This week, in and out of the water",
+      "html": "<ul><li>Alternate breathing sides for at least part of every set, even if it feels awkward.</li><li>Drop paddles and pull buoys for a couple of weeks; they multiply shoulder load.</li><li>Keep a high elbow on the recovery and a relaxed hand; a stiff, thumb-first entry increases pinching.</li><li>Before swimming, do two minutes of arm circles, a doorway chest stretch and ten slow shoulder-blade squeezes.</li><li>Trade one swim for a walk or an easy bike ride if the shoulder is aching daily.</li></ul>"
+    },
+    {
+      "h2": "When to get checked",
+      "html": "<p>Shoulder soreness that fades by the next morning is normal training load. Make an appointment if pain has been present in every session for more than a few weeks, if it wakes you at night or stops you lying on that side, if you have lost range or strength, or if neck pain now comes with headaches or tingling into the arm.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Sudden loss of the ability to lift the arm after a specific pull or a fall.",
+    "Shoulder pain with numbness, tingling or a cold, pale hand.",
+    "A visible lump or deformity at the shoulder or collarbone.",
+    "Chest pain or unusual breathlessness while swimming, which is an emergency: get out of the water and call 911.",
+    "Sudden, severe headache or dizziness during or after a swim."
+  ],
+  "faq": [
+    { "q": "Can I keep swimming with swimmer's shoulder?", "a": "Often yes, at reduced volume and without paddles, while the tissue is treated and the shoulder blade mechanics are corrected. Sharp pain, night pain or weakness should be assessed before continuing." },
+    { "q": "Why does only one shoulder hurt when both do the same stroke?", "a": "Almost nobody is symmetrical in the water. Breathing side, a stronger pull on one arm, a stiffer upper back on one side or an old injury all shift load. Part of the assessment is finding that asymmetry." },
+    { "q": "Is swimming safe for my back?", "a": "For most people swimming is one of the kindest activities for the spine. If the low back aches, it is usually breaststroke or butterfly mechanics and tight hip flexors rather than the water itself." }
+  ],
+  "muscles": ["supraspinatus", "subscapularis", "pec-minor", "lats", "scm"],
+  "pain": ["top-of-shoulder", "deep-shoulder-joint", "side-of-neck", "inside-of-knee"],
+  "guides": ["rotator-cuff"],
+  "related": [
+    "/conditions/shoulder-impingement",
+    "/conditions/shoulder-pain",
+    "/conditions/rotator-cuff-tear",
+    "/conditions/frozen-shoulder",
+    "/conditions/neck-pain",
+    "/treatments/medical-massage",
+    "/treatments/strength-and-performance"
+  ],
+  "programs": ["shoulder-6", "mobility-12"],
+  "reviewStatus": "draft"
+}

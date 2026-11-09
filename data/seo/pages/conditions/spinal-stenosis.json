@@ -1,0 +1,55 @@
+{
+  "group": "conditions",
+  "slug": "spinal-stenosis",
+  "title": "Spinal Stenosis Exercise Care in Sarasota | MD Fit",
+  "h1": "Spinal Stenosis Exercise Care in Sarasota, FL",
+  "description": "Living with lumbar spinal stenosis? MD Fit in Sarasota offers exercise-based care alongside your physician's plan: hip mobility, posture, strength and walking.",
+  "about": { "type": "MedicalCondition", "name": "Spinal stenosis" },
+  "lead": "Spinal stenosis is a narrowing of the canal that houses the spinal cord and nerves. It is a medical diagnosis made by a physician with imaging. What MD Fit offers is the exercise and soft-tissue side of care, which can make a real difference in how far you walk and how well you tolerate your day.",
+  "sections": [
+    {
+      "h2": "What stenosis feels like day to day",
+      "html": "<p>The classic story is a person who can shop comfortably leaning on a cart but cannot walk the same distance upright. Standing and walking bring on heaviness, aching, cramping or tingling in the buttocks and legs that eases within minutes of sitting or bending forward. Other features include:</p><ul><li>Walking tolerance that shrinks over months.</li><li>Relief when leaning forward, cycling, or climbing a hill, and worse when walking downhill or standing in line.</li><li>Low back ache <a href=\"/pain/beside-the-spine\">beside the spine</a> and in the <a href=\"/pain/upper-buttock\">upper buttock</a>, often on both sides.</li><li>A feeling that the legs will give out, and occasional balance trouble.</li></ul><p>Cervical stenosis in the neck behaves differently, with hand clumsiness and gait changes, and needs a physician's attention promptly.</p>"
+    },
+    {
+      "h2": "Where the muscles come in",
+      "html": "<p>Stenosis itself is bony and ligamentous narrowing, which exercise does not reverse. But the amount of space in the canal changes with posture, and muscles determine posture. Standing with an arched low back closes the canal; a neutral or slightly flexed spine opens it. The muscles that matter most are:</p><ul><li><a href=\"/muscles/psoas\">Psoas</a> and <a href=\"/muscles/iliacus\">iliacus</a>: tight hip flexors tip the pelvis forward and increase the lumbar arch every time you stand or walk.</li><li><a href=\"/muscles/quadratus-lumborum\">Quadratus lumborum</a>: shortens with the arched posture and adds flank and buttock pain.</li><li><a href=\"/muscles/gluteus-maximus\">Gluteus maximus</a> and <a href=\"/muscles/gluteus-medius\">gluteus medius</a>: when weak, the back extensors take over hip extension and the arch deepens.</li><li><a href=\"/muscles/multifidus\">Multifidus</a>: deep stabilizers that should hold a neutral spine under load, and often have switched off.</li></ul><p>Hip joint stiffness is the other big piece. A hip that cannot extend forces the low back to extend instead.</p>"
+    },
+    {
+      "h2": "Exercise-based care at MD Fit",
+      "html": "<p>I review your imaging report and your physician's recommendations first, then assess how your hips move, how you stand and walk, and which positions bring relief. Hands-on release of the hip flexors and QL often gives immediate ease in standing. The correction phase teaches a posterior pelvic tilt you can use while walking, so the canal stays more open, and builds hip extension so the back does not have to supply it.</p><p>Your daily routine in the free MD Fit app is short and flexion-biased. Strengthening follows for the glutes, deep core and legs, often on a bike or in a slightly forward-leaning position where symptoms stay quiet. Many people find their walking distance grows as the hips and glutes take over work the back was doing. None of this replaces medical management, injections or surgery your physician may recommend; it runs alongside them, and I am happy to coordinate with your doctor.</p>"
+    },
+    {
+      "h2": "What you can do right away",
+      "html": "<ol><li>When symptoms start while walking, stop and sit or lean forward on a railing until they pass, then continue. Interval walking builds tolerance.</li><li>Stationary cycling is usually well tolerated because the spine is flexed; it is a good way to keep the heart and legs fit.</li><li>Lie on your back with knees bent and gently flatten your low back into the floor for a few breaths, several times a day.</li><li>Choose shoes with cushioning, and avoid long periods of standing still.</li></ol><p>Avoid deep backbends and heavy overhead work unless your physician has cleared them.</p>"
+    },
+    {
+      "h2": "Conditions that mimic stenosis",
+      "html": "<p>Leg pain with walking can also come from narrowed arteries in the legs, which eases with standing still rather than bending and is a vascular problem your physician must check. <a href=\"/conditions/hip-pain\">Hip arthritis</a> produces groin pain and limping. A <a href=\"/conditions/herniated-disc\">disc herniation</a> tends to affect one leg and is worse with sitting. Peripheral neuropathy causes numb feet regardless of posture. These distinctions matter for treatment, and they belong to your physician.</p>"
+    },
+    {
+      "h2": "A note for Sarasota",
+      "html": "<p>Stenosis is common among active adults in their sixties, seventies and beyond, which describes much of our community. The goal of exercise-based care is practical: walking the dog, finishing a round, getting through the grocery store, staying steady on your feet. <a href=\"/conditions/balance-fall-prevention\">Balance work</a> is built in because stenosis and falls often travel together.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "New loss of bladder or bowel control, or numbness in the groin, inner thighs or around the genitals: go to the emergency room now.",
+    "Rapidly worsening leg weakness, foot drop, or falls that are increasing.",
+    "Hand clumsiness, trouble buttoning shirts, or changes in walking that could indicate cervical spinal cord involvement.",
+    "Back pain with fever, unexplained weight loss, or a history of cancer.",
+    "Leg pain with walking that stops when you stand still, which may indicate a circulation problem."
+  ],
+  "faq": [
+    { "q": "Can exercise fix spinal stenosis?", "a": "Exercise does not change the bony narrowing. It can change posture, hip mobility and strength, which often improves walking tolerance and comfort. Your physician manages the medical side." },
+    { "q": "Do I need an MRI before coming to MD Fit?", "a": "Stenosis is diagnosed by a physician, typically with imaging. Please bring that diagnosis and any restrictions your doctor has given, so care is built around them." },
+    { "q": "Why does bending forward help?", "a": "Flexing the spine opens the canal and takes pressure off the nerves. That is why leaning on a cart or sitting relieves symptoms, and why the exercises lean that direction." },
+    { "q": "Is walking good or bad for stenosis?", "a": "Walking in intervals, stopping to sit or lean forward when symptoms begin, is generally encouraged. Dr. Jared will help set a starting distance based on your assessment." }
+  ],
+  "muscles": ["psoas", "iliacus", "ql", "glute-max", "glute-med", "multifidus"],
+  "pain": ["beside-the-spine", "upper-buttock", "back-of-thigh"],
+  "guides": ["iliopsoas"],
+  "related": ["/conditions/sciatica", "/conditions/low-back-pain", "/conditions/herniated-disc", "/conditions/balance-fall-prevention", "/treatments/chronic-pain-program", "/treatments/clinical-exercise-physiology", "/conditions/hip-osteoarthritis"],
+  "reviewStatus": "draft"
+}

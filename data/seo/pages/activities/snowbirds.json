@@ -1,0 +1,68 @@
+{
+  "group": "activities",
+  "slug": "snowbirds",
+  "title": "Snowbird Pain & Mobility Care in Sarasota | MD Fit",
+  "h1": "Seasonal Residents: Pain & Mobility Care in Sarasota",
+  "description": "Snowbirds in Sarasota, November to April: why pain spikes after arrival, the muscles involved, how MD Fit works with your home providers, first-week steps.",
+  "about": { "type": "Thing", "name": "Seasonal residents (snowbirds)" },
+  "lead": "Every November a wave of people arrives in Sarasota after months of being indoors, unpacks the car and plays golf three days in a row. By Thanksgiving a predictable share of them are looking for someone to see their back, hip, shoulder or knee. If that is you, this page explains what is happening and how to use your season well.",
+  "sections": [
+    {
+      "h2": "Why pain spikes in the first weeks back",
+      "html": "<p>The problem is not Florida. It is the jump. Up north, winter tends to mean less walking, less sun and a lot more sitting. Then comes a long drive or flight, which is more sitting, followed by a sudden burst of golf, pickleball, tennis, beach walking, boating and yard work, often all in the same week. Tendons and joints adapt to load slowly, over weeks, and a body that has done very little for two months does not have the capacity it had in April. The muscles that were already tight from sitting, the hip flexors, the chest, the upper traps, the calves, are asked to perform immediately, and they object.</p><p>Walking on sand and shell at Siesta or Lido adds its own load to the calves and feet.</p>"
+    },
+    {
+      "h2": "What seasonal residents come in for",
+      "html": "<ul><li><b>Low back pain</b> after the drive down and the first rounds of golf. See <a href=\"/conditions/low-back-pain\">low back pain</a> and our <a href=\"/golf-performance-sarasota\">golf page</a>.</li><li><b>Hip and outer-hip pain</b> from a sudden increase in walking, especially on sand. See <a href=\"/conditions/hip-pain\">hip pain</a>.</li><li><b>Knee pain</b> in people with <a href=\"/conditions/knee-osteoarthritis\">knee osteoarthritis</a> who were doing fine until the activity tripled.</li><li><b>Shoulder pain</b> after returning to pickleball or tennis overhead play. See <a href=\"/conditions/shoulder-pain\">shoulder pain</a> and the <a href=\"/pickleball-injury-rehab-sarasota\">pickleball page</a>.</li><li><b>Plantar fascia and Achilles pain</b> from flip-flops, sandals and barefoot beach walking after months in supportive winter boots. See <a href=\"/conditions/plantar-fasciitis\">plantar fasciitis</a> and <a href=\"/conditions/achilles-tendon-pain\">Achilles tendon pain</a>.</li><li><b>Neck stiffness and headaches</b> after the travel and the new bed.</li></ul>"
+    },
+    {
+      "h2": "The muscles behind the seasonal pattern",
+      "html": "<ul><li><a href=\"/muscles/psoas\">Psoas</a>: the hip flexor that shortens with a long drive and refers to the low back and front of the hip. It is the most common reason the first week in Sarasota starts with a stiff back.</li><li><a href=\"/muscles/gluteus-medius\">Gluteus medius</a>: the hip stabilizer that is weak after a sedentary winter and overworked by sudden walking. Refers along the belt line and the outer hip. See the <a href=\"/guides/lateral-hip\">lateral hip guide</a>.</li><li><a href=\"/muscles/quadratus-lumborum\">Quadratus lumborum</a>: the deep low-back muscle that side-bends and gets overloaded by a golf swing it has not done since fall.</li><li><a href=\"/muscles/soleus\">Soleus</a> and <a href=\"/muscles/foot-intrinsic-muscles\">foot intrinsics</a>: the calf and sole muscles that face sand, flat sandals and long walks all at once. Behind most heel and Achilles complaints we see in December. See the <a href=\"/guides/calf\">calf guide</a>.</li><li><a href=\"/muscles/upper-trapezius\">Upper trapezius</a>: tight from the drive, the new pillow and the first overhead serves.</li></ul>"
+    },
+    {
+      "h2": "Working with your providers up north",
+      "html": "<p>Many seasonal residents already have a physician, a physical therapist or a massage therapist at home. Dr. Jared does not replace them. He is an MD and clinical exercise physiologist who combines hands-on release with corrective exercise and strengthening, and he is happy to coordinate with your home team, share notes with your permission and build on a plan that is already working. The free MD Fit app also travels with you: the videos assigned here follow you back north in April, so the work does not stop at the state line.</p><p>If you have had surgery over the summer and are finishing recovery in Sarasota, see <a href=\"/conditions/post-surgical-rehab\">post-surgical rehab</a>. We will work from your surgeon's protocol.</p>"
+    },
+    {
+      "h2": "How a season at MD Fit usually goes",
+      "html": "<p>The first visit is an assessment: how you move, what is tight, what is weak, what you want to be able to do by spring. Hands-on work releases the tissues that are guarding, corrective movements restore the ranges the winter took, and the homework goes into the app. Over the season the plan shifts toward strength, so that you leave in April more capable than you arrived in November, not just less sore.</p>"
+    },
+    {
+      "h2": "Your first two weeks in Sarasota",
+      "html": "<ol><li>Ramp up, do not jump: one round of golf or one session of pickleball, then a day off, for the first two weeks.</li><li>After the drive, walk before you unpack. Ten minutes, then a half-kneeling hip flexor stretch for a minute each side.</li><li>Alternate beach walking with walking in supportive shoes on firm ground; let the calves and feet catch up gradually.</li><li>Start a short daily routine now, before anything hurts: calf raises, sit-to-stands, a doorway chest stretch and a gentle spine rotation on the floor.</li></ol>"
+    },
+    {
+      "h2": "When to come in",
+      "html": "<p>Soreness after the first round is expected. Pain that has not settled after two weeks of sensible activity, pain that is changing how you walk or swing, pain into a limb, or anything that is stopping you from doing what you came to Sarasota to do is worth an assessment.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Calf pain with swelling, warmth or redness after a long drive or flight, which can indicate a blood clot and needs urgent medical care.",
+    "Chest pain, breathlessness or a racing heart during activity in the heat: call 911.",
+    "Back pain with numbness in the groin or a change in bowel or bladder control.",
+    "A fall, especially one with a blow to the head or in someone on blood thinners.",
+    "Sudden inability to bear weight on a leg or lift an arm after an awkward swing or step."
+  ],
+  "faq": [
+    { "q": "Can I be seen if I am only in Sarasota for a few months?", "a": "Yes. Most seasonal residents are here for four to six months, which is plenty of time to assess, treat and build a strength base. The app keeps the plan going after you leave." },
+    { "q": "Will Dr. Jared coordinate with my doctor at home?", "a": "With your permission, yes. He will share his findings and the plan so that your northern providers know what was done and can continue it." },
+    { "q": "Why did my knees do fine all summer and hurt the first week here?", "a": "Usually because activity multiplied overnight. Arthritic knees tolerate load they are used to; a sudden tripling of walking and sport exceeds that tolerance. A gradual ramp and stronger hips and quads usually restore it." }
+  ],
+  "muscles": ["psoas", "glute-med", "ql", "soleus", "foot-intrinsics", "upper-trap"],
+  "pain": ["flank", "outside-of-hip", "sole-of-foot", "where-neck-meets-shoulder"],
+  "guides": ["lateral-hip", "calf", "iliopsoas"],
+  "related": [
+    "/golf-performance-sarasota",
+    "/pickleball-injury-rehab-sarasota",
+    "/conditions/low-back-pain",
+    "/conditions/hip-pain",
+    "/conditions/knee-osteoarthritis",
+    "/conditions/plantar-fasciitis",
+    "/activities/seniors-strength-balance",
+    "/treatments/functional-mobility"
+  ],
+  "programs": ["mobility-12", "posterior-chain-6", "knee-6"],
+  "reviewStatus": "draft"
+}

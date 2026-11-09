@@ -1,0 +1,65 @@
+{
+  "group": "activities",
+  "slug": "weightlifting-crossfit",
+  "title": "Weightlifting & CrossFit Injury Rehab in Sarasota | MD Fit",
+  "h1": "Weightlifting & CrossFit Injury Rehab in Sarasota",
+  "description": "Shoulder, low back, hip, knee and elbow pain from barbell training and CrossFit. How MD Fit assesses lifters, keeps you training and rebuilds load tolerance.",
+  "about": { "type": "Thing", "name": "Weightlifting and CrossFit" },
+  "lead": "Lifters do not want to be told to stop lifting, and most of the time they should not be. What they need is an honest look at which positions their body cannot currently get into, which muscles are compensating, and a plan that modifies the training instead of removing it. That is how Dr. Jared works with barbell athletes in Sarasota.",
+  "sections": [
+    {
+      "h2": "The pattern behind most lifting injuries",
+      "html": "<p>Acute gym injuries happen, but they are the minority. The usual story is a position the body cannot reach cleanly, reached anyway under load, hundreds of times. A lifter without full overhead range arches the low back to get the bar overhead. A squatter without ankle or hip mobility folds forward and the knees or low back take the load. A CrossFit athlete doing high-rep kipping pull-ups with a shoulder blade that does not stabilize ends up with a shoulder that aches at rest.</p>"
+    },
+    {
+      "h2": "Common complaints by lift",
+      "html": "<ul><li><b>Overhead press, snatch, jerk, kipping</b>: front-of-shoulder pinching and a shoulder that aches at night. See <a href=\"/conditions/shoulder-impingement\">shoulder impingement</a> and <a href=\"/conditions/rotator-cuff-tear\">rotator cuff tear</a>.</li><li><b>Deadlift, clean, heavy squat</b>: low back that tightens up or \"goes\" on a rep, sometimes with pain into the buttock. See <a href=\"/conditions/low-back-pain\">low back pain</a>, <a href=\"/conditions/herniated-disc\">herniated disc</a> and <a href=\"/conditions/sciatica\">sciatica</a>.</li><li><b>Squat, lunge, box jump</b>: front-of-knee pain and a stiff, pinching front of the hip at depth. See <a href=\"/conditions/patellar-tendinopathy\">patellar tendinopathy</a> and <a href=\"/conditions/hip-pain\">hip pain</a>.</li><li><b>Pull-ups, rows, heavy grip work</b>: inside- or outside-of-elbow pain and forearm tightness. See <a href=\"/conditions/golfers-elbow\">golfer's elbow</a> and <a href=\"/conditions/tennis-elbow\">tennis elbow</a>.</li></ul>"
+    },
+    {
+      "h2": "Muscles that quietly run the show",
+      "html": "<p>In lifters the painful tissue is rarely the problem tissue. These are the ones we check first:</p><ul><li><a href=\"/muscles/latissimus-dorsi\">Latissimus dorsi</a>: big, strong and nearly always tight in lifters. Short lats block overhead range, so the low back arches to compensate, and they refer pain to the bottom of the shoulder blade and down the arm.</li><li><a href=\"/muscles/lower-trapezius\">Lower trapezius</a>: the muscle that should rotate the shoulder blade upward for overhead work and is usually underpowered compared to the upper traps. A hidden driver of neck tension and shoulder pinching.</li><li><a href=\"/muscles/quadratus-lumborum\">Quadratus lumborum</a> and <a href=\"/muscles/multifidus\">multifidus</a>: the deep low-back muscles that stiffen and spasm after a bad pull. QL refers to the flank and SI joint; multifidus gives that pinpoint pain right next to the spine.</li><li><a href=\"/muscles/psoas\">Psoas</a>: the hip flexor that pinches at the bottom of a squat when the hip does not have the room to flex, and that pulls the lumbar spine forward under load.</li><li><a href=\"/muscles/gluteus-maximus\">Gluteus maximus</a>: should be the engine of every squat and pull. When it is slow to fire, hamstrings and low back pick up the bill.</li></ul>"
+    },
+    {
+      "h2": "What an assessment looks like for a lifter",
+      "html": "<p>Dr. Jared wants to see the positions, not hear about them. Expect an overhead reach test against a wall, a deep squat with and without heel elevation, a hip hinge with a dowel, single-leg stance and loaded carries, plus hands-on testing of the shoulder and hip joints. The goal is to separate three things: joints that lack range, muscles that are guarding and limiting range, and movement habits that avoid using range you actually have.</p><p>Treatment then combines hands-on release of the guarding muscles, corrective movements that restore and own the range, daily homework in the free MD Fit app, and a modified training plan. Modified means swapping, not stopping: front squats for back squats, landmine presses for strict overhead, trap-bar for conventional pulls, tempo work for max effort. As tolerance returns, the original lifts come back in a controlled progression.</p>"
+    },
+    {
+      "h2": "Training adjustments for this week",
+      "html": "<ol><li>Keep training, but drop intensity to roughly 60 to 70 percent on the lifts that aggravate the area and cap sets at a crisp, pain-free rep count.</li><li>Swap the specific movement that hurts for a variation that does not, rather than skipping the pattern entirely.</li><li>Add five minutes of targeted mobility before lifting: thoracic rotations for overhead work, half-kneeling hip flexor stretches and ankle rocks for squatting.</li><li>Replace one metcon with a long walk, a swim or an easy bike ride.</li></ol><p>These are general guidelines for healthy adults. Pain that gets sharper under load, numbness or a pop should be assessed before you lift again.</p>"
+    },
+    {
+      "h2": "When to get it looked at",
+      "html": "<p>Muscle soreness that fades in two or three days is adaptation. Book an assessment when the same spot hurts in every session for more than two weeks, when you have changed your technique or avoided a lift to work around it, when pain travels into a limb or comes with tingling, or when a specific rep produced a pop, sudden weakness or swelling. Lifters who have already been through surgery should see <a href=\"/conditions/post-surgical-rehab\">post-surgical rehab</a>.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Low back pain with numbness in the groin or inner thighs, or any loss of bowel or bladder control.",
+    "A pop in the shoulder, biceps, hamstring or Achilles followed by sudden weakness or a visible gap or bulge.",
+    "Progressive weakness or numbness in an arm or leg.",
+    "Joint swelling that appears within hours of a lift, or a joint that locks or gives way.",
+    "Dark urine, severe muscle swelling and extreme soreness after a high-rep workout, which can signal rhabdomyolysis and needs emergency care."
+  ],
+  "faq": [
+    { "q": "Will I be told to stop lifting?", "a": "Rarely. In most cases the plan modifies the lift, the load or the range for a period while the limiting tissue is treated, then rebuilds. Acute injuries with weakness, swelling or nerve symptoms are the exception." },
+    { "q": "My shoulder only hurts overhead. Is it the shoulder or something else?", "a": "Often the shoulder is the victim of tight lats, a stiff upper back and a lower trapezius that is not doing its job. Fixing overhead mechanics usually matters more than treating the painful spot alone." },
+    { "q": "Is it safe to deadlift with a history of low back pain?", "a": "For most people a well-coached hinge is one of the best things for the back. The question is whether you can brace and hinge without the spine moving, which is exactly what the assessment checks." },
+    { "q": "Which MD Fit programs suit lifters?", "a": "The Back Stability protocol builds bracing and hip-driven movement, the six-week shoulder, neck and trap protocol restores overhead mechanics, and the full mobility system addresses the posterior chain. Dr. Jared assigns what fits." }
+  ],
+  "muscles": ["lats", "lower-trap", "ql", "multifidus", "psoas", "glute-max"],
+  "pain": ["front-of-shoulder", "beside-the-spine", "front-of-hip", "below-kneecap"],
+  "guides": ["rotator-cuff", "iliopsoas"],
+  "related": [
+    "/conditions/shoulder-impingement",
+    "/conditions/low-back-pain",
+    "/conditions/herniated-disc",
+    "/conditions/patellar-tendinopathy",
+    "/conditions/hip-pain",
+    "/conditions/sports-injury-rehab",
+    "/treatments/strength-and-performance",
+    "/treatments/clinical-exercise-physiology"
+  ],
+  "programs": ["low-back-6", "shoulder-6", "mobility-12"],
+  "reviewStatus": "draft"
+}

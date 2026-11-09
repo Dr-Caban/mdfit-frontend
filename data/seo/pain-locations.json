@@ -1,0 +1,730 @@
+{
+ "pages": [
+  {
+   "region": "Head & face",
+   "slug": "forehead",
+   "name": "Forehead",
+   "spots": [
+    [
+     "head",
+     "Forehead"
+    ]
+   ],
+   "flags": "head"
+  },
+  {
+   "region": "Head & face",
+   "slug": "temple",
+   "name": "Temple",
+   "spots": [
+    [
+     "head",
+     "Temple"
+    ]
+   ],
+   "flags": "head"
+  },
+  {
+   "region": "Head & face",
+   "slug": "behind-the-eye",
+   "name": "Behind or around the eye",
+   "spots": [
+    [
+     "head",
+     "Behind or around the eye"
+    ]
+   ],
+   "flags": "head"
+  },
+  {
+   "region": "Head & face",
+   "slug": "around-the-ear",
+   "name": "Ear area",
+   "spots": [
+    [
+     "head",
+     "Ear area"
+    ]
+   ],
+   "flags": "head"
+  },
+  {
+   "region": "Back of head",
+   "slug": "base-of-skull",
+   "name": "Base of the skull",
+   "spots": [
+    [
+     "head-b",
+     "Base of the skull"
+    ]
+   ],
+   "flags": "head"
+  },
+  {
+   "region": "Back of head",
+   "slug": "back-of-head",
+   "name": "Back of the head",
+   "spots": [
+    [
+     "head-b",
+     "Back of the head"
+    ]
+   ],
+   "flags": "head"
+  },
+  {
+   "region": "Back of head",
+   "slug": "top-of-head",
+   "name": "Top of the head",
+   "spots": [
+    [
+     "head-b",
+     "Top of the head"
+    ]
+   ],
+   "flags": "head"
+  },
+  {
+   "region": "Neck",
+   "slug": "side-of-neck",
+   "name": "Side of the neck",
+   "spots": [
+    [
+     "neck",
+     "Side of the neck"
+    ]
+   ],
+   "flags": "neck"
+  },
+  {
+   "region": "Neck",
+   "slug": "front-of-neck",
+   "name": "Front of the neck",
+   "spots": [
+    [
+     "neck",
+     "Front of the neck"
+    ]
+   ],
+   "flags": "neck"
+  },
+  {
+   "region": "Neck",
+   "slug": "where-neck-meets-shoulder",
+   "name": "Where the neck meets the shoulder",
+   "spots": [
+    [
+     "neck",
+     "Where neck meets shoulder"
+    ]
+   ],
+   "flags": "neck"
+  },
+  {
+   "region": "Neck",
+   "slug": "back-of-neck",
+   "name": "Back of the neck",
+   "spots": [
+    [
+     "neck-b",
+     "Back of the neck"
+    ]
+   ],
+   "flags": "neck"
+  },
+  {
+   "region": "Shoulder",
+   "slug": "top-of-shoulder",
+   "name": "Top of the shoulder",
+   "spots": [
+    [
+     "shoulder",
+     "Top of the shoulder"
+    ],
+    [
+     "neck-b",
+     "Top of the shoulder"
+    ]
+   ],
+   "flags": null
+  },
+  {
+   "region": "Chest & ribs",
+   "slug": "front-of-chest",
+   "name": "Front of the chest",
+   "spots": [
+    [
+     "chest",
+     "Front of the chest"
+    ]
+   ],
+   "flags": "chest"
+  },
+  {
+   "region": "Chest & ribs",
+   "slug": "side-of-ribs",
+   "name": "Side of the ribs",
+   "spots": [
+    [
+     "chest",
+     "Side of the ribs"
+    ]
+   ],
+   "flags": "chest"
+  },
+  {
+   "region": "Chest & ribs",
+   "slug": "along-one-rib",
+   "name": "Along one rib",
+   "spots": [
+    [
+     "chest",
+     "Along one rib"
+    ]
+   ],
+   "flags": "chest"
+  },
+  {
+   "region": "Chest & ribs",
+   "slug": "side-of-abdomen",
+   "name": "Belly or side of the abdomen",
+   "spots": [
+    [
+     "chest",
+     "Belly or side of the abdomen"
+    ]
+   ],
+   "flags": "abdomen"
+  },
+  {
+   "region": "Shoulder (front)",
+   "slug": "under-collarbone",
+   "name": "Under the collarbone",
+   "spots": [
+    [
+     "shoulder",
+     "Under the collarbone"
+    ]
+   ],
+   "flags": "chest"
+  },
+  {
+   "region": "Shoulder (front)",
+   "slug": "front-of-shoulder",
+   "name": "Front of the shoulder",
+   "spots": [
+    [
+     "shoulder",
+     "Front of the shoulder"
+    ]
+   ],
+   "flags": null
+  },
+  {
+   "region": "Shoulder (front)",
+   "slug": "outside-of-shoulder",
+   "name": "Outside of the shoulder or upper arm",
+   "spots": [
+    [
+     "shoulder",
+     "Outside of the shoulder or arm"
+    ]
+   ],
+   "flags": null
+  },
+  {
+   "region": "Shoulder (front)",
+   "slug": "deep-shoulder-joint",
+   "name": "Deep inside the shoulder joint",
+   "spots": [
+    [
+     "shoulder",
+     "Deep inside the joint"
+    ]
+   ],
+   "flags": null
+  },
+  {
+   "region": "Shoulder (back)",
+   "slug": "back-of-upper-arm",
+   "name": "Back of the upper arm",
+   "spots": [
+    [
+     "shoulder-b",
+     "Back of the upper arm"
+    ]
+   ],
+   "flags": null
+  },
+  {
+   "region": "Shoulder (back)",
+   "slug": "back-of-shoulder",
+   "name": "Back of the shoulder",
+   "spots": [
+    [
+     "shoulder-b",
+     "Back of the shoulder"
+    ]
+   ],
+   "flags": null
+  },
+  {
+   "region": "Shoulder (back)",
+   "slug": "on-shoulder-blade",
+   "name": "On the shoulder blade",
+   "spots": [
+    [
+     "shoulder-b",
+     "On the shoulder blade"
+    ]
+   ],
+   "flags": null
+  },
+  {
+   "region": "Upper back",
+   "slug": "between-shoulder-blades",
+   "name": "Between the shoulder blades",
+   "spots": [
+    [
+     "upper-back",
+     "Between the shoulder blades"
+    ]
+   ],
+   "flags": "chest"
+  },
+  {
+   "region": "Upper back",
+   "slug": "inner-edge-of-shoulder-blade",
+   "name": "Inner edge of the shoulder blade",
+   "spots": [
+    [
+     "upper-back",
+     "Inner edge of the shoulder blade"
+    ]
+   ],
+   "flags": null
+  },
+  {
+   "region": "Upper back",
+   "slug": "bottom-of-shoulder-blade",
+   "name": "Bottom tip of the shoulder blade",
+   "spots": [
+    [
+     "upper-back",
+     "Bottom tip of the shoulder blade"
+    ]
+   ],
+   "flags": null
+  },
+  {
+   "region": "Elbow & forearm",
+   "slug": "front-of-elbow",
+   "name": "Front of the elbow",
+   "spots": [
+    [
+     "elbow",
+     "Front of the elbow"
+    ]
+   ],
+   "flags": null
+  },
+  {
+   "region": "Elbow & forearm",
+   "slug": "point-of-elbow",
+   "name": "Point of the elbow",
+   "spots": [
+    [
+     "elbow",
+     "Point of the elbow"
+    ]
+   ],
+   "flags": null
+  },
+  {
+   "region": "Elbow & forearm",
+   "slug": "forearm",
+   "name": "Forearm",
+   "spots": [
+    [
+     "elbow",
+     "Forearm"
+    ]
+   ],
+   "flags": null
+  },
+  {
+   "region": "Wrist & hand",
+   "slug": "back-of-wrist",
+   "name": "Back of the hand or wrist",
+   "spots": [
+    [
+     "wrist",
+     "Back of the hand or wrist"
+    ]
+   ],
+   "flags": null
+  },
+  {
+   "region": "Wrist & hand",
+   "slug": "palm-side-of-wrist",
+   "name": "Palm side of the wrist and hand",
+   "spots": [
+    [
+     "wrist",
+     "Palm side"
+    ]
+   ],
+   "flags": null
+  },
+  {
+   "region": "Wrist & hand",
+   "slug": "thumb-and-index-finger",
+   "name": "Thumb and index finger",
+   "spots": [
+    [
+     "wrist",
+     "Thumb and index finger"
+    ]
+   ],
+   "flags": "hand"
+  },
+  {
+   "region": "Wrist & hand",
+   "slug": "ring-and-little-finger",
+   "name": "Ring and little finger",
+   "spots": [
+    [
+     "wrist",
+     "Ring and little finger"
+    ]
+   ],
+   "flags": "hand"
+  },
+  {
+   "region": "Low back",
+   "slug": "beside-the-spine",
+   "name": "Right beside the spine (low back)",
+   "spots": [
+    [
+     "low-back",
+     "Right beside the spine"
+    ]
+   ],
+   "flags": "back"
+  },
+  {
+   "region": "Low back",
+   "slug": "flank",
+   "name": "Flank or side of the low back",
+   "spots": [
+    [
+     "low-back",
+     "Flank or side"
+    ]
+   ],
+   "flags": "back"
+  },
+  {
+   "region": "Low back",
+   "slug": "si-joint",
+   "name": "SI joint and back of the pelvis",
+   "spots": [
+    [
+     "low-back",
+     "SI joint / back of pelvis"
+    ]
+   ],
+   "flags": "back"
+  },
+  {
+   "region": "Low back",
+   "slug": "tailbone",
+   "name": "Tailbone",
+   "spots": [
+    [
+     "low-back",
+     "Tailbone"
+    ]
+   ],
+   "flags": "back"
+  },
+  {
+   "region": "Buttock & hip",
+   "slug": "middle-of-buttock",
+   "name": "Middle of the buttock",
+   "spots": [
+    [
+     "glute",
+     "Middle of the buttock"
+    ]
+   ],
+   "flags": "back"
+  },
+  {
+   "region": "Buttock & hip",
+   "slug": "upper-buttock",
+   "name": "Upper buttock at the belt line",
+   "spots": [
+    [
+     "glute",
+     "Upper buttock, belt line"
+    ]
+   ],
+   "flags": "back"
+  },
+  {
+   "region": "Buttock & hip",
+   "slug": "outside-of-hip",
+   "name": "Outside of the hip",
+   "spots": [
+    [
+     "glute",
+     "Outer hip"
+    ],
+    [
+     "hip",
+     "Outside of the hip"
+    ]
+   ],
+   "flags": null
+  },
+  {
+   "region": "Hip (front)",
+   "slug": "groin",
+   "name": "Groin",
+   "spots": [
+    [
+     "hip",
+     "Groin"
+    ]
+   ],
+   "flags": "groin"
+  },
+  {
+   "region": "Hip (front)",
+   "slug": "front-of-hip",
+   "name": "Front of the hip bone",
+   "spots": [
+    [
+     "hip",
+     "Front of the hip bone"
+    ]
+   ],
+   "flags": null
+  },
+  {
+   "region": "Thigh",
+   "slug": "front-of-thigh",
+   "name": "Front of the thigh",
+   "spots": [
+    [
+     "thigh",
+     "Front of the thigh"
+    ]
+   ],
+   "flags": null
+  },
+  {
+   "region": "Thigh",
+   "slug": "outside-of-thigh",
+   "name": "Outside of the thigh",
+   "spots": [
+    [
+     "thigh",
+     "Outside of the thigh"
+    ]
+   ],
+   "flags": null
+  },
+  {
+   "region": "Thigh",
+   "slug": "inner-thigh",
+   "name": "Inner thigh",
+   "spots": [
+    [
+     "thigh",
+     "Inner thigh"
+    ]
+   ],
+   "flags": null
+  },
+  {
+   "region": "Back of thigh",
+   "slug": "back-of-thigh",
+   "name": "Back of the thigh",
+   "spots": [
+    [
+     "hamstring",
+     "Back of the thigh"
+    ]
+   ],
+   "flags": "leg"
+  },
+  {
+   "region": "Back of thigh",
+   "slug": "buttock-crease",
+   "name": "Buttock crease",
+   "spots": [
+    [
+     "hamstring",
+     "Buttock crease"
+    ]
+   ],
+   "flags": null
+  },
+  {
+   "region": "Back of thigh",
+   "slug": "behind-the-knee",
+   "name": "Back of the knee",
+   "spots": [
+    [
+     "hamstring",
+     "Back of the knee"
+    ],
+    [
+     "calf",
+     "Back of the knee"
+    ]
+   ],
+   "flags": "leg"
+  },
+  {
+   "region": "Knee",
+   "slug": "below-kneecap",
+   "name": "Kneecap or just below it",
+   "spots": [
+    [
+     "knee",
+     "Kneecap or just below"
+    ]
+   ],
+   "flags": null
+  },
+  {
+   "region": "Knee",
+   "slug": "inside-of-knee",
+   "name": "Inside of the knee",
+   "spots": [
+    [
+     "knee",
+     "Inside of the knee"
+    ]
+   ],
+   "flags": null
+  },
+  {
+   "region": "Knee",
+   "slug": "outside-of-knee",
+   "name": "Outside of the knee",
+   "spots": [
+    [
+     "knee",
+     "Outside of the knee"
+    ]
+   ],
+   "flags": null
+  },
+  {
+   "region": "Calf",
+   "slug": "upper-calf",
+   "name": "Upper calf",
+   "spots": [
+    [
+     "calf",
+     "Upper calf"
+    ]
+   ],
+   "flags": "leg"
+  },
+  {
+   "region": "Calf",
+   "slug": "lower-calf",
+   "name": "Lower calf",
+   "spots": [
+    [
+     "calf",
+     "Lower calf"
+    ]
+   ],
+   "flags": "leg"
+  },
+  {
+   "region": "Calf",
+   "slug": "outer-calf",
+   "name": "Outer calf",
+   "spots": [
+    [
+     "calf",
+     "Outer calf"
+    ]
+   ],
+   "flags": "leg"
+  },
+  {
+   "region": "Ankle & foot",
+   "slug": "inner-ankle-and-arch",
+   "name": "Inner ankle and arch",
+   "spots": [
+    [
+     "ankle",
+     "Inner ankle and arch"
+    ],
+    [
+     "heel",
+     "Arch"
+    ]
+   ],
+   "flags": null
+  },
+  {
+   "region": "Ankle & foot",
+   "slug": "outer-ankle",
+   "name": "Outer ankle",
+   "spots": [
+    [
+     "ankle",
+     "Outer ankle"
+    ]
+   ],
+   "flags": null
+  },
+  {
+   "region": "Ankle & foot",
+   "slug": "front-of-ankle",
+   "name": "Front of the ankle or big toe",
+   "spots": [
+    [
+     "ankle",
+     "Front of the ankle or big toe"
+    ]
+   ],
+   "flags": null
+  },
+  {
+   "region": "Ankle & foot",
+   "slug": "sole-of-foot",
+   "name": "Sole of the foot",
+   "spots": [
+    [
+     "ankle",
+     "Sole of the foot"
+    ]
+   ],
+   "flags": null
+  }
+ ],
+ "folded": {
+  "head|Jaw, cheek or teeth": "/conditions/jaw-tmj-pain",
+  "elbow|Outside of the elbow": "/conditions/tennis-elbow",
+  "elbow|Inside of the elbow": "/conditions/golfers-elbow",
+  "low-back|Across the low back": "/conditions/low-back-pain",
+  "glute|Pain down the leg (sciatica-like)": "/conditions/sciatica",
+  "knee|Front of the shin": "/conditions/shin-splints",
+  "heel|Bottom of the heel": "/conditions/plantar-fasciitis",
+  "heel|Achilles tendon": "/conditions/achilles-tendon-pain"
+ },
+ "notPages": [
+  "wrist|Tingling or numbness",
+  "neck-b|Can't turn my head"
+ ]
+}

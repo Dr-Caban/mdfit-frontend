@@ -1,0 +1,77 @@
+{
+  "group": "conditions",
+  "slug": "trigger-finger",
+  "title": "Trigger Finger Treatment in Sarasota, FL | MD Fit",
+  "h1": "Trigger Finger Treatment in Sarasota, FL",
+  "description": "A finger that catches, clicks or locks when you bend it is trigger finger. Learn what drives it, what to do today, and how MD Fit in Sarasota treats it.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Trigger finger (stenosing tenosynovitis)"
+  },
+  "lead": "Trigger finger is a tendon that no longer glides smoothly through the pulley at the base of a finger or thumb, so the finger catches, snaps or locks when you bend and straighten it. It is uncomfortable and alarming, and it often has roots in the forearm, not just the palm.",
+  "sections": [
+    {
+      "h2": "The click, the catch and the lock",
+      "html": "<p>Early trigger finger is subtle: a tender spot in the palm at the base of one finger, stiffness first thing in the morning, and a faint clicking as you make a fist. Over weeks it progresses to a definite catch, where the finger hesitates partway through bending or straightening and then jumps the rest of the way. In later stages the finger locks bent and you have to use the other hand to straighten it. The ring finger, middle finger and thumb are the most common sites.</p><p>Mornings are usually worst because fluid collects in the tendon sheath overnight. Gripping something for a long time, such as a steering wheel, a paddle, a tool or a phone, tends to set it off, and the sore spot in the palm is often tender to press.</p>"
+    },
+    {
+      "h2": "Where the tension comes from",
+      "html": "<p>The tendon that catches belongs to the <a href=\"/muscles/finger-flexors\">finger flexors</a>, muscles that live in the forearm and send long tendons down into the fingers. When those muscles are chronically tight from gripping, they hold the tendon under constant tension and pull it hard against the pulley with every bend. The tendon thickens, the pulley thickens, and the fit gets worse. Dr. Jared's own notes on this muscle group list long gripping (tools, phone, steering, climbing), heavy carrying with a narrow handle and repetitive pinching and clicking as the usual culprits.</p><p>Two neighbors matter as well. The <a href=\"/muscles/wrist-flexors\">wrist flexors</a> share the same compartment and the same habits, and when they are tight the whole front of the forearm is under load. The <a href=\"/muscles/finger-extensors\">finger extensors</a> on the back of the forearm are the opposing team; when they are weak or stiff, opening the hand becomes effortful and the flexors never fully relax between grips.</p><p>Diabetes, thyroid conditions and inflammatory arthritis raise the risk of trigger finger. If you have one of those, mention it; it changes how quickly we involve your physician.</p>"
+    },
+    {
+      "h2": "The MD Fit approach",
+      "html": "<p>We start by confirming it is a trigger finger and not one of its look-alikes, and by staging it: an occasional click is treated very differently from a finger that locks daily. Dr. Jared Caban then works the forearm by hand to release the finger and wrist flexors, mobilizes the tissue around the tendon in the palm, and restores gliding between the tendons and their neighbors. He also checks the neck and shoulder, because tension there frequently adds load to the forearm.</p><p>Homework in the free MD Fit app is short and specific: tendon-gliding sequences, gentle forearm release you can do on a table edge, and simple hand-opening exercises to balance the grip muscles. We also look hard at the gripping habits that started the problem, because a tendon will not stop catching while the cause is still there. If the finger is locking despite good conservative care, we say so and help you get to a hand specialist for injection or release; that is appropriate care, not a failure.</p>"
+    },
+    {
+      "h2": "What to do right now",
+      "html": "<ol><li><b>Loosen your grip.</b> Notice how hard you are holding the steering wheel, your phone, your paddle or your coffee mug. Most people grip at twice the pressure they need.</li><li><b>Warm before you move.</b> Run warm water over the hand in the morning, then slowly open and close it before you try to make a full fist.</li><li><b>Pad narrow handles.</b> Wrap tape or foam around thin tool handles, pens and bike grips so the fingers do not have to curl as tightly.</li><li><b>Avoid forcing the lock.</b> If the finger catches, straighten it slowly with the other hand rather than snapping it open; the snap irritates the pulley further.</li></ol>"
+    },
+    {
+      "h2": "What else causes a stiff or catching finger",
+      "html": "<ul><li><b>Dupuytren's contracture</b>: a thickened cord in the palm that slowly pulls the finger bent, with no click and no ability to straighten it even passively.</li><li><b>Hand or finger joint arthritis</b>: stiffness and swelling at the knuckles themselves, usually several fingers, worse in the morning.</li><li><b>Carpal tunnel syndrome</b>: numbness and tingling in the thumb and first fingers, often at night, rather than catching. The two can occur together.</li><li><b>Tendon injury</b> after a cut or a jammed finger, where the finger cannot bend or straighten at all.</li><li><b>Infection</b> of the tendon sheath after a puncture or bite, which makes the whole finger hot, swollen and very painful to straighten and is an emergency.</li></ul>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "A finger locked bent that you cannot straighten even with the other hand.",
+    "A red, hot, swollen finger, especially after a cut, puncture or bite, or with fever, which can be a tendon sheath infection and needs same-day medical care.",
+    "Numbness in the thumb and first fingers that wakes you at night or is constant.",
+    "A finger that cannot bend or straighten at all after an injury, which can mean a torn tendon.",
+    "Several swollen, stiff joints across both hands, which suggests an inflammatory arthritis that needs a physician's evaluation."
+  ],
+  "faq": [
+    {
+      "q": "Can trigger finger go away on its own?",
+      "a": "Mild cases sometimes settle when the gripping that caused them stops. Established catching rarely improves without changing habits and releasing the forearm, and a locked finger generally needs a hand specialist."
+    },
+    {
+      "q": "When is an injection or surgery the right call?",
+      "a": "When the finger is locking regularly, when conservative care over a reasonable period has not changed it, or when you have diabetes and it is progressing. We will tell you plainly when we think it is time to see a hand surgeon."
+    },
+    {
+      "q": "Why are you treating my forearm when my finger is the problem?",
+      "a": "Because the tendon that catches is controlled by muscles in the forearm. If those muscles stay tight, the tendon stays under tension and keeps rubbing on the pulley, no matter what you do to the finger."
+    }
+  ],
+  "muscles": [
+    "finger-flex",
+    "wrist-flex",
+    "finger-ext"
+  ],
+  "pain": [
+    "palm-side-of-wrist",
+    "ring-and-little-finger",
+    "thumb-and-index-finger"
+  ],
+  "guides": [],
+  "related": [
+    "/conditions/carpal-tunnel-wrist-pain",
+    "/conditions/golfers-elbow",
+    "/conditions/de-quervains",
+    "/treatments/medical-massage",
+    "/muscles/finger-flexors",
+    "/pain/palm-side-of-wrist"
+  ],
+  "reviewStatus": "draft"
+}

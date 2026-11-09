@@ -1,0 +1,96 @@
+{
+  "group": "conditions",
+  "slug": "acl-reconstruction-recovery",
+  "title": "ACL Reconstruction Recovery in Sarasota | MD Fit",
+  "h1": "ACL Reconstruction Recovery in Sarasota, FL",
+  "description": "After ACL surgery in Sarasota, the surgeon protocol leads and the muscles follow. Dr. Jared Caban on quad shutdown, scar tissue, hip strength and safe return.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Anterior cruciate ligament reconstruction"
+  },
+  "lead": "ACL reconstruction is a long recovery, and the surgery is only the first step. The graft heals on its own schedule; what you control is how well the quadriceps wake up, how straight the knee gets, and how strong the hips are when you go back to cutting and jumping.",
+  "sections": [
+    {
+      "h2": "The surgeon's protocol leads",
+      "html": "<p>Before anything else: your surgeon's written protocol and precautions are the rulebook. Graft type (patellar tendon, hamstring, quad tendon or allograft), whether the meniscus was also repaired, and your surgeon's preferred brace and weight-bearing timeline all change what is safe week to week. Dr. Jared asks for the operative report and protocol at the first visit and builds around it. If something here differs from what your surgeon told you, the surgeon wins.</p>"
+    },
+    {
+      "h2": "What the first weeks typically feel like",
+      "html": "<p>The knee is swollen, stiff and reluctant to straighten. The quadriceps, especially the inner <a href=\"/muscles/vastus-medialis\">vastus medialis</a>, often goes quiet after surgery, a reflex shutdown caused by swelling and pain. You may struggle to lift the straight leg off the bed. The back of the knee feels tight when you try to extend it fully. If a hamstring graft was used, the back of the thigh is sore and bruised; with a patellar tendon graft, the front of the knee below the kneecap is the sore spot.</p><p>Most people are surprised by how much the hip and calf complain. Weeks of limping and crutches load the <a href=\"/muscles/gluteus-medius\">gluteus medius</a> on the other side and tighten the <a href=\"/muscles/gastrocnemius\">calf</a> on the surgical side.</p>"
+    },
+    {
+      "h2": "Muscles that shape the recovery",
+      "html": "<ul><li><a href=\"/muscles/rectus-femoris\">Rectus femoris</a>: tightens after prolonged sitting and bracing, adds a deep ache around the kneecap and limits bending.</li><li><a href=\"/muscles/vastus-medialis\">Vastus medialis</a>: the muscle that most needs to switch back on. Without it the knee feels unstable on stairs even with a solid graft.</li><li><a href=\"/muscles/inner-hamstrings\">Inner hamstrings</a> and <a href=\"/muscles/biceps-femoris\">biceps femoris</a>: the donor site when a hamstring graft is used; they need careful, gradual return to loading and tend to refer pain to the back of the knee.</li><li><a href=\"/muscles/gluteus-medius\">Gluteus medius</a>: controls whether the knee collapses inward on landing. Weakness here is the pattern most associated with the original injury.</li><li><a href=\"/muscles/gastrocnemius\">Gastrocnemius</a>: shortens with limping and blocks the last bit of knee extension.</li></ul>"
+    },
+    {
+      "h2": "How MD Fit fits into ACL rehab",
+      "html": "<p>Dr. Jared's role is to make the muscles cooperate with the protocol. That looks like:</p><p><b>Assess</b> extension and flexion against the week's targets, quad activation, swelling, gait and single-leg control. <b>Release</b> the guarding tissue: gentle work around the incision and patellar tendon once cleared, hands-on release of the calf, hamstrings and hip flexors, and scar mobilization so the kneecap glides. <b>Correct</b> the two things that predict a good outcome: a fully straight knee and a quad that fires on command. <b>Homework</b> comes from the free MD Fit app, with short daily videos such as Knee Neuroglide, Step Up and Single Leg Balance chosen to match your phase. <b>Strengthen</b> progressively: quads and hamstrings first, then glutes and calf, then hopping, landing and change of direction when the surgeon clears each stage.</p><p>Clinical exercise physiology is where this shines. Load, tempo and volume are chosen deliberately rather than guessed, and progress is tracked against objective measures like side-to-side strength and hop symmetry rather than the calendar alone.</p>"
+    },
+    {
+      "h2": "Safe things to do today",
+      "html": "<ul><li>Spend time with the heel propped and the knee relaxed toward straight, as often as your protocol allows.</li><li>Practice quad sets: press the back of the knee gently toward the bed and hold for a slow count, many times a day.</li><li>Pump the ankle up and down regularly to help circulation, particularly in the first weeks.</li><li>Ice and elevate after activity if your surgeon recommends it, and keep the incision clean and dry per their instructions.</li></ul>"
+    },
+    {
+      "h2": "When the pain is not the graft",
+      "html": "<p>Persistent front-of-knee pain months after a patellar tendon graft is often <a href=\"/conditions/patellar-tendinopathy\">patellar tendinopathy</a> or <a href=\"/conditions/patellofemoral-pain\">patellofemoral pain</a> from quad weakness, not graft failure. Back-of-knee ache is usually hamstring or calf. Outer knee pain with running is frequently <a href=\"/conditions/it-band-syndrome\">IT band</a>. A knee that suddenly swells or gives way with a pop after a new twist does need the surgeon's eyes, as does a hard block to straightening (possible cyclops lesion or meniscus flap).</p>"
+    },
+    {
+      "h2": "Getting back to Sarasota sports",
+      "html": "<p>Pickleball, tennis, soccer and wakeboarding all involve the plant-and-cut that stresses a new ACL. Return-to-sport timing is set by your surgeon and by passing strength and hop testing, not by feeling good. Dr. Jared works with local athletes on the hip and landing mechanics that protect both knees for the long term.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Calf pain, swelling, warmth or redness, or sudden shortness of breath or chest pain after surgery: possible blood clot, call 911 or go to the ER.",
+    "Fever, chills, increasing redness, heat or drainage at the incision.",
+    "A new pop, rapid swelling or the knee giving way after a slip or twist.",
+    "Inability to straighten the knee that is getting worse rather than better.",
+    "Numbness, tingling or color change in the foot that does not resolve with repositioning."
+  ],
+  "faq": [
+    {
+      "q": "When can I start working with MD Fit after ACL surgery?",
+      "a": "As soon as your surgeon clears outpatient rehab. Early visits focus on swelling, extension and quad activation, all within the written protocol."
+    },
+    {
+      "q": "Why can't I tighten my quad after surgery?",
+      "a": "Swelling and pain trigger a reflex inhibition of the quadriceps. It is common and reversible with targeted activation work, reduced swelling and gentle hands-on release."
+    },
+    {
+      "q": "Does MD Fit replace physical therapy?",
+      "a": "Dr. Jared is an MD and clinical exercise physiologist who provides hands-on care and supervised strengthening. Many patients combine MD Fit with their surgical team's physical therapy; coordinate so everyone follows the same protocol."
+    },
+    {
+      "q": "How long until I can play pickleball again?",
+      "a": "That decision belongs to your surgeon and depends on graft healing and passing strength and hop tests. Rushing it is the most common way to re-injure a reconstructed knee."
+    }
+  ],
+  "muscles": [
+    "rectus-femoris",
+    "vmo",
+    "medial-hamstrings",
+    "biceps-femoris",
+    "glute-med",
+    "gastroc"
+  ],
+  "pain": [
+    "below-kneecap",
+    "behind-the-knee",
+    "back-of-thigh"
+  ],
+  "guides": [
+    "quads",
+    "lateral-hip"
+  ],
+  "related": [
+    "/conditions/post-surgical-rehab",
+    "/conditions/meniscus-tear-recovery",
+    "/conditions/knee-pain",
+    "/conditions/sports-injury-rehab",
+    "/treatments/post-op-rehab-timelines",
+    "/treatments/clinical-exercise-physiology",
+    "/treatments/strength-and-performance"
+  ],
+  "reviewStatus": "draft"
+}

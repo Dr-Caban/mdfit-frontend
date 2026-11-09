@@ -1,0 +1,91 @@
+{
+  "group": "conditions",
+  "slug": "patellar-tendinopathy",
+  "title": "Patellar Tendinopathy in Sarasota, FL | MD Fit",
+  "h1": "Patellar Tendinopathy (Jumper's Knee) in Sarasota, FL",
+  "description": "Pain just below the kneecap when you squat, jump or sit? Dr. Jared Caban on patellar tendinopathy, the quad and calf muscles that drive it, and how to load it.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Patellar tendinopathy"
+  },
+  "lead": "Patellar tendinopathy, or jumper's knee, is a pinpoint pain at the bottom of the kneecap where the quadriceps tendon becomes the patellar tendon. It is a tendon that has been asked to do more than it was prepared for, and the fix is not rest. It is the right load, in the right order.",
+  "sections": [
+    {
+      "h2": "How jumper's knee behaves",
+      "html": "<p>You can usually put one finger on it: the lower tip of the kneecap or the tendon just below it. It is stiff and sore for the first minutes of activity, often warms up and feels fine mid-game, then aches afterward and the next morning. Squatting, jumping, landing, going downstairs, and sitting with the knee bent for a long time are the usual triggers. Pressing on the tendon is tender.</p><p>It builds in people who increased jumping or squatting volume quickly: a new pickleball habit, a return to basketball or volleyball, a jump in gym leg work, or a running block with lots of hills. It is more common in people whose quadriceps and calves are tight and whose glutes are not absorbing landings.</p>"
+    },
+    {
+      "h2": "Muscles that load the tendon",
+      "html": "<p>A tendon is only as happy as the muscles pulling on it.</p><ul><li><a href=\"/muscles/rectus-femoris\">Rectus femoris</a> crosses both hip and knee. When it is short, every knee bend puts extra tension through the patellar tendon, and it refers a deep ache around the kneecap after sitting.</li><li><a href=\"/muscles/vastus-lateralis\">Vastus lateralis</a>, the large outer quad, is commonly tight and tender and pulls the kneecap outward, changing how the tendon is loaded.</li><li><a href=\"/muscles/vastus-medialis\">Vastus medialis</a> is often weak, so the kneecap tracks poorly and the tendon takes uneven strain.</li><li><a href=\"/muscles/gluteus-maximus\">Gluteus maximus</a> should absorb landings. When it does not, the knee travels forward and the patellar tendon does the work the hip should have done.</li><li><a href=\"/muscles/gastrocnemius\">Gastrocnemius</a> and <a href=\"/muscles/soleus\">soleus</a> tightness limits ankle bend, which forces the knee forward over the toes in every squat and landing.</li></ul>"
+    },
+    {
+      "h2": "How MD Fit treats patellar tendinopathy",
+      "html": "<p>Tendons respond to load, so the plan is built around it rather than around avoiding it. Dr. Jared begins by <b>assessing</b> the tendon, quad and calf flexibility, ankle range, hip strength and how you squat and land. Hands-on <b>release</b> of the quadriceps, calf and the tissue around the kneecap reduces the pull on the tendon and the sharpness of the pain. <b>Correction</b> works on hinging through the hips in a squat and landing softly so the knee is not the only shock absorber. <b>Homework</b> from the free MD Fit app includes videos such as Couch Stretch, Eccentric Calf Drops and Step Up, with isometric quad holds early to calm the tendon. Then <b>strengthening</b> progresses through slow heavy squatting patterns to fast and springy work, because a tendon that is only trained slowly is not ready to jump. This is where clinical exercise physiology earns its keep: the dose and the tempo are the treatment.</p>"
+    },
+    {
+      "h2": "What you can do today",
+      "html": "<ul><li>Reduce, do not eliminate, the jumping and deep squatting volume while keeping the knee active with walking and gentle bending.</li><li>Try a gentle isometric: sit, straighten the knee against light resistance and hold steadily for a slow count. Many people find this quiets the tendon for a few hours.</li><li>Ease the quads and calves with slow, comfortable stretching rather than aggressive pulling.</li><li>Avoid sitting with the knee bent sharply for long periods; stretch the leg out under the desk or in the car when you can.</li></ul>"
+    },
+    {
+      "h2": "Look-alikes below the kneecap",
+      "html": "<p>Pain around rather than below the kneecap is more often <a href=\"/conditions/patellofemoral-pain\">patellofemoral pain</a>. Pain at the bony bump on the shin in teenagers is Osgood-Schlatter, and at the lower tip of the kneecap in growing kids it is Sinding-Larsen-Johansson; both are growth-plate issues that need a different approach. Fat pad irritation sits just beside the tendon and hurts with full straightening. Quadriceps tendinopathy is above the kneecap. A sudden inability to straighten the knee after a jump, with a gap you can feel, is a possible tendon rupture and needs the ER.</p>"
+    },
+    {
+      "h2": "Sarasota, pickleball and jumper's knee",
+      "html": "<p>The explosive first step and the repeated low ready position in pickleball load the patellar tendon more than people expect, especially in players who have come to the sport after years of sitting. Building ankle mobility and glute strength lets the knee share the work.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": "Tendons adapt slowly. Pain often eases within a few weeks of isometric and slow loading, while full return to jumping sport commonly takes a few months of progressive strengthening. Stopping too early is the usual reason it returns.",
+  "redFlags": [
+    "A sudden pop below the kneecap with inability to straighten the leg or a gap you can feel in the tendon: possible rupture, go to the ER.",
+    "A hot, red, swollen knee with fever.",
+    "Knee pain in a child or teenager with a limp or swelling at the growth plate that is worsening.",
+    "Calf swelling, warmth or redness: possible blood clot, seek emergency care.",
+    "Pain that is severe at rest or at night and does not change with position."
+  ],
+  "faq": [
+    {
+      "q": "Should I rest my jumper's knee completely?",
+      "a": "Complete rest usually makes a tendon weaker and the pain returns when you restart. Reducing provoking activity while loading the tendon progressively works better."
+    },
+    {
+      "q": "Do patellar straps help?",
+      "a": "Some people find a strap below the kneecap reduces pain during activity. It is a comfort tool, not a fix; the strengthening program is what changes the tendon."
+    },
+    {
+      "q": "Is it okay if it hurts a little during exercise?",
+      "a": "Mild discomfort that settles quickly and is not worse the next morning is generally acceptable in tendon rehab. Pain that spikes or lingers the next day means the dose was too high."
+    },
+    {
+      "q": "Why did this start when I began pickleball?",
+      "a": "Pickleball adds sudden lunges, low positions and quick jumps that most adults have not done in years. The tendon was asked to adapt faster than it could."
+    }
+  ],
+  "muscles": [
+    "rectus-femoris",
+    "vastus-lateralis",
+    "vmo",
+    "glute-max",
+    "gastroc",
+    "soleus"
+  ],
+  "pain": [
+    "below-kneecap"
+  ],
+  "guides": [
+    "quads",
+    "calf"
+  ],
+  "related": [
+    "/conditions/knee-pain",
+    "/conditions/patellofemoral-pain",
+    "/conditions/sports-injury-rehab",
+    "/conditions/knee-osteoarthritis",
+    "/conditions/achilles-tendon-pain",
+    "/treatments/strength-and-performance",
+    "/treatments/clinical-exercise-physiology",
+    "/pain/below-kneecap"
+  ],
+  "reviewStatus": "draft"
+}

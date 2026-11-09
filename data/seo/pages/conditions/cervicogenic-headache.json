@@ -1,0 +1,55 @@
+{
+  "group": "conditions",
+  "slug": "cervicogenic-headache",
+  "title": "Cervicogenic Headache Care in Sarasota | MD Fit",
+  "h1": "Cervicogenic Headache Care in Sarasota, FL",
+  "description": "One-sided headache that starts at the base of the skull and changes with neck position? MD Fit in Sarasota treats the neck muscles and joints behind it.",
+  "about": { "type": "MedicalCondition", "name": "Cervicogenic headache" },
+  "lead": "A cervicogenic headache is a headache that originates in the neck. The upper neck joints and the muscles around them share nerve pathways with the head, so irritation there is felt as pain behind the eye, over the temple or across one side of the skull.",
+  "sections": [
+    {
+      "h2": "Emergency signs come before everything on this page",
+      "html": "<p>If you have the worst headache of your life, a headache that hits full strength suddenly, or any headache with fever, a stiff neck, confusion, weakness, trouble speaking or loss of vision, call 911. Headaches after a head or neck injury, or a new headache pattern in someone over 50, need a physician before any hands-on care. The rest of this page assumes a physician has already ruled those causes out.</p>"
+    },
+    {
+      "h2": "How a neck headache gives itself away",
+      "html": "<p>A few features point to the neck rather than the head:</p><ul><li>Pain usually on one side, starting at the <a href=\"/pain/base-of-skull\">base of the skull</a> and spreading forward to <a href=\"/pain/behind-the-eye\">behind the eye</a> or the <a href=\"/pain/top-of-head\">top of the head</a>.</li><li>Turning the head, looking up, or holding one neck position for a long time brings it on or makes it worse.</li><li>Reduced neck rotation on the painful side.</li><li>Pressing on the upper neck reproduces the head pain.</li><li>It often follows a whiplash, a long stretch of desk work, or a night on a bad pillow.</li></ul><p>Nausea or mild light sensitivity can occur, which is why it is frequently mistaken for migraine, but the neck link is the key.</p>"
+    },
+    {
+      "h2": "Muscles and joints involved",
+      "html": "<p>The top three vertebrae and the muscles that move them are the usual culprits. Tight, overworked muscles compress the small upper neck joints and refer pain into the skull:</p><ul><li><a href=\"/muscles/suboccipitals\">Suboccipitals</a> run between the skull and the top two vertebrae. They produce the classic band from the back of the head to behind the eye.</li><li><a href=\"/muscles/splenius-capitis-cervicis\">Splenius capitis and cervicis</a> refer a deep ache inside the head and on top of the skull.</li><li><a href=\"/muscles/levator-scapulae\">Levator scapulae</a> limits rotation and aches at the neck-shoulder corner.</li><li><a href=\"/muscles/upper-trapezius\">Upper trapezius</a> adds the temple and behind-the-ear component.</li><li>A weak <a href=\"/muscles/lower-trapezius\">lower trapezius</a> is a hidden driver: when it does not hold the shoulder blade down, the upper neck muscles take over.</li><li><a href=\"/muscles/sternocleidomastoid\">SCM</a> tightness pulls the head forward and compresses the upper joints.</li></ul>"
+    },
+    {
+      "h2": "The MD Fit approach",
+      "html": "<p>Assessment comes first. I look at how far each segment of your neck rotates and flexes, how your head sits over your shoulders, how you breathe, and which muscle reproduces your headache when pressed. Hands-on release of the suboccipitals, splenius and levator, combined with gentle mobility for the upper neck joints, usually reduces the headache and restores rotation within the session.</p><p>Then we correct the drivers. For most people that means retraining the chin glide so the head sits back over the spine, calming upper-chest breathing, and fixing monitor and pillow height. You get a short daily routine in the free MD Fit app. The final stage is strength: deep neck flexor endurance and lower trapezius work so the upper neck is no longer overloaded.</p>"
+    },
+    {
+      "h2": "Things you can start now",
+      "html": "<ol><li>Gentle chin glides: sit tall and slide the head straight back, eyes level, ten slow repetitions a few times a day.</li><li>Change the pillow if your head is tipped up or dropped down when you lie on your side. One pillow that fills the gap between ear and mattress is usually right.</li><li>Every thirty minutes at the desk, look away from the screen, turn your head slowly each way, and breathe into your belly.</li><li>Warmth on the upper neck before stretching.</li></ol><p>Skip anything that produces dizziness, sharp pain or tingling, and report it to your physician.</p>"
+    },
+    {
+      "h2": "Conditions that can imitate it",
+      "html": "<p>Migraine, <a href=\"/conditions/tension-headache\">tension-type headache</a>, occipital neuralgia and jaw-related headaches all overlap with cervicogenic pain, and more than one can exist together. Cervical disc or nerve root problems can send pain down the arm along with the headache. Upper neck instability after trauma, vertebral artery problems and inflammatory arthritis of the upper neck are uncommon but important, and they are a physician's call. If your headache behaves differently from what is described above, say so at your appointment.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Sudden, severe headache that peaks within seconds or feels like the worst headache of your life: call 911.",
+    "Headache with fever and stiff neck, confusion, weakness, slurred speech or loss of vision: call 911.",
+    "Dizziness with difficulty walking, double vision, fainting or drop attacks when turning the head.",
+    "Headache following a fall, crash or blow to the head or neck that has not been evaluated by a physician.",
+    "Numbness, weakness or tingling in the arms or hands alongside the headache."
+  ],
+  "faq": [
+    { "q": "What is the difference between a cervicogenic headache and a migraine?", "a": "Cervicogenic pain starts in the neck, usually on one side, and is triggered by neck movement or position. Migraine tends to throb, comes with nausea and light sensitivity, and is less tied to neck position. A physician can help distinguish them." },
+    { "q": "Will neck release really change a headache?", "a": "When the headache is coming from the neck, releasing the suboccipitals and nearby muscles often reduces it quickly. Keeping it away depends on posture, breathing and strength work." },
+    { "q": "Is it safe to have my neck worked on?", "a": "After a physician has excluded serious causes, gentle soft-tissue release and mobility are appropriate. Dr. Jared does not use forceful thrust manipulation of the neck." },
+    { "q": "How soon should I expect fewer headaches?", "a": "It depends on how long the pattern has been present and what is driving it. Dr. Jared will outline expectations after your assessment." }
+  ],
+  "muscles": ["suboccipitals", "splenius", "levator", "upper-trap", "lower-trap", "scm"],
+  "pain": ["base-of-skull", "back-of-head", "behind-the-eye", "top-of-head"],
+  "guides": ["posterior-neck"],
+  "related": ["/conditions/tension-headache", "/conditions/neck-pain", "/conditions/whiplash", "/conditions/desk-neck-pain", "/treatments/functional-mobility", "/treatments/medical-massage", "/muscles/suboccipitals"],
+  "reviewStatus": "draft"
+}

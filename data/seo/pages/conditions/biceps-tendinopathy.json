@@ -1,0 +1,83 @@
+{
+  "group": "conditions",
+  "slug": "biceps-tendinopathy",
+  "title": "Biceps Tendinopathy Treatment in Sarasota, FL | MD Fit",
+  "h1": "Biceps Tendinopathy Treatment in Sarasota, FL",
+  "description": "Front-of-shoulder pain with curling, carrying or reaching overhead is often the biceps tendon. MD Fit in Sarasota treats the tendon and the muscles loading it.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Biceps tendinopathy"
+  },
+  "lead": "The long head of the biceps runs up the front of the arm, through a groove at the front of the shoulder and into the joint itself. When it is overloaded it produces a very specific front-of-shoulder pain that is easy to mistake for a joint problem. Most of the time it is a loading problem with a few muscular accomplices.",
+  "sections": [
+    {
+      "h2": "Where it hurts and when",
+      "html": "<p>Biceps tendon pain lives at the front of the shoulder, about a thumb's width out from the armpit crease, and can be pinpointed with one finger. Pressing there reproduces it. It travels down the front of the upper arm, sometimes to the elbow crease. Carrying grocery bags, curls, lifting a suitcase into an overhead bin, reaching behind you, opening a heavy door and throwing all irritate it. Sleeping on the shoulder is uncomfortable. Some people feel or hear a snap at the front of the shoulder as the tendon moves in its groove.</p><p>Typical triggers are a jump in pulling or curling volume at the gym, a season of racquet sport or golf, a lot of overhead work, or a shoulder that has had rotator cuff problems for a while, because when the cuff is weak the biceps gets recruited as a stabilizer and wears out.</p>"
+    },
+    {
+      "h2": "The muscles that load the tendon",
+      "html": "<ul><li><a href=\"/muscles/biceps-long-head\">Biceps, long head</a>: the sore tendon itself. Its trigger points refer pain over the groove and down the front of the arm toward the elbow crease. Dr. Jared's notes list repeated overhead work and throwing, heavy curls and palm-up carrying, cuff weakness and rounded shoulders that pinch the tendon as the usual causes.</li><li><a href=\"/muscles/biceps-short-head\">Biceps, short head</a> and <a href=\"/muscles/coracobrachialis\">coracobrachialis</a>: they attach beside the long head and refer to the front of the shoulder near the collarbone tip and the inner arm; when tight they pull the shoulder forward and add tension through the whole front of the joint.</li><li><a href=\"/muscles/anterior-deltoid\">Anterior deltoid</a> and the <a href=\"/muscles/pectoralis-major-upper\">upper pectoralis major</a>: heavy pressing without enough pulling leaves these short and overworked, and both refer pain over the front of the shoulder, often blamed on the joint.</li><li><a href=\"/muscles/infraspinatus\">Infraspinatus</a>: a rotator cuff muscle on the back of the shoulder blade whose trigger points refer pain deep into the front of the shoulder. Treating the back of the shoulder to fix the front surprises people, but it is a classic pattern.</li></ul>"
+    },
+    {
+      "h2": "How MD Fit treats biceps tendon pain",
+      "html": "<p>Dr. Jared Caban first makes sure it is the tendon: he palpates the groove, tests the biceps against resistance, checks the rotator cuff for weakness and screens for a labral tear or instability, which change the plan. He also looks at the posture of the shoulder blade, because a forward, rounded shoulder narrows the groove and angles the tendon so it rubs with every lift.</p><p>The hands-on work releases the chest, front deltoid, coracobrachialis and infraspinatus so the ball of the shoulder sits back where the groove is straight. The tendon itself is treated gently; aggressive work on an irritated tendon makes it worse. Correction then focuses on the shoulder blade and the rotator cuff so the biceps stops being the stabilizer of last resort. Your homework in the free MD Fit app begins with isometric holds that calm the tendon, and progresses to slow, controlled loading so the tendon rebuilds its capacity to carry, curl and reach.</p>"
+    },
+    {
+      "h2": "What you can do today",
+      "html": "<ol><li><b>Carry with the palm facing in and the elbow slightly bent</b> rather than palm-up with the arm straight; the tendon is far more tolerant of that position.</li><li><b>Pause curls, pull-ups and heavy pressing</b> for a short period, and keep rows and lower-body training going so you stay active.</li><li><b>Try a gentle isometric.</b> Press your fist upward into the underside of a table with the elbow bent at a right angle, at a comfortable effort, and hold for a slow breath or two. Pain should not climb while you hold.</li><li><b>Sleep off the shoulder</b> with a pillow hugged in front to support the arm.</li></ol>"
+    },
+    {
+      "h2": "When front-of-shoulder pain is not the biceps",
+      "html": "<ul><li><b>Shoulder impingement</b> and <b>bursitis</b>: a painful arc raising the arm out to the side rather than a point-tender groove; they often travel together with biceps tendon irritation. See <a href=\"/conditions/shoulder-impingement\">impingement</a>.</li><li><b>SLAP or labral tear</b>: deep pain with clicking or catching, often after a fall or in throwers, with a feeling the joint is not quite stable.</li><li><b>Subscapularis</b> tendon problems, which sit just inside the groove and refer to the back of the shoulder and wrist.</li><li><b>AC joint</b> pain at the end of the collarbone, worst reaching across the chest.</li><li><b>Pectoralis major tear</b>: a pop and bruising on the chest during a heavy press.</li><li><b>Biceps rupture</b>: a pop followed by a bulge in the upper arm and bruising; this needs prompt evaluation, although many people function well afterwards.</li></ul>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "A pop at the front of the shoulder or arm followed by a new bulge in the upper arm and bruising, which can be a tendon rupture and should be evaluated promptly.",
+    "The shoulder catches, locks or feels like it slips out of place.",
+    "Inability to lift the arm at all after a fall or injury.",
+    "A hot, red, swollen shoulder or fever.",
+    "Shoulder or arm pain with chest pressure, shortness of breath, sweating or nausea: call 911."
+  ],
+  "faq": [
+    {
+      "q": "Should I rest the arm completely?",
+      "a": "No. Tendons recover by being loaded carefully, not by being ignored. We reduce the provoking tasks for a while and replace them with isometrics and slow loading the tendon can tolerate."
+    },
+    {
+      "q": "Why are you working on the back of my shoulder for pain in the front?",
+      "a": "The infraspinatus, on the back of the shoulder blade, refers pain deep into the front of the shoulder, and tight chest and front-deltoid muscles pull the ball forward so the biceps tendon rubs in its groove. Both are usually part of the picture."
+    },
+    {
+      "q": "What if the tendon ruptures?",
+      "a": "A long-head biceps rupture produces a pop and a bulge. It should be evaluated, but many people, especially past middle age, recover good function without surgery. Your physician will advise based on your activity and goals."
+    }
+  ],
+  "muscles": [
+    "biceps-long",
+    "biceps-short",
+    "coracobrachialis",
+    "ant-delt",
+    "pec-major-clav",
+    "infraspinatus"
+  ],
+  "pain": [
+    "front-of-shoulder",
+    "front-of-elbow"
+  ],
+  "guides": [
+    "rotator-cuff"
+  ],
+  "related": [
+    "/conditions/shoulder-pain",
+    "/conditions/shoulder-impingement",
+    "/conditions/rotator-cuff-tear",
+    "/conditions/golfers-elbow",
+    "/treatments/strength-and-performance",
+    "/muscles/biceps-long-head",
+    "/muscles/infraspinatus",
+    "/pain/front-of-shoulder"
+  ],
+  "reviewStatus": "draft"
+}

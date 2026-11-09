@@ -1,0 +1,55 @@
+{
+  "group": "conditions",
+  "slug": "thoracic-outlet-symptoms",
+  "title": "Thoracic Outlet Symptoms in Sarasota | MD Fit",
+  "h1": "Thoracic Outlet Symptoms in Sarasota, FL",
+  "description": "Numb hands at night, a heavy arm, tingling into the fingers: the nerves and vessels to the arm can be squeezed by neck and chest muscles. MD Fit, Sarasota.",
+  "about": { "type": "MedicalCondition", "name": "Thoracic outlet syndrome" },
+  "lead": "The thoracic outlet is the narrow passage between the neck and the armpit where the nerves and blood vessels to the arm pass between muscle, collarbone and the first rib. When that passage tightens, the arm and hand complain. Thoracic outlet syndrome is a physician's diagnosis; this page is about the muscular side of it and how MD Fit helps.",
+  "sections": [
+    {
+      "h2": "Symptoms that send people looking for answers",
+      "html": "<p>Most people arrive having already been tested for carpal tunnel or a pinched nerve in the neck, with inconclusive results. What they describe sounds like this:</p><ul><li>Waking at night with a dead or numb arm, often after sleeping with the arm overhead.</li><li>Tingling into the <a href=\"/pain/thumb-and-index-finger\">thumb and index finger</a> or into the <a href=\"/pain/ring-and-little-finger\">ring and little fingers</a>, depending on which nerve fibers are involved.</li><li>A heavy, aching arm when driving, blow-drying hair, or holding a phone up.</li><li>Ache <a href=\"/pain/under-collarbone\">under the collarbone</a>, in the <a href=\"/pain/front-of-neck\">front of the neck</a>, or between the shoulder blades.</li><li>Clumsy fingers or a weak grip by the end of the day.</li></ul><p>Symptoms that change with arm position and breathing point toward a soft-tissue component.</p>"
+    },
+    {
+      "h2": "The three muscles that narrow the passage",
+      "html": "<p>Nerves and vessels thread through three potential pinch points, each guarded by muscle:</p><ul><li><a href=\"/muscles/scalenes\">Scalenes</a>: the side-neck muscles that lift the top ribs with every breath. The nerve plexus passes directly between them. Chronic upper-chest breathing, stress and screen posture keep them short, and they refer pain to the chest, inner shoulder blade and down to the thumb side of the hand.</li><li><a href=\"/muscles/pectoralis-minor\">Pectoralis minor</a>: a small chest muscle that pulls the shoulder blade forward. With rounded shoulders it clamps the nerves and vessels against the ribs, sending symptoms down the inner arm to the last fingers.</li><li><a href=\"/muscles/subclavius\">Subclavius</a>: a thin muscle under the collarbone that can narrow the space between collarbone and first rib.</li></ul><p>A tight <a href=\"/muscles/upper-trapezius\">upper trapezius</a> and <a href=\"/muscles/sternocleidomastoid\">SCM</a> often come along for the ride, because they share the forward-head posture that sets the whole pattern up. Some people also have an extra cervical rib or a fibrous band, which is anatomy I cannot change but can work around.</p>"
+    },
+    {
+      "h2": "What an MD Fit assessment looks for",
+      "html": "<p>I begin by reproducing your symptoms with position: arm overhead, head turned, deep breath. Then I check how much the first rib moves, whether the scalenes and pec minor are shortened, how you breathe at rest, and where your shoulder blade sits. The goal is to find out which pinch point matters most for you, because releasing the wrong one does little.</p><p>Treatment combines hands-on release of the scalenes, pec minor and subclavius with mobility for the first rib and upper spine. The correction phase is mostly breathing: shifting air into the belly and lower ribs so the scalenes stop working as breathing muscles. You take home a daily routine in the free MD Fit app. Strengthening follows, aimed at the lower trapezius and serratus anterior so the shoulder blade sits back and down and keeps the space open.</p>"
+    },
+    {
+      "h2": "Starting points that are safe for most people",
+      "html": "<ol><li>Practice slow nasal breathing with a hand on your belly for a few minutes, several times a day. Let the collarbones stay still.</li><li>Avoid sleeping with the arm overhead or under your head. A pillow in front of you to rest the arm on helps side sleepers.</li><li>Carry bags on a backpack or alternate sides rather than hanging a heavy purse on one shoulder.</li><li>Set your desk so elbows rest at your sides with shoulders relaxed, and bring the screen up to eye level.</li></ol><p>Stretching the neck aggressively can irritate nerve tissue. Go gentle, and stop with any increase in numbness.</p>"
+    },
+    {
+      "h2": "Other causes a physician must consider",
+      "html": "<p>Hand numbness has many sources. A disc or nerve root in the neck, <a href=\"/conditions/carpal-tunnel-wrist-pain\">carpal tunnel at the wrist</a>, ulnar nerve irritation at the elbow, and diabetic or other neuropathies can all produce similar tingling. Vascular thoracic outlet syndrome, in which a vein or artery is compressed, can cause arm swelling, color change or clotting and is urgent. Shoulder problems such as a <a href=\"/conditions/rotator-cuff-tear\">rotator cuff tear</a> can refer down the arm as well. Nerve conduction studies, imaging and vascular testing are the physician's tools; I work alongside those findings.</p>"
+    },
+    {
+      "h2": "Sarasota note",
+      "html": "<p>Overhead sports are part of life here, and tennis, pickleball and swimming all load the scalenes and pec minor. If your symptoms flare after a morning on the court or in the pool, mention it, because activity pattern often tells me which muscle is doing the squeezing.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "A hand or arm that turns cold, pale, blue or swollen, or a sudden change in color with exercise: seek emergency care.",
+    "Chest pain with shortness of breath, sweating or nausea alongside arm symptoms: call 911.",
+    "Rapidly progressing weakness or wasting of the hand muscles.",
+    "Numbness that is constant and does not change with arm or neck position.",
+    "Symptoms that began after a fall, collarbone fracture or neck injury that has not been evaluated."
+  ],
+  "faq": [
+    { "q": "Can MD Fit diagnose thoracic outlet syndrome?", "a": "No. It is a medical diagnosis made by a physician, often with nerve or vascular testing. MD Fit assesses and treats the muscular contributors once serious causes have been excluded." },
+    { "q": "Why are my symptoms worse at night?", "a": "Sleeping with the arm overhead or under the pillow stretches the nerves over tight scalenes and pec minor. Changing arm position and releasing those muscles often reduces night symptoms." },
+    { "q": "Is this the same as carpal tunnel?", "a": "Not usually, though they can coexist. Carpal tunnel compresses the median nerve at the wrist; thoracic outlet symptoms come from higher up, between the neck and the armpit, and often involve the whole arm." },
+    { "q": "What does the free app give me?", "a": "Dr. Jared assigns breathing drills, scalene and pec minor stretches, and shoulder blade exercises you do daily between visits." }
+  ],
+  "muscles": ["scalenes", "pec-minor", "subclavius", "upper-trap", "scm"],
+  "pain": ["under-collarbone", "thumb-and-index-finger", "ring-and-little-finger", "front-of-neck"],
+  "guides": ["scalenes"],
+  "related": ["/conditions/carpal-tunnel-wrist-pain", "/conditions/neck-pain", "/conditions/shoulder-pain", "/conditions/chest-wall-pain", "/conditions/desk-neck-pain", "/treatments/functional-mobility", "/muscles/scalenes", "/muscles/pectoralis-minor"],
+  "reviewStatus": "draft"
+}

@@ -1,0 +1,89 @@
+{
+  "group": "conditions",
+  "slug": "rotator-cuff-repair-rehab",
+  "title": "Rotator Cuff Repair Rehab in Sarasota, FL | MD Fit",
+  "h1": "Rotator Cuff Repair Rehab in Sarasota, FL",
+  "description": "After rotator cuff surgery your surgeon's protocol leads. MD Fit in Sarasota works within it: protect the repair, restore motion, then rebuild strength.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Rotator cuff repair (post-surgical rehabilitation)"
+  },
+  "lead": "A rotator cuff repair is a sewn-down tendon that needs months to become strong. The surgeon's protocol decides what the shoulder is allowed to do and when; our job is to make sure everything that is allowed is done well, and that the rest of you does not fall apart in the meantime.",
+  "sections": [
+    {
+      "h2": "First principle: the surgeon's protocol comes first",
+      "html": "<p>Every repair is different. The size of the tear, the quality of the tendon, whether the biceps or labrum were addressed, and the surgeon's own preferences all shape the timeline. Your surgeon will give you a written protocol with phases: a sling and protection phase where the shoulder is kept still except for specific passive movements, an assisted and active motion phase, and a strengthening phase that begins only once the tendon has had time to heal to bone. Those dates and restrictions are not suggestions. We ask for a copy of the protocol at your first visit and we work inside it, every time, even when the shoulder feels better than the schedule allows. Feeling good early is common; the tendon is still weak.</p><p>If you have not yet had surgery, our <a href=\"/conditions/rotator-cuff-tear\">rotator cuff tear</a> page covers what is often possible without it. If you have, read on.</p>"
+    },
+    {
+      "h2": "What the first weeks feel like",
+      "html": "<p>Expect the sling, a stiff and sore shoulder, poor sleep for a while (a recliner helps many people), and a surprising amount of ache in the neck, upper back and the arm below the elbow. Those secondary aches come from holding the arm in one position, from the <a href=\"/muscles/upper-trapezius\">upper trapezius</a> and <a href=\"/muscles/levator-scapulae\">levator scapulae</a> hitching the shoulder up protectively, and from the <a href=\"/muscles/pectoralis-minor\">pectoralis minor</a> shortening as the shoulder rounds forward in the sling. None of them threaten the repair, but they make the whole process more miserable than it needs to be, and they are the first things we can safely treat.</p>"
+    },
+    {
+      "h2": "The muscles involved, and what each one needs",
+      "html": "<ul><li>The repaired tendon itself, most often the <a href=\"/muscles/supraspinatus\">supraspinatus</a>, sometimes with the <a href=\"/muscles/infraspinatus\">infraspinatus</a> or <a href=\"/muscles/subscapularis\">subscapularis</a>. These are protected early and loaded late, strictly to the protocol.</li><li>The <a href=\"/muscles/teres-minor\">teres minor</a> and the unrepaired parts of the cuff, which weaken from disuse and need gentle, well-timed reactivation.</li><li>The shoulder-blade muscles: <a href=\"/muscles/lower-trapezius\">lower trapezius</a> and <a href=\"/muscles/serratus-anterior\">serratus anterior</a>. These can often be trained earlier than the cuff because they move the blade, not the arm, and a shoulder blade that rotates well protects the repair when overhead motion returns.</li><li>The neck and chest muscles above, which need release so the arm has somewhere to go when motion is allowed.</li></ul>"
+    },
+    {
+      "h2": "How MD Fit fits into your recovery",
+      "html": "<p>Dr. Jared Caban reads the protocol, examines what the shoulder can and cannot do at that stage, and plans the visit around it. In the protection phase that means hands-on work for the neck, upper back, chest and the forearm, guidance on sleeping and sling posture, and gentle motion of the elbow, wrist and hand plus whatever passive shoulder movement the surgeon has cleared. In the motion phase we help the shoulder regain range without substituting with a shrug, and we begin training the shoulder blade. In the strengthening phase we rebuild the cuff and the whole shoulder girdle progressively, then return you to the specific tasks that matter: lifting a grandchild, serving, swinging a club, swimming.</p><p>Your homework is in the free MD Fit app, chosen to match your current phase and nothing beyond it. We coordinate with your surgeon's office if anything in the shoulder does not match what the protocol expects.</p>"
+    },
+    {
+      "h2": "What you can safely do today, in any phase",
+      "html": "<ol><li><b>Follow the sling and precaution instructions exactly</b>, including the ones about reaching, pushing up from a chair and carrying.</li><li><b>Keep the elbow, wrist and hand moving</b> several times a day as instructed; a stiff elbow is a common and avoidable complication.</li><li><b>Mind your neck and posture.</b> Let the shoulders drop, bring the chin back, and change position often. Heat on the upper trapezius is fine.</li><li><b>Walk daily.</b> General circulation helps healing and mood, and keeps the rest of you conditioned for the strengthening phase later.</li></ol>"
+    },
+    {
+      "h2": "Problems to watch for after surgery",
+      "html": "<p>Two things can go wrong that need the surgeon, not us. The first is <b>re-tear</b>: a sudden pop, a new drop in strength or a sharp increase in pain after a fall or a lift that was not allowed. The second is <b>post-operative stiffness</b> (a frozen shoulder picture), where motion plateaus or goes backwards despite good work; the surgeon may adjust the protocol. Beyond those, the red flags below cover infection and blood clots, which are uncommon but serious.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Fever, chills, or redness, warmth, increasing swelling or drainage at the incisions, which can mean infection and needs the surgeon's office the same day.",
+    "A sudden pop, a new loss of strength or a sharp increase in pain after a fall or lifting something, which can mean the repair has pulled away.",
+    "Calf pain, swelling or warmth, or any shortness of breath or chest pain after surgery: call 911, as these can be a blood clot that has traveled.",
+    "Numbness, tingling or weakness in the hand that is new or does not improve after the nerve block has worn off.",
+    "Pain that is escalating rather than easing week to week and is not controlled by your prescribed plan."
+  ],
+  "faq": [
+    {
+      "q": "Can I start rehab at MD Fit right after surgery?",
+      "a": "Yes, within the limits of your surgeon's protocol. Early visits focus on the neck, upper back, posture, sleep and the parts of the arm that are allowed to move, not on the repaired tendon."
+    },
+    {
+      "q": "My shoulder feels fine. Can I take the sling off early?",
+      "a": "No. The tendon is still healing to the bone even when the pain settles, and the sling schedule exists to protect it. We never move faster than the protocol, and neither should you."
+    },
+    {
+      "q": "When can I play golf, tennis or pickleball again?",
+      "a": "That is your surgeon's call and depends on the repair. Our role is to make sure that when you are cleared, the shoulder blade, cuff and whole kinetic chain are actually ready for the sport, not just the calendar."
+    }
+  ],
+  "muscles": [
+    "supraspinatus",
+    "infraspinatus",
+    "subscapularis",
+    "teres-minor",
+    "lower-trap",
+    "pec-minor"
+  ],
+  "pain": [
+    "top-of-shoulder",
+    "outside-of-shoulder",
+    "deep-shoulder-joint",
+    "back-of-shoulder"
+  ],
+  "guides": [
+    "rotator-cuff"
+  ],
+  "related": [
+    "/conditions/rotator-cuff-tear",
+    "/conditions/post-surgical-rehab",
+    "/treatments/post-op-rehab-timelines",
+    "/conditions/shoulder-pain",
+    "/conditions/frozen-shoulder",
+    "/conditions/shoulder-impingement",
+    "/muscles/supraspinatus",
+    "/pain/deep-shoulder-joint"
+  ],
+  "reviewStatus": "draft"
+}

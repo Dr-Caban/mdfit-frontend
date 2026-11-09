@@ -1,0 +1,82 @@
+{
+  "group": "conditions",
+  "slug": "ankle-sprain",
+  "title": "Ankle Sprain Rehab in Sarasota, FL | MD Fit",
+  "h1": "Ankle Sprain Rehab in Sarasota, FL",
+  "description": "Rolled your ankle? Learn why the pain lingers after the ligament heals, which muscles are involved, and how MD Fit in Sarasota rebuilds a stable ankle.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Ankle sprain"
+  },
+  "lead": "Most ankle sprains heal. The problem is that many of them heal into a stiff, weak, nervous ankle that rolls again. Here is what happened, what to do first, and how we rebuild an ankle that holds up on the court and the sand.",
+  "sections": [
+    {
+      "h2": "How an ankle sprain usually happens",
+      "html": "<p>The classic story is a foot that lands on its outer edge: stepping off a curb, landing on someone's shoe under the net, catching a root on a trail, or a quick side-step on a pickleball court. The foot rolls inward, the ligaments on the outside of the ankle get stretched or partly torn, and within an hour there is swelling and a bruise that often drifts toward the toes over the next few days.</p><p>A mild sprain is sore and a little puffy but you can walk on it. A moderate one makes the first days of walking awkward and the outer ankle tender to touch. A severe sprain feels unstable, swells quickly and may need imaging to rule out a fracture (see the red flags below).</p>"
+    },
+    {
+      "h2": "Why the pain lingers after the ligament has healed",
+      "html": "<p>Ligaments take a few weeks to knit. The muscles around the ankle react to the injury immediately and often stay in protective mode long after the ligament is fine. In the clinic the usual suspects are:</p><ul><li><a href=\"/muscles/peroneals-fibularis\">Peroneals</a>: the outer-leg muscles whose job is to stop the foot rolling inward. After a sprain they are weak and full of trigger points that refer pain behind the outer ankle bone and along the outside of the foot.</li><li><a href=\"/muscles/tibialis-posterior\">Tibialis posterior</a>: the deep calf muscle that holds up the arch; overworked by an unstable ankle, it refers pain to the inner ankle and arch.</li><li><a href=\"/muscles/gastrocnemius\">Gastrocnemius</a> and <a href=\"/muscles/soleus\">soleus</a>: calf muscles that tighten during the limping phase and then limit ankle bend, which is why stairs and squatting feel blocked weeks later.</li><li><a href=\"/muscles/gluteus-medius\">Gluteus medius</a>: a weak outer hip lets the knee drift inward and sets the foot up to roll. We see this in almost every repeat sprain.</li></ul><p>This is why a sprain that looks healed on a scan can still ache after a long walk, swell by evening, or feel untrustworthy on uneven ground.</p>"
+    },
+    {
+      "h2": "How we work on a sprained ankle at MD Fit",
+      "html": "<p>Dr. Jared Caban starts with a hands-on assessment: where exactly is it tender, how much does the ankle bend and turn compared to the other side, how do you stand on one leg, and how do the hip and knee behave when you step and land. If anything suggests a fracture or a high ankle (syndesmosis) injury, we send you for imaging first.</p><p>Once the ankle is safe to work on, we release the guarded peroneals, calf and tibialis posterior so the joint can move again, and we correct the movement pattern, usually at the hip and foot, that let the ankle roll in the first place. You get a short homework program in the free MD Fit app with videos for ankle mobility, balance and early strengthening. As the ankle calms, the homework progresses to single-leg strength and controlled hopping so the ankle is ready for the court and the sand, not just the treatment table.</p>"
+    },
+    {
+      "h2": "What you can do today",
+      "html": "<ol><li><b>Check the red flags first.</b> If you cannot take four steps on it, or the bone itself is tender, get it checked before doing anything else.</li><li><b>Move it gently.</b> Trace the alphabet in the air with your big toe a couple of times a day. Pain-free motion helps the swelling drain and keeps the joint from stiffening.</li><li><b>Walk as normally as the pain allows.</b> An even walking pattern is better rehab than a week on the couch.</li><li><b>Start balance early.</b> Once you can stand comfortably, stand on the sore leg while you brush your teeth, holding the counter if needed. This retrains the ankle's sense of position, which is what prevents the next sprain.</li></ol>"
+    },
+    {
+      "h2": "Is it really a sprain?",
+      "html": "<p>Several problems mimic a simple lateral sprain and need a different plan:</p><ul><li>A <b>fracture</b> of the outer ankle bone or the base of the fifth metatarsal (the bony bump on the outside of the mid-foot). Tenderness directly on bone, not soft tissue, is the clue.</li><li>A <b>high ankle sprain</b> of the ligaments between the two shin bones. Pain sits above the joint, worsens with push-off and twisting, and takes longer to heal.</li><li><b>Peroneal tendon injury</b>, where the tendons behind the outer ankle bone are torn or snap over the bone.</li><li><b>Cuboid syndrome</b>, a small mid-foot bone that gets stuck after a sprain.</li><li>An <b>osteochondral injury</b> inside the joint, causing deep aching, clicking or catching months later.</li></ul><p>If your ankle is not improving week to week, or feels deeper and more mechanical than a bruised outside ankle, be re-examined rather than pushing through. If sprains start to repeat, see our <a href=\"/conditions/chronic-ankle-instability\">chronic ankle instability</a> page.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "You cannot put weight on the ankle or take four steps immediately after the injury or in the clinic.",
+    "Tenderness directly on the bone at the tip of either ankle bone, or on the bony bump on the outside of the mid-foot, which can mean a fracture and needs an X-ray.",
+    "The ankle or foot looks deformed, or you heard a loud pop followed by rapid swelling and bruising.",
+    "Numbness, tingling, or a cold or pale foot after the injury.",
+    "Calf pain with swelling, redness and warmth in the days after the sprain, which can be a blood clot and needs urgent care."
+  ],
+  "faq": [
+    {
+      "q": "Should I ice and rest an ankle sprain or keep moving?",
+      "a": "In the first day or two, protect it and keep it elevated when you can. After that, gentle pain-free movement and normal walking usually help more than strict rest."
+    },
+    {
+      "q": "Do I need an X-ray?",
+      "a": "Not for every sprain. You should be checked if you cannot bear weight for four steps, if the bone itself is tender, or if the ankle looks deformed."
+    },
+    {
+      "q": "Why does my ankle still hurt months after a sprain?",
+      "a": "Commonly it is the muscles and the ankle's sense of position that never fully recovered, rather than the ligament. Occasionally there is a structural issue inside the joint, which is why persistent pain deserves a re-examination."
+    }
+  ],
+  "muscles": [
+    "peroneals",
+    "tib-post",
+    "gastroc",
+    "soleus",
+    "glute-med"
+  ],
+  "pain": [
+    "outer-ankle",
+    "inner-ankle-and-arch",
+    "front-of-ankle"
+  ],
+  "guides": [
+    "calf"
+  ],
+  "related": [
+    "/conditions/chronic-ankle-instability",
+    "/conditions/balance-fall-prevention",
+    "/conditions/sports-injury-rehab",
+    "/conditions/achilles-tendon-pain",
+    "/treatments/functional-mobility",
+    "/muscles/peroneals-fibularis",
+    "/pain/outer-ankle"
+  ],
+  "reviewStatus": "draft"
+}

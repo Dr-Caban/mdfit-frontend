@@ -1,0 +1,55 @@
+{
+  "group": "conditions",
+  "slug": "postural-kyphosis",
+  "title": "Postural Kyphosis Correction in Sarasota | MD Fit",
+  "h1": "Postural Kyphosis Correction in Sarasota, FL",
+  "description": "Rounded upper back, forward head and a tired neck by noon? MD Fit in Sarasota treats postural kyphosis with release, mobility and the strength to stand tall.",
+  "about": { "type": "MedicalCondition", "name": "Postural kyphosis" },
+  "lead": "Kyphosis is the natural forward curve of the upper back. Postural kyphosis is that curve exaggerated by habit: hours of sitting, screens, driving and carrying, until the body settles into a rounded shape it can no longer easily undo. The good news is that a postural curve is still flexible, and flexible curves respond to treatment.",
+  "sections": [
+    {
+      "h2": "Postural versus structural: an important distinction",
+      "html": "<p>Not all rounded backs are the same. A postural kyphosis straightens, at least partly, when you lie on your back or actively stand tall. A structural kyphosis does not, because the vertebrae themselves have changed shape, as in Scheuermann's disease in adolescents or compression fractures from osteoporosis in older adults. Those are physician diagnoses that usually need imaging. If your curve is rigid, developed quickly, is painful at night, or appeared after a fall or with known osteoporosis, see your physician before starting any program. MD Fit works with the flexible, muscular curve, and alongside your physician when the curve is structural.</p>"
+    },
+    {
+      "h2": "How people usually notice it",
+      "html": "<ul><li>Someone shows you a photo from the side and you do not recognize your own silhouette.</li><li>Your head sits in front of your shoulders and your neck is tired by lunchtime.</li><li>A persistent ache <a href=\"/pain/between-shoulder-blades\">between the shoulder blades</a> and at the <a href=\"/pain/back-of-neck\">back of the neck</a>.</li><li>Tightness across the <a href=\"/pain/front-of-chest\">front of the chest</a> and difficulty reaching fully overhead.</li><li>Shallow breathing, a shirt collar that rides forward, or a shoulder that pinches when you lift.</li></ul><p>Posture is not a moral failing. It is simply the shape your muscles have adapted to, and they can adapt back.</p>"
+    },
+    {
+      "h2": "The muscular tug-of-war behind the curve",
+      "html": "<p>A rounded upper back is a mismatch between short muscles in front and long, weak muscles behind.</p><ul><li>Short in front: <a href=\"/muscles/pectoralis-minor\">pectoralis minor</a> tips the shoulder blades forward; <a href=\"/muscles/pectoralis-major-lower\">pectoralis major</a> pulls the arms inward and rounds the shoulders.</li><li>Long and weak behind: <a href=\"/muscles/lower-trapezius\">lower trapezius</a> and <a href=\"/muscles/middle-trapezius\">middle trapezius</a> should pull the blades down and back; the thoracic part of the <a href=\"/muscles/longissimus\">longissimus</a> and its neighbors should hold the upper spine upright.</li><li>Caught in between: <a href=\"/muscles/serratus-anterior\">serratus anterior</a>, which should keep the blade flat on the ribs and often stops doing its job.</li></ul><p>Add a forward head and the suboccipitals and upper traps overwork to keep the eyes level, producing the neck pain and headaches that often bring people in.</p>"
+    },
+    {
+      "h2": "The MD Fit plan for a flexible curve",
+      "html": "<p>Assessment measures how much of your curve corrects actively and passively, how far the upper spine extends, how your shoulder blades move, and how you breathe. If anything suggests a structural cause, I refer you to your physician before going further.</p><p>Treatment begins with releasing the chest and the stiff segments of the upper back so that standing tall is possible rather than a strain. Correction is about where you spend your hours: screen height, chair support, how you hold the phone, and breathing that expands the ribs instead of collapsing them. The free MD Fit app carries a short daily routine of thoracic extension, open books and scapular drills. Strengthening is the long game: rows, face pulls, lower trap raises and loaded carries that make the upright position the easy default instead of a conscious effort.</p>"
+    },
+    {
+      "h2": "Daily habits that move the needle",
+      "html": "<ol><li>Spend two minutes lying on your back over a rolled towel placed across the upper back, arms relaxed out to the sides, breathing slowly.</li><li>Set a reminder to reset posture every thirty minutes: feet flat, sit back into the chair, ribs down, head gliding back over the shoulders.</li><li>Raise the screen so you look straight ahead, and hold the phone up rather than dropping your head.</li><li>Walk with your eyes on the horizon. It brings the head back automatically.</li></ol><p>Progress shows up as less effort to stay upright, not as perfect posture every minute.</p>"
+    },
+    {
+      "h2": "Sarasota and the rounded back",
+      "html": "<p>Two groups fill my schedule for this: desk workers and retirees. For older adults, osteoporosis screening matters, because a curve that is partly from compression fractures changes which exercises are safe. If you have not had a bone density test and your curve is increasing, ask your physician. The strength work still applies; it is simply chosen more carefully.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "A curve that appeared or worsened quickly, especially after a fall, or in someone with known osteoporosis: possible compression fracture, see a physician.",
+    "Upper back pain with chest pain, shortness of breath or sweating: call 911.",
+    "Numbness, weakness, or changes in walking, balance, bladder or bowel function.",
+    "Pain that is constant, wakes you at night, or comes with fever or unexplained weight loss.",
+    "A rounded back in a teenager that is rigid and painful, which may be Scheuermann's disease and needs a physician's evaluation."
+  ],
+  "faq": [
+    { "q": "Can posture really be changed as an adult?", "a": "A flexible, muscular curve responds to release, mobility and strength work at any age. Structural changes in the bone do not reverse, but the muscles around them can still improve comfort and function." },
+    { "q": "Do posture braces work?", "a": "They remind you to sit up but do not build the strength to stay there, and worn all day they can let the back muscles weaken further. Short-term use as a cue is reasonable." },
+    { "q": "Is my rounded back causing my neck pain?", "a": "Often. When the upper back rounds, the head moves forward and the neck muscles work overtime to hold it up. Treating the upper back is frequently part of fixing the neck." },
+    { "q": "How do I know if mine is structural?", "a": "Lie on your back on a firm surface. A postural curve flattens noticeably; a structural one stays. Your physician can confirm with an exam and, if needed, an X-ray." }
+  ],
+  "muscles": ["pec-minor", "pec-major-stern", "lower-trap", "middle-trap", "longissimus", "serratus"],
+  "pain": ["between-shoulder-blades", "back-of-neck", "front-of-chest"],
+  "guides": ["posterior-neck"],
+  "related": ["/conditions/desk-neck-pain", "/conditions/upper-back-rhomboid-pain", "/conditions/neck-pain", "/conditions/scoliosis-support", "/conditions/shoulder-impingement", "/treatments/strength-and-performance", "/treatments/functional-mobility", "/muscles/lower-trapezius"],
+  "reviewStatus": "draft"
+}

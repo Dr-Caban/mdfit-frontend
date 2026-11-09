@@ -1,0 +1,68 @@
+{
+  "group": "activities",
+  "slug": "cycling",
+  "title": "Cycling Pain & Injury Care in Sarasota, FL | MD Fit",
+  "h1": "Cycling Pain & Injury Care in Sarasota, FL",
+  "description": "Knee, low back, neck and hand pain from road and trail cycling: the muscles behind each, MD Fit's hands-on approach and safe steps for Sarasota riders.",
+  "about": { "type": "Thing", "name": "Cycling" },
+  "lead": "Cycling is gentle on the joints and brutal on posture. You hold one shape for hours, repeat the same pedal stroke thousands of times and rarely use your glutes the way you think you do. Most cycling pain is a position problem or a muscle-balance problem, and both can be changed.",
+  "sections": [
+    {
+      "h2": "Why a low-impact sport produces so much pain",
+      "html": "<p>The reason a sport with no impact leaves so many people sore is repetition without variety. A pedal stroke moves the hip and knee through a narrow range with the spine flexed and the neck extended to see the road. Over a two-hour ride the hip flexors shorten, the glutes go quiet, the upper back stiffens and the small muscles at the base of the skull work overtime. Add a saddle a centimeter too high or cleats a few degrees off and a knee that was fine at 30 miles a week starts aching at 60.</p>"
+    },
+    {
+      "h2": "Common cycling complaints, region by region",
+      "html": "<ul><li><b>Front of the knee</b>: ache around or under the kneecap, often worse climbing or after long sitting. Usually quad-dominant pedaling with a saddle that is too low or too far forward. See <a href=\"/conditions/knee-pain\">knee pain</a> and <a href=\"/conditions/patellar-tendinopathy\">patellar tendinopathy</a>.</li><li><b>Outside of the knee</b>: classic <a href=\"/conditions/it-band-syndrome\">IT band irritation</a>, frequently from cleat position or a hip that drops with each stroke.</li><li><b>Low back</b>: a dull ache that grows through the ride, tied to short hip flexors and a trunk that flexes instead of hinging from the hips. See <a href=\"/conditions/low-back-pain\">low back pain</a>.</li><li><b>Neck and between the shoulder blades</b>: from holding the head up in the drops for hours. See <a href=\"/conditions/neck-pain\">neck pain</a>.</li><li><b>Hands and wrists</b>: numb ring and little fingers or thumb-side pain from leaning on the bars. See <a href=\"/conditions/carpal-tunnel-wrist-pain\">wrist pain</a>.</li><li><b>Saddle and pelvic discomfort</b>: numbness or pain that may involve the <a href=\"/conditions/pelvic-floor-rehab\">pelvic floor</a> and deserves a proper look rather than just a new saddle.</li></ul>"
+    },
+    {
+      "h2": "The muscles behind the pattern",
+      "html": "<p>Four muscles explain most of what we find in cyclists:</p><ul><li><a href=\"/muscles/psoas\">Psoas</a> and <a href=\"/muscles/iliacus\">iliacus</a>: the hip flexors that live in a shortened position on the bike. They refer to the low back, groin and front of the thigh and make it hard to stand up straight after a long ride. Our <a href=\"/guides/iliopsoas\">iliopsoas guide</a> covers them.</li><li><a href=\"/muscles/rectus-femoris\">Rectus femoris</a>: the quad that crosses both hip and knee and refers a deep ache around the kneecap. It dominates when the glutes are not contributing.</li><li><a href=\"/muscles/gluteus-medius\">Gluteus medius</a>: the pelvic stabilizer that should keep the knee tracking straight. When it is weak, the knee drifts inward on every stroke and the outer knee and hip pay for it.</li><li><a href=\"/muscles/suboccipitals\">Suboccipitals</a> and <a href=\"/muscles/upper-trapezius\">upper trapezius</a>: the neck muscles that hold the head up in an aero position and refer headache and neck tension.</li></ul>"
+    },
+    {
+      "h2": "How MD Fit works with cyclists",
+      "html": "<p>Dr. Jared starts by watching you move off the bike: a single-leg squat, a hip hinge, how far the hip extends and whether the glutes fire before the hamstrings. He then checks the tissues that are guarding and releases them by hand, because a hip flexor that has been shortened for years does not lengthen just because you stretched it for thirty seconds. Corrective movements follow to teach the glutes to lead and the spine to stay quiet.</p><p>The homework lives in the free MD Fit app: a handful of videos that take ten minutes after a ride. As the pain settles, the focus shifts to strength, especially single-leg and posterior chain work, so the position on the bike is supported by muscle rather than endured by joints.</p>"
+    },
+    {
+      "h2": "Safe adjustments for this week",
+      "html": "<ol><li>Stand up on the pedals for 20 to 30 seconds every ten minutes to open the hips and reset the neck.</li><li>Shorten one ride and replace it with a walk or a swim; variety is medicine for a repetitive sport.</li><li>After every ride, spend two minutes each in a half-kneeling hip flexor stretch with the glute squeezed, and a gentle chin tuck against a wall.</li><li>Change hand positions on the bars often and keep a soft bend in the elbows.</li></ol>"
+    },
+    {
+      "h2": "When it is time to get checked",
+      "html": "<p>Ride-related aches that fade within a day are normal adaptation. Get assessed if knee or back pain is present on every ride for more than two to three weeks, if hand numbness persists after you get off the bike, if saddle numbness does not resolve quickly, or if pain is now bothering you walking, sitting at work or sleeping.</p>"
+    },
+    {
+      "h2": "Cycling around Sarasota",
+      "html": "<p>Sarasota riders are lucky: the Legacy Trail runs from downtown toward Venice with no cars, the barrier islands offer long flat loops, and the weather allows riding most of the year. Flat terrain has a downside, though. Without hills to force you out of the saddle, riders sit in one position far longer than they would elsewhere, and summer heat shortens warm-ups and increases cramping. Hydration, regular position changes and off-bike strength work matter more here, not less.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Numbness in the saddle area or loss of bowel or bladder control.",
+    "Knee swelling, locking or giving way after a fall or a sudden twist.",
+    "Hand numbness or weakness that persists for days off the bike.",
+    "Any neck or head pain following a crash, even without a loss of consciousness.",
+    "Chest pain, unusual breathlessness or palpitations during a ride, which need emergency care: call 911."
+  ],
+  "faq": [
+    { "q": "Is my knee pain from the bike fit or from my body?", "a": "Often both. Fit sets the position, but weak glutes or tight hip flexors decide whether you can hold that position well. We address the body side and encourage a professional fit for the bike side." },
+    { "q": "Should I stop cycling with low back pain?", "a": "Usually not entirely. Shorter rides, standing up regularly and daily hip flexor and glute work often let riders keep going while the back settles. Pain that travels into the leg or involves numbness should be assessed first." },
+    { "q": "Why do my hands go numb on long rides?", "a": "Pressure on the nerves at the palm and wrist from leaning on the bars, often made worse by tight chest and neck muscles that irritate the same nerves higher up. Changing hand position helps; persistent numbness should be evaluated." }
+  ],
+  "muscles": ["psoas", "iliacus", "rectus-femoris", "glute-med", "suboccipitals", "upper-trap"],
+  "pain": ["below-kneecap", "outside-of-knee", "front-of-hip", "base-of-skull"],
+  "guides": ["iliopsoas", "quads"],
+  "related": [
+    "/conditions/knee-pain",
+    "/conditions/it-band-syndrome",
+    "/conditions/low-back-pain",
+    "/conditions/neck-pain",
+    "/conditions/patellar-tendinopathy",
+    "/conditions/carpal-tunnel-wrist-pain",
+    "/treatments/functional-mobility",
+    "/running-injury-sarasota"
+  ],
+  "programs": ["posterior-chain-6", "knee-6", "hip-6"],
+  "reviewStatus": "draft"
+}

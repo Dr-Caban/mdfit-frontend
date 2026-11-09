@@ -1,0 +1,95 @@
+{
+  "group": "landing",
+  "slug": "post-op-knee-rehab-sarasota",
+  "title": "Post-Op Knee Rehab in Sarasota | MD Fit",
+  "h1": "Post-Op Knee Rehab in Sarasota",
+  "description": "Post-op knee rehab in Sarasota led by Dr. Jared Caban, MD, MSc, CEP. We follow your surgeon's protocol and rebuild range, quad strength and confidence.",
+  "about": {
+    "type": "Thing",
+    "name": "Post-operative knee rehabilitation"
+  },
+  "lead": "Just had knee surgery? MD Fit in Sarasota runs structured post-op knee rehab under Dr. Jared Caban, MD, MSc, CEP. Your surgeon's protocol governs every timeline and precaution; we work inside it to rebuild range of motion, strength and confidence on stairs, walking and sport.",
+  "sections": [
+    {
+      "h2": "Surgeries we rehab",
+      "html": "<ul><li><b><a href=\"/conditions/knee-replacement-rehab\">Total and partial knee replacement</a></b>: the priority is restoring extension and flexion early, then quad strength and a normal walking pattern.</li><li><b><a href=\"/conditions/acl-reconstruction-recovery\">ACL reconstruction</a></b>: a long rehab, typically nine months or more before return to cutting sport, with graft-protection rules that vary by surgeon and graft type.</li><li><b><a href=\"/conditions/meniscus-tear-recovery\">Meniscectomy and meniscus repair</a></b>: a trimmed meniscus often progresses quickly; a repaired meniscus usually has weight-bearing and flexion limits for several weeks.</li><li><b>Patellar procedures and cartilage work</b>, which often carry the strictest loading limits.</li></ul><p>If your surgery is not listed, call. The approach is the same: read the protocol, test what you can do today and progress within the rules.</p>"
+    },
+    {
+      "h2": "Your surgeon's protocol comes first",
+      "html": "<p>Every surgeon issues a post-operative protocol: when the brace comes off, how much weight you may bear, how far you may bend, when you may drive, when closed-chain loading starts. That document governs. Bring it to the first visit, or have the surgeon's office send it. Dr. Jared builds your plan inside those boundaries and will contact the surgeon's office if anything is unclear rather than guess. If the protocol says no flexion past 90 degrees until week six, that is the rule regardless of how good the knee feels. We will never advance you faster than your surgeon allows; what we can do is make sure you reach each milestone fully instead of barely.</p>"
+    },
+    {
+      "h2": "What the first visit covers",
+      "html": "<p>Expect about 90 minutes. Dr. Jared reviews the operative notes and protocol, checks the incision, swelling and calf, measures knee extension and flexion, and tests how well the quadriceps fires. A quad that will not contract fully after surgery is the single most common reason knees stay stiff and weak, so getting the <a href=\"/muscles/vastus-medialis\">vastus medialis</a> and <a href=\"/muscles/rectus-femoris\">rectus femoris</a> switching on is the first job. Hands-on work addresses the muscles that guard after surgery: the quads, the hamstrings at the back of the knee, the <a href=\"/muscles/popliteus\">popliteus</a> that locks the joint, and the <a href=\"/muscles/gastrocnemius\">calf</a>. You leave with the day's exercises assigned in the free app.</p>"
+    },
+    {
+      "h2": "How the plan progresses",
+      "html": "<p>Visits are paired with daily homework. The early phase is about swelling control, full extension, a strong quad set and a normal heel-to-toe step. The middle phase restores flexion, single-leg balance and stair control. The later phase builds strength, endurance and, where your goals call for it, return to golf, pickleball, running or the gym. Follow-up visits are $150 and are typically weekly early on, then every two to three weeks as the home program carries more of the load. <a href=\"/treatments/medical-massage\">Medical massage</a> is added when scar tissue, swelling or guarded thigh and calf muscles are holding range back.</p>"
+    },
+    {
+      "h2": "The 6-Week Knee Protocol in the app",
+      "html": "<p>The app includes a daily knee protocol that Dr. Jared adapts to post-op patients once the surgeon's protocol permits. Week one (Foundation) is five daily basics: Roll Out Quads, Basic Glute Engagement, low-range Knee Circles, Isometric Hamstring Wall Heel Dig and a full-lockout Quadriceps Squeeze. Week two adds Knee Traction; week three replaces it with Backward Walking, which loads the quad without stressing the kneecap; week four adds a Wall Sit; week five a Bodyweight Squat; week six an assisted Cossack Squat for depth and control. Exercises are swapped or delayed as your precautions require. For a repaired meniscus or ACL graft, deep flexion drills wait until your surgeon clears them.</p>"
+    },
+    {
+      "h2": "Why Sarasota patients choose MD Fit after surgery",
+      "html": "<p>A single provider, Dr. Jared, does your evaluation, hands-on work and strength coaching. No handoffs, no assistants running the real work. Visits are long enough to do both the soft-tissue release and the exercise coaching in the same session. The home program is video-based, so you are never guessing what a cue meant. And because MD Fit is a cash practice, the plan is set by your knee and your surgeon's protocol, not by a visit cap.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Calf pain, swelling, warmth or redness in the operated leg can be a blood clot: contact your surgeon or go to urgent care the same day.",
+    "Chest pain or sudden shortness of breath after surgery: call 911.",
+    "Fever, increasing redness, or drainage from the incision needs a call to your surgeon's office.",
+    "A sudden loss of the ability to bear weight, a new pop or the knee giving way should be reported to your surgeon before continuing rehab.",
+    "Numbness or a foot you cannot lift that was not present before should be reported promptly."
+  ],
+  "faq": [
+    {
+      "q": "How much walking is safe after knee replacement?",
+      "a": "Your surgeon sets the baseline for weight-bearing and assistive devices. We progress from there based on your gait quality and swelling, not a fixed calendar, and we coordinate with their office if you are ahead of or behind the usual pace."
+    },
+    {
+      "q": "When should I start?",
+      "a": "As soon as your surgeon clears you for outpatient rehab. Bring the post-op instructions to the first visit so the plan follows them exactly."
+    },
+    {
+      "q": "Do I need a doctor's referral?",
+      "a": "No. Call 941-313-0562 or book online. We will still ask for your surgeon's protocol."
+    },
+    {
+      "q": "Do you work with ACL patients returning to sport?",
+      "a": "Yes. Return-to-sport decisions are made with your surgeon and based on strength and hop testing, not time alone. The later phases include sport-specific loading for golf, pickleball, tennis and running."
+    }
+  ],
+  "muscles": [
+    "vmo",
+    "rectus-femoris",
+    "vastus-lateralis",
+    "popliteus",
+    "medial-hamstrings",
+    "gastroc"
+  ],
+  "pain": [
+    "below-kneecap",
+    "inside-of-knee",
+    "behind-the-knee"
+  ],
+  "guides": [
+    "quads"
+  ],
+  "related": [
+    "/conditions/knee-replacement-rehab",
+    "/conditions/acl-reconstruction-recovery",
+    "/conditions/meniscus-tear-recovery",
+    "/conditions/post-surgical-rehab",
+    "/treatments/post-op-rehab-timelines",
+    "/treatments/medical-massage",
+    "/conditions/knee-pain",
+    "/post-op-shoulder-rehab-sarasota"
+  ],
+  "programs": [
+    "knee-6"
+  ],
+  "reviewStatus": "draft"
+}

@@ -1,0 +1,84 @@
+{
+  "group": "conditions",
+  "slug": "shoulder-impingement",
+  "title": "Shoulder Impingement Treatment in Sarasota, FL | MD Fit",
+  "h1": "Shoulder Impingement Treatment in Sarasota, FL",
+  "description": "A pinch at the top of the shoulder when you reach overhead or behind you? MD Fit in Sarasota treats impingement by restoring space: posture, blade and cuff.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Shoulder impingement syndrome"
+  },
+  "lead": "Shoulder impingement is a pinching of the rotator cuff tendons and bursa under the bony roof of the shoulder as the arm rises. The pinch is the symptom. The cause is almost always a shoulder blade that is not moving well and a cuff that is not holding the ball down in the socket, and both of those can be trained.",
+  "sections": [
+    {
+      "h2": "The painful arc",
+      "html": "<p>The signature is a catch or sharp pinch at the top or outside of the shoulder somewhere in the middle of lifting the arm out to the side, often between roughly shoulder height and overhead, which then eases as the arm goes higher. Reaching into the back seat, putting on a jacket, fastening a bra, washing your hair and throwing all set it off. Sleeping on the shoulder hurts. There is often a dull ache down the outside of the upper arm toward the elbow between episodes, which is referred pain from the tendons rather than an arm problem.</p><p>It usually creeps in over weeks in people who do a lot of overhead work or sport, or whose posture has slowly rounded forward with desk work. In Sarasota that means swimmers, tennis and pickleball players, golfers, painters and anyone who just spent a weekend trimming palms.</p>"
+    },
+    {
+      "h2": "Why the space closes",
+      "html": "<p>The gap under the shoulder's bony roof is small to begin with. Three things make it smaller:</p><ul><li><b>A forward, tipped shoulder blade.</b> A tight <a href=\"/muscles/pectoralis-minor\">pectoralis minor</a> pulls the blade forward and down so the roof drops toward the tendons. This is the posture of a laptop and a phone.</li><li><b>A shoulder blade that does not rotate up.</b> The <a href=\"/muscles/lower-trapezius\">lower trapezius</a> and <a href=\"/muscles/serratus-anterior\">serratus anterior</a> are supposed to swing the blade upward as the arm rises, lifting the roof out of the way. When they are weak, the <a href=\"/muscles/upper-trapezius\">upper trapezius</a> shrugs instead, and the roof stays low.</li><li><b>A cuff that does not hold the ball down.</b> The <a href=\"/muscles/supraspinatus\">supraspinatus</a> and <a href=\"/muscles/infraspinatus\">infraspinatus</a> are meant to depress and center the ball as the deltoid lifts the arm. When they are weak or inhibited by pain, the <a href=\"/muscles/lateral-deltoid\">lateral deltoid</a> hauls the ball upward into the roof.</li></ul><p>The tendons and bursa then get squeezed on every lift, become swollen and tender, and take up even more room. That is the loop we break.</p>"
+    },
+    {
+      "h2": "How Dr. Jared treats impingement",
+      "html": "<p>The assessment starts with watching you raise your arms from behind: does one shoulder blade hike, wing or lag? Dr. Jared Caban then tests the cuff and the blade muscles for strength, feels for the tight tissue in the chest, lats and upper trap, checks the neck as a source of referred pain, and screens for a cuff tear or a stiff joint that would change the plan.</p><p>Hands-on release of the pectoralis minor, upper trapezius, lats and the posterior cuff restores the position and motion of the shoulder blade, often giving a noticeably freer arc within the first visit. From there the work is corrective: teaching the blade to rotate up without shrugging, waking up the lower trap and serratus, and loading the cuff so it can hold the ball in the socket during real tasks. The homework in the free MD Fit app follows the <a href=\"/guides/rotator-cuff\">rotator cuff guide</a> and progresses as your painful arc shrinks.</p>"
+    },
+    {
+      "h2": "What you can do today",
+      "html": "<ol><li><b>Stop reaching through the pinch.</b> For a couple of weeks, turn your body toward what you are reaching for and keep the elbow lower and closer; let the tendons calm down.</li><li><b>Open the chest.</b> Stand in a doorway with forearms on the frame and lean gently forward for a slow breath or two, a few times a day. If it pinches, lower the arms.</li><li><b>Fix the sleeping position.</b> Lie on the other side with a pillow hugged in front so the sore arm rests on it, or on your back with a pillow under the elbow.</li><li><b>Set the shoulders down before you lift.</b> A gentle drop of the shoulder blade away from the ear before you raise the arm often changes the arc immediately. That is the pattern we will build on.</li></ol>"
+    },
+    {
+      "h2": "Conditions that mimic impingement",
+      "html": "<ul><li><b>Rotator cuff tear</b>: weakness, not just pain, especially lifting the arm or rotating it outward against resistance; more likely after 50 or after a fall. See <a href=\"/conditions/rotator-cuff-tear\">rotator cuff tear</a>.</li><li><b>Shoulder bursitis</b>: a swollen, inflamed bursa that is often part of the same picture; see <a href=\"/conditions/shoulder-bursitis\">shoulder bursitis</a>.</li><li><b>Frozen shoulder</b>: global stiffness in every direction, including when someone else moves the arm for you. See <a href=\"/conditions/frozen-shoulder\">frozen shoulder</a>.</li><li><b>Biceps tendinopathy</b>: pain at the front of the shoulder with curling and carrying. See <a href=\"/conditions/biceps-tendinopathy\">biceps tendinopathy</a>.</li><li><b>Neck referral</b>: pain that comes with turning the head or with tingling in the hand points to the cervical spine.</li><li><b>AC joint</b>: pain right on top at the end of the collarbone, worst reaching across the body.</li></ul>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Inability to lift the arm at all after a fall or injury, which can mean a large cuff tear or fracture.",
+    "A visible deformity or lump on the shoulder or collarbone after trauma.",
+    "A hot, red, swollen shoulder or fever, which can mean infection.",
+    "Neck pain with numbness, weakness or loss of coordination in the arm or hand.",
+    "Shoulder or arm pain with chest pressure, shortness of breath, sweating or nausea: call 911."
+  ],
+  "faq": [
+    {
+      "q": "Is shoulder impingement the same as a rotator cuff tear?",
+      "a": "No. Impingement is pinching and irritation of the tendons; a tear is structural damage to them. Long-standing impingement can contribute to a tear, and the two can coexist, which is why we test strength and not just pain."
+    },
+    {
+      "q": "Will I need an injection or surgery?",
+      "a": "Most impingement responds to restoring shoulder blade motion, posture and cuff strength. Injections are a conversation with your physician if pain is blocking rehab; surgery is uncommon for impingement alone."
+    },
+    {
+      "q": "Why does my upper arm ache if the problem is in the shoulder?",
+      "a": "The supraspinatus and infraspinatus tendons refer pain down the outside of the arm toward the elbow. It is a very common pattern and does not mean the arm itself is injured."
+    }
+  ],
+  "muscles": [
+    "supraspinatus",
+    "infraspinatus",
+    "pec-minor",
+    "lower-trap",
+    "serratus",
+    "lat-delt"
+  ],
+  "pain": [
+    "top-of-shoulder",
+    "outside-of-shoulder",
+    "front-of-shoulder"
+  ],
+  "guides": [
+    "rotator-cuff"
+  ],
+  "related": [
+    "/conditions/shoulder-pain",
+    "/conditions/rotator-cuff-tear",
+    "/conditions/shoulder-bursitis",
+    "/conditions/biceps-tendinopathy",
+    "/conditions/frozen-shoulder",
+    "/conditions/postural-kyphosis",
+    "/muscles/pectoralis-minor",
+    "/pain/outside-of-shoulder"
+  ],
+  "reviewStatus": "draft"
+}

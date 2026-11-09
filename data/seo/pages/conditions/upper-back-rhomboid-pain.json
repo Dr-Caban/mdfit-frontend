@@ -1,0 +1,51 @@
+{
+  "group": "conditions",
+  "slug": "upper-back-rhomboid-pain",
+  "title": "Upper Back & Rhomboid Pain in Sarasota | MD Fit",
+  "h1": "Upper Back and Rhomboid Pain in Sarasota, FL",
+  "description": "That burning knot between the shoulder blade and spine usually has a cause elsewhere. MD Fit in Sarasota finds it, releases it and builds the back to hold.",
+  "about": { "type": "MedicalCondition", "name": "Rhomboid muscle pain" },
+  "lead": "The spot between the shoulder blade and the spine is where a lot of people carry their day. It burns, it begs to be rubbed, and no amount of rolling on a ball seems to fix it. That is usually because the rhomboids are the victim, not the cause.",
+  "sections": [
+    {
+      "h2": "The burning knot and what it tells you",
+      "html": "<p>Rhomboid-area pain tends to be a steady, burning or gnawing ache <a href=\"/pain/between-shoulder-blades\">between the shoulder blades</a> or along the <a href=\"/pain/inner-edge-of-shoulder-blade\">inner edge of one blade</a>. It builds with hours at a laptop, driving, or holding a baby, and it often eases briefly with a good stretch or someone pressing on it. Some people feel a grinding or popping when they roll the shoulder blade. Others notice the ache creeping up into the neck or down to the <a href=\"/pain/bottom-of-shoulder-blade\">bottom tip of the blade</a>.</p><p>The pattern tells a story: a muscle that is being held on a long stretch all day, asked to work from a lengthened, weak position, and never allowed to rest.</p>"
+    },
+    {
+      "h2": "Why the rhomboids hurt and who is really responsible",
+      "html": "<p>The <a href=\"/muscles/rhomboid-major\">rhomboid major</a> and <a href=\"/muscles/rhomboid-minor\">rhomboid minor</a> pull the shoulder blades toward the spine. When the shoulders round forward, tight chest muscles drag the blades outward and the rhomboids spend all day resisting that pull. They lose the fight, fatigue and develop tender points.</p><p>So the first muscle I look at is not the rhomboid. It is the <a href=\"/muscles/pectoralis-minor\">pectoralis minor</a>, the small chest muscle that tips the shoulder blade forward. The <a href=\"/muscles/middle-trapezius\">middle trapezius</a> sits over the rhomboids and produces a nearly identical burning ache. The <a href=\"/muscles/levator-scapulae\">levator scapulae</a> refers down the inner blade edge from the neck. And the <a href=\"/muscles/scalenes\">scalenes</a>, side-neck breathing muscles, refer pain between the shoulder blades from a long way off, which fools almost everyone.</p><p>In other words, rubbing the sore spot treats the messenger. Releasing the chest and neck and strengthening the back treats the message.</p>"
+    },
+    {
+      "h2": "How MD Fit approaches it",
+      "html": "<p>Assessment looks at where your shoulder blades rest, how far your upper spine extends, how your chest and neck muscles feel under pressure, and whether pressing a spot in the scalenes or pec minor lights up your back pain. I also screen for the non-muscular causes listed below.</p><p>Treatment is hands-on release of the pec minor, scalenes and the rhomboid and trapezius tender points, followed by thoracic mobility so the upper back can extend. Correction means raising screens, changing how you hold the phone, and learning to breathe into the lower ribs rather than lifting the shoulders. I assign a few daily drills in the free MD Fit app. Strengthening focuses on rows, face pulls and <a href=\"/muscles/lower-trapezius\">lower trapezius</a> work so the blades are held back by strong muscles instead of tired ones.</p>"
+    },
+    {
+      "h2": "Relief you can start on your own",
+      "html": "<ul><li>Open the chest, not just the back: a doorway stretch for the pecs twice a day often does more than foam rolling the sore spot.</li><li>Every thirty minutes, roll the shoulders back and down, and take three slow breaths that expand the lower ribs.</li><li>Lift the laptop or monitor so the top third is at eye level, and bring the keyboard close so elbows stay at your sides.</li><li>Switch a one-strap bag to a backpack, or alternate shoulders.</li></ul><p>A warm shower aimed at the upper back before these drills makes them easier.</p>"
+    },
+    {
+      "h2": "Causes that are not muscular",
+      "html": "<p>Pain between the shoulder blades can come from the heart, lungs, gallbladder, stomach or the thoracic spine itself. Pain with chest tightness, shortness of breath, sweating or nausea is an emergency: call 911. Right-sided pain after fatty meals with nausea suggests the gallbladder. A sudden tearing pain in the upper back is a medical emergency. Pain that does not change with posture or movement, pain with fever or weight loss, and pain that wakes you at night all need a physician before soft-tissue care. Rib joint sprains, thoracic disc problems and cervical nerve irritation can also masquerade as a rhomboid knot.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Pain between the shoulder blades with chest pain, pressure, shortness of breath, sweating or nausea: call 911.",
+    "A sudden, severe tearing or ripping pain in the upper back: call 911.",
+    "Right-sided upper back pain after fatty meals, with nausea or vomiting.",
+    "Pain that does not change with movement or position, or pain with fever or unexplained weight loss.",
+    "Numbness, weakness or tingling in the arm or hand with the back pain."
+  ],
+  "faq": [
+    { "q": "Why does massage on the knot only help for a day?", "a": "Because the rhomboids are usually being overstretched by tight chest muscles and a forward head. Until the pecs and scalenes are released and the back is strengthened, the knot returns." },
+    { "q": "Should I foam roll between my shoulder blades?", "a": "Gentle rolling can ease the ache temporarily. Pair it with chest stretching and shoulder blade strengthening, and stop if it causes sharp pain or numbness." },
+    { "q": "Can neck problems cause rhomboid pain?", "a": "Yes. The levator scapulae and scalenes both refer pain to the inner shoulder blade, and cervical nerve irritation can do the same. That is why the neck is part of the assessment." },
+    { "q": "Is the popping in my shoulder blade a problem?", "a": "Painless snapping is common and usually comes from muscle gliding over the ribs. Painful or new grinding is worth having assessed." }
+  ],
+  "muscles": ["rhomboid-major", "rhomboid-minor", "middle-trap", "pec-minor", "levator", "scalenes"],
+  "pain": ["between-shoulder-blades", "inner-edge-of-shoulder-blade", "bottom-of-shoulder-blade"],
+  "guides": ["scalenes"],
+  "related": ["/conditions/neck-pain", "/conditions/postural-kyphosis", "/conditions/desk-neck-pain", "/conditions/shoulder-pain", "/conditions/chest-wall-pain", "/treatments/medical-massage", "/muscles/rhomboid-major", "/pain/between-shoulder-blades"],
+  "reviewStatus": "draft"
+}

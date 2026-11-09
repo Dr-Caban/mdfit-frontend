@@ -1,0 +1,64 @@
+{
+  "group": "activities",
+  "slug": "desk-workers",
+  "title": "Desk Worker Neck, Back & Wrist Pain in Sarasota | MD Fit",
+  "h1": "Neck, Back & Wrist Pain for Desk Workers in Sarasota",
+  "description": "Tech neck, headaches, mid-back and low back ache, wrist pain and tight hips from desk work: the muscles involved, MD Fit's approach and realistic fixes.",
+  "about": { "type": "Thing", "name": "Desk work and sedentary occupations" },
+  "lead": "Eight hours at a screen is a sport, just a slow one. The same posture held all day loads the same handful of muscles, and they eventually push back with headaches, a stiff neck, an ache between the shoulder blades, a low back that complains when you stand up and wrists that burn by Friday. None of it needs a new chair first. It needs the body to move differently.",
+  "sections": [
+    {
+      "h2": "What a day of sitting does to the body",
+      "html": "<p>Picture the desk posture: head forward of the shoulders, shoulders rounded toward the keyboard, upper back curved, hips bent to ninety degrees, wrists bent back on the mouse. The muscles at the back of the neck hold up a head that is no longer balanced over the spine. The chest muscles shorten and pull the shoulder blades forward. The hip flexors sit shortened for hours and the glutes switch off. The forearm extensors hold the wrist up for every click. Nothing is injured; everything is tired.</p>"
+    },
+    {
+      "h2": "The usual complaints",
+      "html": "<ul><li><b>Neck pain and \"tech neck\"</b>: stiffness at the back and sides of the neck, worse by late afternoon. See <a href=\"/conditions/desk-neck-pain\">desk neck pain</a> and <a href=\"/conditions/neck-pain\">neck pain</a>.</li><li><b>Headaches</b> that start at the base of the skull and wrap toward the temple or behind the eye. See <a href=\"/conditions/tension-headache\">tension headache</a>.</li><li><b>Burning between the shoulder blades</b> and a rounded upper back. See <a href=\"/conditions/postural-kyphosis\">postural kyphosis</a>.</li><li><b>Low back ache on standing up</b> and a hip that feels stuck. See <a href=\"/conditions/low-back-pain\">low back pain</a>.</li><li><b>Wrist, thumb and forearm pain</b> from the mouse and keyboard. See <a href=\"/conditions/carpal-tunnel-wrist-pain\">wrist pain</a> and <a href=\"/conditions/de-quervains\">De Quervain's</a>.</li></ul>"
+    },
+    {
+      "h2": "Six muscles doing most of the complaining",
+      "html": "<ul><li><a href=\"/muscles/suboccipitals\">Suboccipitals</a>: the tiny muscles at the base of the skull that tilt the head back so you can look at a screen with the head forward. They refer a band of headache that wraps to the forehead and behind the eye and is often mistaken for migraine.</li><li><a href=\"/muscles/upper-trapezius\">Upper trapezius</a>: shrugs the shoulders toward the ears, which is where most people keep them while typing. Refers up the side of the neck and into the temple.</li><li><a href=\"/muscles/levator-scapulae\">Levator scapulae</a>: the \"I slept wrong and can't turn my head\" muscle, overworked by cradling a phone and by a monitor set off to one side. See the <a href=\"/guides/posterior-neck\">posterior neck guide</a>.</li><li><a href=\"/muscles/pectoralis-minor\">Pectoralis minor</a>: pulls the shoulder blades forward into the rounded position and can pinch the nerves that run to the hand, adding tingling that gets blamed on the wrist alone.</li><li><a href=\"/muscles/psoas\">Psoas</a>: the hip flexor that lives shortened in a chair and refers to the low back and front of the hip. See the <a href=\"/guides/iliopsoas\">iliopsoas guide</a>.</li><li><a href=\"/muscles/wrist-extensors\">Wrist extensors</a>: hold the wrist up on the mouse all day and refer to the outside of the elbow and the back of the hand.</li></ul>"
+    },
+    {
+      "h2": "How MD Fit treats desk-related pain",
+      "html": "<p>Dr. Jared starts with the whole picture: where you hurt, when in the day it builds, how your desk is set up and what you do outside of work. He tests neck rotation, shoulder blade control, upper back extension, hip extension and the specific muscles above. Most desk workers have a predictable combination: tight on the front, weak and long on the back, stiff through the middle.</p><p>Treatment is hands-on release of the tight tissues, which gives fast relief but does not last on its own, followed by corrective movements that teach the postural muscles to hold you up again. The homework is short on purpose: a few videos in the free MD Fit app that take two or three minutes and can be done at the desk between meetings. As the pain settles, the plan adds strength for the upper back, glutes and grip so that the body can tolerate the hours it has to sit without protesting.</p>"
+    },
+    {
+      "h2": "Desk changes and movement for this week",
+      "html": "<p>Setup first, because it is free:</p><ul><li>Raise the monitor so the top third is at eye level; laptops need a stand and a separate keyboard.</li><li>Bring the mouse in next to the keyboard so the arm is not reaching.</li><li>Set the chair so the hips are level with or slightly above the knees.</li></ul><p>Then movement, because setup alone is not enough:</p><ol><li>Every thirty minutes, stand up. Thirty seconds is fine.</li><li>Three times a day: ten chin tucks, ten shoulder-blade squeezes, one doorway chest stretch for thirty seconds each side.</li><li>Once a day: a half-kneeling hip flexor stretch with the glute squeezed, one minute per side.</li><li>Walk at lunch, even ten minutes; Sarasota's winter weather makes this easy.</li></ol>"
+    },
+    {
+      "h2": "When to get checked",
+      "html": "<p>Book an assessment if neck or back pain is present most days for more than a few weeks, if headaches are becoming more frequent, if you have tingling or numbness in the hand or arm, if pain now wakes you at night, or if you have tried the setup changes above for a month and nothing has shifted.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "A sudden, severe headache unlike any you have had before, or a headache with fever, a stiff neck and confusion: call 911.",
+    "Numbness, tingling or weakness in the hand or arm that does not change with position or persists for days.",
+    "Neck pain after a car accident or fall, even a minor one.",
+    "Low back pain with numbness in the groin or any change in bowel or bladder control.",
+    "Chest pain, pressure or pain into the left arm or jaw, which must be treated as cardiac until proven otherwise: call 911."
+  ],
+  "faq": [
+    { "q": "Will a standing desk fix my back pain?", "a": "It helps some people, mainly because it forces a change of position. Standing still for eight hours has its own problems. The best desk is the one you move away from regularly." },
+    { "q": "Why do I get headaches at work but not on weekends?", "a": "Commonly the suboccipital and upper trapezius muscles, loaded by hours of forward head posture and screen focus, refer pain into the head. The pattern often eases when the neck muscles are released and the posture that loads them is corrected." },
+    { "q": "Is my wrist pain carpal tunnel?", "a": "Sometimes, but wrist and hand symptoms in desk workers are often driven partly by tight forearm muscles and by chest and neck muscles compressing nerves higher up. The assessment sorts out where the pressure actually is." }
+  ],
+  "muscles": ["suboccipitals", "upper-trap", "levator", "pec-minor", "psoas", "wrist-ext"],
+  "pain": ["base-of-skull", "where-neck-meets-shoulder", "between-shoulder-blades", "back-of-wrist"],
+  "guides": ["posterior-neck", "iliopsoas", "scalenes"],
+  "related": [
+    "/conditions/desk-neck-pain",
+    "/conditions/tension-headache",
+    "/conditions/postural-kyphosis",
+    "/conditions/neck-pain",
+    "/conditions/low-back-pain",
+    "/conditions/carpal-tunnel-wrist-pain",
+    "/conditions/de-quervains",
+    "/treatments/medical-massage"
+  ],
+  "programs": ["shoulder-6", "posterior-chain-6"],
+  "reviewStatus": "draft"
+}

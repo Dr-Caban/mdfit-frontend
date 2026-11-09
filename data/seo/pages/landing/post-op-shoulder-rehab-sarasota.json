@@ -1,0 +1,97 @@
+{
+  "group": "landing",
+  "slug": "post-op-shoulder-rehab-sarasota",
+  "title": "Post-Op Shoulder Rehab in Sarasota | MD Fit",
+  "h1": "Post-Op Shoulder Rehab in Sarasota",
+  "description": "After rotator cuff or labrum surgery, rehab decides how fully you get back. MD Fit's post-op shoulder care in Sarasota follows your surgeon's protocol.",
+  "about": {
+    "type": "Thing",
+    "name": "Post-operative shoulder rehabilitation"
+  },
+  "lead": "After rotator cuff or labrum surgery, structured rehab determines how fully you get back. MD Fit's post-op shoulder care in Sarasota is led by Dr. Jared Caban, MD, MSc, CEP, and runs in three phases inside your surgeon's protocol: protect the repair, restore range, then rebuild strength and control.",
+  "sections": [
+    {
+      "h2": "Who this is for",
+      "html": "<ul><li><b><a href=\"/conditions/rotator-cuff-repair-rehab\">Rotator cuff repair</a></b>, where the repaired tendon must not be loaded until it has healed to bone, and where stiffness afterward is the main thing to prevent.</li><li><b>Labrum repair</b> (SLAP or Bankart), with rotation limits that protect the stitched cartilage rim.</li><li><b>Shoulder stabilization after dislocation</b>, with a long ban on the positions that caused the dislocation.</li><li><b>Frozen shoulder</b> after manipulation under anesthesia or capsular release, where the job is to keep the hard-won range.</li><li><b>Shoulder replacement</b>, with subscapularis-protection rules in the early weeks.</li></ul><p>The three phases are the same in shape for all of them. What differs is the calendar, and your surgeon sets it.</p>"
+    },
+    {
+      "h2": "The surgeon's protocol sets the calendar",
+      "html": "<p>Your surgeon's post-operative protocol decides when the sling comes off, how far the arm may be moved passively, when you may move it yourself, when you may lift anything and when strengthening begins. Those dates depend on the size of the tear, the quality of the tissue and what was done, which only the surgeon knows. Bring the protocol to the first visit or have the office send it. Dr. Jared works strictly inside it, calls the office when something is unclear and never advances a phase early because the shoulder feels good. A repair that is pushed early can fail silently; a shoulder that is under-worked gets stiff. Rehab is the balance between those two, drawn by the surgeon's timeline.</p>"
+    },
+    {
+      "h2": "Phase 1: protect the repair",
+      "html": "<p>While the repair heals, the work is everything around it. Hands-on release of the muscles that clench after surgery, especially the <a href=\"/muscles/upper-trapezius\">upper trapezius</a> and <a href=\"/muscles/scalenes\">scalenes</a>, which hike the shoulder toward the ear in the sling and refer pain into the neck, head and down the arm. Passive and pendulum range as permitted. Elbow, wrist and hand work so the arm does not waste. Scapular setting and the shoulders-down posture habit that the rest of the plan is built on. Sleep positioning and sling fit are sorted out here too, because poor sleep in the first weeks is the complaint we hear most.</p>"
+    },
+    {
+      "h2": "Phase 2: restore range",
+      "html": "<p>When the protocol allows active movement, the goal becomes full, pain-tolerable range without the shoulder shrugging to get there. The <a href=\"/muscles/infraspinatus\">infraspinatus</a> and <a href=\"/muscles/subscapularis\">subscapularis</a> are released as they let go of their guarding, because a tight subscapularis can mimic a frozen shoulder and a tight infraspinatus makes reaching behind the back and sleeping on that side impossible. Early rotator cuff control starts here as the surgeon permits: internal and external rotation with the elbow pinned to the ribs, very light or no resistance, the shoulder staying down. Posture and scapular work continue daily in the app.</p>"
+    },
+    {
+      "h2": "Phase 3: rebuild strength and control",
+      "html": "<p>Once strengthening is cleared, the plan draws on MD Fit's six-week <b>Shoulder, Neck, Trap and Scalene Protocol</b>: Eccentric Dumbbell Shrug Drops to teach the shoulder to live low under load, Farmer Carries for postural endurance, Rotator Cuff Rotation at the side and then in abduction with holds at end range, and in the final weeks Kneeling Straight-Arm Cable Pulldowns and Bear Crawls to integrate the <a href=\"/muscles/lower-trapezius\">lower trapezius</a> and <a href=\"/muscles/supraspinatus\">supraspinatus</a> into real movement. Loads are scaled to your repair. Return to golf, pickleball, swimming or overhead lifting is built in at the end with sport-specific patterns, timed with your surgeon.</p>"
+    },
+    {
+      "h2": "Between visits: the free app",
+      "html": "<p>Every exercise is assigned as a video in the MD Fit app, with the day's dose and the one cue that matters. The protocol's single rule, shoulders lightly pulled down into the pockets all day, is reinforced with reminders because it is the habit that keeps pain from coming back once the repair has healed. Follow-up visits are $150, usually weekly early in Phase 1 and 2, then spaced out as the homework carries more of the load.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Fever, spreading redness or drainage from the incision: call your surgeon's office the same day.",
+    "Chest pain or sudden shortness of breath after surgery: call 911.",
+    "A sudden pop, a new loss of strength or a return of the pre-surgery instability should be reported to your surgeon before continuing rehab.",
+    "New numbness, tingling or color change in the hand, or swelling of the whole arm, needs prompt medical assessment.",
+    "Pain that escalates sharply rather than easing over the first weeks is a reason to contact the surgeon, not to push through."
+  ],
+  "faq": [
+    {
+      "q": "When should I start?",
+      "a": "As soon as your surgeon clears you, usually within the first weeks after surgery for Phase 1 work. Early visits focus on the neck, shoulder blade and sling comfort while the repair is protected."
+    },
+    {
+      "q": "Will you move my arm further than my surgeon allows?",
+      "a": "No. The surgeon's protocol sets the range and loading limits for each phase. We work to the edge of what is permitted, never past it, and we call the office if anything is unclear."
+    },
+    {
+      "q": "Why does my neck hurt more than my shoulder?",
+      "a": "Weeks in a sling with the shoulder hiked toward the ear overload the upper trapezius and scalenes, which refer pain into the neck, head and arm. Releasing them is a Phase 1 priority."
+    },
+    {
+      "q": "How long until I can play golf or pickleball again?",
+      "a": "That depends on your surgery and your surgeon's timeline, often several months for a rotator cuff repair. The final phase of the plan builds the sport-specific movement so you are ready when the clearance comes."
+    }
+  ],
+  "muscles": [
+    "supraspinatus",
+    "infraspinatus",
+    "subscapularis",
+    "scalenes",
+    "upper-trap",
+    "lower-trap"
+  ],
+  "pain": [
+    "front-of-shoulder",
+    "deep-shoulder-joint",
+    "outside-of-shoulder",
+    "top-of-shoulder"
+  ],
+  "guides": [
+    "rotator-cuff",
+    "scalenes"
+  ],
+  "related": [
+    "/conditions/rotator-cuff-repair-rehab",
+    "/conditions/rotator-cuff-tear",
+    "/conditions/frozen-shoulder",
+    "/conditions/shoulder-impingement",
+    "/conditions/post-surgical-rehab",
+    "/treatments/post-op-rehab-timelines",
+    "/activities/swimming",
+    "/post-op-knee-rehab-sarasota"
+  ],
+  "programs": [
+    "shoulder-6"
+  ],
+  "reviewStatus": "draft"
+}

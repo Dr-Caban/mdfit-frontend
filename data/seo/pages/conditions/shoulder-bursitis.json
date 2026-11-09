@@ -1,0 +1,83 @@
+{
+  "group": "conditions",
+  "slug": "shoulder-bursitis",
+  "title": "Shoulder Bursitis Treatment in Sarasota, FL | MD Fit",
+  "h1": "Shoulder Bursitis Treatment in Sarasota, FL",
+  "description": "Shoulder bursitis is an inflamed cushion under the bony roof of the shoulder. MD Fit in Sarasota calms it and fixes the mechanics that keep squeezing it.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Subacromial bursitis"
+  },
+  "lead": "The bursa is a thin fluid-filled cushion that lets the rotator cuff tendons slide under the bony roof of the shoulder. When it is irritated it swells, and a swollen bursa in a tight space hurts with almost every arm movement. Treating the inflammation matters; stopping the squeeze that caused it matters more.",
+  "sections": [
+    {
+      "h2": "What shoulder bursitis feels like",
+      "html": "<p>Bursitis tends to be a hotter, more constant ache than plain impingement. The outside and top of the shoulder throb at rest, especially at night, and the pain can wake you whichever way you lie. Lifting the arm out to the side or forward hurts across a broad range, not just a narrow arc, and even small movements like reaching for a cup can sting. The upper arm often aches down toward the deltoid insertion. Occasionally the shoulder looks slightly puffy at the front or side.</p><p>It can flare after a single overload (a weekend of painting a ceiling, a fall onto the shoulder, moving boxes) or build gradually on top of long-standing rotator cuff irritation. Older adults and people with a forward, rounded posture are more prone to it.</p>"
+    },
+    {
+      "h2": "The muscles behind the squeeze",
+      "html": "<p>A bursa does not inflame itself. Something is compressing it repeatedly, and in the shoulder that is a set of muscular habits:</p><ul><li>The <a href=\"/muscles/supraspinatus\">supraspinatus</a> tendon lies directly under the bursa. When it is swollen, weak or scarred, the bursa gets caught between it and the bony roof on every lift. The two conditions nearly always travel together.</li><li>The <a href=\"/muscles/lateral-deltoid\">lateral deltoid</a> lifts the arm, and when the cuff is not holding the ball down it drives the ball upward into the roof, compressing the bursa.</li><li>The <a href=\"/muscles/upper-trapezius\">upper trapezius</a> shrugs the shoulder instead of letting the blade rotate; the <a href=\"/muscles/lower-trapezius\">lower trapezius</a> should be doing that job and is usually weak.</li><li>The <a href=\"/muscles/pectoralis-minor\">pectoralis minor</a> tips the shoulder blade forward and down, lowering the roof onto the bursa. This is the posture of long hours at a screen.</li><li>The <a href=\"/muscles/subscapularis\">subscapularis</a>, the cuff muscle on the front of the shoulder blade, often becomes tight and shortens the capsule, so the shoulder loses rotation and the bursa gets pinched sooner in the arc.</li></ul>"
+    },
+    {
+      "h2": "How Dr. Jared treats shoulder bursitis",
+      "html": "<p>The first job is to be sure it is a mechanical bursitis and not an infected or crystal (gout-type) bursitis, which needs a physician urgently; the red flags below describe the difference. Dr. Jared Caban then examines how the shoulder blade moves, how strong the cuff is, where the tenderness sits and how much irritability the shoulder has. A very irritable bursa is handled gently in the early visits.</p><p>Early treatment is about decompression: hands-on release of the pectoralis minor, upper trapezius, subscapularis and lateral deltoid so the ball drops back and the roof lifts, plus advice on positions and sleep that stop the constant squeeze. As the inflammation settles, the work shifts to the same corrective program that fixes <a href=\"/conditions/shoulder-impingement\">impingement</a>: shoulder blade control, rotator cuff strength and a return to overhead tasks in stages. Homework in the free MD Fit app is short and matched to how irritable the shoulder is that week.</p>"
+    },
+    {
+      "h2": "What you can do today",
+      "html": "<ol><li><b>Protect it from repeated small insults.</b> For a week or two, keep the elbow below shoulder height and close to the body when you reach, and avoid leaning on that elbow.</li><li><b>Use ice or a cool pack</b> on the outside of the shoulder for short periods if it is hot and throbbing, especially before bed.</li><li><b>Change the sleep setup.</b> Lie on the other side with a pillow hugged in front to support the sore arm, or on your back with a pillow under the elbow so the arm does not hang.</li><li><b>Keep the rest of the arm moving.</b> Gentle pendulum swings and elbow, wrist and hand movement keep the shoulder from stiffening while the bursa calms.</li></ol>"
+    },
+    {
+      "h2": "What else looks like bursitis",
+      "html": "<ul><li><b>Rotator cuff tendinopathy or tear</b>: the usual companion. Weakness lifting or rotating the arm points toward a tear. See <a href=\"/conditions/rotator-cuff-tear\">rotator cuff tear</a>.</li><li><b>Calcific tendinitis</b>: a calcium deposit in the supraspinatus tendon that can cause sudden, severe shoulder pain; an X-ray shows it.</li><li><b>Frozen shoulder</b>: progressive stiffness in all directions, worst for reaching behind the back and rotating outward. See <a href=\"/conditions/frozen-shoulder\">frozen shoulder</a>.</li><li><b>Septic (infected) bursitis</b>: a hot, red, swollen shoulder, often with fever, needing urgent medical care.</li><li><b>Inflammatory arthritis or polymyalgia</b>: both shoulders aching and stiff in the morning, often with the hips, in older adults; this needs a physician and blood work.</li><li><b>Neck referral</b>: pain that changes with head position or comes with tingling in the hand.</li></ul>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "A hot, red, visibly swollen shoulder, especially with fever or chills, which can mean an infected bursa or joint and needs same-day medical care.",
+    "Inability to lift the arm at all after a fall, or a visible deformity of the shoulder or collarbone.",
+    "Severe, constant pain that is not changed by any position and is worsening, particularly with unexplained weight loss or a history of cancer.",
+    "Numbness, tingling or weakness in the arm or hand.",
+    "Shoulder pain with chest pressure, shortness of breath, sweating or nausea: call 911."
+  ],
+  "faq": [
+    {
+      "q": "What is the difference between bursitis and impingement?",
+      "a": "Impingement is the pinching mechanism; bursitis is the inflamed cushion that results when the pinching goes on long enough or a single overload sets it off. Most bursitis is treated by fixing the impingement mechanics once the inflammation calms."
+    },
+    {
+      "q": "Do I need a cortisone injection?",
+      "a": "Some people get useful relief from one when the bursa is very irritable and blocking rehab; that is a decision with your physician. It treats the inflammation, not the mechanics, so we pair it with the corrective work."
+    },
+    {
+      "q": "Should I move the shoulder or rest it?",
+      "a": "Both, in balance. Avoid the overhead and reaching tasks that provoke it for a short time, but keep the shoulder gently moving every day so it does not stiffen into a frozen shoulder."
+    }
+  ],
+  "muscles": [
+    "supraspinatus",
+    "lat-delt",
+    "upper-trap",
+    "lower-trap",
+    "pec-minor",
+    "subscapularis"
+  ],
+  "pain": [
+    "outside-of-shoulder",
+    "top-of-shoulder",
+    "deep-shoulder-joint"
+  ],
+  "guides": [
+    "rotator-cuff"
+  ],
+  "related": [
+    "/conditions/shoulder-impingement",
+    "/conditions/shoulder-pain",
+    "/conditions/rotator-cuff-tear",
+    "/conditions/frozen-shoulder",
+    "/treatments/medical-massage",
+    "/muscles/supraspinatus",
+    "/pain/outside-of-shoulder"
+  ],
+  "reviewStatus": "draft"
+}
