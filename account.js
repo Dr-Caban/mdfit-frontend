@@ -1161,6 +1161,7 @@
 
   async function loadAppointments() {
     appts = await apiAuth("GET", "/api/me/appointments");
+    if (typeof renderPatient === "function") renderPatient();
     $("#p-appts").innerHTML = appts.upcoming.map((a) => apptLi(a, { cancel: true, cal: true })).join("") ||
       `<li class="muted small">No visits booked. <button type="button" class="link" id="p-book-empty">Book one</button></li>`;
     $("#p-history").innerHTML = appts.past.slice(0, 20).map((a) => apptLi(a)).join("") || `<li class="muted small">Past visits show up here.</li>`;
@@ -2464,9 +2465,19 @@
     if (payOn && C && $("#tier-grid") && $("#tier-grid").innerHTML) renderPremium().catch(() => {});
   }).catch(() => {});
   if (new URLSearchParams(location.search).get("checkout") === "success") {
+    const sid = new URLSearchParams(location.search).get("session_id");
     toast("Payment received. Thank you! Your account updates in a moment.");
     history.replaceState(null, "", "/account" + location.hash);
-    setTimeout(() => apiAuth("GET", "/api/me/access").then((a) => { access = a; renderAccessBadge(); loadContent().then(() => renderContent("premium")); }).catch(() => {}), 4000);
+    // Confirm with the server right away (it asks Stripe about this checkout), so the membership shows without
+    // waiting for Stripe's webhook; then reload what depends on it.
+    const refresh = async () => {
+      try { const r = await apiAuth("GET", "/api/me"); client = r.client; auth.set({ ...auth.get(), client }); renderProfile(); } catch {}
+      try { access = await apiAuth("GET", "/api/me/access"); renderAccessBadge(); } catch {}
+      await loadContent().catch(() => {}); renderContent("premium"); renderPayments().catch(() => {});
+    };
+    (sid ? apiAuth("POST", "/api/me/checkout/confirm", { session_id: sid }).catch(() => null) : Promise.resolve(null))
+      .then((r) => { if (r && r.paid && r.membership) toast("You're a member now. Welcome!"); return refresh(); })
+      .then(() => setTimeout(refresh, 6000));
   }
   async function renderPayments() {
     const host = $("#my-payments"); if (!host) return;
@@ -2478,7 +2489,10 @@
   }
   document.addEventListener("click", async (e) => {
     if (!e.target.closest("#manage-billing")) return;
-    try { location.href = (await apiAuth("POST", "/api/me/billing-portal", {})).url; } catch (err) { toast(err.message); }
+    try {
+      const r = await apiAuth("POST", "/api/me/billing-portal", { ui: window.MDFitNative ? "app" : "web" });
+      if (window.MDFitNative) window.MDFitNative.checkout(r.url, "billing"); else location.href = r.url;
+    } catch (err) { toast(err.message); }
   });
   $("#tier-grid").addEventListener("click", async (e) => {
     const b = e.target.closest("[data-tier]"); if (!b) return;
@@ -2488,8 +2502,10 @@
       // Stripe's own checkout, mounted inside MD Fit (no trip to another site); Apple Pay / Google Pay / Link / card
       const label = b.textContent; b.textContent = "Opening secure checkout…";
       try {
-        const r = await apiAuth("POST", "/api/me/checkout/membership", { tier: t.id, ui: "embedded", rewardCode: access.reviewCode || store.get("mdfit_review_code", null) || undefined });
-        if (r.clientSecret && window.MDFitStripe) {
+        // In the MD Fit app, Stripe's page opens in a native sheet so Apple Pay / Google Pay are available
+        const r = await apiAuth("POST", "/api/me/checkout/membership", { tier: t.id, ui: window.MDFitNative ? "app" : "embedded", rewardCode: access.reviewCode || store.get("mdfit_review_code", null) || undefined });
+        if (r.url && window.MDFitNative) { window.MDFitNative.checkout(r.url, "membership"); }
+        else if (r.clientSecret && window.MDFitStripe) {
           try { await window.MDFitStripe.open({ clientSecret: r.clientSecret, publishableKey: stripePub }); }
           catch { try { window.MDFitStripe.close(); } catch {} throw new Error("Secure checkout couldn't load. Check your connection or ad blocker and try again, or call 941-313-0562."); }
         } else if (r.url) location.href = r.url;
@@ -2769,16 +2785,39 @@
   $("#cal-next").addEventListener("click", () => { calMonth = monthAdd(calMonth, 1); renderCalendar(); });
 
   // ================= Become a patient: intake documents kept on file with the account (filled at /intake?me=1)
-  function loadPatientDocs() {
-    apiAuth("GET", "/api/me/intake").then((p) => {
-      // The card appears on the Profile, as a slim line on Home and at the bottom of the Pain tool: same state everywhere
-      for (const card of $$(".patient-card")) {
-        card.classList.toggle("done", p.done);
-        const set = (sel, t) => { const el = $(sel, card); if (el) el.textContent = t; };
-        if (p.done) { set(".pc-title", "Documents on file ✓"); set(".pc-sub", "Your intake documents are on file for every visit."); set(".pc-go", "Update documents"); }
-        else if (p.completed) { set(".pc-title", "Become a patient"); set(".pc-sub", `${p.completed} of ${p.total} intake documents complete.`); set(".pc-go", "Continue ›"); }
+  let patientDocs = null;
+  function renderPatient() {
+    const p = patientDocs; if (!p) return;
+    // Full cards on the Profile and at the bottom of the Pain tool: same state everywhere
+    for (const card of $$(".patient-card:not(#patient-urgent)")) {
+      card.classList.toggle("done", p.done);
+      const set = (sel, t) => { const el = $(sel, card); if (el) el.textContent = t; };
+      if (p.done) { set(".pc-title", "Documents on file ✓"); set(".pc-sub", "Your intake documents are on file for every visit."); set(".pc-go", "Update documents"); }
+      else if (p.completed) { set(".pc-title", "Become a patient"); set(".pc-sub", `${p.completed} of ${p.total} intake documents complete.`); set(".pc-go", "Continue ›"); }
+    }
+    // Home: a tile in Quick actions
+    const tile = $("#patient-tile");
+    if (tile) {
+      tile.classList.toggle("done", p.done);
+      if (p.done) { $("#pt-title").textContent = "Documents on file"; $("#pt-sub").textContent = "Ready for every visit ✓"; }
+      else if (p.completed) { $("#pt-title").textContent = "Finish documents"; $("#pt-sub").textContent = `${p.completed} of ${p.total} done`; }
+      else { $("#pt-title").textContent = "Become a patient"; $("#pt-sub").textContent = "Intake documents"; }
+    }
+    // Home: the big card at the top only when a visit is booked and the documents aren't done (that's when it's urgent)
+    const urgent = $("#patient-urgent");
+    if (urgent) {
+      const t = todayInTz();
+      const visit = !p.done && (appts.upcoming || []).find((a) => a.status !== "cancelled" && a.date >= t);
+      urgent.hidden = !visit;
+      if (visit) {
+        const when = visit.date === t ? "today" : visit.date === addDays(t, 1) ? "tomorrow" : fmtDate(visit.date, { weekday: "long" });
+        $("#pu-sub").textContent = `Your ${visit.typeName || "visit"} is ${when} at ${fmtTime(visit.time)}. The intake documents take about 10 minutes${p.completed ? ` (${p.completed} of ${p.total} done)` : ""}.`;
+        $("#pu-go").textContent = p.completed ? "Continue documents ›" : "Start documents ›";
       }
-    }).catch(() => {});
+    }
+  }
+  function loadPatientDocs() {
+    apiAuth("GET", "/api/me/intake").then((p) => { patientDocs = p; renderPatient(); }).catch(() => {});
   }
 
   // ================= My plans on Home: programs Dr. Jared assigned ("From Dr. Jared") + programs the member saved

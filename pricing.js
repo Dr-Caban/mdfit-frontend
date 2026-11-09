@@ -116,8 +116,8 @@
         if (!me) { location.href = "/login?next=" + encodeURIComponent("/#pricing"); return; }
         buy.disabled = true; buy.textContent = "Opening secure checkout…";
         try {
-          const r = await M.apiAuth("POST", "/api/me/checkout/protocol", { service: state.svc, sessions: state.n, plan: buy.dataset.buy, ui: "embedded" });
-          await openCheckout(r.clientSecret);
+          const r = await M.apiAuth("POST", "/api/me/checkout/protocol", { service: state.svc, sessions: state.n, plan: buy.dataset.buy, ui: window.MDFitNative ? "app" : "embedded" });
+          if (r.url && window.MDFitNative) window.MDFitNative.checkout(r.url, "protocol"); else await openCheckout(r.clientSecret);
         } catch (err) { alert(err.message); }
         buy.disabled = false; buy.textContent = "Start this plan";
         return;
@@ -128,8 +128,8 @@
         if (!me) { location.href = "/login?next=" + encodeURIComponent("/#pricing"); return; }
         pay.disabled = true;
         try {
-          const r = await M.apiAuth("POST", "/api/me/checkout/service", { service: pay.dataset.payService, ui: "embedded" });
-          await openCheckout(r.clientSecret);
+          const r = await M.apiAuth("POST", "/api/me/checkout/service", { service: pay.dataset.payService, ui: window.MDFitNative ? "app" : "embedded" });
+          if (r.url && window.MDFitNative) window.MDFitNative.checkout(r.url, "service"); else await openCheckout(r.clientSecret);
         } catch (err) { alert(err.message); }
         pay.disabled = false;
         return;

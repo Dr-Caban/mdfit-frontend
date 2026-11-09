@@ -19,8 +19,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="app/app.css?v=64dde34c">
-  <link rel="stylesheet" href="account.css?v=d8489231">
+  <link rel="stylesheet" href="app/app.css?v=6cb5340d">
+  <link rel="stylesheet" href="account.css?v=a0c13de8">
   <link rel="stylesheet" href="guides.css?v=704fb203">
 </head>
 <body class="mdapp">
@@ -52,6 +52,12 @@
       <div class="qsearch-results" id="qsearch-results" hidden></div>
 
       <div class="home-grid"><div class="col-main">
+      <!-- Only when a visit is booked and the intake documents aren't finished -->
+      <a class="card patient-card" id="patient-urgent" href="/intake?me=1" hidden>
+        <span class="pc-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zm-1 7V3.5L18.5 9zM8 13h8v2H8zm0 4h5v2H8z"/></svg></span>
+        <span class="pc-txt"><b>Before your visit</b><span id="pu-sub">Please finish your intake documents before your appointment.</span></span>
+        <span class="pc-go" id="pu-go">Finish documents ›</span>
+      </a>
       <div class="card my-plans" id="my-plans" hidden>
         <div id="mp-assigned"></div>
         <div id="mp-saved"></div>
@@ -101,9 +107,9 @@
         <button type="button" class="card q" data-goto="pain"><svg viewBox="0 0 24 24" class="ic orange"><path d="M12 2a2 2 0 1 1-2 2 2 2 0 0 1 2-2zm-3 20v-7H7.5V9a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v6H15v7z"/></svg><b>Pain Tool</b><span>Find relief</span></button>
         <button type="button" class="card q" data-goto="videos"><svg viewBox="0 0 24 24" class="ic purple"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M10 8.5v7l6-3.5z" fill="#fff"/></svg><b>Video Library</b><span id="lib-count">Exercises</span></button>
         <a class="card q" href="/book"><svg viewBox="0 0 24 24" class="ic green"><path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 16H5V9h14zM7 11h2v2H7zm4 0h2v2h-2zm4 0h2v2h-2zm-8 4h2v2H7zm4 0h2v2h-2z"/></svg><b>Book a Visit</b><span>See Dr. Jared</span></a>
+        <a class="card q patient-tile" id="patient-tile" href="/intake?me=1"><svg viewBox="0 0 24 24" class="ic gold"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zm-1 7V3.5L18.5 9zM8 13h8v2H8zm0 4h5v2H8z"/></svg><b id="pt-title">Become a patient</b><span id="pt-sub">Intake documents</span></a>
       </div>
 
-      <a class="card patient-card slim" href="/intake?me=1" aria-label="Become a patient: intake documents"><span class="pc-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zm-1 7V3.5L18.5 9zM8 13h8v2H8zm0 4h5v2H8z"/></svg></span><span class="pc-txt"><b class="pc-title">Become a patient</b><span class="pc-sub">Intake documents, once, before your first visit.</span></span><span class="pc-go">Start ›</span></a>
       </div><div class="col-side">
       <div class="card featured-progs" id="featured-progs">
         <div class="card-head"><span class="label accent">Dr. Jared's Programs</span><button type="button" class="link-sm" data-goto="programs">See all</button></div>
@@ -721,7 +727,7 @@
   <script src="musclereports.js?v=cd9ced26"></script>
   <script src="guides.js?v=4608523e"></script>
   <script src="stripe-checkout.js?v=087989ec"></script>
-  <script src="account.js?v=a14448fa"></script>
+  <script src="account.js?v=353dccd9"></script>
   <script src="account-xp.js?v=5f3c6968"></script>
   <script src="account-habits.js?v=294905ab"></script>
 <script defer src="/_vercel/insights/script.js"></script>
