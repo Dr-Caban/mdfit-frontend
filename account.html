@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="app/app.css?v=6cb5340d">
-  <link rel="stylesheet" href="account.css?v=c0514bd6">
+  <link rel="stylesheet" href="account.css?v=0b6b0efe">
   <link rel="stylesheet" href="guides.css?v=704fb203">
 </head>
 <body class="mdapp">
@@ -58,6 +58,12 @@
         <span class="pc-txt"><b>Before your visit</b><span id="pu-sub">Please finish your intake documents before your appointment.</span></span>
         <span class="pc-go" id="pu-go">Finish documents ›</span>
       </a>
+      <!-- Patients: notes and movements from Dr. Jared, paid or upcoming video visits -->
+      <div class="card care-card" id="next-card" hidden>
+        <div class="card-head"><span class="label accent">What to do next</span><span class="muted small" id="next-date"></span></div>
+        <p class="muted small care-intro">From Dr. Jared, for you.</p>
+        <div id="next-body"></div>
+      </div>
       <div class="card my-plans" id="my-plans" hidden>
         <div id="mp-assigned"></div>
         <div id="mp-saved"></div>
@@ -478,6 +484,11 @@
 
       <a class="card patient-card" href="/intake?me=1"><span class="pc-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zm-1 7V3.5L18.5 9zM8 13h8v2H8zm0 4h5v2H8z"/></svg></span><span class="pc-txt"><b class="pc-title">Become a patient</b><span class="pc-sub">Fill out your intake documents once, before your first visit. They stay on file for every appointment.</span></span><span class="pc-go">Start intake documents ›</span></a>
 
+      <div class="card care-card" id="p-care" hidden>
+        <div class="card-head"><span class="label accent">My care plan</span><span class="muted small" id="p-care-date"></span></div>
+        <div id="p-care-body"></div>
+      </div>
+
       <div class="card list-card">
         <div class="card-head"><span class="label">My appointments</span><button type="button" class="btn-blue sm" id="p-book-open">Book an evaluation</button></div>
         <ul class="events" id="p-appts"></ul>
@@ -718,7 +729,7 @@
   <script src="musclereports.js?v=cd9ced26"></script>
   <script src="guides.js?v=4608523e"></script>
   <script src="stripe-checkout.js?v=087989ec"></script>
-  <script src="account.js?v=a1a18280"></script>
+  <script src="account.js?v=f0cd91ee"></script>
   <script src="account-xp.js?v=5f3c6968"></script>
   <script src="account-habits.js?v=294905ab"></script>
 <script defer src="/_vercel/insights/script.js"></script>

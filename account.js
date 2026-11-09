@@ -2469,12 +2469,60 @@
     const refresh = async () => {
       try { const r = await apiAuth("GET", "/api/me"); client = r.client; auth.set({ ...auth.get(), client }); renderProfile(); } catch {}
       try { access = await apiAuth("GET", "/api/me/access"); renderAccessBadge(); } catch {}
-      await loadContent().catch(() => {}); renderContent("premium"); renderPayments().catch(() => {});
+      await loadContent().catch(() => {}); renderContent("premium"); renderPayments().catch(() => {}); loadCarePlan();
     };
+    if (new URLSearchParams(location.search).get("kind") === "service") toast("Payment received. Dr. Jared will schedule your video visit and the link will show on Home.");
     (sid ? apiAuth("POST", "/api/me/checkout/confirm", { session_id: sid }).catch(() => null) : Promise.resolve(null))
       .then((r) => { if (r && r.paid && r.membership) toast("You're a member now. Welcome!"); return refresh(); })
       .then(() => setTimeout(refresh, 6000));
   }
+  // ---- Care plan (owner, Nov 2026): what Dr. Jared left for a patient. Notes and prescribed movements (each opens its
+  // video), the video visits they paid for or have coming up, and Stripe buttons to pay for an online evaluation or
+  // follow-up. Shown on Home as "What to do next" and on the Profile as "My care plan"; hidden for non-patients.
+  let carePlan = null;
+  function carePlanHtml() {
+    const ch = carePlan; if (!ch) return "";
+    const money0 = (n) => `$${Number(n).toFixed(Number(n) % 1 ? 2 : 0)}`;
+    const notes = ch.notes.map((n) => `<div class="plan-notes care-note"><span class="muted small">${shortDate(n.at.slice(0, 10))}</span><p>${esc(n.text).replace(/\n/g, "<br>")}</p></div>`).join("");
+    const moves = ch.movements.length ? `<p class="care-sub"><b>Your movements</b> <span class="muted small">tap one to watch it</span></p><ul class="care-moves">${ch.movements.map((m) => {
+      const ex = byId.get(m.videoId);
+      return `<li><button type="button" class="care-move" data-care-video="${esc(m.videoId)}" data-care-name="${esc(m.name)}">${thumbImg(m.videoId)}<span class="cm-txt"><b>${esc(m.name)}</b>${m.dose ? `<span class="cm-dose">${esc(m.dose)}</span>` : ""}${m.cue ? `<span class="cm-cue">${esc(m.cue)}</span>` : ex ? `<span class="muted small">${esc(ex.region)} · ${esc(ex.cat)}</span>` : ""}</span><svg viewBox="0 0 24 24" class="cm-play"><path d="M8 5v14l11-7z"/></svg></button></li>`; }).join("")}</ul>` : "";
+    const paid = ch.paidVisits.map((v) => `<li class="care-visit"><b>${esc(v.name || "Video visit")}</b><span class="muted small">Paid ${shortDate(v.paidAt.slice(0, 10))}. Dr. Jared will schedule it; the video link will show here and under Appointments.</span></li>`).join("");
+    const upcoming = ch.visits.map((v) => `<li class="care-visit"><b>${esc(v.typeName)}</b><span class="muted small">${fmtDate(v.date, { weekday: "long" })} at ${fmtTime(v.time)} · ${v.minutes} min</span>${v.meetingLink ? `<a class="btn-blue sm" href="${esc(v.meetingLink)}" target="_blank" rel="noopener">Join video visit</a>` : ""}</li>`).join("");
+    const pay = ch.patient && !ch.inpatient && ch.services.length ? `<div class="care-pay"><p class="care-sub"><b>Video visits with Dr. Jared</b></p>
+        <div class="care-pay-row">${ch.services.map((s) => `<button type="button" class="${s.id === "eval-remote" ? "btn-gold" : "btn-ghost"} sm" data-pay-service="${esc(s.id)}" ${ch.payOn ? "" : "disabled"}>${esc(s.name.replace(/\s*\(Telehealth\)/i, ""))} · ${money0(s.rate)}</button>`).join("")}</div>
+        <p class="muted small">${ch.payOn ? "Secure payment through Stripe. Dr. Jared then schedules your visit and you get the video link." : "Online payment isn't switched on yet. Call 941-313-0562 to book."}</p></div>` : "";
+    const visits = paid || upcoming ? `<p class="care-sub"><b>Video visits</b></p><ul class="care-visits">${paid}${upcoming}</ul>` : "";
+    const empty = !notes && !moves && !visits ? `<p class="muted">Dr. Jared hasn't left anything here yet. After your visit, your notes and movements will show up here.</p>` : "";
+    return `${notes}${moves}${visits}${empty}${pay}`;
+  }
+  function renderCarePlan() {
+    const ch = carePlan;
+    const show = !!(ch && (ch.patient || ch.notes.length || ch.movements.length || ch.paidVisits.length || ch.visits.length));
+    const html = show ? carePlanHtml() : "";
+    const date = ch && ch.updatedAt ? "Updated " + shortDate(ch.updatedAt.slice(0, 10)) : "";
+    for (const [card, body, dt] of [["#next-card", "#next-body", "#next-date"], ["#p-care", "#p-care-body", "#p-care-date"]]) {
+      const el = $(card); if (!el) continue;
+      el.hidden = !show; if (show) { $(body).innerHTML = html; $(dt).textContent = date; }
+    }
+  }
+  function loadCarePlan() { return apiAuth("GET", "/api/me/chart").then((c) => { carePlan = c; renderCarePlan(); }).catch(() => {}); }
+  document.addEventListener("click", async (e) => {
+    const v = e.target.closest("[data-care-video]");
+    if (v) { const x = byId.get(v.dataset.careVideo); playVideo(v.dataset.careVideo, x ? x.name : v.dataset.careName, x ? exMeta(x) : "Prescribed by Dr. Jared"); return; }
+    const b = e.target.closest("[data-pay-service]"); if (!b || b.disabled) return;
+    b.disabled = true; const label = b.textContent; b.textContent = "Opening secure checkout…";
+    try {
+      const r = await apiAuth("POST", "/api/me/checkout/service", { service: b.dataset.payService, ui: window.MDFitNative ? "app" : "embedded" });
+      if (r.url && window.MDFitNative) { window.MDFitNative.checkout(r.url, "service"); }
+      else if (r.clientSecret && window.MDFitStripe) {
+        try { await window.MDFitStripe.open({ clientSecret: r.clientSecret, publishableKey: stripePub }); }
+        catch { try { window.MDFitStripe.close(); } catch {} throw new Error("Secure checkout couldn't load. Check your connection or ad blocker and try again, or call 941-313-0562."); }
+      } else if (r.url) location.href = r.url;
+    } catch (err) { toast(err.message); }
+    b.disabled = false; b.textContent = label;
+  });
+
   async function renderPayments() {
     const host = $("#my-payments"); if (!host) return;
     pays = await apiAuth("GET", "/api/me/payments").catch(() => null);
@@ -2868,7 +2916,7 @@
     if (wl.status === "fulfilled") allWorkouts = wl.value;
     apiAuth("GET", "/api/me/vitals").then((v) => { vitals = v; renderPerf(); }).catch(() => renderPerf());
     pollUnread();
-    loadPatientDocs();
+    loadPatientDocs(); loadCarePlan();
     apiAuth("GET", "/api/me/access").then((a) => { access = a; renderToday(); renderAccessBadge(); }).catch(() => {});
     loadContent().then(() => { renderFeaturedPrograms(); renderMyPlans(); const t = location.hash.slice(1).split("/"); if (["programs", "learn", "premium", "tips"].includes(t[0])) renderContent(t[0], t[0] === "programs" ? t.slice(1).join("/") : t[1]); });
     if (lb.status === "fulfilled") { lib = lb.value; renderPrograms(); if (!$("#view-videos").hidden) renderVideos(); }
