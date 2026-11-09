@@ -1,6 +1,6 @@
 // Generates the SEO pages from data, then refreshes the site header, sitemap and search index.
 //   node scripts/seo/build.js            (everything)
-//   node scripts/seo/build.js muscles    (one group: muscles | pain | content | hubs)
+//   node scripts/seo/build.js muscles    (one group: muscles | pain | content | national)
 // Sources: painmuscles.js, musclereports.js, paintracks.js, painpatterns.js, app/exercises.js, data/seo/*.json,
 // data/seo/pages/**/*.json (see docs/SEO-CONTENT-SPEC.md). Output: /muscles/*, /pain/*, /activities/*, /conditions/<new>,
 // /blog/<new>, the six landing pages and the three hubs. Re-run after any data change; never edit the output by hand.
@@ -384,7 +384,7 @@ function updateSearchIndex() {
   const syn = {}; for (const [k, vs] of Object.entries(idx.synonyms)) { syn[k] = [k, ...vs]; for (const v of vs) syn[v] = syn[v] || [k, ...vs]; }
   const stop = new Set(idx.stopwords);
   const tok = (s) => (String(s).toLowerCase().match(/[a-z0-9][a-z0-9'-]*/g) || []).filter((t) => !stop.has(t));
-  const KIND_ID = { muscle: "muscle", pain: "pain", condition: "cond", activity: "activity", landing: "landing", blog: "blog", hub: "hub" };
+  const KIND_ID = { muscle: "muscle", pain: "pain", condition: "cond", activity: "activity", landing: "landing", blog: "blog", hub: "hub", exercise: "exercise", program: "program" };
   const keep = idx.items.filter((it) => !generated.some((g) => it.url === g.url));
   const items = generated.map((g) => {
     const tf = {}, add = (t, w) => { for (const x of syn[t] || [t]) tf[x] = (tf[x] || 0) + w; };
@@ -416,10 +416,11 @@ if (want("content")) {
   // The conditions hub points at the three new hubs (idempotent)
   const hubFile = path.join(L.root, "conditions/index.html");
   let hub = fs.readFileSync(hubFile, "utf8");
-  const hubBlock = `<!-- seo:hubs --><p>Not sure what to call it? Start from <a href="/pain/">where it hurts</a>, look up <a href="/muscles/">the muscle</a> behind it, or see what we treat for <a href="/activities/">your sport or stage of life</a>. New to MD Fit? Read <a href="/best-rehab-near-me-sarasota">what to expect from a first visit</a>, or find <a href="/areas/">directions from your town</a>: <a href="/areas/sarasota">Sarasota</a>, <a href="/areas/bradenton">Bradenton</a>, <a href="/areas/lakewood-ranch">Lakewood Ranch</a>, <a href="/areas/venice">Venice</a> and <a href="/areas/osprey">Osprey</a>.</p><!-- /seo:hubs -->`;
+  const hubBlock = `<!-- seo:hubs --><p>Not sure what to call it? Start from <a href="/pain/">where it hurts</a>, look up <a href="/muscles/">the muscle</a> behind it, see what we treat for <a href="/activities/">your sport or stage of life</a>, or browse the <a href="/exercises/">exercise library</a> and <a href="/programs/">week-by-week programs</a>. New to MD Fit? Read <a href="/best-rehab-near-me-sarasota">what to expect from a first visit</a>, or find <a href="/areas/">directions from your town</a>: <a href="/areas/sarasota">Sarasota</a>, <a href="/areas/bradenton">Bradenton</a>, <a href="/areas/lakewood-ranch">Lakewood Ranch</a>, <a href="/areas/venice">Venice</a> and <a href="/areas/osprey">Osprey</a>.</p><!-- /seo:hubs -->`;
   hub = hub.includes("<!-- seo:hubs -->") ? hub.replace(/<!-- seo:hubs -->[\s\S]*?<!-- \/seo:hubs -->/, hubBlock) : hub.replace(/(<p class="cd-lead">[\s\S]*?<\/p>)/, `$1\n    ${hubBlock}`);
   fs.writeFileSync(hubFile, hub);
 }
+if (want("national")) require("./national").build(generated);
 if (!only) {
   execFileSync(process.execPath, [path.join(L.root, "scripts/site-header.js")], { stdio: "inherit" });
   const sm = updateSitemap(), si = updateSearchIndex();
