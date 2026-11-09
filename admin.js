@@ -9,6 +9,7 @@
   const APPT_STATUSES = ["booked", "completed", "no-show", "cancelled"];
   const when = (iso) => new Date(iso).toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
   const fmtTime = (t) => { const [h, m] = t.split(":").map(Number); return `${((h + 11) % 12) + 1}:${String(m).padStart(2, "0")} ${h < 12 ? "AM" : "PM"}`; };
+  const fmtMins = (m) => (m >= 60 ? `${Math.floor(m / 60)}h ${m % 60 ? `${m % 60}m` : ""}`.trim() : `${m}m`);
   const fmtDate = (d) => new Date(d + "T12:00:00Z").toLocaleDateString("en-US", { timeZone: "UTC", weekday: "short", month: "short", day: "numeric" });
 
   const session = {
@@ -630,10 +631,10 @@
     const rows = clientsIn(clientPeriod).filter((c) => !q || [c.name, c.email, c.phone].join(" ").toLowerCase().includes(q));
     // Plain words instead of dashes, and a data-label on every cell so phones can show each client as a labelled card
     const none = (t) => `<span class="muted none">${t}</span>`;
-    const act = (n) => { const v = Number(n) || 0, cls = v >= 20 ? "hi" : v >= 8 ? "mid" : v ? "lo" : ""; return `<span class="act-cell ${cls}"><span class="act-bar"><i style="width:${Math.round((v / 30) * 100)}%"></i></span>${v ? `${v} of 30 days` : none("No activity")}</span>`; };
+    const act = (n, mins) => { const v = Number(n) || 0, cls = v >= 20 ? "hi" : v >= 8 ? "mid" : v ? "lo" : ""; return `<span class="act-cell ${cls}"><span class="act-bar"><i style="width:${Math.round((v / 30) * 100)}%"></i></span>${v ? `${v} of 30 days` : none("No activity")}${mins ? `<span class="muted">${fmtMins(mins)} in app</span>` : ""}</span>`; };
     table($("#clients-table"), ["Client", "Type", "Membership", "Activity (30 days)", "Phone", "Next visit", "Last pain log", "Plan", "Docs", "Joined"], rows.map((c) => `
       <tr data-id="${c.id}" class="click-row"><td data-label="Client" class="c-name"><b>${esc(c.name)}</b><br><span class="muted">${esc(c.email)}</span></td><td data-label="Type"><button type="button" class="badge ctype type-toggle ${c.clientType === "inpatient" ? "in" : "out"}" data-type-toggle="${c.id}" title="Click to switch to ${c.clientType === "inpatient" ? "outpatient" : "inpatient"}" aria-label="${esc(c.name)}: ${c.clientType === "inpatient" ? "Inpatient" : "Outpatient"}. Click to switch.">${c.clientType === "inpatient" ? "Inpatient" : "Outpatient"} <span aria-hidden="true">⇄</span></button></td><td data-label="Membership">${subCell(c)}</td>
-        <td data-label="Activity (30 days)">${act(c.active30)}</td>
+        <td data-label="Activity (30 days)">${act(c.active30, c.minutes30)}</td>
         <td data-label="Phone">${c.phone ? `<a href="tel:${esc(c.phone)}" data-nolink>${esc(c.phone)}</a>` : none("No phone")}</td>
         <td data-label="Next visit">${c.next ? `${fmtDate(c.next.date)} · ${fmtTime(c.next.time)}` : none("Not booked")}</td>
         <td data-label="Last pain log">${c.lastPain ? `${esc(c.lastPain.area)} ${c.lastPain.level}/10 · ${fmtDate(c.lastPain.date)}` : none("None logged")}</td>
@@ -784,13 +785,13 @@
     const months = []; d.days.forEach((x, i) => { if (x.date.endsWith("-01") || i === 0) months.push({ i, label: new Date(x.date + "T12:00:00").toLocaleDateString("en-US", { month: "short" }) }); });
     const bars = d.days.map((x, i) => { const h = x.xp ? Math.max(3, (x.xp / max) * (H - 46)) : (x.active ? 3 : 1);
       const cls = x.qualifying ? "q" : x.active ? "a" : "z";
-      const title = `${fmtDate(x.date)}: ${x.xp} XP${x.workouts ? ` · ${x.workouts} workout${x.workouts === 1 ? "" : "s"}` : ""}${x.pain ? ` · pain check-in` : ""}${x.goal ? ` · goal ${x.goal}${x.qualifying ? " met" : ""}` : ""}`;
+      const title = `${fmtDate(x.date)}: ${x.xp} XP${x.workouts ? ` · ${x.workouts} workout${x.workouts === 1 ? "" : "s"}` : ""}${x.pain ? ` · pain check-in` : ""}${x.minutes ? ` · ${fmtMins(x.minutes)} in app` : x.opened ? " · opened the app" : ""}${x.goal ? ` · goal ${x.goal}${x.qualifying ? " met" : ""}` : ""}`;
       const cx = (pad + i * bw + bw / 2).toFixed(1), r = Math.min(2.6, bw / 3).toFixed(1);
       return `<g class="${cls}"><title>${esc(title)}</title><rect x="${(pad + i * bw).toFixed(1)}" y="${(H - 26 - h).toFixed(1)}" width="${Math.max(1, bw - 1.2).toFixed(1)}" height="${h.toFixed(1)}" rx="1"/>` +
         (x.workouts ? `<circle class="dw" cx="${cx}" cy="${H - 18}" r="${r}"/>` : "") + (x.pain ? `<circle class="dp" cx="${cx}" cy="${H - 10}" r="${r}"/>` : "") + `</g>`; }).join("");
     const labels = months.filter((m, j) => j === 0 || m.i - months[j - 1].i > n / 14).map((m) => `<text x="${(pad + m.i * bw).toFixed(1)}" y="${H - 1}">${m.label}</text>`).join("");
     const g = d.days[n - 1] && d.days[n - 1].goal, goalLine = g ? `<line class="goal" x1="${pad}" x2="${W - pad}" y1="${y(g).toFixed(1)}" y2="${y(g).toFixed(1)}"/>` : "";
-    return `<p class="act-sum"><b>${S.active30}</b> of 30 days active · <b>${S.qualifying30}</b> goal days · <b>${Number(S.xp30).toLocaleString()}</b> XP · <b>${S.workouts30}</b> workouts this month${S.lastActive ? ` · last active ${fmtDate(S.lastActive)}` : " · no activity yet"}${days > 30 ? ` · <b>${S.activeAll}</b> of ${n} days active in this range` : ""}</p>
+    return `<p class="act-sum"><b>${S.active30}</b> of 30 days active · <b>${S.qualifying30}</b> goal days · <b>${Number(S.xp30).toLocaleString()}</b> XP · <b>${S.workouts30}</b> workouts this month${S.lastActive ? ` · last active ${fmtDate(S.lastActive)}` : " · no activity yet"} · <b>${fmtMins(S.minutes30 || 0)}</b> in app this month (${S.opened30 || 0} days opened)${days > 30 ? ` · <b>${S.activeAll}</b> of ${n} days active, <b>${fmtMins(S.minutesAll || 0)}</b> in app in this range` : ""}</p>
       <svg class="act-chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Daily XP for the last ${n} days">${goalLine}${bars}${labels}</svg>
       <p class="act-key muted"><i class="k q"></i>Daily goal met <i class="k a"></i>Active, under goal <i class="k dw"></i>Workout <i class="k dp"></i>Pain check-in <i class="k g"></i>Current daily goal</p>`;
   }
@@ -823,6 +824,7 @@
         ${tile("Active days", `${o.activity ? o.activity.summary.active30 : 0} of 30`, o.activity && o.activity.summary.lastActive ? `last active ${fmtDate(o.activity.summary.lastActive)} · ${o.activity.summary.qualifying30} goal days` : "no activity yet")}
         ${tile("Streak", hb ? `${hb.streak.current} day${hb.streak.current === 1 ? "" : "s"}` : `${ws.streak || 0} days`, hb ? `best ${hb.streak.best} · daily goal ${hb.goal} XP (${esc(hb.goalLevel)}) · today ${hb.todayPoints} XP${hb.qualifyingToday ? " ✓" : ""}` : "")}
         ${tile("Workouts", w.total, `${w.thisMonth} this month · ${ws.hours || 0} h total · best streak ${ws.bestStreak || 0}`)}
+        ${o.time ? tile("Time in app", fmtMins(o.time.last30.minutes), `${o.time.last30.sessions} session${o.time.last30.sessions === 1 ? "" : "s"} · ${o.time.last30.daysOpened} day${o.time.last30.daysOpened === 1 ? "" : "s"} opened · ${o.time.last30.avgMinutesPerDay}m per day${o.time.last30.lastSeenAt ? ` · last seen ${when(o.time.last30.lastSeenAt)}${o.time.last30.lastPlatform ? ` (${o.time.last30.lastPlatform})` : ""}` : ""}${o.time.last30.views.length ? ` · mostly ${esc(o.time.last30.views[0].view)}` : ""}`) : ""}
         ${tile("Pain", pn.last ? `${pn.last.level}/10` : "None logged", pn.last ? `${esc(pn.last.area)} · ${pn.trend ? esc(pn.trend) : fmtDate(pn.last.date)} · ${pn.entries} entries` : "")}
         ${tile("Visits", ap.completed, `${ap.booked} booked · ${ap.noShow} no-show · ${ap.cancelled} cancelled${ap.next ? ` · next ${fmtDate(ap.next.date)} ${fmtTime(ap.next.time)}` : ""}`)}
         ${tile("Documents", dc.complete ? "Complete" : `${dc.done} of ${dc.total}`, dc.complete ? "intake on file" : dc.done ? "in progress" : "not started")}

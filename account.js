@@ -1,6 +1,6 @@
 // MD Fit client app (/account): Home, Generate, Videos, Pain Tool, Profile, plus the workout player.
 (() => {
-  const { $, $$, esc, auth, apiAuth, api, wire, fmtDate, fmtTime, todayInTz, addDays, zonedToUtc, icsStamp, AREAS, loadSite } = window.MDFit;
+  const { $, $$, esc, auth, apiAuth, api, wire, fmtDate, fmtTime, todayInTz, addDays, zonedToUtc, icsStamp, AREAS, loadSite, API } = window.MDFit;
   if (!auth.get()) { location.replace("/login?next=" + encodeURIComponent("/account" + location.hash)); return; }
   // Live updates; the new_message handler is registered once, with the Messages code below.
   if (window.MDFitRT) MDFitRT.connect({ namespace: "/member", token: auth.get().token });
@@ -1911,6 +1911,24 @@
   }
   try { localStorage.removeItem("mdfit_review_code"); } catch {} // retired review-reward codes saved by older app versions
   $("#pw-subscribe").addEventListener("click", () => { $("#paywall").close(); go("premium"); });
+
+  // ================= Time in app: a heartbeat while the app is open (every 60 s, when the tab is hidden, when the page
+  // is left). Only seconds since the last beat, which tab was showing and the platform; nothing about content. Powers
+  // "time in app" in Admin → Clients. fetch keepalive lets the last beat finish while the page closes.
+  (() => {
+    let last = Date.now(), timer = 0;
+    const view = () => (location.hash.slice(1).split("/")[0] || "home").toLowerCase();
+    const send = (seconds) => {
+      const sess = auth.get(); if (!sess || !sess.token) return;
+      const body = JSON.stringify({ seconds: Math.max(0, Math.min(120, seconds)), view: view(), platform: window.MDFitNative ? "ios" : "web" });
+      fetch(API + "/api/me/presence", { method: "POST", keepalive: true, headers: { "content-type": "application/json", authorization: "Bearer " + sess.token }, body }).catch(() => {});
+    };
+    const beat = () => { const now = Date.now(); const secs = Math.round((now - last) / 1000); last = now; if (secs >= 1) send(secs); };
+    const start = () => { last = Date.now(); clearInterval(timer); timer = setInterval(beat, 60000); };
+    document.addEventListener("visibilitychange", () => { if (document.hidden) { beat(); clearInterval(timer); } else start(); });
+    window.addEventListener("pagehide", beat);
+    start(); send(0); // opening the app starts a session even if it's closed within the minute
+  })();
 
   // ================= Member content: programs, lectures + live Q&A, membership & 1-on-1, health tips
   let C = null, contentLoading = null;
