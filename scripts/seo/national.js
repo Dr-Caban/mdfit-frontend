@@ -126,10 +126,14 @@ ${GROUPS.map(groupBlock).join("\n")}
 // ---------- Program pages (N12): public summary + week-1 preview; the full program stays in the app
 const plain = (s) => String(s || "").replace(/\s+/g, " ").trim();
 const tc = (s) => /[a-z]/.test(s) ? s : s.toLowerCase().replace(/\b([a-z])/g, (m) => m.toUpperCase());
+const dataGaps = [];
 function buildProgram(id, meta, p) {
   const url = `/programs/${id}`;
   const name = meta.title || tc(p.title);
-  const weeks = (p.weeks || []).length;
+  // the title is the program's real length; some data files are missing weeks (flagged by the build)
+  const titled = Number((String(meta.title || p.title).match(/(\d+)[- ]Week/i) || [])[1]) || 0;
+  const weeks = titled || (p.weeks || []).length;
+  if (titled && titled !== (p.weeks || []).length) dataGaps.push(`${id}: title says ${titled} weeks, data has ${(p.weeks || []).length}`);
   const title = [`${name} | MD Fit`, `${name.replace(/^\d+-Week /, "")} Program | MD Fit`, `${name.slice(0, 50).replace(/\s+\S*$/, "")} | MD Fit`].find((t) => t.length <= 60);
   const w1 = (p.weeks || [])[0] || {};
   const ov = ((p.progression || {}).overview || []).filter((o) => o.focus || o.title);
@@ -311,6 +315,7 @@ function build(generated) {
   buildPainFinder(generated);
   buildLlms([`- [Pain finder](${SITE}/pain-finder): tap where it hurts to see which muscles commonly cause it`]);
   console.log(`national: exercise groups published ${ex.published.join(", ")}${ex.held.length ? `; held on the hub only (under ${MIN_WORDS} words): ${ex.held.join(", ")}` : ""}`);
+  if (dataGaps.length) console.log(`national: program data gaps (week files missing): ${[...new Set(dataGaps)].join("; ")}`);
   console.log(`national: ${pr.published.length} program pages${pr.held.length ? `; held (under ${MIN_WORDS} words): ${pr.held.join(", ")}` : ""}`);
 }
 module.exports = { build };

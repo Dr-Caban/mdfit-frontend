@@ -110,5 +110,7 @@ Appendices (muscle and pain-location URL lists) are the data files: `data/seo/mu
   pulled until he does. Same for the exercise and program pages in the national PR.
 - **Muscle hub grouping:** `/muscles/` groups by the first pain track a muscle appears in, so a few land in odd sections
   (scalenes under "Chest", vastus lateralis under "Glutes"). Cosmetic; fix `regionOf()` in `build.js` if it matters.
+- **Program data gaps:** some `data/protocols/*.json` files have fewer weeks than their titles (golf 5 of 6, mobility-12 8 of 12,
+  posterior-chain-6 3 of 6; marathon-extension has 13 for a 12-week title). Program pages show the titled length; the build lists the gaps.
 - **Fixed in the national PR:** every generated page's JSON-LD carried a `null` node because `lib.js` only read the first
   JSON-LD block of `index.html` (the Dr. Jared node is in the second).
