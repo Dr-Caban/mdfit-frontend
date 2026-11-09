@@ -4,11 +4,11 @@
 .sh { position: sticky; top: 0; z-index: 1000; padding-top: env(safe-area-inset-top, 0px); background: rgba(10, 26, 46, .96); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
   color: #fff; border-bottom: 1px solid rgba(255, 255, 255, .06); font-family: "Montserrat", system-ui, -apple-system, sans-serif; }
 .sh *, .sh *::before, .sh *::after { box-sizing: border-box; }
-/* Signed-in members: the member app's header (logo + bell) on every page, matching /account Home */
-.sh.sh-app .sh-sub, .sh.sh-app .sh-menu-btn, .sh.sh-app .sh-menu { display: none !important; }
-.sh.sh-app { background: #0A1A2E; -webkit-backdrop-filter: none; backdrop-filter: none; border-bottom: 0; }
-.sh.sh-app .sh-inner { width: 100%; padding: 10px 16px; min-height: 0; }
-.sh.sh-app .sh-brand img { height: 64px; }
+/* Signed-in members keep the full public menu and get the app's notification bell next to it (the menu's
+   "Log in" reads "My account" for them, see common.js). */
+.sh.sh-app .sh-sub { display: none; }
+.sh-bell { margin-left: auto; flex: none; }
+.sh.sh-app .sh-menu-btn { margin-left: 2px; }
 .sh-bell { position: relative; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; color: #fff; }
 .sh-bell svg { width: 24px; height: 24px; fill: currentColor; display: block; }
 .sh-bell-count { position: absolute; top: 2px; right: 0; min-width: 19px; height: 19px; padding: 0 5px; border-radius: 999px; background: #e5484d; color: #fff; font: 700 11px/19px "Montserrat", system-ui, sans-serif; text-align: center; border: 2px solid #0A1A2E; }
