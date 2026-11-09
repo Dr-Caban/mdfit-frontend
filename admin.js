@@ -656,7 +656,7 @@
     }
     if (e.target.closest("[data-sub], [data-nolink]")) return; // the membership picker and the phone link don't open the profile
     const row = e.target.closest("tr[data-id]");
-    if (row) openClient(row.dataset.id);
+    if (row) openOverview(row.dataset.id);
   }));
   // Change a client's subscription right from the list (keeps "paid through" and any Stripe details)
   $("#clients-table").addEventListener("change", run(async (e) => {
@@ -770,12 +770,15 @@
 
   // Activity chart: one bar per day (XP), gold when the daily goal was met, blue when active under the goal; dots for
   // workouts and pain check-ins. Admin can switch 30 days / 90 days / a year.
-  async function loadActivity(id, days) {
-    const box = $("#client-activity"); if (!box || box.dataset.client !== id) return;
+  async function loadActivity(id, days, box = $("#client-activity")) {
+    if (!box || box.dataset.client !== id) return;
     $$(".act-range button", box).forEach((b) => b.setAttribute("aria-selected", String(Number(b.dataset.days) === days)));
     const body = $(".act-body", box); body.className = "act-body muted"; body.textContent = "Loading…";
     let d; try { d = await api("GET", `/api/admin/clients/${id}/activity?days=${days}`); } catch (e) { body.textContent = e.message; return; }
     if (box.dataset.client !== id) return;
+    body.className = "act-body"; body.innerHTML = activityHtml(d, days);
+  }
+  function activityHtml(d, days) {
     const S = d.summary, W = 720, H = 140, pad = 4, n = d.days.length, bw = (W - pad * 2) / n, max = Math.max(50, ...d.days.map((x) => x.xp));
     const y = (v) => H - 26 - (v / max) * (H - 46);
     const months = []; d.days.forEach((x, i) => { if (x.date.endsWith("-01") || i === 0) months.push({ i, label: new Date(x.date + "T12:00:00").toLocaleDateString("en-US", { month: "short" }) }); });
@@ -787,12 +790,69 @@
         (x.workouts ? `<circle class="dw" cx="${cx}" cy="${H - 18}" r="${r}"/>` : "") + (x.pain ? `<circle class="dp" cx="${cx}" cy="${H - 10}" r="${r}"/>` : "") + `</g>`; }).join("");
     const labels = months.filter((m, j) => j === 0 || m.i - months[j - 1].i > n / 14).map((m) => `<text x="${(pad + m.i * bw).toFixed(1)}" y="${H - 1}">${m.label}</text>`).join("");
     const g = d.days[n - 1] && d.days[n - 1].goal, goalLine = g ? `<line class="goal" x1="${pad}" x2="${W - pad}" y1="${y(g).toFixed(1)}" y2="${y(g).toFixed(1)}"/>` : "";
-    body.className = "act-body";
-    body.innerHTML = `<p class="act-sum"><b>${S.active30}</b> of 30 days active · <b>${S.qualifying30}</b> goal days · <b>${Number(S.xp30).toLocaleString()}</b> XP · <b>${S.workouts30}</b> workouts this month${S.lastActive ? ` · last active ${fmtDate(S.lastActive)}` : " · no activity yet"}${days > 30 ? ` · <b>${S.activeAll}</b> of ${n} days active in this range` : ""}</p>
+    return `<p class="act-sum"><b>${S.active30}</b> of 30 days active · <b>${S.qualifying30}</b> goal days · <b>${Number(S.xp30).toLocaleString()}</b> XP · <b>${S.workouts30}</b> workouts this month${S.lastActive ? ` · last active ${fmtDate(S.lastActive)}` : " · no activity yet"}${days > 30 ? ` · <b>${S.activeAll}</b> of ${n} days active in this range` : ""}</p>
       <svg class="act-chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Daily XP for the last ${n} days">${goalLine}${bars}${labels}</svg>
       <p class="act-key muted"><i class="k q"></i>Daily goal met <i class="k a"></i>Active, under goal <i class="k dw"></i>Workout <i class="k dp"></i>Pain check-in <i class="k g"></i>Current daily goal</p>`;
   }
-  document.addEventListener("click", (e) => { const b = e.target.closest("#client-activity [data-days]"); if (b) loadActivity(b.closest("#client-activity").dataset.client, Number(b.dataset.days)); });
+  document.addEventListener("click", (e) => { const b = e.target.closest(".activity-card [data-days]"); if (b) { const card = b.closest(".activity-card"); loadActivity(card.dataset.client, Number(b.dataset.days), card); } });
+
+  // ================= Client overview pop-up: tap a client in the list → everything about them, with an X to close
+  const pop = $("#client-pop");
+  let popId = null;
+  const KIND_NAMES = { program: "Dr. Jared programs", custom: "Built themselves", challenge: "Challenges", normal: "Generated / other" };
+  const pct = (a, b) => (b ? Math.round((a / b) * 100) : 0);
+  const tile = (k, v, sub = "") => `<div class="ov"><span>${k}</span><b>${v}</b>${sub ? `<small>${sub}</small>` : ""}</div>`;
+  const sect = (title, body, extra = "") => `<section class="ov-sect"><h3>${title}${extra ? ` <span class="muted">${extra}</span>` : ""}</h3>${body}</section>`;
+  const list = (rows, empty) => (rows.length ? `<ul class="ov-list">${rows.join("")}</ul>` : `<p class="muted none">${empty}</p>`);
+  async function openOverview(id) {
+    if (!pop) return openClient(id);
+    popId = id;
+    $("#cp-name").textContent = "Loading…"; $("#cp-sub").textContent = ""; $("#cp-body").innerHTML = `<p class="muted">Pulling everything together…</p>`;
+    if (!pop.open) pop.showModal();
+    let o; try { o = await api("GET", `/api/admin/clients/${id}/overview`); } catch (e) { $("#cp-body").innerHTML = `<p class="form-msg err">${esc(e.message)}</p>`; return; }
+    if (popId !== id) return;
+    const c = o.client, m = o.membership, rw = o.rewards, hb = o.habits, w = o.workouts, pr = o.programs, ch = o.challenges, pn = o.pain, ap = o.appointments, dc = o.documents;
+    $("#cp-name").textContent = c.name;
+    $("#cp-sub").innerHTML = `<a href="mailto:${esc(c.email)}">${esc(c.email)}</a>${c.phone ? ` · <a href="tel:${esc(c.phone)}">${esc(c.phone)}</a>` : ""} · ${esc(c.clientType)} · joined ${when(c.createdAt)}${c.lastLoginAt ? ` · last login ${when(c.lastLoginAt)}` : " · never logged in"}`;
+    const memTxt = m ? `${esc(m.tier)}${m.until ? ` · paid through ${fmtDate(m.until)}` : ""}${m.since ? ` · since ${fmtDate(m.since)}` : ""}${m.stripeSubscriptionId ? " · Stripe" : ""}` : o.membershipRequest ? `Free · requested ${esc(o.membershipRequest.tier)}` : "Free account";
+    const ws = w.stats || {};
+    $("#cp-body").innerHTML = `
+      <div class="client-ov ov-tiles">
+        ${tile("Membership", m ? esc(m.tier) : "Free", memTxt)}
+        ${tile("Gem & XP", `<i class="gem-dot" style="background:${esc(rw.gem.color)}" aria-hidden="true"></i>${esc(rw.gem.name)}`, `${Number(rw.xp).toLocaleString()} XP · level ${rw.level}${rw.next ? ` · ${Number(rw.next.xpToNext).toLocaleString()} to ${esc(rw.next.name)}` : ""}${rw.overall ? ` · #${rw.overall.rank} of ${rw.overall.total}${c.hideRank ? " (hidden)" : ""}` : ""}`)}
+        ${tile("Active days", `${o.activity ? o.activity.summary.active30 : 0} of 30`, o.activity && o.activity.summary.lastActive ? `last active ${fmtDate(o.activity.summary.lastActive)} · ${o.activity.summary.qualifying30} goal days` : "no activity yet")}
+        ${tile("Streak", hb ? `${hb.streak.current} day${hb.streak.current === 1 ? "" : "s"}` : `${ws.streak || 0} days`, hb ? `best ${hb.streak.best} · daily goal ${hb.goal} XP (${esc(hb.goalLevel)}) · today ${hb.todayPoints} XP${hb.qualifyingToday ? " ✓" : ""}` : "")}
+        ${tile("Workouts", w.total, `${w.thisMonth} this month · ${ws.hours || 0} h total · best streak ${ws.bestStreak || 0}`)}
+        ${tile("Pain", pn.last ? `${pn.last.level}/10` : "None logged", pn.last ? `${esc(pn.last.area)} · ${pn.trend ? esc(pn.trend) : fmtDate(pn.last.date)} · ${pn.entries} entries` : "")}
+        ${tile("Visits", ap.completed, `${ap.booked} booked · ${ap.noShow} no-show · ${ap.cancelled} cancelled${ap.next ? ` · next ${fmtDate(ap.next.date)} ${fmtTime(ap.next.time)}` : ""}`)}
+        ${tile("Documents", dc.complete ? "Complete" : `${dc.done} of ${dc.total}`, dc.complete ? "intake on file" : dc.done ? "in progress" : "not started")}
+      </div>
+      <section class="card activity-card ov-activity" data-client="${esc(c.id)}">
+        <div class="act-head"><h2>Activity</h2><div class="act-range" role="tablist" aria-label="Range">${[30, 90, 365].map((d) => `<button type="button" role="tab" data-days="${d}" aria-selected="${d === 90}">${d === 365 ? "Year" : d + " days"}</button>`).join("")}</div></div>
+        <div class="act-body">${o.activity ? activityHtml(o.activity, 90) : `<p class="muted">No activity data.</p>`}</div>
+      </section>
+      <div class="ov-cols">
+        ${sect("Workouts by kind", `<ul class="ov-bars">${Object.entries(w.byKind).map(([k, v]) => `<li><span>${KIND_NAMES[k] || k}</span><i><b style="width:${pct(v, w.total)}%"></b></i><em>${v}</em></li>`).join("")}</ul>`, `${w.total} total`)}
+        ${sect("Daily activities (30 days)", hb && hb.top30.length ? `<ul class="ov-bars">${hb.top30.map((h) => `<li><span>${esc(h.name)}</span><i><b style="width:${pct(h.count, 30)}%"></b></i><em>${h.count}</em></li>`).join("")}</ul>` : `<p class="muted none">No activity check-ins in the last 30 days.</p>`, hb ? `${hb.repairs.available} streak repair${hb.repairs.available === 1 ? "" : "s"} available` : "")}
+        ${sect("Recent workouts", list(w.recent.map((x) => `<li><b>${esc(x.title)}</b><span class="muted">${fmtDate(x.date)} · ${x.minutes} min · ${KIND_NAMES[x.kind] || x.kind}</span></li>`), "No workouts logged yet."))}
+        ${sect("Programs", list([
+          ...pr.assigned.map((p) => `<li><b>${esc(p.title)}</b><span class="muted">assigned by Dr. Jared${p.assignedAt ? ` ${fmtDate(String(p.assignedAt).slice(0, 10))}` : ""}${p.progress ? ` · ${p.progress.sessions} session${p.progress.sessions === 1 ? "" : "s"} done${p.progress.lastDate ? `, last ${fmtDate(p.progress.lastDate)}` : ""}` : " · not started"}</span></li>`),
+          ...pr.saved.map((p) => `<li><b>${esc(p.title)}</b><span class="muted">saved to their dashboard</span></li>`),
+          ...pr.builtWorkouts.map((p) => `<li><b>${esc(p.name)}</b><span class="muted">built themselves · ${p.exercises} exercise${p.exercises === 1 ? "" : "s"}</span></li>`)
+        ], "No programs assigned, saved or built yet."), `${pr.assigned.length} assigned · ${pr.saved.length} saved · ${pr.builtWorkouts.length} built · ${o.favorites} favorite video${o.favorites === 1 ? "" : "s"}`)}
+        ${sect("Challenges", list(ch.recent.map((x) => `<li><b>${esc(x.workout)}</b><span class="muted">${x.direction === "sent" ? "sent to" : "from"} ${esc(x.with)} · ${fmtDate(x.date)} · ${x.status === "done" ? "done ✓" : "waiting"}</span></li>`), "No challenges yet."), `${ch.sent} sent (${ch.sentDone} done) · ${ch.received} received (${ch.receivedDone} done)`)}
+        ${sect("Pain log", list(pn.recent.map((x) => `<li><b>${esc(x.area)} ${x.level}/10</b><span class="muted">${fmtDate(x.date)}</span></li>`), "No pain entries."), `${pn.entries} entries`)}
+        ${sect("Appointments", list(ap.recent.map((x) => `<li><b>${esc(x.typeName || "Visit")}</b><span class="muted">${fmtDate(x.date)} ${fmtTime(x.time)} · ${esc(x.status)}</span></li>`), "No appointments yet."))}
+        ${sect("Badges", rw.badges.length ? `<p class="ov-badges">${rw.badges.map((b) => `<span class="badge">${esc(b.title)}</span>`).join(" ")}</p>` : `<p class="muted none">No badges yet.</p>`, `${rw.badges.length} of ${rw.badgesTotal}`)}
+      </div>
+      <p class="muted small ov-foot">Snapshot ${when(o.generatedAt)} · XP and streaks are recomputed from the member's real history.</p>`;
+  }
+  if (pop) {
+    $("#cp-close").addEventListener("click", () => pop.close());
+    $("#cp-open").addEventListener("click", () => { const id = popId; pop.close(); if (id) openClient(id); });
+    pop.addEventListener("click", (e) => { if (e.target === pop) pop.close(); }); // tap the dark backdrop to close
+    pop.addEventListener("close", () => { popId = null; });
+  }
   async function openClient(id) {
     const [c, st, ct, pidx] = await Promise.all([api("GET", `/api/admin/clients/${id}`), api("GET", "/api/admin/settings"), contentCache ? contentCache : api("GET", "/api/admin/content"), loadProtoIdx()]);
     contentCache = ct; c._protoIdx = pidx;
@@ -811,7 +871,7 @@
           <div class="row"><button class="btn btn-sm" type="submit">Save</button><button type="button" class="mini" data-cancel-contact>Cancel</button></div>
           <p class="form-msg" role="status"></p>
         </form></div>
-        <div class="client-actions"><button type="button" class="mini" data-cmsg>Message</button><button type="button" class="mini" data-reset>Send password reset email</button><button type="button" class="mini danger" data-delete>Delete account</button></div></div>
+        <div class="client-actions"><button type="button" class="mini" data-overview>Overview</button><button type="button" class="mini" data-cmsg>Message</button><button type="button" class="mini" data-reset>Send password reset email</button><button type="button" class="mini danger" data-delete>Delete account</button></div></div>
       ${clientOverview(c)}
       <section class="card activity-card" id="client-activity" data-client="${esc(c.id)}">
         <div class="act-head"><h2>Activity</h2><div class="act-range" role="tablist" aria-label="Range">${[30, 90, 365].map((d) => `<button type="button" role="tab" data-days="${d}" aria-selected="${d === 90}">${d === 365 ? "Year" : d + " days"}</button>`).join("")}</div></div>
@@ -842,6 +902,7 @@
 
     $("[data-back]", box).addEventListener("click", run(loadClients));
     $("[data-cmsg]", box).addEventListener("click", run(() => goThread(id)));
+    $("[data-overview]", box).addEventListener("click", () => openOverview(id));
     const cd = $("[data-cdocs]", box);
     if (cd) cd.addEventListener("click", run(async () => { const v = $("#client-docs"); if (!v.hidden) { v.hidden = true; return; } showDocs(v, await api("GET", `/api/admin/clients/${id}/intake`)); }));
     // Pen: edit name / email / phone in place
