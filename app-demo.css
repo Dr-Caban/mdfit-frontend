@@ -107,3 +107,16 @@
   .on .ad-msg { opacity: 1; }
   .on .ad-bar-fill { width: 78%; }
 }
+
+/* Add to Home Screen: the button sits with the section's other actions, the steps open in a small sheet */
+.ad-install { gap: 8px; }
+.ad-install svg { width: 15px; height: 15px; fill: currentColor; }
+.ad-sheet { position: fixed; inset: 0; z-index: 60; background: rgba(10, 26, 46, .62); display: grid; place-items: center; padding: 18px; }
+.ad-sheet[hidden] { display: none; }
+.ad-sheet-box { position: relative; width: min(360px, 100%); background: #fff; color: var(--text); border-radius: 18px; padding: 24px 22px 20px; text-align: center; box-shadow: 0 30px 70px -20px rgba(0, 0, 0, .5); }
+.ad-sheet-x { position: absolute; top: 8px; right: 12px; background: none; border: 0; font-size: 26px; line-height: 1; color: var(--muted); cursor: pointer; }
+.ad-sheet-icon { border-radius: 12px; }
+.ad-sheet-t { font: 700 17px/1.3 var(--display, Georgia, serif); color: var(--heading); margin: 10px 0 12px; }
+.ad-sheet-steps { text-align: left; margin: 0; padding-left: 20px; display: grid; gap: 8px; font-size: 14.5px; line-height: 1.5; }
+.ad-sheet-steps b { color: var(--heading); }
+.ad-sheet-fine { color: var(--muted); font-size: 13px; margin: 14px 0 0; }

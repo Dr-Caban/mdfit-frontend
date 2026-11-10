@@ -36,3 +36,41 @@
 
   show(0);
 })();
+
+// "Add to Home Screen". Chrome hands us an install prompt we can fire on a click; every other browser gets the
+// two or three steps for its own menu. Hidden when the site is already running as an installed app.
+(() => {
+  const btn = document.getElementById("ad-install");
+  const sheet = document.getElementById("ad-sheet");
+  if (!btn || !sheet) return;
+  const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+  if (standalone) return;
+
+  const ua = navigator.userAgent;
+  const iOS = /iphone|ipad|ipod/i.test(ua) || (/mac/i.test(ua) && navigator.maxTouchPoints > 1);
+  const android = /android/i.test(ua);
+  const steps = iOS
+    ? ['Tap the <b>Share</b> button at the bottom of Safari.', 'Scroll down and tap <b>Add to Home Screen</b>.', 'Tap <b>Add</b>.']
+    : android
+    ? ['Tap the <b>\u22EE</b> menu at the top right of Chrome.', 'Tap <b>Install app</b> or <b>Add to Home screen</b>.', 'Tap <b>Install</b>.']
+    : ['Click the <b>install icon</b> in the address bar, or the browser menu.', 'Click <b>Install</b>.'];
+  sheet.querySelector(".ad-sheet-steps").innerHTML = steps.map((s) => `<li>${s}</li>`).join("");
+
+  let prompt = null;
+  addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); prompt = e; });
+  addEventListener("appinstalled", () => { btn.hidden = true; close(); });
+
+  const open = () => { sheet.hidden = false; document.body.style.overflow = "hidden"; sheet.querySelector(".ad-sheet-x").focus(); };
+  function close() { sheet.hidden = true; document.body.style.overflow = ""; }
+  sheet.addEventListener("click", (e) => { if (e.target === sheet || e.target.closest(".ad-sheet-x")) close(); });
+  addEventListener("keydown", (e) => { if (e.key === "Escape" && !sheet.hidden) close(); });
+
+  btn.addEventListener("click", async () => {
+    if (!prompt) return open();
+    prompt.prompt();
+    const { outcome } = await prompt.userChoice.catch(() => ({ outcome: "dismissed" }));
+    if (outcome === "accepted") btn.hidden = true;
+    prompt = null;
+  });
+  btn.hidden = false;
+})();

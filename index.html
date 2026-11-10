@@ -17,10 +17,11 @@
   <meta property="og:url" content="https://www.mymdfit.com/">
   <link rel="icon" href="assets/icon-64.png" type="image/png">
   <link rel="apple-touch-icon" href="assets/logo.webp">
+  <link rel="manifest" href="/manifest.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="app-demo.css?v=5e47d854">
+  <link rel="stylesheet" href="app-demo.css?v=d0a376c6">
   <link rel="stylesheet" href="styles.css?v=45de4d22">
   <link rel="stylesheet" href="guides.css?v=704fb203">
   <script type="application/ld+json">
@@ -143,6 +144,10 @@
           </ul>
           <div class="ad-cta">
             <a class="btn" href="/login">Open the app</a>
+            <button type="button" class="btn btn-ghost ad-install" id="ad-install" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v10.2l3.6-3.6 1.4 1.4-6 6-6-6 1.4-1.4 3.6 3.6V3zM5 19h14v2H5z"/></svg>
+              Add to Home Screen
+            </button>
             <a class="btn btn-ghost" href="#book">Book an evaluation</a>
           </div>
         </div>
@@ -479,6 +484,15 @@
         </div>
       </div>
     </section>
+  <div class="ad-sheet" id="ad-sheet" hidden role="dialog" aria-modal="true" aria-labelledby="ad-sheet-t">
+    <div class="ad-sheet-box">
+      <button type="button" class="ad-sheet-x" aria-label="Close">&times;</button>
+      <img src="/assets/app-icon-192.png" alt="" width="52" height="52" class="ad-sheet-icon">
+      <p class="ad-sheet-t" id="ad-sheet-t">Put MD Fit on your Home Screen</p>
+      <ol class="ad-sheet-steps"></ol>
+      <p class="ad-sheet-fine">It opens full screen, just like an app.</p>
+    </div>
+  </div>
   </main>
 
   <footer class="footer">
@@ -534,7 +548,7 @@
   <script src="painpatterns.js?v=eefa906e"></script>
   <script src="paintracks.js?v=55ce1cb4"></script>
   <script src="guides.js?v=4608523e"></script>
-  <script src="app-demo.js?v=6b98dcdc" defer></script>
+  <script src="app-demo.js?v=c3a2e7bc" defer></script>
   <script src="painmap.js?v=52dd4372"></script>
 <script>if(window.MDFitRT)MDFitRT.connect({namespace:"/public"});</script>
 <script defer src="/_vercel/insights/script.js"></script>
