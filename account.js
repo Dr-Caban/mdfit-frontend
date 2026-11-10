@@ -2031,7 +2031,7 @@
     "Kettlebell Swings": "Kettlebell Swing", "Farmer Carries": "Farmer Carry", "Med Ball Slams": "Med Ball Slam", "Scalene Release": "Standing Scalene Stretch",
     "Rotator Cuff Int/Ext Rotation": "Rotator Cuff External Rotation", "Repeated Shoulder Drop Stretch": "Shoulder Drop Hold",
     "Shoulder Packing Drill": "Floor Slide Scapular Retract", "Scapular Retraction": "Floor Slide Scapular Retract",
-    "Hip Dip (Eccentric Control)": "Table Eccentric Hip Drop", "Standing Hip Dip": "Table Eccentric Hip Drop", "Bridge Holds": "Single Leg Glute Bridge",
+    "Hip Dip (Eccentric Control)": "Hip Dips", "Standing Hip Dip": "Hip Dips", "Bridge Holds": "Single Leg Glute Bridge",
     "Glute Bridge": "Single Leg Glute Bridge", "Single-Leg Glute Bridge": "Single Leg Glute Bridge", "Standing Hip Hinge": "Dowel Hip Hinge",
     "Cat-Camel": "Cat Cow Desk Variation", "Wall-Supported Hip/Glute Activation": "Constant Glute Engagement", "Couch Stretch w/ Glute Engage": "Couch Stretch",
     "Golf Address Posture Hold": "Standing Posture Reset", "Seated Thoracic Rotation": "Thoracic Rotation Seated", "Golf Club Across-Chest Rot": "Thoracic Rotation Seated",
