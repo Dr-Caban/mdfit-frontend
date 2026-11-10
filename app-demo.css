@@ -1,0 +1,109 @@
+/* Animated "there is a real app behind the login" demo. Entirely self-contained: every selector is prefixed .ad-
+   and nothing here restyles an existing class, so the section can be deleted from a page with no side effects.
+   Brand tokens come from styles.css; this file defines no new colours of its own. */
+
+.ad-sec { background: var(--ink); color: #fff; overflow: hidden; }
+.ad-grid { display: grid; gap: 36px; align-items: center; grid-template-columns: 1fr; }
+@media (min-width: 900px) { .ad-grid { grid-template-columns: 1.05fr .95fr; gap: 56px; } }
+
+.ad-copy h2 { color: #fff; margin: 6px 0 12px; }
+.ad-copy .eyebrow { color: var(--accent-bright); }
+.ad-lead { color: #c9d4e2; font-size: 17px; line-height: 1.65; margin: 0 0 20px; }
+.ad-list { list-style: none; padding: 0; margin: 0 0 26px; display: grid; gap: 12px; }
+.ad-list li { display: grid; grid-template-columns: 26px 1fr; gap: 12px; align-items: start; color: #c9d4e2; font-size: 15.5px; line-height: 1.5; }
+.ad-list b { color: #fff; font-weight: 600; }
+.ad-tick { width: 26px; height: 26px; border-radius: 50%; background: rgba(122, 175, 215, .16); display: grid; place-items: center; }
+.ad-tick svg { width: 14px; height: 14px; fill: var(--accent-bright); }
+.ad-cta { display: flex; flex-wrap: wrap; gap: 12px; }
+
+/* ---- phone ---- */
+.ad-stage { display: flex; justify-content: center; }
+.ad-phone { position: relative; width: min(300px, 78vw); aspect-ratio: 300 / 548; border-radius: 42px; padding: 11px;
+  background: linear-gradient(170deg, #26384f, #16253a); box-shadow: 0 40px 80px -30px rgba(0, 0, 0, .75), 0 0 0 1px rgba(255, 255, 255, .07); }
+.ad-screen { position: relative; height: 100%; border-radius: 32px; overflow: hidden; background: var(--cream); color: var(--text);
+  font: 13px/1.45 var(--body, Montserrat, system-ui, sans-serif); }
+.ad-notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 96px; height: 20px; background: #16253a; border-radius: 0 0 14px 14px; z-index: 6; }
+
+.ad-bar { display: flex; align-items: center; justify-content: space-between; padding: 26px 14px 8px; background: var(--ink); color: #fff; }
+.ad-bar b { font-size: 13px; font-weight: 700; letter-spacing: .2px; }
+.ad-bell { width: 16px; height: 16px; fill: #fff; opacity: .85; }
+
+.ad-body { position: relative; height: calc(100% - 54px - 46px); }
+.ad-scene { position: absolute; inset: 0; padding: 12px; opacity: 0; transform: translateY(10px); transition: opacity .45s ease, transform .45s ease; pointer-events: none; }
+.ad-scene.on { opacity: 1; transform: none; }
+
+.ad-h { font: 700 14px/1.3 var(--display, Georgia, serif); color: var(--heading); margin: 2px 0 8px; }
+.ad-card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 10px; margin-bottom: 8px; }
+.ad-muted { color: var(--muted); font-size: 11.5px; }
+.ad-go { display: block; margin-top: 10px; text-align: center; background: var(--accent); color: var(--accent-ink); border-radius: 999px; padding: 9px; font-weight: 700; font-size: 12px; }
+.ad-chip { display: inline-block; background: var(--accent-soft); color: var(--accent-text); border-radius: 999px; padding: 3px 9px; font-size: 10.5px; font-weight: 600; }
+
+/* scene 1: pain map */
+.ad-fig { position: relative; height: 112px; margin: 2px 0 8px; display: grid; place-items: center; }
+.ad-fig svg { height: 100%; }
+.ad-dot { position: absolute; width: 15px; height: 15px; border-radius: 50%; background: #d7191f; opacity: .85; }
+.ad-dot::after { content: ""; position: absolute; inset: -7px; border-radius: 50%; border: 2px solid #d7191f; opacity: 0; }
+.on .ad-dot::after { animation: ad-ping 1.8s ease-out .35s infinite; }
+@keyframes ad-ping { 0% { transform: scale(.5); opacity: .75; } 100% { transform: scale(1.5); opacity: 0; } }
+.ad-row { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-top: 1px solid var(--line); font-size: 12px; }
+.ad-row:first-child { border-top: 0; }
+.ad-rank { width: 18px; height: 18px; border-radius: 50%; background: var(--accent-soft); color: var(--accent-text); display: grid; place-items: center; font-size: 10px; font-weight: 700; }
+
+/* scene 2: workout */
+.ad-ex { display: flex; align-items: center; gap: 8px; padding: 7px 0; border-top: 1px solid var(--line); font-size: 12px; }
+.ad-ex:first-child { border-top: 0; }
+.ad-dose { margin-left: auto; color: var(--muted); font-size: 11px; white-space: nowrap; }
+.ad-thumb { width: 26px; height: 26px; border-radius: 7px; background: var(--accent-soft); display: grid; place-items: center; flex: none; }
+.ad-thumb svg { width: 13px; height: 13px; fill: var(--accent-text); }
+.ad-bar-track { height: 6px; border-radius: 999px; background: var(--line); overflow: hidden; margin-top: 8px; }
+.ad-bar-fill { display: block; height: 100%; width: 0; border-radius: 999px; background: var(--accent-text); }
+.on .ad-bar-fill { animation: ad-fill 2.4s ease-out .3s forwards; }
+@keyframes ad-fill { to { width: 78%; } }
+
+/* scene 3: reward */
+.ad-reward { height: 100%; display: grid; place-content: center; justify-items: center; text-align: center; gap: 8px; }
+.ad-gem { width: 74px; height: 74px; }
+.on .ad-gem { animation: ad-pop .7s cubic-bezier(.2, 1.5, .4, 1) .15s both; }
+@keyframes ad-pop { from { transform: scale(.3) rotate(-18deg); opacity: 0; } to { transform: none; opacity: 1; } }
+.ad-xp { font: 700 26px/1 var(--display, Georgia, serif); color: var(--heading); }
+.on .ad-xp { animation: ad-rise .5s ease-out .5s both; }
+@keyframes ad-rise { from { transform: translateY(8px); opacity: 0; } }
+.ad-spark { position: absolute; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); opacity: 0; }
+.on .ad-spark { animation: ad-spark 1.1s ease-out var(--d, .3s) infinite; }
+@keyframes ad-spark { 0% { opacity: 0; transform: none; } 25% { opacity: 1; } 100% { opacity: 0; transform: translate(var(--x, 18px), var(--y, -22px)); } }
+
+/* scene 4: message */
+.ad-msg { max-width: 82%; padding: 8px 11px; border-radius: 14px; font-size: 12px; margin-bottom: 8px; opacity: 0; }
+.ad-msg.them { background: #fff; border: 1px solid var(--line); border-bottom-left-radius: 5px; }
+.ad-msg.me { background: var(--accent); color: var(--accent-ink); margin-left: auto; border-bottom-right-radius: 5px; }
+.on .ad-msg { animation: ad-in .4s ease-out both; }
+.on .ad-msg:nth-child(1) { animation-delay: .25s; }
+.on .ad-msg:nth-child(2) { animation-delay: 1.1s; }
+.on .ad-msg:nth-child(3) { animation-delay: 2s; }
+@keyframes ad-in { from { opacity: 0; transform: translateY(8px) scale(.96); } to { opacity: 1; transform: none; } }
+.ad-typing { display: inline-flex; gap: 3px; }
+.ad-typing i { width: 5px; height: 5px; border-radius: 50%; background: var(--muted); display: block; }
+.on .ad-typing i { animation: ad-blink 1.1s infinite; }
+.on .ad-typing i:nth-child(2) { animation-delay: .18s; }
+.on .ad-typing i:nth-child(3) { animation-delay: .36s; }
+@keyframes ad-blink { 0%, 60%, 100% { opacity: .25; } 30% { opacity: 1; } }
+
+/* tab bar */
+.ad-tabs { position: absolute; bottom: 0; left: 0; right: 0; height: 46px; display: flex; background: #fff; border-top: 1px solid var(--line); }
+.ad-tab { flex: 1; display: grid; place-items: center; gap: 2px; color: var(--muted); font-size: 8.5px; }
+.ad-tab svg { width: 15px; height: 15px; fill: currentColor; }
+.ad-tab.on { color: var(--accent-text); }
+.ad-tab.on::before { content: ""; position: absolute; top: 0; width: 26px; height: 2px; border-radius: 2px; background: var(--accent); }
+.ad-tab { position: relative; }
+
+/* progress pips under the phone */
+.ad-pips { display: flex; gap: 6px; justify-content: center; margin-top: 18px; }
+.ad-pip { width: 22px; height: 3px; border-radius: 2px; background: rgba(255, 255, 255, .22); border: 0; padding: 0; cursor: pointer; }
+.ad-pip.on { background: var(--accent-bright); }
+
+@media (prefers-reduced-motion: reduce) {
+  .ad-scene { transition: none; }
+  .on .ad-dot::after, .on .ad-bar-fill, .on .ad-gem, .on .ad-xp, .on .ad-spark, .on .ad-msg, .on .ad-typing i { animation: none; }
+  .on .ad-msg { opacity: 1; }
+  .on .ad-bar-fill { width: 78%; }
+}
