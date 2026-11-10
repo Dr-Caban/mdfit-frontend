@@ -7,7 +7,7 @@
 "use strict";
 const fs = require("fs"), path = require("path"), { execFileSync } = require("child_process");
 const L = require("./lib");
-const { esc, attr, data, muscleUrl, painUrl, findExercise, thumb, quote, REVIEW, RATING, RATING_P, BOOK_ROW, CTA, crumbs, breadcrumbLd, faqLd, faqHtml, linkList, stepsHtml, ABOUT_DR, page, webPage, SITE, TODAY } = L;
+const { esc, attr, data, muscleUrl, painUrl, findExercise, thumb, quote, REVIEW, RATING, RATING_P, BOOK_ROW, CTA, withInsuranceFaq, crumbs, breadcrumbLd, faqLd, faqHtml, linkList, stepsHtml, ABOUT_DR, page, webPage, SITE, TODAY } = L;
 
 const { M, AGGRAVATORS, SPOTS, rank, reports, tracks, patterns, slugs, pain, guides } = data;
 const generated = []; // { url, title, kind, snippet, kw, priority, file }
@@ -47,7 +47,7 @@ function buildMuscle(id) {
   const name = m.name, short = shortName(name), locs = painForMuscle(id), folded = foldedForMuscle(id), trk = tracksForMuscle(id);
   const title = [`${short} Pain & Trigger Points | MD Fit`, `${short} Pain & Relief | MD Fit`, `${short} Pain | MD Fit`].find((t) => t.length <= 60);
   const description = `${short}: where it refers pain, symptoms, self-check and Dr. Jared Caban's 3-phase relief plan with free exercise videos. MD Fit, Sarasota FL.`.slice(0, 160);
-  const faq = muscleFaq(id, m, r, locs);
+  const faq = withInsuranceFaq(muscleFaq(id, m, r, locs));
   const neighbors = [...new Set(trk.flatMap((t) => t.pts))].filter((x) => x !== id && M[x]).slice(0, 6);
   const siblings = neighbors.length ? neighbors : Object.keys(M).filter((x) => x !== id && regionOf(x) === regionOf(id)).slice(0, 6);
   const trail = [{ name: "Home", href: "/" }, { name: "Muscles", href: "/muscles/" }, { name: short, href: url }];
@@ -198,7 +198,7 @@ function buildPain(p) {
     { q: `How long does ${shortName(top.name).toLowerCase()} pain usually take to settle?`, a: sentence(rep.expect) },
     { q: `What makes it more likely to be the ${shortName(top.name).toLowerCase()}?`, a: `It is worse with ${top.worse.map((w) => (AGGRAVATORS[w] || w).toLowerCase()).join(", ")}, and pressing into the muscle reproduces the pain you know. ${sentence(top.refers)}` },
     { q: `When should I book instead of working on it myself?`, a: sentence(rep.seePro) }
-  ];
+  ].concat(withInsuranceFaq([]));
   const trail = [{ name: "Home", href: "/" }, { name: "Pain locations", href: "/pain/" }, { name: p.name, href: url }];
   const body = `    ${crumbs(trail)}
     <h1>Pain ${esc(at)}: What's Causing It</h1>
@@ -257,6 +257,7 @@ function buildPainHub() {
     ${Object.entries(byRegion).map(([region, ps]) => `<h2>${esc(region)}</h2>
     <p>${esc(REGION_NOTE[region] || "")}</p>
     <ul class="cd-grid">${ps.map((p) => `<li><a href="${painUrl(p.slug)}"><b>${esc(p.name)}</b><span>${esc(rank(p.spots.map(([a, l]) => spotKey(a, l))).slice(0, 3).map((m) => shortName(m.name)).join(", "))}</span></a></li>`).join("")}</ul>`).join("\n    ")}
+    ${linkList(LANDING, "Local pages")}
     <h2>Covered on condition pages</h2>
     <ul class="cd-links">${Object.entries(pain.folded).map(([k, u]) => `<li><a href="${u}">${esc(k.split("|")[1])}</a></li>`).join("")}</ul>
     ${CTA}`;
@@ -277,6 +278,11 @@ function loadContent() {
   }
   return out;
 }
+const LEGACY_SPORTS = [["/golf-performance-sarasota", "Golf", "Hips, thoracic rotation and the swing."], ["/pickleball-injury-rehab-sarasota", "Pickleball", "Shoulders, elbows, Achilles and knees."], ["/running-injury-sarasota", "Running", "Shins, Achilles, knees and hips."]];
+const LANDING = ["/best-rehab-near-me-sarasota", "/golf-performance-sarasota", "/pickleball-injury-rehab-sarasota", "/post-op-knee-rehab-sarasota", "/post-op-shoulder-rehab-sarasota", "/running-injury-sarasota"];
+const AREAS = ["/areas/sarasota", "/areas/bradenton", "/areas/lakewood-ranch", "/areas/venice", "/areas/osprey"];
+const allConditionUrls = () => fs.readdirSync(path.join(L.root, "conditions")).filter((f) => f.endsWith(".html") && f !== "index.html").map((f) => `/conditions/${f.replace(".html", "")}`).sort();
+let allContent = [];
 function buildContent(p) {
   const g = GROUP[p.group], url = g.dir ? `/${g.dir}/${p.slug}` : `/${p.slug}`;
   const trail = [{ name: "Home", href: "/" }, ...(g.crumb ? [{ name: g.crumb[0], href: g.crumb[1] }] : []), { name: p.h1.replace(/ in Sarasota, FL$/, ""), href: url }];
@@ -297,15 +303,18 @@ function buildContent(p) {
     <ul>${li(p.redFlags)}</ul>
     ${p.guides && p.guides.length ? `<h2>Free guides from Dr. Jared</h2><ul>${p.guides.filter((x) => guides[x]).map((x) => `<li><a href="/guides/${x}">${esc(guides[x])}</a></li>`).join("")}</ul>` : ""}
     ${isBlog ? "" : ABOUT_DR}
-    ${faqHtml(p.faq)}
+    ${faqHtml(isBlog ? p.faq : withInsuranceFaq(p.faq))}
     ${isBlog ? CTA.replace("Ready to get out of pain?", "Want this handled in person?") : CTA}
     ${linkList(locs.map(painUrl), "Where it hurts")}
-    ${linkList(p.related, isBlog ? "Read next" : "Related")}`;
+    ${linkList(p.related, isBlog ? "Read next" : "Related")}
+    ${p.group === "conditions" ? linkList(allConditionUrls().filter((u) => u !== url), "Other conditions we treat") : ""}
+    ${p.group === "activities" ? linkList([...LEGACY_SPORTS.map((x) => x[0]), ...allContent.filter((c) => c.group === "activities" && c.slug !== p.slug).map((c) => `/activities/${c.slug}`)], "Other sports and lifestyles") : ""}
+    ${isBlog ? linkList([...allContent.filter((c) => c.group === "blog" && c.slug !== p.slug).map((c) => `/blog/${c.slug}`), "/blog/what-is-a-cep"], "More from the blog") : ""}`;
   const about = p.about ? { "@type": p.about.type, name: p.about.name } : null;
   const graph = isBlog
     ? [{ "@type": "BlogPosting", "@id": SITE + url, url: SITE + url, headline: p.h1, description: p.description, datePublished: p.datePublished, dateModified: p.dateModified || p.datePublished,
       author: { "@id": `${SITE}/#dr-jared` }, publisher: { "@id": `${SITE}/#clinic` }, mainEntityOfPage: SITE + url, image: `${SITE}/assets/logo.webp` }, faqLd(p.faq), breadcrumbLd(trail)]
-    : [webPage({ url, title: p.title, description: p.description, about }), faqLd(p.faq), breadcrumbLd(trail)];
+    : [webPage({ url, title: p.title, description: p.description, about }), faqLd(withInsuranceFaq(p.faq)), breadcrumbLd(trail)];
   const file = `${g.dir ? g.dir + "/" : ""}${p.slug}.html`;
   L.write(file, page({ url, title: p.title, description: p.description, body, graph, section: g.section }));
   generated.push({ url, title: p.h1.replace(/ in Sarasota, FL$/, ""), kind: p.group === "conditions" ? "condition" : p.group === "activities" ? "activity" : p.group, snippet: p.lead.slice(0, 150), kw: [...(p.sections || []).slice(0, 4).map((s) => s.h2), ...(p.about ? [p.about.name] : [])], priority: p.group === "blog" ? 0.6 : 0.8, file, date: p.datePublished });
@@ -313,15 +322,17 @@ function buildContent(p) {
 }
 function buildActivitiesHub(items) {
   const url = "/activities/", title = "Rehab & Performance by Sport and Lifestyle | MD Fit";
-  const description = "Golf, pickleball, tennis, running, cycling, swimming, lifting, desk work, seniors and snowbirds: the injuries each brings and how MD Fit keeps you moving in Sarasota.";
-  const legacy = [["/golf-performance-sarasota", "Golf", "Hips, thoracic rotation and the swing."], ["/pickleball-injury-rehab-sarasota", "Pickleball", "Shoulders, elbows, Achilles and knees."], ["/running-injury-sarasota", "Running", "Shins, Achilles, knees and hips."]];
+  const description = "Golf, pickleball, tennis, running, cycling, swimming, lifting, desk work, seniors and snowbirds: the injuries each brings and how MD Fit keeps you moving.";
+  const legacy = LEGACY_SPORTS;
   const trail = [{ name: "Home", href: "/" }, { name: "Activities", href: url }];
   const body = `    ${crumbs(trail)}
     <h1>Rehab &amp; Performance by Activity</h1>
     ${RATING_P}
     <p class="cd-lead">Every sport and every stage of life loads the body its own way. These pages cover the pains each one brings, the muscles behind them and how Dr. Jared keeps you doing what you love.</p>
     <ul class="cd-grid">${[...legacy.map(([u, b, s]) => ({ u, b, s })), ...items.map(({ url: u, p }) => ({ u, b: p.h1.replace(/ in Sarasota(, FL)?$/, ""), s: p.lead.split(/(?<=\.)\s/)[0].slice(0, 110) }))].map((x) => `<li><a href="${x.u}"><b>${esc(x.b)}</b><span>${esc(x.s)}</span></a></li>`).join("")}</ul>
-    ${CTA}`;
+    ${CTA}
+    ${linkList(LANDING, "Local pages")}
+    ${linkList(AREAS, "Where our clients come from")}`;
   const graph = [{ "@type": "CollectionPage", url: SITE + url, name: title, description }, breadcrumbLd(trail)];
   L.write("activities/index.html", page({ url, title, description, body, graph, section: "activities" }));
   generated.push({ url, title: "Activities", kind: "hub", snippet: description, kw: ["sports", "golf", "pickleball", "tennis", "running"], priority: 0.8, file: "activities/index.html" });
@@ -395,7 +406,8 @@ if (want("muscles")) { for (const id of Object.keys(M)) buildMuscle(id); buildMu
 if (want("pain")) { for (const p of pain.pages) buildPain(p); buildPainHub(); }
 let content = [];
 if (want("content")) {
-  content = loadContent().map(buildContent);
+  allContent = loadContent();
+  content = allContent.map(buildContent);
   const acts = content.filter((c) => c.p.group === "activities");
   buildActivitiesHub(acts);
   appendToHub("conditions/index.html", content.filter((c) => c.p.group === "conditions").map(({ url, p }) => ({ url, b: p.h1.replace(/ (Treatment |Recovery |Rehab |Relief |Support |Care )?in Sarasota, FL$/, ""), s: p.lead.split(/(?<=\.)\s/)[0].slice(0, 110) })), "conditions");
@@ -404,7 +416,7 @@ if (want("content")) {
   // The conditions hub points at the three new hubs (idempotent)
   const hubFile = path.join(L.root, "conditions/index.html");
   let hub = fs.readFileSync(hubFile, "utf8");
-  const hubBlock = `<!-- seo:hubs --><p>Not sure what to call it? Start from <a href="/pain/">where it hurts</a>, look up <a href="/muscles/">the muscle</a> behind it, or see what we treat for <a href="/activities/">your sport or stage of life</a>.</p><!-- /seo:hubs -->`;
+  const hubBlock = `<!-- seo:hubs --><p>Not sure what to call it? Start from <a href="/pain/">where it hurts</a>, look up <a href="/muscles/">the muscle</a> behind it, or see what we treat for <a href="/activities/">your sport or stage of life</a>. New to MD Fit? Read <a href="/best-rehab-near-me-sarasota">what to expect from a first visit</a>, or find <a href="/areas/">directions from your town</a>: <a href="/areas/sarasota">Sarasota</a>, <a href="/areas/bradenton">Bradenton</a>, <a href="/areas/lakewood-ranch">Lakewood Ranch</a>, <a href="/areas/venice">Venice</a> and <a href="/areas/osprey">Osprey</a>.</p><!-- /seo:hubs -->`;
   hub = hub.includes("<!-- seo:hubs -->") ? hub.replace(/<!-- seo:hubs -->[\s\S]*?<!-- \/seo:hubs -->/, hubBlock) : hub.replace(/(<p class="cd-lead">[\s\S]*?<\/p>)/, `$1\n    ${hubBlock}`);
   fs.writeFileSync(hubFile, hub);
 }
