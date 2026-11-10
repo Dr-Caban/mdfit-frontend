@@ -25,6 +25,10 @@
 .sh-menu .sh-book { opacity: 1; display: inline-flex; align-items: center; justify-content: center; background: #7AAFD7; color: #0A1A2E; border-radius: 999px;
   padding: 9px 16px; font-size: 14px; font-weight: 700; transition: background .15s; }
 .sh-menu .sh-book:hover { background: #8EC0E6; }
+.sh-menu .sh-app { opacity: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; border: 1px solid rgba(142, 192, 230, .5);
+  color: #8EC0E6; border-radius: 999px; padding: 8px 15px; font-weight: 600; font-size: 14px; }
+.sh-menu .sh-app:hover { border-color: #8EC0E6; color: #fff; }
+.sh-app svg { width: 13px; height: 13px; fill: currentColor; }
 .sh-menu-btn { display: none; background: none; border: 0; padding: 10px; margin-right: -10px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .sh-menu-btn span { display: block; width: 24px; height: 2px; background: #fff; margin: 5px 0; border-radius: 2px; transition: transform .2s, opacity .2s; }
 .sh-menu-btn[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
@@ -42,6 +46,7 @@
   .sh-menu.open { display: flex; }
   .sh-menu a { padding: 14px 0; border-bottom: 1px solid #1d3352; font-size: 16px; opacity: 1; }
   .sh-menu a[aria-current="page"] { text-decoration: none; color: #C8A763; }
+  .sh-menu .sh-app { margin-top: 14px; border-radius: 12px; padding: 13px; font-size: 16px; justify-content: center; }
   .sh-menu .sh-book { margin-top: 14px; border: 0; padding: 14px; font-size: 16px; }
 }
 @media (max-width: 360px) { .sh-sub { letter-spacing: 1.2px; } .sh-brand img { height: 54px; } }

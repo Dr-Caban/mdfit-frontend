@@ -29,8 +29,8 @@ function header(rel) {
       <button class="sh-menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="sh-menu"><span></span><span></span><span></span></button>
       <nav class="sh-menu" id="sh-menu" aria-label="Main">
 ${links}
-        <a href="/login" data-account-link>Log in</a>
         <a href="tel:+19413130562" class="sh-phone" data-phone-link>941-313-0562</a>
+        <a href="/login" class="sh-app" data-account-link>Open the app</a>
         <a href="${home ? "#book" : "/book"}" class="sh-book">Book evaluation</a>
       </nav>
     </div>
