@@ -113,19 +113,29 @@
   }
   document.addEventListener("DOMContentLoaded", accountLinks);
 
-  // Video hosting: Cloudinary for every video that has been copied there (list cached on the device), Drive otherwise
+  // Video hosting: Bunny Stream first, then Cloudinary for anything not copied there yet, Drive last
+  // (list cached on the device). An older API answers without a `bunny` field, so every lookup tolerates it missing.
   const VKEY = "mdfit-cdn2";
-  let cdn = (() => { try { const c = JSON.parse(localStorage.getItem(VKEY) || "null"); return c && c.cloud ? c : null; } catch { return null; } })();
+  const usable = (c) => (c && (c.cloud || (c.bunny && c.bunny.host)) ? c : null);
+  let cdn = (() => { try { return usable(JSON.parse(localStorage.getItem(VKEY) || "null")); } catch { return null; } })();
   fetch(API + "/api/videos").then((r) => r.ok ? r.json() : null).then((c) => {
-    if (!c) return; cdn = c.cloud ? { cloud: c.cloud, map: c.map || {} } : null;
+    if (!c) return;
+    cdn = usable({ cloud: c.cloud || "", map: c.map || {}, bunny: { host: (c.bunny && c.bunny.host) || "", map: (c.bunny && c.bunny.map) || {} } });
     try { localStorage.setItem(VKEY, JSON.stringify(cdn)); } catch {}
   }).catch(() => {});
-  const hit = (id) => (cdn && cdn.map && cdn.map[id]) || null;
+  const hit = (id) => (cdn && cdn.cloud && cdn.map && cdn.map[id]) || null;
+  const guid = (id) => (cdn && cdn.bunny && cdn.bunny.host && cdn.bunny.map && cdn.bunny.map[id]) || null;
   const CLD = (kind, t, pid, ver, ext) => `https://res.cloudinary.com/${cdn.cloud}/${kind}/upload/${t}/${ver ? "v" + ver + "/" : ""}${pid.split("/").map(encodeURIComponent).join("/")}${ext ? "." + ext : ""}`;
+  const BUN = (id, file) => `https://${cdn.bunny.host}/${encodeURIComponent(guid(id))}/${file}`;
+  const DRIVE = (id) => `https://drive.usercontent.google.com/download?id=${encodeURIComponent(id)}&export=download&authuser=jaredcaban0nopills@gmail.com`;
   window.MDFitVideo = {
-    onCdn: (id) => !!hit(id),
-    mp4: (id) => { const h = hit(id); return h && h[1] === "v" ? CLD("video", "q_auto,vc_h264", h[0], h[2], "mp4") : `https://drive.usercontent.google.com/download?id=${encodeURIComponent(id)}&export=download&authuser=jaredcaban0nopills@gmail.com`; },
-    thumb: (id, w = 480) => { const h = hit(id); if (h) return h[1] === "v" ? CLD("video", `so_1,w_${w},c_limit,q_auto`, h[0], h[2], "jpg") : CLD("image", `f_auto,q_auto,w_${w},c_limit`, h[0], h[2]); return `https://drive.google.com/thumbnail?id=${encodeURIComponent(id)}&sz=w${w}`; },
+    onCdn: (id) => !!(guid(id) || hit(id)),
+    // Bunny's MP4 Fallback rendition: a plain file a <video> can play, so no HLS library is needed. Players keep
+    // their own Drive-iframe fallback (see playVideo in account.js) for anything that will not load.
+    mp4: (id) => { if (guid(id)) return BUN(id, "play_720p.mp4"); const h = hit(id); return h && h[1] === "v" ? CLD("video", "q_auto,vc_h264", h[0], h[2], "mp4") : DRIVE(id); },
+    thumb: (id, w = 480) => { if (guid(id)) return BUN(id, "thumbnail.jpg"); // Bunny's still has no width knob
+      const h = hit(id); if (h) return h[1] === "v" ? CLD("video", `so_1,w_${w},c_limit,q_auto`, h[0], h[2], "jpg") : CLD("image", `f_auto,q_auto,w_${w},c_limit`, h[0], h[2]);
+      return `https://drive.google.com/thumbnail?id=${encodeURIComponent(id)}&sz=w${w}`; },
     preview: (id) => `https://drive.google.com/file/d/${encodeURIComponent(id)}/preview`
   };
 
