@@ -2635,7 +2635,7 @@
       el.hidden = !show; if (show) { $(body).innerHTML = html; $(dt).textContent = date; }
     }
   }
-  function loadCarePlan() { return apiAuth("GET", "/api/me/chart").then((c) => { carePlan = c; renderCarePlan(); loadVisitOptions(); }).catch(() => {}); }
+  function loadCarePlan() { return apiAuth("GET", "/api/me/chart").then((c) => { carePlan = c; renderCarePlan(); renderCalendar(); loadVisitOptions(); }).catch(() => {}); }
   document.addEventListener("click", async (e) => {
     const v = e.target.closest("[data-care-video]");
     if (v) { const x = byId.get(v.dataset.careVideo); playVideo(v.dataset.careVideo, x ? x.name : v.dataset.careName, x ? exMeta(x) : "Prescribed by Dr. Jared"); return; }
@@ -2926,7 +2926,14 @@
       ...allWorkouts.filter((w) => w.date === d).map((w) => ({ k: "workout", t: w.title, s: `${w.minutes} min · ${w.exercises} exercises` })),
       ...[...appts.upcoming, ...appts.past].filter((a) => a.date === d && a.status !== "cancelled").map((a) => ({ k: "visit", t: a.typeName, s: `${fmtTime(a.time)} · ${a.minutes} min${a.status === "booked" && d >= todayInTz() ? " · upcoming" : ""}`,
         link: a.status === "booked" && d >= todayInTz() ? a.meetingLink || "" : "", video: /telehealth|video|remote|online/i.test(a.typeName + " " + a.typeId) })),
-      ...painLog.filter((p) => p.date === d).map((p) => ({ k: "pain", t: `${p.area} pain ${p.level}/10`, s: p.note || "Pain log" }))
+      ...painLog.filter((p) => p.date === d).map((p) => ({ k: "pain", t: `${p.area} pain ${p.level}/10`, s: p.note || "Pain log" })),
+      // What Dr. Jared left in the chart, on the day he left it, so the calendar carries the clinic's side too
+      ...((carePlan && carePlan.notes) || []).filter((n) => String(n.at).slice(0, 10) === d)
+        .map((n) => ({ k: "care", t: "Note from Dr. Jared", s: String(n.text).split("\n")[0].slice(0, 90) })),
+      ...((carePlan && carePlan.movements) || []).filter((m) => String(m.at).slice(0, 10) === d)
+        .map((m) => ({ k: "care", t: m.name, s: m.dose ? `Prescribed · ${m.dose}` : "Prescribed movement", video: m.videoId || "" })),
+      ...((carePlan && carePlan.paidVisits) || []).filter((v) => String(v.paidAt).slice(0, 10) === d)
+        .map((v) => ({ k: "care", t: v.name || "Video visit", s: "Paid, waiting for a time" }))
     ];
   }
   function renderCalendar() {
@@ -2952,7 +2959,7 @@
     const canRepair = d < t && !items.length && repairs && repairs.available >= 1 && !alreadyRepaired;
     $("#cal-day").innerHTML = `<p class="label">${d === t ? "Today" : fmtDate(d, { weekday: "long", month: "short", day: "numeric" })}</p>` + (items.length
       ? `<ul class="activity">${items.map((x) => `<li class="act"><span class="check k-bg-${x.k}"></span><div><b>${esc(x.t)}</b><span>${esc(x.s)}</span>${
-          x.link ? `<a class="btn-blue sm join-link" href="${esc(x.link)}" target="_blank" rel="noopener">Join video visit</a>` : x.video && x.s.includes("upcoming") ? `<span class="muted small">Your video link will be emailed before the visit.</span>` : ""}</div></li>`).join("")}</ul>`
+          x.k === "care" && x.video ? `<button type="button" class="link sm" data-care-video="${esc(x.video)}" data-care-name="${esc(x.t)}">Watch it</button>` : x.link ? `<a class="btn-blue sm join-link" href="${esc(x.link)}" target="_blank" rel="noopener">Join video visit</a>` : x.video && x.s.includes("upcoming") ? `<span class="muted small">Your video link will be emailed before the visit.</span>` : ""}</div></li>`).join("")}</ul>`
       : `<p class="muted small">Nothing logged. ${d === t ? "A quick workout keeps your streak alive." : ""}</p>`)
       + (alreadyRepaired ? `<p class="muted small"><b>Streak repair applied</b> — this missed day is bridged for your streak.</p>` : "")
       + (canRepair ? `<button type="button" class="btn-gold sm" data-repair="${d}">Use 1 repair to bridge this day</button>` : "");
