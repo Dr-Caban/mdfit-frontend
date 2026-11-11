@@ -752,6 +752,8 @@
   const POSTER_GROUP = { "posterior-neck": "Neck & head", "scalenes": "Neck & head", "rotator-cuff": "Shoulder & arm", "iliopsoas": "Hip & glutes", "lateral-hip": "Hip & glutes", "quads": "Knee & thigh", "calf": "Calf & foot" };
   const TK = () => window.MDFitTracks, MUS = () => (window.MDFitMuscles || {}).MUSCLES || {};
   const driveThumb = (id, w = 900) => window.MDFitVideo ? MDFitVideo.thumb(id, w) : `https://drive.google.com/thumbnail?id=${encodeURIComponent(id)}&sz=w${w}`;
+  // Offered only when a host confirms it plays; otherwise it falls into the existing "Video coming soon" state.
+  const vidReady = (id) => !!id && (!window.MDFitVideo || !MDFitVideo.mapped() || MDFitVideo.playable(id));
   const mp4 = (id) => window.MDFitVideo ? MDFitVideo.mp4(id) : `https://drive.usercontent.google.com/download?id=${encodeURIComponent(id)}&export=download`;
   let reportsLoading = null;
   const loadReports = () => window.MDFIT_MUSCLE_REPORTS ? Promise.resolve() : (reportsLoading = reportsLoading || new Promise((res) => {
@@ -814,7 +816,7 @@
         <div class="tg-player" hidden><div class="tg-screen"></div><p class="tg-now"></p></div>
         ${t.levels.map((l, li) => `<div class="tg-level"><h4>${esc(l.title)}</h4><ol>${l.videos.map((v) => {
           const d = doseFor(v, reports, li);
-          return `<li${v.id ? "" : ' class="soon"'}>${v.id ? `<button type="button" class="tg-play" data-gvid="${esc(v.id)}" data-gname="${esc(v.name)}" aria-label="Play ${esc(v.name)}"><img src="${driveThumb(v.id, 240)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()"><span>▶</span></button>` : `<span class="tg-soon">Video coming soon</span>`}
+          return `<li${vidReady(v.id) ? "" : ' class="soon"'}>${vidReady(v.id) ? `<button type="button" class="tg-play" data-gvid="${esc(v.id)}" data-gname="${esc(v.name)}" aria-label="Play ${esc(v.name)}"><img src="${driveThumb(v.id, 240)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()"><span>▶</span></button>` : `<span class="tg-soon">Video coming soon</span>`}
             <div><b>${esc(v.name)}</b><p class="tg-dose">${esc(d.dose)}</p>${d.how ? `<p class="tg-how">${esc(d.how)}</p>` : ""}</div></li>`;
         }).join("")}</ol></div>`).join("")}
         ${allVideos.length ? `<button type="button" class="gd-book tg-start" data-track-play="${esc(t.id)}">▶ Play the whole track</button>` : ""}
