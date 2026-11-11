@@ -597,3 +597,13 @@
 .care-svcs .chip, .care-days .chip, .care-times .chip { font-size: 13.5px; padding: 7px 12px; }
 .care-svcs .chip[disabled] { opacity: .55; cursor: not-allowed; }
 .care-go { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 2px; }
+
+/* Readiness gates visibility: a prescribed move whose video is not confirmed playable keeps its row -- the dose and
+   the cue are the instruction -- but offers no player, so it must not look or behave like a tappable card. */
+.ex.novid, .care-move.novid { cursor: default; }
+.ex.novid:hover, .care-move.novid:hover { background: var(--card-2); }
+.thumb.none { background: var(--gold-soft); color: var(--accent-text); }
+.thumb.none::after, .thumb.none::before { display: none; content: none; }
+.thumb.none svg { width: 24px; height: 24px; fill: currentColor; }
+.care-move .thumb.none { display: grid; place-items: center; }
+.care-move .cm-soon { font-size: 10px; line-height: 1.1; color: var(--muted); text-align: center; }
