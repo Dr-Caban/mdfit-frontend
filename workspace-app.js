@@ -435,7 +435,7 @@
     $("#billRows").innerHTML = b.error ? noneRow(6, esc(b.error)) : b.invoices.map((x) => `<tr><td>${esc(x.number || "—")}</td><td>${x.date ? fmtDate(x.date) : "—"}</td><td>${esc(x.description || "")}</td><td class="num">${x.amount == null ? "—" : usd(x.amount)}</td>
       <td><span class="pill ${STATUS[x.status] ?? "ok"}">${esc(x.status === "paid" && x.method ? `Paid · ${x.method}` : x.status.charAt(0).toUpperCase() + x.status.slice(1))}</span></td>
       <td><div class="row" style="gap:6px;flex-wrap:nowrap;justify-content:flex-end">${x.custom && x.status === "unpaid" ? `<button class="btn sm primary" data-act="invSend" data-id="${esc(x.id)}">Send invoice</button><button class="btn sm" data-act="invPay" data-id="${esc(x.id)}">Mark paid</button><button class="btn sm ghost" data-act="invVoid" data-id="${esc(x.id)}" aria-label="Void invoice ${esc(x.number)}">${ui("x", 14)}</button>` : x.custom && !x.online && (x.status === "paid" || x.status === "void") ? `<button class="btn sm" data-act="invUnpaid" data-id="${esc(x.id)}">Mark unpaid</button>` : x.receiptUrl ? `<a class="btn sm" href="${esc(x.receiptUrl)}" target="_blank" rel="noopener noreferrer">Receipt</a>` : ""}</div></td></tr>`).join("") || noneRow(6, "No invoices or payments yet.");
-    $("#billPay").innerHTML = `<div class="list-item"><span style="flex:1">Card on file</span><b>${b.card ? `${esc(b.card.brand.charAt(0).toUpperCase() + b.card.brand.slice(1))} ••${esc(b.card.last4)}` : "None"}</b></div>
+    $("#billPay").innerHTML = `<div class="list-item"><span style="flex:1">Card on file${b.card && b.card.exp ? `<div class="muted" style="font-size:12px">expires ${esc(b.card.exp)}</div>` : ""}</span><b>${b.card ? `${esc(b.card.brand.charAt(0).toUpperCase() + b.card.brand.slice(1))} ••${esc(b.card.last4)}` : "None"}</b><button type="button" class="btn sm${b.card ? "" : " primary"}" data-act="cardAdd">${b.card ? "Replace" : "Add card"}</button></div>
       <div class="list-item"><span style="flex:1">Autopay</span><span class="pill ${b.autopay ? "ok" : ""}">${b.autopay ? "On" : "Off"}</span></div>
       <div class="list-item"><span style="flex:1">Balance</span><b class="num">${usd(b.balance || 0)}</b></div>`;
   }
@@ -1132,6 +1132,17 @@
     invPay: (el) => { const x = ((cache.billing || {}).invoices || []).find((y) => y.id === el.dataset.id); if (!x) return;
       modal(`<div class="card-head"><h2>Mark ${esc(x.number)} paid</h2><button type="button" class="btn sm ghost" data-act="closeModal" aria-label="Close">${ui("x", 14)}</button></div><p style="margin:0 0 12px">${esc(x.description)} · <b>${usd(x.amount)}</b></p>
         <form class="stack" data-form="invPaid" data-id="${esc(x.id)}"><div class="field"><label for="ipHow">How was it paid?</label><select id="ipHow" name="method" class="input"><option value="cash">Cash</option><option value="check">Check</option><option value="card">Card in person</option><option value="other">Another way</option></select></div><div class="row"><button class="btn primary">Mark paid</button></div></form>`); },
+    // A card on file is typed on the card processor's own page, never into MD Fit
+    cardAdd: () => modal(`<div class="card-head"><h2>Card on file for ${esc(firstOf())}</h2>${xBtn}</div>
+      <p style="margin:0 0 12px">The card is entered on Stripe's secure page, not here: MD Fit never sees or stores the card number. Afterwards this tab shows the card's brand and last four digits.</p>
+      <div class="stack"><button type="button" class="btn primary" data-act="cardOpen">Open the secure card page now</button><p class="muted" style="margin:0;font-size:12.5px">Use this with ${esc(firstOf())} in front of you, or reading you the card by phone.</p>
+      <button type="button" class="btn" data-act="cardEmail">Email ${esc(firstOf())} a link to add it themselves</button><p class="muted" style="margin:0;font-size:12.5px">The link works for 24 hours.</p></div>`),
+    cardOpen: async () => {
+      const w = window.open("", "_blank"); // opened first so the browser does not treat it as a pop-up
+      try { const r = await api("POST", `/api/admin/emr/${cid()}/card-link`, {}); if (w) { w.opener = null; w.location.href = r.url; } else location.href = r.url; closeModal(); toast("When the card is saved, come back and reopen Billing to see it."); }
+      catch (e) { if (w) w.close(); throw e; }
+    },
+    cardEmail: async () => { await api("POST", `/api/admin/emr/${cid()}/card-link`, { send: true }); closeModal(); toast(`Emailed ${firstOf()} a secure link to add a card.`); },
     invUnpaid: async (el) => { await api("PUT", `/api/admin/emr/${cid()}/invoices/${el.dataset.id}`, { status: "unpaid" }); await loadBilling(); toast("Marked unpaid. You can send it now."); },
     invVoid: async (el) => { if (!confirm("Void this invoice? It stays on the record as void.")) return; await api("PUT", `/api/admin/emr/${cid()}/invoices/${el.dataset.id}`, { status: "void" }); toast("Invoice voided."); loadBilling(); },
     invSend: (el) => { const x = ((cache.billing || {}).invoices || []).find((y) => y.id === el.dataset.id); if (!x) return;
@@ -1694,12 +1705,38 @@
   $("#themeBtn").addEventListener("click", () => { const r = document.documentElement, next = r.dataset.theme === "dark" ? "light" : "dark"; r.dataset.theme = next; try { localStorage.setItem(THEME_KEY, next); } catch {} });
   $("#modalBack").addEventListener("click", (e) => { if (e.target.id === "modalBack") closeModal(); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
-  $("#globalSearch").addEventListener("keydown", guard(async (e) => {
-    if (e.key !== "Enter" || !token) return;
-    const q = e.target.value.trim().toLowerCase(); if (!q) return;
-    const c = (await clients()).find((x) => `${x.name} ${x.email}`.toLowerCase().includes(q));
-    if (c) { e.target.value = ""; openChart(c.id); } else toast("No client matches that.");
+  // Top search: every match is listed as you type (all the people with that name, not only the first), newest
+  // sign-in first among equals. Enter or a click opens the chart; the arrow keys move; Escape clears.
+  const gRes = $("#globalRes"); let gList = [], gAt = 0, gMore = 0;
+  const gWords = (v) => v.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  const gClose = () => { gRes.hidden = true; gRes.innerHTML = ""; gList = []; gAt = 0; $("#globalSearch").setAttribute("aria-expanded", "false"); };
+  const gDraw = () => {
+    gRes.innerHTML = gList.map((c, i) => `<button type="button" role="option" aria-selected="${i === gAt}" class="${i === gAt ? "on" : ""}" data-act="searchOpen" data-id="${esc(c.id)}">${avatar(c.name, 28)}<span style="min-width:0;flex:1"><b>${esc(c.name)}</b><span class="muted" style="display:block;font-size:12px;overflow-wrap:anywhere">${esc(c.email)}${c.phone ? " · " + esc(c.phone) : ""}</span></span></button>`).join("")
+      + (gList.length ? (gMore ? `<p class="muted" style="margin:6px 10px;font-size:12px">${gMore} more. Keep typing to narrow it down.</p>` : "") : `<p class="muted" style="margin:8px 10px">No client matches.</p>`);
+    gRes.hidden = false; $("#globalSearch").setAttribute("aria-expanded", "true");
+  };
+  $("#globalSearch").addEventListener("input", guard(async (e) => {
+    if (!token) return;
+    const words = gWords(e.target.value); if (!words.length) return gClose();
+    const list = await clients();
+    if (gWords($("#globalSearch").value).join(" ") !== words.join(" ")) return; // they kept typing while the list loaded
+    const hit = list.filter((c) => words.every((w) => `${c.name} ${c.email} ${c.phone || ""}`.toLowerCase().includes(w)));
+    const starts = (c) => (String(c.name || "").toLowerCase().split(/\s+/).some((part) => part.startsWith(words[0])) ? 0 : 1);
+    hit.sort((a, b) => starts(a) - starts(b) || String(a.name).localeCompare(String(b.name)));
+    gMore = Math.max(0, hit.length - 30); gList = hit.slice(0, 30); gAt = 0; gDraw();
   }));
+  $("#globalSearch").addEventListener("keydown", guard(async (e) => {
+    if (!token) return;
+    if (e.key === "Escape") { e.target.value = ""; return gClose(); }
+    if ((e.key === "ArrowDown" || e.key === "ArrowUp") && gList.length) { e.preventDefault(); gAt = (gAt + (e.key === "ArrowDown" ? 1 : gList.length - 1)) % gList.length; gDraw(); const on = gRes.querySelector(".on"); if (on) on.scrollIntoView({ block: "nearest" }); return; }
+    if (e.key !== "Enter") return;
+    const words = gWords(e.target.value); if (!words.length) return;
+    const c = gList[gAt] || (await clients()).find((x) => words.every((w) => `${x.name} ${x.email}`.toLowerCase().includes(w)));
+    if (c) { e.target.value = ""; gClose(); openChart(c.id); } else toast("No client matches that.");
+  }));
+  $("#globalSearch").addEventListener("focus", (e) => { if (gWords(e.target.value).length && gRes.hidden) e.target.dispatchEvent(new Event("input")); });
+  document.addEventListener("click", (e) => { if (!e.target.closest(".search")) gClose(); });
+  ACT.searchOpen = (el) => { $("#globalSearch").value = ""; gClose(); openChart(el.dataset.id); };
   // A restored session keeps its old last-input time: a reload must not hand out a fresh 15 minutes
   if (token && idleFor() >= IDLE_MS) idleOut();
   else if (token) { if (!idleFor()) idleStamp(); start(); } else { $("#signin").hidden = false; $("#app").hidden = true; }

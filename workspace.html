@@ -89,6 +89,14 @@ h3{font-size:14px;font-weight:600}
 .top{display:flex;align-items:center;gap:12px;padding:10px 24px;border-bottom:1px solid var(--line);background:var(--surface);flex-wrap:wrap}
 .search{flex:1;min-width:180px;max-width:420px;display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 10px}
 .search input{border:0;background:transparent;outline:none;width:100%}
+.search{position:relative}
+.search-res{position:absolute;left:0;right:0;top:calc(100% + 6px);background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:0 12px 30px rgba(10,26,46,.18);z-index:60;max-height:min(70vh,520px);overflow:auto;padding:4px;min-width:260px}
+.search-res button{display:flex;width:100%;text-align:left;gap:10px;align-items:center;padding:8px 10px;border:0;background:none;border-radius:8px;cursor:pointer;color:inherit;font:inherit}
+.search-res button:hover,.search-res button.on{background:var(--accent-soft)}
+/* The same field inside a card (note screen): full width, and the focus ring goes on the box since the input has none */
+.search.in{flex:none;max-width:none}
+.search.in input{-webkit-appearance:none;appearance:none}
+.search.in:focus-within{outline:2px solid var(--accent);outline-offset:2px}
 .top .spacer{flex:1}
 .view{overflow-y:auto;padding:24px;flex:1}
 .view-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:18px;flex-wrap:wrap}
@@ -298,7 +306,7 @@ textarea.input{min-height:120px;resize:vertical;line-height:1.55}
   <div class="main">
     <header class="top">
       <button class="btn ghost mobile-nav-btn" id="navToggle" aria-label="Open menu"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
-      <div class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="globalSearch" placeholder="Find a client by name or email" aria-label="Find a client"></div>
+      <div class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="globalSearch" placeholder="Find a client by name or email" aria-label="Find a client" autocomplete="off" role="combobox" aria-controls="globalRes" aria-expanded="false"><div id="globalRes" class="search-res" role="listbox" hidden></div></div>
       <div class="spacer"></div>
       <span class="muted" id="whoami" style="font-size:12.5px"></span>
       <button class="btn sm" id="installBtn" hidden><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12M7 11l5 5 5-5"/><path d="M4 20h16"/></svg>Install app</button>
@@ -315,6 +323,6 @@ textarea.input{min-height:120px;resize:vertical;line-height:1.55}
 <script src="config.js?v=aac711e3"></script>
 <script src="realtime.js?v=dccfd156"></script>
 <script src="app/exercises.js?v=d121be98"></script>
-<script src="workspace-app.js?v=47f1e1f8"></script>
+<script src="workspace-app.js?v=08080a31"></script>
 </body>
 </html>
