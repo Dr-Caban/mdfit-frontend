@@ -121,20 +121,45 @@
   }
   document.addEventListener("DOMContentLoaded", accountLinks);
 
-  // Video hosting: Cloudinary for every video that has been copied there (list cached on the device), Drive otherwise
+  // Video hosting: Bunny Stream first, then Cloudinary for anything not copied there yet, Drive last
+  // (list cached on the device). An older API answers without a `bunny` field, so every lookup tolerates it missing.
   const VKEY = "mdfit-cdn2";
-  let cdn = (() => { try { const c = JSON.parse(localStorage.getItem(VKEY) || "null"); return c && c.cloud ? c : null; } catch { return null; } })();
+  const usable = (c) => (c && (c.cloud || (c.bunny && c.bunny.host)) ? c : null);
+  let cdn = (() => { try { return usable(JSON.parse(localStorage.getItem(VKEY) || "null")); } catch { return null; } })();
   fetch(API + "/api/videos").then((r) => r.ok ? r.json() : null).then((c) => {
-    if (!c) return; cdn = c.cloud ? { cloud: c.cloud, map: c.map || {} } : null;
+    if (!c) return;
+    cdn = usable({ cloud: c.cloud || "", map: c.map || {}, bunny: { host: (c.bunny && c.bunny.host) || "", map: (c.bunny && c.bunny.map) || {} } });
     try { localStorage.setItem(VKEY, JSON.stringify(cdn)); } catch {}
+    // The list lands after the first paint, so views that only offer ready videos have to be told to re-draw.
+    try { window.dispatchEvent(new CustomEvent("mdfit-videos")); } catch {}
   }).catch(() => {});
-  const hit = (id) => (cdn && cdn.map && cdn.map[id]) || null;
+  const hit = (id) => (cdn && cdn.cloud && cdn.map && cdn.map[id]) || null;
+  const guid = (id) => (cdn && cdn.bunny && cdn.bunny.host && cdn.bunny.map && cdn.bunny.map[id]) || null;
   const CLD = (kind, t, pid, ver, ext) => `https://res.cloudinary.com/${cdn.cloud}/${kind}/upload/${t}/${ver ? "v" + ver + "/" : ""}${pid.split("/").map(encodeURIComponent).join("/")}${ext ? "." + ext : ""}`;
+  const BUN = (id, file) => `https://${cdn.bunny.host}/${encodeURIComponent(guid(id))}/${file}`;
+  const DRIVE = (id) => `https://drive.usercontent.google.com/download?id=${encodeURIComponent(id)}&export=download&authuser=jaredcaban0nopills@gmail.com`;
+  // Readiness: the backend only publishes a key into a map once the host has confirmed a playable file exists,
+  // so "this key is in a map" is the one trustworthy answer to "can this video play right now". `playable` is
+  // that answer and the single source of truth for whether a video may be offered to a member at all.
+  // `mapped` says whether this device actually holds a map yet: while it is false (API down, first load, cache
+  // miss) callers must NOT hide anything, because an empty library is a far worse failure than a clip that
+  // might not load. Only hide when there is a real map and the key is absent from it.
+  const mapped = () => !!(cdn && ((cdn.cloud && cdn.map && Object.keys(cdn.map).length) || (cdn.bunny && cdn.bunny.host && cdn.bunny.map && Object.keys(cdn.bunny.map).length)));
+  const playable = (id) => !!(guid(id) || hit(id));
   window.MDFitVideo = {
-    onCdn: (id) => !!hit(id),
-    mp4: (id) => { const h = hit(id); return h && h[1] === "v" ? CLD("video", "q_auto,vc_h264", h[0], h[2], "mp4") : `https://drive.usercontent.google.com/download?id=${encodeURIComponent(id)}&export=download&authuser=jaredcaban0nopills@gmail.com`; },
-    thumb: (id, w = 480) => { const h = hit(id); if (h) return h[1] === "v" ? CLD("video", `so_1,w_${w},c_limit,q_auto`, h[0], h[2], "jpg") : CLD("image", `f_auto,q_auto,w_${w},c_limit`, h[0], h[2]); return `https://drive.google.com/thumbnail?id=${encodeURIComponent(id)}&sz=w${w}`; },
-    preview: (id) => `https://drive.google.com/file/d/${encodeURIComponent(id)}/preview`
+    playable, mapped,
+    onCdn: playable, // the same test under its old name, for the players that ask "is there a CDN URL for this?"
+    // Bunny's MP4 Fallback rendition: a plain file a <video> can play, so no HLS library is needed. Players keep
+    // their own Drive-iframe fallback (see playVideo in account.js) for anything that will not load.
+    mp4: (id) => { if (guid(id)) return BUN(id, "play_720p.mp4"); const h = hit(id); return h && h[1] === "v" ? CLD("video", "q_auto,vc_h264", h[0], h[2], "mp4") : DRIVE(id); },
+    thumb: (id, w = 480) => { if (guid(id)) return BUN(id, "thumbnail.jpg"); // Bunny's still has no width knob
+      const h = hit(id); if (h) return h[1] === "v" ? CLD("video", `so_1,w_${w},c_limit,q_auto`, h[0], h[2], "jpg") : CLD("image", `f_auto,q_auto,w_${w},c_limit`, h[0], h[2]);
+      return `https://drive.google.com/thumbnail?id=${encodeURIComponent(id)}&sz=w${w}`; },
+    preview: (id) => `https://drive.google.com/file/d/${encodeURIComponent(id)}/preview`,
+    // The referrerpolicy attribute for an <img> of this id's thumbnail. Drive's thumbnail endpoint wants NO referrer,
+    // but Bunny's pull zone only answers requests that carry this site's referrer and 403s the rest - so a Bunny
+    // thumbnail rendered with "no-referrer" never loads. Ask here instead of hard-coding either.
+    refAttr: (id) => (guid(id) ? "" : ' referrerpolicy="no-referrer"')
   };
 
   window.MDFit = { auth, apiAuth, accountLinks, GOOGLE_G, loadGoogleReviews, applyGoogleRating, API, $, $$, esc, get, api, fmtTime, fmtDate, todayInTz, addDays, zonedToUtc, icsStamp, telHref, formData, wire, AREAS, areaChips, loadSite };
