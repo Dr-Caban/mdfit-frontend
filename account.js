@@ -1131,7 +1131,52 @@
     const code = client.referralCode;
     if (code && $("#ref-code").textContent === "—") $("#ref-code").textContent = code;
   }
-  $("#logout").addEventListener("click", () => { auth.clear(); location.href = "/"; });
+  const signOut = () => { auth.clear(); location.href = "/"; };
+  $("#logout").addEventListener("click", signOut);
+  $("#logout-top").addEventListener("click", signOut);
+
+  // Close my account. The server decides between erasing the account outright and keeping the clinical record
+  // (a practice may not destroy a chart on request), and we say which one applies before anything is confirmed.
+  const caSheet = $("#close-account-sheet");
+  $("#close-account").addEventListener("click", async () => {
+    const msg = $("#ca-msg"); msg.textContent = ""; msg.className = "form-msg";
+    $("#ca-password").value = ""; $("#ca-confirm").value = "";
+    let info;
+    try { info = await apiAuth("GET", "/api/me/account/deletion"); }
+    catch (e) { return toast(e.message); }
+    const erase = info.mode === "erase";
+    $("#ca-what").innerHTML = erase
+      ? "This removes your MD Fit account and everything on it. It cannot be undone."
+      : "You have a record with the clinic, so your chart is kept for the period the practice is required to keep it. Everything that identifies you or opens this account is removed. This cannot be undone.";
+    $("#ca-list").innerHTML = (erase
+      ? ["Your login, profile and progress", "Your pain log, workouts and plans", "Your messages with Dr. Jared", "Notifications to your devices"]
+      : ["<b>Removed:</b> your login, name, email, phone, messages and notifications",
+         "<b>Removed:</b> every device signed in to this account",
+         "<b>Kept:</b> your intake documents, visit notes and pain history, as part of your clinical record",
+         "<b>Kept:</b> payment records the practice has to retain"]
+    ).map((x) => `<li>${x}</li>`).join("");
+    const bill = $("#ca-billing");
+    bill.hidden = !info.membership;
+    if (info.membership) bill.textContent = "Your membership is cancelled as part of this, so you will not be billed again.";
+    $("#ca-pw-row").hidden = !info.needsPassword;
+    caSheet.showModal();
+  });
+  $("#ca-go").addEventListener("click", async () => {
+    const btn = $("#ca-go"), msg = $("#ca-msg");
+    msg.className = "form-msg";
+    if ($("#ca-confirm").value.trim().toUpperCase() !== "DELETE") {
+      msg.className = "form-msg err"; msg.textContent = "Type DELETE to confirm."; return;
+    }
+    btn.disabled = true; msg.textContent = "Closing your account…";
+    try {
+      await apiAuth("POST", "/api/me/account/deletion", { confirm: "DELETE", password: $("#ca-password").value });
+      auth.clear();
+      location.href = "/?closed=1";
+    } catch (e) {
+      btn.disabled = false; msg.className = "form-msg err"; msg.textContent = e.message;
+    }
+  });
+  caSheet.addEventListener("click", (e) => { if (e.target.closest("[data-close]") || e.target === caSheet) caSheet.close(); });
 
   async function loadReferral() {
     try {

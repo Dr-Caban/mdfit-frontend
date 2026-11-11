@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="app/app.css?v=6cb5340d">
-  <link rel="stylesheet" href="account.css?v=ff5f1e30">
+  <link rel="stylesheet" href="account.css?v=5a6d695b">
   <link rel="stylesheet" href="guides.css?v=704fb203">
 </head>
 <body class="mdapp">
@@ -466,6 +466,7 @@
       <div class="profile-head">
         <div class="avatar" id="avatar">?</div>
         <div><h1 class="name sm" id="p-name"></h1><p class="muted small" id="p-email"></p></div>
+        <button type="button" class="btn-ghost sm prof-logout" id="logout-top">Log out</button>
       </div>
 
       <div class="profile-grid">
@@ -573,7 +574,8 @@
 
       <div class="profile-links">
         <a href="/?site=1">mymdfit.com</a><a href="tel:+19413130562">Call 941-313-0562</a><a href="/privacy-policy">Privacy</a><a href="/terms">Terms</a>
-        <button type="button" class="link danger" id="logout">Log out</button>
+        <button type="button" class="link" id="logout">Log out</button>
+        <button type="button" class="link danger" id="close-account">Close my account</button>
       </div>
       <p class="muted tiny center">Guides and tracking are educational and don't replace an in-person evaluation. In an emergency, call 911.</p>
     </section>
@@ -596,6 +598,18 @@
     <button type="button" class="more-btn" id="more-btn" aria-haspopup="dialog"><svg viewBox="0 0 24 24"><path d="M6 10a2 2 0 1 0 2 2 2 2 0 0 0-2-2zm6 0a2 2 0 1 0 2 2 2 2 0 0 0-2-2zm6 0a2 2 0 1 0 2 2 2 2 0 0 0-2-2z"/></svg><span class="short">More</span></button>
     <div class="side-foot"><p class="side-tag">Move better<br>Feel stronger<br>Live more</p><a class="side-book" href="/book">Book a visit</a><a href="tel:+19413130562">941-313-0562</a></div>
   </nav>
+
+  <dialog class="sheet" id="close-account-sheet" aria-label="Close my account">
+    <div class="sheet-head"><b>Close my account</b><button type="button" class="icon-btn" data-close aria-label="Close"><svg viewBox="0 0 24 24"><path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/></svg></button></div>
+    <p id="ca-what" class="small"></p>
+    <ul class="ca-list small" id="ca-list"></ul>
+    <p class="muted small" id="ca-billing" hidden></p>
+    <label class="small ca-field" id="ca-pw-row"><span>Your password</span><input type="password" id="ca-password" autocomplete="current-password"></label>
+    <label class="small ca-field"><span>Type <b>DELETE</b> to confirm</span><input type="text" id="ca-confirm" autocomplete="off" spellcheck="false"></label>
+    <p class="form-msg" id="ca-msg"></p>
+    <button type="button" class="btn-danger" id="ca-go">Close my account</button>
+    <button type="button" class="link" data-close>Keep my account</button>
+  </dialog>
 
   <dialog class="sheet paywall" id="paywall" aria-label="Become a member">
     <div class="sheet-head"><b>Membership</b><button type="button" class="icon-btn" data-close aria-label="Close"><svg viewBox="0 0 24 24"><path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/></svg></button></div>
@@ -729,7 +743,7 @@
   <script src="musclereports.js?v=cd9ced26"></script>
   <script src="guides.js?v=4608523e"></script>
   <script src="stripe-checkout.js?v=087989ec"></script>
-  <script src="account.js?v=9962a84d"></script>
+  <script src="account.js?v=e15442d4"></script>
   <script src="account-xp.js?v=5f3c6968"></script>
   <script src="account-habits.js?v=294905ab"></script>
 <script defer src="/_vercel/insights/script.js"></script>

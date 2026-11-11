@@ -597,3 +597,20 @@
 .care-svcs .chip, .care-days .chip, .care-times .chip { font-size: 13.5px; padding: 7px 12px; }
 .care-svcs .chip[disabled] { opacity: .55; cursor: not-allowed; }
 .care-go { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 2px; }
+
+/* Profile: log out sits with the name instead of at the foot of the tab */
+.prof-logout { width: auto; flex: none; margin-left: auto; padding: 9px 16px; font-size: 14px; border-radius: 999px;
+  border: 1px solid var(--line); background: #fff; color: var(--navy); font-weight: 600; cursor: pointer; }
+.prof-logout:hover { border-color: var(--navy); }
+@media (max-width: 520px) { .profile-head .prof-logout { order: 3; margin-left: auto; width: auto; } }
+
+/* Close my account */
+.ca-list { margin: 8px 0 10px; padding-left: 18px; color: var(--muted); display: grid; gap: 5px; }
+.ca-list b { color: var(--navy); }
+.ca-field { display: grid; gap: 5px; margin: 10px 0 0; }
+.ca-field input { width: 100%; padding: 11px 12px; border: 1px solid var(--line); border-radius: 10px; font: inherit; background: #fff; }
+.btn-danger { display: flex; align-items: center; justify-content: center; width: 100%; border: 0; border-radius: 12px; padding: 15px;
+  font: 700 16px var(--body); background: var(--err); color: #fff; cursor: pointer; }
+.btn-danger:disabled { opacity: .55; cursor: not-allowed; }
+#close-account-sheet .btn-danger { margin-top: 14px; }
+#close-account-sheet .link { display: block; width: 100%; margin-top: 10px; text-align: center; }
