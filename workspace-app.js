@@ -45,7 +45,7 @@
   function signOut() {
     token = ""; store.set(""); if (window.MDFitRT) { if (tele.call) MDFitRT.emit("tele_end"); MDFitRT.disconnect(); } teleDrop(); stopDictation();
     for (const k of Object.keys(cache)) cache[k] = (k === "unread" || k === "waiting") ? 0 : null; // every cached list, the open chart included
-    state.chartClient = null; state.thread = null; state.clientQ = "";
+    state.chartClient = null; state.thread = null; state.clientQ = ""; state.scribeText = ""; tele.transcript = "";
     $("#view").innerHTML = ""; $("#nav").innerHTML = ""; $("#whoami").textContent = ""; $("#globalSearch").value = ""; closeModal();
     $("#app").hidden = true; $("#signin").hidden = false; clearTimeout(idleTimer);
     // /admin shares this tab: signing out here signs out there as well
@@ -91,7 +91,11 @@
     camera: '<rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3z"/>',
     screen: '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/>',
     phoneOff: '<path d="M4 15c5-5 11-5 16 0l-2.5 2.5-3-1.5v-2.5a8 8 0 0 0-5 0V16l-3 1.5z" fill="currentColor"/>',
-    copy: '<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/>'
+    copy: '<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/>',
+    board: '<path d="M3 4h18v12H3zM12 16v4M8 20h8"/><path d="M7 12l3-3 2 2 4-4"/>',
+    blur: '<circle cx="12" cy="12" r="9" stroke-dasharray="2 3"/><circle cx="12" cy="12" r="3"/>',
+    chat: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+    person: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/>'
   };
   const ui = (name, size = 16) => `<svg class="ui-ic" viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${UI[name]}</svg>`;
   const ICON = {
@@ -341,37 +345,45 @@
     const [appts, settings] = await Promise.all([get("/appointments?all=1"), get("/settings")]), today = isoDay(new Date());
     const room = (settings.booking && settings.booking.telehealthUrl) || "", own = location.origin + "/visit", usingOwn = room === own;
     const video = appts.filter((a) => a.date >= today && a.status === "booked" && (a.meetingLink || /remote|video|online|call/i.test(`${a.typeId} ${a.typeName}`)));
-    return `<div class="view-head"><div><h1>Telehealth</h1><p class="muted">Built-in video · runs in the browser with nothing to install · encrypted browser to browser</p></div>
-      <button type="button" class="btn" data-act="copyRoom" data-url="${esc(own)}">${ui("copy", 15)}Copy patient link</button></div>
+    const vb = (id, act, icon, label, on) => `<button type="button" class="vbtn${on ? " on" : ""}" id="${id}" data-act="${act}" aria-pressed="${on ? "true" : "false"}" aria-label="${label}" title="${label}">${ui(icon, 18)}</button>`;
+    return `<div class="view-head"><div><h1>Telehealth</h1><p class="muted">Built-in video · encrypted browser to browser · never recorded · nothing to install</p></div>
+      <button type="button" class="btn" data-act="copyRoom" data-url="${esc(own)}">${ui("copy", 15)}Copy session link</button></div>
     <div class="grid g-side">
       <div>
         <div class="tele-stage" id="teleStage">
+          <div class="tele-avatar" aria-hidden="true">${ui("person", 46)}<span id="teleAvatarName"></span></div>
           <video id="teleRemote" autoplay playsinline></video>
+          <canvas id="teleBoard" hidden aria-label="Shared whiteboard"></canvas>
           <video id="teleLocal" autoplay playsinline muted></video>
           <span class="tele-timer" id="teleTimer">00:00</span>
           <span class="tele-who" id="teleWho"></span>
+          <button type="button" class="btn sm tele-clear" id="teleClear" data-act="teleClear" hidden>Clear board</button>
           <div class="tele-idle" id="teleIdle"><b>No visit in progress</b><span>Admit a patient from the waiting room to start. Your camera turns on when you admit.</span></div>
         </div>
         <div class="vcontrols" id="teleControls" hidden>
-          <button type="button" class="vbtn on" id="teleMic" data-act="teleMic" aria-pressed="true" aria-label="Microphone on. Press to mute" title="Mute">${ui("mic", 18)}</button>
-          <button type="button" class="vbtn on" id="teleCam" data-act="teleCam" aria-pressed="true" aria-label="Camera on. Press to turn off" title="Camera">${ui("camera", 18)}</button>
-          <button type="button" class="vbtn" id="teleShare" data-act="teleShare" aria-pressed="false" aria-label="Share your screen" title="Share screen">${ui("screen", 18)}</button>
+          ${vb("teleMic", "teleMic", "mic", "Microphone", true)}${vb("teleCam", "teleCam", "camera", "Camera", true)}${vb("teleShare", "teleShare", "screen", "Share your screen")}${vb("teleBoardBtn", "teleBoard", "board", "Open the whiteboard")}${vb("teleBlurBtn", "teleBlur", "blur", "Blur your background")}
+          <span class="vwrap">${vb("teleChatBtn", "teleChat", "chat", "Open chat")}<i class="vdot" id="teleChatDot" hidden></i></span>${vb("teleScribeBtn", "teleScribeBtn", "spark", "Transcribe for the AI scribe")}
           <button type="button" class="vbtn end" data-act="teleEnd" aria-label="End visit" title="End visit">End</button>
         </div>
         <p class="muted" id="teleStatus" role="status" style="font-size:12.5px;text-align:center;margin:8px 0 0;min-height:1.4em"></p>
+        <div class="card tele-chat" id="teleChatBox" hidden><div class="card-head"><h2>Chat</h2><span class="pill">Not saved</span></div>
+          <div class="tele-chat-list" id="teleChatList" aria-live="polite"></div>
+          <form class="composer" data-form="teleChat" style="padding:0;border:0"><input name="body" class="input" placeholder="Write to the patient" autocomplete="off" maxlength="1000" aria-label="Chat message" required><button class="btn primary">Send</button></form></div>
       </div>
       <div class="stack">
         <div class="card"><div class="card-head"><h2>Waiting room</h2><span class="pill" id="teleCount">Empty</span></div><div id="teleWaiting"></div></div>
-        <div class="card stack"><div class="card-head"><h2>Patient link</h2><span class="pill ${usingOwn ? "ok" : "warn"}">${usingOwn ? "Sent with video bookings" : room ? "Another link is in use" : "Not sent yet"}</span></div>
+        <div class="card"><div class="card-head"><h2>Session tools</h2></div>
+          <div class="list-item"><span style="flex:1">Participants</span><span class="pill">One to one · private</span></div>
+          <div class="list-item"><span style="flex:1;min-width:0">Live transcription → AI scribe<div class="muted" style="font-size:12px" id="teleWords">Starts with a visit</div></span><label class="toggle"><input type="checkbox" id="teleScribeSw" data-change="teleScribe" aria-label="Live transcription" disabled><span></span></label></div>
+          <div class="list-item"><span style="flex:1;min-width:0">Pain check-in<div class="muted" style="font-size:12px" id="telePain"></div></span><button type="button" class="btn sm" id="telePainBtn" data-act="telePain" disabled>Send</button></div>
+          <div class="list-item"><span style="flex:1">Encryption</span><span class="pill ok">DTLS-SRTP</span></div>
+          <div class="list-item"><span style="flex:1">Recording</span><span class="pill">Never recorded</span></div></div>
+        <div class="card stack"><div class="card-head"><h2>Session link</h2><span class="pill ${usingOwn ? "ok" : "warn"}">${usingOwn ? "Sent with video bookings" : room ? "Another link is in use" : "Not sent yet"}</span></div>
           <p class="muted" style="margin:0;font-size:13px;overflow-wrap:anywhere">${esc(own)}</p>
           <p class="muted" style="margin:0;font-size:12px">Patients sign in, check their camera and wait here until you admit them. ${usingOwn ? "Every video booking is sent this link." : room ? `Video bookings are currently sent ${esc(room)}.` : "Video bookings are not sent a link yet."}</p>
           ${usingOwn ? "" : `<div class="row"><button type="button" class="btn sm primary" data-act="useOwnRoom">Send this link with every video booking</button></div>`}
           <details><summary class="muted" style="font-size:12px;cursor:pointer">Use a different video service instead</summary>
             <form class="row" data-form="roomLink" style="align-items:flex-end;margin-top:8px"><div class="field" style="flex:1;min-width:200px;margin:0"><label for="roomUrl">Room link</label><input id="roomUrl" name="url" class="input" type="url" inputmode="url" placeholder="https://" value="${esc(usingOwn ? "" : room)}" maxlength="500"></div><button class="btn sm">Save</button></form></details></div>
-        <div class="card"><div class="card-head"><h2>This visit</h2></div>
-          <div class="list-item"><span style="flex:1">Encryption</span><span class="pill ok">DTLS-SRTP</span></div>
-          <div class="list-item"><span style="flex:1">Recording</span><span class="pill">Never recorded</span></div>
-          <div class="list-item"><span style="flex:1">Participants</span><span class="pill">One patient at a time</span></div></div>
       </div>
     </div>
     <div class="card" style="margin-top:16px"><div class="card-head"><h2>Upcoming video visits</h2></div>
@@ -381,14 +393,15 @@
   V.notes = async () => {
     // The scribe is on only when the server has a model connected; an older server answers 404 and it stays off
     const [emr, scribe] = await Promise.all([get("/emr"), get("/scribe").catch(() => ({ enabled: false }))]);
+    const heard = state.scribeText || ""; state.scribeText = "";
     return `<div class="view-head"><div><h1>New note</h1><p class="muted">A note for a patient. They read it in their app.</p></div></div>
     <div class="grid g-side"><div class="card stack">
       <form class="stack" data-form="noteFor"><div class="field"><label for="nClient">Patient</label><select id="nClient" name="id" class="input" required>${emr.patients.map((p) => `<option value="${esc(p.id)}"${p.id === state.chartClient ? " selected" : ""}>${esc(p.name)}</option>`).join("") || `<option value="">No active patients yet</option>`}</select></div>
-      <div class="field"><div class="row" style="justify-content:space-between"><label for="nBody">Note</label><button type="button" class="btn sm mic" data-act="dictate" data-for="nBody" aria-pressed="false">${ui("mic", 14)}<span>Dictate</span></button></div><textarea id="nBody" name="text" class="input" style="min-height:260px" maxlength="4000" required placeholder="What the patient should know or do next"></textarea></div>
+      <div class="field"><div class="row" style="justify-content:space-between"><label for="nBody">Note</label><button type="button" class="btn sm mic" data-act="dictate" data-for="nBody" aria-pressed="false">${ui("mic", 14)}<span>Dictate</span></button></div><textarea id="nBody" name="text" class="input" style="min-height:260px" maxlength="4000" required placeholder="What the patient should know or do next">${scribe.enabled ? "" : esc(heard.slice(0, 4000))}</textarea></div>
       <div class="row"><button class="btn primary"${emr.patients.length ? "" : " disabled"}>Add note</button><span class="muted" style="font-size:12px">Shared with the patient as soon as it is added</span></div></form></div>
     <div class="stack"><div class="card">${scribe.enabled ? `<div class="card-head"><h2 class="row" style="gap:6px">${ui("spark", 18)}AI scribe</h2><span class="pill ok">On · ${esc(scribe.model)}</span></div>
       <form class="stack" data-form="scribe">
-        <div class="field"><div class="row" style="justify-content:space-between"><label for="sText">What happened in the visit</label><button type="button" class="btn sm mic" data-act="dictate" data-for="sText" aria-pressed="false">${ui("mic", 14)}<span>Dictate</span></button></div><textarea id="sText" name="text" class="input" style="min-height:150px" maxlength="20000" required placeholder="Your rough notes, or paste a transcript. For example: right knee 3 weeks post-op, swelling down, soft tissue on the quad, heel slides 2x10 twice a day, back in a week."></textarea></div>
+        <div class="field"><div class="row" style="justify-content:space-between"><label for="sText">What happened in the visit</label><button type="button" class="btn sm mic" data-act="dictate" data-for="sText" aria-pressed="false">${ui("mic", 14)}<span>Dictate</span></button></div><textarea id="sText" name="text" class="input" style="min-height:150px" maxlength="20000" required placeholder="Your rough notes, or paste a transcript. For example: right knee 3 weeks post-op, swelling down, soft tissue on the quad, heel slides 2x10 twice a day, back in a week.">${esc(heard)}</textarea></div>
         <div class="row"><button class="btn primary"${emr.patients.length ? "" : " disabled"}>Draft the note</button><span class="muted" style="font-size:12px" id="sMsg" role="status"></span></div>
         <p class="muted" style="font-size:12px;margin:0">The draft lands in the Note box for you to read and edit. Nothing is saved or shared until you press Add note. The patient's name, emails and phone numbers are removed before the text goes to ${esc(scribe.host)}.</p>
       </form>` : `<div class="card-head"><h2 class="row" style="gap:6px">${ui("spark", 18)}AI scribe</h2><span class="pill">Not connected</span></div>${none("Drafts the patient's note from your rough notes. It turns on once a language model is connected on the server.")}`}</div>
@@ -545,7 +558,13 @@
     teleMic: () => { if (!tele.local) return; tele.micOff = !tele.micOff; tele.local.getAudioTracks().forEach((t) => { t.enabled = !tele.micOff; }); teleMount(); },
     teleCam: () => { if (!tele.cam) return; tele.camOff = !tele.camOff; tele.cam.enabled = !tele.camOff; teleMount(); },
     teleShare: () => teleShare(),
-    teleEnd: () => { if (!teleIn() || !confirm("End this video visit?")) return; MDFitRT.emit("tele_end"); teleOver(""); toast("Visit ended."); },
+    teleEnd: () => { if (teleIn() && confirm("End this video visit?")) teleFinish(); },
+    teleBoard: () => { if (!teleIn()) return; tele.board = !tele.board; teleSend({ t: "board", on: tele.board }); teleMount(); },
+    teleClear: () => { boardClear($("#teleBoard")); teleSend({ t: "clear" }); },
+    teleBlur: () => teleBlur(),
+    teleChat: () => { tele.chatOpen = !tele.chatOpen; if (tele.chatOpen) tele.unread = 0; teleMount(); if (tele.chatOpen) { const i = $("#teleChatBox input"); if (i) i.focus(); } },
+    teleScribeBtn: () => teleScribe(!tele.scribing),
+    telePain: () => { if (teleSend({ t: "pain?" })) { tele.pain = null; tele.painAsked = true; teleMount(); toast("Pain check-in sent to the patient's screen."); } },
     useOwnRoom: async () => { await api("PUT", "/api/admin/settings", { booking: { telehealthUrl: location.origin + "/visit" } }); toast("Done. Video bookings now get the built-in room link."); await render(); },
     copyRoom: async (el) => { try { await navigator.clipboard.writeText(el.dataset.url); toast("Room link copied."); } catch { toast("Couldn't copy. Select the link and copy it."); } },
     thread: (el) => { state.thread = el.dataset.id; if (location.hash === "#messages") render(); else location.hash = "messages"; },
@@ -580,6 +599,7 @@
     copyBook: async () => { const i = $("#bookUrl"); try { await navigator.clipboard.writeText(i.value); toast("Link copied."); } catch { i.select(); toast("Press Ctrl+C to copy."); } }
   };
   const FORMS = {
+    teleChat: async (f) => { const body = f.body.value.trim(); if (!body) return; if (!teleSend({ t: "chat", body })) { toast("Chat isn't connected yet."); return; } tele.chat.push({ me: true, body, at: Date.now() }); f.body.value = ""; teleMount(); },
     roomLink: async (f) => {
       const url = f.url.value.trim();
       if (url && !/^https:\/\//i.test(url)) { toast("The room link must start with https://"); return; }
@@ -624,6 +644,7 @@
   document.addEventListener("submit", (e) => { const f = e.target.closest("[data-form]"); if (!f) return; e.preventDefault(); const fn = FORMS[f.dataset.form]; if (fn && token) guard(fn)(f); });
   document.addEventListener("change", (e) => {
     if (e.target.matches("[data-change=leadStatus]")) guard(ACT.leadSave)(e.target);
+    if (e.target.matches("[data-change=teleScribe]")) teleScribe(e.target.checked);
     if (e.target.matches("[data-change=insDays]")) { state.insDays = Number(e.target.value) || 30; render(); }
   });
   document.addEventListener("input", (e) => {
@@ -713,10 +734,15 @@
 
   // ---- Built-in video visits. The patient knocks from /visit; Dr. Jared admits them here. Sound and picture then
   // travel browser to browser, encrypted by the browsers (WebRTC). The server only passes the short set-up messages
-  // and never sees the call. The call lives in `tele`, outside the screen, so moving around the workspace keeps it up.
-  const tele = { waiting: [], call: null, pc: null, local: null, cam: null, screen: null, remote: null, micOff: false, camOff: false, status: "", ice: null, queue: [], tick: 0 };
+  // and never sees the call. Chat, the whiteboard and the pain check-in ride a private data channel between the same
+  // two browsers, so they never touch the server either and are gone when the visit ends.
+  // The call lives in `tele`, outside the screen, so moving around the workspace keeps it up.
+  const TELE0 = () => ({ call: null, pc: null, dc: null, local: null, cam: null, screen: null, remote: null, micOff: false, camOff: false, blur: false, status: "", queue: [], tick: 0,
+    chat: [], chatOpen: false, unread: 0, pain: null, painAsked: false, board: false, scribing: false, scribeRec: null });
+  const tele = { waiting: [], ice: null, transcript: "", ...TELE0() };
   const teleIn = () => !!tele.call;
   const teleSay = (t) => { tele.status = t; const el = $("#teleStatus"); if (el) el.textContent = t; };
+  const teleSend = (m) => { try { if (tele.dc && tele.dc.readyState === "open") { tele.dc.send(JSON.stringify(m)); return true; } } catch {} return false; };
   async function teleMedia() {
     if (tele.local) return tele.local;
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw new Error("This browser cannot use a camera or microphone here.");
@@ -729,20 +755,73 @@
     tele.cam = tele.local.getVideoTracks()[0] || null;
     return tele.local;
   }
+  function teleScribeStop() { tele.scribing = false; const r = tele.scribeRec; tele.scribeRec = null; if (r) { r.onend = null; r.onresult = null; r.onerror = null; try { r.stop(); } catch {} } }
   function teleDrop() {
-    clearInterval(tele.tick);
+    clearInterval(tele.tick); teleScribeStop();
+    if (tele.dc) { try { tele.dc.close(); } catch {} }
     if (tele.pc) { try { tele.pc.close(); } catch {} }
     for (const s of [tele.local, tele.screen]) if (s) s.getTracks().forEach((t) => t.stop());
-    Object.assign(tele, { call: null, pc: null, local: null, cam: null, screen: null, remote: null, micOff: false, camOff: false, queue: [], tick: 0 });
+    Object.assign(tele, TELE0()); // chat, whiteboard and pain answer go with the visit; a transcript waits for Notes
   }
   function teleOver(msg) { const was = teleIn(); teleDrop(); teleSay(""); if (was && msg) toast(msg); if (route() === "telehealth") teleMount(); }
-  function teleClock() { const el = $("#teleTimer"); if (!el) return; const s = tele.call ? Math.floor((Date.now() - tele.call.since) / 1000) : 0; el.textContent = `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`; }
+  const mmss = (s) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
+  function teleClock() { const el = $("#teleTimer"); if (!el) return; const s = tele.call ? Math.floor((Date.now() - tele.call.since) / 1000) : 0; el.textContent = mmss(s) + (tele.call && tele.call.minutes ? ` / ${mmss(tele.call.minutes * 60)}` : ""); }
+
+  // What arrives over the private channel from the patient's browser
+  function teleData(m) {
+    if (!m || typeof m !== "object") return;
+    if (m.t === "chat" && typeof m.body === "string") { tele.chat.push({ me: false, body: m.body.slice(0, 1000), at: Date.now() }); if (!tele.chatOpen || route() !== "telehealth") { tele.unread++; toast("New chat message in the visit"); } teleMount(); }
+    else if (m.t === "pain") { const n = Math.round(Number(m.level)); if (n >= 0 && n <= 10) { tele.pain = n; toast(`${tele.call ? tele.call.name : "The patient"} reports pain ${n} out of 10`); teleMount(); } }
+    else if (m.t === "draw") boardLine($("#teleBoard"), m, "#F0A55B");
+    else if (m.t === "clear") boardClear($("#teleBoard"));
+  }
+  // Shared whiteboard: lines are sent as fractions of the board's size, so both screens show the same drawing
+  function boardFit(cv) { if (!cv) return; const r = cv.getBoundingClientRect(); if (r.width && (cv.width !== Math.round(r.width) || cv.height !== Math.round(r.height))) { const old = cv.width ? cv.toDataURL() : null; cv.width = Math.round(r.width); cv.height = Math.round(r.height); if (old) { const im = new Image(); im.onload = () => cv.getContext("2d").drawImage(im, 0, 0, cv.width, cv.height); im.src = old; } } }
+  function boardLine(cv, m, color) { if (!cv || !Array.isArray(m.a) || !Array.isArray(m.b)) return; boardFit(cv); const g = cv.getContext("2d"); g.strokeStyle = color; g.lineWidth = 3; g.lineCap = "round"; g.beginPath(); g.moveTo(m.a[0] * cv.width, m.a[1] * cv.height); g.lineTo(m.b[0] * cv.width, m.b[1] * cv.height); g.stroke(); }
+  function boardClear(cv) { if (cv) cv.getContext("2d").clearRect(0, 0, cv.width, cv.height); }
+  function boardWire(cv) {
+    if (!cv || cv.dataset.wired) return; cv.dataset.wired = "1"; let last = null;
+    const at = (e) => { const r = cv.getBoundingClientRect(); return [Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)), Math.min(1, Math.max(0, (e.clientY - r.top) / r.height))]; };
+    cv.addEventListener("pointerdown", (e) => { last = at(e); cv.setPointerCapture(e.pointerId); e.preventDefault(); });
+    cv.addEventListener("pointermove", (e) => { if (!last) return; const p = at(e), m = { t: "draw", a: last, b: p }; boardLine(cv, m, "#7AAFD7"); teleSend(m); last = p; });
+    const up = () => { last = null; }; cv.addEventListener("pointerup", up); cv.addEventListener("pointercancel", up);
+  }
+  // Live transcription: the browser turns Dr. Jared's own speech into text ON THIS DEVICE (never a cloud service),
+  // and the text waits here until the visit ends, when it is offered to the AI scribe on the Notes screen.
+  async function teleScribe(on) {
+    if (!on) { teleScribeStop(); teleMount(); return; }
+    let ok = false;
+    try { ok = !!SR && typeof SR.available === "function" && (await SR.available({ langs: ["en-US"], processLocally: true })) === "available"; } catch {}
+    if (!ok) { toast("Live transcription needs on-device speech recognition, which this browser does not have ready. Nothing was turned on, and no audio left this computer."); teleMount(); return; }
+    tele.scribing = true;
+    const go = () => {
+      if (!tele.scribing || !teleIn()) return;
+      const r = new SR(); tele.scribeRec = r; r.lang = "en-US"; r.continuous = true; r.interimResults = false;
+      try { r.processLocally = true; } catch {}
+      r.onresult = (e) => { for (let i = e.resultIndex; i < e.results.length; i++) if (e.results[i].isFinal) tele.transcript += e.results[i][0].transcript.trim() + " "; const n = $("#teleWords"); if (n) n.textContent = `${tele.transcript.trim().split(/\s+/).filter(Boolean).length} words so far`; };
+      r.onerror = (e) => { if (e.error !== "no-speech" && e.error !== "aborted") { teleScribeStop(); toast("Live transcription stopped (" + e.error + ")."); teleMount(); } };
+      r.onend = () => { if (tele.scribing && tele.scribeRec === r) setTimeout(go, 250); };
+      try { r.start(); } catch { teleScribeStop(); }
+    };
+    go(); teleMount();
+  }
+  async function teleBlur() {
+    const t = tele.cam; if (!t) return;
+    const cap = t.getCapabilities ? t.getCapabilities() : {};
+    if (!cap.backgroundBlur || !cap.backgroundBlur.includes(true) || !cap.backgroundBlur.includes(false)) { toast(cap.backgroundBlur && cap.backgroundBlur.includes(true) ? "Background blur is controlled by your computer's camera settings on this device." : "Background blur is not available with this camera or browser."); return; }
+    try { await t.applyConstraints({ backgroundBlur: !tele.blur }); tele.blur = !tele.blur; teleMount(); } catch { toast("Background blur could not be changed."); }
+  }
   async function teleBegin(ev) {
     try {
       if (!tele.ice) tele.ice = (await get("/telehealth/ice")).iceServers || [];
       const stream = await teleMedia();
       const pc = new RTCPeerConnection({ iceServers: tele.ice }); tele.pc = pc; tele.queue = [];
-      tele.call = { clientId: ev.clientId, name: ev.name || "Patient", visit: ev.visit || "", since: Date.now() };
+      tele.call = { clientId: ev.clientId, name: ev.name || "Patient", visit: ev.visit || "", minutes: Number(ev.minutes) || 0, since: Date.now() };
+      tele.transcript = "";
+      // The private channel for chat, whiteboard and the pain check-in (browser to browser, same encryption as the call)
+      const dc = pc.createDataChannel("visit"); tele.dc = dc;
+      dc.onmessage = (e) => { try { teleData(JSON.parse(e.data)); } catch {} };
+      dc.onopen = () => teleMount(); dc.onclose = () => teleMount();
       stream.getTracks().forEach((t) => pc.addTrack(t, stream));
       pc.ontrack = (e) => { tele.remote = e.streams[0] || new MediaStream([e.track]); const v = $("#teleRemote"); if (v) v.srcObject = tele.remote; teleMount(); };
       pc.onicecandidate = (e) => { if (e.candidate) MDFitRT.emit("tele_signal", { candidate: e.candidate }); };
@@ -790,21 +869,49 @@
       await sender.replaceTrack(track); teleMount();
     } catch { tele.screen = null; }
   }
+  // Ending a visit: if words were transcribed, they go to the Notes screen for the scribe (held in this page only)
+  function teleFinish() {
+    const text = tele.transcript.trim(), who = tele.call && tele.call.clientId;
+    MDFitRT.emit("tele_end"); teleOver("");
+    if (text) { state.scribeText = text; tele.transcript = ""; if (who) state.chartClient = who; toast("Visit ended. Your transcript is on the Notes screen."); location.hash = "notes"; }
+    else toast("Visit ended.");
+  }
   // Puts the current state on the Telehealth screen without redrawing it (the videos must not be torn down)
   function teleMount() {
     const stage = $("#teleStage"); if (!stage) return;
     const r = $("#teleRemote"), l = $("#teleLocal");
     if (r && r.srcObject !== tele.remote) r.srcObject = tele.remote;
     const mine = tele.screen || tele.local; if (l && l.srcObject !== mine) l.srcObject = mine;
-    stage.classList.toggle("live", teleIn()); stage.classList.toggle("has-remote", !!tele.remote);
+    stage.classList.toggle("live", teleIn()); stage.classList.toggle("has-remote", !!tele.remote); stage.classList.toggle("boarding", tele.board);
     $("#teleWho").textContent = tele.call ? `${tele.call.name}${tele.call.visit ? " · " + tele.call.visit : ""}` : "";
+    $("#teleAvatarName").textContent = tele.call ? tele.call.name : "";
     $("#teleIdle").hidden = teleIn(); $("#teleControls").hidden = !teleIn();
-    // Round icon buttons, filled while the thing is on (microphone live, camera live, screen being shared)
+    // Round icon buttons, filled while the thing is on
     const set = (id, on, labelOn, labelOff) => { const el = $(id); if (el) { el.classList.toggle("on", on); el.setAttribute("aria-pressed", String(on)); el.setAttribute("aria-label", on ? labelOn : labelOff); el.title = on ? labelOn : labelOff; } };
     set("#teleMic", !tele.micOff, "Microphone on. Press to mute", "Muted. Press to unmute");
     set("#teleCam", !!tele.cam && !tele.camOff, "Camera on. Press to turn off", "Camera off. Press to turn on");
     set("#teleShare", !!tele.screen, "Sharing your screen. Press to stop", "Share your screen");
-    if ($("#teleCam")) $("#teleCam").disabled = !tele.cam;
+    set("#teleBoardBtn", tele.board, "Whiteboard open. Press to close", "Open the whiteboard");
+    set("#teleBlurBtn", tele.blur, "Background blurred. Press to show it", "Blur your background");
+    set("#teleChatBtn", tele.chatOpen, "Chat open. Press to close", tele.unread ? `Open chat, ${tele.unread} new` : "Open chat");
+    set("#teleScribeBtn", tele.scribing, "Transcribing on this device. Press to stop", "Transcribe for the AI scribe");
+    const dot = $("#teleChatDot"); if (dot) dot.hidden = !tele.unread;
+    const sw = $("#teleScribeSw"); if (sw) sw.checked = tele.scribing;
+    const words = $("#teleWords"); if (words) words.textContent = tele.scribing ? `${tele.transcript.trim().split(/\s+/).filter(Boolean).length} words so far` : teleIn() ? "Off" : "Starts with a visit";
+    for (const id of ["#teleCam", "#teleBlurBtn"]) if ($(id)) $(id).disabled = !tele.cam;
+    const open = !!(tele.dc && tele.dc.readyState === "open");
+    for (const id of ["#teleBoardBtn", "#teleChatBtn", "#telePainBtn"]) if ($(id)) $(id).disabled = !open;
+    if (sw) sw.disabled = !teleIn();
+    const pain = $("#telePain"); if (pain) pain.textContent = tele.pain !== null ? `${tele.pain} out of 10` : tele.painAsked ? "Asked, waiting" : "";
+    const cv = $("#teleBoard"); if (cv) { cv.hidden = !tele.board; if (tele.board) { boardFit(cv); boardWire(cv); } }
+    const clr = $("#teleClear"); if (clr) clr.hidden = !tele.board;
+    const box = $("#teleChatBox");
+    if (box) {
+      box.hidden = !(tele.chatOpen && teleIn());
+      const list = $("#teleChatList"), stick = !list || list.scrollHeight - list.scrollTop - list.clientHeight < 40;
+      list.innerHTML = tele.chat.map((m) => `<div class="bubble ${m.me ? "me" : ""}">${esc(m.body)}</div>`).join("") || `<p class="muted" style="margin:0;font-size:12.5px">Messages here go straight between the two of you and disappear when the visit ends.</p>`;
+      if (stick) list.scrollTop = list.scrollHeight;
+    }
     teleSay(tele.status); teleClock();
     const w = $("#teleWaiting");
     if (w) w.innerHTML = tele.waiting.map((p) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(p.name)}</b><div class="muted" style="font-size:12px">${esc(p.visit || "No video visit booked today")} · waiting ${Math.max(0, Math.round((Date.now() - p.since) / 60000))} min</div></span><button class="btn sm primary" data-act="teleAdmit" data-id="${esc(p.clientId)}"${teleIn() ? " disabled" : ""}>Admit</button><button class="btn sm ghost" data-act="teleDecline" data-id="${esc(p.clientId)}" aria-label="Turn away ${esc(p.name)}">${ui("x", 14)}</button></div>`).join("") || none(MDFitRT && MDFitRT.connected() ? "Nobody is waiting. Patients appear here when they open their visit link." : "Not connected to the live service. Reload the page.");
