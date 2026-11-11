@@ -3,7 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MD Fit Workspace</title>
+<title>MD Fit Admin</title>
+<link rel="manifest" href="/admin.webmanifest">
+<meta name="theme-color" content="#0A1A2E">
+<link rel="apple-touch-icon" href="assets/app-icon-192.png">
+<meta name="apple-mobile-web-app-title" content="MD Fit Admin">
 <meta name="robots" content="noindex, nofollow">
 <meta name="description" content="MD Fit practice workspace. Staff sign-in required.">
 <!-- Practice workspace: this file holds the screens' styles and shell; workspace-app.js signs in and talks to /api/admin/*. -->
@@ -160,6 +164,8 @@ textarea.input{min-height:120px;resize:vertical;line-height:1.55}
 .appt{position:absolute;left:4px;right:4px;border-radius:6px;padding:4px 7px;font-size:12px;line-height:1.3;cursor:pointer;border-left:3px solid var(--c);background:color-mix(in srgb,var(--c) 13%,var(--surface));contain:paint;overflow-wrap:anywhere}
 .btn.mic.rec{background:var(--bad);color:#fff;border-color:transparent}
 .ui-ic{flex:none;display:block}
+.chip{font:inherit;font-size:12.5px;font-weight:600;padding:5px 11px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.chip.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-text)}
 .bc-list{max-height:200px;overflow:auto;border:1px solid var(--line);border-radius:8px;padding:8px 10px;display:grid;gap:6px}
 .stars{display:inline-flex;gap:1px;color:var(--warn);vertical-align:-2px}
 /* Video visit stage: the patient large, your own picture small in the corner */
@@ -257,7 +263,7 @@ textarea.input{min-height:120px;resize:vertical;line-height:1.55}
 <section class="signin" id="signin">
   <form class="card signin-card" id="signinForm" novalidate>
     <div class="brand" style="padding:0 0 6px"><div class="logo lg"><img src="assets/logo.webp" alt="" width="160" height="160"></div><div><b>MD Fit</b><div class="muted" style="font-size:12px">Physical Rehab &amp; Fitness</div></div></div>
-    <h1 style="font-size:24px">Workspace</h1>
+    <h1 style="font-size:24px">Admin</h1>
     <div class="field"><label for="siEmail">Email</label><input id="siEmail" name="email" type="email" class="input" required autocomplete="username"></div>
     <div class="field"><label for="siPass">Password</label><input id="siPass" name="password" type="password" class="input" required autocomplete="current-password"></div>
     <div class="field" id="siCodeRow" hidden><label for="siCode">Code from your email</label><input id="siCode" name="code" class="input" inputmode="numeric" autocomplete="one-time-code"></div>
@@ -273,6 +279,7 @@ textarea.input{min-height:120px;resize:vertical;line-height:1.55}
       <div class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="globalSearch" placeholder="Find a client by name or email" aria-label="Find a client"></div>
       <div class="spacer"></div>
       <span class="muted" id="whoami" style="font-size:12.5px"></span>
+      <button class="btn sm" id="installBtn" hidden><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12M7 11l5 5 5-5"/><path d="M4 20h16"/></svg>Install app</button>
       <button class="btn sm" id="signOut">Sign out</button>
       <button class="btn ghost sm" id="themeBtn" aria-label="Switch between light and dark"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg></button>
     </header>
@@ -285,6 +292,6 @@ textarea.input{min-height:120px;resize:vertical;line-height:1.55}
 <script src="config.js?v=aac711e3"></script>
 <script src="realtime.js?v=dccfd156"></script>
 <script src="app/exercises.js?v=e75f9690"></script>
-<script src="workspace-app.js?v=6566d31d"></script>
+<script src="workspace-app.js?v=4f4c0cd7"></script>
 </body>
 </html>

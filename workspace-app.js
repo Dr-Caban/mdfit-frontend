@@ -17,7 +17,7 @@
   const initials = (n) => String(n || "?").replace(/<[^>]*>/g, "").split(/\s+/).filter(Boolean).map((w) => w[0]).slice(0, 2).join("").toUpperCase() || "?";
   const avatar = (name, size = 32) => `<span class="avatar" style="background:#8FA3B8;width:${size}px;height:${size}px">${esc(initials(name))}</span>`;
   const isoDay = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-  const adminLink = (tab, label) => `<a class="btn sm" href="/admin#${tab}">${label}</a>`;
+  const adminLink = (tab, label) => `<a class="btn sm" href="/admin-classic#${tab}">${label}</a>`;
   const notBuilt = (what) => `<div class="card">${none(`${what} is not connected yet: the server has nothing for it.`)}</div>`;
 
   // ---------------------------------------------------------------- session
@@ -45,7 +45,7 @@
   function signOut() {
     token = ""; store.set(""); if (window.MDFitRT) { if (tele.call) MDFitRT.emit("tele_end"); MDFitRT.disconnect(); } teleDrop(); stopDictation();
     for (const k of Object.keys(cache)) cache[k] = (k === "unread" || k === "waiting") ? 0 : null; // every cached list, the open chart included
-    state.chartClient = null; state.thread = null; state.clientQ = ""; state.scribeText = ""; tele.transcript = "";
+    state.chartClient = null; state.thread = null; state.clientQ = ""; state.scribeText = ""; tele.transcript = ""; noteReset(null);
     $("#view").innerHTML = ""; $("#nav").innerHTML = ""; $("#whoami").textContent = ""; $("#globalSearch").value = ""; closeModal();
     $("#app").hidden = true; $("#signin").hidden = false; clearTimeout(idleTimer);
     // /admin shares this tab: signing out here signs out there as well
@@ -71,7 +71,10 @@
     try {
       const body = { email: f.email.value.trim(), password: f.password.value }; if (f.code.value.trim()) body.code = f.code.value.trim();
       const out = await api("POST", "/api/admin/login", body);
-      token = out.token; store.set(token); idleStamp(); f.reset(); $("#siCodeRow").hidden = true; start();
+      token = out.token; store.set(token); idleStamp();
+      // the earlier admin (/admin-classic) opens signed in from this tab
+      try { sessionStorage.setItem("mdfit_token", token); } catch {}
+      f.reset(); $("#siCodeRow").hidden = true; start();
     } catch (err) {
       if (/code/i.test(err.message)) { $("#siCodeRow").hidden = false; f.code.focus(); }
       msg.textContent = err.message;
@@ -96,7 +99,11 @@
     board: '<path d="M3 4h18v12H3zM12 16v4M8 20h8"/><path d="M7 12l3-3 2 2 4-4"/>',
     blur: '<circle cx="12" cy="12" r="9" stroke-dasharray="2 3"/><circle cx="12" cy="12" r="3"/>',
     chat: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
-    person: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/>'
+    person: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/>',
+    carry: '<path d="M4 12a8 8 0 1 0 2.5-5.8"/><path d="M4 4v5h5"/>',
+    plus: '<path d="M12 5v14M5 12h14"/>',
+    upload: '<path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/>',
+    download: '<path d="M12 4v12M7 11l5 5 5-5"/><path d="M4 20h16"/>'
   };
   const ui = (name, size = 16) => `<svg class="ui-ic" viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${UI[name]}</svg>`;
   const ICON = {
@@ -132,7 +139,8 @@
   function renderNav(active) {
     const badge = (id) => id === "messages" && cache.unread ? `<span class="badge">${cache.unread}</span>` : id === "clients" && cache.waiting ? `<span class="badge">${cache.waiting}</span>` : "";
     $("#nav").innerHTML = `<div class="brand"><div class="logo"><img src="assets/logo.webp" alt="" width="160" height="160"></div><div><b>MD Fit</b><div class="muted" style="font-size:12px">Physical Rehab &amp; Fitness</div></div></div>` +
-      NAV.map((g) => `<div class="nav-group"><span>${g.g}</span>${g.items.map(([id, label]) => `<a href="#${id}" class="${active === id ? "active" : ""}"><svg viewBox="0 0 24 24">${ICON[id]}</svg>${label}${badge(id)}</a>`).join("")}</div>`).join("");
+      NAV.map((g) => `<div class="nav-group"><span>${g.g}</span>${g.items.map(([id, label]) => `<a href="#${id}" class="${active === id ? "active" : ""}"><svg viewBox="0 0 24 24">${ICON[id]}</svg>${label}${badge(id)}</a>`).join("")}</div>`).join("") +
+      `<div class="nav-group"><a href="/admin-classic" class="muted" style="font-size:12.5px">Earlier admin screens</a></div>`;
   }
 
   async function clients(fresh) { if (fresh || !cache.clients) cache.clients = await get("/clients"); return cache.clients; }
@@ -391,22 +399,89 @@
       ${video.map((a) => `<div class="list-item"><span style="flex:1"><b>${esc(a.name)}</b><div class="muted" style="font-size:12px">${fmtDate(a.date)} · ${fmtTime(a.time)} · ${esc(a.typeName || "")}</div></span>${a.meetingLink && a.meetingLink !== own ? `<a class="btn sm" href="${/^https:\/\//i.test(a.meetingLink) ? esc(a.meetingLink) : "#"}" target="_blank" rel="noopener">Open their link</a>` : a.meetingLink ? `<span class="pill ok">Built-in room</span>` : `<span class="pill warn">No link yet</span>`}</div>`).join("") || none("No video visits booked. Schedule one from a client's chart, under Billing.")}</div>`;
   };
 
+  // ---- Clinical notes. Staff only: drafts autosave, signing locks the note, later information goes in an addendum.
+  // The "For the patient" box is separate: what is written there is what the patient reads in their app.
+  const TEMPLATES = { soap: "SOAP note", evaluation: "Initial evaluation", followup: "Follow-up visit", discharge: "Discharge summary", free: "Free note" };
+  const TIERS = { T1: "T1 · Standard clinical", T2: "T2 · Sensitive", T3: "T3 · Restricted" };
+  const QUICK = ["Soft tissue work", "Assisted stretching", "Corrective exercise", "Medical massage", "Home program given", "Improving", "No change", "Flare-up"];
+  const note = { id: null, clientId: null, template: "soap", tier: "T1", tags: [], dirty: false, savedAt: null, timer: 0, saving: null, has: false };
+  const noteReset = (clientId) => { clearTimeout(note.timer); Object.assign(note, { id: null, clientId: clientId || null, template: "soap", tier: "T1", tags: [], dirty: false, savedAt: null, timer: 0, saving: null, has: false }); };
+  const noteStamp = () => { const el = $("#nSaved"); if (el) el.textContent = note.saving ? "Saving…" : note.savedAt ? `Autosaved ${new Date(note.savedAt).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })} · encrypted` : note.dirty ? "Not saved yet" : "Nothing to save yet"; };
+  // One save at a time; the first save creates the draft, later ones update it
+  function noteSave(quiet) {
+    clearTimeout(note.timer);
+    const box = $("#nBody"); if (!box || !note.clientId) return Promise.resolve(null);
+    const body = { text: box.value, template: note.template, tier: note.tier, tags: note.tags };
+    if (!note.id && !box.value.trim()) return Promise.resolve(null);
+    const run = async () => {
+      const r = note.id ? await api("PUT", `/api/admin/notes/${note.id}`, body) : await api("POST", "/api/admin/notes", { clientId: note.clientId, ...body });
+      note.id = r.id; note.dirty = false; note.savedAt = Date.now(); note.has = true; return r;
+    };
+    note.saving = (note.saving || Promise.resolve()).catch(() => {}).then(run).finally(() => { note.saving = null; noteStamp(); });
+    noteStamp();
+    return quiet ? note.saving.catch((err) => { toast("Autosave failed: " + err.message); return null; }) : note.saving;
+  }
+  const noteTouch = () => { note.dirty = true; noteStamp(); clearTimeout(note.timer); note.timer = setTimeout(() => noteSave(true), 5000); };
+  // What the AI assist reads: clinical content only. Names, contact details, birth date and signatures are left out
+  // here, and the server strips names, emails, phone numbers and calendar dates again before anything is sent.
+  async function noteBundle(cid) {
+    const [c, emr, intake, notes] = await Promise.all([get(`/clients/${cid}`).catch(() => ({})), get(`/emr/${cid}`).catch(() => ({})), get(`/clients/${cid}/intake`).catch(() => ({ docs: [] })), get(`/notes?clientId=${cid}`).catch(() => ({ notes: [] }))]);
+    const idf = /name|birth|dob|address|street|city|zip|phone|email|emergency|signature|contact|reach you/i, out = [];
+    for (const d of intake.docs || []) { if (/information|consent|polic/i.test(d.title || "")) continue; const rows = (d.fields || []).filter((f) => !idf.test(f.label || "") && f.value !== "" && f.value != null && f.value !== false).map((f) => `- ${f.label}: ${Array.isArray(f.value) ? f.value.join(", ") : f.value === true ? "Yes" : f.value}`); if (rows.length) out.push(`INTAKE, ${d.title}:\n${rows.join("\n")}`); }
+    const pain = (c.painLog || []).slice(-12).map((p) => `- ${p.area}: ${p.level}/10${p.note ? " (" + p.note + ")" : ""}`); if (pain.length) out.push("PAIN LOG, oldest to newest:\n" + pain.join("\n"));
+    if (c.plan && (c.plan.notes || (c.plan.exercises || []).length)) out.push("CURRENT PLAN:\n" + [c.plan.notes, ...(c.plan.exercises || []).map((e) => `- ${e.name}${e.detail ? ": " + e.detail : ""}`)].filter(Boolean).join("\n"));
+    const mv = (emr.movements || []).map((m) => `- ${m.name}${m.dose ? ", " + m.dose : ""}${m.cue ? " (" + m.cue + ")" : ""}`); if (mv.length) out.push("PRESCRIBED MOVEMENTS:\n" + mv.join("\n"));
+    const pn = (emr.notes || []).slice(0, 6).reverse().map((n) => "- " + n.text); if (pn.length) out.push("NOTES GIVEN TO THE PATIENT, oldest to newest:\n" + pn.join("\n"));
+    const cn = (notes.notes || []).filter((n) => n.status === "signed" && n.text).slice(0, 5).reverse().map((n) => `${TEMPLATES[n.template] || "Note"}:\n${n.text}`); if (cn.length) out.push("SIGNED CLINICAL NOTES, oldest to newest:\n" + cn.join("\n\n"));
+    const visits = (c.appointments || []).filter((a) => a.status === "completed").length; if (visits) out.push(`VISITS COMPLETED: ${visits}`);
+    return { text: out.join("\n\n").slice(0, 18000), intake, notes: notes.notes || [], client: c };
+  }
   V.notes = async () => {
-    // The scribe is on only when the server has a model connected; an older server answers 404 and it stays off
-    const [emr, scribe] = await Promise.all([get("/emr"), get("/scribe").catch(() => ({ enabled: false }))]);
+    const [list, scribe] = await Promise.all([clients(), get("/scribe").catch(() => ({ enabled: false }))]);
     const heard = state.scribeText || ""; state.scribeText = "";
-    return `<div class="view-head"><div><h1>New note</h1><p class="muted">A note for a patient. They read it in their app.</p></div></div>
-    <div class="grid g-side"><div class="card stack">
-      <form class="stack" data-form="noteFor"><div class="field"><label for="nClient">Patient</label><select id="nClient" name="id" class="input" required>${emr.patients.map((p) => `<option value="${esc(p.id)}"${p.id === state.chartClient ? " selected" : ""}>${esc(p.name)}</option>`).join("") || `<option value="">No active patients yet</option>`}</select></div>
-      <div class="field"><div class="row" style="justify-content:space-between"><label for="nBody">Note</label><button type="button" class="btn sm mic" data-act="dictate" data-for="nBody" aria-pressed="false">${ui("mic", 14)}<span>Dictate</span></button></div><textarea id="nBody" name="text" class="input" style="min-height:260px" maxlength="4000" required placeholder="What the patient should know or do next">${scribe.enabled ? "" : esc(heard.slice(0, 4000))}</textarea></div>
-      <div class="row"><button class="btn primary"${emr.patients.length ? "" : " disabled"}>Add note</button><span class="muted" style="font-size:12px">Shared with the patient as soon as it is added</span></div></form></div>
-    <div class="stack"><div class="card">${scribe.enabled ? `<div class="card-head"><h2 class="row" style="gap:6px">${ui("spark", 18)}AI scribe</h2><span class="pill ok">On · ${esc(scribe.model)}</span></div>
-      <form class="stack" data-form="scribe">
-        <div class="field"><div class="row" style="justify-content:space-between"><label for="sText">What happened in the visit</label><button type="button" class="btn sm mic" data-act="dictate" data-for="sText" aria-pressed="false">${ui("mic", 14)}<span>Dictate</span></button></div><textarea id="sText" name="text" class="input" style="min-height:150px" maxlength="20000" required placeholder="Your rough notes, or paste a transcript. For example: right knee 3 weeks post-op, swelling down, soft tissue on the quad, heel slides 2x10 twice a day, back in a week.">${esc(heard)}</textarea></div>
-        <div class="row"><button class="btn primary"${emr.patients.length ? "" : " disabled"}>Draft the note</button><span class="muted" style="font-size:12px" id="sMsg" role="status"></span></div>
-        <p class="muted" style="font-size:12px;margin:0">The draft lands in the Note box for you to read and edit. Nothing is saved or shared until you press Add note. The patient's name, emails and phone numbers are removed before the text goes to ${esc(scribe.host)}.</p>
-      </form>` : `<div class="card-head"><h2 class="row" style="gap:6px">${ui("spark", 18)}AI scribe</h2><span class="pill">Not connected</span></div>${none("Drafts the patient's note from your rough notes. It turns on once a language model is connected on the server.")}`}</div>
-    <div class="card"><div class="card-head"><h2>Private notes and signing</h2><span class="pill">Not connected</span></div>${none("This system stores only notes the patient can read. Private clinical notes, sensitivity tiers and sign-and-lock are not built yet.")}</div></div></div>`;
+    const cid = list.find((c) => c.id === state.chartClient) ? state.chartClient : (list[0] ? list[0].id : null);
+    if (note.clientId !== cid) noteReset(cid);
+    const onFile = cid ? (await get(`/notes?clientId=${cid}`).catch(() => ({ notes: [], missing: true }))) : { notes: [] };
+    const built = !onFile.missing, cur = note.id ? (onFile.notes || []).find((n) => n.id === note.id && n.status === "draft") : null;
+    if (note.id && !cur) noteReset(cid);
+    if (cur && cur.withheld) { const f = await get(`/notes/${cur.id}`).catch(() => null); if (f) cur.text = f.text; }
+    const text = cur ? cur.text || "" : "", kinds = scribe.kinds || [], ai = scribe.enabled && kinds.includes("soap");
+    const sel = (id, name, map, val) => `<select id="${id}" class="input" data-change="${name}">${Object.entries(map).map(([k, v]) => `<option value="${k}"${k === val ? " selected" : ""}>${esc(v)}</option>`).join("")}</select>`;
+    return `<div class="view-head"><div><h1>New note</h1><p class="muted">Rehab templates · AI drafts are reviewed and signed by you · clinical notes are staff only</p></div>
+      <div class="row"><button type="button" class="btn" data-act="noteSave"${built && cid ? "" : " disabled"}>Save draft</button><button type="button" class="btn primary" data-act="noteSign"${built && cid ? "" : " disabled"}>Sign &amp; lock</button></div></div>
+    ${built ? "" : `<div class="card" style="margin-bottom:16px">${none("Clinical notes are not available on the server yet. Deploy the latest backend to turn this screen on.")}</div>`}
+    <div class="grid g-side"><div class="stack">
+      <div class="card stack">
+        <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px">
+          <div class="field" style="margin:0"><label for="nClient">Client</label><select id="nClient" class="input" data-change="noteClient">${list.map((c) => `<option value="${esc(c.id)}"${c.id === cid ? " selected" : ""}>${esc(c.name)}</option>`).join("") || `<option value="">No clients yet</option>`}</select></div>
+          <div class="field" style="margin:0"><label for="nTemplate">Template</label>${sel("nTemplate", "noteTemplate", TEMPLATES, note.template)}</div>
+          <div class="field" style="margin:0"><label for="nTier">Sensitivity</label>${sel("nTier", "noteTier", TIERS, note.tier)}</div>
+        </div>
+        <div><div class="row" style="gap:6px">${QUICK.map((q) => `<button type="button" class="chip${note.tags.includes(q) ? " on" : ""}" data-act="noteTag" data-tag="${esc(q)}" aria-pressed="${note.tags.includes(q)}">${esc(q)}</button>`).join("")}</div><div class="muted" style="font-size:12px;margin-top:4px">Quick picks</div></div>
+        <div class="field" style="margin:0"><div class="row" style="justify-content:space-between"><label for="nBody" id="nBodyLabel">${esc(TEMPLATES[note.template])}</label><button type="button" class="btn sm mic" data-act="dictate" data-for="nBody" aria-pressed="false">${ui("mic", 14)}<span>Dictate</span></button></div>
+          <textarea id="nBody" class="input" style="min-height:300px" maxlength="20000" data-input="note" placeholder="Start typing, or use the AI scribe to draft from the session…"${built && cid ? "" : " disabled"}>${esc(text)}</textarea></div>
+        <div class="row" style="justify-content:space-between"><div class="row"><button type="button" class="btn sm" data-act="noteCarry"${built && cid ? "" : " disabled"}>${ui("carry", 14)}Carry forward last plan</button><button type="button" class="btn sm" data-act="noteGoal"${built && cid ? "" : " disabled"}>${ui("plus", 14)}Link treatment goal</button></div><span class="muted" style="font-size:12px" id="nSaved" role="status"></span></div>
+      </div>
+      <div class="card stack"><div class="card-head"><h2>For the patient</h2><span class="pill">Optional</span></div>
+        <div class="field" style="margin:0"><div class="row" style="justify-content:space-between"><label for="nPatient">What the patient reads in their app</label><span class="row" style="gap:6px"><button type="button" class="btn sm" data-act="notePatientDraft"${ai ? "" : " disabled"}>${ui("spark", 14)}Draft from the note</button><button type="button" class="btn sm mic" data-act="dictate" data-for="nPatient" aria-pressed="false">${ui("mic", 14)}<span>Dictate</span></button></span></div>
+          <textarea id="nPatient" class="input" style="min-height:110px" maxlength="4000" placeholder="Plain words: what was worked on and what to do before next time"${cid ? "" : " disabled"}></textarea></div>
+        <div class="row"><button type="button" class="btn" data-act="notePatientSend"${cid ? "" : " disabled"}>Share with the patient now</button><span class="muted" style="font-size:12px">Also shared when you sign the note, if this box has text. The clinical note itself is never shown to the patient.</span></div>
+      </div>
+      <div class="card"><div class="card-head"><h2>Notes on file</h2><span class="pill">${(onFile.notes || []).length}</span></div>
+        ${(onFile.notes || []).map((n) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(TEMPLATES[n.template] || "Note")}</b> <span class="pill ${n.status === "signed" ? "ok" : "warn"}">${n.status === "signed" ? "Signed" : "Draft"}</span>${n.tier !== "T1" ? ` <span class="pill">${esc(n.tier)}</span>` : ""}${n.addenda ? ` <span class="pill">${n.addenda} addend${n.addenda === 1 ? "um" : "a"}</span>` : ""}
+          <div class="muted" style="font-size:12px">${when(n.signedAt || n.updatedAt)}${n.withheld ? " · open to read" : n.text ? " · " + esc(n.text.slice(0, 80)) + (n.text.length > 80 ? "…" : "") : ""}</div></span>
+          ${n.status === "draft" ? `<button type="button" class="btn sm ghost" data-act="noteDiscard" data-id="${esc(n.id)}" aria-label="Discard this draft">${ui("x", 14)}</button>` : ""}<button type="button" class="btn sm" data-act="noteOpen" data-id="${esc(n.id)}">${n.status === "draft" ? "Continue" : "Open"}</button></div>`).join("") || none(cid ? "No clinical notes for this client yet." : "Pick a client.")}</div>
+    </div>
+    <div class="stack">
+      <div class="card stack"><div class="card-head"><h2 class="row" style="gap:6px">${ui("spark", 18)}AI scribe</h2><span class="pill ${ai ? "ok" : ""}">${ai ? "On" : "Not connected"}</span></div>
+        <div class="row"><button type="button" class="btn sm mic" data-act="dictate" data-for="sText" aria-pressed="false">${ui("mic", 14)}<span>Dictate</span></button><button type="button" class="btn sm" disabled title="Needs a speech-to-text service with a signed agreement. None is connected.">${ui("upload", 14)}Upload audio</button></div>
+        <div class="field" style="margin:0"><label for="sText">Or paste a summary or transcript</label><textarea id="sText" class="input" style="min-height:130px" maxlength="20000" placeholder="Right knee 3 weeks post-op, swelling down, soft tissue on the quad, heel slides 2x10 twice a day, back in a week.">${esc(heard)}</textarea></div>
+        <button type="button" class="btn primary" data-act="noteScribe" style="justify-content:center"${ai && cid ? "" : " disabled"}>Draft <span id="sKind" style="margin:0 .3em">${esc(TEMPLATES[note.template])}</span></button>
+        <p class="muted" style="font-size:12px;margin:0" id="sMsg" role="status">${ai ? `Writes in your template from what you give it, using ${esc(scribe.model)}. Names, emails, phone numbers and dates are removed before the text is sent. Nothing is saved until you save or sign.` : "Turns on once a language model is connected on the server."}</p></div>
+      <div class="card"><div class="card-head"><h2>AI assist</h2></div>
+        ${[["intake-summary", "Intake summary"], ["prep-brief", "Session prep brief"], ["client-summary", "Client summary"], ["treatment-plan", "Draft treatment plan"]].map(([k, l]) => `<div class="list-item"><span style="flex:1">${l}</span><button type="button" class="btn sm" data-act="noteAssist" data-kind="${k}" data-label="${l}"${ai && cid ? "" : " disabled"}>Generate</button></div>`).join("")}
+        <p class="muted" style="font-size:12px;margin:8px 0 0">Reads this client's clinical record only, with identity fields left out. You review everything it writes.</p></div>
+    </div></div>`;
   };
 
   V.forms = async () => {
@@ -553,6 +628,83 @@
     chart: (el) => openChart(el.dataset.id),
     chartClose: (el, e) => { e.preventDefault(); state.chartClient = null; render(); },
     chartTab: (el) => { state.chartTab = el.dataset.tab; document.querySelectorAll(".tabs .tab").forEach((b) => b.classList.toggle("active", b === el)); $("#chartBody").innerHTML = chartTab(); if (state.chartTab === "plans") loadPool(); },
+    // ---- clinical notes
+    noteSave: async () => { const r = await noteSave(false); toast(r ? "Draft saved." : "Write something first."); },
+    noteSign: async () => {
+      const box = $("#nBody"), forPatient = $("#nPatient").value.trim();
+      if (!box.value.trim()) { toast("Write the note before signing it."); return; }
+      if (!confirm(`Sign and lock this note? It cannot be changed afterwards; later information goes in an addendum.${forPatient ? "\n\nThe text under \"For the patient\" will be shared with the patient." : ""}`)) return;
+      await noteSave(false);
+      await api("POST", `/api/admin/notes/${note.id}/sign`, {});
+      if (forPatient) await api("POST", `/api/admin/emr/${note.clientId}/notes`, { text: forPatient });
+      noteReset(note.clientId); stopDictation();
+      toast(forPatient ? "Signed and locked. The patient's note was shared." : "Signed and locked."); await render();
+    },
+    noteTag: (el) => { const t = el.dataset.tag, i = note.tags.indexOf(t); if (i < 0) note.tags.push(t); else note.tags.splice(i, 1); el.classList.toggle("on", i < 0); el.setAttribute("aria-pressed", String(i < 0)); noteTouch(); },
+    noteCarry: async () => {
+      const r = await get(`/notes?clientId=${note.clientId}`), last = (r.notes || []).find((n) => n.status === "signed" && n.text);
+      const m = last && last.text.match(/(?:^|\n)[ \t]*Plan[^\n:]*:[ \t]*([\s\S]*?)(?=\n[ \t]*[A-Z][A-Za-z ,'/-]{2,40}:[ \t]*(?:\n|$)|$)/);
+      let plan = m ? m[1].trim() : "";
+      if (!plan) { const c = await get(`/clients/${note.clientId}`); plan = ((c.plan && c.plan.notes) || "").trim(); }
+      if (!plan) { toast("There is no earlier plan on file for this client."); return; }
+      noteAppend("Plan carried forward from the last visit:\n" + plan);
+    },
+    noteGoal: async () => {
+      const d = await get(`/clients/${note.clientId}/intake`).catch(() => ({ docs: [] }));
+      const f = (d.docs || []).flatMap((x) => x.fields || []).find((x) => /goal|get back to/i.test(x.label || "") && x.value);
+      if (!f) { toast("This client has not written a goal in their intake documents."); return; }
+      noteAppend("Patient's stated goal: " + (Array.isArray(f.value) ? f.value.join(", ") : f.value));
+    },
+    noteScribe: async (el) => {
+      const text = $("#sText").value.trim(), box = $("#nBody"), msg = $("#sMsg");
+      if (text.length < 20) { msg.textContent = "Dictate or paste a few sentences about the visit first."; return; }
+      if (box.value.trim() && !confirm("Replace what is in the note with the draft?")) return;
+      el.disabled = true; msg.textContent = "Drafting…";
+      try {
+        const r = await api("POST", "/api/admin/scribe/draft", { clientId: note.clientId, text, kind: note.template });
+        box.value = r.draft; box.focus(); box.setSelectionRange(0, 0); box.scrollTop = 0; noteTouch();
+        msg.textContent = `Draft ready. Read it and edit before you sign.${r.removed ? ` ${r.removed} name, contact or date ${r.removed === 1 ? "detail was" : "details were"} removed before sending.` : ""}`;
+      } catch (err) { msg.textContent = err.message; }
+      finally { el.disabled = false; }
+    },
+    notePatientDraft: async (el) => {
+      const src = ($("#nBody").value.trim() || $("#sText").value.trim()), box = $("#nPatient");
+      if (src.length < 20) { toast("Write the clinical note first; the patient's version is drafted from it."); return; }
+      el.disabled = true;
+      try { const r = await api("POST", "/api/admin/scribe/draft", { clientId: note.clientId, text: src, kind: "patient" }); box.value = r.draft; box.focus(); toast("Patient version drafted. Read it before sharing."); }
+      catch (err) { toast(err.message); }
+      finally { el.disabled = false; }
+    },
+    notePatientSend: async () => {
+      const box = $("#nPatient"), text = box.value.trim(); if (!text) { toast("Write the patient's note first."); return; }
+      if (!confirm("Share this with the patient now? They will see it in their app.")) return;
+      await api("POST", `/api/admin/emr/${note.clientId}/notes`, { text }); box.value = ""; toast("Shared. The patient can see it now.");
+    },
+    noteAssist: async (el) => {
+      el.disabled = true; const label = el.dataset.label;
+      try {
+        const b = await noteBundle(note.clientId);
+        if (b.text.length < 20) { toast("There is nothing on this client's record to work from yet."); return; }
+        const r = await api("POST", "/api/admin/scribe/draft", { clientId: note.clientId, text: b.text, kind: el.dataset.kind });
+        modal(`<div class="card-head"><h2 class="row" style="gap:6px">${ui("spark", 18)}${esc(label)}</h2><button type="button" class="btn sm ghost" data-act="closeModal" aria-label="Close">${ui("x", 14)}</button></div>
+          <p class="muted" style="margin:0 0 8px;font-size:12.5px">A draft for you to check against the record. Nothing has been saved.</p>
+          <textarea id="assistOut" class="input" style="min-height:260px" readonly>${esc(r.draft)}</textarea>
+          <div class="row" style="margin-top:10px"><button type="button" class="btn primary" data-act="noteInsert">Add to the note</button><button type="button" class="btn" data-act="assistCopy">${ui("copy", 14)}Copy</button></div>`);
+      } catch (err) { toast(err.message); }
+      finally { el.disabled = false; }
+    },
+    noteInsert: () => { const t = $("#assistOut").value; closeModal(); noteAppend(t); },
+    assistCopy: async () => { try { await navigator.clipboard.writeText($("#assistOut").value); toast("Copied."); } catch { toast("Couldn't copy. Select the text and copy it."); } },
+    noteOpen: async (el) => {
+      const n = await get(`/notes/${el.dataset.id}`);
+      if (n.status === "draft") { if (note.dirty) await noteSave(true); Object.assign(note, { id: n.id, clientId: n.clientId, template: n.template, tier: n.tier, tags: n.tags || [], dirty: false, savedAt: null }); await render(); const box = $("#nBody"); if (box) box.focus(); return; }
+      modal(`<div class="card-head"><h2>${esc(TEMPLATES[n.template] || "Note")} <span class="pill ok">Signed</span>${n.tier !== "T1" ? ` <span class="pill">${esc(n.tier)}</span>` : ""}</h2><button type="button" class="btn sm ghost" data-act="closeModal" aria-label="Close">${ui("x", 14)}</button></div>
+        <p class="muted" style="margin:0 0 8px;font-size:12.5px">Signed ${when(n.signedAt)} by ${esc(n.signedBy || "")} · locked${(n.tags || []).length ? " · " + n.tags.map(esc).join(", ") : ""}</p>
+        ${n.unreadable ? none("This note can't be opened with the server's current keys. Nothing has been changed.") : `<div class="note-text" style="white-space:pre-wrap;overflow-wrap:anywhere">${esc(n.text)}</div>`}
+        ${(n.addendaList || []).map((a) => `<div class="card" style="box-shadow:none;margin-top:10px"><div class="muted" style="font-size:12px">Addendum · ${when(a.at)} · ${esc(a.by || "")}</div><div style="white-space:pre-wrap;overflow-wrap:anywhere">${esc(a.text)}</div></div>`).join("")}
+        ${n.unreadable ? "" : `<form class="stack" data-form="noteAddendum" data-id="${esc(n.id)}" style="margin-top:12px"><div class="field" style="margin:0"><label for="addText">Add an addendum</label><textarea id="addText" name="text" class="input" rows="3" maxlength="20000" required placeholder="New information. The signed note above stays as it is."></textarea></div><div class="row"><button class="btn primary">Add addendum</button></div></form>`}`);
+    },
+    noteDiscard: async (el) => { if (!confirm("Discard this draft? This cannot be undone.")) return; await api("DELETE", `/api/admin/notes/${el.dataset.id}`); if (note.id === el.dataset.id) noteReset(note.clientId); toast("Draft discarded."); await render(); },
     dictate: (el) => dictate(el),
     // Broadcast: one message to many people. It lands in each person's own private thread; nobody sees who else got it.
     broadcast: async () => {
@@ -627,6 +779,7 @@
         if (route() === "messages") await render();
       } catch (err) { msg.textContent = err.message; btn.disabled = false; }
     },
+    noteAddendum: async (f) => { const text = f.text.value.trim(); if (!text) return; await api("POST", `/api/admin/notes/${f.dataset.id}/addendum`, { text }); toast("Addendum added."); await ACT.noteOpen({ dataset: { id: f.dataset.id } }); if (route() === "notes") render(); },
     roomLink: async (f) => {
       const url = f.url.value.trim();
       if (url && !/^https:\/\//i.test(url)) { toast("The room link must start with https://"); return; }
@@ -672,6 +825,9 @@
   document.addEventListener("change", (e) => {
     if (e.target.matches("[data-change=leadStatus]")) guard(ACT.leadSave)(e.target);
     if (e.target.matches("[data-change=teleScribe]")) teleScribe(e.target.checked);
+    if (e.target.matches("[data-change=noteClient]")) { (async () => { if (note.dirty) await noteSave(true); stopDictation(); state.chartClient = e.target.value; noteReset(e.target.value); render(); })(); }
+    if (e.target.matches("[data-change=noteTemplate]")) { note.template = e.target.value; $("#nBodyLabel").textContent = TEMPLATES[note.template]; $("#sKind").textContent = TEMPLATES[note.template]; if (note.id || $("#nBody").value.trim()) noteTouch(); }
+    if (e.target.matches("[data-change=noteTier]")) { note.tier = e.target.value; if (note.id || $("#nBody").value.trim()) noteTouch(); }
     if (e.target.matches("[data-change=bcTo]")) { const p = $("#bcPick"); if (p) p.hidden = e.target.value !== "selected"; }
     if (e.target.matches("[data-change=insDays]")) { state.insDays = Number(e.target.value) || 30; render(); }
   });
@@ -685,7 +841,10 @@
 
   // ---------------------------------------------------------------- router and start
   let seq = 0;
+  const noteAppend = (text) => { const box = $("#nBody"); if (!box) return; box.value = (box.value.trimEnd() ? box.value.trimEnd() + "\n\n" : "") + text; noteTouch(); box.focus(); box.scrollTop = box.scrollHeight; };
+  document.addEventListener("input", (e) => { if (e.target.matches && e.target.matches("[data-input=note]")) noteTouch(); });
   async function render() {
+    if (note.dirty && token && $("#nBody")) await noteSave(true);
     if (dict.on && !(dict.box && dict.box.isConnected && route() === dict.route)) stopDictation();
     if (!token) return;
     let r = (location.hash || "#dashboard").slice(1); if (r === "reports") r = "insights"; if (!V[r]) r = "dashboard";
@@ -719,7 +878,7 @@
     r.onresult = (e) => {
       let interim = "";
       for (let i = e.resultIndex; i < e.results.length; i++) { const t = e.results[i][0].transcript; if (e.results[i].isFinal) dict.said += t; else interim += t; }
-      if (dict.box.isConnected) { dict.box.value = dict.base + dict.said + interim; dict.box.scrollTop = dict.box.scrollHeight; }
+      if (dict.box.isConnected) { dict.box.value = dict.base + dict.said + interim; dict.box.scrollTop = dict.box.scrollHeight; dict.box.dispatchEvent(new Event("input", { bubbles: true })); /* dictated words autosave like typed ones */ }
       dict.restarts = 0; idleBump(); // speaking counts as activity
     };
     r.onerror = (e) => {
@@ -944,6 +1103,22 @@
     const w = $("#teleWaiting");
     if (w) w.innerHTML = tele.waiting.map((p) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(p.name)}</b><div class="muted" style="font-size:12px">${esc(p.visit || "No video visit booked today")} · waiting ${Math.max(0, Math.round((Date.now() - p.since) / 60000))} min</div></span><button class="btn sm primary" data-act="teleAdmit" data-id="${esc(p.clientId)}"${teleIn() ? " disabled" : ""}>Admit</button><button class="btn sm ghost" data-act="teleDecline" data-id="${esc(p.clientId)}" aria-label="Turn away ${esc(p.name)}">${ui("x", 14)}</button></div>`).join("") || none(MDFitRT && MDFitRT.connected() ? "Nobody is waiting. Patients appear here when they open their visit link." : "Not connected to the live service. Reload the page.");
     const n = $("#teleCount"); if (n) { n.textContent = tele.waiting.length ? `${tele.waiting.length} waiting` : "Empty"; n.className = "pill" + (tele.waiting.length ? " ok" : ""); }
+  }
+
+  // ---- Install app: the workspace as its own app window. Nothing about patients is kept by installing; the app
+  // still asks for the sign-in and still signs out after 15 idle minutes.
+  {
+    const btn = $("#installBtn"); let offer = null;
+    const standalone = () => matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+    const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => {});
+    window.addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); offer = e; if (!standalone()) btn.hidden = false; });
+    window.addEventListener("appinstalled", () => { offer = null; btn.hidden = true; toast("MD Fit Admin is installed."); });
+    if (ios && !standalone()) btn.hidden = false;
+    btn.addEventListener("click", async () => {
+      if (offer) { offer.prompt(); const r = await offer.userChoice.catch(() => null); offer = null; if (r && r.outcome === "accepted") btn.hidden = true; return; }
+      toast(ios ? "To install: tap the Share button, then \"Add to Home Screen\"." : "To install: open your browser's menu and choose \"Install MD Fit Admin\" or \"Add to Home Screen\".");
+    });
   }
 
   // ---- Live updates. The server pushes "new_message" the moment a member writes, so the Messages screen and the

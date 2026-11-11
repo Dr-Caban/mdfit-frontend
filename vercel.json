@@ -11,7 +11,7 @@
       ]
     },
     {
-      "source": "/:page(account|book|login|admin|workspace|visit|cancel|intake)",
+      "source": "/:page(account|book|login|admin|admin-classic|workspace|visit|cancel|intake)",
       "headers": [
         {
           "key": "Cache-Control",
@@ -66,6 +66,15 @@
     },
     {
       "source": "/workspace",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/admin-classic",
       "headers": [
         {
           "key": "X-Robots-Tag",
@@ -136,6 +145,12 @@
           "value": "same-origin-allow-popups"
         }
       ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/admin",
+      "destination": "/workspace"
     }
   ],
   "redirects": [

@@ -5,8 +5,10 @@
   the newer `/conditions/*` and `/blog/*`, or the six `*-sarasota.html` landing pages. Edit the data, run
   `node scripts/seo/build.js`, then `node scripts/seo/check.js`.
 - Shared header: `node scripts/site-header.js`. After CSS/JS edits: `node scripts/version-assets.js`.
-- `/workspace` is the practice workspace: `workspace.html` (screens and styles) plus `workspace-app.js` (talks to the same
-  `/api/admin/*` endpoints as `/admin`). `/admin` is separate and unchanged.
+- `/admin` is the practice workspace: `workspace.html` (screens and styles) plus `workspace-app.js`, served at both
+  `/admin` (a rewrite in `vercel.json`) and `/workspace`. The earlier admin is `admin-classic.html` + `admin.js` at
+  `/admin-classic`; it stays until every setting it holds has a screen in the workspace. Patients join video visits at
+  `/visit` (`visit.html` + `visit.js`). Icons in the workspace are inline SVG only: no emoji or text glyphs.
 - Work on a branch → pull request → Vercel preview → merge. One session merges at a time. Never edit permissions or
   secrets from here; all keys live in Vercel/Railway.
 - **Video uploads — `/video-upload`.** When asked to `/video-upload`, to upload or migrate videos, to get footage
