@@ -41,6 +41,13 @@
     .btn:disabled{opacity:.55;cursor:default}
     .btn:focus-visible{outline:3px solid var(--accent-text);outline-offset:2px}
     #status{font-weight:600;min-height:1.5em}
+    #board{position:absolute;inset:0;width:100%;height:100%;background:rgba(255,255,255,.94);touch-action:none;cursor:crosshair}
+    .pain,.chat{display:grid;gap:8px;border-top:1px solid var(--line);padding-top:12px}
+    .pain .btn{min-width:44px;padding:12px 0;flex:1 0 44px}
+    .chat-list{max-height:200px;overflow:auto;display:grid;gap:6px;align-content:start}
+    .bubble{justify-self:start;max-width:85%;padding:8px 12px;border-radius:12px;background:var(--bg);overflow-wrap:anywhere}
+    .bubble.me{justify-self:end;background:var(--accent)}
+    .input{flex:1;min-width:0;font:inherit;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);min-height:44px}
     [hidden]{display:none!important}
     @media (max-width:560px){.stage{aspect-ratio:3/4}h1{font-size:22px}}
   </style>
@@ -58,6 +65,7 @@
   <section class="card" id="room" hidden>
     <div class="stage preview" id="stage">
       <video id="remote" autoplay playsinline></video>
+      <canvas id="board" hidden aria-label="Shared whiteboard"></canvas>
       <video id="local" autoplay playsinline muted></video>
       <div class="note" id="note" hidden></div>
     </div>
@@ -71,11 +79,22 @@
       <button type="button" class="btn" id="cam" aria-pressed="false">Camera off</button>
       <button type="button" class="btn end" id="leave">Leave</button>
     </div>
+    <div class="pain" id="pain" hidden role="group" aria-labelledby="painQ">
+      <b id="painQ">Dr. Jared asks: how is your pain right now?</b>
+      <div class="row" id="painBtns"></div>
+      <span class="muted" style="font-size:12.5px">0 is no pain, 10 is the worst you can imagine.</span>
+    </div>
+    <div class="chat" id="chat" hidden>
+      <b>Chat with Dr. Jared</b>
+      <div class="chat-list" id="chatList" aria-live="polite"></div>
+      <form class="row" id="chatForm"><input id="chatIn" class="input" placeholder="Write a message" autocomplete="off" maxlength="1000" aria-label="Chat message"><button class="btn primary">Send</button></form>
+      <span class="muted" style="font-size:12.5px">Messages here are not saved. They disappear when the visit ends.</span>
+    </div>
     <p class="muted" style="margin:0;font-size:12.5px">Your visit is private: sound and picture go straight between your device and Dr. Jared's, encrypted, and are never recorded. Find a quiet spot and keep this page open.</p>
   </section>
 </main>
 <script src="config.js?v=aac711e3"></script>
 <script src="realtime.js?v=dccfd156"></script>
-<script src="visit.js?v=a09581b5"></script>
+<script src="visit.js?v=8a1ba393"></script>
 </body>
 </html>

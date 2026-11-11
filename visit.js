@@ -12,7 +12,30 @@
 
   const say = (t) => { $("#status").textContent = t; };
   const note = (t) => { const n = $("#note"); n.textContent = t || ""; n.hidden = !t; };
-  const st = { local: null, cam: null, pc: null, queue: [], ice: null, state: "idle", micOff: false, camOff: false };
+  const st = { local: null, cam: null, pc: null, dc: null, queue: [], ice: null, state: "idle", micOff: false, camOff: false, chat: [] };
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+  // Chat, the whiteboard and the pain check-in travel on a private channel straight between the two browsers,
+  // with the same encryption as the call. They never pass through MD Fit's server and are gone when the visit ends.
+  const send = (m) => { try { if (st.dc && st.dc.readyState === "open") { st.dc.send(JSON.stringify(m)); return true; } } catch {} return false; };
+  const cv = $("#board");
+  function boardFit() { const r = cv.getBoundingClientRect(); if (r.width && (cv.width !== Math.round(r.width) || cv.height !== Math.round(r.height))) { cv.width = Math.round(r.width); cv.height = Math.round(r.height); } }
+  function boardLine(m, color) { if (!Array.isArray(m.a) || !Array.isArray(m.b)) return; boardFit(); const g = cv.getContext("2d"); g.strokeStyle = color; g.lineWidth = 3; g.lineCap = "round"; g.beginPath(); g.moveTo(m.a[0] * cv.width, m.a[1] * cv.height); g.lineTo(m.b[0] * cv.width, m.b[1] * cv.height); g.stroke(); }
+  { let last = null; const at = (e) => { const r = cv.getBoundingClientRect(); return [Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)), Math.min(1, Math.max(0, (e.clientY - r.top) / r.height))]; };
+    cv.addEventListener("pointerdown", (e) => { last = at(e); cv.setPointerCapture(e.pointerId); e.preventDefault(); });
+    cv.addEventListener("pointermove", (e) => { if (!last) return; const p = at(e), m = { t: "draw", a: last, b: p }; boardLine(m, "#F0A55B"); send(m); last = p; });
+    const up = () => { last = null; }; cv.addEventListener("pointerup", up); cv.addEventListener("pointercancel", up); }
+  function chatDraw() { const l = $("#chatList"); l.innerHTML = st.chat.map((m) => `<div class="bubble ${m.me ? "me" : ""}">${esc(m.body)}</div>`).join(""); l.scrollTop = l.scrollHeight; }
+  function onData(m) {
+    if (!m || typeof m !== "object") return;
+    if (m.t === "chat" && typeof m.body === "string") { st.chat.push({ me: false, body: m.body.slice(0, 1000) }); chatDraw(); }
+    else if (m.t === "pain?") { $("#pain").hidden = false; $("#painBtns button") && $("#painBtns button").focus(); }
+    else if (m.t === "board") { cv.hidden = !m.on; if (m.on) boardFit(); }
+    else if (m.t === "draw") { if (cv.hidden) { cv.hidden = false; } boardLine(m, "#7AAFD7"); }
+    else if (m.t === "clear") cv.getContext("2d").clearRect(0, 0, cv.width, cv.height);
+  }
+  $("#painBtns").innerHTML = Array.from({ length: 11 }, (_, i) => `<button type="button" class="btn" data-level="${i}" aria-label="${i} out of 10">${i}</button>`).join("");
+  $("#painBtns").addEventListener("click", (e) => { const b = e.target.closest("[data-level]"); if (!b) return; if (send({ t: "pain", level: Number(b.dataset.level) })) { $("#pain").hidden = true; say("Thanks. Dr. Jared has your answer."); } });
+  $("#chatForm").addEventListener("submit", (e) => { e.preventDefault(); const body = $("#chatIn").value.trim(); if (!body) return; if (!send({ t: "chat", body })) return; st.chat.push({ me: true, body }); $("#chatIn").value = ""; chatDraw(); });
 
   async function media() {
     if (st.local) return st.local;
@@ -38,7 +61,8 @@
   }
   function hangUp() {
     if (st.pc) { try { st.pc.close(); } catch {} }
-    st.pc = null; st.queue = [];
+    st.pc = null; st.dc = null; st.queue = []; st.chat = [];
+    $("#chat").hidden = true; $("#pain").hidden = true; cv.hidden = true; $("#chatList").innerHTML = "";
     $("#remote").srcObject = null; $("#stage").classList.remove("has-remote"); note("");
   }
   function reset(msg) { hangUp(); st.state = "idle"; say(msg || ""); paint(); }
@@ -61,6 +85,7 @@
           if (!st.ice) { const r = await fetch(API + "/api/me/telehealth/ice", { headers: { Authorization: "Bearer " + session.token } }); st.ice = r.ok ? (await r.json()).iceServers || [] : []; }
           const pc = new RTCPeerConnection({ iceServers: st.ice }); st.pc = pc;
           const stream = await media(); stream.getTracks().forEach((t) => pc.addTrack(t, stream));
+          pc.ondatachannel = (e) => { st.dc = e.channel; st.dc.onmessage = (x) => { try { onData(JSON.parse(x.data)); } catch {} }; st.dc.onopen = () => { $("#chat").hidden = false; }; };
           pc.ontrack = (e) => { $("#remote").srcObject = e.streams[0] || new MediaStream([e.track]); $("#stage").classList.add("has-remote"); };
           pc.onicecandidate = (e) => { if (e.candidate) RT.emit("tele_signal", { candidate: e.candidate }); };
           pc.onconnectionstatechange = () => {

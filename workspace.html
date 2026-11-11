@@ -173,6 +173,16 @@ textarea.input{min-height:120px;resize:vertical;line-height:1.55}
 .tele-stage.live .tele-timer,.tele-stage.live .tele-who{display:block}
 .tele-idle{position:absolute;inset:0;display:grid;place-content:center;gap:6px;text-align:center;color:#E8F0F7;padding:20px}
 .tele-idle span{color:#9BB0C4;font-size:13px;max-width:36ch}
+.tele-avatar{position:absolute;inset:0;display:none;place-content:center;justify-items:center;gap:8px;color:#9BB0C4}
+.tele-avatar span{color:#E8F0F7;font-weight:600}
+.tele-stage.live:not(.has-remote) .tele-avatar{display:grid}
+#teleBoard{position:absolute;inset:0;width:100%;height:100%;background:rgba(255,255,255,.94);touch-action:none;cursor:crosshair}
+.tele-clear{position:absolute;right:12px;top:12px}
+.tele-chat{margin-top:12px;display:grid;gap:10px}
+.tele-chat-list{max-height:220px;overflow:auto;display:grid;gap:6px;align-content:start}
+.tele-chat-list .bubble{max-width:85%;justify-self:start}.tele-chat-list .bubble.me{justify-self:end}
+.vwrap{position:relative;display:inline-grid}
+.vdot{position:absolute;right:2px;top:2px;width:10px;height:10px;border-radius:50%;background:var(--bad);border:2px solid var(--surface)}
 .vbtn{color:var(--ink)}.vbtn:disabled{opacity:.45;cursor:default}
 .vbtn:focus-visible{outline:3px solid var(--accent-text);outline-offset:2px}
 .vbtn.end{font-weight:700;font-size:13px}
@@ -274,6 +284,6 @@ textarea.input{min-height:120px;resize:vertical;line-height:1.55}
 <script src="config.js?v=aac711e3"></script>
 <script src="realtime.js?v=dccfd156"></script>
 <script src="app/exercises.js?v=e75f9690"></script>
-<script src="workspace-app.js?v=8c070234"></script>
+<script src="workspace-app.js?v=d7e14b4e"></script>
 </body>
 </html>
