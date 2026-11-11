@@ -43,7 +43,7 @@
 
   // Signing out empties everything that was drawn, so names and notes do not stay on a shared screen.
   function signOut() {
-    token = ""; store.set(""); if (window.MDFitRT) { if (tele.call) MDFitRT.emit("tele_end"); MDFitRT.disconnect(); } teleDrop(); stopDictation();
+    token = ""; store.set(""); if (window.MDFitRT) { if (teleIn()) MDFitRT.emit("tele_end"); MDFitRT.disconnect(); } teleDrop(); stopDictation();
     for (const k of Object.keys(cache)) cache[k] = (k === "unread" || k === "waiting") ? 0 : null; // every cached list, the open chart included
     state.chartClient = null; state.thread = null; state.clientQ = ""; state.scribeText = ""; tele.transcript = ""; noteReset(null);
     $("#view").innerHTML = ""; $("#nav").innerHTML = ""; $("#whoami").textContent = ""; $("#globalSearch").value = ""; closeModal();
@@ -361,7 +361,7 @@
       <div>
         <div class="tele-stage" id="teleStage">
           <div class="tele-avatar" aria-hidden="true">${ui("person", 46)}<span id="teleAvatarName"></span></div>
-          <video id="teleRemote" autoplay playsinline></video>
+          <div class="tele-grid" id="teleGrid"></div>
           <canvas id="teleBoard" hidden aria-label="Shared whiteboard"></canvas>
           <video id="teleLocal" autoplay playsinline muted></video>
           <span class="tele-timer" id="teleTimer">00:00</span>
@@ -381,8 +381,9 @@
       </div>
       <div class="stack">
         <div class="card"><div class="card-head"><h2>Waiting room</h2><span class="pill" id="teleCount">Empty</span></div><div id="teleWaiting"></div></div>
+        <div class="card" id="teleRoomCard" hidden><div class="card-head"><h2>In the room</h2><span class="pill" id="teleRoomCount"></span></div><div id="teleRoom"></div></div>
         <div class="card"><div class="card-head"><h2>Session tools</h2></div>
-          <div class="list-item"><span style="flex:1">Participants</span><span class="pill">One to one · private</span></div>
+          <div class="list-item"><span style="flex:1;min-width:0">Live room<div class="muted" style="font-size:12px" id="telePeople">One to one · private</div></span><label class="toggle"><input type="checkbox" id="teleGroupSw" data-change="teleGroup" aria-label="Live room: admit several people as viewers"><span></span></label></div>
           <div class="list-item"><span style="flex:1;min-width:0">Live transcription → AI scribe<div class="muted" style="font-size:12px" id="teleWords">Starts with a visit</div></span><label class="toggle"><input type="checkbox" id="teleScribeSw" data-change="teleScribe" aria-label="Live transcription" disabled><span></span></label></div>
           <div class="list-item"><span style="flex:1;min-width:0">Pain check-in<div class="muted" style="font-size:12px" id="telePain"></div></span><button type="button" class="btn sm" id="telePainBtn" data-act="telePain" disabled>Send</button></div>
           <div class="list-item"><span style="flex:1">Encryption</span><span class="pill ok">DTLS-SRTP</span></div>
@@ -720,7 +721,9 @@
         </form>
         ${past.length ? `<h3 style="margin:14px 0 4px">Recent broadcasts</h3>${past.slice(0, 5).map((b) => `<div class="list-item"><span style="flex:1;min-width:0"><div class="muted" style="font-size:12px">${when(b.at)}${b.sending ? " · emails still going out" : ""}</div><div style="overflow-wrap:anywhere">${esc(b.preview)}${b.preview && b.preview.length >= 120 ? "…" : ""}</div></span><span class="pill">${b.read}/${b.recipients} read</span></div>`).join("")}` : ""}`);
     },
-    teleAdmit: async (el) => { if (teleIn()) return; el.disabled = true; try { await teleMedia(); teleMount(); MDFitRT.emit("tele_admit", { clientId: el.dataset.id }); } catch (err) { el.disabled = false; toast(err.message); } },
+    teleRole: (el) => { const p = tele.peers.get(el.dataset.id); if (!p) return; MDFitRT.emit("tele_role", { clientId: p.id, role: el.dataset.role }); if (el.dataset.role === "speaker") toast(`${firstName(p.name)} was invited into the dock. Their camera turns on once they agree.`); },
+    teleKick: (el) => { const p = tele.peers.get(el.dataset.id); if (p && confirm(`Remove ${p.name} from the room? They cannot come back into this session.`)) MDFitRT.emit("tele_end", { clientId: p.id }); },
+    teleAdmit: async (el) => { if (teleIn() && !tele.group) return; el.disabled = true; try { await teleMedia(); teleMount(); MDFitRT.emit("tele_admit", { clientId: el.dataset.id }); } catch (err) { el.disabled = false; toast(err.message); } },
     teleDecline: (el) => { if (confirm("Turn this person away from the waiting room?")) MDFitRT.emit("tele_decline", { clientId: el.dataset.id }); },
     teleMic: () => { if (!tele.local) return; tele.micOff = !tele.micOff; tele.local.getAudioTracks().forEach((t) => { t.enabled = !tele.micOff; }); teleMount(); },
     teleCam: () => { if (!tele.cam) return; tele.camOff = !tele.camOff; tele.cam.enabled = !tele.camOff; teleMount(); },
@@ -766,7 +769,7 @@
     copyBook: async () => { const i = $("#bookUrl"); try { await navigator.clipboard.writeText(i.value); toast("Link copied."); } catch { i.select(); toast("Press Ctrl+C to copy."); } }
   };
   const FORMS = {
-    teleChat: async (f) => { const body = f.body.value.trim(); if (!body) return; if (!teleSend({ t: "chat", body })) { toast("Chat isn't connected yet."); return; } tele.chat.push({ me: true, body, at: Date.now() }); f.body.value = ""; teleMount(); },
+    teleChat: async (f) => { const body = f.body.value.trim(); if (!body) return; if (!teleSend({ t: "chat", body })) { toast("Chat isn't connected yet."); return; } tele.chat.push({ me: true, body, at: Date.now() }); f.body.value = ""; teleMount(); }, // in a live room this goes to everyone in it
     broadcast: async (f) => {
       const to = f.to.value, body = f.body.value.trim(), ids = [...f.querySelectorAll("[name=who]:checked")].map((x) => x.value), msg = $("#bcMsg");
       if (!body) return;
@@ -825,6 +828,7 @@
   document.addEventListener("change", (e) => {
     if (e.target.matches("[data-change=leadStatus]")) guard(ACT.leadSave)(e.target);
     if (e.target.matches("[data-change=teleScribe]")) teleScribe(e.target.checked);
+    if (e.target.matches("[data-change=teleGroup]")) { if (window.MDFitRT && MDFitRT.connected()) MDFitRT.emit("tele_group", { on: e.target.checked }); else { e.target.checked = tele.group; toast("Not connected to the live service. Reload the page."); } }
     if (e.target.matches("[data-change=noteClient]")) { (async () => { if (note.dirty) await noteSave(true); stopDictation(); state.chartClient = e.target.value; noteReset(e.target.value); render(); })(); }
     if (e.target.matches("[data-change=noteTemplate]")) { note.template = e.target.value; $("#nBodyLabel").textContent = TEMPLATES[note.template]; $("#sKind").textContent = TEMPLATES[note.template]; if (note.id || $("#nBody").value.trim()) noteTouch(); }
     if (e.target.matches("[data-change=noteTier]")) { note.tier = e.target.value; if (note.id || $("#nBody").value.trim()) noteTouch(); }
@@ -919,17 +923,22 @@
     finally { btn.disabled = false; }
   }
 
-  // ---- Built-in video visits. The patient knocks from /visit; Dr. Jared admits them here. Sound and picture then
-  // travel browser to browser, encrypted by the browsers (WebRTC). The server only passes the short set-up messages
-  // and never sees the call. Chat, the whiteboard and the pain check-in ride a private data channel between the same
-  // two browsers, so they never touch the server either and are gone when the visit ends.
-  // The call lives in `tele`, outside the screen, so moving around the workspace keeps it up.
-  const TELE0 = () => ({ call: null, pc: null, dc: null, local: null, cam: null, screen: null, remote: null, micOff: false, camOff: false, blur: false, status: "", queue: [], tick: 0,
+  // ---- Built-in video visits and the live room. People knock from /visit; Dr. Jared admits them here.
+  // One to one (default): one patient, camera and microphone both ways.
+  // Live room: several people. Everyone arrives as a VIEWER (camera and microphone off, sees and hears the host).
+  // Bringing someone "into the dock" makes them a SPEAKER: after they agree on their own screen, their camera and
+  // microphone turn on and the room sees and hears them. They can be sent back to the audience or removed at any time.
+  // Every connection is browser to browser and encrypted by the browsers (WebRTC). This screen holds one connection
+  // per person and passes a speaker's picture on to the others itself; the server only carries set-up messages.
+  // Chat, the whiteboard and the pain check-in ride private data channels on those same connections.
+  const TELE0 = () => ({ call: null, peers: new Map(), local: null, cam: null, screen: null, micOff: false, camOff: false, blur: false, status: "", tick: 0,
     chat: [], chatOpen: false, unread: 0, pain: null, painAsked: false, board: false, scribing: false, scribeRec: null });
-  const tele = { waiting: [], ice: null, transcript: "", ...TELE0() };
-  const teleIn = () => !!tele.call;
+  const tele = { waiting: [], ice: null, transcript: "", group: false, ...TELE0() };
+  const teleIn = () => tele.peers.size > 0;
   const teleSay = (t) => { tele.status = t; const el = $("#teleStatus"); if (el) el.textContent = t; };
-  const teleSend = (m) => { try { if (tele.dc && tele.dc.readyState === "open") { tele.dc.send(JSON.stringify(m)); return true; } } catch {} return false; };
+  const dcSend = (p, m) => { try { if (p.dc && p.dc.readyState === "open") { p.dc.send(JSON.stringify(m)); return true; } } catch {} return false; };
+  const teleSend = (m) => { let n = 0; for (const p of tele.peers.values()) if (dcSend(p, m)) n++; return n > 0; };
+  const firstName = (n) => String(n || "").trim().split(/\s+/)[0] || "Guest";
   async function teleMedia() {
     if (tele.local) return tele.local;
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw new Error("This browser cannot use a camera or microphone here.");
@@ -943,26 +952,27 @@
     return tele.local;
   }
   function teleScribeStop() { tele.scribing = false; const r = tele.scribeRec; tele.scribeRec = null; if (r) { r.onend = null; r.onresult = null; r.onerror = null; try { r.stop(); } catch {} } }
+  function peerClose(p) { clearTimeout(p.retry); try { if (p.dc) p.dc.close(); } catch {} try { p.pc.close(); } catch {} }
   function teleDrop() {
     clearInterval(tele.tick); teleScribeStop();
-    if (tele.dc) { try { tele.dc.close(); } catch {} }
-    if (tele.pc) { try { tele.pc.close(); } catch {} }
+    for (const p of tele.peers.values()) peerClose(p);
     for (const s of [tele.local, tele.screen]) if (s) s.getTracks().forEach((t) => t.stop());
-    Object.assign(tele, TELE0()); // chat, whiteboard and pain answer go with the visit; a transcript waits for Notes
+    Object.assign(tele, TELE0()); // chat, whiteboard and pain answers go with the visit; a transcript waits for Notes
   }
-  function teleOver(msg) { const was = teleIn(); teleDrop(); teleSay(""); if (was && msg) toast(msg); if (route() === "telehealth") teleMount(); }
+  function teleOver(msg) { const was = teleIn() || !!tele.call; teleDrop(); teleSay(""); if (was && msg) toast(msg); if (route() === "telehealth") teleMount(); }
   const mmss = (s) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
-  function teleClock() { const el = $("#teleTimer"); if (!el) return; const s = tele.call ? Math.floor((Date.now() - tele.call.since) / 1000) : 0; el.textContent = mmss(s) + (tele.call && tele.call.minutes ? ` / ${mmss(tele.call.minutes * 60)}` : ""); }
+  function teleClock() { const el = $("#teleTimer"); if (!el) return; const s = tele.call ? Math.floor((Date.now() - tele.call.since) / 1000) : 0; el.textContent = mmss(s) + (tele.call && tele.call.minutes && !tele.group ? ` / ${mmss(tele.call.minutes * 60)}` : ""); }
 
-  // What arrives over the private channel from the patient's browser
-  function teleData(m) {
+  // What arrives over a person's private channel
+  function teleData(m, p) {
     if (!m || typeof m !== "object") return;
-    if (m.t === "chat" && typeof m.body === "string") { tele.chat.push({ me: false, body: m.body.slice(0, 1000), at: Date.now() }); if (!tele.chatOpen || route() !== "telehealth") { tele.unread++; toast("New chat message in the visit"); } teleMount(); }
-    else if (m.t === "pain") { const n = Math.round(Number(m.level)); if (n >= 0 && n <= 10) { tele.pain = n; toast(`${tele.call ? tele.call.name : "The patient"} reports pain ${n} out of 10`); teleMount(); } }
+    if (m.t === "chat" && typeof m.body === "string") { tele.chat.push({ me: false, name: p.name, body: m.body.slice(0, 1000), at: Date.now() }); if (!tele.chatOpen || route() !== "telehealth") { tele.unread++; toast(`Chat from ${firstName(p.name)}`); } teleMount(); }
+    else if (m.t === "pain") { const n = Math.round(Number(m.level)); if (n >= 0 && n <= 10) { tele.pain = tele.peers.size > 1 ? `${firstName(p.name)}: ${n} out of 10` : `${n} out of 10`; toast(`${p.name} reports pain ${n} out of 10`); teleMount(); } }
     else if (m.t === "draw") boardLine($("#teleBoard"), m, "#F0A55B");
-    else if (m.t === "clear") boardClear($("#teleBoard"));
+    else if (m.t === "reneg") teleOffer(p);                                   // they turned their camera on or off
+    else if (m.t === "declined") { toast(`${firstName(p.name)} chose to stay a viewer.`); MDFitRT.emit("tele_role", { clientId: p.id, role: "viewer" }); }
   }
-  // Shared whiteboard: lines are sent as fractions of the board's size, so both screens show the same drawing
+  // Shared whiteboard: lines are sent as fractions of the board's size, so every screen shows the same drawing
   function boardFit(cv) { if (!cv) return; const r = cv.getBoundingClientRect(); if (r.width && (cv.width !== Math.round(r.width) || cv.height !== Math.round(r.height))) { const old = cv.width ? cv.toDataURL() : null; cv.width = Math.round(r.width); cv.height = Math.round(r.height); if (old) { const im = new Image(); im.onload = () => cv.getContext("2d").drawImage(im, 0, 0, cv.width, cv.height); im.src = old; } } }
   function boardLine(cv, m, color) { if (!cv || !Array.isArray(m.a) || !Array.isArray(m.b)) return; boardFit(cv); const g = cv.getContext("2d"); g.strokeStyle = color; g.lineWidth = 3; g.lineCap = "round"; g.beginPath(); g.moveTo(m.a[0] * cv.width, m.a[1] * cv.height); g.lineTo(m.b[0] * cv.width, m.b[1] * cv.height); g.stroke(); }
   function boardClear(cv) { if (cv) cv.getContext("2d").clearRect(0, 0, cv.width, cv.height); }
@@ -998,80 +1008,117 @@
     if (!cap.backgroundBlur || !cap.backgroundBlur.includes(true) || !cap.backgroundBlur.includes(false)) { toast(cap.backgroundBlur && cap.backgroundBlur.includes(true) ? "Background blur is controlled by your computer's camera settings on this device." : "Background blur is not available with this camera or browser."); return; }
     try { await t.applyConstraints({ backgroundBlur: !tele.blur }); tele.blur = !tele.blur; teleMount(); } catch { toast("Background blur could not be changed."); }
   }
+  // This side makes every offer, the first one and any later one (a speaker's picture added or taken away, a path
+  // being found again). If one is already under way, the next waits for it to finish.
+  async function teleOffer(p) {
+    if (!tele.peers.has(p.id)) return;
+    if (p.offering || p.pc.signalingState !== "stable") { p.again = true; return; }
+    p.offering = true; p.again = false;
+    try { await p.pc.setLocalDescription(await p.pc.createOffer()); MDFitRT.emit("tele_signal", { to: p.id, sdp: p.pc.localDescription }); }
+    catch (err) { teleSay("Set-up problem: " + err.message); }
+    finally { p.offering = false; }
+  }
+  // Who sees whom. In a live room every person is sent the pictures of the speakers in the dock (never their own,
+  // never a viewer's). One to one, nothing is passed on. Then each person is told who is in the dock.
+  function teleRelay() {
+    const speakers = tele.group ? [...tele.peers.values()].filter((s) => s.role === "speaker") : [];
+    for (const p of tele.peers.values()) {
+      const want = new Map();
+      for (const s of speakers) if (s !== p) for (const t of s.remote.getTracks()) want.set(t.id, [t, s.remote]);
+      for (const [tid, sender] of p.fwd) if (!want.has(tid)) { try { p.pc.removeTrack(sender); } catch {} p.fwd.delete(tid); }
+      for (const [tid, [t, st]] of want) if (!p.fwd.has(tid)) { try { p.fwd.set(tid, p.pc.addTrack(t, st)); } catch {} }
+      dcSend(p, { t: "room", group: tele.group, role: p.role, watching: tele.peers.size, dock: speakers.filter((s) => s !== p).map((s) => ({ sid: s.remote.id, name: firstName(s.name) })) });
+    }
+  }
+  function teleState() {
+    const all = [...tele.peers.values()], up = all.filter((p) => p.state === "connected").length;
+    if (!all.length) return teleSay("");
+    if (all.length === 1) { const s = all[0].state; return teleSay(s === "connected" ? "Connected, encrypted browser to browser" : s === "disconnected" ? "Connection interrupted. Trying to recover…" : s === "retry" ? "Connection lost. Reconnecting…" : s === "failed" ? "Could not connect: one of the two networks blocks direct video. Ask the patient to try another network." : "Connecting…"); }
+    const bad = all.filter((p) => p.state === "failed").map((p) => firstName(p.name));
+    teleSay(`${up} of ${all.length} connected, each encrypted browser to browser${bad.length ? ". Could not reach: " + bad.join(", ") : ""}`);
+  }
   async function teleBegin(ev) {
     try {
       if (!tele.ice) tele.ice = (await get("/telehealth/ice")).iceServers || [];
       const stream = await teleMedia();
-      const pc = new RTCPeerConnection({ iceServers: tele.ice }); tele.pc = pc; tele.queue = [];
-      tele.call = { clientId: ev.clientId, name: ev.name || "Patient", visit: ev.visit || "", minutes: Number(ev.minutes) || 0, since: Date.now() };
-      tele.transcript = "";
-      // The private channel for chat, whiteboard and the pain check-in (browser to browser, same encryption as the call)
-      const dc = pc.createDataChannel("visit"); tele.dc = dc;
-      dc.onmessage = (e) => { try { teleData(JSON.parse(e.data)); } catch {} };
-      dc.onopen = () => teleMount(); dc.onclose = () => teleMount();
-      stream.getTracks().forEach((t) => pc.addTrack(t, stream));
-      pc.ontrack = (e) => { tele.remote = e.streams[0] || new MediaStream([e.track]); const v = $("#teleRemote"); if (v) v.srcObject = tele.remote; teleMount(); };
-      pc.onicecandidate = (e) => { if (e.candidate) MDFitRT.emit("tele_signal", { candidate: e.candidate }); };
-      // Same approach as the Connect Studio: this side makes every offer (first one and any re-offer), and a path
-      // that drops is looked for again (ICE restart) before the visit is given up on.
-      let offering = false, retry = 0, tries = 0;
-      pc.onnegotiationneeded = async () => {
-        if (offering || tele.pc !== pc) return; offering = true;
-        try { await pc.setLocalDescription(await pc.createOffer()); MDFitRT.emit("tele_signal", { sdp: pc.localDescription }); }
-        catch (err) { teleSay("Set-up problem: " + err.message); }
-        finally { offering = false; }
-      };
+      if (!tele.call) {
+        tele.call = { since: Date.now(), minutes: Number(ev.minutes) || 0 }; tele.transcript = "";
+        clearInterval(tele.tick); tele.tick = setInterval(() => { teleClock(); idleBump(); /* a visit counts as activity */ }, 1000);
+      }
+      const pc = new RTCPeerConnection({ iceServers: tele.ice });
+      const p = { id: ev.clientId, name: ev.name || "Patient", visit: ev.visit || "", role: ev.role === "viewer" ? "viewer" : "speaker", pc, dc: null, remote: new MediaStream(), queue: [], fwd: new Map(), camSender: null, state: "connecting", offering: false, again: false, retry: 0, tries: 0 };
+      tele.peers.set(p.id, p);
+      const dc = pc.createDataChannel("visit"); p.dc = dc;
+      dc.onmessage = (e) => { try { teleData(JSON.parse(e.data), p); } catch {} };
+      dc.onopen = () => { teleRelay(); if (tele.board) dcSend(p, { t: "board", on: true }); teleMount(); }; dc.onclose = () => teleMount();
+      stream.getTracks().forEach((t) => { const s = pc.addTrack(t, stream); if (t.kind === "video") p.camSender = s; });
+      if (tele.screen && p.camSender) p.camSender.replaceTrack(tele.screen.getVideoTracks()[0]).catch(() => {});
+      pc.ontrack = (e) => { if (!p.remote.getTracks().includes(e.track)) p.remote.addTrack(e.track); e.track.onunmute = () => { teleRelay(); teleMount(); }; e.track.onmute = () => teleMount(); teleRelay(); teleMount(); };
+      pc.onicecandidate = (e) => { if (e.candidate) MDFitRT.emit("tele_signal", { to: p.id, candidate: e.candidate }); };
+      pc.onnegotiationneeded = () => teleOffer(p);
       pc.onconnectionstatechange = () => {
-        const s = pc.connectionState; clearTimeout(retry);
-        if (s === "connected") { tries = 0; teleSay("Connected, encrypted browser to browser"); }
-        else if (s === "connecting") teleSay("Connecting…");
-        else if (s === "disconnected") { teleSay("Connection interrupted. Trying to recover…"); retry = setTimeout(() => { if (tele.pc === pc && pc.connectionState === "disconnected") { try { pc.restartIce(); } catch {} } }, 4000); }
-        else if (s === "failed") {
-          if (tries++ < 2) { teleSay("Connection lost. Reconnecting…"); try { pc.restartIce(); } catch {} }
-          else teleSay("Could not connect: one of the two networks blocks direct video. Ask the patient to try another network.");
-        }
+        const s = pc.connectionState; clearTimeout(p.retry);
+        if (s === "connected") { p.tries = 0; p.state = "connected"; }
+        else if (s === "connecting") p.state = "connecting";
+        else if (s === "disconnected") { p.state = "disconnected"; p.retry = setTimeout(() => { if (tele.peers.get(p.id) === p && pc.connectionState === "disconnected") { try { pc.restartIce(); } catch {} } }, 4000); }
+        else if (s === "failed") { if (p.tries++ < 2) { p.state = "retry"; try { pc.restartIce(); } catch {} } else p.state = "failed"; }
+        teleState(); teleMount();
       };
-      teleSay("Connecting…");
-      clearInterval(tele.tick);
-      tele.tick = setInterval(() => { teleClock(); idleBump(); /* a visit counts as activity */ }, 1000);
-      if (route() === "telehealth") teleMount(); else toast(`Video visit with ${tele.call.name} started. Open Telehealth to see it.`);
-    } catch (err) { MDFitRT.emit("tele_end"); teleOver(""); toast(err.message); }
+      teleState();
+      if (route() === "telehealth") teleMount(); else toast(`${p.name} joined the video visit. Open Telehealth to see it.`);
+    } catch (err) { MDFitRT.emit("tele_end", tele.peers.size > 1 ? { clientId: ev.clientId } : undefined); if (tele.peers.size <= 1) teleOver(""); toast(err.message); }
   }
   async function teleSignal(d) {
-    const pc = tele.pc; if (!pc || !d) return;
+    if (!d) return;
+    const p = d.from !== undefined ? tele.peers.get(String(d.from)) : (tele.peers.size === 1 ? [...tele.peers.values()][0] : null);
+    if (!p) return;
     try {
-      if (d.sdp) { await pc.setRemoteDescription(d.sdp); for (const c of tele.queue.splice(0)) await pc.addIceCandidate(c).catch(() => {}); }
-      else if (d.candidate) { if (pc.remoteDescription) await pc.addIceCandidate(d.candidate).catch(() => {}); else tele.queue.push(d.candidate); }
+      if (d.sdp) { await p.pc.setRemoteDescription(d.sdp); for (const c of p.queue.splice(0)) await p.pc.addIceCandidate(c).catch(() => {}); if (p.again) teleOffer(p); }
+      else if (d.candidate) { if (p.pc.remoteDescription) await p.pc.addIceCandidate(d.candidate).catch(() => {}); else p.queue.push(d.candidate); }
     } catch (err) { teleSay("Set-up problem: " + err.message); }
   }
+  // Someone left or was removed; the room carries on for the others
+  function teleLeft(ev) {
+    const p = ev && tele.peers.get(String(ev.clientId)); if (!p) return;
+    peerClose(p); tele.peers.delete(p.id);
+    if (tele.peers.size) { toast(ev.why === "removed" ? `${firstName(p.name)} was removed.` : `${firstName(p.name)} left.`); teleRelay(); teleState(); teleMount(); }
+  }
   async function teleShare() {
-    if (!tele.pc) return;
-    const sender = tele.pc.getSenders().find((s) => s.track && s.track.kind === "video") || tele.pc.getSenders().find((s) => !s.track);
-    if (tele.screen) { tele.screen.getTracks().forEach((t) => t.stop()); tele.screen = null; if (sender && tele.cam) await sender.replaceTrack(tele.cam); teleMount(); return; }
-    if (!sender) { toast("Screen sharing needs a camera connection in this visit."); return; }
+    if (!teleIn()) return;
+    const senders = [...tele.peers.values()].map((p) => p.camSender).filter(Boolean);
+    if (tele.screen) { tele.screen.getTracks().forEach((t) => t.stop()); tele.screen = null; if (tele.cam) for (const s of senders) await s.replaceTrack(tele.cam).catch(() => {}); teleMount(); return; }
+    if (!senders.length) { toast("Screen sharing needs a camera connection in this visit."); return; }
     try {
       tele.screen = await navigator.mediaDevices.getDisplayMedia({ video: true });
       const track = tele.screen.getVideoTracks()[0];
       track.onended = () => { if (tele.screen) teleShare(); };
-      await sender.replaceTrack(track); teleMount();
+      for (const s of senders) await s.replaceTrack(track).catch(() => {});
+      teleMount();
     } catch { tele.screen = null; }
   }
   // Ending a visit: if words were transcribed, they go to the Notes screen for the scribe (held in this page only)
   function teleFinish() {
-    const text = tele.transcript.trim(), who = tele.call && tele.call.clientId;
+    const text = tele.transcript.trim(), only = tele.peers.size === 1 ? [...tele.peers.keys()][0] : null;
     MDFitRT.emit("tele_end"); teleOver("");
-    if (text) { state.scribeText = text; tele.transcript = ""; if (who) state.chartClient = who; toast("Visit ended. Your transcript is on the Notes screen."); location.hash = "notes"; }
+    if (text) { state.scribeText = text; tele.transcript = ""; if (only) state.chartClient = only; toast("Visit ended. Your transcript is on the Notes screen."); location.hash = "notes"; }
     else toast("Visit ended.");
   }
   // Puts the current state on the Telehealth screen without redrawing it (the videos must not be torn down)
   function teleMount() {
     const stage = $("#teleStage"); if (!stage) return;
-    const r = $("#teleRemote"), l = $("#teleLocal");
-    if (r && r.srcObject !== tele.remote) r.srcObject = tele.remote;
-    const mine = tele.screen || tele.local; if (l && l.srcObject !== mine) l.srcObject = mine;
-    stage.classList.toggle("live", teleIn()); stage.classList.toggle("has-remote", !!tele.remote); stage.classList.toggle("boarding", tele.board);
-    $("#teleWho").textContent = tele.call ? `${tele.call.name}${tele.call.visit ? " · " + tele.call.visit : ""}` : "";
-    $("#teleAvatarName").textContent = tele.call ? tele.call.name : "";
+    const all = [...tele.peers.values()], shown = all.filter((p) => !tele.group || p.role === "speaker");
+    const grid = $("#teleGrid"), key = shown.map((p) => p.id).join(",");
+    if (grid.dataset.key !== key) {
+      grid.dataset.key = key; grid.style.setProperty("--n", String(Math.max(1, Math.ceil(Math.sqrt(shown.length)))));
+      grid.innerHTML = shown.map((p) => `<div class="tile" data-peer="${esc(p.id)}"><video autoplay playsinline></video>${shown.length > 1 || tele.group ? `<span>${esc(p.name)}</span>` : ""}</div>`).join("");
+    }
+    shown.forEach((p) => { const v = grid.querySelector(`[data-peer="${p.id.replace(/[^\w-]/g, "")}"] video`); if (v && v.srcObject !== p.remote) v.srcObject = p.remote; });
+    const l = $("#teleLocal"), mine = tele.screen || tele.local; if (l && l.srcObject !== mine) l.srcObject = mine;
+    const live = shown.some((p) => p.remote.getVideoTracks().some((t) => !t.muted) || p.state === "connected");
+    stage.classList.toggle("live", teleIn()); stage.classList.toggle("has-remote", shown.length > 0 && live); stage.classList.toggle("boarding", tele.board);
+    const one = all.length === 1 && !tele.group ? all[0] : null;
+    $("#teleWho").textContent = one ? `${one.name}${one.visit ? " · " + one.visit : ""}` : teleIn() ? `Live room · ${all.length} ${all.length === 1 ? "person" : "people"} · ${all.filter((p) => p.role === "speaker").length} in the dock` : "";
+    $("#teleAvatarName").textContent = one ? one.name : teleIn() ? `${all.length} watching · nobody in the dock yet` : "";
     $("#teleIdle").hidden = teleIn(); $("#teleControls").hidden = !teleIn();
     // Round icon buttons, filled while the thing is on
     const set = (id, on, labelOn, labelOff) => { const el = $(id); if (el) { el.classList.toggle("on", on); el.setAttribute("aria-pressed", String(on)); el.setAttribute("aria-label", on ? labelOn : labelOff); el.title = on ? labelOn : labelOff; } };
@@ -1083,25 +1130,36 @@
     set("#teleChatBtn", tele.chatOpen, "Chat open. Press to close", tele.unread ? `Open chat, ${tele.unread} new` : "Open chat");
     set("#teleScribeBtn", tele.scribing, "Transcribing on this device. Press to stop", "Transcribe for the AI scribe");
     const dot = $("#teleChatDot"); if (dot) dot.hidden = !tele.unread;
-    const sw = $("#teleScribeSw"); if (sw) sw.checked = tele.scribing;
+    const sw = $("#teleScribeSw"); if (sw) { sw.checked = tele.scribing; sw.disabled = !teleIn(); }
     const words = $("#teleWords"); if (words) words.textContent = tele.scribing ? `${tele.transcript.trim().split(/\s+/).filter(Boolean).length} words so far` : teleIn() ? "Off" : "Starts with a visit";
     for (const id of ["#teleCam", "#teleBlurBtn"]) if ($(id)) $(id).disabled = !tele.cam;
-    const open = !!(tele.dc && tele.dc.readyState === "open");
+    const open = all.some((p) => p.dc && p.dc.readyState === "open");
     for (const id of ["#teleBoardBtn", "#teleChatBtn", "#telePainBtn"]) if ($(id)) $(id).disabled = !open;
-    if (sw) sw.disabled = !teleIn();
-    const pain = $("#telePain"); if (pain) pain.textContent = tele.pain !== null ? `${tele.pain} out of 10` : tele.painAsked ? "Asked, waiting" : "";
+    const pain = $("#telePain"); if (pain) pain.textContent = tele.pain !== null ? tele.pain : tele.painAsked ? "Asked, waiting" : "";
+    const gs = $("#teleGroupSw"); if (gs) { gs.checked = tele.group; gs.disabled = all.length > 0; }
+    const ppl = $("#telePeople"); if (ppl) ppl.textContent = tele.group ? "Live room: people join as viewers, camera and microphone off, until you bring them into the dock" : "One to one · private";
     const cv = $("#teleBoard"); if (cv) { cv.hidden = !tele.board; if (tele.board) { boardFit(cv); boardWire(cv); } }
     const clr = $("#teleClear"); if (clr) clr.hidden = !tele.board;
     const box = $("#teleChatBox");
     if (box) {
       box.hidden = !(tele.chatOpen && teleIn());
       const list = $("#teleChatList"), stick = !list || list.scrollHeight - list.scrollTop - list.clientHeight < 40;
-      list.innerHTML = tele.chat.map((m) => `<div class="bubble ${m.me ? "me" : ""}">${esc(m.body)}</div>`).join("") || `<p class="muted" style="margin:0;font-size:12.5px">Messages here go straight between the two of you and disappear when the visit ends.</p>`;
+      list.innerHTML = tele.chat.map((m) => `<div class="bubble ${m.me ? "me" : ""}">${!m.me && all.length > 1 ? `<b style="font-size:11.5px;display:block">${esc(firstName(m.name))}</b>` : ""}${esc(m.body)}</div>`).join("") || `<p class="muted" style="margin:0;font-size:12.5px">${tele.group ? "What you write goes to everyone in the room. What a person writes comes only to you. Nothing is saved." : "Messages here go straight between the two of you and disappear when the visit ends."}</p>`;
       if (stick) list.scrollTop = list.scrollHeight;
     }
+    // Who is in the room, and the dock controls
+    const rm = $("#teleRoomCard"), rl = $("#teleRoom");
+    if (rm) {
+      rm.hidden = !teleIn();
+      rl.innerHTML = all.map((p) => `<div class="list-item" style="flex-wrap:wrap;row-gap:6px"><span style="flex:1 1 120px;min-width:0;overflow-wrap:anywhere"><b>${esc(p.name)}</b><div class="muted" style="font-size:12px">${p.state === "connected" ? "Connected" : p.state === "failed" ? "Could not connect" : "Connecting…"}</div></span>
+        <span class="pill ${p.role === "speaker" ? "ok" : ""}">${!tele.group ? "In the visit" : p.role !== "speaker" ? "Viewer" : p.remote.getTracks().some((t) => !t.muted && t.readyState === "live") ? "In the dock" : "Invited"}</span>
+        ${tele.group ? `<button type="button" class="btn sm${p.role === "speaker" ? "" : " primary"}" data-act="teleRole" data-id="${esc(p.id)}" data-role="${p.role === "speaker" ? "viewer" : "speaker"}">${p.role === "speaker" ? "Back to audience" : "Bring to dock"}</button>` : ""}
+        ${all.length > 1 || tele.group ? `<button type="button" class="btn sm ghost" data-act="teleKick" data-id="${esc(p.id)}" aria-label="Remove ${esc(p.name)} from the room">${ui("x", 14)}</button>` : ""}</div>`).join("");
+      const rc = $("#teleRoomCount"); if (rc) rc.textContent = tele.group ? `${all.length} in the room` : "One to one";
+    }
     teleSay(tele.status); teleClock();
-    const w = $("#teleWaiting");
-    if (w) w.innerHTML = tele.waiting.map((p) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(p.name)}</b><div class="muted" style="font-size:12px">${esc(p.visit || "No video visit booked today")} · waiting ${Math.max(0, Math.round((Date.now() - p.since) / 60000))} min</div></span><button class="btn sm primary" data-act="teleAdmit" data-id="${esc(p.clientId)}"${teleIn() ? " disabled" : ""}>Admit</button><button class="btn sm ghost" data-act="teleDecline" data-id="${esc(p.clientId)}" aria-label="Turn away ${esc(p.name)}">${ui("x", 14)}</button></div>`).join("") || none(MDFitRT && MDFitRT.connected() ? "Nobody is waiting. Patients appear here when they open their visit link." : "Not connected to the live service. Reload the page.");
+    const w = $("#teleWaiting"), canAdmit = !teleIn() || tele.group;
+    if (w) w.innerHTML = tele.waiting.map((p) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(p.name)}</b><div class="muted" style="font-size:12px">${esc(p.visit || "No video visit booked today")} · waiting ${Math.max(0, Math.round((Date.now() - p.since) / 60000))} min</div></span><button class="btn sm primary" data-act="teleAdmit" data-id="${esc(p.clientId)}"${canAdmit ? "" : " disabled"}>Admit</button><button class="btn sm ghost" data-act="teleDecline" data-id="${esc(p.clientId)}" aria-label="Turn away ${esc(p.name)}">${ui("x", 14)}</button></div>`).join("") || none(MDFitRT && MDFitRT.connected() ? "Nobody is waiting. People appear here when they open the session link." : "Not connected to the live service. Reload the page.");
     const n = $("#teleCount"); if (n) { n.textContent = tele.waiting.length ? `${tele.waiting.length} waiting` : "Empty"; n.className = "pill" + (tele.waiting.length ? " ok" : ""); }
   }
 
@@ -1145,10 +1203,15 @@
     MDFitRT.on("tele_waiting", (ev) => {
       const had = new Set(tele.waiting.map((p) => p.clientId)); tele.waiting = (ev && ev.waiting) || [];
       const fresh = tele.waiting.find((p) => !had.has(p.clientId));
+      // the server is the record of the room's mode and of who is a viewer or a speaker
+      tele.group = !!(ev && ev.group); let moved = false;
+      for (const m of (ev && ev.room) || []) { const p = tele.peers.get(m.clientId); if (p && p.role !== m.role) { p.role = m.role; moved = true; } }
+      if (moved) teleRelay();
       if (route() === "telehealth") teleMount(); else if (fresh && token) toast(`${fresh.name} is in the video waiting room`);
     });
     MDFitRT.on("tele_started", (ev) => { if (token) teleBegin(ev || {}); });
     MDFitRT.on("tele_signal", (d) => teleSignal(d));
+    MDFitRT.on("tele_left", (ev) => teleLeft(ev));
     MDFitRT.on("tele_ended", (ev) => teleOver(ev && ev.why === "patient_left" ? "The patient left the visit." : ev && ev.why === "staff_left" ? "The visit ended: this page lost its connection." : "Visit ended."));
     MDFitRT.on("tele_error", (ev) => { if (ev && ev.error) toast(ev.error); });
     MDFitRT.on("calendar_changed", () => { if (token && route() === "calendar" && !$("#modalBack").classList.contains("open")) render(); });
