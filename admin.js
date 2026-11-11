@@ -46,7 +46,7 @@
     try {
       const body = Object.fromEntries(new FormData(f)); if (!body.code) delete body.code;
       const out = await api("POST", "/api/admin/login", body);
-      token = out.token; session.set(token); f.reset(); $("#code-row").hidden = true; show();
+      token = out.token; session.set(token); idleStamp(); f.reset(); $("#code-row").hidden = true; show();
     } catch (err) {
       if (/code/i.test(err.message)) { $("#code-row").hidden = false; f.code.focus(); }
       msg.className = "form-msg err"; msg.textContent = err.message;
@@ -58,14 +58,29 @@
     token = ""; session.set(""); $("#app").hidden = true; $("#login").hidden = false; if (window.MDFitRT) MDFitRT.disconnect();
     $$("#appts-list, #clients-list, #client-totals, #client-detail, #emr-list .table-wrap, #emr-detail, #leads-list, #members-list, #msg-thread, #msg-threads, #bc-list, #feedback-list, #reviews-list, #cal-grid, #cal-pop-body, #notif-list, #home-inbox, #app table tbody").forEach((el) => { el.innerHTML = ""; });
     const pop = $("#cal-pop"); if (pop && pop.open) pop.close();
+    // the client overview pop-up sits outside #app: close it and empty it too
+    const cp = $("#client-pop"); if (cp) { if (cp.open) cp.close(); $("#cp-name").textContent = ""; $("#cp-sub").textContent = ""; $("#cp-body").innerHTML = ""; }
+    const bc = $("#bc-recent"); if (bc) bc.innerHTML = "";
+    $$("#client-search, #emr-search").forEach((el) => { el.value = ""; });
     // cached patient data goes too, so nothing is shown again before the next sign-in reloads it
-    clientList = []; calAppts = []; notes = []; contentCache = null; homeThread = null; drafts.clear();
+    clientList = []; calAppts = []; notes = []; contentCache = null; homeThread = null; drafts.clear(); emrRows = { patients: [], waiting: [] };
+    // /workspace shares this tab: signing out here signs out there as well
+    try { sessionStorage.removeItem("mdfit_ws_token"); sessionStorage.removeItem(ACTIVE_KEY); } catch {}
     clearTimeout(idleT);
   }
   $("#logout").addEventListener("click", logout);
-  const IDLE_MS = 15 * 60 * 1000; let idleT = 0;
-  const idleBump = () => { if (!token) return; clearTimeout(idleT); idleT = setTimeout(() => { logout(); $("#login .form-msg").textContent = "Signed out after 15 minutes of inactivity."; }, IDLE_MS); };
+  // The time of the last input is kept in the tab's session storage and shared with /workspace, so the 15 minutes
+  // follow the person across both pages and are not restarted by a reload, Back, or a sleeping laptop.
+  const IDLE_MS = 15 * 60 * 1000, ACTIVE_KEY = "mdfit_staff_active"; let idleT = 0, lastStamp = 0;
+  const idleStamp = () => { lastStamp = Date.now(); try { sessionStorage.setItem(ACTIVE_KEY, String(lastStamp)); } catch {} };
+  const idleFor = () => { try { const t = Number(sessionStorage.getItem(ACTIVE_KEY)); return t ? Date.now() - t : 0; } catch { return 0; } };
+  const idleOut = () => { logout(); $("#login .form-msg").textContent = "Signed out after 15 minutes of inactivity."; };
+  const idleArm = () => { clearTimeout(idleT); if (token) idleT = setTimeout(() => (idleFor() >= IDLE_MS ? idleOut() : idleArm()), Math.max(1000, IDLE_MS - idleFor())); };
+  const idleBump = () => { if (!token) return; if (Date.now() - lastStamp > 5000) idleStamp(); idleArm(); };
+  const idleCheck = () => { if (token && (!session.get() || idleFor() >= IDLE_MS)) idleOut(); };
   ["pointerdown", "keydown", "scroll", "touchstart"].forEach((t) => document.addEventListener(t, idleBump, { passive: true }));
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) idleCheck(); });
+  window.addEventListener("pageshow", idleCheck); window.addEventListener("focus", idleCheck);
 
   // ---- Tabs
   const loaders = { dash: loadDash, clients: loadClients, appts: loadAppts, hours: loadHours, leads: loadLeads, classes: loadClasses, bookings: loadBookings, subs: loadSubs, reviews: loadReviews, audit: loadAudit, messages: loadThreads, members: loadMembers, content: loadContent, settings: loadSettings, feedback: loadFeedback, analytics: loadAnalytics, habits: loadHabits, emr: loadEmr };
@@ -195,7 +210,7 @@
   const hasNotify = typeof window.Notification !== "undefined";
   let rtWired = false; // live-update handlers are registered once; logging in again only reconnects
   function show() {
-    $("#login").hidden = true; $("#app").hidden = false; openTab(fromHash()); idleBump();
+    $("#login").hidden = true; $("#app").hidden = false; openTab(fromHash()); idleArm();
     pollBadges(); // unread messages / open feedback counts right away, not a minute after logging in
     loadNotes(); if (!clientList.length) api("GET", "/api/admin/clients").then((l) => { clientList = l; }).catch(() => {});
     if (hasNotify && Notification.permission === "default") { try { Promise.resolve(Notification.requestPermission()).catch(() => {}); } catch {} }
@@ -1069,7 +1084,7 @@
       </div>
       <section class="card chart-sect"><div class="card-head"><h2>Documents</h2>${d.documents.done ? `<button type="button" class="mini" data-cdocs>View documents</button>` : `<span class="muted small">None on file yet.</span>`}</div><div class="intake-view" id="chart-docs" hidden></div></section>
       <div class="chart-grid">
-        <section class="card chart-sect"><div class="card-head"><h2>Notes for ${esc(first)}</h2><span class="muted small">${first} reads these on Home</span></div>
+        <section class="card chart-sect"><div class="card-head"><h2>Notes for ${esc(first)}</h2><span class="muted small">${esc(first)} reads these on Home</span></div>
           <form class="form" id="chart-note-form" novalidate>
             <label class="sr-only" for="chart-note-text">New note</label>
             <textarea id="chart-note-text" name="text" rows="3" maxlength="4000" placeholder="What ${esc(first)} should know or do next…" required></textarea>
@@ -1841,5 +1856,7 @@
     } catch (err) { msg.className = "form-msg err"; msg.textContent = err.message; }
   }));
 
-  if (token) api("GET", "/api/admin/me").then(show).catch(() => {});
+  // A restored session keeps its old last-input time: a reload must not hand out a fresh 15 minutes
+  if (token && idleFor() >= IDLE_MS) idleOut();
+  else if (token) { if (!idleFor()) idleStamp(); api("GET", "/api/admin/me").then(show).catch(() => {}); }
 })();
