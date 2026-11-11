@@ -126,8 +126,8 @@ Tested in Chromium against the real backend run locally with made-up people:
 
 | Check | Result |
 |---|---|
-| Walk-through of 49 steps: wrong password refused, sign in, all 21 screens, 8 chart tabs, Insights period and Audit tab, add and remove a note, prescribe and remove a movement, view documents, schedule a video visit, send a message, change a lead, save an appointment, verify the ledger, search, sign out | 49 of 49 |
-| API calls during the walk-through | 37 distinct; the only refusals were the two the test provokes on purpose (wrong password, video visit with no link) |
+| Walk-through of 56 steps: wrong password refused, sign in, all 21 screens, 8 chart tabs, Insights period and Audit tab, add and remove a note, prescribe and remove a movement, view documents, schedule a video visit, send a message, change a lead, save an appointment, verify the ledger, search, sign out | 56 of 56 |
+| API calls during the walk-through | All 43 endpoints the page uses were called and answered successfully; the only refusals were the two the test provokes on purpose (wrong password, video visit with no link) |
 | HTML typed into a client's name | Shown as text, not run |
 | Sign-out | Names gone from the page, token gone from the browser |
 | The site's layout rule on the sign-in screen at its five widths, and on all 21 screens and 6 chart tabs signed in at 320, 390 and 1366 | 92 of 92 |
@@ -137,7 +137,13 @@ Protections match `/admin`: private path in `middleware.js`, no-cache and noinde
 `vercel.json`, `Disallow` in `robots.txt`, signs out after 15 idle minutes, nothing clinical kept in
 browser storage.
 
-Not tested: the emailed-code sign-in step, the 6 connected endpoints the walk-through does not reach
-(cancelling a class booking, deleting a lead, removing a subscriber, the two review and report updates,
-patient conversion), dark theme, Safari and Firefox, keyboard-only and screen-reader use, and live
-updates (this page refreshes on navigation; `/admin` also listens on a socket).
+The walk-through also cancels a class booking, deletes a lead, saves lead notes, removes a subscriber,
+approves and hides a review, resolves a bug report, and converts a member to a patient and back.
+The backend's own test suite passes at the commit tested against: 139 of 139.
+
+Not tested: the emailed-code sign-in step (the local backend has no email set up), anything against the
+live site, dark theme, Safari and Firefox, keyboard-only and screen-reader use, and live updates (this
+page refreshes on navigation; `/admin` also listens on a socket).
+
+CI note: the repository's "Mobile layout" job failed on the workspace commits at its browser-install
+step (the runner could not reach Ubuntu's package server), so it did not run its checks on them.
