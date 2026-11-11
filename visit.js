@@ -12,8 +12,20 @@
   "use strict";
   const $ = (s) => document.querySelector(s);
   const API = (window.MDFIT_CONFIG.apiUrl || "").replace(/\/+$/, "");
+  // Opened from the phone app into Safari: a one-time code (good for two minutes, works once) signs this browser in,
+  // so the member does not have to type a password to use their camera here.
+  const hand = new URLSearchParams(location.search).get("h");
+  if (hand) {
+    fetch(API + "/api/clients/handoff/exchange", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code: hand }) })
+      .then((r) => (r.ok ? r.json() : null)).then((s) => { if (s && s.token) { try { localStorage.setItem("mdfit_client", JSON.stringify(s)); } catch {} } })
+      .catch(() => {}).then(() => location.replace("/visit"));
+    return;
+  }
   const session = (() => { try { const s = JSON.parse(localStorage.getItem("mdfit_client") || "null"); return s && Date.parse(s.expiresAt) > Date.now() ? s : null; } catch { return null; } })();
   if (!session) { $("#needLogin").hidden = false; return; }
+  // Inside the MD Fit phone app, watching works but the app cannot use the camera or microphone. Safari can.
+  const inApp = !!(window.MDFitNative && typeof window.MDFitNative.open === "function");
+  if (inApp) $("#appNote").hidden = false;
   $("#room").hidden = false;
 
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
@@ -26,9 +38,10 @@
 
   async function media() {
     if (st.local) return st.local;
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw new Error("This browser can't use a camera here. Open this page in Safari or Chrome.");
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw new Error(inApp ? "The MD Fit app can't use your camera or microphone. Tap \"Open in Safari\" below to be seen and heard." : "This browser can't use a camera here. Open this page in Safari or Chrome.");
     try { st.local = await navigator.mediaDevices.getUserMedia({ audio: true, video: { facingMode: "user", width: { ideal: 1280 }, height: { ideal: 720 } } }); st.camOff = false; }
     catch (err) {
+      if (inApp) throw new Error("The MD Fit app can't use your camera or microphone. Tap \"Open in Safari\" below to be seen and heard.");
       if (err && (err.name === "NotAllowedError" || err.name === "SecurityError")) throw new Error("Camera and microphone are blocked. Allow them for this site in your browser, then try again.");
       try { st.local = await navigator.mediaDevices.getUserMedia({ audio: true }); st.camOff = true; }
       catch { throw new Error("No camera or microphone could be started on this device."); }
@@ -124,7 +137,7 @@
   RT.on("tele_role", async (ev) => {
     if (st.state !== "call") return;
     if (ev && ev.role === "speaker") { st.invited = true; say("Dr. Jared invited you to speak."); paint(); const b = $("#inviteYes"); if (b) b.focus(); }
-    else { st.invited = false; st.role = "viewer"; await stopSending(); send({ t: "reneg" }); say("You're back in the audience. Your camera and microphone are off."); paint(); }
+    else { st.invited = false; st.role = "viewer"; if (ev && ev.opened) st.group = true; await stopSending(); send({ t: "reneg" }); say(ev && ev.opened ? "Dr. Jared opened this session to more people, so your camera and microphone are now off. Nobody new can see or hear you. He can invite you to speak." : "You're back in the audience. Your camera and microphone are off."); paint(); }
   });
   $("#inviteYes").addEventListener("click", async () => {
     try { st.role = "speaker"; await startSending(); st.invited = false; send({ t: "reneg" }); say("You're on screen. Everyone in the room can see and hear you."); }
@@ -170,8 +183,30 @@
     } catch (err) { say("There was a problem starting the video: " + err.message); }
   });
   // If the live connection drops and comes back while waiting, knock again so the place in the waiting room is kept
-  document.addEventListener("mdfit:connected", () => { if (st.state === "waiting") RT.emit("tele_knock"); });
+  // During a session, sound and picture go browser to browser, so they keep going if the connection to MD Fit drops
+  // for a moment. When it comes back, say we are still here; if the session is not picked back up, say so plainly.
+  let hereTimer = 0;
+  document.addEventListener("mdfit:connected", () => {
+    if (st.state === "waiting") RT.emit("tele_knock");
+    if (st.state !== "call") return;
+    RT.emit("tele_here"); clearTimeout(hereTimer);
+    hereTimer = setTimeout(() => { if (st.state !== "call") return; try { RT.emit("tele_leave"); } catch {} mediaOff(); reset("The connection to MD Fit dropped and the session could not be picked back up. Join the waiting room to reconnect."); }, 30000);
+  });
+  document.addEventListener("mdfit:disconnected", () => { if (st.state === "call") note("Reconnecting to MD Fit. Your session continues."); });
+  RT.on("tele_resumed", () => { clearTimeout(hereTimer); note(""); });
 
+  $("#openSafari").addEventListener("click", async () => {
+    $("#openSafari").disabled = true;
+    try {
+      const r = await fetch(API + "/api/clients/handoff", { method: "POST", headers: { Authorization: "Bearer " + session.token } });
+      const d = r.ok ? await r.json() : null;
+      if (!d || !d.code) throw new Error("Couldn't open Safari just now. Try again.");
+      try { RT.emit("tele_leave"); } catch {}
+      mediaOff(); reset("This session continues in Safari.");
+      window.MDFitNative.open(location.origin + "/visit?h=" + encodeURIComponent(d.code));
+    } catch (err) { say(err.message); }
+    $("#openSafari").disabled = false;
+  });
   $("#startCam").addEventListener("click", async () => {
     $("#startCam").disabled = true;
     try {

@@ -16,7 +16,8 @@
     *{box-sizing:border-box}
     html,body{margin:0;min-height:100%}
     body{background:linear-gradient(180deg,var(--accent-soft),var(--bg) 40%);color:var(--ink);font:15px/1.5 "Montserrat",system-ui,-apple-system,"Segoe UI",sans-serif}
-    .wrap{width:min(920px,100%);margin:0 auto;padding:16px 16px 32px;display:grid;gap:16px}
+    .wrap{width:min(920px,100%);margin:0 auto;padding:calc(16px + env(safe-area-inset-top)) calc(16px + env(safe-area-inset-right)) calc(32px + env(safe-area-inset-bottom)) calc(16px + env(safe-area-inset-left));display:grid;gap:16px}
+    .app-note{display:grid;gap:8px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--accent-soft);font-size:13.5px}
     .top{display:flex;align-items:center;gap:10px}
     .logo{width:44px;height:44px;border-radius:11px;background:#0A1A2E;display:grid;place-items:center;overflow:hidden;flex:none}
     .logo img{width:100%;height:100%;object-fit:contain;display:block}
@@ -81,6 +82,7 @@
       <div class="note" id="note" hidden></div>
     </div>
     <div class="dock" id="dock" hidden aria-label="Also on screen"></div>
+    <div class="app-note" id="appNote" hidden><span>You're in the MD Fit app. Watching and chat work here. To turn on your camera and microphone, continue in Safari: you stay signed in.</span><div class="row"><button type="button" class="btn" id="openSafari">Open in Safari</button></div></div>
     <p id="status" role="status" aria-live="polite"></p>
     <div class="invite" id="invite" hidden role="group" aria-labelledby="inviteQ">
       <b id="inviteQ">Dr. Jared invited you to speak</b>
@@ -114,6 +116,6 @@
 </main>
 <script src="config.js?v=aac711e3"></script>
 <script src="realtime.js?v=dccfd156"></script>
-<script src="visit.js?v=5c7413d2"></script>
+<script src="visit.js?v=b62c270a"></script>
 </body>
 </html>

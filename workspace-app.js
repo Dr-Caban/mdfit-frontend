@@ -23,7 +23,7 @@
   const KEY = "mdfit_ws_token";
   const store = { get: () => { try { return sessionStorage.getItem(KEY) || ""; } catch { return ""; } }, set: (t) => { try { t ? sessionStorage.setItem(KEY, t) : sessionStorage.removeItem(KEY); } catch {} } };
   let token = store.get();
-  const state = { chartClient: null, chartTab: "overview", thread: null, calWeek: 0, clientQ: "", insTab: "analytics", insDays: 30 };
+  const state = { chartClient: null, chartTab: "overview", thread: null, calWeek: 0, clientQ: "", insTab: "analytics", insDays: 30, picked: new Set() };
   const cache = { clients: null, unread: 0, waiting: 0, me: null };
 
   async function api(method, path, body) {
@@ -243,14 +243,15 @@
     const shown = list.filter((c) => q.every((w) => `${c.name} ${c.email} ${c.phone}`.toLowerCase().includes(w)));
     return `
     <div class="view-head"><div><h1>Clients</h1><p class="muted">${plural(list.length, "account")} · ${plural(patients.size, "active patient")} · ${waiting.size} waiting to be converted</p></div>
-    <div class="row"><input class="input" id="clientQ" style="width:240px" placeholder="Filter by name, email or phone" value="${esc(state.clientQ)}" aria-label="Filter clients"></div></div>
+    <div class="row"><input class="input" id="clientQ" style="width:240px" placeholder="Filter by name, email or phone" value="${esc(state.clientQ)}" aria-label="Filter clients"><button class="btn" data-act="exportAsk" id="exportBtn">${ui("download", 14)} <span id="exportLabel">${state.picked.size ? `Export ${state.picked.size} selected` : "Export all"}</span></button></div></div>
     <div class="card" style="padding:0"><div class="table-wrap"><table>
-      <thead><tr><th>Client</th><th>Status</th><th>Documents</th><th>Next visit</th><th>Membership</th><th>Last sign-in</th></tr></thead>
-      <tbody id="clientRows">${clientRows(shown, patients, waiting) || noneRow(6, list.length ? "No one matches." : "No clients yet.")}</tbody>
+      <thead><tr><th style="width:34px"><input type="checkbox" data-change="pickAll" aria-label="Select everyone shown"${shown.length && shown.every((c) => state.picked.has(c.id)) ? " checked" : ""}></th><th>Client</th><th>Status</th><th>Documents</th><th>Next visit</th><th>Membership</th><th>Last sign-in</th></tr></thead>
+      <tbody id="clientRows">${clientRows(shown, patients, waiting) || noneRow(7, list.length ? "No one matches." : "No clients yet.")}</tbody>
     </table></div></div>`;
   };
   function clientRows(list, patients, waiting) {
     return list.map((c) => `<tr class="click" data-act="chart" data-id="${esc(c.id)}">
+      <td data-act="stop"><input type="checkbox" data-change="pickOne" data-id="${esc(c.id)}" aria-label="Select ${esc(c.name)}"${state.picked.has(c.id) ? " checked" : ""}></td>
       <td><div class="row">${avatar(c.name)}<div style="min-width:0"><b>${esc(c.name)}</b><div class="muted" style="font-size:12px">${esc(c.email)}${c.phone ? " · " + esc(c.phone) : ""}</div></div></div></td>
       <td>${patients.has(c.id) ? `<span class="pill ok">Active patient</span>` : waiting.has(c.id) ? `<span class="pill warn">Waiting</span>` : `<span class="pill">Member</span>`}${c.clientType === "inpatient" ? ` <span class="pill">Inpatient</span>` : ""}</td>
       <td>${c.documents ? (c.documents.complete ? `<span class="pill ok">Complete</span>` : `${c.documents.done} of ${c.documents.total}`) : "—"}</td>
@@ -704,11 +705,20 @@
       <div class="card" style="margin-bottom:16px"><h2 style="margin-bottom:10px">Ledger check</h2><div id="auditResult">${none("Not checked in this session. Press Verify.")}</div></div>${ledgerTable(a)}`;
     }
     const days = state.insDays;
-    const [d, sa, mail] = await Promise.all([get(`/analytics?days=${days}`), get(`/search-analytics?days=${days}`).catch(() => null), get("/email-log").catch(() => null)]);
+    const [d, sa, mail, people] = await Promise.all([get(`/analytics?days=${days}`), get(`/search-analytics?days=${days}`).catch(() => null), get("/email-log").catch(() => null), clients(true), content()]);
+    // Sign-ups and members, counted from the accounts themselves. "Paying" means a card subscription is running;
+    // a membership set by hand (no card on a schedule) is counted separately so the two are never confused.
+    const since = Date.now() - days * 864e5, fresh = people.filter((c) => c.createdAt && Date.parse(c.createdAt) >= since).length;
+    const paying = people.filter((c) => c.membership && c.membership.stripeSubscriptionId), byHand = people.filter((c) => c.membership && !c.membership.stripeSubscriptionId);
+    const tierRows = tiers().map((t) => ({ name: t.name, price: t.price, pay: paying.filter((c) => c.membership.tier === t.id).length, hand: byHand.filter((c) => c.membership.tier === t.id).length })).filter((r) => r.pay || r.hand);
+    const monthly = tierRows.reduce((n, r) => n + r.pay * (Number(r.price) || 0), 0);
     const s = d.summary, m = d.mix || {}, st = (sa && sa.totals) || {};
     const qRows = (list) => (list || []).slice(0, 10).map((r) => `<tr><td>${esc(r.q)}</td><td class="num">${esc(r.impressions)}</td><td class="num">${esc(r.clicks)}</td><td class="num">${esc(r.ctr)}%</td></tr>`).join("") || noneRow(4, "No data yet.");
-    return `<div class="view-head"><div><h1>Insights</h1><p class="muted">Website traffic, search and alerts</p></div>
+    return `<div class="view-head"><div><h1>Insights</h1><p class="muted">Sign-ups, members, website traffic, search and alerts</p></div>
       <select class="input" style="width:auto" data-change="insDays" aria-label="Period">${[7, 30, 90].map((n) => `<option value="${n}"${n === days ? " selected" : ""}>Last ${n} days</option>`).join("")}</select></div>${tabs}
+    <div class="grid g4" style="margin-bottom:16px">${kpi("Total sign-ups", people.length, "accounts, all time")}${kpi(`New sign-ups (${days}d)`, fresh, "accounts created")}${kpi("Paying members", paying.length, "card subscription running", paying.length ? "ok" : "")}${kpi("Members set by hand", byHand.length, "no card subscription")}</div>
+    <div class="card" style="margin-bottom:16px"><div class="card-head"><h2>Members by type</h2><span class="muted" style="font-size:12px">${paying.length ? `About ${money(Math.round(monthly))} a month from card subscriptions, before discounts` : "No card subscriptions running"}</span></div>
+      ${tierRows.map((r) => `<div class="list-item"><span style="flex:1"><b>${esc(r.name)}</b></span><span class="pill ${r.pay ? "ok" : ""}">${r.pay} paying</span>${r.hand ? `<span class="pill">${r.hand} set by hand</span>` : ""}</div>`).join("") || none("Nobody has a membership yet.")}</div>
     <div class="grid g4" style="margin-bottom:16px">${kpi("Views today", s.todayViews, "page views")}${kpi("Visitors today", s.todayUnique, "people")}${kpi(`Views (${d.rangeDays || days}d)`, s.totalViews, "page views")}${kpi(`Visitors (${d.rangeDays || days}d)`, s.totalUnique, "people")}</div>
     <div class="grid g2">
       <div class="card" style="padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>By day</h2></div><div class="table-wrap"><table><thead><tr><th>Date</th><th class="num">Views</th><th class="num">Visitors</th></tr></thead><tbody>${(d.days || []).slice().reverse().slice(0, 31).map((r) => `<tr><td>${fmtDate(r.date)}</td><td class="num">${r.views}</td><td class="num">${r.unique}</td></tr>`).join("") || noneRow(3, "No data yet.")}</tbody></table></div></div>
@@ -919,7 +929,15 @@
     },
     teleRole: (el) => { const p = tele.peers.get(el.dataset.id); if (!p) return; MDFitRT.emit("tele_role", { clientId: p.id, role: el.dataset.role }); if (el.dataset.role === "speaker") toast(`${firstName(p.name)} was asked to speak. Their camera turns on once they agree.`); },
     teleKick: (el) => { const p = tele.peers.get(el.dataset.id); if (p && confirm(`Remove ${p.name} from the room? They cannot come back into this session.`)) MDFitRT.emit("tele_end", { clientId: p.id }); },
-    teleAdmit: async (el) => { if (teleIn() && !tele.group) return; el.disabled = true; try { await teleMedia(); teleMount(); MDFitRT.emit("tele_admit", { clientId: el.dataset.id }); } catch (err) { el.disabled = false; toast(err.message); } },
+    teleAdmit: async (el) => {
+      // Letting a second person into a private visit opens it as a live room: the one already in it becomes a viewer first
+      if (teleIn() && !tele.group) { const cur = [...tele.peers.values()][0]; if (!confirm(`Open this visit to more people? ${cur ? firstName(cur.name) + "'s" : "Their"} camera and microphone turn off until you make them a speaker again and they agree. Everyone you admit comes in as a viewer.`)) return; MDFitRT.emit("tele_group", { on: true }); }
+      // Someone already on screen will be seen and heard by whoever comes in next: say so before it happens
+      const on = [...tele.peers.values()].filter((p) => p.role === "speaker" && p.remote.getTracks().some((t) => !t.muted && t.readyState === "live")).map((p) => firstName(p.name));
+      const who = (tele.waiting.find((p) => p.clientId === el.dataset.id) || {}).name || "this person";
+      if (tele.group && on.length && !confirm(`${on.join(" and ")} ${on.length === 1 ? "is" : "are"} on screen as a speaker. Admit ${who}? They will see and hear ${on.join(" and ")}.`)) return;
+      el.disabled = true; try { await teleMedia(); teleMount(); MDFitRT.emit("tele_admit", { clientId: el.dataset.id }); } catch (err) { el.disabled = false; toast(err.message); }
+    },
     teleDecline: (el) => { if (confirm("Turn this person away from the waiting room?")) MDFitRT.emit("tele_decline", { clientId: el.dataset.id }); },
     teleMic: () => { if (!tele.local) return; tele.micOff = !tele.micOff; tele.local.getAudioTracks().forEach((t) => { t.enabled = !tele.micOff; }); teleMount(); },
     teleCam: () => { if (!tele.cam) return; tele.camOff = !tele.camOff; tele.cam.enabled = !tele.camOff; teleMount(); },
@@ -1094,6 +1112,24 @@
         <div class="row"><button class="btn primary"${(r.models || []).length ? "" : " disabled"}>Use this model</button></div></form>`);
     },
     stop: () => {},
+    // Export: the people ticked on the Clients list, or everyone when nobody is ticked
+    exportAsk: async () => {
+      const n = state.picked.size, all = !n, total = (await clients()).length;
+      modal(`<div class="card-head"><h2>Export ${all ? `all ${total} clients` : plural(n, "selected client")}</h2>${xBtn}</div>
+        <div class="stack"><button type="button" class="btn primary" data-act="exportGo" data-kind="csv">Spreadsheet (CSV)</button><p class="muted" style="margin:0;font-size:12.5px">One row per client: name, email, phone, status, membership, visit dates, tags, alerts and what is owed. Opens in Excel, Numbers or Google Sheets.</p>
+        <button type="button" class="btn" data-act="exportGo" data-kind="records">Full records (JSON)</button><p class="muted" style="margin:0;font-size:12.5px">Everything in each chart: plan and protocols, measures, medications, alerts, consents, invoices, notes to the patient, new patient documents, visits and clinical notes. Restricted notes are listed without their text. For a patient's request for their record, or for moving to another system.</p>
+        <p class="muted" style="margin:0;font-size:12.5px">The file holds patient information: keep it only where patient records may be kept. Every export is recorded in the audit ledger.</p></div>`);
+    },
+    exportGo: async (el) => {
+      const ids = [...state.picked], kind = el.dataset.kind;
+      el.disabled = true;
+      const res = await fetch(`${API}/api/admin/export/clients`, { method: "POST", headers: { "Content-Type": "application/json", Authorization: "Bearer " + token }, body: JSON.stringify(ids.length ? { ids, kind } : { all: true, kind }) });
+      if (!res.ok) { el.disabled = false; const d = await res.json().catch(() => null); throw new Error((d && d.error) || "The export could not be made."); }
+      const name = ((res.headers.get("content-disposition") || "").match(/filename="?([^";]+)"?/) || [])[1] || (kind === "csv" ? "mdfit-clients.csv" : "mdfit-client-records.json");
+      const url = URL.createObjectURL(await res.blob()), a = document.createElement("a");
+      a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 30000);
+      closeModal(); toast(`Exported ${ids.length ? plural(ids.length, "client") : "all clients"}. The file is in your downloads.`);
+    },
     teleInvite: (el) => { if (!(window.MDFitRT && MDFitRT.connected())) { toast("Not connected to the live service. Reload the page."); return; } MDFitRT.emit("tele_invite", { clientId: el.dataset.id }); const q = $("#teleInviteQ"); if (q) q.value = ""; const r = $("#teleInviteRes"); if (r) r.innerHTML = ""; },
     teleUninvite: (el) => { MDFitRT.emit("tele_uninvite", { clientId: el.dataset.id }); },
     chartNewNote: () => { location.hash = "notes"; },
@@ -1278,11 +1314,21 @@
   document.addEventListener("change", (e) => {
     if (e.target.matches("[data-change=leadStatus]")) guard(ACT.leadSave)(e.target);
     if (e.target.matches("[data-change=chartFile]")) guard(chartUpload)(e.target);
+    if (e.target.matches("[data-change=pickOne], [data-change=pickAll]")) {
+      if (e.target.matches("[data-change=pickAll]")) document.querySelectorAll("[data-change=pickOne]").forEach((b) => { b.checked = e.target.checked; if (b.checked) state.picked.add(b.dataset.id); else state.picked.delete(b.dataset.id); });
+      else if (e.target.checked) state.picked.add(e.target.dataset.id); else state.picked.delete(e.target.dataset.id);
+      const l = $("#exportLabel"); if (l) l.textContent = state.picked.size ? `Export ${state.picked.size} selected` : "Export all";
+    }
     if (e.target.matches("[data-change=rowTier]")) guard(async (el) => { const was = ((cache.clients || []).find((x) => x.id === el.dataset.id) || {}).membership; const said = await setMembership(el.dataset.id, el.value, was && was.tier === el.value ? was.until : "", el.dataset.name); if (said) { await clients(true); toast(said); } else el.value = (was && was.tier) || ""; el.classList.toggle("on", !!el.value); })(e.target);
     if (e.target.matches("[data-change=chartTier]")) guard(async (el) => { const was = cache.chart.c.membership, said = await setMembership(cid(), el.value, "", firstOf()); if (said) { await render(); toast(said); } else el.value = (was && was.tier) || ""; })(e.target);
     if (e.target.matches("[data-change=chartType]")) guard(async (el) => { await api("PUT", `/api/admin/clients/${cid()}/type`, { type: el.value }); cache.clients = null; const type = el.value; await render(); toast(`${firstOf()} is now ${type === "inpatient" ? "an inpatient: visits are not charged" : "an outpatient"}.`); })(e.target);
     if (e.target.matches("[data-change=teleScribe]")) teleScribe(e.target.checked);
-    if (e.target.matches("[data-change=teleGroup]")) { if (window.MDFitRT && MDFitRT.connected()) MDFitRT.emit("tele_group", { on: e.target.checked }); else { e.target.checked = tele.group; toast("Not connected to the live service. Reload the page."); } }
+    if (e.target.matches("[data-change=teleGroup]")) {
+      const cur = [...tele.peers.values()][0];
+      if (!(window.MDFitRT && MDFitRT.connected())) { e.target.checked = tele.group; toast("Not connected to the live service. Reload the page."); }
+      else if (e.target.checked && cur && !confirm(`Open this visit to more people? ${firstName(cur.name)}'s camera and microphone turn off until you make them a speaker again and they agree.`)) e.target.checked = false;
+      else MDFitRT.emit("tele_group", { on: e.target.checked });
+    }
     if (e.target.matches("[data-change=noteClient]")) noteClientSwitch(e.target.value);
     if (e.target.matches("[data-change=noteTemplate]")) { note.template = e.target.value; $("#nBodyLabel").textContent = TEMPLATES[note.template]; $("#sKind").textContent = TEMPLATES[note.template]; if (note.id || $("#nBody").value.trim()) noteTouch(); }
     if (e.target.matches("[data-change=noteTier]")) { note.tier = e.target.value; if (note.id || $("#nBody").value.trim()) noteTouch(); }
@@ -1460,14 +1506,25 @@
   // and the text waits here until the visit ends, when it is offered to the AI scribe on the Notes screen.
   async function teleScribe(on) {
     if (!on) { teleScribeStop(); teleMount(); return; }
-    let ok = false;
-    try { ok = !!SR && typeof SR.available === "function" && (await SR.available({ langs: ["en-US"], processLocally: true })) === "available"; } catch {}
-    if (!ok) { toast("Live transcription needs on-device speech recognition, which this browser does not have ready. Nothing was turned on, and no audio left this computer."); teleMount(); return; }
-    tele.scribing = true;
+    if (!SR) { toast("This browser has no speech recognition. Use Chrome, Edge or Safari for live transcription."); teleMount(); return; }
+    // First choice: recognition that runs on this computer, so no sound leaves it. Some browsers have to fetch a
+    // language pack for that once.
+    let state = "unavailable";
+    try { if (typeof SR.available === "function") state = await SR.available({ langs: ["en-US"], processLocally: true }); } catch {}
+    if ((state === "downloadable" || state === "downloading") && typeof SR.install === "function") {
+      toast("Getting this browser's on-device speech pack (one time). Transcription starts when it is ready.");
+      try { if (await SR.install({ langs: ["en-US"], processLocally: true })) state = "available"; } catch {}
+    }
+    let local = state === "available";
+    // Otherwise the browser's own speech service can do it, but that sends the microphone's sound to the browser's
+    // maker. That is the owner's call, asked every time, never assumed.
+    if (!local && !confirm("This browser cannot transcribe on this computer.\n\nUse the browser's speech service instead? The sound from YOUR microphone is sent to the browser's maker (Google for Chrome, Apple for Safari) to be turned into text. MD Fit has no privacy agreement with them. The patient's side of the call is not sent.\n\nPress Cancel to leave transcription off.")) { toast("Transcription was left off. No audio left this computer."); teleMount(); return; }
+    if (!teleIn()) { teleMount(); return; }
+    tele.scribing = true; tele.scribeLocal = local;
     const go = () => {
       if (!tele.scribing || !teleIn()) return;
       const r = new SR(); tele.scribeRec = r; r.lang = "en-US"; r.continuous = true; r.interimResults = false;
-      try { r.processLocally = true; } catch {}
+      if (tele.scribeLocal) { try { r.processLocally = true; } catch {} }
       r.onresult = (e) => { for (let i = e.resultIndex; i < e.results.length; i++) if (e.results[i].isFinal) tele.transcript += e.results[i][0].transcript.trim() + " "; const n = $("#teleWords"); if (n) n.textContent = `${tele.transcript.trim().split(/\s+/).filter(Boolean).length} words so far`; };
       r.onerror = (e) => { if (e.error !== "no-speech" && e.error !== "aborted") { teleScribeStop(); toast("Live transcription stopped (" + e.error + ")."); teleMount(); } };
       r.onend = () => { if (tele.scribing && tele.scribeRec === r) setTimeout(go, 250); };
@@ -1588,7 +1645,7 @@
     shown.forEach((p) => { const v = grid.querySelector(`[data-peer="${p.id.replace(/[^\w-]/g, "")}"] video`); if (v && v.srcObject !== p.remote) v.srcObject = p.remote; });
     const l = $("#teleLocal"), mine = tele.screen || tele.local; if (l && l.srcObject !== mine) l.srcObject = mine;
     const live = shown.some((p) => p.remote.getVideoTracks().some((t) => !t.muted) || p.state === "connected");
-    stage.classList.toggle("live", teleIn()); stage.classList.toggle("has-remote", shown.length > 0 && live); stage.classList.toggle("boarding", tele.board);
+    stage.classList.toggle("live", teleIn()); stage.classList.toggle("room", tele.group && teleIn()); stage.classList.toggle("has-remote", shown.length > 0 && live); stage.classList.toggle("boarding", tele.board);
     const one = all.length === 1 && !tele.group ? all[0] : null;
     $("#teleWho").textContent = one ? `${one.name}${one.visit ? " · " + one.visit : ""}` : teleIn() ? `Live room · ${all.length} ${all.length === 1 ? "person" : "people"} · ${all.filter((p) => p.role === "speaker").length} in the dock` : "";
     $("#teleAvatarName").textContent = one ? one.name : teleIn() ? `${all.length} watching · nobody in the dock yet` : "";
@@ -1601,16 +1658,16 @@
     set("#teleBoardBtn", tele.board, "Whiteboard open. Press to close", "Open the whiteboard");
     set("#teleBlurBtn", tele.blur, "Background blurred. Press to show it", "Blur your background");
     set("#teleChatBtn", tele.chatOpen, "Chat open. Press to close", tele.unread ? `Open chat, ${tele.unread} new` : "Open chat");
-    set("#teleScribeBtn", tele.scribing, "Transcribing on this device. Press to stop", "Transcribe for the AI scribe");
+    set("#teleScribeBtn", tele.scribing, tele.scribeLocal ? "Transcribing on this device. Press to stop" : "Transcribing your microphone with the browser's speech service. Press to stop", "Transcribe for the AI scribe");
     const dot = $("#teleChatDot"); if (dot) dot.hidden = !tele.unread;
     const sw = $("#teleScribeSw"); if (sw) { sw.checked = tele.scribing; sw.disabled = !teleIn(); }
-    const words = $("#teleWords"); if (words) words.textContent = tele.scribing ? `${tele.transcript.trim().split(/\s+/).filter(Boolean).length} words so far` : teleIn() ? "Off" : "Starts with a visit";
+    const words = $("#teleWords"); if (words) words.textContent = tele.scribing ? `${tele.transcript.trim().split(/\s+/).filter(Boolean).length} words so far · ${tele.scribeLocal ? "on this device" : "your microphone, via the browser's speech service"}` : teleIn() ? "Off" : "Starts with a visit";
     for (const id of ["#teleCam", "#teleBlurBtn"]) if ($(id)) $(id).disabled = !tele.cam;
     const open = all.some((p) => p.dc && p.dc.readyState === "open");
     for (const id of ["#teleBoardBtn", "#teleChatBtn", "#telePainBtn"]) if ($(id)) $(id).disabled = !open;
     const pain = $("#telePain"); if (pain) pain.textContent = tele.pain !== null ? tele.pain : tele.painAsked ? "Asked, waiting" : "";
-    const gs = $("#teleGroupSw"); if (gs) { gs.checked = tele.group; gs.disabled = all.length > 0; }
-    const ppl = $("#telePeople"); if (ppl) ppl.textContent = tele.group ? "Live room: people join as viewers, camera and microphone off, until you bring them into the dock" : "One to one · private";
+    const gs = $("#teleGroupSw"); if (gs) { gs.checked = tele.group; gs.disabled = tele.group && all.length > 0; }
+    const ppl = $("#telePeople"); if (ppl) ppl.textContent = tele.group ? "Live room: people join as viewers, camera and microphone off, until you make them a speaker" : "One to one · private";
     const cv = $("#teleBoard"); if (cv) { cv.hidden = !tele.board; if (tele.board) { boardFit(cv); boardWire(cv); } }
     const clr = $("#teleClear"); if (clr) clr.hidden = !tele.board;
     const box = $("#teleChatBox");
@@ -1631,7 +1688,7 @@
       const rc = $("#teleRoomCount"); if (rc) rc.textContent = tele.group ? `${all.length} in the room` : "One to one";
     }
     teleSay(tele.status); teleClock();
-    const w = $("#teleWaiting"), canAdmit = !teleIn() || tele.group;
+    const w = $("#teleWaiting"), canAdmit = true; // in a private visit, Admit asks before opening it to more people
     if (w) w.innerHTML = tele.waiting.map((p) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(p.name)}</b><div class="muted" style="font-size:12px">${esc(p.visit || "No video visit booked today")} · waiting ${Math.max(0, Math.round((Date.now() - p.since) / 60000))} min</div></span><button class="btn sm primary" data-act="teleAdmit" data-id="${esc(p.clientId)}"${canAdmit ? "" : " disabled"}>Admit</button><button class="btn sm ghost" data-act="teleDecline" data-id="${esc(p.clientId)}" aria-label="Turn away ${esc(p.name)}">${ui("x", 14)}</button></div>`).join("") || none(MDFitRT && MDFitRT.connected() ? "Nobody is waiting. People appear here when they open the session link." : "Not connected to the live service. Reload the page.");
     const pend = $("#telePending"); if (pend) pend.innerHTML = tele.invited.map((p) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(p.name)}</b><div class="muted" style="font-size:12px">invited ${Math.max(0, Math.round((Date.now() - p.at) / 60000))} min ago · let in on arrival</div></span><span class="pill warn">Pending</span><button class="btn sm ghost" data-act="teleUninvite" data-id="${esc(p.clientId)}" aria-label="Withdraw the invitation to ${esc(p.name)}">${ui("x", 14)}</button></div>`).join("");
     const n = $("#teleCount"); if (n) { n.textContent = tele.waiting.length ? `${tele.waiting.length} waiting` : tele.invited.length ? `${tele.invited.length} pending` : "Empty"; n.className = "pill" + (tele.waiting.length ? " ok" : tele.invited.length ? " warn" : ""); }
@@ -1679,6 +1736,7 @@
       const fresh = tele.waiting.find((p) => !had.has(p.clientId));
       // the server is the record of the room's mode and of who is a viewer or a speaker
       tele.group = !!(ev && ev.group); let moved = false;
+      tele.roomIds = new Set(((ev && ev.room) || []).map((m) => m.clientId));
       for (const m of (ev && ev.room) || []) { const p = tele.peers.get(m.clientId); if (p && p.role !== m.role) { p.role = m.role; moved = true; } }
       if (moved) teleRelay();
       if (route() === "telehealth") teleMount(); else if (fresh && token) toast(`${fresh.name} is in the video waiting room`);
@@ -1688,6 +1746,15 @@
     MDFitRT.on("tele_left", (ev) => teleLeft(ev));
     MDFitRT.on("tele_ended", (ev) => teleOver(ev && ev.why === "patient_left" ? "The patient left the visit." : ev && ev.why === "staff_left" ? "The visit ended: this page lost its connection." : "Visit ended."));
     MDFitRT.on("tele_error", (ev) => { if (ev && ev.error) toast(ev.error); });
+    // The connection to the server came back during a visit (a restart, or a network blip). Sound and picture go
+    // browser to browser, so the visit is still running: tell the server who it is with so it can pick the room back
+    // up. Anyone the server has not put back after half a minute is treated as gone.
+    document.addEventListener("mdfit:connected", () => {
+      if (!token || !teleIn()) return;
+      MDFitRT.emit("tele_resume", { group: tele.group, people: [...tele.peers.values()].map((p) => ({ clientId: p.id, role: p.role })) });
+      clearTimeout(tele.resumeT);
+      tele.resumeT = setTimeout(() => { for (const p of [...tele.peers.values()]) if (!(tele.roomIds && tele.roomIds.has(p.id))) { toast(`The connection dropped and ${firstName(p.name)}'s visit could not be picked back up. They can rejoin from the waiting room.`); if (tele.peers.size === 1) teleOver(""); else teleLeft({ clientId: p.id, why: "lost" }); } }, 30000);
+    });
     MDFitRT.on("tele_invited", (ev) => { if (ev) toast(`${firstName(ev.name || "They")} was invited: ${ev.emailed ? "emailed and " : ""}notified in the app. They are let in when they arrive.`); });
     MDFitRT.on("calendar_changed", () => { if (token && route() === "calendar" && !$("#modalBack").classList.contains("open")) render(); });
     setInterval(() => { if (token && route() === "messages" && !document.hidden && !MDFitRT.connected() && !$("#modalBack").classList.contains("open")) refreshMessages(); }, 15000);
