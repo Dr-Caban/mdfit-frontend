@@ -154,6 +154,9 @@ textarea.input{min-height:120px;resize:vertical;line-height:1.55}
 .cal-col{position:relative;border-left:1px solid var(--line);background:repeating-linear-gradient(to bottom,transparent 0 55px,var(--line) 55px 56px)}
 .appt{position:absolute;left:4px;right:4px;border-radius:6px;padding:4px 7px;font-size:12px;line-height:1.3;cursor:pointer;border-left:3px solid var(--c);background:color-mix(in srgb,var(--c) 13%,var(--surface));contain:paint;overflow-wrap:anywhere}
 .appt b{display:block;font-weight:600}
+/* Busy on another calendar: times only, drawn behind MD Fit's own visits and not clickable */
+.appt.busy{--c:var(--muted);left:2px;right:2px;cursor:default;color:var(--muted);border-left-style:dashed;background:repeating-linear-gradient(135deg,var(--wash) 0 7px,color-mix(in srgb,var(--muted) 10%,var(--surface)) 7px 14px)}
+.appt.busy:hover{filter:none}
 .appt:hover{filter:brightness(.97)}
 
 /* Chat */
@@ -246,7 +249,8 @@ textarea.input{min-height:120px;resize:vertical;line-height:1.55}
 <div class="toast" id="toast" role="status"></div>
 
 <script src="config.js?v=aac711e3"></script>
+<script src="realtime.js?v=1e278d3b"></script>
 <script src="app/exercises.js?v=9d24b0f6"></script>
-<script src="workspace-app.js?v=59ffd034"></script>
+<script src="workspace-app.js?v=74d1f0da"></script>
 </body>
 </html>
