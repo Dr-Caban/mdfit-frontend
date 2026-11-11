@@ -112,7 +112,7 @@
   ];
   function renderNav(active) {
     const badge = (id) => id === "messages" && cache.unread ? `<span class="badge">${cache.unread}</span>` : id === "clients" && cache.waiting ? `<span class="badge">${cache.waiting}</span>` : "";
-    $("#nav").innerHTML = `<div class="brand"><div class="logo">M</div><div><b>MD Fit</b><div class="muted" style="font-size:12px">Physical Rehab &amp; Fitness</div></div></div>` +
+    $("#nav").innerHTML = `<div class="brand"><div class="logo"><img src="assets/logo.webp" alt="" width="160" height="160"></div><div><b>MD Fit</b><div class="muted" style="font-size:12px">Physical Rehab &amp; Fitness</div></div></div>` +
       NAV.map((g) => `<div class="nav-group"><span>${g.g}</span>${g.items.map(([id, label]) => `<a href="#${id}" class="${active === id ? "active" : ""}"><svg viewBox="0 0 24 24">${ICON[id]}</svg>${label}${badge(id)}</a>`).join("")}</div>`).join("");
   }
 
@@ -553,7 +553,10 @@
   }
   window.addEventListener("hashchange", () => { if (location.hash !== "#chart") {} render(); });
   $("#navToggle").addEventListener("click", () => $("#nav").classList.toggle("open"));
-  $("#themeBtn").addEventListener("click", () => { const r = document.documentElement; const dark = r.dataset.theme ? r.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches; r.dataset.theme = dark ? "light" : "dark"; });
+  // Light is the default on every device; dark is a choice, remembered on this device (a display setting, no patient data)
+  const THEME_KEY = "workspace-theme";
+  try { if (localStorage.getItem(THEME_KEY) === "dark") document.documentElement.dataset.theme = "dark"; } catch {}
+  $("#themeBtn").addEventListener("click", () => { const r = document.documentElement, next = r.dataset.theme === "dark" ? "light" : "dark"; r.dataset.theme = next; try { localStorage.setItem(THEME_KEY, next); } catch {} });
   $("#modalBack").addEventListener("click", (e) => { if (e.target.id === "modalBack") closeModal(); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
   $("#globalSearch").addEventListener("keydown", guard(async (e) => {
