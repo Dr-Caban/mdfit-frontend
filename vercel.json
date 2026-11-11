@@ -11,7 +11,7 @@
       ]
     },
     {
-      "source": "/:page(account|book|login|admin|workspace|cancel|intake)",
+      "source": "/:page(account|book|login|admin|workspace|visit|cancel|intake)",
       "headers": [
         {
           "key": "Cache-Control",
@@ -74,6 +74,15 @@
       ]
     },
     {
+      "source": "/visit",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
       "source": "/cancel",
       "headers": [
         {
@@ -120,7 +129,7 @@
         },
         {
           "key": "Permissions-Policy",
-          "value": "camera=(), microphone=(self), geolocation=(), payment=(), usb=(), bluetooth=(self)"
+          "value": "camera=(self), microphone=(self), geolocation=(), payment=(), usb=(), bluetooth=(self)"
         },
         {
           "key": "Cross-Origin-Opener-Policy",

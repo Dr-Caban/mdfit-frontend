@@ -159,6 +159,23 @@ textarea.input{min-height:120px;resize:vertical;line-height:1.55}
 .cal-col{position:relative;border-left:1px solid var(--line);background:repeating-linear-gradient(to bottom,transparent 0 55px,var(--line) 55px 56px)}
 .appt{position:absolute;left:4px;right:4px;border-radius:6px;padding:4px 7px;font-size:12px;line-height:1.3;cursor:pointer;border-left:3px solid var(--c);background:color-mix(in srgb,var(--c) 13%,var(--surface));contain:paint;overflow-wrap:anywhere}
 .btn.mic.rec{background:var(--bad);color:#fff;border-color:transparent}
+.ui-ic{flex:none;display:block}
+.stars{display:inline-flex;gap:1px;color:var(--warn);vertical-align:-2px}
+/* Video visit stage: the patient large, your own picture small in the corner */
+.tele-stage{position:relative;aspect-ratio:16/9;background:#0A1A2E;border-radius:var(--r);overflow:hidden;border:1px solid var(--line)}
+.tele-stage video{display:block;background:#0A1A2E}
+#teleRemote{width:100%;height:100%;object-fit:contain;visibility:hidden}
+.tele-stage.has-remote #teleRemote{visibility:visible}
+#teleLocal{position:absolute;right:12px;bottom:12px;width:22%;min-width:96px;aspect-ratio:4/3;object-fit:cover;border-radius:10px;border:2px solid rgba(255,255,255,.7);display:none}
+.tele-stage.live #teleLocal{display:block}
+.tele-timer,.tele-who{position:absolute;left:12px;background:rgba(10,26,46,.72);color:#fff;padding:4px 9px;border-radius:7px;font-size:12.5px;display:none}
+.tele-timer{top:12px;font-variant-numeric:tabular-nums}.tele-who{bottom:12px;max-width:60%;overflow-wrap:anywhere}
+.tele-stage.live .tele-timer,.tele-stage.live .tele-who{display:block}
+.tele-idle{position:absolute;inset:0;display:grid;place-content:center;gap:6px;text-align:center;color:#E8F0F7;padding:20px}
+.tele-idle span{color:#9BB0C4;font-size:13px;max-width:36ch}
+.tele-controls{margin-top:12px;flex-wrap:wrap}
+.tele-controls .btn.off{background:var(--accent-soft);color:var(--accent-text)}
+.btn.tele-end{background:var(--bad);color:#fff;border-color:transparent}
 .appt b{display:block;font-weight:600}
 /* Busy on another calendar: times only, drawn behind MD Fit's own visits and not clickable */
 .appt.busy{--c:var(--muted);left:2px;right:2px;cursor:default;color:var(--muted);border-left-style:dashed;background:repeating-linear-gradient(135deg,var(--wash) 0 7px,color-mix(in srgb,var(--muted) 10%,var(--surface)) 7px 14px)}
@@ -241,12 +258,12 @@ textarea.input{min-height:120px;resize:vertical;line-height:1.55}
   <nav class="nav" id="nav" aria-label="Main"></nav>
   <div class="main">
     <header class="top">
-      <button class="btn ghost mobile-nav-btn" id="navToggle" aria-label="Open menu">☰</button>
+      <button class="btn ghost mobile-nav-btn" id="navToggle" aria-label="Open menu"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
       <div class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="globalSearch" placeholder="Find a client by name or email" aria-label="Find a client"></div>
       <div class="spacer"></div>
       <span class="muted" id="whoami" style="font-size:12.5px"></span>
       <button class="btn sm" id="signOut">Sign out</button>
-      <button class="btn ghost sm" id="themeBtn" aria-label="Toggle theme">◐</button>
+      <button class="btn ghost sm" id="themeBtn" aria-label="Switch between light and dark"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg></button>
     </header>
     <main class="view" id="view" tabindex="-1"></main>
   </div>
@@ -255,8 +272,8 @@ textarea.input{min-height:120px;resize:vertical;line-height:1.55}
 <div class="toast" id="toast" role="status"></div>
 
 <script src="config.js?v=aac711e3"></script>
-<script src="realtime.js?v=1e278d3b"></script>
+<script src="realtime.js?v=dccfd156"></script>
 <script src="app/exercises.js?v=9d24b0f6"></script>
-<script src="workspace-app.js?v=a0b89761"></script>
+<script src="workspace-app.js?v=027b58b4"></script>
 </body>
 </html>

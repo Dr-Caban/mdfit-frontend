@@ -59,6 +59,9 @@
       if (socket) socket.on(event, fn);
     },
 
+    // Send an event up the live connection (used by video visits for the waiting room and call set-up)
+    emit: function (event, data) { if (socket) socket.emit(event, data); },
+
     off: function (event, fn) {
       listeners = listeners.filter(function (l) { return !(l.event === event && l.fn === fn); });
       if (socket) socket.off(event, fn);

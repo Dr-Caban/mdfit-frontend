@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Video visit | MD Fit</title>
+  <link rel="icon" href="assets/icon-64.png" type="image/png">
+  <link rel="apple-touch-icon" href="assets/logo.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* The patient's side of a video visit. White with light blues, like the practice workspace. */
+    :root{--bg:#F5F9FC;--surface:#FFFFFF;--ink:#0A1A2E;--muted:#5B6B7C;--line:#DCE8F2;--accent:#7AAFD7;--accent-soft:#EAF3FA;--accent-text:#2F6E9E;--bad:#C62828;--ok:#2E7D4F;color-scheme:light}
+    *{box-sizing:border-box}
+    html,body{margin:0;min-height:100%}
+    body{background:linear-gradient(180deg,var(--accent-soft),var(--bg) 40%);color:var(--ink);font:15px/1.5 "Montserrat",system-ui,-apple-system,"Segoe UI",sans-serif}
+    .wrap{width:min(920px,100%);margin:0 auto;padding:16px 16px 32px;display:grid;gap:16px}
+    .top{display:flex;align-items:center;gap:10px}
+    .logo{width:44px;height:44px;border-radius:11px;background:#0A1A2E;display:grid;place-items:center;overflow:hidden;flex:none}
+    .logo img{width:100%;height:100%;object-fit:contain;display:block}
+    .top b{font:700 19px/1.2 "Libre Baskerville",Georgia,serif;display:block}
+    .top span{color:var(--muted);font-size:12.5px}
+    h1{font:700 26px/1.2 "Libre Baskerville",Georgia,serif;margin:0}
+    .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:12px;box-shadow:0 6px 18px -10px rgba(10,26,46,.18)}
+    .muted{color:var(--muted)}
+    .stage{position:relative;aspect-ratio:16/9;background:#0A1A2E;border-radius:14px;overflow:hidden}
+    .stage video{display:block;background:#0A1A2E}
+    #remote{width:100%;height:100%;object-fit:contain;visibility:hidden}
+    .stage.has-remote #remote{visibility:visible}
+    #local{position:absolute;right:10px;bottom:10px;width:26%;min-width:92px;aspect-ratio:4/3;object-fit:cover;border-radius:10px;border:2px solid rgba(255,255,255,.75)}
+    .stage.preview #local{position:static;width:100%;height:100%;min-width:0;aspect-ratio:auto;border:0;border-radius:0}
+    .stage.preview #remote{display:none}
+    .note{position:absolute;inset:auto 0 0 0;padding:10px 12px;color:#fff;background:linear-gradient(0deg,rgba(10,26,46,.8),transparent);font-size:13px}
+    .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+    .btn{font:600 15px/1 inherit;font-family:inherit;padding:12px 18px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;min-height:44px}
+    .btn.primary{background:var(--accent);border-color:transparent}
+    .btn.end{background:var(--bad);color:#fff;border-color:transparent}
+    .btn.off{background:var(--accent-soft);color:var(--accent-text)}
+    .btn:disabled{opacity:.55;cursor:default}
+    .btn:focus-visible{outline:3px solid var(--accent-text);outline-offset:2px}
+    #status{font-weight:600;min-height:1.5em}
+    [hidden]{display:none!important}
+    @media (max-width:560px){.stage{aspect-ratio:3/4}h1{font-size:22px}}
+  </style>
+</head>
+<body>
+<main class="wrap">
+  <div class="top"><div class="logo"><img src="assets/logo.webp" alt="" width="160" height="160"></div><div><b>MD Fit</b><span>Physical Rehab &amp; Fitness</span></div></div>
+  <h1>Your video visit</h1>
+
+  <section class="card" id="needLogin" hidden>
+    <p style="margin:0">Sign in to your MD Fit account to join your video visit.</p>
+    <div class="row"><a class="btn primary" href="/login?next=/visit" style="text-decoration:none">Sign in</a></div>
+  </section>
+
+  <section class="card" id="room" hidden>
+    <div class="stage preview" id="stage">
+      <video id="remote" autoplay playsinline></video>
+      <video id="local" autoplay playsinline muted></video>
+      <div class="note" id="note" hidden></div>
+    </div>
+    <p id="status" role="status" aria-live="polite"></p>
+    <div class="row" id="before">
+      <button type="button" class="btn primary" id="startCam">Turn on camera and microphone</button>
+      <button type="button" class="btn primary" id="join" hidden>Join the waiting room</button>
+    </div>
+    <div class="row" id="during" hidden>
+      <button type="button" class="btn" id="mic" aria-pressed="false">Mute</button>
+      <button type="button" class="btn" id="cam" aria-pressed="false">Camera off</button>
+      <button type="button" class="btn end" id="leave">Leave</button>
+    </div>
+    <p class="muted" style="margin:0;font-size:12.5px">Your visit is private: sound and picture go straight between your device and Dr. Jared's, encrypted, and are never recorded. Find a quiet spot and keep this page open.</p>
+  </section>
+</main>
+<script src="config.js?v=aac711e3"></script>
+<script src="realtime.js?v=dccfd156"></script>
+<script src="visit.js?v=a09581b5"></script>
+</body>
+</html>
