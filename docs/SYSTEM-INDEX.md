@@ -32,6 +32,25 @@ open a pull request, check the Vercel preview, then merge — one session mergin
 name, tags and metadata. Files above the plan's 100 MB limit are re-encoded to phone-friendly 720p H.264
 first. Keys: `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`.
 
+**Bunny Stream — where the videos are moving.** Cloudinary bills in credits (1 credit = 1 GB stored or
+delivered); at ~200 videos and real member traffic that reaches the $99/mo Plus tier, and $249/mo Advanced with a
+few hundred members. Bunny bills $0.01/GB for both storage and delivery, which puts the same library at a few
+dollars a month. Transcoding, the player and the security features are included. Images stay on Cloudinary, whose
+free tier covers them with room to spare (the whole image set is well under 100 MB).
+
+| | |
+|---|---|
+| Library | MDfit |
+| Library ID | 805934 |
+| CDN hostname | vz-03938ec5-16f.b-cdn.net |
+| Pull zone | vz-03938ec5-16f |
+
+Keys: `BUNNY_STREAM_API_KEY` (library-scoped, Railway only), `BUNNY_STREAM_LIBRARY_ID`, `BUNNY_STREAM_HOSTNAME`.
+Uploads use Bunny's resumable TUS API, which suits the big source files better than the current path (it buffers whole
+files into memory and has pushed the Railway container to its 1 GB ceiling). Turn on **MP4 Fallback** in the library
+so the app can keep using a plain `<video>` element instead of shipping hls.js, and **Token Authentication** so the
+stream URLs are not playable by anyone holding the link.
+
 **Google Drive — the library of record.** The original footage (384 videos) lives in Drive, named by the
 movement spoken at the start of each clip. The player falls back to a Drive preview iframe if Cloudinary
 stalls, so Drive file sharing has to stay intact. Renaming and moving files in Drive is safe — the app
