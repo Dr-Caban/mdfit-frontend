@@ -614,3 +614,12 @@
 .btn-danger:disabled { opacity: .55; cursor: not-allowed; }
 #close-account-sheet .btn-danger { margin-top: 14px; }
 #close-account-sheet .link { display: block; width: 100%; margin-top: 10px; text-align: center; }
+/* Readiness gates visibility: a prescribed move whose video is not confirmed playable keeps its row -- the dose and
+   the cue are the instruction -- but offers no player, so it must not look or behave like a tappable card. */
+.ex.novid, .care-move.novid { cursor: default; }
+.ex.novid:hover, .care-move.novid:hover { background: var(--card-2); }
+.thumb.none { background: var(--gold-soft); color: var(--accent-text); }
+.thumb.none::after, .thumb.none::before { display: none; content: none; }
+.thumb.none svg { width: 24px; height: 24px; fill: currentColor; }
+.care-move .thumb.none { display: grid; place-items: center; }
+.care-move .cm-soon { font-size: 10px; line-height: 1.1; color: var(--muted); text-align: center; }

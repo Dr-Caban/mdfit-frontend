@@ -13,7 +13,7 @@
   };
   const shortDate = (d) => fmtDate(d, { month: "short", day: "numeric" });
   const thumb = (id) => MDFitVideo.thumb(id, 480);
-  const thumbImg = (id) => `<span class="thumb" data-thumb="${esc(id)}"><img src="${thumb(id)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="window.MDFitThumbFail&&window.MDFitThumbFail(this)" onload="this.naturalWidth<40&&window.MDFitThumbFail&&window.MDFitThumbFail(this)"></span>`;
+  const thumbImg = (id) => `<span class="thumb" data-thumb="${esc(id)}"><img src="${thumb(id)}" alt="" loading="lazy"${MDFitVideo.refAttr(id)} onerror="window.MDFitThumbFail&&window.MDFitThumbFail(this)" onload="this.naturalWidth<40&&window.MDFitThumbFail&&window.MDFitThumbFail(this)"></span>`;
   // If Drive has no thumbnail, show a still frame from the video itself (#t= makes Safari paint that frame)
   window.MDFitThumbFail = (img) => {
     const box = img.closest(".thumb"); img.remove(); if (!box || box.querySelector("video")) return;
@@ -190,6 +190,15 @@
   // Video preloading: direct MP4 in a native <video>, warmed before the tap. Visible cards fetch metadata
   // (a few at a time); touching a card starts buffering the opening seconds. Drive's player is the fallback.
   const mp4Url = (id) => MDFitVideo.mp4(id);
+  // ---- Readiness gates visibility ----------------------------------------------------------------
+  // A video is only put in front of a member once a host has confirmed it plays: MDFitVideo.playable(id) is that
+  // confirmation (the key is in a published map). WHY the extra MDFitVideo.mapped() clause: while this device holds
+  // no map at all -- /api/videos down, first ever load, cache miss -- we know nothing, and an empty library would be
+  // a catastrophic empty state, so everything is offered exactly as it was before. We only hide a video when there
+  // is a real map and the key is absent from it. Everything that offers a video goes through here.
+  const offered = (id) => !!id && (!MDFitVideo.mapped() || MDFitVideo.playable(id));
+  // Stands in for the thumbnail of a video that is not ready yet: same box, an info glyph, no play badge.
+  const soonThumb = `<span class="thumb none"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 15h-2v-6h2zm0-8h-2V7h2z"/></svg></span>`;
   const saveData = !!(navigator.connection && (navigator.connection.saveData || /(^|-)2g$/.test(navigator.connection.effectiveType || "")));
   const warm = new Map(); const WARM_MAX = 8; let warmQueue = [], warmActive = 0;
   function warmVideo(id, level = "metadata") {
@@ -232,6 +241,8 @@
   // (touchstart on the card reloads it well ahead of the click) and a MediaError is never fired twice, so read the
   // state here instead of only waiting for `error`; a clip that shows no frame within 6 s falls back too.
   function playVideo(id, title, meta = "") {
+    // Nothing unconfirmed ever reaches the player: a line of text beats a dialog that spins and then fails.
+    if (!offered(id)) return toast("That video isn't available yet. Dr. Jared is still uploading it.");
     earn("video", id);
     $("#vd-title").textContent = title;
     $("#vd-meta").textContent = meta;
@@ -539,8 +550,13 @@
   });
 
   let current = null;
-  const exLi = (e) => `<li><button type="button" class="ex" data-video="${e.id}">${thumbImg(e.id)}
-    <span><b>${esc(e.name)}</b><span><span class="sets">${esc(e.sets)}</span> · ${esc(e.region)} · ${esc(e.cat)}</span></span></button></li>`;
+  // A move whose video is not ready yet stays in the workout -- the member still does it, timed, with the cues --
+  // it just is not clickable and says so, instead of opening a player that cannot play.
+  const exLi = (e) => offered(e.id)
+    ? `<li><button type="button" class="ex" data-video="${e.id}">${thumbImg(e.id)}
+    <span><b>${esc(e.name)}</b><span><span class="sets">${esc(e.sets)}</span> · ${esc(e.region)} · ${esc(e.cat)}</span></span></button></li>`
+    : `<li><span class="ex novid">${soonThumb}
+    <span><b>${esc(e.name)}</b><span><span class="sets">${esc(e.sets)}</span> · ${esc(e.region)} · video not available yet</span></span></span></li>`;
   function renderGenerated() {
     const w = current, loc = Gen.LOCATIONS.find((l) => l.id === w.location);
     $("#generated").hidden = false;
@@ -658,29 +674,52 @@
   const LOCS = [{ id: "", label: "Everywhere" }, ...Gen.LOCATIONS.map((l) => ({ id: l.id, label: l.label }))];
   const locIds = Object.fromEntries(Gen.LOCATIONS.map((l) => [l.id, new Set(Gen.byLocation(l.id).map((e) => e.id))]));
   const vf = { q: "", cat: "All", region: "", loc: "", by: "joint", kind: "Exercise" };
+  // The library offers exactly the videos that are ready. Counts, chips, jump list and groups all read this list,
+  // so none of them can advertise a video the member cannot open (or a count that disagrees with the grid).
+  const liveEX = () => EX.filter((e) => offered(e.id));
   EX.forEach((e) => { e.kind = LIB.kind(e); });
   const catsFor = () => ["All", "♥ Favorites", ...(vf.kind === "All" ? LIB.CATEGORIES : LIB.CAT_BY_KIND[vf.kind])];
-  function renderCats() { $("#vid-cats").innerHTML = catsFor().map((c) => `<button type="button" class="chip" role="tab" data-cat="${esc(c)}" aria-selected="${c === vf.cat}">${esc(c)}</button>`).join(""); }
+  function renderCats() {
+    // Drop a category whose only videos are unplayable: an empty chip is a dead end.
+    const live = new Set(liveEX().filter((e) => vf.kind === "All" || e.kind === vf.kind).map((e) => e.libCat));
+    const cats = catsFor().filter((c) => c === "All" || c === "♥ Favorites" || live.has(c));
+    if (!cats.includes(vf.cat)) vf.cat = "All";
+    $("#vid-cats").innerHTML = cats.map((c) => `<button type="button" class="chip" role="tab" data-cat="${esc(c)}" aria-selected="${c === vf.cat}">${esc(c)}</button>`).join("");
+  }
   $("#vid-kind").addEventListener("click", (e) => {
     const b = e.target.closest("[data-kind]"); if (!b) return;
     vf.kind = b.dataset.kind; vf.cat = "All"; $$("#vid-kind button").forEach((x) => x.setAttribute("aria-selected", x === b));
     $("#vid-kind-note").textContent = KIND_NOTE[vf.kind]; renderCats(); renderVideos();
   });
   const KIND_NOTE = { Exercise: "Strength training and specialty movements for building fitness.", Rehab: "Dr. Jared's corrective work: rehabilitation, stretching and mobility. Keep pain at 3/10 or lower.", All: "Every video in the library." };
-  $("#vid-locs").innerHTML = LOCS.map((l) => `<button type="button" role="tab" data-loc="${l.id}" aria-selected="${l.id === ""}">${esc(l.label)}</button>`).join("");
+  function renderLocs() {
+    const ready = liveEX();
+    const locs = LOCS.filter((l) => !l.id || ready.some((e) => locIds[l.id].has(e.id)));
+    if (vf.loc && !locs.some((l) => l.id === vf.loc)) vf.loc = "";
+    $("#vid-locs").innerHTML = locs.map((l) => `<button type="button" role="tab" data-loc="${l.id}" aria-selected="${l.id === vf.loc}">${esc(l.label)}</button>`).join("");
+  }
+  renderLocs();
   $("#vid-locs").addEventListener("click", (e) => {
     const b = e.target.closest("[data-loc]"); if (!b) return;
     vf.loc = b.dataset.loc; $$("#vid-locs button").forEach((x) => x.setAttribute("aria-selected", x === b)); renderVideos();
   });
   const groupsFor = () => (vf.by === "joint" ? LIB.JOINTS : LIB.MUSCLES);
-  function fillJump() { $("#vid-region").innerHTML = `<option value="">All ${vf.by === "joint" ? "joints" : "muscles"}</option>` + groupsFor().map((r) => `<option>${esc(r)}</option>`).join(""); }
+  function fillJump() {
+    const live = new Set(liveEX().map((e) => e[vf.by]));
+    if (vf.region && !live.has(vf.region)) vf.region = "";
+    $("#vid-region").innerHTML = `<option value="">All ${vf.by === "joint" ? "joints" : "muscles"}</option>` + groupsFor().filter((r) => live.has(r)).map((r) => `<option${r === vf.region ? " selected" : ""}>${esc(r)}</option>`).join("");
+  }
   fillJump();
   $("#vid-by").addEventListener("click", (e) => {
     const b = e.target.closest("[data-by]"); if (!b) return;
     vf.by = b.dataset.by; vf.region = ""; $$("#vid-by button").forEach((x) => x.setAttribute("aria-selected", x === b)); fillJump(); renderVideos();
   });
-  $("#vid-count").textContent = EX.length;
-  $("#lib-count").textContent = `${EX.length} exercises`;
+  function renderCounts() {
+    const n = liveEX().length;
+    $("#vid-count").textContent = n;
+    $("#lib-count").textContent = `${n} exercises`;
+  }
+  renderCounts();
   renderCats();
   $("#vid-cats").addEventListener("click", (e) => {
     const c = e.target.closest("[data-cat]");
@@ -722,7 +761,7 @@
   });
   function renderVideos() {
     const key = vf.by;
-    let list = EX.filter((e) => (vf.kind === "All" || e.kind === vf.kind) && (vf.cat === "All" || (vf.cat === "♥ Favorites" ? isFav(e.id) : e.libCat === vf.cat)) && (!vf.region || e[key] === vf.region)
+    let list = liveEX().filter((e) => (vf.kind === "All" || e.kind === vf.kind) && (vf.cat === "All" || (vf.cat === "♥ Favorites" ? isFav(e.id) : e.libCat === vf.cat)) && (!vf.region || e[key] === vf.region)
       && (!vf.loc || locIds[vf.loc].has(e.id))
       && (!vf.q || (vqRank ? vqRank.has(e.id) : [e.name, e.region, e.cat, e.libCat, e.joint, e.muscle].join(" ").toLowerCase().includes(vf.q))));
     // Ranked results come back ordered by relevance; otherwise sort by level then name as before.
@@ -735,6 +774,13 @@
     $("#vid-empty").hidden = list.length > 0;
     $("#vid-empty").textContent = vf.cat === "♥ Favorites" && !lib.favorites.length ? "Tap the heart on any video to save it here." : "No exercises match. Try another filter.";
   }
+
+  // /api/videos answers after the first paint, so redraw everything that is gated on it once it arrives.
+  window.addEventListener("mdfit-videos", () => {
+    renderCounts(); renderCats(); fillJump(); renderLocs(); renderVideos();
+    if (typeof renderCarePlan === "function") renderCarePlan();
+    if (current) renderGenerated();
+  });
 
   // ================= Pain tool
   // Body areas; painmuscles.js holds the precise spots and the muscles for each area id.
@@ -970,7 +1016,9 @@
       <p>${msg}</p><small>${s.answered} of ${s.n} answered · educational self-check, not a medical diagnosis</small></div>`;
   }
   const stepLi = (st) => {
-    const ex = st.video && byName.get(st.video);
+    // Only link the thumbnail when the clip is confirmed playable; otherwise the step keeps its existing
+    // no-video placeholder and the member reads the dose and the how-to instead.
+    const found = st.video && byName.get(st.video), ex = found && offered(found.id) ? found : null;
     return `<li class="pstep">${ex ? `<button type="button" class="pthumb" data-video="${ex.id}" aria-label="Watch ${esc(ex.name)}">${thumbImg(ex.id)}</button>` : `<span class="pthumb none"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 15h-2v-6h2zm0-8h-2V7h2z"/></svg></span>`}
       <div><b>${esc(st.name)}</b><span class="dose">${esc(st.dose)}</span><p>${esc(st.how)}</p></div></li>`;
   };
@@ -1612,7 +1660,10 @@
     }
     const e = st.e;
     P.left = 0; P.total = Gen.stepSecs(e.sets);
-    const noVid = !e.id;
+    // Readiness gates visibility here too: rather than load a player that will fail, an unconfirmed clip runs as a
+    // timer-only step -- the member still gets the name, the dose and the clock, and the set is not lost.
+    const notReady = !!e.id && !offered(e.id);
+    const noVid = !e.id || notReady;
     vwrap.hidden = noVid;
     v.muted = !P.opt.sound;
     if (noVid) { v.pause(); v.removeAttribute("src"); v.load(); }
@@ -1623,7 +1674,7 @@
         <h2 class="p-name">${esc(e.name)}</h2>
         <div class="p-setrow">
           <div class="p-ring" id="p-ring" style="--pct:0%"><span id="p-count">0:00</span></div>
-          <div><p class="p-sets">${esc(e.sets)}</p><p class="p-meta">${noVid ? "Follow along: no video for this one. Use the timer and go at your own pace." : esc(exMeta(e))}</p></div>
+          <div><p class="p-sets">${esc(e.sets)}</p><p class="p-meta">${notReady ? "This video isn't available yet. Use the timer and go at your own pace." : noVid ? "Follow along: no video for this one. Use the timer and go at your own pace." : esc(exMeta(e))}</p></div>
         </div>
         ${st.label.startsWith("Round") || st.label === "Circuit" ? `<label class="p-load">Weight used <input id="p-weight" inputmode="decimal" placeholder="lb" value="${esc((P.log[e.id] || {}).weight || "")}"></label>` : ""}
         ${upNext}
@@ -1635,7 +1686,7 @@
     clearTimeout(P.stall); const si = P.i;
     P.stall = setTimeout(() => { if (P.i === si && !v.hidden && v.readyState < HTMLMediaElement.HAVE_CURRENT_DATA && v.onerror) v.onerror(); }, 6000);
     // Seamless sequence: buffer the next exercise video while this one plays
-    const nx = P.steps.slice(P.i + 1).find((x) => x.e && x.e.id);
+    const nx = P.steps.slice(P.i + 1).find((x) => x.e && offered(x.e.id));
     if (nx && typeof warmVideo === "function") try { warmVideo(nx.e.id, "auto"); } catch {}
     // A browser that blocks sound until a tap: play muted and ask for one tap on Sound
     const pr = v.play(); if (pr) pr.catch((err) => { if (err && err.name === "NotAllowedError" && !v.muted) { v.muted = true; soundBlocked(true); v.play().catch(() => {}); } });
@@ -2575,7 +2626,12 @@
     const notes = ch.notes.map((n) => `<div class="plan-notes care-note"><span class="muted small">${shortDate(n.at.slice(0, 10))}</span><p>${esc(n.text).replace(/\n/g, "<br>")}</p></div>`).join("");
     const moves = ch.movements.length ? `<p class="care-sub"><b>Your movements</b> <span class="muted small">tap one to watch it</span></p><ul class="care-moves">${ch.movements.map((m) => {
       const ex = byId.get(m.videoId);
-      return `<li><button type="button" class="care-move" data-care-video="${esc(m.videoId)}" data-care-name="${esc(m.name)}">${thumbImg(m.videoId)}<span class="cm-txt"><b>${esc(m.name)}</b>${m.dose ? `<span class="cm-dose">${esc(m.dose)}</span>` : ""}${m.cue ? `<span class="cm-cue">${esc(m.cue)}</span>` : ex ? `<span class="muted small">${esc(ex.region)} · ${esc(ex.cat)}</span>` : ""}</span><svg viewBox="0 0 24 24" class="cm-play"><path d="M8 5v14l11-7z"/></svg></button></li>`; }).join("")}</ul>` : "";
+      // What Dr. Jared prescribed is never dropped -- the dose and the cue are the clinical instruction and must
+      // stay readable -- but a movement whose video is not ready yet is not clickable and says so.
+      const txt = `<span class="cm-txt"><b>${esc(m.name)}</b>${m.dose ? `<span class="cm-dose">${esc(m.dose)}</span>` : ""}${m.cue ? `<span class="cm-cue">${esc(m.cue)}</span>` : ex ? `<span class="muted small">${esc(ex.region)} · ${esc(ex.cat)}</span>` : ""}</span>`;
+      return offered(m.videoId)
+        ? `<li><button type="button" class="care-move" data-care-video="${esc(m.videoId)}" data-care-name="${esc(m.name)}">${thumbImg(m.videoId)}${txt}<svg viewBox="0 0 24 24" class="cm-play"><path d="M8 5v14l11-7z"/></svg></button></li>`
+        : `<li><span class="care-move novid">${soonThumb}${txt}<span class="cm-soon">Video<br>soon</span></span></li>`; }).join("")}</ul>` : "";
     const paid = ch.paidVisits.map((v) => `<li class="care-visit"><b>${esc(v.name || "Video visit")}</b><span class="muted small">Paid ${shortDate(v.paidAt.slice(0, 10))}. Dr. Jared will schedule it; the video link will show here and under Appointments.</span></li>`).join("");
     const upcoming = ch.visits.map((v) => `<li class="care-visit"><b>${esc(v.typeName)}</b><span class="muted small">${fmtDate(v.date, { weekday: "long" })} at ${fmtTime(v.time)} · ${v.minutes} min</span>${v.meetingLink ? `<a class="btn-blue sm" href="${esc(v.meetingLink)}" target="_blank" rel="noopener">Join video visit</a>` : ""}</li>`).join("");
     const pay = bookHtml();
