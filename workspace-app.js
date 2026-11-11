@@ -92,6 +92,7 @@
     screen: '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/>',
     phoneOff: '<path d="M4 15c5-5 11-5 16 0l-2.5 2.5-3-1.5v-2.5a8 8 0 0 0-5 0V16l-3 1.5z" fill="currentColor"/>',
     copy: '<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/>',
+    broadcast: '<path d="M3 10v4h3l6 4V6l-6 4z"/><path d="M16 9a4 4 0 0 1 0 6M19 6a8 8 0 0 1 0 12"/>',
     board: '<path d="M3 4h18v12H3zM12 16v4M8 20h8"/><path d="M7 12l3-3 2 2 4-4"/>',
     blur: '<circle cx="12" cy="12" r="9" stroke-dasharray="2 3"/><circle cx="12" cy="12" r="3"/>',
     chat: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
@@ -332,7 +333,7 @@
     if (!t.threads.find((x) => x.clientId === state.thread)) state.thread = t.threads[0] ? t.threads[0].clientId : null;
     const th = state.thread ? await get(`/messages/${state.thread}`) : null;
     renderNav("messages");
-    return `<div class="view-head"><div><h1>Messages</h1><p class="muted">Conversations with members · stored encrypted on the server</p></div>${adminLink("messages", "Message many people")}</div>
+    return `<div class="view-head"><div><h1>Messages</h1><p class="muted">Conversations with members · stored encrypted on the server</p></div><button type="button" class="btn" data-act="broadcast">${ui("broadcast", 15)}Broadcast</button></div>
     <div class="card chat" style="padding:0">
       <div class="threads">${t.threads.map((x) => `<div class="thread ${x.clientId === state.thread ? "active" : ""}" data-act="thread" data-id="${esc(x.clientId)}">${avatar(x.name, 36)}<div style="flex:1;min-width:0"><div class="row" style="justify-content:space-between"><b>${esc(x.name)}</b>${x.unread ? `<span class="badge">${x.unread}</span>` : ""}</div><div class="muted" style="font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${x.last ? (x.last.from === "doctor" ? "You: " : "") + esc(x.last.body) : ""}</div></div></div>`).join("") || `<p class="muted" style="padding:16px;margin:0">No messages yet.</p>`}</div>
       <div class="msgs">${th ? `<div style="padding:12px 16px;border-bottom:1px solid var(--line)" class="row"><b>${esc(th.client.name)}</b><span class="muted" style="font-size:12px">${esc(th.client.email)}</span><button class="btn sm" style="margin-left:auto" data-act="chart" data-id="${esc(th.client.id)}">Chart</button></div>
@@ -553,6 +554,20 @@
     chartClose: (el, e) => { e.preventDefault(); state.chartClient = null; render(); },
     chartTab: (el) => { state.chartTab = el.dataset.tab; document.querySelectorAll(".tabs .tab").forEach((b) => b.classList.toggle("active", b === el)); $("#chartBody").innerHTML = chartTab(); if (state.chartTab === "plans") loadPool(); },
     dictate: (el) => dictate(el),
+    // Broadcast: one message to many people. It lands in each person's own private thread; nobody sees who else got it.
+    broadcast: async () => {
+      const [list, past] = await Promise.all([clients(), get("/messages/broadcasts").catch(() => [])]);
+      modal(`<div class="card-head"><h2 class="row" style="gap:6px">${ui("broadcast", 18)}Broadcast</h2><button type="button" class="btn sm ghost" data-act="closeModal" aria-label="Close">${ui("x", 14)}</button></div>
+        <form class="stack" data-form="broadcast">
+          <p class="muted" style="margin:0;font-size:13px">One message to many people. Each person gets it in their own private thread and cannot see who else received it.</p>
+          <div class="field"><label for="bcTo">Send to</label><select id="bcTo" name="to" class="input" data-change="bcTo"><option value="all">Everyone (${list.length})</option><option value="members">Paying members</option><option value="selected">People I pick</option></select></div>
+          <div class="field" id="bcPick" hidden><label>Pick people</label><div class="bc-list">${list.map((c) => `<label class="row" style="gap:8px"><input type="checkbox" name="who" value="${esc(c.id)}"><span>${esc(c.name)} <span class="muted" style="font-size:12px">${esc(c.email)}</span></span></label>`).join("") || none("No clients yet.")}</div></div>
+          <div class="field"><div class="row" style="justify-content:space-between"><label for="bcBody">Message</label><button type="button" class="btn sm mic" data-act="dictate" data-for="bcBody" aria-pressed="false">${ui("mic", 14)}<span>Dictate</span></button></div><textarea id="bcBody" name="body" class="input" style="min-height:140px" maxlength="4000" required placeholder="Keep health details out of a message that goes to many people"></textarea></div>
+          <label class="row" style="gap:8px"><input type="checkbox" name="email" checked><span>Also email each person that a new message is waiting (the email never contains the message)</span></label>
+          <div class="row"><button class="btn primary">Send broadcast</button><span class="muted" id="bcMsg" role="status" style="font-size:12.5px"></span></div>
+        </form>
+        ${past.length ? `<h3 style="margin:14px 0 4px">Recent broadcasts</h3>${past.slice(0, 5).map((b) => `<div class="list-item"><span style="flex:1;min-width:0"><div class="muted" style="font-size:12px">${when(b.at)}${b.sending ? " · emails still going out" : ""}</div><div style="overflow-wrap:anywhere">${esc(b.preview)}${b.preview && b.preview.length >= 120 ? "…" : ""}</div></span><span class="pill">${b.read}/${b.recipients} read</span></div>`).join("")}` : ""}`);
+    },
     teleAdmit: async (el) => { if (teleIn()) return; el.disabled = true; try { await teleMedia(); teleMount(); MDFitRT.emit("tele_admit", { clientId: el.dataset.id }); } catch (err) { el.disabled = false; toast(err.message); } },
     teleDecline: (el) => { if (confirm("Turn this person away from the waiting room?")) MDFitRT.emit("tele_decline", { clientId: el.dataset.id }); },
     teleMic: () => { if (!tele.local) return; tele.micOff = !tele.micOff; tele.local.getAudioTracks().forEach((t) => { t.enabled = !tele.micOff; }); teleMount(); },
@@ -578,7 +593,7 @@
     mvPool: async (el) => { await api("POST", `/api/admin/emr/${state.chartClient}/movements`, { videoId: el.dataset.id, name: el.dataset.name, dose: el.dataset.dose, cue: el.dataset.cue }); toast("Added to the plan."); await reChart(); loadPool(); },
     docs: async () => { $("#docsBox").innerHTML = showDocs(await get(`/clients/${state.chartClient}/intake`)); },
     docsModal: async (el) => { const d = await get(`/clients/${el.dataset.id}/intake`); modal(`<div class="card-head"><h2>New patient documents</h2><button class="btn sm" data-act="closeModal">Close</button></div>${showDocs(d)}`); },
-    closeModal: () => closeModal(),
+    closeModal: () => { stopDictation(); closeModal(); },
     appt: async (el) => {
       const list = cache.appts || (cache.appts = await get("/appointments?all=1")), a = list.find((x) => x.id === el.dataset.id) || (await get("/appointments?all=1")).find((x) => x.id === el.dataset.id);
       if (!a) return toast("That appointment is no longer there.");
@@ -600,6 +615,18 @@
   };
   const FORMS = {
     teleChat: async (f) => { const body = f.body.value.trim(); if (!body) return; if (!teleSend({ t: "chat", body })) { toast("Chat isn't connected yet."); return; } tele.chat.push({ me: true, body, at: Date.now() }); f.body.value = ""; teleMount(); },
+    broadcast: async (f) => {
+      const to = f.to.value, body = f.body.value.trim(), ids = [...f.querySelectorAll("[name=who]:checked")].map((x) => x.value), msg = $("#bcMsg");
+      if (!body) return;
+      if (to === "selected" && !ids.length) { msg.textContent = "Pick at least one person."; return; }
+      if (!confirm(to === "selected" ? `Send this to ${ids.length} ${ids.length === 1 ? "person" : "people"}?` : to === "members" ? "Send this to every paying member?" : "Send this to everyone?")) return;
+      const btn = f.querySelector("button.primary"); btn.disabled = true; msg.textContent = "Sending…";
+      try {
+        const r = await api("POST", "/api/admin/messages/broadcast", { to, body, email: f.email.checked, ...(to === "selected" ? { clientIds: ids } : {}) });
+        stopDictation(); closeModal(); toast(`Broadcast sent to ${r.sent} ${r.sent === 1 ? "person" : "people"}${r.emailing ? `. Emailing ${r.emailing} a notice.` : "."}`);
+        if (route() === "messages") await render();
+      } catch (err) { msg.textContent = err.message; btn.disabled = false; }
+    },
     roomLink: async (f) => {
       const url = f.url.value.trim();
       if (url && !/^https:\/\//i.test(url)) { toast("The room link must start with https://"); return; }
@@ -645,6 +672,7 @@
   document.addEventListener("change", (e) => {
     if (e.target.matches("[data-change=leadStatus]")) guard(ACT.leadSave)(e.target);
     if (e.target.matches("[data-change=teleScribe]")) teleScribe(e.target.checked);
+    if (e.target.matches("[data-change=bcTo]")) { const p = $("#bcPick"); if (p) p.hidden = e.target.value !== "selected"; }
     if (e.target.matches("[data-change=insDays]")) { state.insDays = Number(e.target.value) || 30; render(); }
   });
   document.addEventListener("input", (e) => {
