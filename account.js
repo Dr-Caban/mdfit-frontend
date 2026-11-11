@@ -2017,6 +2017,20 @@
   function setBadge(n) { const b = $("#msg-badge"); b.hidden = !n; b.textContent = n > 9 ? "9+" : n; $("#more-btn").classList.toggle("has-badge", !!n); const ml = $('#more-list [data-goto="messages"]'); if (ml) ml.dataset.badge = n || ""; }
   const pollUnread = () => apiAuth("GET", "/api/me/messages/unread-count").then((r) => { setBadge(r.unread); notifyMessages(r.unread); renderNotes(); }).catch(() => {});
   if (window.MDFitRT) MDFitRT.on("new_message", () => { if (inThread) loadMessages(false); else pollUnread(); });
+  // ---- Video session invitation: Dr. Jared asked this member to join now. One banner with one button; it says
+  // nothing about why. Shown when the invitation arrives while the app is open, and on opening the app while it stands.
+  function teleBanner(on) {
+    let b = document.getElementById("tele-invite");
+    if (!on) { if (b) b.remove(); return; }
+    if (b) return;
+    b = document.createElement("div"); b.id = "tele-invite"; b.setAttribute("role", "status");
+    b.style.cssText = "position:fixed;left:12px;right:12px;bottom:calc(88px + env(safe-area-inset-bottom));z-index:60;max-width:560px;margin:0 auto;background:#0A1A2E;color:#fff;border-radius:14px;padding:12px 14px;display:flex;gap:10px;align-items:center;box-shadow:0 10px 30px rgba(0,0,0,.3)";
+    b.innerHTML = `<span style="flex:1;font-weight:600">Dr. Jared invited you to a video session.</span><a href="/visit" style="background:#7AAFD7;color:#0A1A2E;font-weight:700;padding:10px 16px;border-radius:10px;text-decoration:none">Join</a><button type="button" aria-label="Dismiss" style="background:none;border:0;color:#fff;padding:8px;cursor:pointer;line-height:0"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>`;
+    b.querySelector("button").addEventListener("click", () => b.remove());
+    document.body.appendChild(b);
+  }
+  apiAuth("GET", "/api/me/telehealth/invite").then((r) => teleBanner(!!(r && r.invited))).catch(() => {});
+  if (window.MDFitRT) MDFitRT.on("tele_invited", () => teleBanner(true));
   setInterval(() => { if (!document.hidden && $("#view-messages").hidden) pollUnread(); }, 60000);
   $("#chat-form").addEventListener("submit", async (e) => {
     e.preventDefault(); const f = e.target, body = f.body.value.trim(); if (!body) return;

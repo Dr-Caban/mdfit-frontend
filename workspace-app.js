@@ -389,7 +389,8 @@
           <div class="grid g3"><div class="field"><label for="ivAmt">Amount ($)</label><input id="ivAmt" name="amount" class="input" type="number" min="0.01" max="20000" step="0.01" required inputmode="decimal"></div>
             <div class="field"><label for="ivDate">Date</label><input id="ivDate" name="date" class="input" type="date" value="${today}"></div>
             <div class="field"><label for="ivPaid">Paid already?</label><select id="ivPaid" name="method" class="input"><option value="">Not yet</option><option value="cash">Yes, cash</option><option value="check">Yes, check</option><option value="card">Yes, card in person</option><option value="other">Yes, another way</option></select></div></div>
-          <div class="row"><button class="btn primary">Create invoice</button></div></form></div>
+          <div class="row"><button class="btn primary" name="go" value="send">Create and send to ${first}</button><button class="btn" name="go" value="save">Create without sending</button></div>
+          <p class="muted" style="margin:0;font-size:12.5px">Sending emails ${first} the amount and a secure card payment page. You write the subject and message before it goes.</p></form></div>
         <div class="card"><div class="card-head"><h2>Video visits</h2><button class="btn sm" data-act="book">Schedule</button></div>
           ${d.paidVisits.map((v) => `<div class="list-item"><span style="flex:1"><b>${esc(v.name || v.service)}</b><div class="muted" style="font-size:12px">paid ${when(v.paidAt)}${v.amount != null ? ` · ${usd(v.amount)}` : ""}</div></span><span class="pill warn">Needs a time</span></div>`).join("")}
           ${d.visits.map((v) => `<div class="list-item"><span style="flex:1"><b>${esc(v.typeName)}</b><div class="muted" style="font-size:12px">${fmtDate(v.date)} ${fmtTime(v.time)} · ${v.minutes} min</div></span>${v.payment === "paid" ? `<span class="pill ok">Paid</span>` : v.payment === "exempt" ? `<span class="pill">Inpatient</span>` : ""}</div>`).join("")}
@@ -432,7 +433,7 @@
     cache.billing = b;
     $("#billRows").innerHTML = b.error ? noneRow(6, esc(b.error)) : b.invoices.map((x) => `<tr><td>${esc(x.number || "—")}</td><td>${x.date ? fmtDate(x.date) : "—"}</td><td>${esc(x.description || "")}</td><td class="num">${x.amount == null ? "—" : usd(x.amount)}</td>
       <td><span class="pill ${STATUS[x.status] ?? "ok"}">${esc(x.status === "paid" && x.method ? `Paid · ${x.method}` : x.status.charAt(0).toUpperCase() + x.status.slice(1))}</span></td>
-      <td><div class="row" style="gap:6px;flex-wrap:nowrap;justify-content:flex-end">${x.custom && x.status === "unpaid" ? `<button class="btn sm primary" data-act="invSend" data-id="${esc(x.id)}">Send</button><button class="btn sm" data-act="invPay" data-id="${esc(x.id)}">Mark paid</button><button class="btn sm ghost" data-act="invVoid" data-id="${esc(x.id)}" aria-label="Void invoice ${esc(x.number)}">${ui("x", 14)}</button>` : x.receiptUrl ? `<a class="btn sm" href="${esc(x.receiptUrl)}" target="_blank" rel="noopener noreferrer">Receipt</a>` : ""}</div></td></tr>`).join("") || noneRow(6, "No invoices or payments yet.");
+      <td><div class="row" style="gap:6px;flex-wrap:nowrap;justify-content:flex-end">${x.custom && x.status === "unpaid" ? `<button class="btn sm primary" data-act="invSend" data-id="${esc(x.id)}">Send invoice</button><button class="btn sm" data-act="invPay" data-id="${esc(x.id)}">Mark paid</button><button class="btn sm ghost" data-act="invVoid" data-id="${esc(x.id)}" aria-label="Void invoice ${esc(x.number)}">${ui("x", 14)}</button>` : x.custom && !x.online && (x.status === "paid" || x.status === "void") ? `<button class="btn sm" data-act="invUnpaid" data-id="${esc(x.id)}">Mark unpaid</button>` : x.receiptUrl ? `<a class="btn sm" href="${esc(x.receiptUrl)}" target="_blank" rel="noopener noreferrer">Receipt</a>` : ""}</div></td></tr>`).join("") || noneRow(6, "No invoices or payments yet.");
     $("#billPay").innerHTML = `<div class="list-item"><span style="flex:1">Card on file</span><b>${b.card ? `${esc(b.card.brand.charAt(0).toUpperCase() + b.card.brand.slice(1))} ••${esc(b.card.last4)}` : "None"}</b></div>
       <div class="list-item"><span style="flex:1">Autopay</span><span class="pill ${b.autopay ? "ok" : ""}">${b.autopay ? "On" : "Off"}</span></div>
       <div class="list-item"><span style="flex:1">Balance</span><b class="num">${usd(b.balance || 0)}</b></div>`;
@@ -493,7 +494,9 @@
           <form class="composer" data-form="teleChat" style="padding:0;border:0"><input name="body" class="input" placeholder="Write to the patient" autocomplete="off" maxlength="1000" aria-label="Chat message" required><button class="btn primary">Send</button></form></div>
       </div>
       <div class="stack">
-        <div class="card"><div class="card-head"><h2>Waiting room</h2><span class="pill" id="teleCount">Empty</span></div><div id="teleWaiting"></div></div>
+        <div class="card stack"><div class="card-head"><h2>Invite a client</h2><span class="muted" style="font-size:12px">App notice and email</span></div>
+          <input class="input" id="teleInviteQ" type="search" placeholder="Search by name or email" aria-label="Search for a client to invite" autocomplete="off"><div id="teleInviteRes"></div></div>
+        <div class="card"><div class="card-head"><h2>Waiting room</h2><span class="pill" id="teleCount">Empty</span></div><div id="teleWaiting"></div><div id="telePending"></div></div>
         <div class="card" id="teleRoomCard" hidden><div class="card-head"><h2>In the room</h2><span class="pill" id="teleRoomCount"></span></div><div id="teleRoom"></div></div>
         <div class="card"><div class="card-head"><h2>Session tools</h2></div>
           <div class="list-item"><span style="flex:1;min-width:0">Live room<div class="muted" style="font-size:12px" id="telePeople">One to one · private</div></span><label class="toggle"><input type="checkbox" id="teleGroupSw" data-change="teleGroup" aria-label="Live room: admit several people as viewers"><span></span></label></div>
@@ -876,7 +879,7 @@
         </form>
         ${past.length ? `<h3 style="margin:14px 0 4px">Recent broadcasts</h3>${past.slice(0, 5).map((b) => `<div class="list-item"><span style="flex:1;min-width:0"><div class="muted" style="font-size:12px">${when(b.at)}${b.sending ? " · emails still going out" : ""}</div><div style="overflow-wrap:anywhere">${esc(b.preview)}${b.preview && b.preview.length >= 120 ? "…" : ""}</div></span><span class="pill">${b.read}/${b.recipients} read</span></div>`).join("")}` : ""}`);
     },
-    teleRole: (el) => { const p = tele.peers.get(el.dataset.id); if (!p) return; MDFitRT.emit("tele_role", { clientId: p.id, role: el.dataset.role }); if (el.dataset.role === "speaker") toast(`${firstName(p.name)} was invited into the dock. Their camera turns on once they agree.`); },
+    teleRole: (el) => { const p = tele.peers.get(el.dataset.id); if (!p) return; MDFitRT.emit("tele_role", { clientId: p.id, role: el.dataset.role }); if (el.dataset.role === "speaker") toast(`${firstName(p.name)} was asked to speak. Their camera turns on once they agree.`); },
     teleKick: (el) => { const p = tele.peers.get(el.dataset.id); if (p && confirm(`Remove ${p.name} from the room? They cannot come back into this session.`)) MDFitRT.emit("tele_end", { clientId: p.id }); },
     teleAdmit: async (el) => { if (teleIn() && !tele.group) return; el.disabled = true; try { await teleMedia(); teleMount(); MDFitRT.emit("tele_admit", { clientId: el.dataset.id }); } catch (err) { el.disabled = false; toast(err.message); } },
     teleDecline: (el) => { if (confirm("Turn this person away from the waiting room?")) MDFitRT.emit("tele_decline", { clientId: el.dataset.id }); },
@@ -987,9 +990,16 @@
   }
   // Practice details for superbills and estimates are typed once and remembered on this device (they are not patient data)
   const PRACTICE_KEY = "mdfit_ws_practice";
-  const practice = () => { try { return JSON.parse(localStorage.getItem(PRACTICE_KEY) || "{}") || {}; } catch { return {}; } };
+  // Starts from what is saved in Settings (practice name, address, phone, the provider's name and title). Nothing is
+  // assumed: a field with no saved value starts empty.
+  const practice = () => {
+    let saved = {}; try { saved = JSON.parse(localStorage.getItem(PRACTICE_KEY) || "{}") || {}; } catch {}
+    const st = cache.settings || {}, b = st.business || {}, co = st.coach || {};
+    const base = { name: b.name || "", address: b.address || "", phone: b.phone || "", provider: [co.name, co.title].filter(Boolean).join(", ") };
+    return { ...base, ...Object.fromEntries(Object.entries(saved).filter(([, v]) => v)) };
+  };
   const practiceFields = () => { const p = practice(); const f = (n, l, ph = "") => `<div class="field"><label for="pf_${n}">${l}</label><input id="pf_${n}" name="p_${n}" class="input" maxlength="160" value="${esc(p[n] || "")}" placeholder="${ph}"></div>`;
-    return `<div class="grid g2">${f("name", "Practice name", "MD Fit")}${f("provider", "Provider and credentials", "Jared Caban, DPT")}${f("address", "Practice address")}${f("phone", "Practice phone")}${f("npi", "NPI")}${f("ein", "Tax ID (EIN)")}</div>`; };
+    return `<div class="grid g2">${f("name", "Practice name")}${f("provider", "Provider name and credentials")}${f("address", "Practice address")}${f("phone", "Practice phone")}${f("npi", "NPI")}${f("ein", "Tax ID (EIN)")}</div>`; };
   const practiceFrom = (f) => { const p = {}; for (const n of ["name", "provider", "address", "phone", "npi", "ein"]) p[n] = f["p_" + n].value.trim(); try { localStorage.setItem(PRACTICE_KEY, JSON.stringify(p)); } catch {} return p; };
   const lineRows = (n, cols) => Array.from({ length: n }, (_, i) => `<div class="doc-line">${cols.map(([k, ph, type, extra = ""]) => `<input name="${k}${i}" class="input" placeholder="${ph}" aria-label="${ph}, line ${i + 1}" ${type ? `type="${type}"` : ""} ${extra}>`).join("")}</div>`).join("");
   const GFE_NOTICE = [
@@ -1046,6 +1056,8 @@
         <div class="row"><button class="btn primary"${(r.models || []).length ? "" : " disabled"}>Use this model</button></div></form>`);
     },
     stop: () => {},
+    teleInvite: (el) => { if (!(window.MDFitRT && MDFitRT.connected())) { toast("Not connected to the live service. Reload the page."); return; } MDFitRT.emit("tele_invite", { clientId: el.dataset.id }); const q = $("#teleInviteQ"); if (q) q.value = ""; const r = $("#teleInviteRes"); if (r) r.innerHTML = ""; },
+    teleUninvite: (el) => { MDFitRT.emit("tele_uninvite", { clientId: el.dataset.id }); },
     chartNewNote: () => { location.hash = "notes"; },
     chartNote: async (el) => {
       if (!el.dataset.draft) return ACT.noteOpen(el);
@@ -1077,11 +1089,12 @@
     },
     docView: (el) => { const x = (cache.chart.d.docs || []).find((y) => y.id === el.dataset.id); if (!x) return; let o = {}; try { o = JSON.parse(x.body); } catch {} showDoc(x.kind, o, x.title); },
     docPrint: () => { const box = $("#printDoc"), src = $("#docShown"); if (!box || !src) return; box.innerHTML = src.innerHTML; window.print(); setTimeout(() => { box.innerHTML = ""; }, 500); },
-    superbill: async () => { docForm("superbill"); },
+    superbill: async () => { if (!cache.settings) cache.settings = await get("/settings").catch(() => ({})); docForm("superbill"); },
     gfe: async () => { if (!cache.settings) cache.settings = await get("/settings").catch(() => ({})); docForm("gfe"); },
     invPay: (el) => { const x = ((cache.billing || {}).invoices || []).find((y) => y.id === el.dataset.id); if (!x) return;
       modal(`<div class="card-head"><h2>Mark ${esc(x.number)} paid</h2><button type="button" class="btn sm ghost" data-act="closeModal" aria-label="Close">${ui("x", 14)}</button></div><p style="margin:0 0 12px">${esc(x.description)} · <b>${usd(x.amount)}</b></p>
         <form class="stack" data-form="invPaid" data-id="${esc(x.id)}"><div class="field"><label for="ipHow">How was it paid?</label><select id="ipHow" name="method" class="input"><option value="cash">Cash</option><option value="check">Check</option><option value="card">Card in person</option><option value="other">Another way</option></select></div><div class="row"><button class="btn primary">Mark paid</button></div></form>`); },
+    invUnpaid: async (el) => { await api("PUT", `/api/admin/emr/${cid()}/invoices/${el.dataset.id}`, { status: "unpaid" }); await loadBilling(); toast("Marked unpaid. You can send it now."); },
     invVoid: async (el) => { if (!confirm("Void this invoice? It stays on the record as void.")) return; await api("PUT", `/api/admin/emr/${cid()}/invoices/${el.dataset.id}`, { status: "void" }); toast("Invoice voided."); loadBilling(); },
     invSend: (el) => { const x = ((cache.billing || {}).invoices || []).find((y) => y.id === el.dataset.id); if (!x) return;
       modal(`<div class="card-head"><h2>Send ${esc(x.number)} to ${esc(firstOf())}</h2><button type="button" class="btn sm ghost" data-act="closeModal" aria-label="Close">${ui("x", 14)}</button></div>
@@ -1102,7 +1115,12 @@
     med: async (f) => { await api("POST", `/api/admin/emr/${cid()}/meds`, { name: f.name.value.trim(), dose: f.dose.value.trim(), note: f.note.value.trim() }); await chartRedo(); toast("Medication added."); },
     allergy: async (f) => { await api("POST", `/api/admin/emr/${cid()}/allergies`, { name: f.name.value.trim(), reaction: f.reaction.value.trim() }); await chartRedo(); toast("Alert added. It shows at the top of the chart."); },
     consent: async (f) => { await api("POST", `/api/admin/emr/${cid()}/consents`, { title: f.title.value.trim(), detail: f.detail.value.trim(), signedOn: f.signedOn.value, expires: f.expires.value, how: f.how.value }); await chartRedo(); toast("Consent recorded."); },
-    invoice: async (f) => { const inv = await api("POST", `/api/admin/emr/${cid()}/invoices`, { description: f.description.value.trim(), amount: Number(f.amount.value), date: f.date.value, method: f.method.value }); f.reset(); toast(`${inv.number} created${inv.status === "paid" ? " and marked paid" : ""}.`); loadBilling(); },
+    invoice: async (f, e) => {
+      const send = !!(e && e.submitter && e.submitter.value === "send") && !f.method.value;
+      const inv = await api("POST", `/api/admin/emr/${cid()}/invoices`, { description: f.description.value.trim(), amount: Number(f.amount.value), date: f.date.value, method: f.method.value });
+      f.reset(); await loadBilling(); toast(`${inv.number} created${inv.status === "paid" ? " and marked paid" : ""}.`);
+      if (send) ACT.invSend({ dataset: { id: inv.id } });
+    },
     invPaid: async (f) => { await api("PUT", `/api/admin/emr/${cid()}/invoices/${f.dataset.id}`, { status: "paid", method: f.method.value }); closeModal(); toast("Marked paid."); loadBilling(); },
     invEmail: async (f) => { await api("POST", `/api/admin/emr/${cid()}/invoices/${f.dataset.id}/paylink`, { send: true, subject: f.subject.value.trim(), message: f.message.value.trim() }); closeModal(); toast(`Invoice emailed to ${firstOf()}.`); },
     membership: async (f) => { const said = await setMembership(cid(), f.tier.value, f.until.value, firstOf()); if (said) { await render(); toast(said); } },
@@ -1207,7 +1225,7 @@
   }
 
   document.addEventListener("click", (e) => { const el = e.target.closest("[data-act]"); if (!el || !token) return; const fn = ACT[el.dataset.act]; if (fn) guard(fn)(el, e); });
-  document.addEventListener("submit", (e) => { const f = e.target.closest("[data-form]"); if (!f) return; e.preventDefault(); const fn = FORMS[f.dataset.form]; if (fn && token) guard(fn)(f); });
+  document.addEventListener("submit", (e) => { const f = e.target.closest("[data-form]"); if (!f) return; e.preventDefault(); const fn = FORMS[f.dataset.form]; if (fn && token) guard(fn)(f, e); });
   document.addEventListener("change", (e) => {
     if (e.target.matches("[data-change=leadStatus]")) guard(ACT.leadSave)(e.target);
     if (e.target.matches("[data-change=chartFile]")) guard(chartUpload)(e.target);
@@ -1228,6 +1246,14 @@
       box.innerHTML = q.length ? (EXERCISES.filter((x) => q.every((w) => `${x.name} ${x.region} ${x.cat}`.toLowerCase().includes(w))).slice(0, 10).map((x) => `<div class="list-item"><span style="flex:1"><b>${esc(x.name)}</b><div class="muted" style="font-size:12px">${esc(x.region)} · ${esc(x.cat)} · level ${x.level}</div></span><button type="button" class="btn sm" data-act="mvPick" data-id="${esc(x.id)}">Choose</button></div>`).join("") || none("No movement matches.")) : "";
     }
     if (e.target.dataset && e.target.dataset.svc) { const sv = ((cache.settings && cache.settings.services) || []).find((x) => x.name === e.target.value), fee = e.target.parentElement.querySelector('[name^="fee"]'); if (sv && fee && !fee.value) fee.value = sv.rate; }
+    if (e.target.id === "teleInviteQ") {
+      const q = e.target.value.trim().toLowerCase().split(/\s+/).filter(Boolean), box = $("#teleInviteRes");
+      if (!q.length) { box.innerHTML = ""; return; }
+      clients().then((list) => { if ($("#teleInviteQ").value.trim().toLowerCase().split(/\s+/).filter(Boolean).join(" ") !== q.join(" ")) return;
+        const here = new Set([...tele.peers.keys(), ...tele.waiting.map((p) => p.clientId)]), asked = new Set(tele.invited.map((p) => p.clientId));
+        box.innerHTML = list.filter((c) => q.every((w) => `${c.name} ${c.email}`.toLowerCase().includes(w))).slice(0, 8).map((c) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(c.name)}</b><div class="muted" style="font-size:12px;overflow-wrap:anywhere">${esc(c.email)}</div></span>${here.has(c.id) ? `<span class="pill ok">Here</span>` : `<button type="button" class="btn sm primary" data-act="teleInvite" data-id="${esc(c.id)}">${asked.has(c.id) ? "Invite again" : "Invite to telehealth"}</button>`}</div>`).join("") || none("No client matches.");
+      }).catch(() => {});
+    }
     if (e.target.id === "clientQ") { state.clientQ = e.target.value; clearTimeout(e.target._t); e.target._t = setTimeout(async () => { const pos = e.target.selectionStart; await render(); const i = $("#clientQ"); if (i) { i.focus(); i.setSelectionRange(pos, pos); } }, 250); }
   });
 
@@ -1321,7 +1347,7 @@
   // Chat, the whiteboard and the pain check-in ride private data channels on those same connections.
   const TELE0 = () => ({ call: null, peers: new Map(), local: null, cam: null, screen: null, micOff: false, camOff: false, blur: false, status: "", tick: 0,
     chat: [], chatOpen: false, unread: 0, pain: null, painAsked: false, board: false, scribing: false, scribeRec: null });
-  const tele = { waiting: [], ice: null, transcript: "", group: false, ...TELE0() };
+  const tele = { waiting: [], invited: [], ice: null, transcript: "", group: false, ...TELE0() };
   const teleIn = () => tele.peers.size > 0;
   const teleSay = (t) => { tele.status = t; const el = $("#teleStatus"); if (el) el.textContent = t; };
   const dcSend = (p, m) => { try { if (p.dc && p.dc.readyState === "open") { p.dc.send(JSON.stringify(m)); return true; } } catch {} return false; };
@@ -1540,15 +1566,16 @@
     if (rm) {
       rm.hidden = !teleIn();
       rl.innerHTML = all.map((p) => `<div class="list-item" style="flex-wrap:wrap;row-gap:6px"><span style="flex:1 1 120px;min-width:0;overflow-wrap:anywhere"><b>${esc(p.name)}</b><div class="muted" style="font-size:12px">${p.state === "connected" ? "Connected" : p.state === "failed" ? "Could not connect" : "Connecting…"}</div></span>
-        <span class="pill ${p.role === "speaker" ? "ok" : ""}">${!tele.group ? "In the visit" : p.role !== "speaker" ? "Viewer" : p.remote.getTracks().some((t) => !t.muted && t.readyState === "live") ? "In the dock" : "Invited"}</span>
-        ${tele.group ? `<button type="button" class="btn sm${p.role === "speaker" ? "" : " primary"}" data-act="teleRole" data-id="${esc(p.id)}" data-role="${p.role === "speaker" ? "viewer" : "speaker"}">${p.role === "speaker" ? "Back to audience" : "Bring to dock"}</button>` : ""}
+        <span class="pill ${p.role === "speaker" ? "ok" : ""}">${!tele.group ? "In the visit" : p.role !== "speaker" ? "Viewer" : p.remote.getTracks().some((t) => !t.muted && t.readyState === "live") ? "Speaker" : "Asked to speak"}</span>
+        ${tele.group ? `<button type="button" class="btn sm${p.role === "speaker" ? "" : " primary"}" data-act="teleRole" data-id="${esc(p.id)}" data-role="${p.role === "speaker" ? "viewer" : "speaker"}">${p.role === "speaker" ? "Make viewer" : "Make speaker"}</button>` : ""}
         ${all.length > 1 || tele.group ? `<button type="button" class="btn sm ghost" data-act="teleKick" data-id="${esc(p.id)}" aria-label="Remove ${esc(p.name)} from the room">${ui("x", 14)}</button>` : ""}</div>`).join("");
       const rc = $("#teleRoomCount"); if (rc) rc.textContent = tele.group ? `${all.length} in the room` : "One to one";
     }
     teleSay(tele.status); teleClock();
     const w = $("#teleWaiting"), canAdmit = !teleIn() || tele.group;
     if (w) w.innerHTML = tele.waiting.map((p) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(p.name)}</b><div class="muted" style="font-size:12px">${esc(p.visit || "No video visit booked today")} · waiting ${Math.max(0, Math.round((Date.now() - p.since) / 60000))} min</div></span><button class="btn sm primary" data-act="teleAdmit" data-id="${esc(p.clientId)}"${canAdmit ? "" : " disabled"}>Admit</button><button class="btn sm ghost" data-act="teleDecline" data-id="${esc(p.clientId)}" aria-label="Turn away ${esc(p.name)}">${ui("x", 14)}</button></div>`).join("") || none(MDFitRT && MDFitRT.connected() ? "Nobody is waiting. People appear here when they open the session link." : "Not connected to the live service. Reload the page.");
-    const n = $("#teleCount"); if (n) { n.textContent = tele.waiting.length ? `${tele.waiting.length} waiting` : "Empty"; n.className = "pill" + (tele.waiting.length ? " ok" : ""); }
+    const pend = $("#telePending"); if (pend) pend.innerHTML = tele.invited.map((p) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(p.name)}</b><div class="muted" style="font-size:12px">invited ${Math.max(0, Math.round((Date.now() - p.at) / 60000))} min ago · let in on arrival</div></span><span class="pill warn">Pending</span><button class="btn sm ghost" data-act="teleUninvite" data-id="${esc(p.clientId)}" aria-label="Withdraw the invitation to ${esc(p.name)}">${ui("x", 14)}</button></div>`).join("");
+    const n = $("#teleCount"); if (n) { n.textContent = tele.waiting.length ? `${tele.waiting.length} waiting` : tele.invited.length ? `${tele.invited.length} pending` : "Empty"; n.className = "pill" + (tele.waiting.length ? " ok" : tele.invited.length ? " warn" : ""); }
   }
 
   // ---- Install app: the workspace as its own app window. Nothing about patients is kept by installing; the app
@@ -1589,7 +1616,7 @@
     });
     MDFitRT.on("message_reaction", (ev) => { if (token && route() === "messages" && ev && ev.clientId === state.thread) refreshMessages(); });
     MDFitRT.on("tele_waiting", (ev) => {
-      const had = new Set(tele.waiting.map((p) => p.clientId)); tele.waiting = (ev && ev.waiting) || [];
+      const had = new Set(tele.waiting.map((p) => p.clientId)); tele.waiting = (ev && ev.waiting) || []; tele.invited = (ev && ev.invited) || [];
       const fresh = tele.waiting.find((p) => !had.has(p.clientId));
       // the server is the record of the room's mode and of who is a viewer or a speaker
       tele.group = !!(ev && ev.group); let moved = false;
@@ -1602,6 +1629,7 @@
     MDFitRT.on("tele_left", (ev) => teleLeft(ev));
     MDFitRT.on("tele_ended", (ev) => teleOver(ev && ev.why === "patient_left" ? "The patient left the visit." : ev && ev.why === "staff_left" ? "The visit ended: this page lost its connection." : "Visit ended."));
     MDFitRT.on("tele_error", (ev) => { if (ev && ev.error) toast(ev.error); });
+    MDFitRT.on("tele_invited", (ev) => { if (ev) toast(`${firstName(ev.name || "They")} was invited: ${ev.emailed ? "emailed and " : ""}notified in the app. They are let in when they arrive.`); });
     MDFitRT.on("calendar_changed", () => { if (token && route() === "calendar" && !$("#modalBack").classList.contains("open")) render(); });
     setInterval(() => { if (token && route() === "messages" && !document.hidden && !MDFitRT.connected() && !$("#modalBack").classList.contains("open")) refreshMessages(); }, 15000);
   }
