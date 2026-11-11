@@ -194,8 +194,8 @@
   V.calendar = async () => {
     const now = new Date(), mon = new Date(now); mon.setDate(mon.getDate() - ((mon.getDay() + 6) % 7) + state.calWeek * 7);
     const days = Array.from({ length: 7 }, (_, i) => { const d = new Date(mon); d.setDate(d.getDate() + i); return d; });
-    // The practice's other calendars (SimplePractice, Google Calendar) for the week on screen. The server passes on
-    // times only, never a name or a title, so these are drawn as "Busy" blocks behind MD Fit's own visits.
+    // The practice's other calendars (SimplePractice, Google Calendar) for the week on screen, drawn behind MD Fit's
+    // own visits. Google events carry their titles (shown here only, never stored); anything else is a "Busy" block.
     const [appts, classes, bookings, sync] = await Promise.all([get("/appointments?all=1"), get("/classes"), get("/bookings"),
       get(`/busy?from=${isoDay(mon)}&days=7`).catch(() => null)]);
     cache.appts = appts;
@@ -208,7 +208,7 @@
       const cl = classes.filter((c) => c.active !== false && c.day === dow).map((c) => `<div class="appt" style="--c:var(--fit);top:${top(c.time) + 2}px;height:${Math.max(26, (c.durationMin || 60) / 60 * 56 - 4)}px;opacity:.85"><b>${esc(c.title)}</b>${fmtTime(c.time)} · class</div>`);
       const bz = busy.filter((b) => b.date === key && !b.allDay).map((b) => {
         const s = Math.max(b.start, START * 60), e = Math.min(b.end, END * 60); if (e <= s) return "";
-        return `<div class="appt busy" style="top:${(s / 60 - START) * 56 + 2}px;height:${Math.max(20, (e - s) / 60 * 56 - 4)}px" title="Busy on ${srcName(b.source)}, ${fmtTime(hhmm(b.start))} to ${fmtTime(hhmm(b.end))}"><b>Busy</b>${fmtTime(hhmm(b.start))} · ${srcName(b.source)}</div>`;
+        return `<div class="appt busy" style="top:${(s / 60 - START) * 56 + 2}px;height:${Math.max(20, (e - s) / 60 * 56 - 4)}px" title="${esc(b.title || "Busy")} · ${srcName(b.source)}, ${fmtTime(hhmm(b.start))} to ${fmtTime(hhmm(b.end))}"><b>${esc(b.title || "Busy")}</b>${fmtTime(hhmm(b.start))} to ${fmtTime(hhmm(b.end))} · ${srcName(b.source)}</div>`;
       });
       return `<div class="cal-col" style="grid-row:2">${bz.concat(ev, cl).join("")}</div>`;
     }).join("");
@@ -217,10 +217,10 @@
     <div class="view-head"><div><h1>Calendar</h1><p class="muted">Week of ${mon.toLocaleDateString("en-US", { month: "long", day: "numeric" })}</p></div>
     <div class="row"><button class="btn sm" data-act="calWeek" data-d="-1" aria-label="Previous week">${ui("prev", 14)}</button><button class="btn sm" data-act="calWeek" data-d="0">Today</button><button class="btn sm" data-act="calWeek" data-d="1" aria-label="Next week">${ui("next", 14)}</button>
     ${adminLink("hours", "Hours &amp; calendar sync")}</div></div>
-    <div class="row" style="margin-bottom:12px"><span class="pill"><span class="dot" style="background:var(--body)"></span>Booked</span><span class="pill"><span class="dot" style="background:var(--ok)"></span>Completed</span><span class="pill"><span class="dot" style="background:var(--fit)"></span>Class</span><span class="pill"><span class="dot" style="background:var(--muted)"></span>Busy on your other calendars</span>
-    <span class="muted" style="font-size:12.5px">${!sync ? "Your other calendars could not be read just now." : sync.simplepractice === "off" && sync.google === "off" ? "No outside calendar is connected, so only MD Fit bookings show." : `Showing ${[sync.simplepractice !== "off" && "SimplePractice", sync.google !== "off" && "Google Calendar"].filter(Boolean).join(" and ")} busy times (times only)${sync.lastError ? ". Last sync reported a problem" : ""}.`}</span></div>
+    <div class="row" style="margin-bottom:12px"><span class="pill"><span class="dot" style="background:var(--body)"></span>Booked</span><span class="pill"><span class="dot" style="background:var(--ok)"></span>Completed</span><span class="pill"><span class="dot" style="background:var(--fit)"></span>Class</span><span class="pill"><span class="dot" style="background:var(--muted)"></span>Your other calendars</span>
+    <span class="muted" style="font-size:12.5px">${!sync ? "Your other calendars could not be read just now." : sync.simplepractice === "off" && sync.google === "off" ? "No outside calendar is connected, so only MD Fit bookings show." : `Showing ${[sync.simplepractice !== "off" && "SimplePractice", sync.google !== "off" && "Google Calendar"].filter(Boolean).join(" and ")}${sync.titles ? " events, shown only on this screen" : " busy times (times only)"}${sync.lastError ? ". Last sync reported a problem" : ""}.`}</span></div>
     <div class="table-wrap"><div class="cal">
-      <div style="border-bottom:1px solid var(--line)"></div>${days.map((d) => `<div class="cal-h ${isoDay(d) === today ? "today" : ""}">${d.toLocaleDateString("en-US", { weekday: "short" })} ${d.getDate()}${busy.filter((b) => b.allDay && b.date === isoDay(d)).slice(0, 1).map((b) => ` <span class="pill" style="font-weight:500" title="All day on ${srcName(b.source)}">Busy all day</span>`).join("")}</div>`).join("")}
+      <div style="border-bottom:1px solid var(--line)"></div>${days.map((d) => `<div class="cal-h ${isoDay(d) === today ? "today" : ""}">${d.toLocaleDateString("en-US", { weekday: "short" })} ${d.getDate()}${((all) => all.slice(0, 1).map((b) => ` <span class="pill" style="font-weight:500;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:bottom" title="${esc(all.map((x) => x.title || "Busy").join(", "))} · all day on ${srcName(b.source)}">${esc(b.title || "Busy all day")}${all.length > 1 ? ` +${all.length - 1}` : ""}</span>`).join(""))(busy.filter((b) => b.allDay && b.date === isoDay(d)))}</div>`).join("")}
       <div class="cal-times" style="grid-row:2">${Array.from({ length: 28 }, (_, i) => `<div>${i % 2 === 0 ? fmtTime(`${START + i / 2}:00`).replace(":00", "") : ""}</div>`).join("")}</div>
       ${cols}
     </div></div>
