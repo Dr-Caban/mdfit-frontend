@@ -66,7 +66,10 @@ async function startApi(dataDir) {
 async function seedClient() {
   const post = async (url, body, token) => (await fetch(API + url, { method: "POST", body: JSON.stringify(body),
     headers: { "content-type": "application/json", "user-agent": "Mozilla/5.0 Safari", ...(token ? { authorization: "Bearer " + token } : {}) } })).json();
-  const sess = await post("/api/clients/login", { name: "<img src=x onerror=window.__pwn=1><b>Bold</b>\"> Supercalifragilisticexpialidocious_Wellington_Smith", email: "layout-check@example.com", password: "layout-check-123" });
+  // Sign up, or sign in when the account is already there. Signing in never creates an account.
+  const who = { name: "<img src=x onerror=window.__pwn=1><b>Bold</b>\"> Supercalifragilisticexpialidocious_Wellington_Smith", email: "layout-check@example.com", password: "layout-check-123" };
+  let sess = await post("/api/clients/signup", who);
+  if (!sess.token) sess = await post("/api/clients/login", who);
   if (!sess.token) throw new Error("couldn't log in a test client: " + JSON.stringify(sess));
   await post("/api/me/pain", { area: "Lower back", level: 6, note: "</textarea><script>window.__pwn=1</script><img src=x onerror=window.__pwn=1> Sharp pain after sitting through a long drive; better after the mobility routine. https://example.com/a-very-long-link-without-spaces-to-check-wrapping" }, sess.token);
   await post("/api/me/pain", { area: "Elbow / wrist / hand", level: 3, note: "" }, sess.token);

@@ -1162,8 +1162,31 @@
     $("#p-appts").innerHTML = appts.upcoming.map((a) => apptLi(a, { cancel: true, cal: true })).join("") ||
       `<li class="muted small">No visits booked. <button type="button" class="link" id="p-book-empty">Book one</button></li>`;
     $("#p-history").innerHTML = appts.past.slice(0, 20).map((a) => apptLi(a)).join("") || `<li class="muted small">Past visits show up here.</li>`;
+    // Visits booked as a guest are shown only once the member has proved the email is theirs (a code we send to it).
+    // The server says so with emailVerified: false; older servers send nothing and this stays hidden.
+    if (client && client.emailVerified === false) $("#p-appts").insertAdjacentHTML("afterbegin",
+      `<li class="small" id="ev-card">Booked with us before you made this account? Confirm your email and those visits show up here.
+        <span id="ev-step"><button type="button" class="link" id="ev-send">Email me a code</button></span></li>`);
   }
   $("#p-appts").addEventListener("click", async (e) => {
+    if (e.target.closest("#ev-send")) {
+      e.target.disabled = true;
+      try {
+        const r = await apiAuth("POST", "/api/me/email/code", {});
+        if (r.verified) { client = { ...client, emailVerified: true }; auth.set({ ...auth.get(), client }); await loadAppointments(); return; }
+        $("#ev-step").innerHTML = `<label>Code from your email <input id="ev-code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" size="8"></label> <button type="button" class="link" id="ev-ok">Confirm</button>`;
+        $("#ev-code").focus(); toast("We emailed you a 6-digit code.");
+      } catch (err) { e.target.disabled = false; toast(err.message); }
+      return;
+    }
+    if (e.target.closest("#ev-ok")) {
+      try {
+        const r = await apiAuth("POST", "/api/me/email/verify", { code: $("#ev-code").value.trim() });
+        client = r.client; auth.set({ ...auth.get(), client });
+        await loadAppointments(); renderEvents(); renderNotes(); toast("Email confirmed.");
+      } catch (err) { toast(err.message); }
+      return;
+    }
     if (e.target.closest("#p-book-empty")) { openBook(); return; }
     const b = e.target.closest("[data-cancel]");
     if (!b || !confirm("Cancel this appointment? The time opens up for someone else.")) return;
