@@ -1,422 +1,251 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Generated from admin.html by scripts/workspace-page.js. Do not edit by hand. -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-  <script src="/nozoom.js?v=45d3b173"></script>
-  <meta name="robots" content="noindex, nofollow">
-  <title>MD Fit Workspace</title>
-  <link rel="icon" href="assets/icon-64.png" type="image/png">
-  <link rel="apple-touch-icon" href="assets/logo.webp">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=45de4d22">
-  <link rel="stylesheet" href="admin.css?v=dc5a7ba3">
-  <link rel="stylesheet" href="workspace.css?v=45bbe9a3">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MD Fit Workspace</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="MD Fit practice workspace. Staff sign-in required.">
+<!-- Practice workspace: this file holds the screens' styles and shell; workspace-app.js signs in and talks to /api/admin/*. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: calm clinical workspace — slim nav rail, dense cards, color = discipline */
+:root{
+  /* MD Fit brand, inverted for a workspace: the marketing site is navy with light-blue
+     accents; this is white with lighter blues, and navy only for text. Values are the
+     site's own tokens (styles.css). To white-label for another practice, change this block. */
+  --bg:#F5F9FC; --surface:#FFFFFF; --ink:#0A1A2E; --muted:#5B6B7C; --line:#DCE8F2;
+  --accent:#7AAFD7; --accent-soft:#EAF3FA; --accent-ink:#0A1A2E;
+  --accent-text:#2F6E9E;   /* light blue fails contrast as text on white; this is the brand's AA blue */
+  --wash:#F0F6FB;          /* the lightest blue, for hovers and quiet panels */
+  --bh:#6B4FB8; --med:#C2412D; --nut:#2E8540; --fit:#C8862B; --body:#2F6E9E;
+  --ok:#2E7D4F; --warn:#B7791F; --bad:#C62828;
+  --font-display:"Libre Baskerville", Georgia, "Times New Roman", serif;
+  --font-body:"Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --r:12px; --shadow:0 1px 2px rgba(10,26,46,.05),0 6px 18px -8px rgba(10,26,46,.14);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0A1A2E; --surface:#10233B; --ink:#E8F0F7; --muted:#9BB0C4; --line:#1D3352;
+  --accent:#8EC0E6; --accent-soft:#16304D; --accent-ink:#0A1A2E; --accent-text:#8EC0E6; --wash:#132A45;
+  --bh:#A28BE6; --med:#EE7D68; --nut:#6CC47E; --fit:#F0A55B; --body:#8EC0E6; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#0A1A2E; --surface:#10233B; --ink:#E8F0F7; --muted:#9BB0C4; --line:#1D3352;
+  --accent:#8EC0E6; --accent-soft:#16304D; --accent-ink:#0A1A2E; --accent-text:#8EC0E6; --wash:#132A45;
+  --bh:#A28BE6; --med:#EE7D68; --nut:#6CC47E; --fit:#F0A55B; --body:#8EC0E6; color-scheme:dark;}
+
+.demo-bar{background:var(--accent-soft);color:var(--ink);border-bottom:1px solid var(--line);padding:8px 16px;font-size:12.5px;line-height:1.45;overflow-wrap:anywhere}
+.signin{min-height:100vh;display:grid;place-items:center;padding:16px;background:linear-gradient(180deg,var(--accent-soft),var(--bg) 60%)}
+.signin-card{width:min(380px,100%);display:grid;gap:14px;padding:26px 24px}
+[hidden]{display:none!important}
+.kv{display:grid;grid-template-columns:minmax(110px,max-content) minmax(0,1fr);gap:6px 14px;margin:0}
+.kv dt{color:var(--muted)}.kv dd{margin:0;overflow-wrap:anywhere}
+.rec{display:grid;grid-template-columns:auto auto minmax(0,1fr);gap:10px;align-items:baseline;padding:8px 0;border-bottom:1px solid var(--line)}
+.rec:last-child{border-bottom:0}
+.note-text{white-space:pre-wrap;overflow-wrap:anywhere;margin:6px 0 0}
+.mv-thumb{width:64px;height:40px;object-fit:cover;border-radius:6px;background:var(--wash)}
+.spin{color:var(--muted);padding:24px 0}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font:14px/1.5 var(--font-body);}
+button,input,select,textarea{font:inherit;color:inherit}
+h1,h2,h3{margin:0;text-wrap:balance}
+h1{font-family:var(--font-display);font-weight:700;font-size:28px;letter-spacing:-.01em}
+h2{font-size:16px;font-weight:700}
+h3{font-size:14px;font-weight:600}
+.muted{color:var(--muted)}
+.num{font-variant-numeric:tabular-nums}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* Shell */
+.app{display:grid;grid-template-columns:232px 1fr;height:100%}
+.nav{background:var(--surface);border-right:1px solid var(--line);display:flex;flex-direction:column;overflow-y:auto}
+.brand{display:flex;align-items:center;gap:10px;padding:18px 18px 14px}
+.logo{width:30px;height:30px;border-radius:8px;background:var(--accent);display:grid;place-items:center;color:var(--accent-ink);font-weight:700}
+.brand b{font-family:var(--font-display);font-size:18px}
+.nav-group{padding:8px 10px}
+.nav-group>span{display:block;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:6px 10px}
+.nav a{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:8px;color:var(--ink);text-decoration:none;font-weight:500}
+.nav a:hover{background:var(--bg)}
+.nav a.active{background:var(--accent-soft);color:var(--accent-text)}
+.nav a svg{width:17px;height:17px;flex:none;stroke:currentColor;fill:none;stroke-width:1.8}
+.nav .badge{margin-left:auto}
+.nav-foot{margin-top:auto;padding:14px;border-top:1px solid var(--line);font-size:12px}
+
+.main{display:flex;flex-direction:column;min-width:0;overflow:hidden}
+.top{display:flex;align-items:center;gap:12px;padding:10px 24px;border-bottom:1px solid var(--line);background:var(--surface);flex-wrap:wrap}
+.search{flex:1;min-width:180px;max-width:420px;display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 10px}
+.search input{border:0;background:transparent;outline:none;width:100%}
+.top .spacer{flex:1}
+.view{overflow-y:auto;padding:24px;flex:1}
+.view-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+.view-head p{margin:4px 0 0}
+
+/* Primitives */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;box-shadow:var(--shadow)}
+.card-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.g-side{grid-template-columns:minmax(0,2fr) minmax(0,1fr)}
+.row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.stack{display:flex;flex-direction:column;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);padding:7px 12px;border-radius:8px;cursor:pointer;font-weight:600}
+a.btn{text-decoration:none;color:var(--ink)}
+.btn:hover{border-color:var(--muted)}
+#roleSel{max-width:300px}
+.btn.primary,a.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.ghost{border-color:transparent;background:transparent}
+.btn.sm{padding:4px 9px;font-size:12px}
+.btn.danger{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 40%,var(--line))}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;background:var(--bg);border:1px solid var(--line);white-space:nowrap}
+.pill.ok{color:var(--ok);background:color-mix(in srgb,var(--ok) 10%,transparent);border-color:transparent}
+.pill.warn{color:var(--warn);background:color-mix(in srgb,var(--warn) 12%,transparent);border-color:transparent}
+.pill.bad{color:var(--bad);background:color-mix(in srgb,var(--bad) 10%,transparent);border-color:transparent}
+.pill.accent{color:var(--accent-text);background:var(--accent-soft);border-color:transparent}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none}
+.disc{--c:var(--accent);color:var(--c);background:color-mix(in srgb,var(--c) 11%,transparent);border-color:transparent}
+.d-bh{--c:var(--bh)}.d-med{--c:var(--med)}.d-nut{--c:var(--nut)}.d-fit{--c:var(--fit)}.d-body{--c:var(--body)}
+.badge{min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--accent);color:var(--accent-ink);font-size:11px;font-weight:700;display:inline-grid;place-items:center}
+.avatar{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:12px;color:#fff;flex:none}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;font-size:12px;color:var(--muted);font-weight:600;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:10px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr.click{cursor:pointer}
+tr.click:hover td{background:var(--bg)}
+.table-wrap{overflow-x:auto}
+.field{display:flex;flex-direction:column;gap:4px}
+.field label{font-size:12px;font-weight:600;color:var(--muted)}
+.input,select.input,textarea.input{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:8px 10px;width:100%}
+textarea.input{min-height:120px;resize:vertical;line-height:1.55}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:16px;overflow-x:auto}
+.tab{padding:8px 12px;border:0;background:transparent;cursor:pointer;font-weight:600;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap}
+.tab.active{color:var(--accent-text);border-bottom-color:var(--accent)}
+.kpi b{display:block;font-size:26px;font-weight:700;letter-spacing:-.02em}
+.kpi small{font-size:12px}
+.list-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.list-item:last-child{border-bottom:0}
+.list-item .pill{white-space:normal;text-align:right}
+.toggle{position:relative;width:36px;height:20px;flex:none}
+.toggle input{opacity:0;width:100%;height:100%;margin:0;cursor:pointer;position:absolute;z-index:1}
+.toggle span{position:absolute;inset:0;border-radius:999px;background:var(--line);transition:.15s}
+.toggle span::after{content:"";position:absolute;left:2px;top:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.15s}
+.toggle input:checked+span{background:var(--accent)}
+.toggle input:checked+span::after{left:18px}
+.locked{border:1px dashed var(--line);border-radius:8px;padding:14px;display:flex;gap:10px;align-items:flex-start;background:repeating-linear-gradient(135deg,transparent 0 8px,color-mix(in srgb,var(--muted) 5%,transparent) 8px 16px)}
+.locked svg{width:18px;height:18px;flex:none;stroke:var(--muted);fill:none;stroke-width:1.8;margin-top:2px}
+.tier{font-size:11px;font-weight:700;padding:1px 6px;border-radius:4px;border:1px solid currentColor}
+.t0{color:var(--muted)}.t1{color:var(--accent-text)}.t2{color:var(--warn)}.t3{color:var(--bad)}
+.bar{height:8px;border-radius:999px;background:var(--bg);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:999px}
+
+/* Calendar */
+.cal{display:grid;grid-template-columns:56px repeat(7,minmax(104px,1fr));border:1px solid var(--line);border-radius:var(--r);background:var(--surface);min-width:820px}
+.cal-h{padding:10px;border-bottom:1px solid var(--line);font-weight:600;font-size:13px;border-left:1px solid var(--line)}
+.cal-h.today{color:var(--accent-text)}
+.cal-times{display:grid;grid-template-rows:repeat(28,28px)}
+.cal-times div{font-size:11px;color:var(--muted);padding:0 6px;text-align:right;transform:translateY(-7px)}
+.cal-col{position:relative;border-left:1px solid var(--line);background:repeating-linear-gradient(to bottom,transparent 0 55px,var(--line) 55px 56px)}
+.appt{position:absolute;left:4px;right:4px;border-radius:6px;padding:4px 7px;font-size:12px;line-height:1.3;cursor:pointer;border-left:3px solid var(--c);background:color-mix(in srgb,var(--c) 13%,var(--surface));contain:paint;overflow-wrap:anywhere}
+.appt b{display:block;font-weight:600}
+.appt:hover{filter:brightness(.97)}
+
+/* Chat */
+.chat{display:grid;grid-template-columns:280px 1fr;height:calc(100vh - 190px);min-height:420px}
+.threads{border-right:1px solid var(--line);overflow-y:auto}
+.thread{padding:12px 14px;border-bottom:1px solid var(--line);cursor:pointer;display:flex;gap:10px}
+.thread.active{background:var(--accent-soft)}
+.msgs{display:flex;flex-direction:column}
+.msg-list{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+.bubble{max-width:70%;padding:9px 12px;border-radius:12px;background:var(--bg)}
+.bubble.me{align-self:flex-end;background:var(--accent);color:var(--accent-ink)}
+.composer{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line)}
+
+/* Telehealth */
+.video{position:relative;background:#0A1A2E;border-radius:14px;aspect-ratio:16/9;overflow:hidden;display:grid;place-items:center;color:#cfe}
+.video .self{position:absolute;right:14px;bottom:14px;width:22%;aspect-ratio:16/10;border-radius:10px;background:#244;display:grid;place-items:center;font-size:12px;border:2px solid rgba(255,255,255,.2)}
+.video .label{position:absolute;left:14px;bottom:14px;background:rgba(0,0,0,.45);padding:3px 9px;border-radius:6px;font-size:12px}
+.video .timer{position:absolute;left:14px;top:14px;background:rgba(0,0,0,.45);padding:3px 9px;border-radius:6px;font-size:12px}
+.vcontrols{display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+.vbtn{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;cursor:pointer}
+.vbtn.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.vbtn.end{background:var(--bad);color:#fff;border-color:var(--bad);width:64px;border-radius:22px}
+.vbtn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8}
+
+/* Phone */
+.phone{width:320px;max-width:100%;border-radius:36px;border:10px solid #0A1A2E;background:var(--bg);overflow:hidden;box-shadow:var(--shadow);margin:0 auto}
+.phone-screen{height:620px;overflow-y:auto;padding:18px 16px}
+.phone-bar{display:flex;justify-content:space-around;border-top:1px solid var(--line);padding:10px 0;background:var(--surface);font-size:11px;color:var(--muted)}
+
+/* Forms builder */
+.palette button{width:100%;justify-content:flex-start}
+.canvas-field{border:1px solid var(--line);border-radius:8px;padding:12px;background:var(--surface);display:flex;gap:10px;align-items:flex-start}
+.canvas-field .grip{color:var(--muted);cursor:grab;user-select:none}
+
+/* Modal + toast */
+.modal-back{position:fixed;inset:0;background:rgba(10,26,46,.45);display:none;place-items:center;z-index:50;padding:16px}
+.modal-back.open{display:grid}
+.modal{background:var(--surface);border-radius:14px;max-width:560px;width:100%;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.25);max-height:90vh;overflow-y:auto}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;opacity:0;transition:.2s;z-index:60;font-weight:500;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.mobile-nav-btn{display:none}
+@media (max-width:1100px){.g4{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(2,minmax(0,1fr))}.g-side{grid-template-columns:1fr}}
+.form-grid{grid-template-columns:200px minmax(0,1fr) 260px}
+.form-grid>*{min-width:0}
+.main,.view{min-width:0}
+@media (max-width:820px){
+  .app{grid-template-columns:minmax(0,1fr)!important}
+  .view>*{max-width:100%}
+  .form-grid{grid-template-columns:minmax(0,1fr)}
+  .card{overflow-x:auto}
+  .table-wrap{overflow-x:auto;max-width:100%}
+  .app{grid-template-columns:1fr}
+  .nav{position:fixed;inset:0 auto 0 0;width:260px;z-index:40;transform:translateX(-100%);transition:.2s}
+  .nav.open{transform:none;box-shadow:0 0 40px rgba(0,0,0,.3)}
+  .mobile-nav-btn{display:inline-flex}
+  .g2,.g3,.g4,.g-side{grid-template-columns:minmax(0,1fr)}
+  .chat{grid-template-columns:1fr}.threads{display:none}
+  .view{padding:16px}.top{padding:10px 16px}
+}
+</style>
 </head>
-<body class="admin ws">
-  <section id="login" class="login">
-    <form id="login-form" class="form" novalidate>
-      <a href="/" class="brand dark"><img class="brand-logo" src="assets/logo.webp" alt="MD Fit" width="160" height="160"><span class="brand-text"><span class="brand-sub">Physical Rehab &amp; Fitness</span></span></a>
-      <h1>Workspace</h1>
-      <label>Email<input name="email" type="email" required autocomplete="username"></label>
-      <label>Password<input name="password" type="password" required autocomplete="current-password"></label>
-      <label id="code-row" hidden>Code from your email<input name="code" inputmode="numeric" autocomplete="one-time-code" placeholder="6-digit code from your email"></label>
-      <button class="btn" type="submit">Log in</button>
-      <p class="form-msg" role="status"></p>
-    </form>
-  </section>
-
-  <div id="app" hidden>
-    <header class="topbar">
-      <button type="button" class="tb-menu" id="menu-btn" aria-label="Menu" aria-controls="sidebar" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg></button>
-      <a href="/" class="brand"><img class="brand-logo" src="assets/logo.webp" alt="MD Fit" width="160" height="160"><span class="brand-text"><span class="brand-sub">Workspace</span></span></a>
-      <h1 class="tb-title" id="tb-title">Home</h1>
-      <div class="tb-right">
-        <button type="button" class="bell" id="bell" aria-label="Notifications" aria-haspopup="dialog" aria-expanded="false">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22zm7-6V11a7 7 0 0 0-5.5-6.84V3.5a1.5 1.5 0 0 0-3 0v.66A7 7 0 0 0 5 11v5l-2 2v1h18v-1z"/></svg>
-          <span class="bell-count" id="bell-count" hidden></span>
-        </button>
-        <div class="notif-panel" id="notif-panel" role="dialog" aria-label="Notifications" hidden>
-          <div class="np-head"><b>Notifications</b><button type="button" class="link" id="notif-read">Mark all read</button></div>
-          <ul class="np-list" id="notif-list"><li class="np-empty">Loading…</li></ul>
-        </div>
-      </div>
+<body>
+<section class="signin" id="signin">
+  <form class="card signin-card" id="signinForm" novalidate>
+    <div class="brand" style="padding:0 0 6px"><div class="logo">M</div><div><b>MD Fit</b><div class="muted" style="font-size:12px">Physical Rehab &amp; Fitness</div></div></div>
+    <h1 style="font-size:24px">Workspace</h1>
+    <div class="field"><label for="siEmail">Email</label><input id="siEmail" name="email" type="email" class="input" required autocomplete="username"></div>
+    <div class="field"><label for="siPass">Password</label><input id="siPass" name="password" type="password" class="input" required autocomplete="current-password"></div>
+    <div class="field" id="siCodeRow" hidden><label for="siCode">Code from your email</label><input id="siCode" name="code" class="input" inputmode="numeric" autocomplete="one-time-code"></div>
+    <button class="btn primary" style="justify-content:center">Sign in</button>
+    <p class="muted" id="siMsg" role="status" style="margin:0;min-height:1.2em"></p>
+  </form>
+</section>
+<div class="app" id="app" hidden>
+  <nav class="nav" id="nav" aria-label="Main"></nav>
+  <div class="main">
+    <header class="top">
+      <button class="btn ghost mobile-nav-btn" id="navToggle" aria-label="Open menu">☰</button>
+      <div class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="globalSearch" placeholder="Find a client by name or email" aria-label="Find a client"></div>
+      <div class="spacer"></div>
+      <span class="muted" id="whoami" style="font-size:12.5px"></span>
+      <button class="btn sm" id="signOut">Sign out</button>
+      <button class="btn ghost sm" id="themeBtn" aria-label="Toggle theme">◐</button>
     </header>
-    <aside class="sidebar" id="sidebar">
-      <nav aria-label="Admin sections">
-        <button type="button" data-nav="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 16H5V9h14zM7 11h5v5H7z"/></svg><span>Home</span></button>
-        <button type="button" data-nav="people"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 11a3 3 0 1 0-3-3 3 3 0 0 0 3 3zm-8 0a3 3 0 1 0-3-3 3 3 0 0 0 3 3zm0 2c-2.3 0-7 1.2-7 3.5V19h14v-2.5C15 14.2 10.3 13 8 13zm8 0c-.3 0-.6 0-1 .1a4.2 4.2 0 0 1 2 3.4V19h6v-2.5c0-2.3-4.7-3.5-7-3.5z"/></svg><span>Clients</span></button>
-        <button type="button" data-nav="emr"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 3h-4.2a3 3 0 0 0-5.6 0H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-7 0a1 1 0 1 1-1 1 1 1 0 0 1 1-1zm3 13h-2v2h-2v-2H9v-2h2v-2h2v2h2zm0-6H9V8h6z"/></svg><span>Medical record</span> <span class="pill pending" id="emr-wait-count" hidden></span></button>
-        <button type="button" data-nav="inbox"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM6 9h12v2H6zm8 5H6v-2h8zm4-6H6V6h12z"/></svg><span>Inbox</span> <span class="pill pending" id="admin-msg-count" hidden></span></button>
-        <button type="button" data-nav="insights"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z"/></svg><span>Insights</span></button>
-        <button type="button" data-nav="settings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.1 12.9a7 7 0 0 0 0-1.8l2-1.5-2-3.4-2.3.9a7 7 0 0 0-1.6-.9L14.9 4h-4l-.4 2.2a7 7 0 0 0-1.5.9l-2.4-.9-2 3.4 2 1.5a7 7 0 0 0 0 1.8l-2 1.5 2 3.4 2.4-.9a7 7 0 0 0 1.5.9l.4 2.2h4l.3-2.2a7 7 0 0 0 1.6-.9l2.3.9 2-3.4zM12.9 15a3 3 0 1 1 3-3 3 3 0 0 1-3 3z"/></svg><span>Settings</span></button>
-      </nav>
-      <button type="button" id="logout" class="sb-logout">Log out</button>
-    </aside>
-    <div class="sb-scrim" id="sb-scrim" hidden></div>
-
-    <div class="rt-toasts" id="rt-toasts"></div>
-    <main class="wrap panel-wrap">
-      <p id="toast" class="toast" role="status" hidden></p>
-      <div class="subnav" id="subnav" role="tablist" hidden></div>
-
-      <section data-panel="dash">
-        <div class="home-switch seg" role="radiogroup" aria-label="Show">
-          <button type="button" role="radio" data-homeview="cal" aria-checked="true">Calendar</button>
-          <button type="button" role="radio" data-homeview="inbox" aria-checked="false">Inbox <span class="pill pending" id="home-inbox-count" hidden></span></button>
-        </div>
-        <p class="banner" id="email-banner" hidden>Email notifications are off. Add <code>RESEND_API_KEY</code> and <code>NOTIFY_FROM</code> in Railway to get an email for every booking and request.</p>
-        <p class="banner" id="video-banner" hidden><b>Add your Video visit link.</b> Telehealth bookings and booking links can't include a way to join the call until it's set. <button type="button" class="link" id="video-banner-go">Set it in Hours &amp; sync ›</button></p>
-        <div class="home-strip">
-          <div class="online-bar" id="online-bar"><span class="online-dot"></span><span id="online-text">Connecting…</span></div>
-          <div class="share-mini"><span class="muted">Booking link</span> <input id="book-link" readonly aria-label="Your booking link"><button class="btn btn-sm" id="copy-link" type="button">Copy</button>
-            <span class="share-more muted">Phone consult: <code id="call-link"></code></span></div>
-        </div>
-        <div class="stats"></div>
-        <div class="home-grid" data-show="cal">
-          <div class="cal-card">
-            <div class="cal-head">
-              <div class="cal-nav"><button type="button" class="mini" id="cal-prev" aria-label="Previous">‹</button><button type="button" class="mini" id="cal-today">Today</button><button type="button" class="mini" id="cal-next" aria-label="Next">›</button></div>
-              <b id="cal-label"></b>
-              <div class="seg" role="radiogroup" aria-label="Calendar view"><button type="button" role="radio" data-calview="week" aria-checked="true">Week</button><button type="button" role="radio" data-calview="day" aria-checked="false">Day</button></div>
-            </div>
-            <div class="cal-legend muted"><span class="lg lg-booked"></span>Booked <span class="lg lg-video"></span>Video <span class="lg lg-done"></span>Done <span class="lg lg-class"></span>Class <span class="lg lg-busy"></span>Busy (Google / SimplePractice)</div>
-            <div class="cal-grid" id="cal-grid"></div>
-          </div>
-          <aside class="agenda">
-            <div class="home-inbox card-lite" id="home-inbox-card">
-              <div class="hi-head"><h2>Inbox</h2><button type="button" class="link" data-tab-link="messages">All messages ›</button></div>
-              <div id="home-inbox"><p class="muted">Loading…</p></div>
-              <p class="hi-more muted" id="home-inbox-more"><button type="button" class="link" data-tab-link="feedback">Bug reports & ideas <span class="pill pending" id="admin-fb-count" hidden></span></button> · <button type="button" class="link" data-tab-link="reviews">Reviews</button> · <button type="button" class="link" data-tab-link="leads">Leads</button></p>
-            </div>
-            <h2>Today</h2>
-            <div class="table-wrap"><table id="today"></table></div>
-            <details class="agenda-more"><summary>Coming up</summary><div class="table-wrap"><table id="next-appts"></table></div></details>
-            <details class="agenda-more"><summary>Classes this week</summary><div class="table-wrap"><table id="upcoming"></table></div></details>
-          </aside>
-        </div>
-        <dialog class="cal-pop" id="cal-pop"><div id="cal-pop-body"></div><form method="dialog"><button class="btn btn-sm btn-line">Close</button></form></dialog>
-      </section>
-
-      <section data-panel="appts" hidden>
-        <div class="bar">
-          <label class="check"><input type="checkbox" id="appts-all"> Show past &amp; cancelled</label>
-          <button class="btn btn-sm btn-line" data-csv="/api/admin/appointments.csv">Download CSV</button>
-        </div>
-        <div id="appts-list" class="stack"></div>
-      </section>
-
-      <section data-panel="hours" hidden>
-        <form id="cal-form" class="form cal-admin" novalidate>
-          <h2>Booking system</h2>
-          <div class="provider">
-            <label class="radio"><input type="radio" name="provider" value="builtin"> <span><b>MD Fit built-in</b><small>Uses the hours and appointment types below.</small></span></label>
-            <label class="radio"><input type="radio" name="provider" value="cal"> <span><b>Cal.com</b><small>Embeds your Cal.com calendar on /book and the homepage.</small></span></label>
-          </div>
-          <label>Video visit link (your telehealth room)<input name="telehealthUrl" type="url" inputmode="url" placeholder="https://zoom.us/j/…"></label>
-          <p class="muted fine">Sent automatically to everyone who books a video visit, in the confirmation email and in their account. Use a HIPAA-covered room (Zoom for Healthcare, Doxy.me, or Google Meet under your Workspace BAA). You can set a different link on any appointment.</p>
-          <div class="cal-fields">
-            <div class="cal-status" id="cal-status"><span class="muted">Checking Cal.com…</span></div>
-            <div class="grid2">
-              <label>Cal.com username (blank = from API key)<input name="calUsername" placeholder="mdfit"></label>
-              <label>Event types to show, in order (blank = all)<input name="calEventSlugs" placeholder="initial-evaluation, phone-consult"></label>
-            </div>
-            <div class="bar">
-              <button class="btn btn-sm btn-line" type="button" id="cal-test">Test connection</button>
-              <button class="btn btn-sm btn-line" type="button" id="cal-sync">Sync Cal bookings now</button>
-            </div>
-            <p class="muted fine">Webhook for instant updates: Cal.com → Settings → Developer → Webhooks → Subscriber URL <code id="cal-hook"></code>, same secret as <code>CAL_WEBHOOK_SECRET</code> in Railway, events: Booking created, rescheduled, cancelled.</p>
-          </div>
-          <button class="btn" type="submit">Save booking system</button>
-          <p class="form-msg" role="status"></p>
-        </form>
-        <form id="sync-form" class="form" novalidate>
-          <h2>Calendar sync</h2>
-          <p class="muted">Times you're busy in Google Calendar or SimplePractice can't be booked here, and every website booking is added to your Google Calendar.</p>
-          <div class="cal-status" id="sync-status"><span class="muted">Checking…</span></div>
-          <label>SimplePractice calendar link<input name="icsUrl" placeholder="Paste the link from SimplePractice → Settings → Calendar → Calendar sync"></label>
-          <div class="row-actions"><button class="btn btn-sm" type="submit">Save link</button><button class="btn btn-sm btn-line" type="button" id="sync-test">Test sync now</button><button class="btn btn-sm btn-line" type="button" id="sync-clear" hidden>Remove link</button></div>
-          <p class="form-msg" role="status"></p>
-        </form>
-
-        <form id="hours-form" class="form" novalidate>
-          <h2>Booking hours</h2>
-          <p class="muted">When clients can book 1-on-1 appointments online. Leave a day empty to close it. Split shifts: <code>09:00-12:00, 13:00-17:00</code></p>
-          <div class="grid2" id="hours-days"></div>
-          <div class="grid4">
-            <label>Start times every<select name="slotStepMin"><option value="15">15 min</option><option value="20">20 min</option><option value="30">30 min</option><option value="60">60 min</option></select></label>
-            <label>Minimum notice (hours)<input name="minNoticeHours" type="number" min="0" max="168"></label>
-            <label>Book up to (days ahead)<input name="daysAhead" type="number" min="1" max="90"></label>
-            <label>Latest start time (blank = any)<input name="lastStart" type="time" step="900"></label>
-          </div>
-          <label>Closed dates (holidays, vacation), one per line as YYYY-MM-DD<textarea name="blockedDates" rows="4" placeholder="2026-12-25"></textarea></label>
-          <h2>Appointment types</h2>
-          <p class="muted">One per line: <code>id | Name | minutes | description</code>. Keep ids stable once people have booked.</p>
-          <textarea name="appointmentTypes" rows="5"></textarea>
-          <button class="btn" type="submit">Save hours</button>
-          <p class="form-msg" role="status"></p>
-        </form>
-      </section>
-
-      <section data-panel="clients" hidden>
-        <div id="clients-list">
-          <div class="bar"><input id="client-search" type="search" placeholder="Search name, email or phone" aria-label="Search clients"></div>
-          <div class="client-totals" id="client-totals" role="group" aria-label="Client totals"></div>
-          <div class="table-wrap"><table id="clients-table"></table></div>
-        </div>
-        <div id="client-detail" hidden></div>
-      </section>
-
-      <section data-panel="emr" hidden>
-        <div id="emr-list">
-          <div class="bar"><input id="emr-search" type="search" placeholder="Search patients by name, email or phone" aria-label="Search patients"></div>
-          <div class="emr-cols">
-            <div class="card emr-col"><div class="card-head"><h2>Active patients <span class="muted" id="emr-n-active"></span></h2></div><div class="table-wrap"><table id="emr-active"></table></div></div>
-            <div class="card emr-col"><div class="card-head"><h2>Waiting to be converted <span class="muted" id="emr-n-wait"></span></h2><p class="muted fine">Members who finished their new patient documents. Open one and tap Convert to make them an active patient.</p></div><div class="table-wrap"><table id="emr-waiting"></table></div></div>
-          </div>
-        </div>
-        <div id="emr-detail" hidden></div>
-      </section>
-
-      <section data-panel="leads" hidden>
-        <div class="bar">
-          <select id="lead-filter">
-            <option value="">All leads</option>
-            <option value="new">New</option><option value="contacted">Contacted</option>
-            <option value="booked">Booked</option><option value="client">Client</option><option value="closed">Closed</option>
-          </select>
-          <button class="btn btn-sm btn-line" data-csv="/api/admin/leads.csv">Download CSV</button>
-        </div>
-        <div id="leads-list" class="stack"></div>
-      </section>
-
-      <section data-panel="classes" hidden>
-        <form id="class-form" class="form inline-form" novalidate>
-          <h2>Add a weekly class</h2>
-          <div class="grid4">
-            <label>Name<input name="title" required maxlength="80"></label>
-            <label>Day<select name="day"></select></label>
-            <label>Start<input name="time" type="time" required value="06:00"></label>
-            <label>Minutes<input name="durationMin" type="number" min="15" max="240" value="60"></label>
-            <label>Capacity<input name="capacity" type="number" min="1" max="100" value="10"></label>
-            <label>Coach<input name="coach" maxlength="80"></label>
-            <label>Location<input name="location" maxlength="120"></label>
-          </div>
-          <label>Description<input name="description" maxlength="500"></label>
-          <button class="btn btn-sm" type="submit">Add class</button>
-          <p class="form-msg" role="status"></p>
-        </form>
-        <div class="table-wrap"><table id="classes-table"></table></div>
-      </section>
-
-      <section data-panel="bookings" hidden>
-        <div class="bar"><label class="check"><input type="checkbox" id="bookings-all"> Include past</label></div>
-        <div class="table-wrap"><table id="bookings-table"></table></div>
-      </section>
-
-      <section data-panel="messages" hidden>
-        <div class="bar"><button class="btn btn-sm" id="bc-open" type="button">New message to many</button>
-          <span class="muted small">Send one message to everyone, all members, one membership tier, or people you pick.</span></div>
-        <div class="bc-recent" id="bc-recent" hidden></div>
-        <div class="msg-admin">
-          <div class="msg-threads" id="msg-threads"></div>
-          <div class="msg-thread" id="msg-thread"><p class="muted">Pick a conversation.</p></div>
-        </div>
-      </section>
-
-      <section data-panel="audit" hidden>
-        <p class="muted">Every login, every look at a patient's record, and every change, in a tamper-proof ledger. Each entry is hash-chained to the one before and signed (Ed25519), so editing, deleting or reordering anything is detected.</p>
-        <div class="bar"><button class="btn btn-sm" id="audit-verify" type="button">Verify chain</button>
-          <select id="audit-filter"><option value="">All events</option><option value="auth.">Logins</option><option value="admin.view">Admin viewed records</option><option value="admin.change">Admin changes</option><option value="client.">Client activity</option><option value="payments">Payments</option></select></div>
-        <div id="audit-status"></div>
-        <details class="audit-key"><summary>Check an anchor from your email</summary>
-          <div class="row-actions"><input id="anchor-seq" placeholder="Entry #" inputmode="numeric" style="width:110px"><input id="anchor-head" placeholder="Hash from the email" style="flex:1;min-width:240px"><button class="btn btn-sm" type="button" id="anchor-check">Check</button><button class="btn btn-sm btn-line" type="button" id="anchor-now">Send an anchor now</button></div>
-          <p class="muted small">Every night the newest ledger hash is emailed to you. If anyone ever rewrote the log, an old email's hash won't match.</p>
-        </details>
-        <div class="table-wrap"><table id="audit-table"></table></div>
-        <details class="audit-key"><summary>Public verification key</summary><pre id="audit-pub"></pre></details>
-      </section>
-
-      <section data-panel="reviews" hidden>
-        <p class="muted">Reviews left on the website. Everyone who leaves one gets a free 30-minute plan review code, whatever their rating. Approve a review to show it on the homepage (only if they agreed).</p>
-        <div id="reviews-list" class="stack"></div>
-      </section>
-
-      <section data-panel="feedback" hidden>
-        <p class="muted">Bug reports and suggestions from members, from Account → Profile → Help us improve. Mark as working or resolved; delete spam.</p>
-        <div class="bar">
-          <select id="fb-filter-kind"><option value="">All kinds</option><option value="bug">Bugs</option><option value="suggestion">Suggestions</option></select>
-          <select id="fb-filter-status"><option value="">All statuses</option><option value="new">New</option><option value="working">Working</option><option value="resolved">Resolved</option></select>
-        </div>
-        <div id="feedback-list" class="stack"></div>
-      </section>
-
-            <section data-panel="members" hidden>
-        <p class="muted">Membership requests and members. Turn a membership on after payment; set "paid through" so it locks again if they stop paying. Schedule 1-on-1 requests here (paste a Google Meet or Zoom link).</p>
-        <div id="members-list" class="stack"></div>
-      </section>
-
-      <section data-panel="content" hidden>
-        <form id="content-form" class="form" novalidate>
-          <h2>Monthly live Q&amp;A</h2>
-          <div class="grid2">
-            <label>Title<input name="live_title" maxlength="120"></label>
-            <label>Date<input name="live_date" type="date"></label>
-            <label>Start time<input name="live_time" type="time"></label>
-            <label>Length (minutes)<input name="live_minutes" type="number" min="15" max="240"></label>
-            <label>Join link (Google Meet, Zoom, YouTube Live)<input name="live_joinUrl" placeholder="https://meet.google.com/…"></label>
-            <label>Who can join<select name="live_access"><option value="free">Everyone with an account</option><option value="member">Members</option><option value="premium">Premium only</option></select></label>
-          </div>
-          <label>Notes shown to members<textarea name="live_notes" rows="2" maxlength="1000"></textarea></label>
-          <p class="muted">Past recordings, one per line: <code>Title | YYYY-MM-DD | https://link</code></p>
-          <textarea name="live_recordings" rows="3"></textarea>
-
-          <h2>Lectures</h2>
-          <p class="muted">YouTube, Vimeo and Google Drive links play inside the app. "Download" can be a Drive or Dropbox link to a PDF or video file.</p>
-          <div class="rows" id="rows-lectures"></div><button class="btn btn-sm btn-line" type="button" data-add="lectures">+ Add a lecture</button>
-
-          <h2>Health tips</h2>
-          <div class="rows" id="rows-recommendations"></div><button class="btn btn-sm btn-line" type="button" data-add="recommendations">+ Add a tip</button>
-
-          <h2>Membership tiers</h2>
-          <p class="muted">Tiers with 1-on-1 sessions count as Premium (unlock premium content and the session request form).</p>
-          <div class="rows" id="rows-tiers"></div><button class="btn btn-sm btn-line" type="button" data-add="tiers">+ Add a tier</button>
-
-          <h2>Premade programs</h2>
-          <p class="muted">Days, one per line: <code>Name | focus (upper, lower, full, core, mobility) | minutes (15/20/30/45/60/90) | rounds</code>. Change the seed number to get a different mix of exercises.</p>
-          <div class="rows" id="rows-programs"></div><button class="btn btn-sm btn-line" type="button" data-add="programs">+ Add a program</button>
-
-          <h2>Events</h2>
-          <p class="muted">Upcoming workshops, community days and seminars. They show on the <a href="/events" target="_blank">/events</a> page.</p>
-          <div class="rows" id="rows-events"></div><button class="btn btn-sm btn-line" type="button" data-add="events">+ Add an event</button>
-
-          <h2>Pain tracks</h2>
-          <p class="muted">Each track shows up on the body map for the muscles you pick. Pattern images and videos are Google Drive links (or file ids). Levels: a line with no <code>|</code> starts a level; each video is <code>Video name | Drive link</code>. Leave the link blank to show "Video coming soon".</p>
-          <div class="rows" id="rows-tracks"></div>
-          <div class="row-actions"><button class="btn btn-sm btn-line" type="button" data-add="tracks">+ Add a pain track</button>
-            <button class="btn btn-sm btn-line" type="button" id="tracks-reset">Reset to Dr. Jared's original tracks</button></div>
-
-          <button class="btn" type="submit">Save content</button>
-          <p class="form-msg" role="status"></p>
-        </form>
-      </section>
-
-      <section data-panel="subs" hidden>
-        <div class="bar"><button class="btn btn-sm btn-line" data-csv="/api/admin/subscribers.csv">Download CSV</button></div>
-        <div class="table-wrap"><table id="subs-table"></table></div>
-      </section>
-
-      <section data-panel="analytics" hidden>
-        <h2>Site analytics <small class="muted">(last 30 days)</small></h2>
-        <div class="stats" id="analytics-stats"></div>
-        <div class="grid2" id="analytics-grid">
-          <div>
-            <h3>Daily traffic</h3>
-            <div class="table-wrap"><table id="analytics-days"></table></div>
-          </div>
-          <div>
-            <h3>Top pages <small class="muted">(all time)</small></h3>
-            <div class="table-wrap"><table id="analytics-pages"></table></div>
-            <h3 style="margin-top:18px">Top referrers <small class="muted">(all time)</small></h3>
-            <div class="table-wrap"><table id="analytics-refs"></table></div>
-          </div>
-        </div>
-        <h3 style="margin-top:22px">Email delivery</h3>
-        <div class="email-log" id="email-log"><p class="muted">Loading…</p></div>
-
-        <h3 style="margin-top:22px">Who's visiting <select id="an-range" style="margin-left:8px"><option value="7">Last 7 days</option><option value="30" selected>Last 30 days</option><option value="90">Last 90 days</option></select></h3>
-        <div class="an-mix" id="an-mix"></div>
-        <p class="muted" style="margin-top:14px">Device, source and location tracking started on Nov 3, 2026. Earlier days only have page views. Speed and more detail: <a href="https://vercel.com" target="_blank" rel="noopener">Vercel Dashboard</a> → mdfit-srq → Analytics.</p>
-
-        <h3 style="margin-top:28px">In-app search <select id="sa-range" style="margin-left:8px"><option value="7">Last 7 days</option><option value="30" selected>Last 30 days</option><option value="90">Last 90 days</option></select></h3>
-        <div class="stats" id="sa-stats"></div>
-        <div class="grid2">
-          <div><h4>Top queries</h4><div class="table-wrap"><table id="sa-top"></table></div></div>
-          <div><h4>Zero-result or abandoned</h4><p class="muted small">High impressions, low CTR. Fix: add synonyms, write a page, or re-tag an existing one.</p><div class="table-wrap"><table id="sa-zero"></table></div></div>
-        </div>
-        <div class="grid2">
-          <div><h4>Best CTR</h4><div class="table-wrap"><table id="sa-best"></table></div></div>
-          <div><h4>Worst CTR</h4><div class="table-wrap"><table id="sa-worst"></table></div></div>
-        </div>
-      </section>
-
-      <section data-panel="settings" hidden>
-        <form id="settings-form" class="form" novalidate>
-          <h2>Security</h2>
-          <div id="mfa-box" class="mfa-box"><span class="muted">Checking…</span></div>
-          <h2>Business</h2>
-          <div class="grid2">
-            <label>Name<input name="business.name" maxlength="60"></label>
-            <label>Tagline<input name="business.tagline" maxlength="160"></label>
-            <label>Phone<input name="business.phone" maxlength="30"></label>
-            <label>Email<input name="business.email" type="email"></label>
-            <label>Address<input name="business.address" maxlength="200"></label>
-            <label>Hours<input name="business.hours" maxlength="300" placeholder="Mon-Fri 5am-8pm · Sat 7am-12pm"></label>
-            <label>Google Maps link<input name="business.mapsUrl" placeholder="https://maps.google.com/…"></label>
-            <label>Instagram link<input name="business.instagram" placeholder="https://instagram.com/…"></label>
-            <label>Facebook link<input name="business.facebook" placeholder="https://facebook.com/…"></label>
-            <label>TikTok link<input name="business.tiktok" placeholder="https://tiktok.com/@…"></label>
-            <label>Programs note<input name="business.bookingNote" maxlength="300"></label>
-          </div>
-          <h2>Reviews badge</h2>
-          <div class="grid4">
-            <label>Rating<input name="rating.score" maxlength="3" placeholder="4.9"></label>
-            <label>Review count<input name="rating.count" type="number" min="0"></label>
-            <label>Source<input name="rating.source" maxlength="40" placeholder="Google"></label>
-            <label>Reviews link<input name="rating.url" placeholder="https://…"></label>
-          </div>
-          <h2>Dr. Jared</h2>
-          <div class="grid2">
-            <label>Name<input name="coach.name" maxlength="80"></label>
-            <label>Title<input name="coach.title" maxlength="80"></label>
-            <label>Photo link<input name="coach.photoUrl" placeholder="https://…/coach.jpg"></label>
-          </div>
-          <label>Bio (blank line between paragraphs)<textarea name="coach.bio" rows="5" maxlength="3000"></textarea></label>
-          <h2>Services &amp; pricing</h2>
-          <p class="muted">Hourly rates shown on the website pricing section. Tick “Protocol” for services sold in multi-visit plans (Gold, Silver, monthly).</p>
-          <div id="svc-rows" class="svc-rows"></div>
-          <button class="btn btn-sm btn-line" type="button" id="svc-add">+ Add a service</button>
-          <h2>Protocol payment plans</h2>
-          <div class="grid2 plan-grid">
-            <label>Gold: % off when paid in full<input name="plan_gold" type="number" min="0" max="50"></label>
-            <label>Silver: % off<input name="plan_silver" type="number" min="0" max="50"></label>
-            <label>Silver: number of monthly payments<input name="plan_silverPayments" type="number" min="2" max="12"></label>
-            <label>12-month plan: % added<input name="plan_ext12" type="number" min="0" max="50"></label>
-            <label>24-month plan: % added<input name="plan_ext24" type="number" min="0" max="50"></label>
-            <label>Protocol sizes (visits, comma separated)<input name="plan_packageSizes" placeholder="6, 12, 24"></label>
-            <label>Money-back guarantee from (visits)<input name="plan_guaranteeMin" type="number" min="1" max="100"></label>
-          </div>
-          <h2>Testimonials</h2>
-          <p class="muted">One per line: <code>Name | Quote</code></p>
-          <textarea name="testimonials" rows="5"></textarea>
-          <button class="btn" type="submit">Save settings</button>
-          <p class="form-msg" role="status"></p>
-        </form>
-      </section>
-
-      <section data-panel="habits" hidden>
-        <div id="habits-admin" class="hba"><p class="muted">Loading…</p></div>
-      </section>
-    </main>
+    <main class="view" id="view" tabindex="-1"></main>
   </div>
+</div>
+<div class="modal-back" id="modalBack"><div class="modal" id="modal" role="dialog" aria-modal="true"></div></div>
+<div class="toast" id="toast" role="status"></div>
 
-  <script src="config.js?v=aac711e3"></script>
-  <script src="analytics.js?v=f3f61f9e" defer></script>
-  <script src="realtime.js?v=c1829e8b"></script>
-  <script src="painmuscles.js?v=74e3b348"></script>
-  <script src="paintracks.js?v=55ce1cb4"></script>
-  <script src="app/exercises.js?v=9d24b0f6"></script>
-  <script src="admin-habits.js?v=57506dba"></script>
-  <!-- Tap a client: everything about them in one pop-up (data-collection month) -->
-  <dialog class="ov-pop" id="client-pop" aria-label="Client overview">
-    <div class="ov-head"><div><h2 id="cp-name"></h2><p class="muted" id="cp-sub"></p></div>
-      <div class="ov-head-actions"><button type="button" class="btn btn-sm" id="cp-open">Open full profile</button><button type="button" class="icon-x" id="cp-close" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/></svg></button></div></div>
-    <div class="ov-body" id="cp-body"></div>
-  </dialog>
-  <script src="admin.js?v=fe0309d3"></script>
-<script defer src="/_vercel/insights/script.js"></script>
+<script src="config.js?v=aac711e3"></script>
+<script src="app/exercises.js?v=9d24b0f6"></script>
+<script src="workspace-app.js?v=fad96b32"></script>
 </body>
 </html>

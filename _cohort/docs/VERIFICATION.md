@@ -8,7 +8,7 @@
   discipline separation, sensitivity tiers, note locking, booking-overlap prevention and an append-only
   chained audit ledger **into Postgres itself**, below any application code.
 - 33 tests pass, each a real query against a real PostgreSQL 16.15 database rebuilt from empty.
-- A preview of the screens is installed at `/workspace-preview`: MD Fit branding, no sample data, no backend.
+- Separately, the clinic site has a working `/workspace` page on its existing backend (see the last section).
 - **There is no application.** No API, no login, no encryption code, no hosting. Nothing here stores or
   could store patient data, and nothing here is HIPAA compliant. See `HIPAA-STATUS.md`: 0 of 84 items
   complete, 7 with tested groundwork.
@@ -99,39 +99,44 @@ A second pass, looking for what the tests did not cover, found three real defect
 - **Test environment.** A scratch PostgreSQL 16.15 on a local socket with trust authentication. It says
   nothing about production configuration.
 
-## The workspace preview page
+## The clinic workspace at `/workspace`
 
-`workspace-preview.html` at the repository root, served at `/workspace-preview`, is the uploaded Universal
-EMR prototype with three changes:
+This is separate from the Cohort product: it is MD Fit's own page, on MD Fit's existing single-practice
+backend. `workspace.html` holds the screens and styles from the uploaded prototype in MD Fit's colours;
+`workspace-app.js` signs in and reads and writes through the same `/api/admin/*` endpoints as `/admin`.
+`/admin` is unchanged.
 
-1. **MD Fit branding.** Colours and fonts from the site's own stylesheet: white surfaces, light blue
-   `#7AAFD7` for fills, navy `#0A1A2E` for text, Libre Baskerville and Montserrat. Light blue fails
-   contrast as small text on white, so accent-coloured text uses the brand's darker blue `#2F6E9E`.
-   All colours sit in one block at the top, so another practice's branding is a change to that block.
-2. **All sample data removed.** No made-up clients, staff, appointments, notes, messages, invoices,
-   prices, revenue figures, audit entries or statuses. Every list is empty and every screen shows an
-   empty state. Dates come from the real calendar.
-3. **No action pretends to work.** Every button that would need a server shows one message: "Preview
-   only: not connected yet, so nothing was saved or sent." A bar at the top of every screen says the page
-   is not connected and asks people not to enter patient information. The Security screen shows every
-   control as "Not set up".
+**Connected: 41 of the backend's 87 admin endpoints.** Sign-in (with the emailed-code step), dashboard,
+week calendar with appointment status and notes, classes and class bookings, clients, the client chart
+(record, patient notes add and remove, movements prescribe and remove, intake documents, pain log, video
+visit scheduling, patient conversion), leads, messages, programs, payments and members (read), newsletter,
+reviews and bug reports, reports, team, the audit ledger with its verify check, and settings (read).
 
-It is kept away from search engines (`noindex`, and `Disallow` in `robots.txt`) and nothing on the site
-links to it.
+**Not connected: the other 46.** Mostly editing screens: settings, content, classes and daily activities
+editors, hours and calendar sync, messages to many people, two-step sign-in setup, client contact, plan,
+program and membership edits, CSV downloads, email log, push devices, video migration. Each affected
+screen links to the matching `/admin` screen instead.
 
-Checked in Chromium:
+**Shown as "Not connected" because the backend has nothing for them:** private clinical notes, signing
+and sensitivity tiers, AI scribe, built-in video, a form builder, food journals and meal plans,
+medication lists, sharing consent, extra staff accounts and roles.
+
+Tested in Chromium against the real backend run locally with made-up people:
 
 | Check | Result |
 |---|---|
-| All 18 screens load | 18 of 18, no script errors |
-| The site's own layout rule (from `scripts/layout-check.js`) on the default screen at its five widths | Passes at 320, 390, 768, 1366 and 2560 |
-| The same rule on all 18 screens at 320, 390 and 1366 | 54 of 54 pass |
-| Every visible button on every screen clicked (60 clicks) | No errors; the only message any action produced was the preview notice |
-| Search for the removed sample names, figures and claims in the file | None left |
-| `scripts/seo/check.js` for the whole site | 238 pages ok |
+| Walk-through of 46 steps: wrong password refused, sign in, all 21 screens, 8 chart tabs, add and remove a note, prescribe and remove a movement, view documents, schedule a video visit, send a message, change a lead, save an appointment, verify the ledger, search, sign out | 46 of 46 |
+| API calls during the walk-through | 35 distinct; the only refusals were the two the test provokes on purpose (wrong password, video visit with no link) |
+| HTML typed into a client's name | Shown as text, not run |
+| Sign-out | Names gone from the page, token gone from the browser |
+| The site's layout rule on the sign-in screen at its five widths, and on all 21 screens and 6 chart tabs signed in at 320, 390 and 1366 | 89 of 89 |
+| `scripts/seo/check.js` for the whole site | 237 pages ok |
 
-Phone-width defects found in the original prototype and fixed: the calendar, form builder, payments
-table and client-app mock-up all ran off a phone screen, and one label ran out of its card on desktop.
+Protections match `/admin`: private path in `middleware.js`, no-cache and noindex headers in
+`vercel.json`, `Disallow` in `robots.txt`, signs out after 15 idle minutes, nothing clinical kept in
+browser storage.
 
-Not checked: dark theme, Safari and Firefox, keyboard-only and screen-reader use. The site's full
-layout job in CI also needs the backend, so it has not been run here; only its page rule has.
+Not tested: the emailed-code sign-in step, the 6 connected endpoints the walk-through does not reach
+(cancelling a class booking, deleting a lead, removing a subscriber, the two review and report updates,
+patient conversion), dark theme, Safari and Firefox, keyboard-only and screen-reader use, and live
+updates (this page refreshes on navigation; `/admin` also listens on a socket).

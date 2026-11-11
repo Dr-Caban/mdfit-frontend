@@ -6,7 +6,7 @@ with a status added where work exists.
 ## Read this first
 
 **Nothing here is HIPAA compliant yet, and no item is fully checked.** What exists is a database
-foundation — three migrations and a test suite — plus a preview of the screens with no data. There is no
+foundation — three migrations and a test suite — and nothing else. There is no
 application, no login, no encryption code, no hosting, and no signed BAA.
 
 | Mark | Meaning | Count |
@@ -19,8 +19,8 @@ application, no login, no encryption code, no hosting, and no signed BAA.
 A `[~]` means a specific, tested property of the database. It does not mean the control is in place for
 users. Evidence for every `[~]` is in `docs/VERIFICATION.md`; rerun it with `db/test/run.sh`.
 
-The preview page (`workspace-preview.html`) has no sample data and shows every security control as
-"Not set up". It is a set of screens, not a system.
+`/workspace` on the clinic site is a separate thing: MD Fit's own page on its existing backend. It is not
+part of Cohort and is not covered by this list.
 
 ---
 
