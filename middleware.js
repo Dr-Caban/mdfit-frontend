@@ -16,7 +16,7 @@ const ALLOWED = new Set(["US", "PR", "GU", "VI", "AS", "MP", "UM"]);
 // Claude-SearchBot, Claude-User) are allowed on public pages so MD Fit can be cited in AI search answers (owner, Nov 2026).
 const BAD_UA = /(curl|wget|python-requests|python-urllib|aiohttp|httpx|go-http-client|java\/|okhttp|libwww|scrapy|httpclient|node-fetch|axios|postman|insomnia|headless|phantomjs|selenium|puppeteer|playwright|crawler|spider|scraper|gptbot|ccbot|claudebot|claude-web|anthropic-ai|bytespider|petalbot|semrushbot|ahrefsbot|mj12bot|dotbot|dataforseo|amazonbot|youbot|diffbot|imagesiftbot|omgili|zgrab|masscan|nmap|nikto|sqlmap|wpscan)/i;
 const SEARCH = /(googlebot|bingbot|duckduckbot|applebot|oai-searchbot|chatgpt-user|perplexitybot|perplexity-user|claude-searchbot|claude-user)/i;
-const PRIVATE = /^\/(account|admin|api|login|cancel|intake)/;
+const PRIVATE = /^\/(account|admin|workspace|api|login|cancel|intake)/;
 // Public, read-only API calls the homepage makes while it renders (business info, Google rating, published reviews,
 // video catalog). Search engines that render JavaScript (Googlebot, Bingbot) may GET these so they index the real
 // page instead of placeholders. Everything else under /api stays closed to bots.

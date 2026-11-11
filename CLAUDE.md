@@ -5,5 +5,8 @@
   the newer `/conditions/*` and `/blog/*`, or the six `*-sarasota.html` landing pages. Edit the data, run
   `node scripts/seo/build.js`, then `node scripts/seo/check.js`.
 - Shared header: `node scripts/site-header.js`. After CSS/JS edits: `node scripts/version-assets.js`.
+- `/workspace` is the admin portal in the new skin: `workspace.html` is generated from `admin.html` (same scripts, plus
+  `workspace.css`). After editing `admin.html` run `node scripts/workspace-page.js`, then `version-assets.js`. Never edit
+  `workspace.html` by hand.
 - Work on a branch → pull request → Vercel preview → merge. One session merges at a time. Never edit permissions or
   secrets from here; all keys live in Vercel/Railway.

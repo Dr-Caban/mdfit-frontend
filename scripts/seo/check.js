@@ -6,7 +6,7 @@
 "use strict";
 const fs = require("fs"), path = require("path");
 const root = path.join(__dirname, "..", "..");
-const APP_PAGES = new Set(["account.html", "admin.html", "login.html", "intake.html", "cancel.html", "app-return.html"]);
+const APP_PAGES = new Set(["account.html", "admin.html", "workspace.html", "login.html", "intake.html", "cancel.html", "app-return.html"]);
 const GENERATED = /^(muscles|pain|activities)\//;
 const MIN_WORDS = Number(process.env.SEO_MIN_WORDS || 700), MAX_SIM = Number(process.env.SEO_MAX_SIM || 0.4);
 const problems = [];
