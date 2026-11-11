@@ -43,7 +43,7 @@
 
   // Signing out empties everything that was drawn, so names and notes do not stay on a shared screen.
   function signOut() {
-    token = ""; store.set("");
+    token = ""; store.set(""); if (window.MDFitRT) MDFitRT.disconnect();
     for (const k of Object.keys(cache)) cache[k] = (k === "unread" || k === "waiting") ? 0 : null; // every cached list, the open chart included
     state.chartClient = null; state.thread = null; state.clientQ = "";
     $("#view").innerHTML = ""; $("#nav").innerHTML = ""; $("#whoami").textContent = ""; $("#globalSearch").value = ""; closeModal();
@@ -165,25 +165,35 @@
 
   // Week grid, Monday to Sunday, 6 AM to 8 PM. 56px per hour.
   V.calendar = async () => {
-    const [appts, classes, bookings] = await Promise.all([get("/appointments?all=1"), get("/classes"), get("/bookings")]);
-    cache.appts = appts;
     const now = new Date(), mon = new Date(now); mon.setDate(mon.getDate() - ((mon.getDay() + 6) % 7) + state.calWeek * 7);
     const days = Array.from({ length: 7 }, (_, i) => { const d = new Date(mon); d.setDate(d.getDate() + i); return d; });
-    const START = 6, top = (t) => { const [h, m] = t.split(":").map(Number); return (h + m / 60 - START) * 56; };
+    // The practice's other calendars (SimplePractice, Google Calendar) for the week on screen. The server passes on
+    // times only, never a name or a title, so these are drawn as "Busy" blocks behind MD Fit's own visits.
+    const [appts, classes, bookings, sync] = await Promise.all([get("/appointments?all=1"), get("/classes"), get("/bookings"),
+      get(`/busy?from=${isoDay(mon)}&days=7`).catch(() => null)]);
+    cache.appts = appts;
+    const busy = (sync && sync.busy) || [], srcName = (x) => (x === "simplepractice" ? "SimplePractice" : "Google Calendar");
+    const START = 6, END = 20, top = (t) => { const [h, m] = t.split(":").map(Number); return (h + m / 60 - START) * 56; };
+    const hhmm = (min) => `${Math.floor(min / 60)}:${String(min % 60).padStart(2, "0")}`;
     const cols = days.map((d) => {
       const key = isoDay(d), dow = d.getDay();
       const ev = appts.filter((a) => a.date === key && a.status !== "cancelled").map((a) => `<div class="appt" style="--c:var(--${a.status === "completed" ? "ok" : "body"});top:${top(a.time) + 2}px;height:${Math.max(26, (a.minutes || 60) / 60 * 56 - 4)}px" data-act="appt" data-id="${esc(a.id)}"><b>${esc(a.name)}</b>${fmtTime(a.time)} · ${esc(a.typeName || "")}</div>`);
       const cl = classes.filter((c) => c.active !== false && c.day === dow).map((c) => `<div class="appt" style="--c:var(--fit);top:${top(c.time) + 2}px;height:${Math.max(26, (c.durationMin || 60) / 60 * 56 - 4)}px;opacity:.85"><b>${esc(c.title)}</b>${fmtTime(c.time)} · class</div>`);
-      return `<div class="cal-col" style="grid-row:2">${ev.concat(cl).join("")}</div>`;
+      const bz = busy.filter((b) => b.date === key && !b.allDay).map((b) => {
+        const s = Math.max(b.start, START * 60), e = Math.min(b.end, END * 60); if (e <= s) return "";
+        return `<div class="appt busy" style="top:${(s / 60 - START) * 56 + 2}px;height:${Math.max(20, (e - s) / 60 * 56 - 4)}px" title="Busy on ${srcName(b.source)}, ${fmtTime(hhmm(b.start))} to ${fmtTime(hhmm(b.end))}"><b>Busy</b>${fmtTime(hhmm(b.start))} · ${srcName(b.source)}</div>`;
+      });
+      return `<div class="cal-col" style="grid-row:2">${bz.concat(ev, cl).join("")}</div>`;
     }).join("");
     const today = isoDay(now);
     return `
     <div class="view-head"><div><h1>Calendar</h1><p class="muted">Week of ${mon.toLocaleDateString("en-US", { month: "long", day: "numeric" })}</p></div>
     <div class="row"><button class="btn sm" data-act="calWeek" data-d="-1" aria-label="Previous week">‹</button><button class="btn sm" data-act="calWeek" data-d="0">Today</button><button class="btn sm" data-act="calWeek" data-d="1" aria-label="Next week">›</button>
     ${adminLink("hours", "Hours &amp; calendar sync")}</div></div>
-    <div class="row" style="margin-bottom:12px"><span class="pill"><span class="dot" style="background:var(--body)"></span>Booked</span><span class="pill"><span class="dot" style="background:var(--ok)"></span>Completed</span><span class="pill"><span class="dot" style="background:var(--fit)"></span>Class</span></div>
+    <div class="row" style="margin-bottom:12px"><span class="pill"><span class="dot" style="background:var(--body)"></span>Booked</span><span class="pill"><span class="dot" style="background:var(--ok)"></span>Completed</span><span class="pill"><span class="dot" style="background:var(--fit)"></span>Class</span><span class="pill"><span class="dot" style="background:var(--muted)"></span>Busy on your other calendars</span>
+    <span class="muted" style="font-size:12.5px">${!sync ? "Your other calendars could not be read just now." : sync.simplepractice === "off" && sync.google === "off" ? "No outside calendar is connected, so only MD Fit bookings show." : `Showing ${[sync.simplepractice !== "off" && "SimplePractice", sync.google !== "off" && "Google Calendar"].filter(Boolean).join(" and ")} busy times (times only)${sync.lastError ? ". Last sync reported a problem" : ""}.`}</span></div>
     <div class="table-wrap"><div class="cal">
-      <div style="border-bottom:1px solid var(--line)"></div>${days.map((d) => `<div class="cal-h ${isoDay(d) === today ? "today" : ""}">${d.toLocaleDateString("en-US", { weekday: "short" })} ${d.getDate()}</div>`).join("")}
+      <div style="border-bottom:1px solid var(--line)"></div>${days.map((d) => `<div class="cal-h ${isoDay(d) === today ? "today" : ""}">${d.toLocaleDateString("en-US", { weekday: "short" })} ${d.getDate()}${busy.filter((b) => b.allDay && b.date === isoDay(d)).slice(0, 1).map((b) => ` <span class="pill" style="font-weight:500" title="All day on ${srcName(b.source)}">Busy all day</span>`).join("")}</div>`).join("")}
       <div class="cal-times" style="grid-row:2">${Array.from({ length: 28 }, (_, i) => `<div>${i % 2 === 0 ? fmtTime(`${START + i / 2}:00`).replace(":00", "") : ""}</div>`).join("")}</div>
       ${cols}
     </div></div>
@@ -512,7 +522,15 @@
     noteFor: async (f) => { const text = f.text.value.trim(); if (!f.id.value || !text) return; await api("POST", `/api/admin/emr/${f.id.value}/notes`, { text }); f.text.value = ""; toast("Note added. The patient can see it now."); },
     movement: async (f) => { await api("POST", `/api/admin/emr/${state.chartClient}/movements`, { videoId: f.videoId.value, name: f.name.value, dose: f.dose.value.trim(), cue: f.cue.value.trim() }); toast("Added to the plan."); await reChart(); loadPool(); },
     consult: async (f) => { const a = await api("POST", `/api/admin/clients/${state.chartClient}/consult`, { date: f.date.value, time: f.time.value, minutes: Number(f.minutes.value), title: f.title.value.trim(), meetingLink: f.meetingLink.value.trim(), message: "" }); toast(`Scheduled ${fmtDate(a.date)} at ${fmtTime(a.time)}.`); await reChart(); },
-    message: async (f) => { const body = f.body.value.trim(); if (!body) return; await api("POST", `/api/admin/messages/${state.thread}`, { body }); await render(); const l = $("#msgList"); if (l) l.scrollTop = l.scrollHeight; },
+    // The message shows at once as "Sending…" and the box clears, so typing the next one never waits on the server
+    message: async (f) => {
+      const body = f.body.value.trim(); if (!body) return;
+      const l = $("#msgList"); f.body.value = "";
+      if (l) { l.insertAdjacentHTML("beforeend", `<div class="bubble me" data-pending style="opacity:.6">${esc(body)}<div class="muted" style="font-size:11px;margin-top:2px">Sending…</div></div>`); l.scrollTop = l.scrollHeight; }
+      try { await api("POST", `/api/admin/messages/${state.thread}`, { body }); }
+      catch (err) { const p = $("[data-pending]"); if (p) p.remove(); const box = $(".composer input[name=body]"); if (box && !box.value) box.value = body; throw err; }
+      await refreshMessages(true);
+    },
     apptSave: async (f) => { await api("PATCH", `/api/admin/appointments/${f.dataset.id}`, { status: f.status.value, adminNotes: f.adminNotes.value }); cache.appts = null; closeModal(); toast("Appointment updated."); render(); }
   };
   async function loadPool() {
@@ -546,8 +564,32 @@
     try { const html = await V[r](); if (my !== seq || !token) return; view.innerHTML = html; if (r === "chart" && state.chartTab === "plans") loadPool(); }
     catch (err) { if (my !== seq || !token) return; view.innerHTML = `<div class="card"><b>This screen could not be loaded.</b><p class="muted" style="margin:6px 0 0">${esc(err.message)}</p></div>`; }
   }
+  // ---- Live updates. The server pushes "new_message" the moment a member writes, so the Messages screen and the
+  // unread badge update without a reload. If the live connection is down, the open Messages screen checks every 15 s.
+  async function refreshMessages(toBottom) {
+    const box = $(".composer input[name=body]"), draft = box ? box.value : "", focused = !!box && document.activeElement === box;
+    const l0 = $("#msgList"), wasAtBottom = !l0 || l0.scrollHeight - l0.scrollTop - l0.clientHeight < 60;
+    await render();
+    const box2 = $(".composer input[name=body]"); if (box2) { if (draft) box2.value = draft; if (focused) box2.focus(); }
+    const l = $("#msgList"); if (l && (toBottom || wasAtBottom)) l.scrollTop = l.scrollHeight;
+  }
+  const route = () => (location.hash || "#dashboard").slice(1);
+  let liveWired = false;
+  function goLive() {
+    if (!window.MDFitRT) return;
+    MDFitRT.connect({ namespace: "/admin", token });
+    if (liveWired) return; liveWired = true;
+    MDFitRT.on("new_message", (ev) => {
+      if (!token) return;
+      if (route() === "messages" && !$("#modalBack").classList.contains("open")) refreshMessages();
+      else { cache.unread = (cache.unread || 0) + 1; renderNav(route()); toast(`New message from ${(ev && ev.clientName) || "a member"}`); }
+    });
+    MDFitRT.on("message_reaction", (ev) => { if (token && route() === "messages" && ev && ev.clientId === state.thread) refreshMessages(); });
+    MDFitRT.on("calendar_changed", () => { if (token && route() === "calendar" && !$("#modalBack").classList.contains("open")) render(); });
+    setInterval(() => { if (token && route() === "messages" && !document.hidden && !MDFitRT.connected() && !$("#modalBack").classList.contains("open")) refreshMessages(); }, 15000);
+  }
   async function start() {
-    $("#signin").hidden = true; $("#app").hidden = false; idleArm();
+    $("#signin").hidden = true; $("#app").hidden = false; idleArm(); goLive();
     get("/me").then((me) => { cache.me = me; $("#whoami").textContent = me.email; }).catch(() => {});
     render();
   }
