@@ -43,7 +43,7 @@
 
   // Signing out empties everything that was drawn, so names and notes do not stay on a shared screen.
   function signOut() {
-    token = ""; store.set(""); if (window.MDFitRT) MDFitRT.disconnect();
+    token = ""; store.set(""); if (window.MDFitRT) MDFitRT.disconnect(); stopDictation();
     for (const k of Object.keys(cache)) cache[k] = (k === "unread" || k === "waiting") ? 0 : null; // every cached list, the open chart included
     state.chartClient = null; state.thread = null; state.clientQ = "";
     $("#view").innerHTML = ""; $("#nav").innerHTML = ""; $("#whoami").textContent = ""; $("#globalSearch").value = ""; closeModal();
@@ -262,7 +262,7 @@
     if (t === "notes") return `
       <div class="card stack"><div class="card-head"><h2>Notes for ${first}</h2><span class="pill warn">${first} reads these in the app</span></div>
         <p class="muted" style="margin:0">These notes are shared with the patient. This system does not yet have private clinical notes or signing.</p>
-        <form class="stack" data-form="note"><label class="muted" for="noteText" style="font-size:12px">New note</label><textarea id="noteText" name="text" class="input" rows="3" maxlength="4000" required placeholder="What ${first} should know or do next"></textarea>
+        <form class="stack" data-form="note"><div class="row" style="justify-content:space-between"><label class="muted" for="noteText" style="font-size:12px">New note</label><button type="button" class="btn sm mic" data-act="dictate" data-for="noteText" aria-pressed="false">🎤 Dictate</button></div><textarea id="noteText" name="text" class="input" rows="3" maxlength="4000" required placeholder="What ${first} should know or do next"></textarea>
         <div class="row"><button class="btn primary">Add note</button></div></form></div>
       <div class="stack" style="margin-top:16px">${d.notes.map((n) => `<div class="card"><div class="card-head"><span class="muted">${when(n.at)}</span><button class="btn sm danger" data-act="rmNote" data-id="${esc(n.id)}">Remove</button></div><p class="note-text">${esc(n.text)}</p></div>`).join("") || `<div class="card">${none("No notes yet.")}</div>`}</div>`;
     if (t === "plans") return `
@@ -324,21 +324,32 @@
   };
 
   V.telehealth = async () => {
-    const appts = await get("/appointments?all=1"), today = isoDay(new Date());
+    const [appts, settings] = await Promise.all([get("/appointments?all=1"), get("/settings")]), today = isoDay(new Date());
+    const room = (settings.booking && settings.booking.telehealthUrl) || "", roomOk = /^https:\/\//i.test(room);
     const video = appts.filter((a) => a.date >= today && a.status === "booked" && (a.meetingLink || /remote|video|online|call/i.test(`${a.typeId} ${a.typeName}`)));
-    return `<div class="view-head"><div><h1>Telehealth</h1><p class="muted">Video visits run on your own meeting link. Built-in video is not connected.</p></div>${adminLink("hours", "Set your video room link")}</div>
+    return `<div class="view-head"><div><h1>Telehealth</h1><p class="muted">Video visits run in your own video room. Everyone who books a video visit is sent its link.</p></div></div>
+    <div class="card stack" style="margin-bottom:16px"><div class="card-head"><h2>Your video room</h2><span class="pill ${roomOk ? "ok" : "warn"}">${roomOk ? "Ready" : "Not set"}</span></div>
+      ${roomOk ? `<div class="row"><a class="btn primary" href="${esc(room)}" target="_blank" rel="noopener">Open my room</a><button type="button" class="btn" data-act="copyRoom" data-url="${esc(room)}">Copy link</button><span class="muted" style="font-size:12.5px;overflow-wrap:anywhere">${esc(room)}</span></div>` : none("No room link yet. Paste the link to your video room below.")}
+      <form class="row" data-form="roomLink" style="align-items:flex-end"><div class="field" style="flex:1;min-width:220px;margin:0"><label for="roomUrl">${roomOk ? "Change the room link" : "Room link"}</label><input id="roomUrl" name="url" class="input" type="url" inputmode="url" placeholder="https://" value="${esc(room)}" maxlength="500"></div><button class="btn">Save</button></form>
+      <p class="muted" style="font-size:12px;margin:0">Use a room from a video service that has signed a business associate agreement with you, with its waiting room switched on: every patient gets this same link.</p></div>
     <div class="card"><div class="card-head"><h2>Upcoming video visits</h2></div>
       ${video.map((a) => `<div class="list-item"><span style="flex:1"><b>${esc(a.name)}</b><div class="muted" style="font-size:12px">${fmtDate(a.date)} · ${fmtTime(a.time)} · ${esc(a.typeName || "")}</div></span>${a.meetingLink ? `<a class="btn sm primary" href="${esc(a.meetingLink)}" target="_blank" rel="noopener">Open video link</a>` : `<span class="pill warn">No link yet</span>`}</div>`).join("") || none("No video visits booked. Schedule one from a client's chart, under Billing.")}</div>`;
   };
 
   V.notes = async () => {
-    const emr = await get("/emr");
+    // The scribe is on only when the server has a model connected; an older server answers 404 and it stays off
+    const [emr, scribe] = await Promise.all([get("/emr"), get("/scribe").catch(() => ({ enabled: false }))]);
     return `<div class="view-head"><div><h1>New note</h1><p class="muted">A note for a patient. They read it in their app.</p></div></div>
     <div class="grid g-side"><div class="card stack">
       <form class="stack" data-form="noteFor"><div class="field"><label for="nClient">Patient</label><select id="nClient" name="id" class="input" required>${emr.patients.map((p) => `<option value="${esc(p.id)}"${p.id === state.chartClient ? " selected" : ""}>${esc(p.name)}</option>`).join("") || `<option value="">No active patients yet</option>`}</select></div>
-      <div class="field"><label for="nBody">Note</label><textarea id="nBody" name="text" class="input" style="min-height:260px" maxlength="4000" required placeholder="What the patient should know or do next"></textarea></div>
+      <div class="field"><div class="row" style="justify-content:space-between"><label for="nBody">Note</label><button type="button" class="btn sm mic" data-act="dictate" data-for="nBody" aria-pressed="false">🎤 Dictate</button></div><textarea id="nBody" name="text" class="input" style="min-height:260px" maxlength="4000" required placeholder="What the patient should know or do next"></textarea></div>
       <div class="row"><button class="btn primary"${emr.patients.length ? "" : " disabled"}>Add note</button><span class="muted" style="font-size:12px">Shared with the patient as soon as it is added</span></div></form></div>
-    <div class="stack"><div class="card"><div class="card-head"><h2>✦ AI scribe</h2><span class="pill">Not connected</span></div>${none("Drafting notes from a recording or transcript is not built yet.")}</div>
+    <div class="stack"><div class="card">${scribe.enabled ? `<div class="card-head"><h2>✦ AI scribe</h2><span class="pill ok">On · ${esc(scribe.model)}</span></div>
+      <form class="stack" data-form="scribe">
+        <div class="field"><div class="row" style="justify-content:space-between"><label for="sText">What happened in the visit</label><button type="button" class="btn sm mic" data-act="dictate" data-for="sText" aria-pressed="false">🎤 Dictate</button></div><textarea id="sText" name="text" class="input" style="min-height:150px" maxlength="20000" required placeholder="Your rough notes, or paste a transcript. For example: right knee 3 weeks post-op, swelling down, soft tissue on the quad, heel slides 2x10 twice a day, back in a week."></textarea></div>
+        <div class="row"><button class="btn primary"${emr.patients.length ? "" : " disabled"}>Draft the note</button><span class="muted" style="font-size:12px" id="sMsg" role="status"></span></div>
+        <p class="muted" style="font-size:12px;margin:0">The draft lands in the Note box for you to read and edit. Nothing is saved or shared until you press Add note. The patient's name, emails and phone numbers are removed before the text goes to ${esc(scribe.host)}.</p>
+      </form>` : `<div class="card-head"><h2>✦ AI scribe</h2><span class="pill">Not connected</span></div>${none("Drafts the patient's note from your rough notes. It turns on once a language model is connected on the server.")}`}</div>
     <div class="card"><div class="card-head"><h2>Private notes and signing</h2><span class="pill">Not connected</span></div>${none("This system stores only notes the patient can read. Private clinical notes, sensitivity tiers and sign-and-lock are not built yet.")}</div></div></div>`;
   };
 
@@ -481,11 +492,13 @@
 
   // ---------------------------------------------------------------- actions
   const reChart = async () => { const id = state.chartClient; const [d, c] = await Promise.all([get(`/emr/${id}`), get(`/clients/${id}`)]); cache.chart = { d, c }; const box = $("#chartBody"); if (box) box.innerHTML = chartTab(); };
-  const showDocs = (d) => (d.docs || []).map((doc) => `<div class="card" style="box-shadow:none;margin-top:10px"><h3 style="margin:0 0 2px">${esc(doc.title)}</h3><p class="muted" style="margin:0 0 8px;font-size:12px">Completed ${when(doc.createdAt)}</p><dl class="kv">${(doc.fields || []).map((f) => `<dt>${esc(f.label)}</dt><dd>${esc(Array.isArray(f.value) ? f.value.join(", ") : f.value === true ? "Yes" : f.value === false ? "No" : f.value == null || f.value === "" ? "—" : f.value)}</dd>`).join("")}</dl></div>`).join("") || none("No documents received yet.");
+  const showDocs = (d) => (d.docs || []).map((doc) => `<div class="card" style="box-shadow:none;margin-top:10px"><h3 style="margin:0 0 2px">${esc(doc.title)}</h3><p class="muted" style="margin:0 0 8px;font-size:12px">Completed ${when(doc.createdAt)}</p><dl class="qa">${(doc.fields || []).map((f) => `<div><dt>${esc(f.label)}</dt><dd>${esc(Array.isArray(f.value) ? f.value.join(", ") : f.value === true ? "Yes" : f.value === false ? "No" : f.value == null || f.value === "" ? "—" : f.value)}</dd></div>`).join("")}</dl></div>`).join("") || none("No documents received yet.");
   const ACT = {
     chart: (el) => openChart(el.dataset.id),
     chartClose: (el, e) => { e.preventDefault(); state.chartClient = null; render(); },
     chartTab: (el) => { state.chartTab = el.dataset.tab; document.querySelectorAll(".tabs .tab").forEach((b) => b.classList.toggle("active", b === el)); $("#chartBody").innerHTML = chartTab(); if (state.chartTab === "plans") loadPool(); },
+    dictate: (el) => dictate(el),
+    copyRoom: async (el) => { try { await navigator.clipboard.writeText(el.dataset.url); toast("Room link copied."); } catch { toast("Couldn't copy. Select the link and copy it."); } },
     thread: (el) => { state.thread = el.dataset.id; if (location.hash === "#messages") render(); else location.hash = "messages"; },
     insTab: (el) => { state.insTab = el.dataset.tab; render(); },
     calWeek: (el) => { const d = Number(el.dataset.d); state.calWeek = d ? state.calWeek + d : 0; render(); },
@@ -518,6 +531,25 @@
     copyBook: async () => { const i = $("#bookUrl"); try { await navigator.clipboard.writeText(i.value); toast("Link copied."); } catch { i.select(); toast("Press Ctrl+C to copy."); } }
   };
   const FORMS = {
+    roomLink: async (f) => {
+      const url = f.url.value.trim();
+      if (url && !/^https:\/\//i.test(url)) { toast("The room link must start with https://"); return; }
+      await api("PUT", "/api/admin/settings", { booking: { telehealthUrl: url } });
+      toast(url ? "Room link saved. New video bookings get this link." : "Room link removed."); await render();
+    },
+    // AI scribe: the draft goes into the Note box and nowhere else; the clinician edits it and adds it himself
+    scribe: async (f) => {
+      const text = f.text.value.trim(), box = $("#nBody"), who = $("#nClient"), btn = f.querySelector("button"), msg = $("#sMsg");
+      if (text.length < 20) { msg.textContent = "Write a few sentences about the visit first."; return; }
+      if (box.value.trim() && !confirm("Replace what is in the Note box with the draft?")) return;
+      btn.disabled = true; msg.textContent = "Drafting…";
+      try {
+        const r = await api("POST", "/api/admin/scribe/draft", { clientId: who && who.value ? who.value : undefined, text });
+        box.value = r.draft; box.focus(); box.setSelectionRange(0, 0); box.scrollTop = 0;
+        msg.textContent = `Draft ready. Read it and edit before adding.${r.removed ? ` ${r.removed} name or contact ${r.removed === 1 ? "detail was" : "details were"} removed before sending.` : ""}`;
+      } catch (err) { msg.textContent = err.message; }
+      finally { btn.disabled = false; }
+    },
     note: async (f) => { const text = f.text.value.trim(); if (!text) return; await api("POST", `/api/admin/emr/${state.chartClient}/notes`, { text }); toast("Note added. The patient can see it now."); await reChart(); },
     noteFor: async (f) => { const text = f.text.value.trim(); if (!f.id.value || !text) return; await api("POST", `/api/admin/emr/${f.id.value}/notes`, { text }); f.text.value = ""; toast("Note added. The patient can see it now."); },
     movement: async (f) => { await api("POST", `/api/admin/emr/${state.chartClient}/movements`, { videoId: f.videoId.value, name: f.name.value, dose: f.dose.value.trim(), cue: f.cue.value.trim() }); toast("Added to the plan."); await reChart(); loadPool(); },
@@ -564,6 +596,33 @@
     try { const html = await V[r](); if (my !== seq || !token) return; view.innerHTML = html; if (r === "chart" && state.chartTab === "plans") loadPool(); }
     catch (err) { if (my !== seq || !token) return; view.innerHTML = `<div class="card"><b>This screen could not be loaded.</b><p class="muted" style="margin:6px 0 0">${esc(err.message)}</p></div>`; }
   }
+  // ---- Voice dictation into a note box. It uses the browser's own speech recognition: on this device when the
+  // browser offers that, otherwise through the browser maker's speech service (Google in Chrome, Apple in Safari).
+  // The button says which. Nothing is recorded or kept by this page; only the words land in the box.
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  let rec = null;
+  function stopDictation() { if (rec) { try { rec.stop(); } catch {} } }
+  async function dictate(btn) {
+    if (rec) { stopDictation(); return; }
+    const box = $("#" + btn.dataset.for); if (!box) return;
+    if (!SR) { toast("This browser has no voice dictation. Use Chrome, Edge or Safari, or your computer's own dictation key."); return; }
+    const r = new SR(); r.lang = "en-US"; r.continuous = true; r.interimResults = true;
+    let onDevice = false;
+    try { if (typeof SR.available === "function" && (await SR.available({ langs: ["en-US"], processLocally: true })) === "available") { r.processLocally = true; onDevice = true; } } catch {}
+    const base = box.value ? box.value.replace(/\s*$/, " ") : ""; let said = "";
+    r.onresult = (e) => {
+      let interim = "";
+      for (let i = e.resultIndex; i < e.results.length; i++) { const t = e.results[i][0].transcript; if (e.results[i].isFinal) said += t; else interim += t; }
+      box.value = base + said + interim; box.scrollTop = box.scrollHeight; idleBump(); // speaking counts as activity
+    };
+    r.onerror = (e) => toast(e.error === "not-allowed" || e.error === "service-not-allowed" ? "Microphone access is blocked. Allow the microphone for this site and try again." : e.error === "no-speech" ? "No speech was heard." : e.error === "aborted" ? "Dictation stopped." : "Dictation stopped (" + e.error + ").");
+    r.onend = () => { rec = null; box.value = (base + said).replace(/\s+$/, ""); if (btn.isConnected) { btn.classList.remove("rec"); btn.textContent = "🎤 Dictate"; btn.setAttribute("aria-pressed", "false"); btn.title = ""; } };
+    rec = r; btn.classList.add("rec"); btn.textContent = "■ Stop"; btn.setAttribute("aria-pressed", "true");
+    btn.title = onDevice ? "Listening. Speech is turned into text on this device." : "Listening. Your browser sends the audio to its maker's speech service to turn it into text.";
+    toast(onDevice ? "Listening (on this device). Press Stop when done." : "Listening (through your browser's speech service). Press Stop when done.");
+    try { r.start(); } catch (err) { rec = null; btn.classList.remove("rec"); btn.textContent = "🎤 Dictate"; toast("Dictation could not start."); }
+  }
+
   // ---- Live updates. The server pushes "new_message" the moment a member writes, so the Messages screen and the
   // unread badge update without a reload. If the live connection is down, the open Messages screen checks every 15 s.
   async function refreshMessages(toBottom) {
