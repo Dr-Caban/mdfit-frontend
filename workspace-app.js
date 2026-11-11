@@ -37,8 +37,8 @@
   const get = (p) => api("GET", "/api/admin" + p);
 
   function toast(msg) { const t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2600); }
-  function modal(html) { $("#modal").innerHTML = html; $("#modalBack").classList.add("open"); $("#modal").querySelector("button,input,select,textarea")?.focus(); }
-  function closeModal() { $("#modalBack").classList.remove("open"); $("#modal").innerHTML = ""; }
+  function modal(html) { $("#modal").classList.remove("wide"); $("#modal").innerHTML = html; $("#modalBack").classList.add("open"); $("#modal").querySelector("button,input,select,textarea")?.focus(); }
+  function closeModal() { $("#modalBack").classList.remove("open"); $("#modal").innerHTML = ""; $("#modal").classList.remove("wide"); }
   const guard = (fn) => (...a) => Promise.resolve(fn(...a)).catch((e) => toast(e.message));
 
   // Signing out empties everything that was drawn, so names and notes do not stay on a shared screen.
@@ -90,6 +90,9 @@
     spark: '<path d="M12 3l1.9 5.6L19.5 10.5l-5.6 1.9L12 18l-1.9-5.6L4.5 10.5l5.6-1.9z"/>',
     prev: '<path d="M15 5l-7 7 7 7"/>', next: '<path d="M9 5l7 7-7 7"/>',
     x: '<path d="M6 6l12 12M18 6L6 18"/>',
+    alert: '<path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17v.5"/>',
+    lock: '<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
+    file: '<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/>',
     star: '<path d="M12 3.5l2.6 5.3 5.9.9-4.2 4.1 1 5.8L12 16.9 6.7 19.6l1-5.8L3.5 9.7l5.9-.9z" fill="currentColor"/>',
     camera: '<rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3z"/>',
     screen: '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/>',
@@ -233,7 +236,7 @@
   };
 
   V.clients = async () => {
-    const [list, emr] = await Promise.all([clients(true), get("/emr")]);
+    const [list, emr] = await Promise.all([clients(true), get("/emr"), content()]);
     cache.waiting = emr.waiting.length; renderNav("clients");
     const patients = new Set(emr.patients.map((p) => p.id)), waiting = new Set(emr.waiting.map((p) => p.id));
     const q = state.clientQ.toLowerCase().split(/\s+/).filter(Boolean);
@@ -252,8 +255,23 @@
       <td>${patients.has(c.id) ? `<span class="pill ok">Active patient</span>` : waiting.has(c.id) ? `<span class="pill warn">Waiting</span>` : `<span class="pill">Member</span>`}${c.clientType === "inpatient" ? ` <span class="pill">Inpatient</span>` : ""}</td>
       <td>${c.documents ? (c.documents.complete ? `<span class="pill ok">Complete</span>` : `${c.documents.done} of ${c.documents.total}`) : "—"}</td>
       <td class="num">${c.next ? `${fmtDate(c.next.date)} · ${fmtTime(c.next.time)}` : `<span class="muted">Not booked</span>`}</td>
-      <td>${c.membership ? `<span class="pill ok">${esc(c.membership.tier || "Member")}</span>` : `<span class="muted">—</span>`}</td>
+      <td data-act="stop"><select class="input tier-pick${c.membership ? " on" : ""}" data-change="rowTier" data-id="${esc(c.id)}" data-name="${esc(c.name)}" aria-label="Membership type for ${esc(c.name)}">${tierOptions((c.membership && c.membership.tier) || "")}</select></td>
       <td class="muted">${when(c.lastLoginAt)}</td></tr>`).join("");
+  }
+
+  // ---- Client chart. Every sub-tab is worked from here: nothing is handed off to another screen to edit.
+  const usd = (cents) => "$" + (Number(cents || 0) / 100).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const sizeOf = (n) => (n < 1024 ? n + " B" : n < 1048576 ? Math.round(n / 1024) + " KB" : (n / 1048576).toFixed(1) + " MB");
+  const tiers = () => (cache.content && cache.content.tiers) || [];
+  const tierName = (id) => (tiers().find((x) => x.id === id) || {}).name || id || "";
+  const tierOptions = (cur) => `<option value="">No membership</option>${tiers().map((t) => `<option value="${esc(t.id)}"${cur === t.id ? " selected" : ""}>${esc(t.name)}</option>`).join("")}`;
+  const content = async () => cache.content || (cache.content = await get("/content").catch(() => ({ programs: [], tiers: [] })));
+  const chartPills = () => { const { d } = cache.chart; return `${d.patient ? `<span class="pill ok">Active patient${d.since ? " since " + when(d.since) : ""}</span>` : `<span class="pill warn">Not yet a patient</span>`}${(d.allergies || []).map((a) => `<span class="pill bad" title="${esc(a.reaction || "Allergy or alert")}">${ui("alert", 12)} ${esc(a.name)}</span>`).join("")}${(d.tags || []).map((t) => `<span class="pill">${esc(t)}</span>`).join("")}`; };
+  // A small line chart for one measure over time (oldest on the left)
+  function trend(points, unit) {
+    const W = 320, H = 110, p = 20, vs = points.map((x) => x.value), lo = Math.min(...vs), hi = Math.max(...vs), span = hi - lo || 1, step = (W - 2 * p) / Math.max(points.length - 1, 1);
+    const xy = points.map((pt, i) => [p + i * step, H - p - ((pt.value - lo) / span) * (H - 2 * p)]);
+    return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="${esc(points.map((x) => `${x.date}: ${x.value}${unit ? " " + unit : ""}`).join(", "))}" style="max-width:420px;display:block"><polyline fill="none" stroke="var(--accent-text)" stroke-width="2" points="${xy.map((q) => q.map((n) => n.toFixed(1)).join(",")).join(" ")}"/>${xy.map((q, i) => `<circle cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="3.5" fill="var(--accent-text)"><title>${esc(points[i].date)}: ${esc(points[i].value)}</title></circle>`).join("")}</svg>`;
   }
 
   V.chart = async () => {
@@ -265,35 +283,60 @@
       <div class="grid g2"><div class="card"><div class="card-head"><h2>Active patients</h2></div>${emr.patients.map(pick).join("") || none("No active patients yet.")}</div>
       <div class="card"><div class="card-head"><h2>Waiting to be converted</h2></div>${emr.waiting.map(pick).join("") || none("Nobody is waiting.")}</div></div>`;
     }
-    const [d, c] = await Promise.all([get(`/emr/${id}`), get(`/clients/${id}`)]);
-    cache.chart = { d, c };
+    const [d, c, cn] = await Promise.all([get(`/emr/${id}`), get(`/clients/${id}`), get(`/notes?clientId=${id}`).catch(() => ({ notes: [] })), content()]);
+    cache.chart = { d, c, cn: cn.notes || [] }; cache.billing = null;
     const tabs = [["overview", "Overview"], ["notes", "Clinical notes"], ["plans", "Plans & protocols"], ["measures", "Measures"], ["meds", "Meds & allergies"], ["files", "Files"], ["billing", "Billing"], ["consent", "Sharing & consent"]];
+    const tier = (c.membership && c.membership.tier) || "";
     return `
     <div class="view-head"><div class="row" style="gap:14px">${avatar(d.name, 52)}<div style="min-width:0"><h1>${esc(d.name)}</h1>
-      <p class="muted">${esc(d.email)}${d.phone ? " · " + esc(d.phone) : ""} · ${d.clientType === "inpatient" ? "inpatient" : "outpatient"} · joined ${when(d.createdAt)}</p>
-      <div class="row" style="margin-top:6px">${d.patient ? `<span class="pill ok">Active patient${d.since ? " since " + when(d.since) : ""}</span>` : `<span class="pill warn">Not yet a patient</span>`}</div></div></div>
+      <p class="muted">${esc(d.email)}${d.phone ? " · " + esc(d.phone) : ""} · Next: ${d.nextVisit ? `${fmtDate(d.nextVisit.date)} ${fmtTime(d.nextVisit.time)}` : "nothing booked"}</p>
+      <div class="row" style="margin-top:6px" id="chartPills">${chartPills()}</div></div></div>
       <div class="row"><button class="btn ${d.patient ? "" : "primary"}" data-act="convert" data-on="${d.patient ? "0" : "1"}">${d.patient ? "Mark as not a patient" : "Convert to active patient"}</button>
-      <button class="btn" data-act="thread" data-id="${esc(id)}">Message</button><a class="btn" href="#chart" data-act="chartClose">Other client</a></div></div>
+      <button class="btn" data-act="thread" data-id="${esc(id)}">Message</button><button class="btn" data-act="book">Book</button><button class="btn ${d.patient ? "primary" : ""}" data-act="chartNewNote">${ui("plus", 14)} Note</button><a class="btn" href="#chart" data-act="chartClose">Other client</a></div></div>
+    <div class="row chart-types"><label for="chTier">Membership</label><select id="chTier" class="input" data-change="chartTier">${tierOptions(tier)}</select>
+      <label for="chType">Client type</label><select id="chType" class="input" data-change="chartType"><option value="outpatient"${d.clientType !== "inpatient" ? " selected" : ""}>Outpatient</option><option value="inpatient"${d.clientType === "inpatient" ? " selected" : ""}>Inpatient (visits not charged)</option></select></div>
     <div class="tabs" role="tablist">${tabs.map(([t, l]) => `<button class="tab ${state.chartTab === t ? "active" : ""}" role="tab" data-act="chartTab" data-tab="${t}">${l}</button>`).join("")}</div>
     <div id="chartBody">${chartTab()}</div>`;
   };
   const REC = { joined: "Joined", documents: "Documents", patient: "Patient", note: "Note", movement: "Movement", payment: "Paid", scheduled: "Scheduled", visit: "Visit", cancelled: "Cancelled", lapsed: "Unfinished", removed: "Removed" };
+  const rm = (kind, id, label) => `<button type="button" class="btn sm ghost" data-act="rmItem" data-kind="${kind}" data-id="${esc(id)}" aria-label="${esc(label)}">${ui("x", 14)}</button>`;
   function chartTab() {
-    const { d, c } = cache.chart, t = state.chartTab, first = esc(String(d.name).split(" ")[0]);
+    const { d, c, cn } = cache.chart, t = state.chartTab, first = esc(String(d.name).split(" ")[0]), today = isoDay(new Date());
+    const plan = c.plan || { guides: [], exercises: [], notes: "" };
     if (t === "overview") return `
-      <div class="grid g4" style="margin-bottom:16px">${kpi("Documents", `${d.documents.done}/${d.documents.total}`, d.documents.complete ? "complete" : "in progress")}${kpi("Notes", d.notes.length, "for the patient")}${kpi("Movements", d.movements.length, "prescribed")}${kpi("Paid visits", d.paidVisits.length, "need a time", d.paidVisits.length ? "warn" : "")}</div>
-      <div class="grid g-side"><div class="card"><div class="card-head"><h2>Record</h2><span class="muted" style="font-size:12px">Newest first</span></div>
-        ${(d.record || []).map((e) => `<div class="rec"><span class="muted num" style="font-size:12px">${when(e.at)}</span><span class="pill">${esc(REC[e.kind] || e.kind)}</span><span><b>${esc(e.title)}</b>${e.detail ? ` <span class="muted">${esc(e.detail)}</span>` : ""}</span></div>`).join("") || none("Nothing on the record yet.")}</div>
-      <div class="stack"><div class="card"><h2 style="margin-bottom:10px">Contact</h2><dl class="kv"><dt>Email</dt><dd>${esc(d.email)}</dd><dt>Phone</dt><dd>${esc(d.phone || "—")}</dd><dt>Last sign-in</dt><dd>${when(d.lastLoginAt)}</dd></dl></div>
-      <div class="card"><h2 style="margin-bottom:10px">Next visit</h2>${d.nextVisit ? `<b>${fmtDate(d.nextVisit.date)} · ${fmtTime(d.nextVisit.time)}</b><div class="muted">${esc(d.nextVisit.typeName || "")}</div>` : none("Nothing booked.")}</div></div></div>`;
+      <div class="grid g4" style="margin-bottom:16px">${kpi("Documents", `${d.documents.done}/${d.documents.total}`, d.documents.complete ? "complete" : "in progress")}${kpi("Clinical notes", cn.length, `${cn.filter((n) => n.status !== "draft").length} signed`)}${kpi("Movements", d.movements.length, "prescribed")}${kpi("Paid visits", d.paidVisits.length, "need a time", d.paidVisits.length ? "warn" : "")}</div>
+      <div class="grid g-side"><div class="stack">
+        <div class="card stack"><div class="card-head"><h2>Care summary</h2><span class="pill">Staff only</span></div>
+          <form class="stack" data-form="summary"><textarea name="summary" class="input" rows="3" maxlength="2000" placeholder="Where ${first} is in care, in a few lines" aria-label="Care summary">${esc(d.summary || "")}</textarea>
+          <div class="field"><label for="sumTags">Tags (comma separated, up to 8)</label><input id="sumTags" name="tags" class="input" maxlength="260" value="${esc((d.tags || []).join(", "))}" placeholder="Runner, Post-op knee"></div>
+          <div class="row"><button class="btn primary">Save summary</button></div></form></div>
+        <div class="card"><div class="card-head"><h2>Record</h2><span class="muted" style="font-size:12px">Newest first</span></div>
+        ${(d.record || []).map((e) => `<div class="rec"><span class="muted num" style="font-size:12px">${when(e.at)}</span><span class="pill">${esc(REC[e.kind] || e.kind)}</span><span><b>${esc(e.title)}</b>${e.detail ? ` <span class="muted">${esc(e.detail)}</span>` : ""}</span></div>`).join("") || none("Nothing on the record yet.")}</div></div>
+      <div class="stack"><div class="card"><h2 style="margin-bottom:10px">Contact</h2><dl class="kv"><dt>Email</dt><dd>${esc(d.email)}</dd><dt>Phone</dt><dd>${esc(d.phone || "—")}</dd><dt>Last sign-in</dt><dd>${when(d.lastLoginAt)}</dd><dt>Joined</dt><dd>${when(d.createdAt)}</dd></dl></div>
+      <div class="card"><h2 style="margin-bottom:10px">Next visit</h2>${d.nextVisit ? `<b>${fmtDate(d.nextVisit.date)} · ${fmtTime(d.nextVisit.time)}</b><div class="muted">${esc(d.nextVisit.typeName || "")}</div>` : none("Nothing booked.")}<div class="row" style="margin-top:10px"><button class="btn sm" data-act="book">Book</button></div></div>
+      <div class="card"><h2 style="margin-bottom:10px">Allergies &amp; alerts</h2>${(d.allergies || []).map((a) => `<div class="list-item"><span class="pill bad">${ui("alert", 12)}</span><span style="flex:1"><b>${esc(a.name)}</b>${a.reaction ? ` <span class="muted">${esc(a.reaction)}</span>` : ""}</span></div>`).join("") || none("None recorded.")}</div></div></div>`;
     if (t === "notes") return `
-      <div class="card stack"><div class="card-head"><h2>Notes for ${first}</h2><span class="pill warn">${first} reads these in the app</span></div>
-        <p class="muted" style="margin:0">These notes are shared with the patient. This system does not yet have private clinical notes or signing.</p>
-        <form class="stack" data-form="note"><div class="row" style="justify-content:space-between"><label class="muted" for="noteText" style="font-size:12px">New note</label><button type="button" class="btn sm mic" data-act="dictate" data-for="noteText" aria-pressed="false">${ui("mic", 14)}<span>Dictate</span></button></div><textarea id="noteText" name="text" class="input" rows="3" maxlength="4000" required placeholder="What ${first} should know or do next"></textarea>
-        <div class="row"><button class="btn primary">Add note</button></div></form></div>
-      <div class="stack" style="margin-top:16px">${d.notes.map((n) => `<div class="card"><div class="card-head"><span class="muted">${when(n.at)}</span><button class="btn sm danger" data-act="rmNote" data-id="${esc(n.id)}">Remove</button></div><p class="note-text">${esc(n.text)}</p></div>`).join("") || `<div class="card">${none("No notes yet.")}</div>`}</div>`;
-    if (t === "plans") return `
-      <div class="card stack"><div class="card-head"><h2>Movements for ${first}</h2><span class="muted" style="font-size:12px">Each one plays its video in the app</span></div>
+      <div class="card"><div class="card-head"><h2>Clinical notes</h2><div class="row"><span class="pill">Staff only</span><button class="btn sm primary" data-act="chartNewNote">${ui("plus", 14)} New note</button></div></div>
+        ${cn.map((n) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(TEMPLATES[n.template] || "Note")}</b><div class="muted" style="font-size:12px">${n.status === "draft" ? "Last saved " + when(n.updatedAt) : "Signed " + when(n.signedAt) + (n.signedBy ? " by " + esc(n.signedBy) : "")}${n.addenda ? ` · ${n.addenda} addend${n.addenda === 1 ? "um" : "a"}` : ""}</div></span>
+          ${n.tier && n.tier !== "T1" ? `<span class="pill">${esc(n.tier)}</span>` : ""}<span class="pill ${n.status === "draft" ? "warn" : "ok"}">${n.status === "draft" ? "Draft" : "Signed &amp; locked"}</span><button class="btn sm" data-act="chartNote" data-id="${esc(n.id)}" data-draft="${n.status === "draft" ? "1" : ""}">${n.status === "draft" ? "Continue" : "Open"}</button></div>`).join("") || none("No clinical notes yet.")}</div>
+      <div class="card stack" style="margin-top:16px"><div class="card-head"><h2>Notes for ${first}</h2><span class="pill warn">${first} reads these in the app</span></div>
+        <form class="stack" data-form="note"><div class="row" style="justify-content:space-between"><label class="muted" for="noteText" style="font-size:12px">New note to the patient</label><button type="button" class="btn sm mic" data-act="dictate" data-for="noteText" aria-pressed="false">${ui("mic", 14)}<span>Dictate</span></button></div><textarea id="noteText" name="text" class="input" rows="3" maxlength="4000" required placeholder="What ${first} should know or do next"></textarea>
+        <div class="row"><button class="btn primary">Add note</button></div></form>
+        ${d.notes.map((n) => `<div class="list-item" style="align-items:flex-start"><span style="flex:1;min-width:0"><span class="muted" style="font-size:12px">${when(n.at)}</span><p class="note-text" style="margin:2px 0 0">${esc(n.text)}</p></span><button class="btn sm danger" data-act="rmNote" data-id="${esc(n.id)}">Remove</button></div>`).join("") || none("No notes to the patient yet.")}</div>`;
+    if (t === "plans") { const progs = (cache.content && cache.content.programs) || [], mine = new Set((c.assignedPrograms || []).map((p) => p.id)); return `
+      <div class="grid g2"><div class="card stack"><div class="card-head"><h2>Treatment plan</h2><span class="pill warn">${first} reads this in the app</span></div>
+          <form class="stack" data-form="planNotes"><div class="row" style="justify-content:flex-end"><button type="button" class="btn sm mic" data-act="dictate" data-for="planText" aria-pressed="false">${ui("mic", 14)}<span>Dictate</span></button></div>
+          <textarea id="planText" name="notes" class="input" rows="6" maxlength="3000" placeholder="Goals, how often, and when you will review" aria-label="Treatment plan">${esc(plan.notes || "")}</textarea>
+          <div class="row"><button class="btn primary">Save treatment plan</button>${plan.updatedAt ? `<span class="muted" style="font-size:12px">Updated ${when(plan.updatedAt)}</span>` : ""}</div></form></div>
+        <div class="card stack"><div class="card-head"><h2>Protocols for ${first}</h2><span class="muted" style="font-size:12px">Type one, or pick from the lists below</span></div>
+          <form class="stack" data-form="protocol"><div class="field"><label for="prName">Protocol</label><input id="prName" name="name" class="input" maxlength="80" required placeholder="e.g. ACL phase 1, weeks 0 to 2" list="prNames" autocomplete="off"><datalist id="prNames"></datalist></div>
+          <div class="field"><div class="row" style="justify-content:space-between"><label for="prDetail">What to do</label><button type="button" class="btn sm mic" data-act="dictate" data-for="prDetail" aria-pressed="false">${ui("mic", 14)}<span>Dictate</span></button></div><textarea id="prDetail" name="detail" class="input" rows="4" maxlength="1000" placeholder="Steps, sets and reps, how often, what to avoid"></textarea></div>
+          <div class="row"><button class="btn primary">Add to ${first}'s program</button></div></form>
+          ${(plan.exercises || []).map((x, i) => `<div class="list-item" style="align-items:flex-start"><span style="flex:1;min-width:0"><b>${esc(x.name)}</b>${x.detail ? `<div class="muted note-text" style="font-size:12.5px">${esc(x.detail)}</div>` : ""}</span><button class="btn sm danger" data-act="prRemove" data-i="${i}">Remove</button></div>`).join("") || none(`Nothing in ${first}'s program yet.`)}</div></div>
+      <div class="grid g2" style="margin-top:16px"><div class="card"><div class="card-head"><h2>All protocols</h2><span class="muted" style="font-size:12px">Everything you have written, most used first</span></div><div id="prPool">${none("Loading…")}</div></div>
+        <div class="card"><div class="card-head"><h2>All programs</h2><span class="muted" style="font-size:12px">${plural(progs.length, "program")} in the library</span></div>
+          ${progs.map((p) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(p.title)}</b><div class="muted" style="font-size:12px">${[p.category, p.level, p.weeks ? p.weeks + " weeks" : ""].filter(Boolean).map(esc).join(" · ")}</div></span>${mine.has(p.id) ? `<span class="pill ok">Assigned</span><button class="btn sm danger" data-act="prUnassign" data-id="${esc(p.id)}">Remove</button>` : `<button class="btn sm" data-act="prAssign" data-id="${esc(p.id)}">Add to ${first}'s program</button>`}</div>`).join("") || none("No programs in the library.")}</div></div>
+      <div class="card stack" style="margin-top:16px"><div class="card-head"><h2>Movements for ${first}</h2><span class="muted" style="font-size:12px">Each one plays its video in the app</span></div>
         <div id="mvPool"></div>
         <input class="input" id="mvSearch" type="search" placeholder="Search the video library (e.g. hip hinge, calf, dead bug)" aria-label="Search movements" autocomplete="off">
         <div id="mvResults"></div>
@@ -301,28 +344,99 @@
           <div class="grid g2"><div class="field"><label for="mvDose">Sets × reps</label><input id="mvDose" name="dose" class="input" maxlength="120" placeholder="3 × 12"></div><div class="field"><label for="mvCue">Cue (optional)</label><input id="mvCue" name="cue" class="input" maxlength="300"></div></div>
           <div class="row"><button class="btn primary">Add to ${first}'s plan</button><button type="button" class="btn" data-act="mvCancel">Cancel</button></div></form></div>
       <div class="card" style="margin-top:16px"><div class="card-head"><h2>Prescribed</h2></div>
-        ${d.movements.map((m) => `<div class="list-item"><img class="mv-thumb" src="https://drive.google.com/thumbnail?id=${encodeURIComponent(m.videoId)}&sz=w160" alt="" loading="lazy" referrerpolicy="no-referrer"><span style="flex:1;min-width:0"><b>${esc(m.name)}</b>${m.dose ? ` <span class="pill">${esc(m.dose)}</span>` : ""}<div class="muted" style="font-size:12px">${m.cue ? esc(m.cue) + " · " : ""}added ${when(m.at)}</div></span><button class="btn sm danger" data-act="rmMove" data-id="${esc(m.id)}">Remove</button></div>`).join("") || none("No movements prescribed yet.")}</div>
-      ${(c.assignedPrograms || []).length ? `<div class="card" style="margin-top:16px"><div class="card-head"><h2>Assigned programs</h2>${adminLink("clients", "Edit in admin")}</div>${c.assignedPrograms.map((p) => `<div class="list-item"><span style="flex:1"><b>${esc(p.title || p.id)}</b></span></div>`).join("")}</div>` : ""}`;
-    if (t === "measures") { const pain = (c.painLog || []).slice().reverse().slice(0, 50); return `
-      <div class="card" style="padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>Pain log</h2><span class="muted" style="font-size:12px">Logged by ${first} in the app</span></div><div class="table-wrap"><table><thead><tr><th>Date</th><th>Area</th><th class="num">Pain</th><th>Note</th></tr></thead><tbody>
+        ${d.movements.map((m) => `<div class="list-item"><img class="mv-thumb" src="https://drive.google.com/thumbnail?id=${encodeURIComponent(m.videoId)}&sz=w160" alt="" loading="lazy" referrerpolicy="no-referrer"><span style="flex:1;min-width:0"><b>${esc(m.name)}</b>${m.dose ? ` <span class="pill">${esc(m.dose)}</span>` : ""}<div class="muted" style="font-size:12px">${m.cue ? esc(m.cue) + " · " : ""}added ${when(m.at)}</div></span><button class="btn sm danger" data-act="rmMove" data-id="${esc(m.id)}">Remove</button></div>`).join("") || none("No movements prescribed yet.")}</div>`; }
+    if (t === "measures") {
+      const pain = (c.painLog || []).slice().reverse().slice(0, 50), by = new Map();
+      for (const m of (d.measures || []).slice().reverse()) { const k = m.name.toLowerCase(); if (!by.has(k)) by.set(k, []); by.get(k).push(m); }
+      const areas = new Map(); for (const e of (c.painLog || [])) { if (!areas.has(e.area)) areas.set(e.area, []); areas.get(e.area).push({ date: e.date, value: Number(e.level) || 0 }); }
+      return `
+      <div class="card stack"><div class="card-head"><h2>Record a measure</h2><span class="pill">Staff only</span></div>
+        <form data-form="measure" class="stack"><div class="grid g4"><div class="field"><label for="msName">Measure</label><input id="msName" name="name" class="input" maxlength="80" required list="msNames" placeholder="Knee flexion" autocomplete="off"><datalist id="msNames">${[...new Set([...(d.measures || []).map((m) => m.name), "Knee flexion", "Knee extension", "Shoulder flexion", "Hip flexion", "Grip strength", "Single-leg balance", "LEFS", "QuickDASH", "Oswestry (ODI)", "Neck Disability Index"])].map((n) => `<option value="${esc(n)}">`).join("")}</datalist></div>
+          <div class="field"><label for="msVal">Result</label><input id="msVal" name="value" class="input" type="number" step="any" required inputmode="decimal"></div>
+          <div class="field"><label for="msUnit">Unit</label><input id="msUnit" name="unit" class="input" maxlength="20" placeholder="deg, lb, sec, /80"></div>
+          <div class="field"><label for="msDate">Date</label><input id="msDate" name="date" class="input" type="date" value="${today}" max="${today}"></div></div>
+          <div class="field"><label for="msNote">Note (optional)</label><input id="msNote" name="note" class="input" maxlength="200"></div>
+          <div class="row"><button class="btn primary">Add measure</button></div></form></div>
+      <div class="grid g2" style="margin-top:16px">${[...by.values()].map((list) => { const last = list[list.length - 1], firstM = list[0], diff = last.value - firstM.value; return `<div class="card"><div class="card-head"><h2>${esc(last.name)}</h2><b class="num">${esc(last.value)}${last.unit ? " " + esc(last.unit) : ""}</b></div>
+          ${list.length > 1 ? trend(list, last.unit) + `<p class="muted" style="margin:4px 0 8px;font-size:12.5px">${diff === 0 ? "No change" : (diff > 0 ? "Up " : "Down ") + Math.abs(Math.round(diff * 100) / 100)}${last.unit ? " " + esc(last.unit) : ""} since ${fmtDate(firstM.date)}</p>` : ""}
+          ${list.slice().reverse().map((m) => `<div class="list-item"><span class="muted num" style="font-size:12px">${fmtDate(m.date)}</span><span style="flex:1"><b class="num">${esc(m.value)}${m.unit ? " " + esc(m.unit) : ""}</b>${m.note ? ` <span class="muted">${esc(m.note)}</span>` : ""}</span>${rm("measures", m.id, "Remove this result")}</div>`).join("")}</div>`; }).join("") || `<div class="card">${none("No measures recorded yet.")}</div>`}</div>
+      ${[...areas.entries()].filter(([, v]) => v.length > 1).slice(0, 4).length ? `<div class="grid g2" style="margin-top:16px">${[...areas.entries()].filter(([, v]) => v.length > 1).slice(0, 4).map(([a, v]) => `<div class="card"><div class="card-head"><h2>Pain: ${esc(a)}</h2><b class="num">${v[v.length - 1].value}/10</b></div>${trend(v.slice(-20), "/10")}</div>`).join("")}</div>` : ""}
+      <div class="card" style="padding:0;margin-top:16px"><div class="card-head" style="padding:14px 16px 0"><h2>Pain log</h2><span class="muted" style="font-size:12px">Logged by ${first} in the app</span></div><div class="table-wrap"><table><thead><tr><th>Date</th><th>Area</th><th class="num">Pain</th><th>Note</th></tr></thead><tbody>
       ${pain.map((e) => `<tr><td>${fmtDate(e.date)}</td><td>${esc(e.area)}</td><td class="num">${esc(e.level)}/10</td><td>${esc(e.note || "")}</td></tr>`).join("") || noneRow(4, "No entries yet.")}</tbody></table></div></div>
       <div class="grid g3" style="margin-top:16px">${kpi("Workouts", (c.stats && c.stats.workouts) || 0, "logged")}${kpi("Streak", (c.stats && c.stats.streak) || 0, "days")}${kpi("Level", (c.rewards && c.rewards.level) || 1, esc((c.rewards && c.rewards.title) || ""))}</div>`; }
-    if (t === "meds") return notBuilt("A medication and allergy list");
-    if (t === "files") return `<div class="card"><div class="card-head"><h2>New patient documents</h2><span class="pill ${d.documents.complete ? "ok" : ""}">${d.documents.done} of ${d.documents.total}</span></div>
-      ${d.documents.done ? `<button class="btn" data-act="docs">View documents</button><div id="docsBox" style="margin-top:12px"></div>` : none("None on file yet.")}</div>`;
-    if (t === "billing") { const today = isoDay(new Date()); return `
-      <div class="grid g2"><div class="card"><div class="card-head"><h2>Video visits</h2></div>
-        ${d.paidVisits.map((v) => `<div class="list-item"><span style="flex:1"><b>${esc(v.name || v.service)}</b><div class="muted" style="font-size:12px">paid ${when(v.paidAt)}${v.amount != null ? ` · $${(v.amount / 100).toFixed(2)}` : ""}</div></span><span class="pill warn">Needs a time</span></div>`).join("")}
-        ${d.visits.map((v) => `<div class="list-item"><span style="flex:1"><b>${esc(v.typeName)}</b><div class="muted" style="font-size:12px">${fmtDate(v.date)} ${fmtTime(v.time)} · ${v.minutes} min</div></span>${v.payment === "paid" ? `<span class="pill ok">Paid</span>` : v.payment === "exempt" ? `<span class="pill">Inpatient</span>` : ""}</div>`).join("")}
-        ${d.paidVisits.length || d.visits.length ? "" : none("No video visits.")}</div>
-      <div class="card"><div class="card-head"><h2>Schedule a video visit</h2></div>
-        <form class="stack" data-form="consult"><div class="grid g2"><div class="field"><label for="cvDate">Date</label><input id="cvDate" name="date" type="date" class="input" min="${today}" required></div><div class="field"><label for="cvTime">Time</label><input id="cvTime" name="time" type="time" step="900" class="input" required></div></div>
-        <div class="grid g2"><div class="field"><label for="cvMin">Length</label><select id="cvMin" name="minutes" class="input"><option value="30">30 min</option><option value="45">45 min</option><option value="60" selected>60 min</option><option value="90">90 min</option></select></div><div class="field"><label for="cvTitle">Title</label><input id="cvTitle" name="title" class="input" maxlength="80" value="Video visit"></div></div>
-        <div class="field"><label for="cvLink">Video link (blank uses your usual room)</label><input id="cvLink" name="meetingLink" type="url" class="input" placeholder="https://"></div>
-        <div class="row"><button class="btn primary">Schedule</button></div></form></div></div>
-      <div class="card" style="margin-top:16px"><div class="card-head"><h2>Membership</h2>${adminLink("members", "Edit in admin")}</div>${c.membership ? `<dl class="kv"><dt>Tier</dt><dd>${esc(c.membership.tier || "")}</dd><dt>Since</dt><dd>${esc(c.membership.since || "—")}</dd><dt>Paid through</dt><dd>${esc(c.membership.until || "—")}</dd></dl>` : none("No membership.")}</div>`; }
-    if (t === "consent") return notBuilt("Care-team sharing consent");
+    if (t === "meds") return `
+      <div class="grid g2"><div class="card stack"><div class="card-head"><h2>Medications</h2><span class="pill">Staff only</span></div>
+          ${(d.meds || []).map((m) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(m.name)}</b>${m.dose ? ` <span class="muted">${esc(m.dose)}</span>` : ""}${m.note ? `<div class="muted" style="font-size:12px">${esc(m.note)}</div>` : ""}</span><span class="muted" style="font-size:12px">${when(m.at)}</span>${rm("meds", m.id, "Remove " + m.name)}</div>`).join("") || none("None recorded.")}
+          <form class="stack" data-form="med"><div class="grid g2"><div class="field"><label for="mdName">Medication or supplement</label><input id="mdName" name="name" class="input" maxlength="120" required></div><div class="field"><label for="mdDose">Dose and how often</label><input id="mdDose" name="dose" class="input" maxlength="120" placeholder="400 mg as needed"></div></div>
+          <div class="field"><label for="mdNote">Note (optional)</label><input id="mdNote" name="note" class="input" maxlength="300" placeholder="Prescribed by, reason, started"></div>
+          <div class="row"><button class="btn primary">Add medication</button></div></form></div>
+        <div class="card stack"><div class="card-head"><h2>Allergies &amp; alerts</h2><span class="muted" style="font-size:12px">Shown at the top of the chart</span></div>
+          ${(d.allergies || []).map((a) => `<div class="list-item"><span class="pill bad">${ui("alert", 12)}</span><span style="flex:1;min-width:0"><b>${esc(a.name)}</b>${a.reaction ? ` <span class="muted">${esc(a.reaction)}</span>` : ""}</span>${rm("allergies", a.id, "Remove " + a.name)}</div>`).join("") || none("None recorded.")}
+          <form class="stack" data-form="allergy"><div class="grid g2"><div class="field"><label for="alName">Allergy or alert</label><input id="alName" name="name" class="input" maxlength="120" required placeholder="Penicillin, latex, fall risk"></div><div class="field"><label for="alRx">Reaction or detail</label><input id="alRx" name="reaction" class="input" maxlength="200"></div></div>
+          <div class="row"><button class="btn primary">Add alert</button></div></form></div></div>`;
+    if (t === "files") return `
+      <div class="card"><div class="card-head"><h2>Files</h2><label class="btn sm primary">${ui("upload", 14)} Upload<input type="file" hidden data-change="chartFile" accept=".pdf,.png,.jpg,.jpeg,.webp,.heic,.txt,application/pdf,image/*,text/plain"></label></div>
+        <p class="muted" style="margin:0 0 8px;font-size:12.5px">PDF, pictures or plain text, up to 4 MB each. Each file is encrypted before it is stored, and every download is logged.</p>
+        ${(d.files || []).map((f) => `<div class="list-item"><span style="flex:1;min-width:0;overflow-wrap:anywhere">${ui("file", 14)} <b>${esc(f.name)}</b><div class="muted" style="font-size:12px">${when(f.at)} · ${sizeOf(f.size)}</div></span><span class="pill ok">${ui("lock", 12)} Encrypted</span><button class="btn sm" data-act="fileGet" data-id="${esc(f.id)}" data-name="${esc(f.name)}">${ui("download", 14)} Download</button>${rm("files", f.id, "Remove " + f.name)}</div>`).join("") || none("No files yet.")}</div>
+      <div class="card" style="margin-top:16px"><div class="card-head"><h2>New patient documents</h2><span class="pill ${d.documents.complete ? "ok" : ""}">${d.documents.done} of ${d.documents.total}</span></div>
+        ${d.documents.done ? `<button class="btn" data-act="docs">View documents</button><div id="docsBox" style="margin-top:12px"></div>` : none("None on file yet.")}</div>
+      <div class="card" style="margin-top:16px"><div class="card-head"><h2>Documents issued</h2><span class="muted" style="font-size:12px">Superbills and Good Faith Estimates</span></div>
+        ${(d.docs || []).map((x) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(x.title)}</b><div class="muted" style="font-size:12px">${when(x.at)}</div></span><button class="btn sm" data-act="docView" data-id="${esc(x.id)}">View or print</button>${rm("docs", x.id, "Remove " + x.title)}</div>`).join("") || none("None issued yet. They are made from the Billing tab.")}</div>`;
+    if (t === "billing") return `
+      <div class="grid g-side"><div class="stack">
+        <div class="card" style="padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>Invoices and payments</h2></div><div class="table-wrap"><table><thead><tr><th>Invoice</th><th>Date</th><th>Description</th><th class="num">Amount</th><th>Status</th><th></th></tr></thead><tbody id="billRows">${noneRow(6, "Loading…")}</tbody></table></div></div>
+        <div class="card stack"><div class="card-head"><h2>New invoice</h2><span class="muted" style="font-size:12px">For anything outside the usual online checkout</span></div>
+          <form class="stack" data-form="invoice"><div class="field"><label for="ivDesc">What it is for</label><input id="ivDesc" name="description" class="input" maxlength="200" required placeholder="Kinesiology tape, late cancellation, custom package"></div>
+          <div class="grid g3"><div class="field"><label for="ivAmt">Amount ($)</label><input id="ivAmt" name="amount" class="input" type="number" min="0.01" max="20000" step="0.01" required inputmode="decimal"></div>
+            <div class="field"><label for="ivDate">Date</label><input id="ivDate" name="date" class="input" type="date" value="${today}"></div>
+            <div class="field"><label for="ivPaid">Paid already?</label><select id="ivPaid" name="method" class="input"><option value="">Not yet</option><option value="cash">Yes, cash</option><option value="check">Yes, check</option><option value="card">Yes, card in person</option><option value="other">Yes, another way</option></select></div></div>
+          <div class="row"><button class="btn primary">Create invoice</button></div></form></div>
+        <div class="card"><div class="card-head"><h2>Video visits</h2><button class="btn sm" data-act="book">Schedule</button></div>
+          ${d.paidVisits.map((v) => `<div class="list-item"><span style="flex:1"><b>${esc(v.name || v.service)}</b><div class="muted" style="font-size:12px">paid ${when(v.paidAt)}${v.amount != null ? ` · ${usd(v.amount)}` : ""}</div></span><span class="pill warn">Needs a time</span></div>`).join("")}
+          ${d.visits.map((v) => `<div class="list-item"><span style="flex:1"><b>${esc(v.typeName)}</b><div class="muted" style="font-size:12px">${fmtDate(v.date)} ${fmtTime(v.time)} · ${v.minutes} min</div></span>${v.payment === "paid" ? `<span class="pill ok">Paid</span>` : v.payment === "exempt" ? `<span class="pill">Inpatient</span>` : ""}</div>`).join("")}
+          ${d.paidVisits.length || d.visits.length ? "" : none("No video visits.")}</div></div>
+      <div class="stack"><div class="card stack"><h2>Payment</h2><div id="billPay">${none("Loading…")}</div>
+          <button class="btn" data-act="superbill">Generate superbill</button><button class="btn" data-act="gfe">Good Faith Estimate</button></div>
+        <div class="card stack"><h2>Membership</h2>
+          <form class="stack" data-form="membership"><div class="field"><label for="mbTier">Membership type</label><select id="mbTier" name="tier" class="input">${tierOptions((c.membership && c.membership.tier) || "")}</select></div>
+          <div class="field"><label for="mbUntil">Paid through (blank for no end date)</label><input id="mbUntil" name="until" type="date" class="input" value="${esc((c.membership && c.membership.until) || "")}"></div>
+          <div class="row"><button class="btn primary">Save membership</button></div>${c.membership && c.membership.since ? `<p class="muted" style="margin:0;font-size:12px">Member since ${esc(c.membership.since)}</p>` : ""}</form></div></div></div>`;
+    if (t === "consent") { const live = (x) => !x.removedAt && (!x.expires || x.expires >= today); return `
+      <div class="card"><div class="card-head"><h2>New patient consents</h2><span class="pill ${d.documents.complete ? "ok" : "warn"}">${d.documents.complete ? "Signed" : `${d.documents.done} of ${d.documents.total} documents`}</span></div>
+        <p class="muted" style="margin:0 0 8px">Consent to treatment, the privacy notice and the financial policy are signed by ${first} as part of the new patient documents.</p>
+        ${d.documents.done ? `<button class="btn sm" data-act="docsModal" data-id="${esc(d.id)}">View what was signed</button>` : none(`${first} has not filled these out yet.`)}</div>
+      <div class="card stack" style="margin-top:16px"><div class="card-head"><h2>Consents on file</h2><span class="muted" style="font-size:12px">Releases and permissions ${first} has signed</span></div>
+        ${(d.consents || []).map((x) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(x.title)}</b><div class="muted" style="font-size:12px">${x.detail ? esc(x.detail) + " · " : ""}signed ${fmtDate(x.signedOn)} (${esc(x.how)})${x.expires ? " · expires " + fmtDate(x.expires) : ""}${x.removedAt ? " · revoked " + when(x.removedAt) : ""}</div></span><span class="pill ${live(x) ? "ok" : ""}">${x.removedAt ? "Revoked" : live(x) ? "Active" : "Expired"}</span>${x.removedAt ? "" : `<button class="btn sm danger" data-act="rmItem" data-kind="consents" data-id="${esc(x.id)}" data-word="Revoke this consent? It stays on the record as revoked.">Revoke</button>`}</div>`).join("") || none("None recorded yet.")}
+        <form class="stack" data-form="consent"><div class="grid g2"><div class="field"><label for="csTitle">Consent</label><input id="csTitle" name="title" class="input" maxlength="120" required list="csTitles" placeholder="Release of records" autocomplete="off"><datalist id="csTitles">${["Release of records to another provider", "Telehealth consent", "Photo and video consent", "Email and text message consent", "Sharing with a family member or caregiver"].map((n) => `<option value="${n}">`).join("")}</datalist></div>
+          <div class="field"><label for="csDetail">Who or what it covers</label><input id="csDetail" name="detail" class="input" maxlength="500" placeholder="Dr. Lee, orthopedics: visit notes"></div></div>
+          <div class="grid g3"><div class="field"><label for="csOn">Signed on</label><input id="csOn" name="signedOn" type="date" class="input" value="${today}" max="${today}"></div><div class="field"><label for="csExp">Expires (optional)</label><input id="csExp" name="expires" type="date" class="input" min="${today}"></div>
+            <div class="field"><label for="csHow">How it was given</label><select id="csHow" name="how" class="input"><option value="in person">Signed in person</option><option value="electronic">Signed electronically</option><option value="verbal">Verbal, noted by staff</option></select></div></div>
+          <div class="row"><button class="btn primary">Record consent</button></div></form></div>`; }
     return "";
+  }
+  // What a tab needs once it is on screen
+  function chartAfter() {
+    if (state.chartTab === "plans") { loadPool(); loadProtocols(); }
+    if (state.chartTab === "billing") loadBilling();
+  }
+  async function loadProtocols() {
+    const r = await get("/emr/protocols").catch(() => ({ protocols: [] })), box = $("#prPool"); if (!box) return;
+    cache.protocols = r.protocols || [];
+    const mine = new Set(((cache.chart.c.plan || {}).exercises || []).map((x) => String(x.name).toLowerCase())), first = esc(String(cache.chart.d.name).split(" ")[0]);
+    box.innerHTML = cache.protocols.map((p, i) => `<div class="list-item" style="align-items:flex-start"><span style="flex:1;min-width:0"><b>${esc(p.name)}</b> <span class="muted" style="font-size:12px">used ${p.uses}×</span>${p.detail ? `<div class="muted note-text" style="font-size:12.5px">${esc(p.detail)}</div>` : ""}</span>${mine.has(p.name.toLowerCase()) ? `<span class="pill ok">In program</span>` : `<button class="btn sm" data-act="prPick" data-i="${i}">Add to ${first}'s program</button>`}</div>`).join("") || none("Nothing written yet. Type the first one above.");
+    const dl = $("#prNames"); if (dl) dl.innerHTML = cache.protocols.map((p) => `<option value="${esc(p.name)}">`).join("");
+  }
+  const STATUS = { paid: "ok", unpaid: "warn", void: "", failed: "bad", refunded: "", pending: "warn" };
+  async function loadBilling() {
+    const id = state.chartClient, b = await get(`/emr/${id}/billing`).catch((e) => ({ error: e.message, invoices: [] }));
+    if (state.chartClient !== id || !$("#billRows")) return;
+    cache.billing = b;
+    $("#billRows").innerHTML = b.error ? noneRow(6, esc(b.error)) : b.invoices.map((x) => `<tr><td>${esc(x.number || "—")}</td><td>${x.date ? fmtDate(x.date) : "—"}</td><td>${esc(x.description || "")}</td><td class="num">${x.amount == null ? "—" : usd(x.amount)}</td>
+      <td><span class="pill ${STATUS[x.status] ?? "ok"}">${esc(x.status === "paid" && x.method ? `Paid · ${x.method}` : x.status.charAt(0).toUpperCase() + x.status.slice(1))}</span></td>
+      <td><div class="row" style="gap:6px;flex-wrap:nowrap;justify-content:flex-end">${x.custom && x.status === "unpaid" ? `<button class="btn sm primary" data-act="invSend" data-id="${esc(x.id)}">Send</button><button class="btn sm" data-act="invPay" data-id="${esc(x.id)}">Mark paid</button><button class="btn sm ghost" data-act="invVoid" data-id="${esc(x.id)}" aria-label="Void invoice ${esc(x.number)}">${ui("x", 14)}</button>` : x.receiptUrl ? `<a class="btn sm" href="${esc(x.receiptUrl)}" target="_blank" rel="noopener noreferrer">Receipt</a>` : ""}</div></td></tr>`).join("") || noneRow(6, "No invoices or payments yet.");
+    $("#billPay").innerHTML = `<div class="list-item"><span style="flex:1">Card on file</span><b>${b.card ? `${esc(b.card.brand.charAt(0).toUpperCase() + b.card.brand.slice(1))} ••${esc(b.card.last4)}` : "None"}</b></div>
+      <div class="list-item"><span style="flex:1">Autopay</span><span class="pill ${b.autopay ? "ok" : ""}">${b.autopay ? "On" : "Off"}</span></div>
+      <div class="list-item"><span style="flex:1">Balance</span><b class="num">${usd(b.balance || 0)}</b></div>`;
   }
 
   V.leads = async () => {
@@ -623,12 +737,12 @@
   const b_note = (s) => s.business && s.business.bookingNote ? `<p class="muted" style="margin:10px 0 0">${esc(s.business.bookingNote)}</p>` : "";
 
   // ---------------------------------------------------------------- actions
-  const reChart = async () => { const id = state.chartClient; const [d, c] = await Promise.all([get(`/emr/${id}`), get(`/clients/${id}`)]); cache.chart = { d, c }; const box = $("#chartBody"); if (box) box.innerHTML = chartTab(); };
+  const reChart = async () => { const id = state.chartClient; const [d, c] = await Promise.all([get(`/emr/${id}`), get(`/clients/${id}`)]); cache.chart = { ...cache.chart, d, c }; const box = $("#chartBody"); if (box) box.innerHTML = chartTab(); };
   const showDocs = (d) => (d.docs || []).map((doc) => `<div class="card" style="box-shadow:none;margin-top:10px"><h3 style="margin:0 0 2px">${esc(doc.title)}</h3><p class="muted" style="margin:0 0 8px;font-size:12px">Completed ${when(doc.createdAt)}</p><dl class="qa">${(doc.fields || []).map((f) => `<div><dt>${esc(f.label)}</dt><dd>${esc(Array.isArray(f.value) ? f.value.join(", ") : f.value === true ? "Yes" : f.value === false ? "No" : f.value == null || f.value === "" ? "—" : f.value)}</dd></div>`).join("")}</dl></div>`).join("") || none("No documents received yet.");
   const ACT = {
     chart: (el) => openChart(el.dataset.id),
     chartClose: (el, e) => { e.preventDefault(); state.chartClient = null; render(); },
-    chartTab: (el) => { state.chartTab = el.dataset.tab; document.querySelectorAll(".tabs .tab").forEach((b) => b.classList.toggle("active", b === el)); $("#chartBody").innerHTML = chartTab(); if (state.chartTab === "plans") loadPool(); },
+    chartTab: (el) => { state.chartTab = el.dataset.tab; document.querySelectorAll(".tabs .tab").forEach((b) => b.classList.toggle("active", b === el)); $("#chartBody").innerHTML = chartTab(); chartAfter(); },
     // ---- clinical notes
     noteSave: async () => { const r = await noteSave(false); toast(r ? "Draft saved." : "Write something first."); },
     noteSign: async () => {
@@ -805,7 +919,7 @@
     note: async (f) => { const text = f.text.value.trim(); if (!text) return; await api("POST", `/api/admin/emr/${state.chartClient}/notes`, { text }); toast("Note added. The patient can see it now."); await reChart(); },
     noteFor: async (f) => { const text = f.text.value.trim(); if (!f.id.value || !text) return; await api("POST", `/api/admin/emr/${f.id.value}/notes`, { text }); f.text.value = ""; toast("Note added. The patient can see it now."); },
     movement: async (f) => { await api("POST", `/api/admin/emr/${state.chartClient}/movements`, { videoId: f.videoId.value, name: f.name.value, dose: f.dose.value.trim(), cue: f.cue.value.trim() }); toast("Added to the plan."); await reChart(); loadPool(); },
-    consult: async (f) => { const a = await api("POST", `/api/admin/clients/${state.chartClient}/consult`, { date: f.date.value, time: f.time.value, minutes: Number(f.minutes.value), title: f.title.value.trim(), meetingLink: f.meetingLink.value.trim(), message: "" }); toast(`Scheduled ${fmtDate(a.date)} at ${fmtTime(a.time)}.`); await reChart(); },
+    consult: async (f) => { const a = await api("POST", `/api/admin/clients/${state.chartClient}/consult`, { date: f.date.value, time: f.time.value, minutes: Number(f.minutes.value), title: f.title.value.trim(), meetingLink: f.meetingLink.value.trim(), message: "" }); closeModal(); toast(`Scheduled ${fmtDate(a.date)} at ${fmtTime(a.time)}.`); render(); },
     // The message shows at once as "Sending…" and the box clears, so typing the next one never waits on the server
     message: async (f) => {
       const body = f.body.value.trim(); if (!body) return;
@@ -817,6 +931,149 @@
     },
     apptSave: async (f) => { await api("PATCH", `/api/admin/appointments/${f.dataset.id}`, { status: f.status.value, adminNotes: f.adminNotes.value }); cache.appts = null; closeModal(); toast("Appointment updated."); render(); }
   };
+  // ---- Client chart: what the buttons do
+  const cid = () => state.chartClient;
+  const firstOf = () => String(cache.chart.d.name).split(" ")[0];
+  const putPlan = (patch) => { const p = cache.chart.c.plan || {}; return api("PUT", `/api/admin/clients/${cid()}/plan`, { guides: p.guides || [], exercises: p.exercises || [], notes: p.notes || "", ...patch }); };
+  const setPrograms = (ids) => api("PUT", `/api/admin/clients/${cid()}/programs`, { programs: ids.map((id) => ({ id })) });
+  // After a change: fresh data, the same tab, and the alerts and tags in the header
+  const chartRedo = async () => { await reChart(); const p = $("#chartPills"); if (p) p.innerHTML = chartPills(); chartAfter(); };
+  async function setMembership(id, tier, until, name) {
+    const cur = (cache.clients || []).find((x) => x.id === id), was = cur && cur.membership;
+    if (was && was.stripeSubscriptionId && !confirm(`${name} pays for this membership by card each month. Changing it here changes what they can use, not what their card is charged. Continue?`)) return false;
+    await api("PUT", `/api/admin/clients/${id}/membership`, tier ? { tier, until: until || "" } : { tier: "" });
+    cache.clients = null; return tier ? `${name}: ${tierName(tier)}.` : `${name}: membership ended.`;
+  }
+  // Practice details for superbills and estimates are typed once and remembered on this device (they are not patient data)
+  const PRACTICE_KEY = "mdfit_ws_practice";
+  const practice = () => { try { return JSON.parse(localStorage.getItem(PRACTICE_KEY) || "{}") || {}; } catch { return {}; } };
+  const practiceFields = () => { const p = practice(); const f = (n, l, ph = "") => `<div class="field"><label for="pf_${n}">${l}</label><input id="pf_${n}" name="p_${n}" class="input" maxlength="160" value="${esc(p[n] || "")}" placeholder="${ph}"></div>`;
+    return `<div class="grid g2">${f("name", "Practice name", "MD Fit")}${f("provider", "Provider and credentials", "Jared Caban, DPT")}${f("address", "Practice address")}${f("phone", "Practice phone")}${f("npi", "NPI")}${f("ein", "Tax ID (EIN)")}</div>`; };
+  const practiceFrom = (f) => { const p = {}; for (const n of ["name", "provider", "address", "phone", "npi", "ein"]) p[n] = f["p_" + n].value.trim(); try { localStorage.setItem(PRACTICE_KEY, JSON.stringify(p)); } catch {} return p; };
+  const lineRows = (n, cols) => Array.from({ length: n }, (_, i) => `<div class="doc-line">${cols.map(([k, ph, type, extra = ""]) => `<input name="${k}${i}" class="input" placeholder="${ph}" aria-label="${ph}, line ${i + 1}" ${type ? `type="${type}"` : ""} ${extra}>`).join("")}</div>`).join("");
+  const GFE_NOTICE = [
+    "This Good Faith Estimate shows the costs of items and services that are reasonably expected for your health care needs for an item or service. The estimate is based on information known at the time the estimate was created.",
+    "The Good Faith Estimate does not include any unknown or unexpected costs that may arise during treatment. You could be charged more if complications or special circumstances occur. If this happens, federal law allows you to dispute (appeal) the bill.",
+    "If you are billed for $400 or more above this Good Faith Estimate, you have the right to dispute the bill. You may contact the health care provider or facility listed to let them know the billed charges are higher than the Good Faith Estimate. You can ask them to update the bill to match the Good Faith Estimate, ask to negotiate the bill, or ask if there is financial assistance available.",
+    "You may also start a dispute resolution process with the U.S. Department of Health and Human Services (HHS). If you choose to use the dispute resolution process, you must start the dispute process within 120 calendar days (about 4 months) of the date on the original bill. There is a fee to use the dispute process. If the agency reviewing your dispute agrees with you, you will have to pay the price on this Good Faith Estimate. If the agency disagrees with you and agrees with the health care provider or facility, you will have to pay the higher amount.",
+    "To learn more and get a form to start the process, go to www.cms.gov/nosurprises or call 1-800-985-3059. This Good Faith Estimate is not a contract and does not require you to obtain the items or services from the provider listed. Keep a copy of this Good Faith Estimate in a safe place. You may need it if you are billed a higher amount."];
+  // A superbill or estimate as a printable page. Everything is escaped: these are typed by staff.
+  function docHtml(kind, o) {
+    const P = o.practice || {}, gfe = kind === "gfe", lines = o.lines || [], total = lines.reduce((n, l) => n + (Number(l.fee) || 0) * (gfe ? Number(l.qty) || 1 : 1), 0), m = (n) => "$" + (Number(n) || 0).toFixed(2);
+    return `<div class="doc"><div class="doc-top"><div><b style="font-size:18px">${esc(P.name || "MD Fit")}</b><div>${esc(P.address || "")}</div><div>${esc(P.phone || "")}</div><div>${esc(P.provider || "")}</div><div>${P.npi ? "NPI " + esc(P.npi) : ""}${P.npi && P.ein ? " · " : ""}${P.ein ? "Tax ID " + esc(P.ein) : ""}</div></div>
+      <div style="text-align:right"><b style="font-size:18px">${gfe ? "Good Faith Estimate" : "Superbill"}</b><div>Issued ${esc(o.issued || "")}</div></div></div>
+      <table class="doc-t"><tbody><tr><th>Patient</th><td>${esc(o.patient || "")}</td><th>Date of birth</th><td>${esc(o.dob || "")}</td></tr>${o.address ? `<tr><th>Address</th><td colspan="3">${esc(o.address)}</td></tr>` : ""}
+      ${gfe ? `<tr><th>Primary service</th><td colspan="3">${esc(o.reason || "")}</td></tr><tr><th>Expected</th><td colspan="3">${esc(o.period || "")}</td></tr>` : ""}<tr><th>Diagnosis codes (ICD-10)</th><td colspan="3">${esc((o.dx || []).join(", ") || (gfe ? "Not yet determined" : ""))}</td></tr></tbody></table>
+      <table class="doc-t"><thead><tr>${gfe ? "<th>Service</th><th>Code</th><th>Quantity</th><th>Each</th><th>Expected charge</th>" : "<th>Date of service</th><th>CPT</th><th>Description</th><th>Fee</th>"}</tr></thead><tbody>
+      ${lines.map((l) => gfe ? `<tr><td>${esc(l.desc)}</td><td>${esc(l.code || "")}</td><td>${esc(l.qty || 1)}</td><td>${m(l.fee)}</td><td>${m((Number(l.fee) || 0) * (Number(l.qty) || 1))}</td></tr>` : `<tr><td>${esc(l.date)}</td><td>${esc(l.code || "")}</td><td>${esc(l.desc)}</td><td>${m(l.fee)}</td></tr>`).join("")}
+      <tr><th colspan="${gfe ? 4 : 3}" style="text-align:right">${gfe ? "Total estimated charges" : "Total charges"}</th><th>${m(total)}</th></tr>${gfe ? "" : `<tr><th colspan="3" style="text-align:right">Paid by patient</th><th>${m(o.paid)}</th></tr><tr><th colspan="3" style="text-align:right">Balance</th><th>${m(total - (Number(o.paid) || 0))}</th></tr>`}</tbody></table>
+      ${gfe ? `<div class="doc-fine"><b>Disclaimer</b>${GFE_NOTICE.map((p) => `<p>${p}</p>`).join("")}</div>` : `<p class="doc-fine">This statement is for you to submit to your insurance plan for possible out-of-network reimbursement. MD Fit is a self-pay practice and does not bill insurance. Payment was due at the time of service.</p><p style="margin-top:28px">Provider signature: ______________________________ &nbsp; Date: ______________</p>`}</div>`;
+  }
+  function showDoc(kind, o, title) { modal(`<div class="card-head"><h2>${esc(title)}</h2><div class="row"><button type="button" class="btn sm primary" data-act="docPrint">Print or save as PDF</button><button type="button" class="btn sm ghost" data-act="closeModal" aria-label="Close">${ui("x", 14)}</button></div></div><div id="docShown">${docHtml(kind, o)}</div>`); $("#modal").classList.add("wide"); }
+  const docForm = (kind) => {
+    const { d } = cache.chart, gfe = kind === "gfe", today = isoDay(new Date());
+    modal(`<div class="card-head"><h2>${gfe ? "Good Faith Estimate" : "Superbill"} for ${esc(firstOf())}</h2><button type="button" class="btn sm ghost" data-act="closeModal" aria-label="Close">${ui("x", 14)}</button></div>
+      <form class="stack" data-form="${gfe ? "gfe" : "superbill"}">${practiceFields()}
+      <div class="grid g2"><div class="field"><label for="dfName">Patient name</label><input id="dfName" name="patient" class="input" maxlength="120" required value="${esc(d.name)}"></div><div class="field"><label for="dfDob">Date of birth</label><input id="dfDob" name="dob" type="date" class="input" max="${today}"></div></div>
+      ${gfe ? `<div class="grid g2"><div class="field"><label for="dfReason">Primary service or reason for care</label><input id="dfReason" name="reason" class="input" maxlength="200" required placeholder="Physical rehabilitation for knee pain"></div><div class="field"><label for="dfPeriod">Expected when</label><input id="dfPeriod" name="period" class="input" maxlength="120" placeholder="8 visits over 6 weeks, starting Nov 18"></div></div>` : `<div class="field"><label for="dfAddr">Patient address (optional)</label><input id="dfAddr" name="address" class="input" maxlength="200"></div>`}
+      <div class="field"><label for="dfDx">Diagnosis codes, ICD-10 (comma separated${gfe ? ", if known" : ""})</label><input id="dfDx" name="dx" class="input" maxlength="200" placeholder="M25.561, M62.81"></div>
+      <div><label class="muted" style="font-size:12px">${gfe ? "Services expected: name, code, how many, price each" : "Services: date, CPT code, description, fee"}</label>
+        ${gfe ? lineRows(4, [["desc", "Service", "", 'list="svcNames" data-svc="1"'], ["code", "Code"], ["qty", "Qty", "number", 'min="1" max="200" step="1"'], ["fee", "Each ($)", "number", 'min="0" step="0.01"']]) : lineRows(4, [["date", "Date", "date", `max="${today}"`], ["code", "CPT"], ["desc", "Description"], ["fee", "Fee ($)", "number", 'min="0" step="0.01"']])}
+        <datalist id="svcNames">${((cache.settings && cache.settings.services) || []).map((s) => `<option value="${esc(s.name)}">`).join("")}</datalist></div>
+      ${gfe ? "" : `<div class="field"><label for="dfPaid">Paid by the patient ($)</label><input id="dfPaid" name="paid" class="input" type="number" min="0" step="0.01" value="0"></div>`}
+      <p class="muted" style="margin:0;font-size:12.5px">${gfe ? "Uses the notice wording from the federal model form. Have your attorney or compliance advisor confirm it fits your practice before relying on it." : "Check the codes before you hand this over: nothing here is filled in for you."} A copy is kept in this chart under Files.</p>
+      <div class="row"><button class="btn primary">Create ${gfe ? "estimate" : "superbill"}</button></div></form>`);
+    $("#modal").classList.add("wide");
+  };
+  async function docSubmit(kind, f) {
+    const gfe = kind === "gfe", lines = [];
+    for (let i = 0; i < 4; i++) { const desc = f["desc" + i].value.trim(), fee = Number(f["fee" + i].value); if (!desc && !f["code" + i].value.trim()) continue; lines.push(gfe ? { desc, code: f["code" + i].value.trim(), qty: Math.max(1, Number(f["qty" + i].value) || 1), fee: fee || 0 } : { date: f["date" + i].value, code: f["code" + i].value.trim(), desc, fee: fee || 0 }); }
+    if (!lines.length) { toast("Add at least one service line."); return; }
+    const o = { practice: practiceFrom(f), patient: f.patient.value.trim(), dob: f.dob.value, dx: f.dx.value.split(",").map((x) => x.trim()).filter(Boolean).slice(0, 12), lines, issued: isoDay(new Date()),
+      ...(gfe ? { reason: f.reason.value.trim(), period: f.period.value.trim() } : { address: f.address.value.trim(), paid: Number(f.paid.value) || 0 }) };
+    const title = `${gfe ? "Good Faith Estimate" : "Superbill"} ${o.issued}`;
+    await api("POST", `/api/admin/emr/${cid()}/docs`, { kind, title, body: JSON.stringify(o) });
+    showDoc(kind, o, title); toast("Created. A copy is in this chart under Files."); reChart();
+  }
+  Object.assign(ACT, {
+    stop: () => {},
+    chartNewNote: () => { location.hash = "notes"; },
+    chartNote: async (el) => {
+      if (!el.dataset.draft) return ACT.noteOpen(el);
+      const n = await get(`/notes/${el.dataset.id}`);
+      Object.assign(note, { id: n.id, clientId: n.clientId, template: n.template, tier: n.tier, tags: n.tags || [], dirty: false, savedAt: null }); location.hash = "notes";
+    },
+    book: async () => {
+      const today = isoDay(new Date()), s = cache.settings || (cache.settings = await get("/settings").catch(() => ({})));
+      modal(`<div class="card-head"><h2>Book ${esc(firstOf())}</h2><button type="button" class="btn sm ghost" data-act="closeModal" aria-label="Close">${ui("x", 14)}</button></div>
+        <form class="stack" data-form="consult"><b>Schedule a video visit yourself</b><div class="grid g2"><div class="field"><label for="cvDate">Date</label><input id="cvDate" name="date" type="date" class="input" min="${today}" required></div><div class="field"><label for="cvTime">Time</label><input id="cvTime" name="time" type="time" step="900" class="input" required></div></div>
+        <div class="grid g2"><div class="field"><label for="cvMin">Length</label><select id="cvMin" name="minutes" class="input"><option value="30">30 min</option><option value="45">45 min</option><option value="60" selected>60 min</option><option value="90">90 min</option></select></div><div class="field"><label for="cvTitle">Title</label><input id="cvTitle" name="title" class="input" maxlength="80" value="Video visit"></div></div>
+        <div class="field"><label for="cvLink">Video link (blank uses the built-in room)</label><input id="cvLink" name="meetingLink" type="url" class="input" placeholder="https://"></div>
+        <div class="row"><button class="btn primary">Schedule</button></div></form>
+        <form class="stack" data-form="bookLink" style="border-top:1px solid var(--line);margin-top:14px;padding-top:14px"><b>Or email ${esc(firstOf())} a link to pick a time</b>
+        <div class="field"><label for="blType">Visit type</label><select id="blType" name="typeId" class="input" required>${(s.appointmentTypes || []).map((t) => `<option value="${esc(t.id)}">${esc(t.name)}</option>`).join("")}</select></div>
+        <div class="field"><label for="blMsg">A line from you (optional)</label><input id="blMsg" name="message" class="input" maxlength="500"></div>
+        <div class="row"><button class="btn">Email booking link</button></div></form>`);
+    },
+    rmItem: async (el) => { if (!confirm(el.dataset.word || "Remove this? It stays on the record as removed.")) return; await api("DELETE", `/api/admin/emr/${cid()}/${el.dataset.kind}/${el.dataset.id}`); await chartRedo(); toast(el.dataset.kind === "consents" ? "Consent revoked." : "Removed."); },
+    prAssign: async (el) => { await setPrograms([...(cache.chart.c.assignedPrograms || []).map((p) => p.id), el.dataset.id]); await chartRedo(); toast(`Added to ${firstOf()}'s program. They are notified in the app.`); },
+    prUnassign: async (el) => { await setPrograms((cache.chart.c.assignedPrograms || []).map((p) => p.id).filter((x) => x !== el.dataset.id)); await chartRedo(); toast("Program removed."); },
+    prPick: async (el) => { const p = (cache.protocols || [])[Number(el.dataset.i)]; if (!p) return; await putPlan({ exercises: [...((cache.chart.c.plan || {}).exercises || []), { name: p.name, detail: p.detail || "" }] }); await chartRedo(); toast(`Added to ${firstOf()}'s program.`); },
+    prRemove: async (el) => { if (!confirm("Remove this protocol from the program?")) return; const list = ((cache.chart.c.plan || {}).exercises || []).slice(); list.splice(Number(el.dataset.i), 1); await putPlan({ exercises: list }); await chartRedo(); toast("Protocol removed."); },
+    fileGet: async (el) => {
+      const res = await fetch(`${API}/api/admin/emr/${cid()}/files/${el.dataset.id}`, { headers: { Authorization: "Bearer " + token } });
+      if (!res.ok) throw new Error(res.status === 401 ? "Session expired. Sign in again." : "That file could not be opened.");
+      const url = URL.createObjectURL(await res.blob()), a = document.createElement("a");
+      a.href = url; a.download = el.dataset.name || "file"; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 30000);
+    },
+    docView: (el) => { const x = (cache.chart.d.docs || []).find((y) => y.id === el.dataset.id); if (!x) return; let o = {}; try { o = JSON.parse(x.body); } catch {} showDoc(x.kind, o, x.title); },
+    docPrint: () => { const box = $("#printDoc"), src = $("#docShown"); if (!box || !src) return; box.innerHTML = src.innerHTML; window.print(); setTimeout(() => { box.innerHTML = ""; }, 500); },
+    superbill: async () => { docForm("superbill"); },
+    gfe: async () => { if (!cache.settings) cache.settings = await get("/settings").catch(() => ({})); docForm("gfe"); },
+    invPay: (el) => { const x = ((cache.billing || {}).invoices || []).find((y) => y.id === el.dataset.id); if (!x) return;
+      modal(`<div class="card-head"><h2>Mark ${esc(x.number)} paid</h2><button type="button" class="btn sm ghost" data-act="closeModal" aria-label="Close">${ui("x", 14)}</button></div><p style="margin:0 0 12px">${esc(x.description)} · <b>${usd(x.amount)}</b></p>
+        <form class="stack" data-form="invPaid" data-id="${esc(x.id)}"><div class="field"><label for="ipHow">How was it paid?</label><select id="ipHow" name="method" class="input"><option value="cash">Cash</option><option value="check">Check</option><option value="card">Card in person</option><option value="other">Another way</option></select></div><div class="row"><button class="btn primary">Mark paid</button></div></form>`); },
+    invVoid: async (el) => { if (!confirm("Void this invoice? It stays on the record as void.")) return; await api("PUT", `/api/admin/emr/${cid()}/invoices/${el.dataset.id}`, { status: "void" }); toast("Invoice voided."); loadBilling(); },
+    invSend: (el) => { const x = ((cache.billing || {}).invoices || []).find((y) => y.id === el.dataset.id); if (!x) return;
+      modal(`<div class="card-head"><h2>Send ${esc(x.number)} to ${esc(firstOf())}</h2><button type="button" class="btn sm ghost" data-act="closeModal" aria-label="Close">${ui("x", 14)}</button></div>
+        <p class="muted" style="margin:0 0 12px">${esc(firstOf())} gets an email with the amount (<b>${usd(x.amount)}</b>) and a secure card payment page. The invoice is marked paid here on its own once the payment goes through.</p>
+        <form class="stack" data-form="invEmail" data-id="${esc(x.id)}"><div class="field"><label for="ieSub">Subject</label><input id="ieSub" name="subject" class="input" maxlength="120" value="MD Fit invoice ${esc(x.number)}"></div>
+        <div class="field"><label for="ieMsg">Your message (optional)</label><textarea id="ieMsg" name="message" class="input" rows="3" maxlength="600" placeholder="Thanks for coming in today."></textarea></div>
+        <p class="muted" style="margin:0;font-size:12.5px">Email is not private. Leave health details out of the subject and the message: what the invoice is for is not included in the email or sent to the card processor.</p>
+        <div class="row"><button class="btn primary">Send invoice</button><button type="button" class="btn" data-act="invLink" data-id="${esc(x.id)}">Copy payment link instead</button></div></form>`); },
+    invLink: async (el) => { const r = await api("POST", `/api/admin/emr/${cid()}/invoices/${el.dataset.id}/paylink`, {}); try { await navigator.clipboard.writeText(r.url); toast("Payment link copied. It works for 24 hours."); } catch { prompt("Copy this payment link (works for 24 hours):", r.url); } },
+  });
+  Object.assign(FORMS, {
+    summary: async (f) => { await api("PUT", `/api/admin/emr/${cid()}/summary`, { summary: f.summary.value.trim(), tags: f.tags.value.split(",").map((x) => x.trim()).filter(Boolean) }); await chartRedo(); toast("Summary saved."); },
+    planNotes: async (f) => { stopDictation(); await putPlan({ notes: f.notes.value.trim() }); await chartRedo(); toast(`Treatment plan saved. ${firstOf()} can see it in the app.`); },
+    protocol: async (f) => { stopDictation(); const name = f.name.value.trim(); if (!name) return; let detail = f.detail.value.trim(); if (!detail) { const known = (cache.protocols || []).find((p) => p.name.toLowerCase() === name.toLowerCase()); if (known) detail = known.detail || ""; }
+      await putPlan({ exercises: [...((cache.chart.c.plan || {}).exercises || []), { name, detail }] }); await chartRedo(); toast(`Added to ${firstOf()}'s program. They are notified in the app.`); },
+    measure: async (f) => { await api("POST", `/api/admin/emr/${cid()}/measures`, { name: f.name.value.trim(), value: f.value.value, unit: f.unit.value.trim(), date: f.date.value, note: f.note.value.trim() }); await chartRedo(); toast("Measure added."); },
+    med: async (f) => { await api("POST", `/api/admin/emr/${cid()}/meds`, { name: f.name.value.trim(), dose: f.dose.value.trim(), note: f.note.value.trim() }); await chartRedo(); toast("Medication added."); },
+    allergy: async (f) => { await api("POST", `/api/admin/emr/${cid()}/allergies`, { name: f.name.value.trim(), reaction: f.reaction.value.trim() }); await chartRedo(); toast("Alert added. It shows at the top of the chart."); },
+    consent: async (f) => { await api("POST", `/api/admin/emr/${cid()}/consents`, { title: f.title.value.trim(), detail: f.detail.value.trim(), signedOn: f.signedOn.value, expires: f.expires.value, how: f.how.value }); await chartRedo(); toast("Consent recorded."); },
+    invoice: async (f) => { const inv = await api("POST", `/api/admin/emr/${cid()}/invoices`, { description: f.description.value.trim(), amount: Number(f.amount.value), date: f.date.value, method: f.method.value }); f.reset(); toast(`${inv.number} created${inv.status === "paid" ? " and marked paid" : ""}.`); loadBilling(); },
+    invPaid: async (f) => { await api("PUT", `/api/admin/emr/${cid()}/invoices/${f.dataset.id}`, { status: "paid", method: f.method.value }); closeModal(); toast("Marked paid."); loadBilling(); },
+    invEmail: async (f) => { await api("POST", `/api/admin/emr/${cid()}/invoices/${f.dataset.id}/paylink`, { send: true, subject: f.subject.value.trim(), message: f.message.value.trim() }); closeModal(); toast(`Invoice emailed to ${firstOf()}.`); },
+    membership: async (f) => { const said = await setMembership(cid(), f.tier.value, f.until.value, firstOf()); if (said) { await render(); toast(said); } },
+    bookLink: async (f) => { const r = await api("POST", `/api/admin/clients/${cid()}/send-booking-link`, { typeId: f.typeId.value, message: f.message.value.trim() }); closeModal(); toast(r.message || "Booking link sent."); },
+    superbill: (f) => docSubmit("superbill", f),
+    gfe: (f) => docSubmit("gfe", f),
+  });
+  // Uploading a file to the chart: sent as it is, sealed by the server before it is stored
+  async function chartUpload(input) {
+    const file = input.files && input.files[0]; input.value = ""; if (!file) return;
+    const types = { pdf: "application/pdf", png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg", webp: "image/webp", heic: "image/heic", txt: "text/plain" };
+    const type = types[(file.name.split(".").pop() || "").toLowerCase()];
+    if (!type) { toast("Files can be PDF, PNG, JPG, WEBP, HEIC or plain text."); return; }
+    if (file.size > 4 * 1024 * 1024) { toast("That file is larger than 4 MB."); return; }
+    toast("Uploading…");
+    const res = await fetch(`${API}/api/admin/emr/${cid()}/files`, { method: "POST", headers: { "Content-Type": type, "X-File-Name": encodeURIComponent(file.name), Authorization: "Bearer " + token }, body: file });
+    const data = await res.json().catch(() => null);
+    if (!res.ok) throw new Error((data && data.error) || (res.status === 413 ? "That file is too large." : "The upload did not go through."));
+    await chartRedo(); toast("Encrypted and saved to the chart.");
+  }
+
   async function loadPool() {
     const box = $("#mvPool"); if (!box) return;
     const pool = ((await get("/emr/pool").catch(() => ({ pool: [] }))).pool || []).slice(0, 12);
@@ -827,6 +1084,10 @@
   document.addEventListener("submit", (e) => { const f = e.target.closest("[data-form]"); if (!f) return; e.preventDefault(); const fn = FORMS[f.dataset.form]; if (fn && token) guard(fn)(f); });
   document.addEventListener("change", (e) => {
     if (e.target.matches("[data-change=leadStatus]")) guard(ACT.leadSave)(e.target);
+    if (e.target.matches("[data-change=chartFile]")) guard(chartUpload)(e.target);
+    if (e.target.matches("[data-change=rowTier]")) guard(async (el) => { const was = ((cache.clients || []).find((x) => x.id === el.dataset.id) || {}).membership; const said = await setMembership(el.dataset.id, el.value, was && was.tier === el.value ? was.until : "", el.dataset.name); if (said) { await clients(true); toast(said); } else el.value = (was && was.tier) || ""; el.classList.toggle("on", !!el.value); })(e.target);
+    if (e.target.matches("[data-change=chartTier]")) guard(async (el) => { const was = cache.chart.c.membership, said = await setMembership(cid(), el.value, "", firstOf()); if (said) { await render(); toast(said); } else el.value = (was && was.tier) || ""; })(e.target);
+    if (e.target.matches("[data-change=chartType]")) guard(async (el) => { await api("PUT", `/api/admin/clients/${cid()}/type`, { type: el.value }); cache.clients = null; const type = el.value; await render(); toast(`${firstOf()} is now ${type === "inpatient" ? "an inpatient: visits are not charged" : "an outpatient"}.`); })(e.target);
     if (e.target.matches("[data-change=teleScribe]")) teleScribe(e.target.checked);
     if (e.target.matches("[data-change=teleGroup]")) { if (window.MDFitRT && MDFitRT.connected()) MDFitRT.emit("tele_group", { on: e.target.checked }); else { e.target.checked = tele.group; toast("Not connected to the live service. Reload the page."); } }
     if (e.target.matches("[data-change=noteClient]")) { (async () => { if (note.dirty) await noteSave(true); stopDictation(); state.chartClient = e.target.value; noteReset(e.target.value); render(); })(); }
@@ -840,6 +1101,7 @@
       const q = e.target.value.trim().toLowerCase().split(/\s+/).filter(Boolean), box = $("#mvResults");
       box.innerHTML = q.length ? (EXERCISES.filter((x) => q.every((w) => `${x.name} ${x.region} ${x.cat}`.toLowerCase().includes(w))).slice(0, 10).map((x) => `<div class="list-item"><span style="flex:1"><b>${esc(x.name)}</b><div class="muted" style="font-size:12px">${esc(x.region)} · ${esc(x.cat)} · level ${x.level}</div></span><button type="button" class="btn sm" data-act="mvPick" data-id="${esc(x.id)}">Choose</button></div>`).join("") || none("No movement matches.")) : "";
     }
+    if (e.target.dataset && e.target.dataset.svc) { const sv = ((cache.settings && cache.settings.services) || []).find((x) => x.name === e.target.value), fee = e.target.parentElement.querySelector('[name^="fee"]'); if (sv && fee && !fee.value) fee.value = sv.rate; }
     if (e.target.id === "clientQ") { state.clientQ = e.target.value; clearTimeout(e.target._t); e.target._t = setTimeout(async () => { const pos = e.target.selectionStart; await render(); const i = $("#clientQ"); if (i) { i.focus(); i.setSelectionRange(pos, pos); } }, 250); }
   });
 
@@ -855,7 +1117,7 @@
     renderNav(r); $("#nav").classList.remove("open");
     const my = ++seq, view = $("#view");
     if (!view.innerHTML) view.innerHTML = `<p class="spin">Loading…</p>`;
-    try { const html = await V[r](); if (my !== seq || !token) return; view.innerHTML = html; if (r === "chart" && state.chartTab === "plans") loadPool(); if (r === "telehealth") { if (window.MDFitRT) MDFitRT.emit("tele_list"); teleMount(); } }
+    try { const html = await V[r](); if (my !== seq || !token) return; view.innerHTML = html; if (r === "chart" && state.chartClient) chartAfter(); if (r === "telehealth") { if (window.MDFitRT) MDFitRT.emit("tele_list"); teleMount(); } }
     catch (err) { if (my !== seq || !token) return; view.innerHTML = `<div class="card"><b>This screen could not be loaded.</b><p class="muted" style="margin:6px 0 0">${esc(err.message)}</p></div>`; }
   }
   // ---- Voice dictation into a note box. It uses the browser's own speech recognition: on this device when the
