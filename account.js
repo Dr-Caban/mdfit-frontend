@@ -2609,6 +2609,8 @@
     payOn = !!(c.features && c.features.payments && stripePub);
     if (payOn && C && $("#tier-grid") && $("#tier-grid").innerHTML) renderPremium().catch(() => {});
   }).catch(() => {});
+  // Back from the card processor's page after adding a card to keep on file
+  if (new URLSearchParams(location.search).get("card") === "saved") { toast("Your card was saved. Thank you."); history.replaceState(null, "", "/account" + location.hash); }
   if (new URLSearchParams(location.search).get("checkout") === "success") {
     const sid = new URLSearchParams(location.search).get("session_id");
     toast("Payment received. Thank you! Your account updates in a moment.");
