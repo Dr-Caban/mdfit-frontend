@@ -43,14 +43,27 @@
 
   // Signing out empties everything that was drawn, so names and notes do not stay on a shared screen.
   function signOut() {
-    token = ""; store.set(""); cache.clients = null; cache.me = null; state.chartClient = null; state.thread = null;
-    $("#view").innerHTML = ""; $("#nav").innerHTML = ""; $("#whoami").textContent = ""; closeModal();
+    token = ""; store.set("");
+    for (const k of Object.keys(cache)) cache[k] = (k === "unread" || k === "waiting") ? 0 : null; // every cached list, the open chart included
+    state.chartClient = null; state.thread = null; state.clientQ = "";
+    $("#view").innerHTML = ""; $("#nav").innerHTML = ""; $("#whoami").textContent = ""; $("#globalSearch").value = ""; closeModal();
     $("#app").hidden = true; $("#signin").hidden = false; clearTimeout(idleTimer);
+    // /admin shares this tab: signing out here signs out there as well
+    try { sessionStorage.removeItem("mdfit_token"); sessionStorage.removeItem(ACTIVE_KEY); } catch {}
   }
-  let idleTimer;
-  const IDLE_MS = 15 * 60 * 1000;
-  function idleBump() { clearTimeout(idleTimer); if (token) idleTimer = setTimeout(() => { signOut(); $("#siMsg").textContent = "Signed out after 15 minutes without activity."; }, IDLE_MS); }
+  // The time of the last input is kept in the tab's session storage and shared with /admin, so the 15 minutes
+  // follow the person across both pages and are not restarted by a reload, Back, or a sleeping laptop.
+  let idleTimer, lastStamp = 0;
+  const IDLE_MS = 15 * 60 * 1000, ACTIVE_KEY = "mdfit_staff_active";
+  const idleStamp = () => { lastStamp = Date.now(); try { sessionStorage.setItem(ACTIVE_KEY, String(lastStamp)); } catch {} };
+  const idleFor = () => { try { const t = Number(sessionStorage.getItem(ACTIVE_KEY)); return t ? Date.now() - t : 0; } catch { return 0; } };
+  const idleOut = () => { signOut(); $("#siMsg").textContent = "Signed out after 15 minutes without activity."; };
+  function idleArm() { clearTimeout(idleTimer); if (token) idleTimer = setTimeout(() => (idleFor() >= IDLE_MS ? idleOut() : idleArm()), Math.max(1000, IDLE_MS - idleFor())); }
+  function idleBump() { if (!token) return; if (Date.now() - lastStamp > 5000) idleStamp(); idleArm(); }
+  const idleCheck = () => { if (token && (!store.get() || idleFor() >= IDLE_MS)) idleOut(); };
   ["pointerdown", "keydown", "scroll"].forEach((ev) => window.addEventListener(ev, idleBump, { passive: true, capture: true }));
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) idleCheck(); });
+  window.addEventListener("pageshow", idleCheck); window.addEventListener("focus", idleCheck);
 
   $("#signinForm").addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -58,7 +71,7 @@
     try {
       const body = { email: f.email.value.trim(), password: f.password.value }; if (f.code.value.trim()) body.code = f.code.value.trim();
       const out = await api("POST", "/api/admin/login", body);
-      token = out.token; store.set(token); f.reset(); $("#siCodeRow").hidden = true; start();
+      token = out.token; store.set(token); idleStamp(); f.reset(); $("#siCodeRow").hidden = true; start();
     } catch (err) {
       if (/code/i.test(err.message)) { $("#siCodeRow").hidden = false; f.code.focus(); }
       msg.textContent = err.message;
@@ -534,7 +547,7 @@
     catch (err) { if (my !== seq || !token) return; view.innerHTML = `<div class="card"><b>This screen could not be loaded.</b><p class="muted" style="margin:6px 0 0">${esc(err.message)}</p></div>`; }
   }
   async function start() {
-    $("#signin").hidden = true; $("#app").hidden = false; idleBump();
+    $("#signin").hidden = true; $("#app").hidden = false; idleArm();
     get("/me").then((me) => { cache.me = me; $("#whoami").textContent = me.email; }).catch(() => {});
     render();
   }
@@ -549,5 +562,7 @@
     const c = (await clients()).find((x) => `${x.name} ${x.email}`.toLowerCase().includes(q));
     if (c) { e.target.value = ""; openChart(c.id); } else toast("No client matches that.");
   }));
-  if (token) start(); else { $("#signin").hidden = false; $("#app").hidden = true; }
+  // A restored session keeps its old last-input time: a reload must not hand out a fresh 15 minutes
+  if (token && idleFor() >= IDLE_MS) idleOut();
+  else if (token) { if (!idleFor()) idleStamp(); start(); } else { $("#signin").hidden = false; $("#app").hidden = true; }
 })();

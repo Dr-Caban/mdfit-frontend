@@ -88,7 +88,15 @@
   const auth = {
     get() { try { const s = JSON.parse(localStorage.getItem(KEY) || "null"); return s && Date.parse(s.expiresAt) > Date.now() ? s : null; } catch { return null; } },
     set(sess) { try { localStorage.setItem(KEY, JSON.stringify(sess)); } catch {} },
-    clear() { try { localStorage.removeItem(KEY); } catch {} },
+    // Signing out removes everything this app kept on the device, not only the session: the notification list
+    // (visit times), today's workout, preferences and the paired device name must not greet the next person
+    // who signs in on a shared phone or tablet. The public video map and the staff "seen" marker hold no member data.
+    clear() {
+      try {
+        localStorage.removeItem(KEY);
+        Object.keys(localStorage).filter((k) => /^mdfit/i.test(k) && k !== "mdfit-cdn2" && k !== "mdfit_admin_seen").forEach((k) => localStorage.removeItem(k));
+      } catch {}
+    },
     client() { const s = auth.get(); return s ? s.client : null; }
   };
   async function apiAuth(method, path, body) {

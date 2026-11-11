@@ -1,6 +1,8 @@
 (function () {
   "use strict";
-  var SOCKET_IO_CDN = "https://cdn.jsdelivr.net/npm/socket.io-client@4.8.1/dist/socket.io.min.js";
+  // Served from this site, not a public CDN: this script runs inside the signed-in member app and Admin,
+  // so no outside host may be able to change it. The file is the unmodified socket.io-client 4.8.1 build from npm.
+  var SOCKET_IO_CDN = "/vendor/socket.io-4.8.1.min.js";
   var loaded = null;
 
   function loadSocketIO() {
