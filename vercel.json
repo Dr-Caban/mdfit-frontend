@@ -11,7 +11,7 @@
       ]
     },
     {
-      "source": "/:page(account|book|login|admin|cancel|intake)",
+      "source": "/:page(account|book|login|admin|workspace|cancel|intake)",
       "headers": [
         {
           "key": "Cache-Control",
@@ -57,6 +57,15 @@
     },
     {
       "source": "/admin",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/workspace",
       "headers": [
         {
           "key": "X-Robots-Tag",
