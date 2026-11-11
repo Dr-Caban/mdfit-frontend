@@ -195,6 +195,14 @@ textarea.input{min-height:120px;resize:vertical;line-height:1.55}
 .tele-avatar span{color:#E8F0F7;font-weight:600}
 .tele-stage.live:not(.has-remote) .tele-avatar{display:grid}
 .tele-stage.live .tele-who{bottom:auto;top:44px}
+/* Live room, the host's view: your own picture fills the stage (it is what the room sees) and each speaker is a
+   bubble stacked up the right-hand side */
+.tele-stage.room #teleLocal{inset:0;width:100%;height:100%;min-width:0;aspect-ratio:auto;object-fit:contain;border:0;border-radius:0}
+.tele-stage.room .tele-grid{inset:auto 12px 12px auto;width:22%;min-width:104px;max-height:calc(100% - 72px);display:flex;flex-direction:column-reverse;gap:8px;overflow-y:auto;visibility:visible;z-index:2}
+.tele-stage.room .tele-grid .tile{flex:none;aspect-ratio:4/3;border-radius:12px;overflow:hidden;border:2px solid rgba(255,255,255,.8)}
+.tele-stage.room .tele-grid .tile video{object-fit:cover}
+.tele-stage.room .tele-avatar{display:none!important}
+.tele-stage.room .tele-timer,.tele-stage.room .tele-who{z-index:3}
 #teleBoard{position:absolute;inset:0;width:100%;height:100%;background:rgba(255,255,255,.94);touch-action:none;cursor:crosshair}
 .tele-clear{position:absolute;right:12px;top:12px}
 .tele-chat{margin-top:12px;display:grid;gap:10px}
@@ -323,6 +331,6 @@ textarea.input{min-height:120px;resize:vertical;line-height:1.55}
 <script src="config.js?v=aac711e3"></script>
 <script src="realtime.js?v=dccfd156"></script>
 <script src="app/exercises.js?v=d121be98"></script>
-<script src="workspace-app.js?v=08080a31"></script>
+<script src="workspace-app.js?v=b5c5e82e"></script>
 </body>
 </html>
