@@ -17,7 +17,6 @@
   const initials = (n) => String(n || "?").replace(/<[^>]*>/g, "").split(/\s+/).filter(Boolean).map((w) => w[0]).slice(0, 2).join("").toUpperCase() || "?";
   const avatar = (name, size = 32) => `<span class="avatar" style="background:#8FA3B8;width:${size}px;height:${size}px">${esc(initials(name))}</span>`;
   const isoDay = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-  const adminLink = (tab, label) => `<a class="btn sm" href="/admin-classic#${tab}">${label}</a>`;
   const notBuilt = (what) => `<div class="card">${none(`${what} is not connected yet: the server has nothing for it.`)}</div>`;
 
   // ---------------------------------------------------------------- session
@@ -39,7 +38,7 @@
   function toast(msg) { const t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2600); }
   function modal(html) { $("#modal").classList.remove("wide"); $("#modal").innerHTML = html; $("#modalBack").classList.add("open"); $("#modal").querySelector("button,input,select,textarea")?.focus(); }
   function closeModal() { $("#modalBack").classList.remove("open"); $("#modal").innerHTML = ""; $("#modal").classList.remove("wide"); }
-  const guard = (fn) => (...a) => Promise.resolve(fn(...a)).catch((e) => toast(e.message));
+  const guard = (fn) => async (...a) => { try { return await fn(...a); } catch (e) { toast(e.message); } };
 
   // Signing out empties everything that was drawn, so names and notes do not stay on a shared screen.
   function signOut() {
@@ -201,7 +200,7 @@
     // own visits. Google events carry their titles (shown here only, never stored); anything else is a "Busy" block.
     const [appts, classes, bookings, sync] = await Promise.all([get("/appointments?all=1"), get("/classes"), get("/bookings"),
       get(`/busy?from=${isoDay(mon)}&days=7`).catch(() => null)]);
-    cache.appts = appts;
+    cache.appts = appts; cache.classes = classes;
     const busy = (sync && sync.busy) || [], srcName = (x) => (x === "simplepractice" ? "SimplePractice" : "Google Calendar");
     const START = 6, END = 20, top = (t) => { const [h, m] = t.split(":").map(Number); return (h + m / 60 - START) * 56; };
     const hhmm = (min) => `${Math.floor(min / 60)}:${String(min % 60).padStart(2, "0")}`;
@@ -219,7 +218,7 @@
     return `
     <div class="view-head"><div><h1>Calendar</h1><p class="muted">Week of ${mon.toLocaleDateString("en-US", { month: "long", day: "numeric" })}</p></div>
     <div class="row"><button class="btn sm" data-act="calWeek" data-d="-1" aria-label="Previous week">${ui("prev", 14)}</button><button class="btn sm" data-act="calWeek" data-d="0">Today</button><button class="btn sm" data-act="calWeek" data-d="1" aria-label="Next week">${ui("next", 14)}</button>
-    ${adminLink("hours", "Hours &amp; calendar sync")}</div></div>
+    <a class="btn sm" href="#settings">Hours &amp; calendar sync</a></div></div>
     <div class="row" style="margin-bottom:12px"><span class="pill"><span class="dot" style="background:var(--body)"></span>Booked</span><span class="pill"><span class="dot" style="background:var(--ok)"></span>Completed</span><span class="pill"><span class="dot" style="background:var(--fit)"></span>Class</span><span class="pill"><span class="dot" style="background:var(--muted)"></span>Your other calendars</span>
     <span class="muted" style="font-size:12.5px">${!sync ? "Your other calendars could not be read just now." : sync.simplepractice === "off" && sync.google === "off" ? "No outside calendar is connected, so only MD Fit bookings show." : `Showing ${[sync.simplepractice !== "off" && "SimplePractice", sync.google !== "off" && "Google Calendar"].filter(Boolean).join(" and ")}${sync.titles ? " events, shown only on this screen" : " busy times (times only)"}${sync.lastError ? ". Last sync reported a problem" : ""}.`}</span></div>
     <div class="table-wrap"><div class="cal">
@@ -228,8 +227,8 @@
       ${cols}
     </div></div>
     <div class="grid g2" style="margin-top:16px">
-      <div class="card"><div class="card-head"><h2>Weekly classes</h2>${adminLink("classes", "Edit classes")}</div>
-        ${classes.map((c) => `<div class="list-item"><span style="flex:1"><b>${esc(c.title)}</b><div class="muted" style="font-size:12px">${["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][c.day]} ${fmtTime(c.time)} · ${c.durationMin} min · ${esc(c.coach || "")}</div></span><span class="pill">${c.capacity} spots</span></div>`).join("") || none("No classes set up.")}</div>
+      <div class="card"><div class="card-head"><h2>Weekly classes</h2><button class="btn sm primary" data-act="classEdit">${ui("plus", 14)} Class</button></div>
+        ${classes.map((c) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(c.title)}</b>${c.active === false ? ` <span class="pill warn">Closed</span>` : ""}<div class="muted" style="font-size:12px">${["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][c.day]} ${fmtTime(c.time)} · ${c.durationMin} min${c.coach ? " · " + esc(c.coach) : ""}</div></span><span class="pill">${c.capacity} spots</span><button class="btn sm" data-act="classEdit" data-id="${esc(c.id)}">Edit</button></div>`).join("") || none("No classes set up.")}</div>
       <div class="card"><div class="card-head"><h2>Class bookings</h2></div>
         ${bookings.map((b) => `<div class="list-item"><span style="flex:1"><b>${esc(b.name)}</b><div class="muted" style="font-size:12px">${esc(b.title)} · ${fmtDate(b.date)} ${fmtTime(b.time)}</div></span><button class="btn sm danger" data-act="cancelBooking" data-id="${esc(b.id)}">Cancel</button></div>`).join("") || none("No upcoming class bookings.")}</div>
     </div>`;
@@ -588,7 +587,8 @@
           ${n.status === "draft" ? `<button type="button" class="btn sm ghost" data-act="noteDiscard" data-id="${esc(n.id)}" aria-label="Discard this draft">${ui("x", 14)}</button>` : ""}<button type="button" class="btn sm" data-act="noteOpen" data-id="${esc(n.id)}">${n.status === "draft" ? "Continue" : "Open"}</button></div>`).join("") || none(cid ? "No clinical notes for this client yet." : "Pick a client.")}</div>
     </div>
     <div class="stack">
-      <div class="card stack"><div class="card-head"><h2 class="row" style="gap:6px">${ui("spark", 18)}AI scribe</h2><span class="pill ${ai ? "ok" : ""}">${ai ? "On" : "Not connected"}</span></div>
+      <div class="card stack"><div class="card-head"><h2 class="row" style="gap:6px">${ui("spark", 18)}AI scribe</h2><span class="pill ${ai ? "ok" : ""}">${ai ? "On" : "Off"}</span></div>
+        ${scribe.model || scribe.host ? `<div class="row" style="justify-content:space-between;font-size:12.5px"><span class="muted" style="overflow-wrap:anywhere">Model: <b id="sModel">${esc(scribe.model || "none chosen")}</b></span><button type="button" class="btn sm" data-act="scribeModels">Change model</button></div>` : ""}
         <div class="row"><button type="button" class="btn sm mic" data-act="dictate" data-for="sText" aria-pressed="false">${ui("mic", 14)}<span>Dictate</span></button><button type="button" class="btn sm" disabled title="Needs a speech-to-text service with a signed agreement. None is connected.">${ui("upload", 14)}Upload audio</button></div>
         <div class="field" style="margin:0"><label for="sText">Or paste a summary or transcript</label><textarea id="sText" class="input" style="min-height:130px" maxlength="20000" placeholder="Right knee 3 weeks post-op, swelling down, soft tissue on the quad, heel slides 2x10 twice a day, back in a week.">${esc(heard)}</textarea></div>
         <button type="button" class="btn primary" data-act="noteScribe" style="justify-content:center"${ai && cid ? "" : " disabled"}>Draft <span id="sKind" style="margin:0 .3em">${esc(TEMPLATES[note.template])}</span></button>
@@ -607,18 +607,25 @@
     <div class="card" style="margin-top:16px"><div class="card-head"><h2>Form builder</h2><span class="pill">Not connected</span></div>${none("The four intake documents are fixed. A builder for custom forms is not built yet.")}</div>`;
   };
 
+  // ---- Small form pieces shared by the editing screens
+  const fld = (id, name, label, val, o = {}) => `<div class="field"><label for="${id}">${label}</label>${o.area ? `<textarea id="${id}" name="${name}" class="input" rows="${o.rows || 3}" maxlength="${o.max || 500}" ${o.attrs || ""}>${esc(val ?? "")}</textarea>` : `<input id="${id}" name="${name}" class="input" type="${o.type || "text"}" value="${esc(val ?? "")}" ${o.max ? `maxlength="${o.max}"` : ""} ${o.attrs || ""}>`}</div>`;
+  const sel = (id, name, label, opts, cur) => `<div class="field"><label for="${id}">${label}</label><select id="${id}" name="${name}" class="input">${opts.map((o) => { const [v, l] = Array.isArray(o) ? o : [o, o]; return `<option value="${esc(v)}"${String(v) === String(cur) ? " selected" : ""}>${esc(l)}</option>`; }).join("")}</select></div>`;
+  const slugOf = (t) => (String(t).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 24) || "item") + "-" + Math.random().toString(36).slice(2, 6);
+  const xBtn = `<button type="button" class="btn sm ghost" data-act="closeModal" aria-label="Close">${ui("x", 14)}</button>`;
+  const DAYN = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
   V.programs = async () => {
-    const c = await get("/content");
-    return `<div class="view-head"><div><h1>Programs</h1><p class="muted">${plural(c.programs.length, "program")} · ${plural((c.lectures || []).length, "lecture")}</p></div>${adminLink("content", "Edit content")}</div>
-    <div class="grid g3">${c.programs.map((p) => `<div class="card"><div class="card-head"><h2>${esc(p.title)}</h2></div><div class="row" style="gap:6px"><span class="pill">${esc(p.category || "")}</span><span class="pill">${esc(p.level || "")}</span><span class="pill">${p.weeks} weeks</span><span class="pill ${p.access === "free" ? "ok" : ""}">${esc(p.access || "")}</span></div><p class="muted" style="margin:10px 0 0">${esc(String(p.summary || "").slice(0, 160))}</p></div>`).join("") || `<div class="card">${none("No programs.")}</div>`}</div>
-    <div class="card" style="margin-top:16px"><div class="card-head"><h2>Lectures</h2></div>${(c.lectures || []).map((l) => `<div class="list-item"><span style="flex:1"><b>${esc(l.title)}</b><div class="muted" style="font-size:12px">${esc(l.topic || "")} · ${l.minutes} min</div></span><span class="pill">${esc(l.access || "")}</span></div>`).join("") || none("No lectures.")}</div>`;
+    const c = cache.content = await get("/content");
+    return `<div class="view-head"><div><h1>Programs</h1><p class="muted">${plural(c.programs.length, "program")} · ${plural((c.lectures || []).length, "lecture")} · what members see in the app</p></div><button class="btn primary" data-act="lectureEdit">${ui("plus", 14)} Lecture</button></div>
+    <div class="grid g3">${c.programs.map((p) => `<div class="card stack"><div class="card-head"><h2>${esc(p.title)}</h2></div><div class="row" style="gap:6px"><span class="pill">${esc(p.category || "")}</span><span class="pill">${esc(p.level || "")}</span><span class="pill">${p.weeks} weeks</span><span class="pill ${p.access === "free" ? "ok" : ""}">${esc(p.access || "")}</span></div><p class="muted" style="margin:0">${esc(String(p.summary || "").slice(0, 160))}</p>
+      <div class="row" style="margin-top:auto"><button class="btn sm" data-act="progEdit" data-id="${esc(p.id)}">Edit</button><button class="btn sm" data-act="progCopy" data-id="${esc(p.id)}">Duplicate</button><button class="btn sm danger" data-act="progDelete" data-id="${esc(p.id)}">Delete</button></div></div>`).join("") || `<div class="card">${none("No programs.")}</div>`}</div>
+    <div class="card" style="margin-top:16px"><div class="card-head"><h2>Lectures</h2></div>${(c.lectures || []).map((l) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(l.title)}</b><div class="muted" style="font-size:12px">${esc(l.topic || "")} · ${l.minutes} min</div></span><span class="pill">${esc(l.access || "")}</span><button class="btn sm" data-act="lectureEdit" data-id="${esc(l.id)}">Edit</button><button class="btn sm ghost" data-act="lectureDelete" data-id="${esc(l.id)}" aria-label="Delete ${esc(l.title)}">${ui("x", 14)}</button></div>`).join("") || none("No lectures.")}</div>`;
   };
 
   V.nutrition = async () => {
-    const c = await get("/content"), recs = (c.recommendations || []);
-    return `<div class="view-head"><div><h1>Nutrition</h1><p class="muted">Recommendations members see in the app</p></div>${adminLink("content", "Edit content")}</div>
-    <div class="stack">${recs.map((r) => `<div class="card"><div class="card-head"><h2>${esc(r.title)}</h2><span class="pill">${esc(r.area || "")}</span></div><p class="note-text muted">${esc(String(r.body || "").slice(0, 400))}</p></div>`).join("") || `<div class="card">${none("No recommendations.")}</div>`}</div>
-    <div class="card" style="margin-top:16px"><div class="card-head"><h2>Food journals and meal plans</h2><span class="pill">Not connected</span></div>${none("Per-client food journals, targets and meal plans are not built yet.")}</div>`;
+    const c = cache.content = await get("/content"), recs = (c.recommendations || []);
+    return `<div class="view-head"><div><h1>Nutrition</h1><p class="muted">Recommendations members see in the app</p></div><button class="btn primary" data-act="recEdit">${ui("plus", 14)} Recommendation</button></div>
+    <div class="stack">${recs.map((r) => `<div class="card"><div class="card-head"><h2>${esc(r.title)}</h2><div class="row"><span class="pill">${esc(r.area || "")}</span><button class="btn sm" data-act="recEdit" data-id="${esc(r.id)}">Edit</button><button class="btn sm ghost" data-act="recDelete" data-id="${esc(r.id)}" aria-label="Delete ${esc(r.title)}">${ui("x", 14)}</button></div></div><p class="note-text muted">${esc(String(r.body || "").slice(0, 400))}</p></div>`).join("") || `<div class="card">${none("No recommendations.")}</div>`}</div>`;
   };
 
   V.fitness = async () => {
@@ -630,13 +637,17 @@
   };
 
   V.payments = async () => {
-    const [p, members, s, c] = await Promise.all([get("/payments"), get("/members"), get("/settings"), get("/content")]);
-    return `<div class="view-head"><div><h1>Payments</h1><p class="muted">Self-pay only · card payments through Stripe</p></div>${adminLink("members", "Manage memberships")}</div>
+    const [p, members, s, c] = await Promise.all([get("/payments"), get("/members"), get("/settings"), get("/content"), clients()]);
+    cache.content = c; cache.settings = s;
+    return `<div class="view-head"><div><h1>Payments</h1><p class="muted">Self-pay only · card payments through Stripe · invoices are written from each client's chart</p></div><a class="btn" href="#settings">Services &amp; fees</a></div>
     <div class="grid g3" style="margin-bottom:16px">${kpi("Card payments", p.enabled ? "On" : "Off", p.enabled ? "Stripe connected" : "Stripe not set up", p.enabled ? "ok" : "warn")}${kpi("Payment confirmations", p.webhook ? "On" : "Off", "from Stripe", p.webhook ? "ok" : "warn")}${kpi("Members and requests", members.length, "people")}</div>
-    <div class="grid g2"><div class="card"><div class="card-head"><h2>Services & fees</h2>${adminLink("settings", "Edit")}</div>${(s.services || []).map((x) => `<div class="list-item"><span style="flex:1"><b>${esc(x.name)}</b><div class="muted" style="font-size:12px">${esc(x.unit || "")}</div></span><b class="num">${money(x.rate)}</b></div>`).join("") || none("No services.")}</div>
-    <div class="card"><div class="card-head"><h2>Membership tiers</h2></div>${(c.tiers || []).map((t) => `<div class="list-item"><span style="flex:1"><b>${esc(t.name)}</b></span><b class="num">$${esc(t.price)}/mo</b></div>`).join("") || none("No tiers.")}</div></div>
-    <div class="card" style="margin-top:16px"><div class="card-head"><h2>Members and requests</h2></div>${members.map((m) => `<div class="list-item"><span style="flex:1"><b>${esc(m.name)}</b> <span class="muted">${esc(m.email)}</span></span>${m.membership ? `<span class="pill ok">${esc(m.tier || "")}</span>` : m.request ? `<span class="pill warn">Requested ${esc(m.request.tier || "")}</span>` : ""}<button class="btn sm" data-act="chart" data-id="${esc(m.id)}">Chart</button></div>`).join("") || none("No members or requests yet.")}</div>
-    <div class="card" style="margin-top:16px"><div class="card-head"><h2>Clients with payments</h2></div>${(p.clients || []).map((x) => `<div class="list-item"><span style="flex:1"><b>${esc(x.name || x.email || "")}</b></span></div>`).join("") || none("No payments recorded.")}</div>`;
+    <div class="grid g2"><div class="card"><div class="card-head"><h2>Members and requests</h2><span class="muted" style="font-size:12px">Change a membership type here</span></div>${members.map((m) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(m.name)}</b> <span class="muted">${esc(m.email)}</span>${m.request && !m.membership ? `<div class="muted" style="font-size:12px">Asked for ${esc(tierName(m.request.tier))}</div>` : ""}</span><select class="input tier-pick${m.membership ? " on" : ""}" data-change="rowTier" data-id="${esc(m.id)}" data-name="${esc(m.name)}" aria-label="Membership type for ${esc(m.name)}">${tierOptions((m.membership && m.membership.tier) || "")}</select><button class="btn sm" data-act="chart" data-id="${esc(m.id)}">Chart</button></div>`).join("") || none("No members or requests yet.")}</div>
+    <div class="card stack"><div class="card-head"><h2>Membership types</h2><span class="muted" style="font-size:12px">What members can sign up for</span></div>
+      <form class="stack" data-form="setTiers">${(c.tiers || []).map((t, i) => `<div class="stack" style="border-bottom:1px solid var(--line);padding-bottom:12px"><div class="grid g2">${fld("tn" + i, "name" + i, "Name", t.name, { max: 60 })}${fld("tp" + i, "price" + i, "Price per month ($)", t.price, { type: "number", attrs: 'min="0" step="0.01"' })}</div>
+        <div class="grid g2">${fld("tm" + i, "meetings" + i, "1-on-1 calls per month", t.meetings || 0, { type: "number", attrs: 'min="0" max="31"' })}${fld("tl" + i, "minutes" + i, "Minutes per call", t.meetingMinutes || 0, { type: "number", attrs: 'min="0" max="180"' })}</div>
+        ${fld("tk" + i, "perks" + i, "What it includes (one per line)", (t.perks || []).join("\n"), { area: true, rows: 3, max: 1300 })}</div>`).join("")}
+      <div class="row"><button class="btn primary">Save membership types</button></div><p class="muted" style="margin:0;font-size:12.5px">A price change applies to people who join from now on. Current members keep what their card is already charged.</p></form></div></div>
+    <div class="card" style="margin-top:16px"><div class="card-head"><h2>Clients with payments</h2></div>${(p.clients || []).map((x) => `<div class="list-item"><span style="flex:1"><b>${esc(x.name || x.email || "")}</b></span><button class="btn sm" data-act="chartBilling" data-id="${esc(x.id)}">Billing</button></div>`).join("") || none("No payments recorded.")}</div>`;
   };
 
   V.newsletter = async () => {
@@ -701,27 +712,57 @@
   V.security = async () => {
     const [a, mfa] = await Promise.all([get("/audit"), get("/mfa")]);
     return `<div class="view-head"><div><h1>Security & audit</h1><p class="muted">Every sign-in, every look at a record and every change, in a ledger that detects tampering</p></div><button class="btn primary" data-act="auditVerify">Verify the ledger</button></div>
-    <div class="grid g3" style="margin-bottom:16px">
+    <div class="grid g2" style="margin-bottom:16px">
       <div class="card"><h2 style="margin-bottom:10px">Ledger check</h2><div id="auditResult">${none("Not checked in this session. Press Verify.")}</div></div>
-      <div class="card"><h2 style="margin-bottom:10px">Sign-in</h2><div class="list-item"><span style="flex:1">Two-step sign-in by email code</span><span class="pill ${mfa.enabled ? "ok" : "warn"}">${mfa.enabled ? "On" : "Off"}</span></div><div class="list-item"><span style="flex:1">Signs out when idle</span><span class="pill ok">15 minutes</span></div>${adminLink("settings", "Change sign-in settings")}</div>
-      <div class="card"><h2 style="margin-bottom:10px">Not connected</h2>${none("Sensitivity tiers, break-glass access and per-vendor agreement tracking are not in this system yet.")}</div>
+      <div class="card"><h2 style="margin-bottom:10px">Sign-in</h2>
+        <div class="list-item"><span style="flex:1">Two-step sign-in by email code<div class="muted" style="font-size:12px">${mfa.forcedOff ? "Switched off by a server setting." : mfa.emailReady ? `The code goes to ${esc(mfa.sendsTo || "your email")}.` : "Email is not connected on the server, so codes cannot be sent."}</div></span><span class="pill ${mfa.enabled ? "ok" : "warn"}">${mfa.enabled ? "On" : "Off"}</span>${mfa.forcedOff ? "" : `<button class="btn sm ${mfa.enabled ? "" : "primary"}" data-act="${mfa.enabled ? "mfaOff" : "mfaOn"}">${mfa.enabled ? "Turn off" : "Turn on"}</button>`}</div>
+        <div class="list-item"><span style="flex:1">Signs out when idle</span><span class="pill ok">15 minutes</span></div></div>
     </div>
     ${ledgerTable(a)}`;
   };
 
+  // Hours are typed the way they are said: "09:00-12:00, 13:00-17:00". Blank means closed that day.
+  const hoursText = (day) => (day || []).map((w) => `${w[0]}-${w[1]}`).join(", ");
   V.settings = async () => {
     const [s, cal, me] = await Promise.all([get("/settings"), get("/calsync"), get("/me")]);
-    const b = s.business || {};
-    return `<div class="view-head"><div><h1>Settings</h1><p class="muted">Read here; edit in the admin portal for now</p></div>${adminLink("settings", "Edit settings")}</div>
+    cache.settings = s;
+    const b = s.business || {}, sc = s.scheduling || {}, pl = s.plans || {}, bk = s.booking || {};
+    return `<div class="view-head"><div><h1>Settings</h1><p class="muted">Practice details, booking hours, visit types, fees and connections</p></div><a class="btn" href="#security">Sign-in security</a></div>
     <div class="grid g2">
-      <div class="card"><h2 style="margin-bottom:10px">Practice</h2><dl class="kv"><dt>Name</dt><dd>${esc(b.name)}</dd><dt>Tagline</dt><dd>${esc(b.tagline)}</dd><dt>Phone</dt><dd>${esc(b.phone)}</dd><dt>Address</dt><dd>${esc(b.address)}</dd><dt>Hours</dt><dd>${esc(b.hours)}</dd></dl></div>
-      <div class="card"><h2 style="margin-bottom:10px">Connections</h2>
-        <div class="list-item"><span style="flex:1">Google Calendar</span><span class="pill ${cal.google === "on" ? "ok" : ""}">${esc(cal.google)}</span></div>
-        <div class="list-item"><span style="flex:1">SimplePractice calendar</span><span class="pill ${cal.simplepractice === "on" ? "ok" : ""}">${esc(cal.simplepractice)}</span></div>
-        <div class="list-item"><span style="flex:1">Email alerts to you</span><span class="pill ${me.emailNotifications ? "ok" : ""}">${me.emailNotifications ? "on" : "off"}</span></div>
-        ${cal.lastError ? `<p class="muted" style="margin:8px 0 0">Last calendar error: ${esc(cal.lastError)}</p>` : ""}</div>
-      <div class="card"><div class="card-head"><h2>Services & fees</h2></div>${(s.services || []).map((x) => `<div class="list-item"><span style="flex:1"><b>${esc(x.name)}</b><div class="muted" style="font-size:12px">${esc(x.unit || "")}</div></span><b class="num">${money(x.rate)}</b></div>`).join("") || none("No services.")}</div>
-      <div class="card"><div class="card-head"><h2>Discipline modules</h2><span class="pill">Not connected</span></div>${none("This system serves one practice and one discipline. Switching modules on and off is not built yet.")}</div>
+      <div class="card stack"><h2>Practice</h2><form class="stack" data-form="setBusiness">
+        <div class="grid g2">${fld("sbName", "name", "Name", b.name, { max: 60, attrs: "required" })}${fld("sbPhone", "phone", "Phone", b.phone, { max: 30 })}</div>
+        ${fld("sbTag", "tagline", "Tagline", b.tagline, { max: 160 })}${fld("sbEmail", "email", "Contact email", b.email, { type: "email", max: 120 })}${fld("sbAddr", "address", "Address", b.address, { max: 200 })}
+        ${fld("sbHours", "hours", "Hours as shown on the website", b.hours, { area: true, rows: 2, max: 300 })}${fld("sbNote", "bookingNote", "Note on the booking page", b.bookingNote, { area: true, rows: 2, max: 300 })}
+        <div class="row"><button class="btn primary">Save practice details</button></div></form></div>
+      <div class="card stack" id="hours"><h2>Hours people can book</h2><form class="stack" data-form="setHours">
+        ${DAYN.map((d, i) => `<div class="row" style="flex-wrap:nowrap"><label for="hr${i}" style="flex:0 0 96px">${d}</label><input id="hr${i}" name="h${i}" class="input" style="flex:1;min-width:0" value="${esc(hoursText((sc.hours || [])[i]))}" placeholder="Closed" maxlength="60" autocomplete="off"></div>`).join("")}
+        <p class="muted" style="margin:0;font-size:12.5px">Type times like 09:00-12:00, 13:00-17:00. Leave a day blank to close it.</p>
+        <div class="grid g2">${sel("hrStep", "slotStepMin", "Offer a start time every", [[10, "10 minutes"], [15, "15 minutes"], [20, "20 minutes"], [30, "30 minutes"], [60, "60 minutes"]], sc.slotStepMin)}${fld("hrLast", "lastStart", "Latest start time (optional)", sc.lastStart, { type: "time" })}</div>
+        <div class="grid g2">${fld("hrNotice", "minNoticeHours", "Shortest notice (hours)", sc.minNoticeHours, { type: "number", attrs: 'min="0" max="168"' })}${fld("hrAhead", "daysAhead", "How far ahead (days)", sc.daysAhead, { type: "number", attrs: 'min="1" max="90"' })}</div>
+        ${fld("hrBlock", "blockedDates", "Days off (dates like 2026-12-25, separated by commas)", (sc.blockedDates || []).join(", "), { area: true, rows: 2, max: 2400 })}
+        <div class="row"><button class="btn primary">Save booking hours</button></div></form></div>
+      <div class="card stack"><h2>Visit types</h2><form class="stack" data-form="setTypes">
+        ${[...(s.appointmentTypes || []), ...((s.appointmentTypes || []).length < 8 ? [{ id: "", name: "", minutes: 60, description: "" }] : [])].map((t, i) => `<div class="set-row"><input name="name${i}" class="input" value="${esc(t.name)}" maxlength="60" placeholder="${t.id ? "Name" : "Add a visit type"}" aria-label="Visit type ${i + 1} name"><input name="minutes${i}" class="input" type="number" min="10" max="240" value="${esc(t.minutes)}" aria-label="Visit type ${i + 1} minutes"><label class="row" style="gap:6px;flex-wrap:nowrap"><input type="checkbox" name="remote${i}"${t.remote ? " checked" : ""}> Video</label><input name="description${i}" class="input wide" value="${esc(t.description || "")}" maxlength="200" placeholder="Short description" aria-label="Visit type ${i + 1} description"></div>`).join("")}
+        <p class="muted" style="margin:0;font-size:12.5px">Name, length in minutes, whether it is on video. Clear a name to remove that type${(s.appointmentTypes || []).length < 8 ? "; fill the last row to add one" : ". Eight is the most there can be"}.</p>
+        <div class="row"><button class="btn primary">Save visit types</button></div></form></div>
+      <div class="card stack"><h2>Services &amp; fees</h2><form class="stack" data-form="setServices">
+        ${[...(s.services || []), ...((s.services || []).length < 12 ? [{ id: "", name: "", rate: "", unit: "visit", description: "" }] : [])].map((x, i) => `<div class="set-row"><input name="name${i}" class="input" value="${esc(x.name)}" maxlength="60" placeholder="${x.id ? "Name" : "Add a service"}" aria-label="Service ${i + 1} name"><input name="rate${i}" class="input" type="number" min="0" max="10000" step="1" value="${esc(x.rate)}" placeholder="$" aria-label="Service ${i + 1} price in dollars"><input name="unit${i}" class="input" value="${esc(x.unit || "visit")}" maxlength="20" aria-label="Service ${i + 1} unit"><input name="description${i}" class="input wide" value="${esc(x.description || "")}" maxlength="300" placeholder="Short description" aria-label="Service ${i + 1} description"></div>`).join("")}
+        <p class="muted" style="margin:0;font-size:12.5px">Name, price in whole dollars, per what. Clear a name to remove a service. Prices on the website and at checkout follow these.</p>
+        <div class="row"><button class="btn primary">Save services &amp; fees</button></div></form></div>
+      <div class="card stack"><h2>Care plan pricing</h2><form class="stack" data-form="setPlans">
+        <div class="grid g2">${fld("plGold", "gold", "Paid in full: % off", pl.gold, { type: "number", attrs: 'min="0" max="50"' })}${fld("plSilver", "silver", "Monthly payments: % off", pl.silver, { type: "number", attrs: 'min="0" max="50"' })}</div>
+        <div class="grid g2">${fld("plSp", "silverPayments", "Monthly payments: how many", pl.silverPayments, { type: "number", attrs: 'min="2" max="12"' })}${fld("plRev", "reviewDiscountPct", "Review reward: % off", pl.reviewDiscountPct, { type: "number", attrs: 'min="0" max="100"' })}</div>
+        <div class="grid g2">${fld("plE12", "ext12", "Spread over 12 months: % added", pl.ext12, { type: "number", attrs: 'min="0" max="50"' })}${fld("plE24", "ext24", "Spread over 24 months: % added", pl.ext24, { type: "number", attrs: 'min="0" max="50"' })}</div>
+        <div class="row"><button class="btn primary">Save pricing</button></div></form></div>
+      <div class="card stack"><h2>Calendars and video</h2>
+        <div class="list-item"><span style="flex:1">Google Calendar${cal.serviceAccountEmail && cal.google !== "off" ? `<div class="muted" style="font-size:12px;overflow-wrap:anywhere">Shared with ${esc(cal.serviceAccountEmail)}${cal.calendars > 1 ? ` · ${cal.calendars} calendars` : ""}</div>` : ""}</span><span class="pill ${cal.google !== "off" ? "ok" : ""}">${cal.google !== "off" ? "Connected" : "Off"}</span></div>
+        <div class="list-item"><span style="flex:1">SimplePractice calendar${cal.simplePracticeUrl ? `<div class="muted" style="font-size:12px;overflow-wrap:anywhere">${esc(cal.simplePracticeUrl)}</div>` : ""}</span><span class="pill ${cal.simplepractice !== "off" ? "ok" : ""}">${cal.simplepractice !== "off" ? "Connected" : "Off"}</span></div>
+        <div class="list-item"><span style="flex:1">Email alerts to you</span><span class="pill ${me.emailNotifications ? "ok" : ""}">${me.emailNotifications ? "On" : "Off"}</span></div>
+        ${cal.lastError ? `<p class="muted" style="margin:0">Last calendar problem: ${esc(cal.lastError)}</p>` : ""}
+        <form class="stack" data-form="setIcs">${fld("icsUrl", "icsUrl", "SimplePractice calendar link (paste a new one to change it; blank disconnects)", "", { type: "url", max: 500, attrs: 'placeholder="https://… or webcal://…" autocomplete="off"' })}
+          <div class="row"><button class="btn">Save calendar link</button><button type="button" class="btn" data-act="calTest">Check the calendars now</button></div><div id="calTestOut" class="muted" style="font-size:12.5px"></div></form>
+        <form class="stack" data-form="setVideo" style="border-top:1px solid var(--line);padding-top:12px">${fld("tvUrl", "telehealthUrl", "Outside video room link (optional; the built-in Telehealth room needs none)", bk.telehealthUrl, { type: "url", max: 300, attrs: 'placeholder="https://"' })}
+          <div class="row"><button class="btn">Save video link</button></div></form></div>
     </div>`;
   };
 
@@ -732,7 +773,7 @@
     const s = await get("/settings"), url = location.origin + "/book";
     return `<div class="view-head"><div><h1>Booking page</h1><p class="muted">The public page where people book with you</p></div><a class="btn primary" href="/book" target="_blank" rel="noopener">Open booking page</a></div>
     <div class="grid g2"><div class="card"><h2 style="margin-bottom:10px">Booking link</h2><div class="row"><input class="input" id="bookUrl" readonly value="${esc(url)}" aria-label="Booking link" style="flex:1"><button class="btn" data-act="copyBook">Copy</button></div>${b_note(s)}</div>
-    <div class="card"><div class="card-head"><h2>What people can book</h2>${adminLink("hours", "Hours")}</div>${(s.services || []).map((x) => `<div class="list-item"><span style="flex:1"><b>${esc(x.name)}</b><div class="muted" style="font-size:12px">${esc(x.unit || "")}</div></span><b class="num">${money(x.rate)}</b></div>`).join("") || none("No services.")}</div></div>`;
+    <div class="card"><div class="card-head"><h2>What people can book</h2><a class="btn sm" href="#settings">Hours and fees</a></div>${(s.services || []).map((x) => `<div class="list-item"><span style="flex:1"><b>${esc(x.name)}</b><div class="muted" style="font-size:12px">${esc(x.unit || "")}</div></span><b class="num">${money(x.rate)}</b></div>`).join("") || none("No services.")}</div></div>`;
   };
   const b_note = (s) => s.business && s.business.bookingNote ? `<p class="muted" style="margin:10px 0 0">${esc(s.business.bookingNote)}</p>` : "";
 
@@ -996,6 +1037,14 @@
     showDoc(kind, o, title); toast("Created. A copy is in this chart under Files."); reChart();
   }
   Object.assign(ACT, {
+    // The AI scribe's model: the list comes from the connected service, for the key the server holds
+    scribeModels: async () => {
+      const r = await get("/scribe/models");
+      modal(`<div class="card-head"><h2>AI scribe model</h2>${xBtn}</div><p class="muted" style="margin:0 0 12px">These are the models ${esc(r.host || "the AI service")} offers your key. Pick the one drafts should use.</p>
+        <form class="stack" data-form="scribeModel"><div class="field"><label for="smPick">Model</label><select id="smPick" name="model" class="input">${(r.models || []).map((m) => `<option${m === r.current ? " selected" : ""}>${esc(m)}</option>`).join("")}</select></div>
+        ${(r.models || []).includes(r.current) ? "" : `<p class="muted" style="margin:0;font-size:12.5px">The one set now, ${esc(r.current || "none")}, is not on this list, which is why drafts fail.</p>`}
+        <div class="row"><button class="btn primary"${(r.models || []).length ? "" : " disabled"}>Use this model</button></div></form>`);
+    },
     stop: () => {},
     chartNewNote: () => { location.hash = "notes"; },
     chartNote: async (el) => {
@@ -1044,6 +1093,7 @@
     invLink: async (el) => { const r = await api("POST", `/api/admin/emr/${cid()}/invoices/${el.dataset.id}/paylink`, {}); try { await navigator.clipboard.writeText(r.url); toast("Payment link copied. It works for 24 hours."); } catch { prompt("Copy this payment link (works for 24 hours):", r.url); } },
   });
   Object.assign(FORMS, {
+    scribeModel: async (f) => { const r = await api("PUT", "/api/admin/scribe/model", { model: f.model.value }); closeModal(); await render(); toast(`AI scribe now uses ${r.model}.`); },
     summary: async (f) => { await api("PUT", `/api/admin/emr/${cid()}/summary`, { summary: f.summary.value.trim(), tags: f.tags.value.split(",").map((x) => x.trim()).filter(Boolean) }); await chartRedo(); toast("Summary saved."); },
     planNotes: async (f) => { stopDictation(); await putPlan({ notes: f.notes.value.trim() }); await chartRedo(); toast(`Treatment plan saved. ${firstOf()} can see it in the app.`); },
     protocol: async (f) => { stopDictation(); const name = f.name.value.trim(); if (!name) return; let detail = f.detail.value.trim(); if (!detail) { const known = (cache.protocols || []).find((p) => p.name.toLowerCase() === name.toLowerCase()); if (known) detail = known.detail || ""; }
@@ -1073,6 +1123,82 @@
     if (!res.ok) throw new Error((data && data.error) || (res.status === 413 ? "That file is too large." : "The upload did not go through."));
     await chartRedo(); toast("Encrypted and saved to the chart.");
   }
+
+  // ---- Editing the practice's own settings and content, all from the workspace
+  const putSettings = async (patch, said) => { cache.settings = await api("PUT", "/api/admin/settings", patch); await render(); toast(said); };
+  const putContent = async (patch, said) => { cache.content = await api("PUT", "/api/admin/content", patch); closeModal(); await render(); toast(said); };
+  const optsOf = () => (cache.content && cache.content.options) || {};
+  const rowsOf = (f, keys) => { const out = []; for (let i = 0; f["name" + i]; i++) { const r = { i }; for (const k of keys) { const el = f[k + i]; r[k] = el ? (el.type === "checkbox" ? el.checked : el.value.trim()) : ""; } out.push(r); } return out; };
+  function progForm(p, isNew) {
+    const o = optsOf(), days = [...(p.days || []), { name: "", goal: "full", length: 30 }];
+    modal(`<div class="card-head"><h2>${isNew ? "New program" : "Edit program"}</h2>${xBtn}</div>
+      <form class="stack" data-form="progSave" data-id="${esc(p.id)}" data-new="${isNew ? "1" : ""}">${fld("pgTitle", "title", "Title", p.title, { max: 80, attrs: "required" })}
+      <div class="grid g3">${sel("pgCat", "category", "Category", o.categories || [p.category], p.category)}${sel("pgLevel", "level", "Level", o.levels || [p.level], p.level)}${sel("pgLoc", "location", "Where", o.locations || [p.location], p.location)}</div>
+      <div class="grid g2">${fld("pgWeeks", "weeks", "Weeks", p.weeks, { type: "number", attrs: 'min="1" max="52" required' })}${sel("pgAccess", "access", "Who can open it", o.access || [p.access], p.access || "free")}</div>
+      ${fld("pgSum", "summary", "Summary", p.summary, { area: true, rows: 2, max: 400 })}${fld("pgNotes", "notes", "Notes for the member", p.notes, { area: true, rows: 3, max: 1000 })}
+      <div><label class="muted" style="font-size:12px">Training days: name, focus, minutes. Clear a name to remove a day; fill the last row to add one (up to 7).</label>
+      ${days.slice(0, 7).map((d, i) => `<div class="set-row three"><input name="name${i}" class="input" value="${esc(d.name)}" maxlength="40" placeholder="${d.name ? "Day name" : "Add a day"}" aria-label="Day ${i + 1} name"><select name="goal${i}" class="input" aria-label="Day ${i + 1} focus">${(o.goals || [d.goal]).map((g) => `<option${g === d.goal ? " selected" : ""}>${esc(g)}</option>`).join("")}</select><select name="length${i}" class="input" aria-label="Day ${i + 1} minutes">${[15, 20, 25, 30, 45, 60, 90].map((n) => `<option${n === Number(d.length) ? " selected" : ""}>${n}</option>`).join("")}</select></div>`).join("")}</div>
+      <div class="row"><button class="btn primary">${isNew ? "Create program" : "Save program"}</button></div></form>`);
+    $("#modal").classList.add("wide");
+  }
+  Object.assign(ACT, {
+    chartBilling: (el) => { state.chartClient = el.dataset.id; state.chartTab = "billing"; if (location.hash === "#chart") render(); else location.hash = "chart"; },
+    progEdit: (el) => { const p = (cache.content.programs || []).find((x) => x.id === el.dataset.id); if (p) progForm(p, false); },
+    progCopy: (el) => { const p = (cache.content.programs || []).find((x) => x.id === el.dataset.id); if (p) progForm({ ...p, id: p.id, title: p.title + " (copy)" }, true); },
+    progDelete: async (el) => { const p = (cache.content.programs || []).find((x) => x.id === el.dataset.id); if (!p || !confirm(`Delete "${p.title}"? Members who were assigned it will no longer see it.`)) return; await putContent({ programs: cache.content.programs.filter((x) => x.id !== p.id) }, "Program deleted."); },
+    lectureEdit: (el) => { const l = (cache.content.lectures || []).find((x) => x.id === el.dataset.id) || { id: "", title: "", topic: (optsOf().topics || ["Health"])[0], minutes: 10, access: "free" }, o = optsOf();
+      modal(`<div class="card-head"><h2>${l.id ? "Edit lecture" : "New lecture"}</h2>${xBtn}</div><form class="stack" data-form="lectureSave" data-id="${esc(l.id)}">${fld("lcTitle", "title", "Title", l.title, { max: 120, attrs: "required" })}
+        <div class="grid g3">${sel("lcTopic", "topic", "Topic", o.topics || [l.topic], l.topic)}${fld("lcMin", "minutes", "Minutes", l.minutes, { type: "number", attrs: 'min="0" max="600"' })}${sel("lcAccess", "access", "Who can open it", o.access || [l.access], l.access)}</div>
+        ${fld("lcUrl", "url", "Video link", l.url, { type: "url", max: 500 })}${fld("lcDl", "downloadUrl", "Download link (optional)", l.downloadUrl, { type: "url", max: 500 })}${fld("lcSum", "summary", "Summary", l.summary, { area: true, rows: 3, max: 500 })}
+        <div class="row"><button class="btn primary">Save lecture</button></div></form>`); },
+    lectureDelete: async (el) => { if (!confirm("Delete this lecture?")) return; await putContent({ lectures: cache.content.lectures.filter((x) => x.id !== el.dataset.id) }, "Lecture deleted."); },
+    recEdit: (el) => { const r = (cache.content.recommendations || []).find((x) => x.id === el.dataset.id) || { id: "", area: "", title: "", body: "", link: "" };
+      modal(`<div class="card-head"><h2>${r.id ? "Edit recommendation" : "New recommendation"}</h2>${xBtn}</div><form class="stack" data-form="recSave" data-id="${esc(r.id)}"><div class="grid g2">${fld("rcTitle", "title", "Title", r.title, { max: 120, attrs: "required" })}${fld("rcArea", "area", "Area (e.g. Protein, Sleep)", r.area, { max: 40, attrs: "required" })}</div>
+        ${fld("rcBody", "body", "What members read", r.body, { area: true, rows: 8, max: 2000, attrs: "required" })}${fld("rcLink", "link", "Link (optional)", r.link, { type: "url", max: 500 })}
+        <div class="row"><button class="btn primary">Save recommendation</button></div></form>`); $("#modal").classList.add("wide"); },
+    recDelete: async (el) => { if (!confirm("Delete this recommendation?")) return; await putContent({ recommendations: cache.content.recommendations.filter((x) => x.id !== el.dataset.id) }, "Recommendation deleted."); },
+    classEdit: (el) => { const c = (cache.classes || []).find((x) => x.id === el.dataset.id) || { id: "", title: "", day: 1, time: "09:00", durationMin: 60, capacity: 10, coach: "", location: "", description: "" };
+      modal(`<div class="card-head"><h2>${c.id ? "Edit class" : "New class"}</h2>${xBtn}</div><form class="stack" data-form="classSave" data-id="${esc(c.id)}">${fld("clTitle", "title", "Class name", c.title, { max: 80, attrs: "required" })}
+        <div class="grid g2">${sel("clDay", "day", "Day", DAYN.map((d, i) => [i, d]), c.day)}${fld("clTime", "time", "Start time", c.time, { type: "time", attrs: "required" })}</div>
+        <div class="grid g2">${fld("clLen", "durationMin", "Length (minutes)", c.durationMin, { type: "number", attrs: 'min="15" max="240"' })}${fld("clCap", "capacity", "Spots", c.capacity, { type: "number", attrs: 'min="1" max="100"' })}</div>
+        <div class="grid g2">${fld("clCoach", "coach", "Coach", c.coach, { max: 80 })}${fld("clLoc", "location", "Where", c.location, { max: 120 })}</div>${fld("clDesc", "description", "Description", c.description, { area: true, rows: 3, max: 500 })}
+        ${c.id ? `<label class="row" style="gap:8px"><input type="checkbox" name="active"${c.active !== false ? " checked" : ""}> Open for booking</label>` : ""}
+        <div class="row"><button class="btn primary">Save class</button>${c.id ? `<button type="button" class="btn danger" data-act="classDelete" data-id="${esc(c.id)}">Delete class</button>` : ""}</div></form>`); },
+    classDelete: async (el) => { if (!confirm("Delete this class? Its upcoming bookings are cancelled too.")) return; await api("DELETE", `/api/admin/classes/${el.dataset.id}`); closeModal(); await render(); toast("Class deleted."); },
+    calTest: async () => { const out = $("#calTestOut"); out.textContent = "Checking…"; const r = await api("POST", "/api/admin/calsync/test", {}).catch((e) => ({ error: e.message })); out.textContent = r.error ? r.error : `Read ${r.busyNext14Days || 0} busy times for the next two weeks.${r.lastError ? " Problem: " + r.lastError : " No problems."}`; },
+    mfaOn: async () => { const r = await api("POST", "/api/admin/mfa/start", {}); modal(`<div class="card-head"><h2>Turn on two-step sign-in</h2>${xBtn}</div><p style="margin:0 0 12px">A 6-digit code was emailed to ${esc(r.to || "you")}. Type it here to finish.</p><form class="stack" data-form="mfaConfirm">${fld("mfCode", "code", "Code", "", { max: 8, attrs: 'inputmode="numeric" autocomplete="one-time-code" required' })}<div class="row"><button class="btn primary">Turn on</button></div></form>`); },
+    mfaOff: () => modal(`<div class="card-head"><h2>Turn off two-step sign-in</h2>${xBtn}</div><p style="margin:0 0 12px">Signing in will need only the password. Type your password to confirm.</p><form class="stack" data-form="mfaDisable">${fld("mfPass", "password", "Password", "", { type: "password", attrs: 'autocomplete="current-password" required' })}<div class="row"><button class="btn danger">Turn off</button></div></form>`),
+  });
+  Object.assign(FORMS, {
+    setBusiness: (f) => putSettings({ business: { name: f.name.value.trim(), phone: f.phone.value.trim(), tagline: f.tagline.value.trim(), email: f.email.value.trim(), address: f.address.value.trim(), hours: f.hours.value.trim(), bookingNote: f.bookingNote.value.trim() } }, "Practice details saved."),
+    setHours: (f) => {
+      const hours = DAYN.map((d, i) => f["h" + i].value.split(",").map((x) => x.trim()).filter(Boolean).map((w) => { const m = w.match(/^(\d{1,2}):?(\d{2})?\s*(?:-|to)\s*(\d{1,2}):?(\d{2})?$/i); if (!m) throw new Error(`${d}: "${w}" is not a time window. Type it like 09:00-17:00.`); return [`${m[1].padStart(2, "0")}:${m[2] || "00"}`, `${m[3].padStart(2, "0")}:${m[4] || "00"}`]; }));
+      return putSettings({ scheduling: { hours, slotStepMin: Number(f.slotStepMin.value), lastStart: f.lastStart.value, minNoticeHours: Number(f.minNoticeHours.value), daysAhead: Number(f.daysAhead.value), blockedDates: f.blockedDates.value.split(/[\s,]+/).filter(Boolean) } }, "Booking hours saved.");
+    },
+    setTypes: (f) => { const cur = cache.settings.appointmentTypes || []; return putSettings({ appointmentTypes: rowsOf(f, ["name", "minutes", "remote", "description"]).filter((r) => r.name).map((r) => ({ id: (cur[r.i] && cur[r.i].id) || slugOf(r.name), name: r.name, minutes: Number(r.minutes), description: r.description, remote: r.remote })) }, "Visit types saved."); },
+    setServices: (f) => { const cur = cache.settings.services || []; return putSettings({ services: rowsOf(f, ["name", "rate", "unit", "description"]).filter((r) => r.name).map((r) => ({ ...(cur[r.i] || {}), id: (cur[r.i] && cur[r.i].id) || slugOf(r.name), name: r.name, rate: Number(r.rate), unit: r.unit || "visit", description: r.description })) }, "Services and fees saved."); },
+    setPlans: (f) => putSettings({ plans: Object.fromEntries(["gold", "silver", "silverPayments", "reviewDiscountPct", "ext12", "ext24"].map((k) => [k, Number(f[k].value)])) }, "Pricing saved."),
+    setVideo: (f) => putSettings({ booking: { telehealthUrl: f.telehealthUrl.value.trim() } }, "Video link saved."),
+    setIcs: async (f) => { const v = f.icsUrl.value.trim(); if (!v && !confirm("Disconnect the SimplePractice calendar? Its busy times will stop blocking bookings.")) return; await api("PUT", "/api/admin/calsync", { icsUrl: v }); await render(); toast(v ? "Calendar link saved." : "SimplePractice calendar disconnected."); },
+    setTiers: (f) => putContent({ tiers: (cache.content.tiers || []).map((t, i) => ({ ...t, name: f["name" + i].value.trim(), price: Number(f["price" + i].value), meetings: Number(f["meetings" + i].value), meetingMinutes: Number(f["minutes" + i].value), perks: f["perks" + i].value.split("\n").map((x) => x.trim()).filter(Boolean) })) }, "Membership types saved."),
+    progSave: (f) => {
+      const all = cache.content.programs || [], src = all.find((x) => x.id === f.dataset.id) || {}, isNew = !!f.dataset.new;
+      const days = rowsOf(f, ["name", "goal", "length"]).filter((r) => r.name).map((r) => ({ ...((src.days || [])[r.i] || {}), name: r.name, goal: r.goal, length: Number(r.length) }));
+      if (!days.length) throw new Error("A program needs at least one training day.");
+      const p = { ...src, id: isNew ? slugOf(f.title.value) : src.id, title: f.title.value.trim(), category: f.category.value, level: f.level.value, location: f.location.value, weeks: Number(f.weeks.value), access: f.access.value, summary: f.summary.value.trim(), notes: f.notes.value.trim(), days };
+      if (isNew) delete p.perWeek;
+      return putContent({ programs: isNew ? [...all, p] : all.map((x) => (x.id === p.id ? p : x)) }, isNew ? "Program created." : "Program saved.");
+    },
+    lectureSave: (f) => { const all = cache.content.lectures || [], id = f.dataset.id, l = { ...(all.find((x) => x.id === id) || {}), id: id || slugOf(f.title.value), title: f.title.value.trim(), topic: f.topic.value, minutes: Number(f.minutes.value), access: f.access.value, url: f.url.value.trim(), downloadUrl: f.downloadUrl.value.trim(), summary: f.summary.value.trim() };
+      return putContent({ lectures: id ? all.map((x) => (x.id === id ? l : x)) : [...all, l] }, "Lecture saved."); },
+    recSave: (f) => { const all = cache.content.recommendations || [], id = f.dataset.id, r = { ...(all.find((x) => x.id === id) || {}), id: id || slugOf(f.title.value), title: f.title.value.trim(), area: f.area.value.trim(), body: f.body.value.trim(), link: f.link.value.trim() };
+      return putContent({ recommendations: id ? all.map((x) => (x.id === id ? r : x)) : [...all, r] }, "Recommendation saved."); },
+    classSave: async (f) => { const body = { title: f.title.value.trim(), day: Number(f.day.value), time: f.time.value, durationMin: Number(f.durationMin.value), capacity: Number(f.capacity.value), coach: f.coach.value.trim(), location: f.location.value.trim(), description: f.description.value.trim() };
+      if (f.dataset.id) await api("PUT", `/api/admin/classes/${f.dataset.id}`, { ...body, ...(f.active ? { active: f.active.checked } : {}) }); else await api("POST", "/api/admin/classes", body);
+      closeModal(); await render(); toast("Class saved."); },
+    mfaConfirm: async (f) => { await api("POST", "/api/admin/mfa/confirm", { code: f.code.value.trim() }); closeModal(); await render(); toast("Two-step sign-in is on."); },
+    mfaDisable: async (f) => { await api("POST", "/api/admin/mfa/disable", { password: f.password.value }); closeModal(); await render(); toast("Two-step sign-in is off."); },
+  });
 
   async function loadPool() {
     const box = $("#mvPool"); if (!box) return;
