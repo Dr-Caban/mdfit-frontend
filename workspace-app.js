@@ -43,7 +43,7 @@
 
   // Signing out empties everything that was drawn, so names and notes do not stay on a shared screen.
   function signOut() {
-    token = ""; store.set(""); if (window.MDFitRT) MDFitRT.disconnect(); stopDictation();
+    token = ""; store.set(""); if (window.MDFitRT) { if (tele.call) MDFitRT.emit("tele_end"); MDFitRT.disconnect(); } teleDrop(); stopDictation();
     for (const k of Object.keys(cache)) cache[k] = (k === "unread" || k === "waiting") ? 0 : null; // every cached list, the open chart included
     state.chartClient = null; state.thread = null; state.clientQ = "";
     $("#view").innerHTML = ""; $("#nav").innerHTML = ""; $("#whoami").textContent = ""; $("#globalSearch").value = ""; closeModal();
@@ -80,6 +80,20 @@
   $("#signOut").addEventListener("click", signOut);
 
   // ---------------------------------------------------------------- navigation
+  // Small line icons for buttons and labels. SVG only: no emoji or text glyphs anywhere in the workspace.
+  const UI = {
+    mic: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',
+    stop: '<rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor"/>',
+    spark: '<path d="M12 3l1.9 5.6L19.5 10.5l-5.6 1.9L12 18l-1.9-5.6L4.5 10.5l5.6-1.9z"/>',
+    prev: '<path d="M15 5l-7 7 7 7"/>', next: '<path d="M9 5l7 7-7 7"/>',
+    x: '<path d="M6 6l12 12M18 6L6 18"/>',
+    star: '<path d="M12 3.5l2.6 5.3 5.9.9-4.2 4.1 1 5.8L12 16.9 6.7 19.6l1-5.8L3.5 9.7l5.9-.9z" fill="currentColor"/>',
+    camera: '<rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3z"/>',
+    screen: '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/>',
+    phoneOff: '<path d="M4 15c5-5 11-5 16 0l-2.5 2.5-3-1.5v-2.5a8 8 0 0 0-5 0V16l-3 1.5z" fill="currentColor"/>',
+    copy: '<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/>'
+  };
+  const ui = (name, size = 16) => `<svg class="ui-ic" viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${UI[name]}</svg>`;
   const ICON = {
     dashboard: '<path d="M3 13h8V3H3zM13 21h8V11h-8zM3 21h8v-6H3zM13 3v6h8V3z"/>',
     calendar: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/>',
@@ -188,7 +202,7 @@
     const today = isoDay(now);
     return `
     <div class="view-head"><div><h1>Calendar</h1><p class="muted">Week of ${mon.toLocaleDateString("en-US", { month: "long", day: "numeric" })}</p></div>
-    <div class="row"><button class="btn sm" data-act="calWeek" data-d="-1" aria-label="Previous week">‹</button><button class="btn sm" data-act="calWeek" data-d="0">Today</button><button class="btn sm" data-act="calWeek" data-d="1" aria-label="Next week">›</button>
+    <div class="row"><button class="btn sm" data-act="calWeek" data-d="-1" aria-label="Previous week">${ui("prev", 14)}</button><button class="btn sm" data-act="calWeek" data-d="0">Today</button><button class="btn sm" data-act="calWeek" data-d="1" aria-label="Next week">${ui("next", 14)}</button>
     ${adminLink("hours", "Hours &amp; calendar sync")}</div></div>
     <div class="row" style="margin-bottom:12px"><span class="pill"><span class="dot" style="background:var(--body)"></span>Booked</span><span class="pill"><span class="dot" style="background:var(--ok)"></span>Completed</span><span class="pill"><span class="dot" style="background:var(--fit)"></span>Class</span><span class="pill"><span class="dot" style="background:var(--muted)"></span>Busy on your other calendars</span>
     <span class="muted" style="font-size:12.5px">${!sync ? "Your other calendars could not be read just now." : sync.simplepractice === "off" && sync.google === "off" ? "No outside calendar is connected, so only MD Fit bookings show." : `Showing ${[sync.simplepractice !== "off" && "SimplePractice", sync.google !== "off" && "Google Calendar"].filter(Boolean).join(" and ")} busy times (times only)${sync.lastError ? ". Last sync reported a problem" : ""}.`}</span></div>
@@ -262,7 +276,7 @@
     if (t === "notes") return `
       <div class="card stack"><div class="card-head"><h2>Notes for ${first}</h2><span class="pill warn">${first} reads these in the app</span></div>
         <p class="muted" style="margin:0">These notes are shared with the patient. This system does not yet have private clinical notes or signing.</p>
-        <form class="stack" data-form="note"><div class="row" style="justify-content:space-between"><label class="muted" for="noteText" style="font-size:12px">New note</label><button type="button" class="btn sm mic" data-act="dictate" data-for="noteText" aria-pressed="false">🎤 Dictate</button></div><textarea id="noteText" name="text" class="input" rows="3" maxlength="4000" required placeholder="What ${first} should know or do next"></textarea>
+        <form class="stack" data-form="note"><div class="row" style="justify-content:space-between"><label class="muted" for="noteText" style="font-size:12px">New note</label><button type="button" class="btn sm mic" data-act="dictate" data-for="noteText" aria-pressed="false">${ui("mic", 14)}<span>Dictate</span></button></div><textarea id="noteText" name="text" class="input" rows="3" maxlength="4000" required placeholder="What ${first} should know or do next"></textarea>
         <div class="row"><button class="btn primary">Add note</button></div></form></div>
       <div class="stack" style="margin-top:16px">${d.notes.map((n) => `<div class="card"><div class="card-head"><span class="muted">${when(n.at)}</span><button class="btn sm danger" data-act="rmNote" data-id="${esc(n.id)}">Remove</button></div><p class="note-text">${esc(n.text)}</p></div>`).join("") || `<div class="card">${none("No notes yet.")}</div>`}</div>`;
     if (t === "plans") return `
@@ -325,15 +339,43 @@
 
   V.telehealth = async () => {
     const [appts, settings] = await Promise.all([get("/appointments?all=1"), get("/settings")]), today = isoDay(new Date());
-    const room = (settings.booking && settings.booking.telehealthUrl) || "", roomOk = /^https:\/\//i.test(room);
+    const room = (settings.booking && settings.booking.telehealthUrl) || "", own = location.origin + "/visit", usingOwn = room === own;
     const video = appts.filter((a) => a.date >= today && a.status === "booked" && (a.meetingLink || /remote|video|online|call/i.test(`${a.typeId} ${a.typeName}`)));
-    return `<div class="view-head"><div><h1>Telehealth</h1><p class="muted">Video visits run in your own video room. Everyone who books a video visit is sent its link.</p></div></div>
-    <div class="card stack" style="margin-bottom:16px"><div class="card-head"><h2>Your video room</h2><span class="pill ${roomOk ? "ok" : "warn"}">${roomOk ? "Ready" : "Not set"}</span></div>
-      ${roomOk ? `<div class="row"><a class="btn primary" href="${esc(room)}" target="_blank" rel="noopener">Open my room</a><button type="button" class="btn" data-act="copyRoom" data-url="${esc(room)}">Copy link</button><span class="muted" style="font-size:12.5px;overflow-wrap:anywhere">${esc(room)}</span></div>` : none("No room link yet. Paste the link to your video room below.")}
-      <form class="row" data-form="roomLink" style="align-items:flex-end"><div class="field" style="flex:1;min-width:220px;margin:0"><label for="roomUrl">${roomOk ? "Change the room link" : "Room link"}</label><input id="roomUrl" name="url" class="input" type="url" inputmode="url" placeholder="https://" value="${esc(room)}" maxlength="500"></div><button class="btn">Save</button></form>
-      <p class="muted" style="font-size:12px;margin:0">Use a room from a video service that has signed a business associate agreement with you, with its waiting room switched on: every patient gets this same link.</p></div>
-    <div class="card"><div class="card-head"><h2>Upcoming video visits</h2></div>
-      ${video.map((a) => `<div class="list-item"><span style="flex:1"><b>${esc(a.name)}</b><div class="muted" style="font-size:12px">${fmtDate(a.date)} · ${fmtTime(a.time)} · ${esc(a.typeName || "")}</div></span>${a.meetingLink ? `<a class="btn sm primary" href="${esc(a.meetingLink)}" target="_blank" rel="noopener">Open video link</a>` : `<span class="pill warn">No link yet</span>`}</div>`).join("") || none("No video visits booked. Schedule one from a client's chart, under Billing.")}</div>`;
+    return `<div class="view-head"><div><h1>Telehealth</h1><p class="muted">Built-in video · runs in the browser with nothing to install · encrypted browser to browser</p></div>
+      <button type="button" class="btn" data-act="copyRoom" data-url="${esc(own)}">${ui("copy", 15)}Copy patient link</button></div>
+    <div class="grid g-side">
+      <div>
+        <div class="tele-stage" id="teleStage">
+          <video id="teleRemote" autoplay playsinline></video>
+          <video id="teleLocal" autoplay playsinline muted></video>
+          <span class="tele-timer" id="teleTimer">00:00</span>
+          <span class="tele-who" id="teleWho"></span>
+          <div class="tele-idle" id="teleIdle"><b>No visit in progress</b><span>Admit a patient from the waiting room to start. Your camera turns on when you admit.</span></div>
+        </div>
+        <div class="row tele-controls" id="teleControls" hidden>
+          <button type="button" class="btn" id="teleMic" data-act="teleMic" aria-pressed="false">Mute</button>
+          <button type="button" class="btn" id="teleCam" data-act="teleCam" aria-pressed="false">Camera off</button>
+          <button type="button" class="btn" id="teleShare" data-act="teleShare" aria-pressed="false">Share screen</button>
+          <button type="button" class="btn tele-end" data-act="teleEnd">${ui("phoneOff", 15)}End visit</button>
+          <span class="muted" id="teleStatus" role="status" style="font-size:12.5px"></span>
+        </div>
+      </div>
+      <div class="stack">
+        <div class="card"><div class="card-head"><h2>Waiting room</h2><span class="pill" id="teleCount">Empty</span></div><div id="teleWaiting"></div></div>
+        <div class="card stack"><div class="card-head"><h2>Patient link</h2><span class="pill ${usingOwn ? "ok" : "warn"}">${usingOwn ? "Sent with video bookings" : room ? "Another link is in use" : "Not sent yet"}</span></div>
+          <p class="muted" style="margin:0;font-size:13px;overflow-wrap:anywhere">${esc(own)}</p>
+          <p class="muted" style="margin:0;font-size:12px">Patients sign in, check their camera and wait here until you admit them. ${usingOwn ? "Every video booking is sent this link." : room ? `Video bookings are currently sent ${esc(room)}.` : "Video bookings are not sent a link yet."}</p>
+          ${usingOwn ? "" : `<div class="row"><button type="button" class="btn sm primary" data-act="useOwnRoom">Send this link with every video booking</button></div>`}
+          <details><summary class="muted" style="font-size:12px;cursor:pointer">Use a different video service instead</summary>
+            <form class="row" data-form="roomLink" style="align-items:flex-end;margin-top:8px"><div class="field" style="flex:1;min-width:200px;margin:0"><label for="roomUrl">Room link</label><input id="roomUrl" name="url" class="input" type="url" inputmode="url" placeholder="https://" value="${esc(usingOwn ? "" : room)}" maxlength="500"></div><button class="btn sm">Save</button></form></details></div>
+        <div class="card"><div class="card-head"><h2>This visit</h2></div>
+          <div class="list-item"><span style="flex:1">Encryption</span><span class="pill ok">DTLS-SRTP</span></div>
+          <div class="list-item"><span style="flex:1">Recording</span><span class="pill">Never recorded</span></div>
+          <div class="list-item"><span style="flex:1">Participants</span><span class="pill">One patient at a time</span></div></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px"><div class="card-head"><h2>Upcoming video visits</h2></div>
+      ${video.map((a) => `<div class="list-item"><span style="flex:1"><b>${esc(a.name)}</b><div class="muted" style="font-size:12px">${fmtDate(a.date)} · ${fmtTime(a.time)} · ${esc(a.typeName || "")}</div></span>${a.meetingLink && a.meetingLink !== own ? `<a class="btn sm" href="${/^https:\/\//i.test(a.meetingLink) ? esc(a.meetingLink) : "#"}" target="_blank" rel="noopener">Open their link</a>` : a.meetingLink ? `<span class="pill ok">Built-in room</span>` : `<span class="pill warn">No link yet</span>`}</div>`).join("") || none("No video visits booked. Schedule one from a client's chart, under Billing.")}</div>`;
   };
 
   V.notes = async () => {
@@ -342,14 +384,14 @@
     return `<div class="view-head"><div><h1>New note</h1><p class="muted">A note for a patient. They read it in their app.</p></div></div>
     <div class="grid g-side"><div class="card stack">
       <form class="stack" data-form="noteFor"><div class="field"><label for="nClient">Patient</label><select id="nClient" name="id" class="input" required>${emr.patients.map((p) => `<option value="${esc(p.id)}"${p.id === state.chartClient ? " selected" : ""}>${esc(p.name)}</option>`).join("") || `<option value="">No active patients yet</option>`}</select></div>
-      <div class="field"><div class="row" style="justify-content:space-between"><label for="nBody">Note</label><button type="button" class="btn sm mic" data-act="dictate" data-for="nBody" aria-pressed="false">🎤 Dictate</button></div><textarea id="nBody" name="text" class="input" style="min-height:260px" maxlength="4000" required placeholder="What the patient should know or do next"></textarea></div>
+      <div class="field"><div class="row" style="justify-content:space-between"><label for="nBody">Note</label><button type="button" class="btn sm mic" data-act="dictate" data-for="nBody" aria-pressed="false">${ui("mic", 14)}<span>Dictate</span></button></div><textarea id="nBody" name="text" class="input" style="min-height:260px" maxlength="4000" required placeholder="What the patient should know or do next"></textarea></div>
       <div class="row"><button class="btn primary"${emr.patients.length ? "" : " disabled"}>Add note</button><span class="muted" style="font-size:12px">Shared with the patient as soon as it is added</span></div></form></div>
-    <div class="stack"><div class="card">${scribe.enabled ? `<div class="card-head"><h2>✦ AI scribe</h2><span class="pill ok">On · ${esc(scribe.model)}</span></div>
+    <div class="stack"><div class="card">${scribe.enabled ? `<div class="card-head"><h2 class="row" style="gap:6px">${ui("spark", 18)}AI scribe</h2><span class="pill ok">On · ${esc(scribe.model)}</span></div>
       <form class="stack" data-form="scribe">
-        <div class="field"><div class="row" style="justify-content:space-between"><label for="sText">What happened in the visit</label><button type="button" class="btn sm mic" data-act="dictate" data-for="sText" aria-pressed="false">🎤 Dictate</button></div><textarea id="sText" name="text" class="input" style="min-height:150px" maxlength="20000" required placeholder="Your rough notes, or paste a transcript. For example: right knee 3 weeks post-op, swelling down, soft tissue on the quad, heel slides 2x10 twice a day, back in a week."></textarea></div>
+        <div class="field"><div class="row" style="justify-content:space-between"><label for="sText">What happened in the visit</label><button type="button" class="btn sm mic" data-act="dictate" data-for="sText" aria-pressed="false">${ui("mic", 14)}<span>Dictate</span></button></div><textarea id="sText" name="text" class="input" style="min-height:150px" maxlength="20000" required placeholder="Your rough notes, or paste a transcript. For example: right knee 3 weeks post-op, swelling down, soft tissue on the quad, heel slides 2x10 twice a day, back in a week."></textarea></div>
         <div class="row"><button class="btn primary"${emr.patients.length ? "" : " disabled"}>Draft the note</button><span class="muted" style="font-size:12px" id="sMsg" role="status"></span></div>
         <p class="muted" style="font-size:12px;margin:0">The draft lands in the Note box for you to read and edit. Nothing is saved or shared until you press Add note. The patient's name, emails and phone numbers are removed before the text goes to ${esc(scribe.host)}.</p>
-      </form>` : `<div class="card-head"><h2>✦ AI scribe</h2><span class="pill">Not connected</span></div>${none("Drafts the patient's note from your rough notes. It turns on once a language model is connected on the server.")}`}</div>
+      </form>` : `<div class="card-head"><h2 class="row" style="gap:6px">${ui("spark", 18)}AI scribe</h2><span class="pill">Not connected</span></div>${none("Drafts the patient's note from your rough notes. It turns on once a language model is connected on the server.")}`}</div>
     <div class="card"><div class="card-head"><h2>Private notes and signing</h2><span class="pill">Not connected</span></div>${none("This system stores only notes the patient can read. Private clinical notes, sensitivity tiers and sign-and-lock are not built yet.")}</div></div></div>`;
   };
 
@@ -445,7 +487,7 @@
     const [reviews, rep] = await Promise.all([get("/feedback"), get("/feedback-reports")]);
     return `<div class="view-head"><div><h1>Reviews & feedback</h1><p class="muted">${plural(reviews.length, "review")} · ${plural(rep.open || 0, "open report")}</p></div></div>
     <div class="grid g2"><div class="card"><div class="card-head"><h2>Reviews from the website</h2></div>
-      ${reviews.map((f) => `<div class="list-item" style="align-items:flex-start"><span style="flex:1;min-width:0"><b>${esc(f.name)}</b> <span class="muted">${"★".repeat(Math.max(0, Math.min(5, f.rating || 0)))}</span> <span class="pill">${esc(f.status)}</span><p class="note-text">${esc(f.text)}</p></span>
+      ${reviews.map((f) => `<div class="list-item" style="align-items:flex-start"><span style="flex:1;min-width:0"><b>${esc(f.name)}</b> <span class="stars" role="img" aria-label="${Math.max(0, Math.min(5, f.rating || 0))} out of 5 stars">${ui("star", 13).repeat(Math.max(0, Math.min(5, f.rating || 0)))}</span> <span class="pill">${esc(f.status)}</span><p class="note-text">${esc(f.text)}</p></span>
         ${f.status !== "hidden" ? `<button class="btn sm" data-act="review" data-id="${esc(f.id)}" data-st="hidden">Hide</button>` : `<button class="btn sm" data-act="review" data-id="${esc(f.id)}" data-st="pending">Restore</button>`}${f.publish && f.status !== "approved" ? `<button class="btn sm primary" data-act="review" data-id="${esc(f.id)}" data-st="approved">Show on website</button>` : ""}</div>`).join("") || none("No reviews yet.")}</div>
     <div class="card"><div class="card-head"><h2>Bug reports and ideas</h2></div>
       ${rep.reports.map((r) => `<div class="list-item" style="align-items:flex-start"><span style="flex:1;min-width:0"><b>${esc(r.title)}</b> <span class="pill">${r.kind === "bug" ? "Bug" : "Suggestion"}</span> <span class="pill">${esc(r.status)}</span><p class="note-text">${esc(r.body)}</p><span class="muted" style="font-size:12px">${esc(r.clientName || "")} · ${when(r.createdAt)}</span></span>
@@ -498,6 +540,13 @@
     chartClose: (el, e) => { e.preventDefault(); state.chartClient = null; render(); },
     chartTab: (el) => { state.chartTab = el.dataset.tab; document.querySelectorAll(".tabs .tab").forEach((b) => b.classList.toggle("active", b === el)); $("#chartBody").innerHTML = chartTab(); if (state.chartTab === "plans") loadPool(); },
     dictate: (el) => dictate(el),
+    teleAdmit: async (el) => { if (teleIn()) return; el.disabled = true; try { await teleMedia(); teleMount(); MDFitRT.emit("tele_admit", { clientId: el.dataset.id }); } catch (err) { el.disabled = false; toast(err.message); } },
+    teleDecline: (el) => { if (confirm("Turn this person away from the waiting room?")) MDFitRT.emit("tele_decline", { clientId: el.dataset.id }); },
+    teleMic: () => { if (!tele.local) return; tele.micOff = !tele.micOff; tele.local.getAudioTracks().forEach((t) => { t.enabled = !tele.micOff; }); teleMount(); },
+    teleCam: () => { if (!tele.cam) return; tele.camOff = !tele.camOff; tele.cam.enabled = !tele.camOff; teleMount(); },
+    teleShare: () => teleShare(),
+    teleEnd: () => { if (!teleIn() || !confirm("End this video visit?")) return; MDFitRT.emit("tele_end"); teleOver(""); toast("Visit ended."); },
+    useOwnRoom: async () => { await api("PUT", "/api/admin/settings", { booking: { telehealthUrl: location.origin + "/visit" } }); toast("Done. Video bookings now get the built-in room link."); await render(); },
     copyRoom: async (el) => { try { await navigator.clipboard.writeText(el.dataset.url); toast("Room link copied."); } catch { toast("Couldn't copy. Select the link and copy it."); } },
     thread: (el) => { state.thread = el.dataset.id; if (location.hash === "#messages") render(); else location.hash = "messages"; },
     insTab: (el) => { state.insTab = el.dataset.tab; render(); },
@@ -588,39 +637,162 @@
   // ---------------------------------------------------------------- router and start
   let seq = 0;
   async function render() {
+    if (dict.on && !(dict.box && dict.box.isConnected && route() === dict.route)) stopDictation();
     if (!token) return;
     let r = (location.hash || "#dashboard").slice(1); if (r === "reports") r = "insights"; if (!V[r]) r = "dashboard";
     renderNav(r); $("#nav").classList.remove("open");
     const my = ++seq, view = $("#view");
     if (!view.innerHTML) view.innerHTML = `<p class="spin">Loading…</p>`;
-    try { const html = await V[r](); if (my !== seq || !token) return; view.innerHTML = html; if (r === "chart" && state.chartTab === "plans") loadPool(); }
+    try { const html = await V[r](); if (my !== seq || !token) return; view.innerHTML = html; if (r === "chart" && state.chartTab === "plans") loadPool(); if (r === "telehealth") { if (window.MDFitRT) MDFitRT.emit("tele_list"); teleMount(); } }
     catch (err) { if (my !== seq || !token) return; view.innerHTML = `<div class="card"><b>This screen could not be loaded.</b><p class="muted" style="margin:6px 0 0">${esc(err.message)}</p></div>`; }
   }
   // ---- Voice dictation into a note box. It uses the browser's own speech recognition: on this device when the
   // browser offers that, otherwise through the browser maker's speech service (Google in Chrome, Apple in Safari).
   // The button says which. Nothing is recorded or kept by this page; only the words land in the box.
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  let rec = null;
-  function stopDictation() { if (rec) { try { rec.stop(); } catch {} } }
-  async function dictate(btn) {
-    if (rec) { stopDictation(); return; }
-    const box = $("#" + btn.dataset.for); if (!box) return;
-    if (!SR) { toast("This browser has no voice dictation. Use Chrome, Edge or Safari, or your computer's own dictation key."); return; }
-    const r = new SR(); r.lang = "en-US"; r.continuous = true; r.interimResults = true;
-    let onDevice = false;
-    try { if (typeof SR.available === "function" && (await SR.available({ langs: ["en-US"], processLocally: true })) === "available") { r.processLocally = true; onDevice = true; } } catch {}
-    const base = box.value ? box.value.replace(/\s*$/, " ") : ""; let said = "";
+  const dict = { on: false, rec: null, btn: null, box: null, base: "", said: "", restarts: 0 };
+  const micLabel = (btn, on) => { if (!btn || !btn.isConnected) return; btn.classList.toggle("rec", on); btn.setAttribute("aria-pressed", String(on)); btn.innerHTML = ui(on ? "stop" : "mic", 14) + `<span>${on ? "Stop" : "Dictate"}</span>`; };
+  function stopDictation(why) {
+    if (!dict.on && !dict.rec) return;
+    dict.on = false;
+    const r = dict.rec; dict.rec = null;
+    if (r) { r.onend = null; r.onerror = null; r.onresult = null; try { r.stop(); } catch {} }
+    if (dict.box && dict.box.isConnected) dict.box.value = (dict.base + dict.said).replace(/\s+$/, "");
+    micLabel(dict.btn, false);
+    if (why) toast(why);
+  }
+  // One listening stretch. Browsers end a stretch after a few seconds of silence or about a minute of speech, so
+  // while the button is on, the next stretch starts by itself and the words keep adding to the same box.
+  function listen(onDevice) {
+    const r = new SR(); dict.rec = r;
+    r.lang = "en-US"; r.continuous = true; r.interimResults = true;
+    if (onDevice) { try { r.processLocally = true; } catch {} }
     r.onresult = (e) => {
       let interim = "";
-      for (let i = e.resultIndex; i < e.results.length; i++) { const t = e.results[i][0].transcript; if (e.results[i].isFinal) said += t; else interim += t; }
-      box.value = base + said + interim; box.scrollTop = box.scrollHeight; idleBump(); // speaking counts as activity
+      for (let i = e.resultIndex; i < e.results.length; i++) { const t = e.results[i][0].transcript; if (e.results[i].isFinal) dict.said += t; else interim += t; }
+      if (dict.box.isConnected) { dict.box.value = dict.base + dict.said + interim; dict.box.scrollTop = dict.box.scrollHeight; }
+      dict.restarts = 0; idleBump(); // speaking counts as activity
     };
-    r.onerror = (e) => toast(e.error === "not-allowed" || e.error === "service-not-allowed" ? "Microphone access is blocked. Allow the microphone for this site and try again." : e.error === "no-speech" ? "No speech was heard." : e.error === "aborted" ? "Dictation stopped." : "Dictation stopped (" + e.error + ").");
-    r.onend = () => { rec = null; box.value = (base + said).replace(/\s+$/, ""); if (btn.isConnected) { btn.classList.remove("rec"); btn.textContent = "🎤 Dictate"; btn.setAttribute("aria-pressed", "false"); btn.title = ""; } };
-    rec = r; btn.classList.add("rec"); btn.textContent = "■ Stop"; btn.setAttribute("aria-pressed", "true");
-    btn.title = onDevice ? "Listening. Speech is turned into text on this device." : "Listening. Your browser sends the audio to its maker's speech service to turn it into text.";
-    toast(onDevice ? "Listening (on this device). Press Stop when done." : "Listening (through your browser's speech service). Press Stop when done.");
-    try { r.start(); } catch (err) { rec = null; btn.classList.remove("rec"); btn.textContent = "🎤 Dictate"; toast("Dictation could not start."); }
+    r.onerror = (e) => {
+      if (e.error === "no-speech" || e.error === "aborted") return; // a pause: onend restarts the stretch
+      stopDictation(e.error === "not-allowed" || e.error === "service-not-allowed" ? "The microphone is blocked for this site. Click the lock icon in the address bar, allow the microphone, and press Dictate again."
+        : e.error === "audio-capture" ? "No microphone was found. Plug one in or check your sound settings."
+        : e.error === "network" ? "This browser's speech service could not be reached. Dictation works in Chrome, Edge and Safari; otherwise use your computer's own dictation key."
+        : e.error === "language-not-supported" ? "This browser cannot dictate in English here." : "Dictation stopped (" + e.error + ").");
+    };
+    r.onend = () => {
+      if (!dict.on || dict.rec !== r) return;
+      if (!dict.box.isConnected) { stopDictation(); return; }            // the screen changed
+      if (++dict.restarts > 40) { stopDictation("Dictation paused after a long silence. Press Dictate to continue."); return; }
+      dict.base = (dict.base + dict.said).replace(/\s*$/, " "); dict.said = "";
+      setTimeout(() => { if (dict.on) { try { listen(onDevice); } catch { stopDictation("Dictation could not restart. Press Dictate again."); } } }, 250);
+    };
+    r.start();
+  }
+  async function dictate(btn) {
+    if (dict.on) { const same = dict.btn === btn; stopDictation(); if (same) return; }
+    const box = $("#" + btn.dataset.for); if (!box) return;
+    if (!SR) { toast("This browser has no voice dictation. Use Chrome, Edge or Safari, or your computer's own dictation key (on a Mac: press the microphone key or Fn twice)."); return; }
+    btn.disabled = true;
+    try {
+      // Ask for the microphone up front, so the browser's permission prompt shows and a refusal is reported plainly
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        try { (await navigator.mediaDevices.getUserMedia({ audio: true })).getTracks().forEach((t) => t.stop()); }
+        catch (err) { toast(err && err.name === "NotFoundError" ? "No microphone was found. Plug one in or check your sound settings." : "The microphone is blocked for this site. Click the lock icon in the address bar, allow the microphone, and press Dictate again."); return; }
+      }
+      let onDevice = false;
+      try { if (typeof SR.available === "function") onDevice = (await SR.available({ langs: ["en-US"], processLocally: true })) === "available"; } catch {}
+      Object.assign(dict, { route: route(), on: true, btn, box, base: box.value ? box.value.replace(/\s*$/, " ") : "", said: "", restarts: 0 });
+      micLabel(btn, true);
+      btn.title = onDevice ? "Listening. Speech is turned into text on this device." : "Listening. Your browser sends the audio to its maker's speech service to turn it into text.";
+      listen(onDevice);
+      toast(onDevice ? "Listening (on this device). Press Stop when done." : "Listening. Press Stop when done.");
+    } catch (err) { stopDictation("Dictation could not start in this browser."); }
+    finally { btn.disabled = false; }
+  }
+
+  // ---- Built-in video visits. The patient knocks from /visit; Dr. Jared admits them here. Sound and picture then
+  // travel browser to browser, encrypted by the browsers (WebRTC). The server only passes the short set-up messages
+  // and never sees the call. The call lives in `tele`, outside the screen, so moving around the workspace keeps it up.
+  const tele = { waiting: [], call: null, pc: null, local: null, cam: null, screen: null, remote: null, micOff: false, camOff: false, status: "", ice: null, queue: [], tick: 0 };
+  const teleIn = () => !!tele.call;
+  const teleSay = (t) => { tele.status = t; const el = $("#teleStatus"); if (el) el.textContent = t; };
+  async function teleMedia() {
+    if (tele.local) return tele.local;
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw new Error("This browser cannot use a camera or microphone here.");
+    try { tele.local = await navigator.mediaDevices.getUserMedia({ audio: true, video: { width: { ideal: 1280 }, height: { ideal: 720 } } }); }
+    catch (err) {
+      if (err && (err.name === "NotAllowedError" || err.name === "SecurityError")) throw new Error("Camera and microphone are blocked. Allow them for this site and try again.");
+      try { tele.local = await navigator.mediaDevices.getUserMedia({ audio: true }); tele.camOff = true; toast("No camera found. Joining with sound only."); }
+      catch { throw new Error("No microphone or camera could be started."); }
+    }
+    tele.cam = tele.local.getVideoTracks()[0] || null;
+    return tele.local;
+  }
+  function teleDrop() {
+    clearInterval(tele.tick);
+    if (tele.pc) { try { tele.pc.close(); } catch {} }
+    for (const s of [tele.local, tele.screen]) if (s) s.getTracks().forEach((t) => t.stop());
+    Object.assign(tele, { call: null, pc: null, local: null, cam: null, screen: null, remote: null, micOff: false, camOff: false, queue: [], tick: 0 });
+  }
+  function teleOver(msg) { const was = teleIn(); teleDrop(); teleSay(""); if (was && msg) toast(msg); if (route() === "telehealth") teleMount(); }
+  function teleClock() { const el = $("#teleTimer"); if (!el) return; const s = tele.call ? Math.floor((Date.now() - tele.call.since) / 1000) : 0; el.textContent = `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`; }
+  async function teleBegin(ev) {
+    try {
+      if (!tele.ice) tele.ice = (await get("/telehealth/ice")).iceServers || [];
+      const stream = await teleMedia();
+      const pc = new RTCPeerConnection({ iceServers: tele.ice }); tele.pc = pc; tele.queue = [];
+      tele.call = { clientId: ev.clientId, name: ev.name || "Patient", visit: ev.visit || "", since: Date.now() };
+      stream.getTracks().forEach((t) => pc.addTrack(t, stream));
+      pc.ontrack = (e) => { tele.remote = e.streams[0] || new MediaStream([e.track]); const v = $("#teleRemote"); if (v) v.srcObject = tele.remote; teleMount(); };
+      pc.onicecandidate = (e) => { if (e.candidate) MDFitRT.emit("tele_signal", { candidate: e.candidate }); };
+      pc.onconnectionstatechange = () => {
+        const s = pc.connectionState;
+        teleSay(s === "connected" ? "Connected, encrypted browser to browser" : s === "connecting" ? "Connecting…" : s === "disconnected" ? "Connection interrupted. Trying to recover…" : s === "failed" ? "Could not connect: one of the two networks blocks direct video. Ask the patient to try another network." : "");
+      };
+      teleSay("Connecting…");
+      await pc.setLocalDescription(await pc.createOffer());
+      MDFitRT.emit("tele_signal", { sdp: pc.localDescription });
+      clearInterval(tele.tick);
+      tele.tick = setInterval(() => { teleClock(); idleBump(); /* a visit counts as activity */ }, 1000);
+      if (route() === "telehealth") teleMount(); else toast(`Video visit with ${tele.call.name} started. Open Telehealth to see it.`);
+    } catch (err) { MDFitRT.emit("tele_end"); teleOver(""); toast(err.message); }
+  }
+  async function teleSignal(d) {
+    const pc = tele.pc; if (!pc || !d) return;
+    try {
+      if (d.sdp) { await pc.setRemoteDescription(d.sdp); for (const c of tele.queue.splice(0)) await pc.addIceCandidate(c).catch(() => {}); }
+      else if (d.candidate) { if (pc.remoteDescription) await pc.addIceCandidate(d.candidate).catch(() => {}); else tele.queue.push(d.candidate); }
+    } catch (err) { teleSay("Set-up problem: " + err.message); }
+  }
+  async function teleShare() {
+    if (!tele.pc) return;
+    const sender = tele.pc.getSenders().find((s) => s.track && s.track.kind === "video") || tele.pc.getSenders().find((s) => !s.track);
+    if (tele.screen) { tele.screen.getTracks().forEach((t) => t.stop()); tele.screen = null; if (sender && tele.cam) await sender.replaceTrack(tele.cam); teleMount(); return; }
+    if (!sender) { toast("Screen sharing needs a camera connection in this visit."); return; }
+    try {
+      tele.screen = await navigator.mediaDevices.getDisplayMedia({ video: true });
+      const track = tele.screen.getVideoTracks()[0];
+      track.onended = () => { if (tele.screen) teleShare(); };
+      await sender.replaceTrack(track); teleMount();
+    } catch { tele.screen = null; }
+  }
+  // Puts the current state on the Telehealth screen without redrawing it (the videos must not be torn down)
+  function teleMount() {
+    const stage = $("#teleStage"); if (!stage) return;
+    const r = $("#teleRemote"), l = $("#teleLocal");
+    if (r && r.srcObject !== tele.remote) r.srcObject = tele.remote;
+    const mine = tele.screen || tele.local; if (l && l.srcObject !== mine) l.srcObject = mine;
+    stage.classList.toggle("live", teleIn()); stage.classList.toggle("has-remote", !!tele.remote);
+    $("#teleWho").textContent = tele.call ? `${tele.call.name}${tele.call.visit ? " · " + tele.call.visit : ""}` : "";
+    $("#teleIdle").hidden = teleIn(); $("#teleControls").hidden = !teleIn();
+    const set = (id, icon, on, a, b) => { const el = $(id); if (el) { el.classList.toggle("off", on); el.innerHTML = ui(icon, 15) + `<span>${on ? b : a}</span>`; el.setAttribute("aria-pressed", String(on)); } };
+    set("#teleMic", "mic", tele.micOff, "Mute", "Unmute"); set("#teleCam", "camera", tele.camOff, "Camera off", "Camera on"); set("#teleShare", "screen", !!tele.screen, "Share screen", "Stop sharing");
+    if ($("#teleCam")) $("#teleCam").disabled = !tele.cam;
+    teleSay(tele.status); teleClock();
+    const w = $("#teleWaiting");
+    if (w) w.innerHTML = tele.waiting.map((p) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(p.name)}</b><div class="muted" style="font-size:12px">${esc(p.visit || "No video visit booked today")} · waiting ${Math.max(0, Math.round((Date.now() - p.since) / 60000))} min</div></span><button class="btn sm primary" data-act="teleAdmit" data-id="${esc(p.clientId)}"${teleIn() ? " disabled" : ""}>Admit</button><button class="btn sm ghost" data-act="teleDecline" data-id="${esc(p.clientId)}" aria-label="Turn away ${esc(p.name)}">${ui("x", 14)}</button></div>`).join("") || none(MDFitRT && MDFitRT.connected() ? "Nobody is waiting. Patients appear here when they open their visit link." : "Not connected to the live service. Reload the page.");
+    const n = $("#teleCount"); if (n) { n.textContent = tele.waiting.length ? `${tele.waiting.length} waiting` : "Empty"; n.className = "pill" + (tele.waiting.length ? " ok" : ""); }
   }
 
   // ---- Live updates. The server pushes "new_message" the moment a member writes, so the Messages screen and the
@@ -644,6 +816,15 @@
       else { cache.unread = (cache.unread || 0) + 1; renderNav(route()); toast(`New message from ${(ev && ev.clientName) || "a member"}`); }
     });
     MDFitRT.on("message_reaction", (ev) => { if (token && route() === "messages" && ev && ev.clientId === state.thread) refreshMessages(); });
+    MDFitRT.on("tele_waiting", (ev) => {
+      const had = new Set(tele.waiting.map((p) => p.clientId)); tele.waiting = (ev && ev.waiting) || [];
+      const fresh = tele.waiting.find((p) => !had.has(p.clientId));
+      if (route() === "telehealth") teleMount(); else if (fresh && token) toast(`${fresh.name} is in the video waiting room`);
+    });
+    MDFitRT.on("tele_started", (ev) => { if (token) teleBegin(ev || {}); });
+    MDFitRT.on("tele_signal", (d) => teleSignal(d));
+    MDFitRT.on("tele_ended", (ev) => teleOver(ev && ev.why === "patient_left" ? "The patient left the visit." : ev && ev.why === "staff_left" ? "The visit ended: this page lost its connection." : "Visit ended."));
+    MDFitRT.on("tele_error", (ev) => { if (ev && ev.error) toast(ev.error); });
     MDFitRT.on("calendar_changed", () => { if (token && route() === "calendar" && !$("#modalBack").classList.contains("open")) render(); });
     setInterval(() => { if (token && route() === "messages" && !document.hidden && !MDFitRT.connected() && !$("#modalBack").classList.contains("open")) refreshMessages(); }, 15000);
   }

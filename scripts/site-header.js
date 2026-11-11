@@ -6,7 +6,7 @@
 const fs = require("fs"), path = require("path");
 const root = path.join(__dirname, "..");
 // The member app, the admin portal and the workspace demo have their own chrome, so they keep it.
-const SKIP = new Set(["account.html", "admin.html", "workspace.html"]);
+const SKIP = new Set(["account.html", "admin.html", "workspace.html", "visit.html"]);
 
 const LINKS = [
   { href: "/conditions/", text: "Conditions", section: "conditions" },
