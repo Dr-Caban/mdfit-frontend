@@ -26,6 +26,7 @@ User-agent: *
 Disallow: /account
 Disallow: /admin
 Disallow: /workspace
+Disallow: /admin-classic
 Disallow: /visit
 Disallow: /api/
 Allow: /api/site$
