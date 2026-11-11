@@ -105,7 +105,8 @@
     carry: '<path d="M4 12a8 8 0 1 0 2.5-5.8"/><path d="M4 4v5h5"/>',
     plus: '<path d="M12 5v14M5 12h14"/>',
     upload: '<path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/>',
-    download: '<path d="M12 4v12M7 11l5 5 5-5"/><path d="M4 20h16"/>'
+    download: '<path d="M12 4v12M7 11l5 5 5-5"/><path d="M4 20h16"/>',
+    search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>'
   };
   const ui = (name, size = 16) => `<svg class="ui-ic" viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${UI[name]}</svg>`;
   const ICON = {
@@ -539,6 +540,33 @@
     return quiet ? note.saving.catch((err) => { toast("Autosave failed: " + err.message); return null; }) : note.saving;
   }
   const noteTouch = () => { note.dirty = true; noteStamp(); clearTimeout(note.timer); note.timer = setTimeout(() => noteSave(true), 5000); };
+  // Moving the note screen to another client: the Client select and the client search above it both come through here.
+  // A draft with unsaved words is saved first, while its box is still on the page.
+  const noteClientSwitch = async (id) => { if (note.dirty) await noteSave(true); stopDictation(); state.chartClient = id; noteReset(id); return render(); };
+  const qWords = (s) => String(s || "").trim().toLowerCase().split(/\s+/).filter(Boolean);
+  const noteClientFind = (list, q) => list.filter((c) => q.every((w) => `${c.name || ""} ${c.email || ""}`.toLowerCase().includes(w))).slice(0, 8);
+  // The client search on the note screen: up to 8 clients whose name or email holds every word typed
+  function noteClientType(el) {
+    const q = qWords(el.value), box = $("#nClientRes"); if (!box) return;
+    if (!q.length) { box.innerHTML = ""; return; }
+    clients().then((list) => { const now = $("#nClientQ"), out = $("#nClientRes"); if (!now || !out || qWords(now.value).join(" ") !== q.join(" ")) return;
+      out.innerHTML = noteClientFind(list, q).map((c) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(c.name)}</b><div class="muted" style="font-size:12px;overflow-wrap:anywhere">${esc(c.email)}</div></span>${c.id === note.clientId ? `<span class="pill ok">Selected</span>` : `<button type="button" class="btn sm" data-act="noteClientPick" data-id="${esc(c.id)}" aria-label="Choose ${esc(c.name)}">Choose</button>`}</div>`).join("") || none("No client matches.");
+    }).catch(() => {});
+  }
+  // Notes on file. Each row is kept as it is drawn, next to the words it can be found by: template, status, tier, tags,
+  // the date as shown, and the text for a note whose text the list carries. A withheld note (T2, T3) is found by its
+  // details only; its text is never searched or printed here, even when the open draft's text was fetched for the editor.
+  const noteRow = (n) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(TEMPLATES[n.template] || "Note")}</b> <span class="pill ${n.status === "signed" ? "ok" : "warn"}">${n.status === "signed" ? "Signed" : "Draft"}</span>${n.tier !== "T1" ? ` <span class="pill">${esc(n.tier)}</span>` : ""}${n.addenda ? ` <span class="pill">${n.addenda} addend${n.addenda === 1 ? "um" : "a"}</span>` : ""}
+          <div class="muted" style="font-size:12px">${when(n.signedAt || n.updatedAt)}${n.withheld ? " · open to read" : n.text ? " · " + esc(n.text.slice(0, 80)) + (n.text.length > 80 ? "…" : "") : ""}</div></span>
+          ${n.status === "draft" ? `<button type="button" class="btn sm ghost" data-act="noteDiscard" data-id="${esc(n.id)}" aria-label="Discard this draft">${ui("x", 14)}</button>` : ""}<button type="button" class="btn sm" data-act="noteOpen" data-id="${esc(n.id)}">${n.status === "draft" ? "Continue" : "Open"}</button></div>`;
+  const noteHay = (n) => [TEMPLATES[n.template] || "Note", n.status === "signed" ? "signed" : "draft", n.tier !== "T1" ? n.tier : "", (n.tags || []).join(" "), when(n.signedAt || n.updatedAt), !n.withheld && n.tier === "T1" && n.text ? n.text : ""].join(" ").toLowerCase();
+  const noteFiledShow = (f) => { const q = qWords(f.q), hit = f.rows.filter((r) => q.every((w) => r.hay.includes(w))); return { on: q.length > 0, n: hit.length, html: hit.map((r) => r.html).join("") }; };
+  // The search over the notes on file filters what the screen already loaded: nothing is requested
+  function noteFiledType(el) {
+    const f = cache.noteFiled, box = $("#nFiledList"); if (!f || !box || box.dataset.cid !== String(f.cid || "")) return;
+    f.q = el.value; const s = noteFiledShow(f), count = $("#nFiledCount");
+    box.innerHTML = s.html || none("No note matches."); if (count) count.textContent = s.on ? `${s.n} of ${f.rows.length}` : f.rows.length;
+  }
   // What the AI assist reads: clinical content only. Names, contact details, birth date and signatures are left out
   // here, and the server strips names, emails, phone numbers and calendar dates again before anything is sent.
   async function noteBundle(cid) {
@@ -554,6 +582,7 @@
     return { text: out.join("\n\n").slice(0, 18000), intake, notes: notes.notes || [], client: c };
   }
   V.notes = async () => {
+    const drawn = seq; // this render's number: only the render that reaches the page may keep its list for the search
     const [list, scribe] = await Promise.all([clients(), get("/scribe").catch(() => ({ enabled: false }))]);
     const heard = state.scribeText || ""; state.scribeText = "";
     const cid = list.find((c) => c.id === state.chartClient) ? state.chartClient : (list[0] ? list[0].id : null);
@@ -563,12 +592,15 @@
     if (note.id && !cur) noteReset(cid);
     if (cur && cur.withheld) { const f = await get(`/notes/${cur.id}`).catch(() => null); if (f) cur.text = f.text; }
     const text = cur ? cur.text || "" : "", kinds = scribe.kinds || [], ai = scribe.enabled && kinds.includes("soap");
+    const filed = { cid, q: cache.noteFiled && cache.noteFiled.cid === cid ? cache.noteFiled.q : "", rows: (onFile.notes || []).map((n) => ({ hay: noteHay(n), html: noteRow(n) })) }, shown = noteFiledShow(filed);
+    if (drawn === seq) cache.noteFiled = filed;
     const sel = (id, name, map, val) => `<select id="${id}" class="input" data-change="${name}">${Object.entries(map).map(([k, v]) => `<option value="${k}"${k === val ? " selected" : ""}>${esc(v)}</option>`).join("")}</select>`;
     return `<div class="view-head"><div><h1>New note</h1><p class="muted">Rehab templates · AI drafts are reviewed and signed by you · clinical notes are staff only</p></div>
       <div class="row"><button type="button" class="btn" data-act="noteSave"${built && cid ? "" : " disabled"}>Save draft</button><button type="button" class="btn primary" data-act="noteSign"${built && cid ? "" : " disabled"}>Sign &amp; lock</button></div></div>
     ${built ? "" : `<div class="card" style="margin-bottom:16px">${none("Clinical notes are not available on the server yet. Deploy the latest backend to turn this screen on.")}</div>`}
     <div class="grid g-side"><div class="stack">
       <div class="card stack">
+        <div><div class="search in">${ui("search", 14)}<input id="nClientQ" type="search" placeholder="Find a client by name or email" aria-label="Find a client for this note, by name or email" autocomplete="off"></div><div id="nClientRes"></div></div>
         <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px">
           <div class="field" style="margin:0"><label for="nClient">Client</label><select id="nClient" class="input" data-change="noteClient">${list.map((c) => `<option value="${esc(c.id)}"${c.id === cid ? " selected" : ""}>${esc(c.name)}</option>`).join("") || `<option value="">No clients yet</option>`}</select></div>
           <div class="field" style="margin:0"><label for="nTemplate">Template</label>${sel("nTemplate", "noteTemplate", TEMPLATES, note.template)}</div>
@@ -584,10 +616,9 @@
           <textarea id="nPatient" class="input" style="min-height:110px" maxlength="4000" placeholder="Plain words: what was worked on and what to do before next time"${cid ? "" : " disabled"}></textarea></div>
         <div class="row"><button type="button" class="btn" data-act="notePatientSend"${cid ? "" : " disabled"}>Share with the patient now</button><span class="muted" style="font-size:12px">Also shared when you sign the note, if this box has text. The clinical note itself is never shown to the patient.</span></div>
       </div>
-      <div class="card"><div class="card-head"><h2>Notes on file</h2><span class="pill">${(onFile.notes || []).length}</span></div>
-        ${(onFile.notes || []).map((n) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(TEMPLATES[n.template] || "Note")}</b> <span class="pill ${n.status === "signed" ? "ok" : "warn"}">${n.status === "signed" ? "Signed" : "Draft"}</span>${n.tier !== "T1" ? ` <span class="pill">${esc(n.tier)}</span>` : ""}${n.addenda ? ` <span class="pill">${n.addenda} addend${n.addenda === 1 ? "um" : "a"}</span>` : ""}
-          <div class="muted" style="font-size:12px">${when(n.signedAt || n.updatedAt)}${n.withheld ? " · open to read" : n.text ? " · " + esc(n.text.slice(0, 80)) + (n.text.length > 80 ? "…" : "") : ""}</div></span>
-          ${n.status === "draft" ? `<button type="button" class="btn sm ghost" data-act="noteDiscard" data-id="${esc(n.id)}" aria-label="Discard this draft">${ui("x", 14)}</button>` : ""}<button type="button" class="btn sm" data-act="noteOpen" data-id="${esc(n.id)}">${n.status === "draft" ? "Continue" : "Open"}</button></div>`).join("") || none(cid ? "No clinical notes for this client yet." : "Pick a client.")}</div>
+      <div class="card"><div class="card-head"><h2>Notes on file</h2><span class="pill" id="nFiledCount">${shown.on ? `${shown.n} of ${filed.rows.length}` : filed.rows.length}</span></div>
+        ${filed.rows.length ? `<div class="search in">${ui("search", 14)}<input id="nFiledQ" type="search" placeholder="Search these notes" aria-label="Search this client's notes on file" autocomplete="off" value="${esc(filed.q)}"></div>` : ""}
+        <div id="nFiledList" data-cid="${esc(cid || "")}">${filed.rows.length ? shown.html || none("No note matches.") : none(cid ? "No clinical notes for this client yet." : "Pick a client.")}</div></div>
     </div>
     <div class="stack">
       <div class="card stack"><div class="card-head"><h2 class="row" style="gap:6px">${ui("spark", 18)}AI scribe</h2><span class="pill ${ai ? "ok" : ""}">${ai ? "On" : "Off"}</span></div>
@@ -862,6 +893,13 @@
         ${n.unreadable ? none("This note can't be opened with the server's current keys. Nothing has been changed.") : `<div class="note-text" style="white-space:pre-wrap;overflow-wrap:anywhere">${esc(n.text)}</div>`}
         ${(n.addendaList || []).map((a) => `<div class="card" style="box-shadow:none;margin-top:10px"><div class="muted" style="font-size:12px">Addendum · ${when(a.at)} · ${esc(a.by || "")}</div><div style="white-space:pre-wrap;overflow-wrap:anywhere">${esc(a.text)}</div></div>`).join("")}
         ${n.unreadable ? "" : `<form class="stack" data-form="noteAddendum" data-id="${esc(n.id)}" style="margin-top:12px"><div class="field" style="margin:0"><label for="addText">Add an addendum</label><textarea id="addText" name="text" class="input" rows="3" maxlength="20000" required placeholder="New information. The signed note above stays as it is."></textarea></div><div class="row"><button class="btn primary">Add addendum</button></div></form>`}`);
+    },
+    // A client chosen in the note screen's search. Choosing the client already selected only empties the search:
+    // a switch would close the draft being written.
+    noteClientPick: async (el) => {
+      const id = el.dataset.id;
+      if (id === note.clientId) { const q = $("#nClientQ"), r = $("#nClientRes"); if (q) q.value = ""; if (r) r.innerHTML = ""; toast("That client is already selected."); return; }
+      await noteClientSwitch(id); const s = $("#nClient"); if (s && route() === "notes") s.focus();
     },
     noteDiscard: async (el) => { if (!confirm("Discard this draft? This cannot be undone.")) return; await api("DELETE", `/api/admin/notes/${el.dataset.id}`); if (note.id === el.dataset.id) noteReset(note.clientId); toast("Draft discarded."); await render(); },
     dictate: (el) => dictate(el),
@@ -1234,7 +1272,7 @@
     if (e.target.matches("[data-change=chartType]")) guard(async (el) => { await api("PUT", `/api/admin/clients/${cid()}/type`, { type: el.value }); cache.clients = null; const type = el.value; await render(); toast(`${firstOf()} is now ${type === "inpatient" ? "an inpatient: visits are not charged" : "an outpatient"}.`); })(e.target);
     if (e.target.matches("[data-change=teleScribe]")) teleScribe(e.target.checked);
     if (e.target.matches("[data-change=teleGroup]")) { if (window.MDFitRT && MDFitRT.connected()) MDFitRT.emit("tele_group", { on: e.target.checked }); else { e.target.checked = tele.group; toast("Not connected to the live service. Reload the page."); } }
-    if (e.target.matches("[data-change=noteClient]")) { (async () => { if (note.dirty) await noteSave(true); stopDictation(); state.chartClient = e.target.value; noteReset(e.target.value); render(); })(); }
+    if (e.target.matches("[data-change=noteClient]")) noteClientSwitch(e.target.value);
     if (e.target.matches("[data-change=noteTemplate]")) { note.template = e.target.value; $("#nBodyLabel").textContent = TEMPLATES[note.template]; $("#sKind").textContent = TEMPLATES[note.template]; if (note.id || $("#nBody").value.trim()) noteTouch(); }
     if (e.target.matches("[data-change=noteTier]")) { note.tier = e.target.value; if (note.id || $("#nBody").value.trim()) noteTouch(); }
     if (e.target.matches("[data-change=bcTo]")) { const p = $("#bcPick"); if (p) p.hidden = e.target.value !== "selected"; }
@@ -1254,7 +1292,17 @@
         box.innerHTML = list.filter((c) => q.every((w) => `${c.name} ${c.email}`.toLowerCase().includes(w))).slice(0, 8).map((c) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(c.name)}</b><div class="muted" style="font-size:12px;overflow-wrap:anywhere">${esc(c.email)}</div></span>${here.has(c.id) ? `<span class="pill ok">Here</span>` : `<button type="button" class="btn sm primary" data-act="teleInvite" data-id="${esc(c.id)}">${asked.has(c.id) ? "Invite again" : "Invite to telehealth"}</button>`}</div>`).join("") || none("No client matches.");
       }).catch(() => {});
     }
+    if (e.target.id === "nClientQ") noteClientType(e.target);
+    if (e.target.id === "nFiledQ") noteFiledType(e.target);
     if (e.target.id === "clientQ") { state.clientQ = e.target.value; clearTimeout(e.target._t); e.target._t = setTimeout(async () => { const pos = e.target.selectionStart; await render(); const i = $("#clientQ"); if (i) { i.focus(); i.setSelectionRange(pos, pos); } }, 250); }
+  });
+  // Keys in the two search fields on the note screen: Escape empties the field, Enter in the client search picks the first match
+  document.addEventListener("keydown", (e) => {
+    const id = e.target && e.target.id; if ((id !== "nClientQ" && id !== "nFiledQ") || e.isComposing) return;
+    if (e.key === "Escape") { if (!e.target.value) return; e.preventDefault(); e.target.value = ""; (id === "nClientQ" ? noteClientType : noteFiledType)(e.target); return; }
+    if (e.key !== "Enter") return;
+    e.preventDefault(); const q = qWords(e.target.value); if (id !== "nClientQ" || !q.length || !token) return;
+    guard(async () => { const c = noteClientFind(await clients(), q)[0]; if (c) await ACT.noteClientPick({ dataset: { id: c.id } }); else toast("No client matches that."); })();
   });
 
   // ---------------------------------------------------------------- router and start
