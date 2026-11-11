@@ -8,7 +8,7 @@
   discipline separation, sensitivity tiers, note locking, booking-overlap prevention and an append-only
   chained audit ledger **into Postgres itself**, below any application code.
 - 33 tests pass, each a real query against a real PostgreSQL 16.15 database rebuilt from empty.
-- A clickable prototype was rebranded to MD Fit. It has no backend and all its data is mock.
+- A preview of the screens is installed at `/workspace-preview`: MD Fit branding, no sample data, no backend.
 - **There is no application.** No API, no login, no encryption code, no hosting. Nothing here stores or
   could store patient data, and nothing here is HIPAA compliant. See `HIPAA-STATUS.md`: 0 of 84 items
   complete, 7 with tested groundwork.
@@ -99,17 +99,39 @@ A second pass, looking for what the tests did not cover, found three real defect
 - **Test environment.** A scratch PostgreSQL 16.15 on a local socket with trust authentication. It says
   nothing about production configuration.
 
-## The prototype
+## The workspace preview page
 
-`prototype.html` is the uploaded Universal EMR prototype with MD Fit's colours and fonts applied, taken
-from the site's own stylesheet: white surfaces, light blue `#7AAFD7` for fills, navy `#0A1A2E` for text,
-Libre Baskerville and Montserrat. Light blue fails contrast as small text on white, so text that was
-accent-coloured uses the brand's darker blue `#2F6E9E` (6 places). All colours sit in one block at the
-top, so another practice's branding is a change to that block.
+`workspace-preview.html` at the repository root, served at `/workspace-preview`, is the uploaded Universal
+EMR prototype with three changes:
 
-Checked: the dashboard, client chart and security views at 1440×900 and the dashboard at 390×844, light
-theme, in Chromium. No script errors and no horizontal overflow; two of the four screenshots were
-inspected by eye. Not checked: the other fifteen views, dark theme, Safari and Firefox, keyboard and
-screen-reader use.
+1. **MD Fit branding.** Colours and fonts from the site's own stylesheet: white surfaces, light blue
+   `#7AAFD7` for fills, navy `#0A1A2E` for text, Libre Baskerville and Montserrat. Light blue fails
+   contrast as small text on white, so accent-coloured text uses the brand's darker blue `#2F6E9E`.
+   All colours sit in one block at the top, so another practice's branding is a change to that block.
+2. **All sample data removed.** No made-up clients, staff, appointments, notes, messages, invoices,
+   prices, revenue figures, audit entries or statuses. Every list is empty and every screen shows an
+   empty state. Dates come from the real calendar.
+3. **No action pretends to work.** Every button that would need a server shows one message: "Preview
+   only: not connected yet, so nothing was saved or sent." A bar at the top of every screen says the page
+   is not connected and asks people not to enter patient information. The Security screen shows every
+   control as "Not set up".
 
-Its Security page shows encryption, MFA and audit as done. That is mock data.
+It is kept away from search engines (`noindex`, and `Disallow` in `robots.txt`) and nothing on the site
+links to it.
+
+Checked in Chromium:
+
+| Check | Result |
+|---|---|
+| All 18 screens load | 18 of 18, no script errors |
+| The site's own layout rule (from `scripts/layout-check.js`) on the default screen at its five widths | Passes at 320, 390, 768, 1366 and 2560 |
+| The same rule on all 18 screens at 320, 390 and 1366 | 54 of 54 pass |
+| Every visible button on every screen clicked (60 clicks) | No errors; the only message any action produced was the preview notice |
+| Search for the removed sample names, figures and claims in the file | None left |
+| `scripts/seo/check.js` for the whole site | 238 pages ok |
+
+Phone-width defects found in the original prototype and fixed: the calendar, form builder, payments
+table and client-app mock-up all ran off a phone screen, and one label ran out of its card on desktop.
+
+Not checked: dark theme, Safari and Firefox, keyboard-only and screen-reader use. The site's full
+layout job in CI also needs the backend, so it has not been run here; only its page rule has.

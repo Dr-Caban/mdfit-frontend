@@ -6,7 +6,7 @@ with a status added where work exists.
 ## Read this first
 
 **Nothing here is HIPAA compliant yet, and no item is fully checked.** What exists is a database
-foundation — three migrations and a test suite — plus a clickable prototype with mock data. There is no
+foundation — three migrations and a test suite — plus a preview of the screens with no data. There is no
 application, no login, no encryption code, no hosting, and no signed BAA.
 
 | Mark | Meaning | Count |
@@ -19,8 +19,8 @@ application, no login, no encryption code, no hosting, and no signed BAA.
 A `[~]` means a specific, tested property of the database. It does not mean the control is in place for
 users. Evidence for every `[~]` is in `docs/VERIFICATION.md`; rerun it with `db/test/run.sh`.
 
-The prototype (`prototype.html`) has a Security page showing encryption, MFA and audit as green. That
-page is illustrative mock data. Do not show it to a customer or an assessor as the state of the system.
+The preview page (`workspace-preview.html`) has no sample data and shows every security control as
+"Not set up". It is a set of screens, not a system.
 
 ---
 
@@ -39,7 +39,7 @@ page is illustrative mock data. Do not show it to a customer or an assessor as t
 - [ ] **AES-256 at rest** for the database, object storage, backups, logs and search indexes
 - [ ] **KMS-managed keys**, per-tenant data keys (envelope encryption), rotation, and logged key use
 - [ ] Field-level encryption for Tier 2/3 data; optional **end-to-end encryption (WebCrypto)** for psychotherapy notes
-  - *Status:* `note.body_ciphertext` is a column. **Nothing encrypts.** The prototype's Security page shows this as done; that is mock data.
+  - *Status:* `note.body_ciphertext` is a column. **Nothing encrypts.**
 - [ ] FIPS 140-validated crypto modules where possible (needed for the safe harbor)
 - [ ] Keys never stored alongside data; never in code or the repo
   - *Status:* The schema stores key *identifiers* only (`dek_id`, `key_id`). No keys, KMS or encryption code exist yet.

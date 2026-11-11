@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MD Fit — Practice Workspace (preview)</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="A preview of the MD Fit practice workspace screens. Not connected to a database; nothing entered here is saved.">
+<!--
+  PRACTICE WORKSPACE — FRONTEND PREVIEW (no backend, no data)
+  ------------------------------------------------
+  • Single file: HTML + CSS + vanilla JS. No build step.
+  • There is no sample data. The DATA section of the <script> holds empty lists that
+    API calls will fill (search for "TODO(api)"). Every screen shows an empty state.
+  • Nothing is connected: every action reports that it is a preview and saves nothing.
+  • Views are hash-routed: #dashboard, #calendar, #clients, #chart, #notes, #messages,
+    #telehealth, #forms, #programs, #nutrition, #fitness, #payments, #reports,
+    #team, #security, #settings, #portal, #booking
+  • The chart, nav and messages are written to change by discipline, role and
+    sensitivity tier once there are users and records to show.
+  • PWA: add manifest.json + service worker in production (see installModal()).
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: calm clinical workspace — slim nav rail, dense cards, color = discipline */
+:root{
+  /* MD Fit brand, inverted for a workspace: the marketing site is navy with light-blue
+     accents; this is white with lighter blues, and navy only for text. Values are the
+     site's own tokens (styles.css). To white-label for another practice, change this block. */
+  --bg:#F5F9FC; --surface:#FFFFFF; --ink:#0A1A2E; --muted:#5B6B7C; --line:#DCE8F2;
+  --accent:#7AAFD7; --accent-soft:#EAF3FA; --accent-ink:#0A1A2E;
+  --accent-text:#2F6E9E;   /* light blue fails contrast as text on white; this is the brand's AA blue */
+  --wash:#F0F6FB;          /* the lightest blue, for hovers and quiet panels */
+  --bh:#6B4FB8; --med:#C2412D; --nut:#2E8540; --fit:#C8862B; --body:#2F6E9E;
+  --ok:#2E7D4F; --warn:#B7791F; --bad:#C62828;
+  --font-display:"Libre Baskerville", Georgia, "Times New Roman", serif;
+  --font-body:"Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --r:12px; --shadow:0 1px 2px rgba(10,26,46,.05),0 6px 18px -8px rgba(10,26,46,.14);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0A1A2E; --surface:#10233B; --ink:#E8F0F7; --muted:#9BB0C4; --line:#1D3352;
+  --accent:#8EC0E6; --accent-soft:#16304D; --accent-ink:#0A1A2E; --accent-text:#8EC0E6; --wash:#132A45;
+  --bh:#A28BE6; --med:#EE7D68; --nut:#6CC47E; --fit:#F0A55B; --body:#8EC0E6; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#0A1A2E; --surface:#10233B; --ink:#E8F0F7; --muted:#9BB0C4; --line:#1D3352;
+  --accent:#8EC0E6; --accent-soft:#16304D; --accent-ink:#0A1A2E; --accent-text:#8EC0E6; --wash:#132A45;
+  --bh:#A28BE6; --med:#EE7D68; --nut:#6CC47E; --fit:#F0A55B; --body:#8EC0E6; color-scheme:dark;}
+
+.demo-bar{background:var(--accent-soft);color:var(--ink);border-bottom:1px solid var(--line);padding:8px 16px;font-size:12.5px;line-height:1.45;overflow-wrap:anywhere}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font:14px/1.5 var(--font-body);}
+button,input,select,textarea{font:inherit;color:inherit}
+h1,h2,h3{margin:0;text-wrap:balance}
+h1{font-family:var(--font-display);font-weight:700;font-size:28px;letter-spacing:-.01em}
+h2{font-size:16px;font-weight:700}
+h3{font-size:14px;font-weight:600}
+.muted{color:var(--muted)}
+.num{font-variant-numeric:tabular-nums}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* Shell */
+.app{display:grid;grid-template-columns:232px 1fr;height:100%}
+.nav{background:var(--surface);border-right:1px solid var(--line);display:flex;flex-direction:column;overflow-y:auto}
+.brand{display:flex;align-items:center;gap:10px;padding:18px 18px 14px}
+.logo{width:30px;height:30px;border-radius:8px;background:var(--accent);display:grid;place-items:center;color:var(--accent-ink);font-weight:700}
+.brand b{font-family:var(--font-display);font-size:18px}
+.nav-group{padding:8px 10px}
+.nav-group>span{display:block;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:6px 10px}
+.nav a{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:8px;color:var(--ink);text-decoration:none;font-weight:500}
+.nav a:hover{background:var(--bg)}
+.nav a.active{background:var(--accent-soft);color:var(--accent-text)}
+.nav a svg{width:17px;height:17px;flex:none;stroke:currentColor;fill:none;stroke-width:1.8}
+.nav .badge{margin-left:auto}
+.nav-foot{margin-top:auto;padding:14px;border-top:1px solid var(--line);font-size:12px}
+
+.main{display:flex;flex-direction:column;min-width:0;overflow:hidden}
+.top{display:flex;align-items:center;gap:12px;padding:10px 24px;border-bottom:1px solid var(--line);background:var(--surface);flex-wrap:wrap}
+.search{flex:1;min-width:180px;max-width:420px;display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 10px}
+.search input{border:0;background:transparent;outline:none;width:100%}
+.top .spacer{flex:1}
+.view{overflow-y:auto;padding:24px;flex:1}
+.view-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+.view-head p{margin:4px 0 0}
+
+/* Primitives */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;box-shadow:var(--shadow)}
+.card-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.g-side{grid-template-columns:minmax(0,2fr) minmax(0,1fr)}
+.row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.stack{display:flex;flex-direction:column;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);padding:7px 12px;border-radius:8px;cursor:pointer;font-weight:600}
+a.btn{text-decoration:none;color:var(--ink)}
+.btn:hover{border-color:var(--muted)}
+#roleSel{max-width:300px}
+.btn.primary,a.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.ghost{border-color:transparent;background:transparent}
+.btn.sm{padding:4px 9px;font-size:12px}
+.btn.danger{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 40%,var(--line))}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;background:var(--bg);border:1px solid var(--line);white-space:nowrap}
+.pill.ok{color:var(--ok);background:color-mix(in srgb,var(--ok) 10%,transparent);border-color:transparent}
+.pill.warn{color:var(--warn);background:color-mix(in srgb,var(--warn) 12%,transparent);border-color:transparent}
+.pill.bad{color:var(--bad);background:color-mix(in srgb,var(--bad) 10%,transparent);border-color:transparent}
+.pill.accent{color:var(--accent-text);background:var(--accent-soft);border-color:transparent}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none}
+.disc{--c:var(--accent);color:var(--c);background:color-mix(in srgb,var(--c) 11%,transparent);border-color:transparent}
+.d-bh{--c:var(--bh)}.d-med{--c:var(--med)}.d-nut{--c:var(--nut)}.d-fit{--c:var(--fit)}.d-body{--c:var(--body)}
+.badge{min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--accent);color:var(--accent-ink);font-size:11px;font-weight:700;display:inline-grid;place-items:center}
+.avatar{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:12px;color:#fff;flex:none}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;font-size:12px;color:var(--muted);font-weight:600;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:10px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr.click{cursor:pointer}
+tr.click:hover td{background:var(--bg)}
+.table-wrap{overflow-x:auto}
+.field{display:flex;flex-direction:column;gap:4px}
+.field label{font-size:12px;font-weight:600;color:var(--muted)}
+.input,select.input,textarea.input{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:8px 10px;width:100%}
+textarea.input{min-height:120px;resize:vertical;line-height:1.55}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:16px;overflow-x:auto}
+.tab{padding:8px 12px;border:0;background:transparent;cursor:pointer;font-weight:600;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap}
+.tab.active{color:var(--accent-text);border-bottom-color:var(--accent)}
+.kpi b{display:block;font-size:26px;font-weight:700;letter-spacing:-.02em}
+.kpi small{font-size:12px}
+.list-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.list-item:last-child{border-bottom:0}
+.list-item .pill{white-space:normal;text-align:right}
+.toggle{position:relative;width:36px;height:20px;flex:none}
+.toggle input{opacity:0;width:100%;height:100%;margin:0;cursor:pointer;position:absolute;z-index:1}
+.toggle span{position:absolute;inset:0;border-radius:999px;background:var(--line);transition:.15s}
+.toggle span::after{content:"";position:absolute;left:2px;top:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.15s}
+.toggle input:checked+span{background:var(--accent)}
+.toggle input:checked+span::after{left:18px}
+.locked{border:1px dashed var(--line);border-radius:8px;padding:14px;display:flex;gap:10px;align-items:flex-start;background:repeating-linear-gradient(135deg,transparent 0 8px,color-mix(in srgb,var(--muted) 5%,transparent) 8px 16px)}
+.locked svg{width:18px;height:18px;flex:none;stroke:var(--muted);fill:none;stroke-width:1.8;margin-top:2px}
+.tier{font-size:11px;font-weight:700;padding:1px 6px;border-radius:4px;border:1px solid currentColor}
+.t0{color:var(--muted)}.t1{color:var(--accent-text)}.t2{color:var(--warn)}.t3{color:var(--bad)}
+.bar{height:8px;border-radius:999px;background:var(--bg);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:999px}
+
+/* Calendar */
+.cal{display:grid;grid-template-columns:56px repeat(5,minmax(120px,1fr));border:1px solid var(--line);border-radius:var(--r);background:var(--surface);min-width:720px}
+.cal-h{padding:10px;border-bottom:1px solid var(--line);font-weight:600;font-size:13px;border-left:1px solid var(--line)}
+.cal-h.today{color:var(--accent-text)}
+.cal-times{display:grid;grid-template-rows:repeat(20,28px)}
+.cal-times div{font-size:11px;color:var(--muted);padding:0 6px;text-align:right;transform:translateY(-7px)}
+.cal-col{position:relative;border-left:1px solid var(--line);background:repeating-linear-gradient(to bottom,transparent 0 55px,var(--line) 55px 56px)}
+.appt{position:absolute;left:4px;right:4px;border-radius:6px;padding:4px 7px;font-size:12px;line-height:1.3;cursor:pointer;border-left:3px solid var(--c);background:color-mix(in srgb,var(--c) 13%,var(--surface));overflow:hidden}
+.appt b{display:block;font-weight:600}
+.appt:hover{filter:brightness(.97)}
+
+/* Chat */
+.chat{display:grid;grid-template-columns:280px 1fr;height:calc(100vh - 190px);min-height:420px}
+.threads{border-right:1px solid var(--line);overflow-y:auto}
+.thread{padding:12px 14px;border-bottom:1px solid var(--line);cursor:pointer;display:flex;gap:10px}
+.thread.active{background:var(--accent-soft)}
+.msgs{display:flex;flex-direction:column}
+.msg-list{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+.bubble{max-width:70%;padding:9px 12px;border-radius:12px;background:var(--bg)}
+.bubble.me{align-self:flex-end;background:var(--accent);color:var(--accent-ink)}
+.composer{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line)}
+
+/* Telehealth */
+.video{position:relative;background:#0A1A2E;border-radius:14px;aspect-ratio:16/9;overflow:hidden;display:grid;place-items:center;color:#cfe}
+.video .self{position:absolute;right:14px;bottom:14px;width:22%;aspect-ratio:16/10;border-radius:10px;background:#244;display:grid;place-items:center;font-size:12px;border:2px solid rgba(255,255,255,.2)}
+.video .label{position:absolute;left:14px;bottom:14px;background:rgba(0,0,0,.45);padding:3px 9px;border-radius:6px;font-size:12px}
+.video .timer{position:absolute;left:14px;top:14px;background:rgba(0,0,0,.45);padding:3px 9px;border-radius:6px;font-size:12px}
+.vcontrols{display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+.vbtn{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;cursor:pointer}
+.vbtn.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.vbtn.end{background:var(--bad);color:#fff;border-color:var(--bad);width:64px;border-radius:22px}
+.vbtn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8}
+
+/* Phone */
+.phone{width:320px;max-width:100%;border-radius:36px;border:10px solid #0A1A2E;background:var(--bg);overflow:hidden;box-shadow:var(--shadow);margin:0 auto}
+.phone-screen{height:620px;overflow-y:auto;padding:18px 16px}
+.phone-bar{display:flex;justify-content:space-around;border-top:1px solid var(--line);padding:10px 0;background:var(--surface);font-size:11px;color:var(--muted)}
+
+/* Forms builder */
+.palette button{width:100%;justify-content:flex-start}
+.canvas-field{border:1px solid var(--line);border-radius:8px;padding:12px;background:var(--surface);display:flex;gap:10px;align-items:flex-start}
+.canvas-field .grip{color:var(--muted);cursor:grab;user-select:none}
+
+/* Modal + toast */
+.modal-back{position:fixed;inset:0;background:rgba(10,26,46,.45);display:none;place-items:center;z-index:50;padding:16px}
+.modal-back.open{display:grid}
+.modal{background:var(--surface);border-radius:14px;max-width:560px;width:100%;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.25);max-height:90vh;overflow-y:auto}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;opacity:0;transition:.2s;z-index:60;font-weight:500;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.mobile-nav-btn{display:none}
+@media (max-width:1100px){.g4{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(2,minmax(0,1fr))}.g-side{grid-template-columns:1fr}}
+.form-grid{grid-template-columns:200px minmax(0,1fr) 260px}
+.form-grid>*{min-width:0}
+.main,.view{min-width:0}
+@media (max-width:820px){
+  .app{grid-template-columns:minmax(0,1fr)!important}
+  .view>*{max-width:100%}
+  .form-grid{grid-template-columns:minmax(0,1fr)}
+  .card{overflow-x:auto}
+  .table-wrap{overflow-x:auto;max-width:100%}
+  .app{grid-template-columns:1fr}
+  .nav{position:fixed;inset:0 auto 0 0;width:260px;z-index:40;transform:translateX(-100%);transition:.2s}
+  .nav.open{transform:none;box-shadow:0 0 40px rgba(0,0,0,.3)}
+  .mobile-nav-btn{display:inline-flex}
+  .g2,.g3,.g4,.g-side{grid-template-columns:minmax(0,1fr)}
+  .chat{grid-template-columns:1fr}.threads{display:none}
+  .view{padding:16px}.top{padding:10px 16px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <nav class="nav" id="nav" aria-label="Main"></nav>
+  <div class="main">
+    <div class="demo-bar" role="note"><b>Preview.</b> These screens are not connected to a database yet. Nothing you enter is saved and no feature here is live. Please do not enter patient information.</div>
+    <header class="top">
+      <button class="btn ghost mobile-nav-btn" id="navToggle" aria-label="Open menu">☰</button>
+      <div class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="globalSearch" placeholder="Search clients, notes, invoices…  (Ctrl K)"></div>
+      <div class="spacer"></div>
+      <span class="pill warn" title="A preview of the screens. Not connected to a database, so nothing is saved.">Preview · not connected</span>
+      <button class="btn sm" id="installBtn">⤓ Install app</button>
+      <div class="field" style="flex-direction:row;align-items:center;gap:6px">
+        <label for="roleSel" style="margin:0">Viewing as</label>
+        <select id="roleSel" class="input" style="width:auto;padding:5px 8px"></select>
+      </div>
+      <button class="btn ghost sm" id="themeBtn" aria-label="Toggle theme">◐</button>
+    </header>
+    <main class="view" id="view" tabindex="-1"></main>
+  </div>
+</div>
+<div class="modal-back" id="modalBack"><div class="modal" id="modal" role="dialog" aria-modal="true"></div></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* =========================================================================
+   DATA — empty until the API is connected. Fill each block from API calls. TODO(api)
+   ========================================================================= */
+const DISC = {
+  bh:{label:"Behavioral Health",short:"Therapy"},
+  med:{label:"Psychiatry / Medical",short:"Medical"},
+  nut:{label:"Nutrition",short:"Nutrition"},
+  fit:{label:"Fitness / Coaching",short:"Fitness"},
+  body:{label:"Bodywork / Rehab",short:"Bodywork"}
+};
+const PRACTICE = {name:"MD Fit",locations:[],modules:{bh:true,med:true,nut:true,fit:true,body:true},ai:true};
+
+const USERS = [
+  {id:"u1",name:"Practice owner",cred:"",role:"Owner",disc:["body","fit","nut","bh","med"],color:"#2F6E9E"}
+];
+
+const CLIENTS = [];
+
+// tier: 0 client-visible, 1 standard clinical, 2 restricted (author only), 3 specially protected
+const NOTES = [];
+
+const APPTS = [];
+/* The current working week, from the real date. TODAY is 0–4 on weekdays and 5–6 at the weekend, when no column is highlighted. */
+const NOW = new Date();
+const WEEK0 = (()=>{const d=new Date(NOW);d.setDate(d.getDate()-((d.getDay()+6)%7));return d;})();
+const DAYS = Array.from({length:5},(_,i)=>{const d=new Date(WEEK0);d.setDate(d.getDate()+i);return d.toLocaleDateString("en-US",{weekday:"short"})+" "+d.getDate();});
+const TODAY = (NOW.getDay()+6)%7;
+
+const THREADS = [];
+
+const INVOICES = [];
+const PACKAGES = [];
+const PROGRAMS = [];
+const AUDIT = [];
+const VENDORS = [
+  {n:"Cloud hosting",baa:null},{n:"Database",baa:null},{n:"File storage",baa:null},
+  {n:"Key management",baa:null},{n:"Email and text provider",baa:null},{n:"Video (telehealth)",baa:null},
+  {n:"AI model provider",baa:null},{n:"Payments",baa:null}
+];
+
+/* =========================================================================
+   STATE + HELPERS
+   ========================================================================= */
+const state = {user:"u1", chartClient:null, chartTab:"overview", thread:null, formFields:null, noteTemplate:"SOAP", portalTab:"home", bookStep:0, book:{}};
+const $ = s => document.querySelector(s);
+const esc = s => String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const user = id => USERS.find(u=>u.id===id);
+const client = id => CLIENTS.find(c=>c.id===id);
+const me = () => user(state.user);
+const initials = n => n.split(" ").filter(w=>/^[A-Z]/.test(w)).map(w=>w[0]).slice(0,2).join("");
+const av = (u,size=32) => `<span class="avatar" style="background:${u.color};width:${size}px;height:${size}px">${initials(u.name)}</span>`;
+const cav = (c,size=32) => `<span class="avatar" style="background:#8FA3B8;width:${size}px;height:${size}px">${initials(c.name)}</span>`;
+const discPill = d => `<span class="pill disc d-${d}">${DISC[d].short}</span>`;
+const money = n => "$"+n.toLocaleString("en-US",{minimumFractionDigits:0});
+const isAdmin = () => me().role==="Owner";
+function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("show"),2200);}
+function modal(html){$("#modal").innerHTML=html;$("#modalBack").classList.add("open");$("#modal").querySelector("button,input,select,textarea")?.focus();}
+function closeModal(){$("#modalBack").classList.remove("open");}
+$("#modalBack").addEventListener("click",e=>{if(e.target.id==="modalBack")closeModal();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();$("#globalSearch").focus();}});
+const lockIcon = `<svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>`;
+
+/* -------- ACCESS RULES (mirror these on the server!) --------------------
+   canSeeNote(): discipline + consent + sensitivity tier. TODO(api): enforce in RLS. */
+function canSeeNote(n){
+  const u = me(), c = client(n.client);
+  if(n.tier===2) return {ok:n.author===u.id, why:"Restricted psychotherapy note · only the author can read it"};
+  if(n.tier===3) return {ok:false, why:"42 CFR Part 2 protected · needs specific written consent or break-glass"};
+  if(!c.team.includes(u.id) && u.role!=="Owner") return {ok:false, why:"You are not on this client's care team"};
+  if(u.disc.includes(n.disc)) return {ok:true};
+  if(u.supervisor && n.disc==="bh") return {ok:true};
+  if(n.disc==="bh" && u.disc.includes("med") && c.consent.bh_to_med) return {ok:true, via:"Shared via client consent (Therapy → Psychiatry)"};
+  if(n.disc==="nut" && u.disc.includes("fit") && c.consent.nut_to_fit) return {ok:true, via:"Shared via client consent (Nutrition → Fitness)"};
+  if(u.disc.length===0) return {ok:false, why:"Front-desk roles see demographics, scheduling and billing only"};
+  return {ok:false, why:`${DISC[n.disc].label} notes are hidden from ${DISC[u.disc[0]]?.short||"this"} providers unless the client consents`};
+}
+
+/* =========================================================================
+   NAV
+   ========================================================================= */
+const ICON = {
+  dashboard:'<path d="M3 13h8V3H3zM13 21h8V11h-8zM3 21h8v-6H3zM13 3v6h8V3z"/>',
+  calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/>',
+  clients:'<circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-6 7-6s7 2 7 6M17 11a3 3 0 1 0 0-6M22 20c0-3-2-5-5-5"/>',
+  chart:'<path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/>',
+  notes:'<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
+  messages:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+  telehealth:'<rect x="2" y="6" width="14" height="12" rx="2"/><path d="m16 10 6-4v12l-6-4"/>',
+  forms:'<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>',
+  programs:'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/>',
+  nutrition:'<path d="M12 21c-5 0-8-4-8-9 0-4 3-6 6-6 1 0 2 .5 2 .5s1-.5 2-.5c3 0 6 2 6 6 0 5-3 9-8 9z"/><path d="M12 6c0-2 1-3 3-4"/>',
+  fitness:'<path d="M6 7v10M18 7v10M3 10v4M21 10v4M6 12h12"/>',
+  payments:'<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/>',
+  reports:'<path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/>',
+  team:'<circle cx="12" cy="7" r="4"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/>',
+  security:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
+  settings:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1A2 2 0 1 1 4.3 17l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1A2 2 0 1 1 7 4.3l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1A2 2 0 1 1 19.7 7l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
+  portal:'<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>',
+  booking:'<path d="M3 9h18M7 3v4M17 3v4"/><rect x="3" y="5" width="18" height="16" rx="2"/><path d="m9 15 2 2 4-4"/>'
+};
+const NAV = [
+  {g:"Practice",items:[["dashboard","Dashboard"],["calendar","Calendar"],["clients","Clients"],["chart","Client chart"],["messages","Messages"],["telehealth","Telehealth"]]},
+  {g:"Clinical",items:[["notes","Notes & AI scribe","clinical"],["forms","Forms & intake"],["programs","Programs"],["nutrition","Nutrition","nut"],["fitness","Fitness","fit"]]},
+  {g:"Business",items:[["payments","Payments"],["reports","Reports"]]},
+  {g:"Admin",items:[["team","Team & roles","admin"],["security","Security & audit","admin"],["settings","Modules & settings","admin"]]},
+  {g:"Client-facing",items:[["portal","Client app preview"],["booking","Booking page"]]}
+];
+function navAllowed(flag){
+  const u=me();
+  if(!flag) return true;
+  if(flag==="admin") return u.role==="Owner";
+  if(flag==="clinical") return u.disc.length>0;
+  if(flag==="nut"||flag==="fit") return PRACTICE.modules[flag] && (u.disc.includes(flag)||u.role==="Owner");
+  return true;
+}
+function renderNav(active){
+  const unread = THREADS.filter(threadVisible).reduce((a,t)=>a+t.unread,0);
+  $("#nav").innerHTML = `<div class="brand"><div class="logo">M</div><div><b>MD Fit</b><div class="muted" style="font-size:12px">Physical Rehab &amp; Fitness</div></div></div>`+
+  NAV.map(g=>{
+    const items=g.items.filter(i=>navAllowed(i[2]));
+    if(!items.length) return "";
+    return `<div class="nav-group"><span>${g.g}</span>${items.map(([id,label])=>`<a href="#${id}" class="${active===id?"active":""}"><svg viewBox="0 0 24 24">${ICON[id]}</svg>${label}${id==="messages"&&unread?`<span class="badge">${unread}</span>`:""}</a>`).join("")}</div>`;
+  }).join("")+
+  `<div class="nav-foot"><div class="row">${av(me(),28)}<div><b>${esc(me().name)}</b><div class="muted">${esc(me().role)}${me().disc.length?" · "+me().disc.map(d=>DISC[d].short).join(", "):""}</div></div></div></div>`;
+}
+
+/* =========================================================================
+   VIEWS
+   ========================================================================= */
+const V = {};
+const none = t => `<p class="muted" style="margin:0">${t}</p>`;
+const noneRow = (n,t) => `<tr><td colspan="${n}" class="muted">${t}</td></tr>`;
+const sum = a => a.reduce((x,y)=>x+y,0);
+const plural = (n,w) => `${n} ${w}${n===1?"":"s"}`;
+const MONTH = NOW.toLocaleDateString("en-US",{month:"short"});
+/* Nothing here is connected to a server. Every action says so instead of pretending it worked. */
+const notLive = () => toast("Preview only: not connected yet, so nothing was saved or sent.");
+
+V.dashboard = () => {
+  const u=me();
+  const todays = APPTS.filter(a=>a.d===TODAY && (u.role==="Owner"||u.role==="Front desk"||a.u===u.id)).sort((a,b)=>a.s-b.s);
+  const unsigned = NOTES.filter(n=>!n.signed && (n.author===u.id||isAdmin()));
+  const paid=INVOICES.filter(i=>i.status==="Paid"), due=INVOICES.filter(i=>i.status==="Due");
+  const h=NOW.getHours(), hello=h<12?"Good morning":h<18?"Good afternoon":"Good evening";
+  const attention=[
+    unsigned.length?["warn",`${plural(unsigned.length,"note")} waiting for your signature`,"notes"]:null,
+    due.length?["bad",`${plural(due.length,"invoice")} due`,"payments"]:null
+  ].filter(Boolean);
+  return `
+  <div class="view-head"><div><h1>${hello}</h1><p class="muted">${NOW.toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric"})} · ${plural(todays.length,"appointment")} today</p></div>
+  <div class="row"><a class="btn" href="#booking">+ New appointment</a><button class="btn primary" onclick="newClientModal()">+ New client</button></div></div>
+  <div class="grid g4" style="margin-bottom:16px">
+    ${kpi("Today",todays.length,"appointments")}
+    ${kpi("Unsigned notes",unsigned.length,unsigned.length?"needs attention":"none waiting",unsigned.length?"warn":"")}
+    ${kpi(`Collected (${MONTH})`,money(sum(paid.map(i=>i.amt))),plural(paid.length,"paid invoice"))}
+    ${kpi("Outstanding",money(sum(due.map(i=>i.amt))),`${plural(due.length,"invoice")} due`,due.length?"warn":"")}
+  </div>
+  <div class="grid g-side">
+    <div class="card"><div class="card-head"><h2>Today's schedule</h2><a href="#calendar" class="btn sm">Open calendar</a></div>
+      ${todays.length?todays.map(a=>apptRow(a)).join(""):none("No appointments today.")}
+    </div>
+    <div class="stack">
+      <div class="card"><div class="card-head"><h2>Needs attention</h2></div>
+        ${attention.map(([k,t,to])=>`<div class="list-item"><span class="dot" style="background:var(--${k})"></span><span style="flex:1">${t}</span><a class="btn sm" href="#${to}">Open</a></div>`).join("")||none("Nothing needs attention.")}
+      </div>
+      <div class="card"><div class="card-head"><h2>Tasks</h2><button class="btn sm" onclick="notLive()">+ Add</button></div>
+        ${none("No tasks yet.")}
+      </div>
+    </div>
+  </div>`;
+};
+function kpi(label,val,sub,kind){return `<div class="card kpi"><span class="muted">${label}</span><b class="num">${val}</b><small class="${kind?"pill "+kind:"muted"}">${sub}</small></div>`;}
+function hhmm(h){const H=Math.floor(h),M=Math.round((h-H)*60);const ap=H>=12?"pm":"am";return `${((H+11)%12)+1}:${String(M).padStart(2,"0")}${ap}`;}
+function apptRow(a){
+  const c=a.c?client(a.c):null, u=user(a.u);
+  return `<div class="list-item"><span class="num muted" style="width:62px">${hhmm(a.s)}</span><span class="dot" style="background:var(--${a.disc})"></span>
+  <div style="flex:1;min-width:0"><b>${c?esc(c.name):esc(a.t)}</b><div class="muted" style="font-size:12px">${esc(a.t)} · ${esc(u.name)}${a.room?" · "+esc(a.room):""}</div></div>
+  ${a.tele?`<a class="btn sm primary" href="#telehealth">Join video</a>`:`<span class="pill">In person</span>`}
+  ${c?`<button class="btn sm" onclick="openChart('${c.id}')">Chart</button>`:""}</div>`;
+}
+
+V.calendar = () => {
+  const u=me();
+  const list = APPTS.filter(a=>u.role==="Owner"||u.role==="Front desk"||a.u===u.id);
+  const START=7;
+  const cols = DAYS.map((d,i)=>`<div class="cal-col" style="grid-row:2">${list.filter(a=>a.d===i).map(a=>{
+    const c=a.c?client(a.c):null;
+    return `<div class="appt" style="--c:var(--${a.disc});top:${(a.s-START)*56+2}px;height:${a.du*56-4}px" onclick="apptModal(${APPTS.indexOf(a)})"><b>${c?esc(c.name):esc(a.t)}</b>${hhmm(a.s)} · ${esc(c?a.t:user(a.u).name)}${a.tele?" · video":""}</div>`;}).join("")}</div>`).join("");
+  return `
+  <div class="view-head"><div><h1>Calendar</h1><p class="muted">Week of ${WEEK0.toLocaleDateString("en-US",{month:"long",day:"numeric"})} · ${u.role==="Owner"||u.role==="Front desk"?"All providers":"Your schedule"}</p></div>
+  <div class="row"><button class="btn sm" onclick="notLive()" aria-label="Previous week">‹</button><button class="btn sm" onclick="notLive()">Today</button><button class="btn sm" onclick="notLive()" aria-label="Next week">›</button>
+  <select class="input" style="width:auto" aria-label="Calendar view"><option>Week</option><option>Day</option><option>Month</option><option>List</option></select>
+  <select class="input" style="width:auto" aria-label="Location"><option>All locations</option>${PRACTICE.locations.map(l=>`<option>${esc(l)}</option>`).join("")}</select>
+  <button class="btn" onclick="notLive()">Block time</button><a class="btn primary" href="#booking">+ Appointment</a></div></div>
+  <div class="row" style="margin-bottom:12px">${Object.keys(DISC).filter(d=>PRACTICE.modules[d]).map(d=>`<span class="pill disc d-${d}"><span class="dot" style="background:var(--${d})"></span>${DISC[d].label}</span>`).join("")}</div>
+  <div class="table-wrap"><div class="cal">
+    <div style="border-bottom:1px solid var(--line)"></div>${DAYS.map((d,i)=>`<div class="cal-h ${i===TODAY?"today":""}">${d}</div>`).join("")}
+    <div class="cal-times" style="grid-row:2">${Array.from({length:20},(_,i)=>`<div>${i%2===0?hhmm(START+i/2).replace(":00",""):""}</div>`).join("")}</div>
+    ${cols}
+  </div></div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card"><div class="card-head"><h2>Waitlist</h2></div>${none("No one is on the waitlist.")}</div>
+    <div class="card"><div class="card-head"><h2>Rooms & equipment</h2></div>${none("No rooms or equipment set up yet.")}</div>
+  </div>`;
+};
+function apptModal(i){
+  const a=APPTS[i], c=a.c?client(a.c):null, u=user(a.u);
+  modal(`<div class="card-head"><h2>${esc(c?c.name:a.t)}</h2>${discPill(a.disc)}</div>
+  <p class="muted">${DAYS[a.d]} · ${hhmm(a.s)}–${hhmm(a.s+a.du)} · ${esc(u.name)}${a.tele?" · Telehealth":a.room?" · "+esc(a.room):""}</p>
+  <div class="row" style="margin-top:14px">${a.tele?`<a class="btn primary" href="#telehealth" onclick="closeModal()">Start video</a>`:`<button class="btn primary" onclick="notLive();closeModal()">Check in</button>`}
+  ${c?`<button class="btn" onclick="closeModal();openChart('${c.id}')">Open chart</button>`:""}
+  <button class="btn" onclick="notLive();closeModal()">Reschedule</button>
+  <button class="btn danger" onclick="notLive();closeModal()">No-show</button></div>`);
+}
+
+V.clients = () => {
+  const u=me();
+  const list = CLIENTS.filter(c=>u.role==="Owner"||u.role==="Front desk"||c.team.includes(u.id));
+  return `
+  <div class="view-head"><div><h1>Clients</h1><p class="muted">${list.length} ${u.role==="Owner"||u.role==="Front desk"?"active clients":"clients on your caseload"}</p></div>
+  <div class="row"><button class="btn" onclick="notLive()">Import</button><button class="btn primary" onclick="newClientModal()">+ New client</button></div></div>
+  <div class="card" style="padding:0"><div class="table-wrap"><table>
+    <thead><tr><th>Client</th><th>Care team</th><th>Tags</th><th>Next visit</th><th>Consent</th><th class="num">Balance</th></tr></thead>
+    <tbody>${list.map(c=>`<tr class="click" onclick="openChart('${c.id}')">
+      <td><div class="row">${cav(c)}<div><b>${esc(c.name)}</b>${c.minor?` <span class="pill warn">Minor</span>`:""}<div class="muted" style="font-size:12px">${esc(c.pronouns)} · DOB ${esc(c.dob)}</div></div></div></td>
+      <td><div class="row" style="gap:4px">${[...new Set(c.team.flatMap(t=>user(t).disc))].map(d=>discPill(d)).join("")}</div></td>
+      <td>${c.tags.map(t=>`<span class="pill">${esc(t)}</span>`).join(" ")}</td>
+      <td class="num">${esc(c.next||"—")}</td>
+      <td>${Object.keys(c.consent).length?`<span class="pill ok">${Object.keys(c.consent).length} active</span>`:`<span class="pill">None</span>`}</td>
+      <td class="num">${c.balance?`<span class="pill bad">${money(c.balance)}</span>`:"—"}</td></tr>`).join("")||noneRow(6,"No clients yet.")}</tbody>
+  </table></div></div>`;
+};
+function newClientModal(){
+  modal(`<h2 style="margin-bottom:6px">New client</h2><p class="muted" style="margin:0 0 14px">Preview only. This form is not connected yet, so nothing entered here is saved. Please don't enter a real person's details.</p>
+  <form class="stack" onsubmit="event.preventDefault();notLive();closeModal()">
+    <div class="grid g2"><div class="field"><label for="nc1">First name</label><input id="nc1" class="input" autocomplete="off"></div><div class="field"><label for="nc2">Last name</label><input id="nc2" class="input" autocomplete="off"></div></div>
+    <div class="grid g2"><div class="field"><label for="nc3">Email</label><input id="nc3" type="email" class="input" autocomplete="off"></div><div class="field"><label for="nc4">Mobile</label><input id="nc4" class="input" autocomplete="off"></div></div>
+    <div class="grid g2"><div class="field"><label for="nc5">Client type</label><select id="nc5" class="input"><option>Individual</option><option>Couple</option><option>Family</option><option>Minor (with guardian)</option></select></div>
+    <div class="field"><label for="nc6">Primary discipline</label><select id="nc6" class="input">${Object.keys(DISC).filter(d=>PRACTICE.modules[d]).map(d=>`<option>${DISC[d].label}</option>`).join("")}</select></div></div>
+    <div class="row" style="justify-content:flex-end"><button type="button" class="btn" onclick="closeModal()">Cancel</button><button class="btn primary">Create client</button></div>
+  </form>`);
+}
+function openChart(id){state.chartClient=id;state.chartTab="overview";location.hash="chart";render();}
+
+V.chart = () => {
+  const c=client(state.chartClient)||CLIENTS[0], u=me();
+  if(!c) return `
+  <div class="view-head"><div><h1>Client chart</h1><p class="muted">Overview, clinical notes, plans, measures, medications, files, billing and sharing consent for one client</p></div>
+  <button class="btn primary" onclick="newClientModal()">+ New client</button></div>
+  <div class="card">${none("No clients yet. A chart opens here once a client has been added.")}</div>`;
+  const onTeam = c.team.includes(u.id)||u.role==="Owner"||u.role==="Front desk";
+  if(!onTeam) return `<div class="locked">${lockIcon}<div><b>${esc(c.name)} is not on your caseload</b><p class="muted">Ask the owner to add you to the care team.</p></div></div>`;
+  const tabs=[["overview","Overview"],["notes","Clinical notes"],["plans","Plans & protocols"],["measures","Measures"],["meds","Meds & allergies"],["files","Files"],["billing","Billing"],["consent","Sharing & consent"]];
+  return `
+  <div class="view-head"><div class="row" style="gap:14px">${cav(c,52)}<div><h1>${esc(c.name)}</h1>
+    <p class="muted">${esc(c.pronouns)} · DOB ${esc(c.dob)}${c.minor?` · Guardian: ${esc(c.guardian)}`:""}${c.next?` · Next: ${esc(c.next)}`:""}</p>
+    <div class="row" style="margin-top:6px">${(c.alerts||[]).map(a=>`<span class="pill bad">⚠ ${esc(a)}</span>`).join("")}${(c.tags||[]).map(t=>`<span class="pill">${esc(t)}</span>`).join("")}</div></div></div>
+    <div class="row"><select class="input" style="width:auto" aria-label="Client" onchange="state.chartClient=this.value;render()">${CLIENTS.map(x=>`<option value="${x.id}" ${x.id===c.id?"selected":""}>${esc(x.name)}</option>`).join("")}</select>
+    <button class="btn" onclick="location.hash='messages'">Message</button><a class="btn" href="#booking">Book</a>${u.disc.length?`<a class="btn primary" href="#notes">+ Note</a>`:""}</div></div>
+  <div class="tabs" role="tablist">${tabs.map(([id,l])=>`<button class="tab ${state.chartTab===id?"active":""}" role="tab" onclick="state.chartTab='${id}';render()">${l}</button>`).join("")}</div>
+  ${chartTab(c)}`;
+};
+function chartTab(c){
+  const u=me();
+  const t=state.chartTab;
+  const consent=c.consent||{};
+  if(t==="overview"){
+    return `<div class="grid g-side"><div class="stack">
+      <div class="card"><div class="card-head"><h2>Shared care summary</h2><span class="tier t0">T0 · care team</span></div>
+        ${consent.summary_all||u.role==="Owner"?`<p style="margin:0">${esc(c.summary||"No summary yet.")}</p>`:`<div class="locked">${lockIcon}<span class="muted">Client hasn't consented to share a care summary.</span></div>`}</div>
+      <div class="card"><div class="card-head"><h2>Recent activity</h2></div>
+        ${NOTES.filter(n=>n.client===c.id).map(n=>{const a=canSeeNote(n);return `<div class="list-item"><span class="dot" style="background:var(--${n.disc})"></span><span style="flex:1">${a.ok?`<b>${esc(n.type)}</b>`:`<span class="muted">${DISC[n.disc].short} note (hidden)</span>`} <span class="muted">· ${esc(user(n.author).name)} · ${esc(n.date)}</span></span><span class="tier t${n.tier}">T${n.tier}</span></div>`}).join("")||none("No activity yet.")}
+      </div></div>
+      <div class="stack"><div class="card"><h2 style="margin-bottom:10px">Care team</h2>${c.team.map(id=>{const m=user(id);return `<div class="list-item">${av(m,28)}<span style="flex:1"><b>${esc(m.name)}</b> <span class="muted">${esc(m.cred)}</span></span>${m.disc.map(discPill).join("")}</div>`}).join("")||none("No one assigned yet.")}</div>
+      <div class="card"><h2 style="margin-bottom:10px">Contact</h2><div class="muted">${esc(c.phone||"—")}<br>${esc(c.email||"—")}</div></div></div></div>`;
+  }
+  if(t==="notes"){
+    const notes=NOTES.filter(n=>n.client===c.id);
+    return `<div class="row" style="margin-bottom:12px"><span class="muted">You see notes from your discipline, plus anything the client consented to share. Hidden notes are still listed, so you know they exist.</span></div>
+    <div class="stack">${notes.map(n=>{const a=canSeeNote(n);
+      return `<div class="card" style="border-left:3px solid var(--${n.disc})"><div class="card-head"><div class="row">${discPill(n.disc)}<b>${a.ok?esc(n.type):"Hidden note"}</b><span class="muted">${esc(user(n.author).name)} · ${esc(n.date)}</span></div>
+      <div class="row"><span class="tier t${n.tier}">T${n.tier}</span>${n.signed?`<span class="pill ok">Signed & locked</span>`:`<span class="pill warn">Draft</span>`}</div></div>
+      ${a.ok?`<div style="white-space:pre-wrap">${esc(n.body)}</div>${a.via?`<div class="pill accent" style="margin-top:10px">${a.via}</div>`:""}${n.signed?`<div style="margin-top:10px"><button class="btn sm" onclick="notLive()">+ Addendum</button></div>`:""}`
+      :`<div class="locked">${lockIcon}<div><b>Not visible to you</b><div class="muted">${a.why}</div>${n.tier===3||!a.ok&&isAdmin()?`<button class="btn sm danger" style="margin-top:8px" onclick="breakGlass()">Break-glass access…</button>`:""}</div></div>`}</div>`}).join("")||none("No notes yet.")}</div>`;
+  }
+  if(t==="plans"){
+    const plans=c.plans||[];
+    return plans.length?`<div class="grid g3">${plans.map(p=>`<div class="card" style="border-top:3px solid var(--${p.disc})"><div class="card-head"><h2>${esc(p.title)}</h2>${discPill(p.disc)}</div>${u.disc.includes(p.disc)||u.role==="Owner"?`<div style="white-space:pre-wrap">${esc(p.body)}</div>`:`<div class="locked">${lockIcon}<span class="muted">${DISC[p.disc].label} plan · not shared with your discipline</span></div>`}</div>`).join("")}</div>`
+    :`<div class="card">${none("No plans or protocols yet.")}</div>`;
+  }
+  if(t==="measures"){
+    const m=c.measures||{};
+    const cards=`${m.phq9?measureCard("PHQ-9 (depression)",m.phq9,27):""}${m.gad7?measureCard("GAD-7 (anxiety)",m.gad7,21):""}`;
+    return `${cards?`<div class="grid g2">${cards}</div>`:`<div class="card">${none("No outcome measures recorded yet.")}</div>`}
+    <div class="row" style="margin-top:12px"><button class="btn" onclick="notLive()">Send measure</button></div>`;
+  }
+  if(t==="meds"){
+    const ok=u.disc.length>0||u.role==="Owner";
+    return `<div class="grid g2"><div class="card"><div class="card-head"><h2>Medications</h2></div>
+      ${ok?((c.meds||[]).map(m=>`<div class="list-item"><b style="flex:1">${esc(m.n)}</b><span class="muted">${esc(m.d)}</span></div>`).join("")||none("None recorded.")):`<div class="locked">${lockIcon}<span class="muted">Clinical staff only</span></div>`}</div>
+      <div class="card"><h2 style="margin-bottom:10px">Allergies & alerts</h2>${(c.alerts||[]).map(a=>`<div class="list-item"><span class="pill bad">⚠</span>${esc(a)}</div>`).join("")||none("None recorded.")}</div></div>`;
+  }
+  if(t==="files"){
+    return `<div class="card"><div class="card-head"><h2>Files</h2><button class="btn sm primary" onclick="notLive()">Upload</button></div>${none("No files yet.")}</div>`;
+  }
+  if(t==="billing"){
+    const inv=INVOICES.filter(i=>i.c===c.id);
+    return `<div class="grid g-side"><div class="card" style="padding:0"><div class="table-wrap"><table><thead><tr><th>Invoice</th><th>Date</th><th>Description</th><th class="num">Amount</th><th>Status</th></tr></thead><tbody>
+    ${inv.map(i=>`<tr><td>${esc(i.id)}</td><td>${esc(i.date)}</td><td>${esc(i.desc)}</td><td class="num">${money(i.amt)}</td><td><span class="pill ${i.status==="Paid"?"ok":"bad"}">${esc(i.status)}</span></td></tr>`).join("")||noneRow(5,"No invoices.")}</tbody></table></div></div>
+    <div class="card stack"><h2>Payment</h2><div class="list-item"><span style="flex:1">Card on file</span><span class="muted">None</span></div><div class="list-item"><span style="flex:1">Balance</span><b>${money(c.balance||0)}</b></div>
+    <button class="btn" onclick="notLive()">Generate superbill</button><button class="btn" onclick="notLive()">Good Faith Estimate</button></div></div>`;
+  }
+  if(t==="consent"){
+    const rows=[["summary_all","Share care summary with the whole care team","All disciplines"],["bh_to_med","Share therapy notes with psychiatry","Therapy → Psychiatry"],["nut_to_fit","Share nutrition plan with trainer","Nutrition → Fitness"],["part2","Disclose substance-use records (42 CFR Part 2)","Specific written consent"]];
+    return `<div class="card"><div class="card-head"><h2>Care-team sharing</h2><span class="muted">The client signs and can revoke these in their app</span></div>
+    ${rows.map(([k,l,s])=>`<div class="list-item"><div style="flex:1"><b>${l}</b><div class="muted" style="font-size:12px">${s} · ${consent[k]?"Granted":"Not granted"}</div></div><span class="pill ${consent[k]?"ok":""}">${consent[k]?"Active":"Off"}</span><button class="btn sm" onclick="notLive()">${consent[k]?"View":"Request"}</button></div>`).join("")}
+    ${c.minor?`<div class="locked" style="margin-top:12px">${lockIcon}<div><b>Minor protections on</b><div class="muted">Guardian (${esc(c.guardian)}) sees appointments and billing. Notes marked "confidential to minor" are hidden from the guardian portal.</div></div></div>`:""}</div>`;
+  }
+  return "";
+}
+function measureCard(title,vals,max){
+  const W=320,H=120,p=22, step=(W-2*p)/Math.max(vals.length-1,1);
+  const pts=vals.map((v,i)=>[p+i*step,H-p-(v/max)*(H-2*p)]);
+  const path=pts.map((q,i)=>(i?"L":"M")+q[0].toFixed(1)+","+q[1].toFixed(1)).join(" ");
+  const area=path+` L${pts.at(-1)[0]},${H-p} L${p},${H-p} Z`;
+  const last=vals.at(-1), first=vals[0];
+  return `<div class="card"><div class="card-head"><h2>${title}</h2><span class="pill ${last<first?"ok":"warn"}">${last} now · ${last<first?"↓":"↑"}${Math.abs(first-last)}</span></div>
+  <svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="${title} trend">
+    ${[0,.5,1].map(f=>`<line x1="${p}" x2="${W-p}" y1="${H-p-f*(H-2*p)}" y2="${H-p-f*(H-2*p)}" stroke="var(--line)"/><text x="2" y="${H-p-f*(H-2*p)+4}" font-size="10" fill="var(--muted)">${Math.round(f*max)}</text>`).join("")}
+    <path d="${area}" fill="var(--accent)" opacity=".12"/><path d="${path}" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    ${pts.map((q,i)=>`<circle cx="${q[0]}" cy="${q[1]}" r="${i===pts.length-1?4.5:2.5}" fill="var(--accent)"/>`).join("")}
+  </svg><div class="muted" style="font-size:12px">Last ${vals.length} submissions</div></div>`;
+}
+/* Break-glass is a design placeholder: it opens nothing and records nothing in this preview. */
+function breakGlass(){
+  modal(`<h2>Break-glass access</h2><p class="muted">Planned: emergency access to a protected record, which needs a reason, is time-limited, alerts the practice owner and is permanently logged.</p>
+  <p class="muted">This is not built yet. Nothing is opened or recorded from this screen.</p>
+  <div class="row" style="justify-content:flex-end"><button class="btn primary" onclick="closeModal()">Close</button></div>`);
+}
+
+V.notes = () => {
+  const u=me();
+  const disc=u.disc[0]||"bh";
+  const templates={bh:["SOAP","DAP","BIRP","Intake / diagnostic eval","Group note","Psychotherapy note"],med:["Med management","H&P","Follow-up","Psychiatric eval"],nut:["ADIME","Nutrition SOAP"],fit:["GROW coaching","Assessment (PAR-Q)","Session log"],body:["SOAP","Treatment record"]}[disc];
+  if(!templates.includes(state.noteTemplate)) state.noteTemplate=templates[0];
+  const myClients=CLIENTS.filter(c=>c.team.includes(u.id)||u.role==="Owner");
+  return `
+  <div class="view-head"><div><h1>New note</h1><p class="muted">${DISC[disc].label} templates · AI drafts will always be reviewed and signed by the clinician</p></div>
+  <div class="row"><button class="btn" onclick="notLive()">Save draft</button><button class="btn primary" onclick="notLive()">Sign & lock</button></div></div>
+  <div class="grid g-side">
+    <div class="card stack">
+      <div class="grid g3">
+        <div class="field"><label for="nClient">Client</label><select id="nClient" class="input">${myClients.map(c=>`<option ${c.id===state.chartClient?"selected":""}>${esc(c.name)}</option>`).join("")||`<option>No clients yet</option>`}</select></div>
+        <div class="field"><label for="nTpl">Template</label><select id="nTpl" class="input" onchange="state.noteTemplate=this.value;render()">${templates.map(t=>`<option ${t===state.noteTemplate?"selected":""}>${t}</option>`).join("")}</select></div>
+        <div class="field"><label for="nTier">Sensitivity</label><select id="nTier" class="input"><option>T1 · Standard clinical</option><option ${state.noteTemplate.startsWith("Psychotherapy")?"selected":""}>T2 · Restricted (author only)</option><option>T3 · Specially protected</option></select></div>
+      </div>
+      <div class="field"><label for="noteBody">${state.noteTemplate}</label><textarea id="noteBody" class="input" style="min-height:300px" placeholder="Note text. Nothing typed here is saved in this preview."></textarea></div>
+      <div class="row"><button class="btn sm" onclick="notLive()">↺ Carry forward last plan</button><button class="btn sm" onclick="notLive()">+ Link treatment goal</button><span class="muted" style="font-size:12px;margin-left:auto">Not saved in this preview</span></div>
+    </div>
+    <div class="stack">
+      <div class="card"><div class="card-head"><h2>✦ AI scribe</h2><span class="pill">Not connected</span></div>
+        <div class="stack">
+          <div class="row"><button class="btn sm" onclick="notLive()">● Record session</button><button class="btn sm" onclick="notLive()">Upload audio</button></div>
+          <div class="field"><label for="aiIn">Or paste a summary or transcript</label><textarea id="aiIn" class="input" style="min-height:90px" placeholder="Not connected in this preview."></textarea></div>
+          <button class="btn primary" onclick="notLive()">Draft ${state.noteTemplate} note</button>
+          <div class="muted" style="font-size:12px">Planned: drafts in the clinician's own template, using only data that clinician is allowed to see, with nothing saved until they sign.</div>
+        </div></div>
+      <div class="card"><h2 style="margin-bottom:8px">AI assist</h2>${["Intake summary","Session prep brief","Client summary","Draft treatment plan"].map(x=>`<div class="list-item"><span style="flex:1">${x}</span><button class="btn sm" onclick="notLive()">Generate</button></div>`).join("")}</div>
+      ${u.supervisor?`<div class="card"><h2>Supervision</h2><p class="muted">Signed notes go to ${esc(user(u.supervisor).name)} for co-signature.</p></div>`:""}
+    </div>
+  </div>`;
+};
+
+function threadVisible(t){const u=me();if(t.with==="team")return true;if(u.role==="Owner")return true;if(u.role==="Front desk")return false;return u.disc.includes(t.disc);}
+V.messages = () => {
+  const list=THREADS.filter(threadVisible);
+  if(!list.find(t=>t.id===state.thread)) state.thread=list[0]?.id;
+  const t=THREADS.find(x=>x.id===state.thread);
+  return `
+  <div class="view-head"><div><h1>Messages</h1><p class="muted">Messages are routed by discipline, so a therapy message never reaches the trainer</p></div><button class="btn" onclick="notLive()">Broadcast</button></div>
+  <div class="card chat" style="padding:0">
+    <div class="threads">${list.map(x=>{const c=x.client?client(x.client):null;return `<div class="thread ${x.id===state.thread?"active":""}" onclick="state.thread='${x.id}';render()">${c?cav(c,36):`<span class="avatar" style="background:var(--accent)">TM</span>`}<div style="flex:1;min-width:0"><div class="row" style="justify-content:space-between"><b>${c?esc(c.name):"Team chat"}</b>${x.unread?`<span class="badge">${x.unread}</span>`:""}</div><div class="muted" style="font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(x.msgs.at(-1)?.t||"")}</div>${x.disc?discPill(x.disc):`<span class="pill">Internal</span>`}</div></div>`}).join("")}</div>
+    <div class="msgs">${t?`<div style="padding:12px 16px;border-bottom:1px solid var(--line)" class="row"><b>${t.client?esc(client(t.client).name):"Team chat"}</b>${t.disc?discPill(t.disc):""}<span class="muted" style="font-size:12px">${t.with==="team"?"All staff":"with "+esc(user(t.with).name)}</span></div>
+    <div class="msg-list" id="msgList">${t.msgs.map(m=>`<div class="bubble ${m.me?"me":""}">${esc(m.t)}</div>`).join("")}</div>
+    <form class="composer" onsubmit="event.preventDefault();notLive()"><input id="msgIn" class="input" placeholder="Write a message…" autocomplete="off"><button class="btn primary">Send</button></form>`:`<p class="muted" style="padding:16px;margin:0">No conversations yet.</p>`}</div>
+  </div>`;
+};
+
+V.telehealth = () => `
+  <div class="view-head"><div><h1>Telehealth</h1><p class="muted">Planned: built-in video that runs in the browser with nothing to install</p></div><button class="btn" onclick="notLive()">Copy session link</button></div>
+  <div class="grid g-side">
+    <div><div class="video" id="video"><div style="text-align:center;padding:0 16px"><div style="font-size:42px">👤</div><div>No session in progress</div></div></div>
+      <div class="vcontrols">
+        ${[["mic","Mute",'<path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3"/>'],["cam","Camera",'<rect x="2" y="6" width="14" height="12" rx="2"/><path d="m16 10 6-4v12l-6-4"/>'],["share","Share screen",'<rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 22h8M12 8v6M9 11l3-3 3 3"/>'],["board","Whiteboard",'<path d="M3 4h18v12H3zM12 16v4M8 20h8"/>'],["blur","Blur background",'<circle cx="12" cy="12" r="9" stroke-dasharray="2 3"/>'],["chat","Chat",ICON.messages]].map(([id,l,ic])=>`<button class="vbtn" title="${l}" aria-label="${l}" onclick="notLive()"><svg viewBox="0 0 24 24">${ic}</svg></button>`).join("")}
+      </div></div>
+    <div class="stack">
+      <div class="card"><div class="card-head"><h2>Waiting room</h2></div>${none("No one is waiting.")}</div>
+      <div class="card"><h2 style="margin-bottom:8px">Session tools</h2>
+        <div class="list-item"><span style="flex:1">Group sessions</span><span class="pill">Planned</span></div>
+        <div class="list-item"><span style="flex:1">Live transcription for the AI scribe</span><span class="pill">Planned</span></div>
+        <div class="list-item"><span style="flex:1">Send a measure during the session</span><span class="pill">Planned</span></div></div>
+    </div></div>`;
+
+V.forms = () => {
+  if(!state.formFields) state.formFields=[];
+  return `
+  <div class="view-head"><div><h1>Forms & intake</h1><p class="muted">Form builder · e-signatures · answers written into chart fields</p></div><div class="row"><button class="btn" onclick="notLive()">Preview</button><button class="btn primary" onclick="notLive()">Publish</button></div></div>
+  <div class="grid form-grid">
+    <div class="card palette stack"><h3>Add field</h3>${["Short text","Long text","Multiple choice","Checkboxes","Date","Scale 0–10","File upload","Body diagram","Conditional","Signature"].map(f=>`<button class="btn sm" onclick="state.formFields.push({t:'${f}',l:''});render()">+ ${f}</button>`).join("")}</div>
+    <div class="card"><div class="field" style="margin-bottom:12px"><label for="fTitle">Form title</label><input id="fTitle" class="input" placeholder="Untitled form"></div>
+      <div class="stack">${state.formFields.map((f,i)=>`<div class="canvas-field"><span class="grip">⋮⋮</span><div style="flex:1;min-width:0"><span class="pill">${f.t}</span><input class="input" style="margin-top:6px" value="${esc(f.l)}" placeholder="Question or label" aria-label="Field label" onchange="state.formFields[${i}].l=this.value"></div><button class="btn sm ghost" aria-label="Remove field" onclick="state.formFields.splice(${i},1);render()">✕</button></div>`).join("")||none("No fields yet. Add one from the list.")}</div></div>
+    <div class="card stack"><h3>Template library</h3>${["Adult intake","Minor intake + guardian","Informed consent (telehealth)","Care-team sharing consent","Release of information","PAR-Q+ (fitness)","Liability waiver","3-day food recall","PHQ-9 / GAD-7","Good Faith Estimate","Cancellation policy"].map(t=>`<div class="list-item"><span style="flex:1">${t}</span><span class="pill">Planned</span></div>`).join("")}</div>
+  </div>`;
+};
+
+V.programs = () => `
+  <div class="view-head"><div><h1>Programs & courses</h1><p class="muted">Fixed-date, rolling or self-paced · content released on a schedule · can be sold as packages</p></div><button class="btn primary" onclick="notLive()">+ New program</button></div>
+  ${PROGRAMS.filter(p=>PRACTICE.modules[p.disc]).length?`<div class="grid g2">${PROGRAMS.filter(p=>PRACTICE.modules[p.disc]).map(p=>`<div class="card"><div class="card-head"><h2>${esc(p.n)}</h2>${discPill(p.disc)}</div>
+    <div class="row muted" style="margin-bottom:10px">${esc(p.mode)} · ${p.modules} modules · ${p.enrolled} enrolled</div>
+    <div class="muted" style="font-size:12px;margin-bottom:4px">Average completion ${p.done}%</div><div class="bar"><i style="width:${p.done}%"></i></div></div>`).join("")}</div>`
+  :`<div class="card">${none("No programs yet.")}</div>`}`;
+
+V.nutrition = () => `
+  <div class="view-head"><div><h1>Nutrition</h1><p class="muted">Food journals, protocols, meal plans and supplements</p></div><div class="row"><button class="btn" onclick="notLive()">Recommend supplements</button><button class="btn primary" onclick="notLive()">+ Meal plan</button></div></div>
+  <div class="grid g-side">
+    <div class="card"><div class="card-head"><h2>Food journal</h2></div>${none("No journal entries yet. Entries a client logs in their app appear here.")}</div>
+    <div class="stack">
+      <div class="card"><h2 style="margin-bottom:10px">Daily targets</h2>${none("No targets set.")}</div>
+      <div class="card"><h2 style="margin-bottom:8px">Body metrics</h2>${none("No measurements yet.")}</div>
+    </div></div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card"><div class="card-head"><h2>Protocol builder</h2><span class="muted" style="font-size:12px">One plan the client follows in their app</span></div>${none("No protocol items yet.")}<button class="btn sm" style="margin-top:10px" onclick="notLive()">+ Add item</button></div>
+    <div class="card"><h2 style="margin-bottom:10px">Meal plan</h2>${none("No meal plan yet.")}</div>
+  </div>`;
+
+V.fitness = () => `
+  <div class="view-head"><div><h1>Fitness & coaching</h1><p class="muted">Assessments, workout plans, workout logs and wearable data</p></div><button class="btn primary" onclick="notLive()">+ Workout plan</button></div>
+  <div class="grid g3" style="margin-bottom:16px">
+    <div class="card"><h2 style="margin-bottom:8px">Clearance</h2>${none("No client selected. A trainer sees the medical clearance and restrictions from the shared care summary, and never therapy or medical notes.")}</div>
+    <div class="card"><h2 style="margin-bottom:8px">Wearables</h2>${none("No wearable data.")}</div>
+    <div class="card"><h2 style="margin-bottom:8px">Adherence</h2>${none("No sessions logged.")}</div>
+  </div>
+  <div class="card"><div class="card-head"><h2>Workout plan</h2></div>${none("No workout plan yet.")}
+  <div class="row" style="margin-top:10px"><button class="btn sm" onclick="notLive()">+ Exercise from library</button></div></div>`;
+
+V.payments = () => {
+  const paid=INVOICES.filter(i=>i.status==="Paid"), due=INVOICES.filter(i=>i.status==="Due");
+  return `
+  <div class="view-head"><div><h1>Payments</h1><p class="muted">Self-pay only · card payments, packages, memberships and superbills · insurance claims are deliberately excluded</p></div><div class="row"><button class="btn" onclick="notLive()">Batch superbills</button><button class="btn primary" onclick="notLive()">+ Invoice</button></div></div>
+  <div class="grid g4" style="margin-bottom:16px">${kpi(`Collected (${MONTH})`,money(sum(paid.map(i=>i.amt))),plural(paid.length,"paid invoice"))}${kpi("Outstanding",money(sum(due.map(i=>i.amt))),`${plural(due.length,"invoice")} due`,due.length?"warn":"")}${kpi("Active memberships",PACKAGES.filter(p=>/Membership/.test(p.type)).length,"none yet")}${kpi("Packages",PACKAGES.filter(p=>!/Membership/.test(p.type)).length,"none yet")}</div>
+  <div class="grid g-side">
+    <div class="card" style="padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>Invoices</h2></div><div class="table-wrap"><table><thead><tr><th>Invoice</th><th>Client</th><th>Date</th><th>Description</th><th class="num">Amount</th><th>Status</th></tr></thead><tbody>
+    ${INVOICES.map(i=>`<tr><td>${esc(i.id)}</td><td>${esc(client(i.c)?.name||"")}</td><td>${esc(i.date)}</td><td>${esc(i.desc)}</td><td class="num">${money(i.amt)}</td><td><span class="pill ${i.status==="Paid"?"ok":"bad"}">${esc(i.status)}</span></td></tr>`).join("")||noneRow(6,"No invoices yet.")}</tbody></table></div></div>
+    <div class="card"><h2 style="margin-bottom:10px">Settings</h2>${["Auto-invoice after each session","Charge card when a session is completed","Late-cancel fee","Accept HSA/FSA cards","Sliding scale","Payment plans and deposits"].map(l=>`<div class="list-item"><span style="flex:1">${l}</span><label class="toggle"><input type="checkbox" aria-label="${l}"><span></span></label></div>`).join("")}</div>
+  </div>
+  <div class="card" style="margin-top:16px"><div class="card-head"><h2>Packages & memberships</h2><button class="btn sm" onclick="notLive()">+ New</button></div>
+    ${PACKAGES.length?`<div class="grid g4">${PACKAGES.map(p=>`<div class="card" style="box-shadow:none"><span class="pill">${esc(p.type)}</span><h3 style="margin:8px 0 2px">${esc(p.n)}</h3><b class="num" style="font-size:20px">${money(p.price)}</b><p class="muted" style="font-size:12px;margin:6px 0">${esc(p.incl)}</p></div>`).join("")}</div>`:none("No packages or memberships yet.")}</div>`;
+};
+
+V.reports = () => {
+  const paid=INVOICES.filter(i=>i.status==="Paid");
+  return `
+  <div class="view-head"><div><h1>Reports</h1><p class="muted">${NOW.toLocaleDateString("en-US",{month:"long",year:"numeric"})} · all locations</p></div><div class="row"><select class="input" style="width:auto" aria-label="Period"><option>This month</option><option>Last month</option><option>Quarter</option></select><button class="btn" onclick="notLive()">Export CSV</button></div></div>
+  <div class="grid g4" style="margin-bottom:16px">${kpi("Revenue",money(sum(paid.map(i=>i.amt))),"this month")}${kpi("Visits",APPTS.length,"this week")}${kpi("No-show rate","—","no visits yet")}${kpi("New clients",CLIENTS.length,"total")}</div>
+  <div class="grid g2">
+    <div class="card"><h2 style="margin-bottom:10px">Revenue by discipline</h2>${none("No revenue recorded yet.")}</div>
+    <div class="card"><h2 style="margin-bottom:10px">Outcome trends</h2>${none("No outcome measures recorded yet.")}</div>
+  </div>
+  <div class="card" style="margin-top:16px;padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>Provider productivity</h2></div><div class="table-wrap"><table><thead><tr><th>Provider</th><th class="num">Visits</th><th class="num">Hours</th><th class="num">Revenue</th><th class="num">Unsigned notes</th></tr></thead><tbody>
+  ${noneRow(5,"No visits recorded yet.")}</tbody></table></div></div>`;
+};
+
+V.team = () => {
+  const perms=["Own clients' notes","Other disciplines' notes","Scheduling (all)","Billing","Settings","Supervise / co-sign","Export records"];
+  const roles={"Owner / Admin":[1,0,1,1,1,1,1],"Clinician":[1,0,0,0,0,0,0],"Supervisor":[1,0,0,0,0,1,0],"Practice manager":[0,0,1,1,1,0,0],"Front desk":[0,0,1,1,0,0,0],"Assistant / Intern":[1,0,0,0,0,0,0]};
+  return `
+  <div class="view-head"><div><h1>Team & roles</h1><p class="muted">Role-based access · per-location permissions</p></div><button class="btn primary" onclick="notLive()">+ Invite team member</button></div>
+  <div class="card" style="padding:0;margin-bottom:16px"><div class="table-wrap"><table><thead><tr><th>Member</th><th>Role</th><th>Disciplines</th><th>Locations</th><th>Two-step sign-in</th></tr></thead><tbody>
+  ${USERS.map(u=>`<tr><td><div class="row">${av(u,28)}<div><b>${esc(u.name)}</b> <span class="muted">${esc(u.cred)}</span></div></div></td><td>${esc(u.role)}</td><td>${u.disc.map(discPill).join(" ")||`<span class="muted">—</span>`}</td><td class="muted">All</td><td><span class="pill">Not set up</span></td></tr>`).join("")}</tbody></table></div></div>
+  <div class="card"><div class="card-head"><h2>Permission matrix</h2><span class="muted" style="font-size:12px">The planned default for each role</span></div><div class="table-wrap"><table><thead><tr><th>Role</th>${perms.map(p=>`<th>${p}</th>`).join("")}</tr></thead><tbody>
+  ${Object.entries(roles).map(([r,v])=>`<tr><td><b>${r}</b></td>${v.map((on,i)=>`<td><label class="toggle"><input type="checkbox" ${on?"checked":""} aria-label="${r}: ${perms[i]}" onchange="notLive()"><span></span></label></td>`).join("")}</tr>`).join("")}</tbody></table></div>
+  <p class="muted" style="font-size:12px;margin:10px 0 0">Other disciplines' notes stay off for every role. They are meant to open only through client consent or break-glass access.</p></div>`;
+};
+
+V.security = () => `
+  <div class="view-head"><div><h1>Security & audit</h1><p class="muted"><b>Nothing on this screen is set up yet.</b> It shows where each control will appear once the system is connected.</p></div><button class="btn danger" onclick="breakGlass()">Break-glass access</button></div>
+  <div class="grid g3" style="margin-bottom:16px">
+    <div class="card"><h2 style="margin-bottom:10px">Encryption</h2>${["In transit","At rest","Keys","Restricted notes"].map(k=>`<div class="list-item"><span style="flex:1">${k}</span><span class="pill">Not set up</span></div>`).join("")}</div>
+    <div class="card"><h2 style="margin-bottom:10px">Sensitivity tiers</h2>${[["T0","Client-visible","Appointments, invoices, shared plans"],["T1","Standard clinical","Treating discipline only"],["T2","Restricted","Psychotherapy notes · author only"],["T3","Specially protected","Part 2, HIV, reproductive, minors' confidential notes"]].map(([t,n,d],i)=>`<div class="list-item"><span class="tier t${i}">${t}</span><div><b>${n}</b><div class="muted" style="font-size:12px">${d}</div></div></div>`).join("")}</div>
+    <div class="card"><h2 style="margin-bottom:10px">Vendor agreements (BAAs)</h2>${VENDORS.map(v=>`<div class="list-item"><span style="flex:1">${esc(v.n)}</span><span class="pill ${v.baa===true?"ok":""}">${v.baa===true?"BAA signed":"Not signed"}</span></div>`).join("")}</div>
+  </div>
+  <div class="card" style="padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>Audit log</h2></div>
+  <div class="table-wrap"><table><thead><tr><th>Time</th><th>User</th><th>Action</th><th>Record</th><th>Tier</th><th>IP</th></tr></thead><tbody>
+  ${AUDIT.map(a=>`<tr><td class="num">${esc(a.t)}</td><td>${esc(user(a.u)?.name||"")}</td><td><span class="pill ${a.a==="Denied"?"warn":a.a==="Break-glass"?"bad":""}">${esc(a.a)}</span></td><td>${esc(a.o)}</td><td><span class="tier t${a.tier}">T${a.tier}</span></td><td class="num muted">${esc(a.ip)}</td></tr>`).join("")||noneRow(6,"No activity recorded. Audit logging is not connected yet.")}</tbody></table></div></div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card"><h2 style="margin-bottom:10px">Session & device policy</h2>${["Require two-step sign-in","Sign out after 15 minutes idle","Remote sign-out for lost devices","Hide health details from notifications"].map(l=>`<div class="list-item"><span style="flex:1">${l}</span><span class="pill">Not set up</span></div>`).join("")}</div>
+    <div class="card"><h2 style="margin-bottom:10px">Records requests</h2><p class="muted" style="margin-top:0">Planned: generate a chart packet for a client or authorized party, leaving out T2 notes automatically and requiring the client's specific consent for T3 records.</p><button class="btn" onclick="notLive()">New records release</button></div>
+  </div>`;
+
+V.settings = () => `
+  <div class="view-head"><div><h1>Modules & settings</h1><p class="muted">Turn disciplines on or off for the practice. Each module adds its own note types, forms and chart tabs.</p></div></div>
+  <div class="grid g2">
+    <div class="card"><h2 style="margin-bottom:10px">Discipline modules</h2>${Object.entries(DISC).map(([k,d])=>`<div class="list-item"><span class="dot" style="background:var(--${k})"></span><span style="flex:1"><b>${d.label}</b></span><label class="toggle"><input type="checkbox" ${PRACTICE.modules[k]?"checked":""} aria-label="${d.label}" onchange="PRACTICE.modules['${k}']=this.checked;render()"><span></span></label></div>`).join("")}</div>
+    <div class="card"><h2 style="margin-bottom:10px">Practice</h2>
+      <div class="stack"><div class="field"><label for="pn">Practice name</label><input id="pn" class="input" value="${esc(PRACTICE.name)}"></div>
+      <div class="field"><label for="tz">Time zone</label><select id="tz" class="input"><option>America/New_York</option><option>America/Chicago</option><option>America/Denver</option><option>America/Los_Angeles</option></select></div>
+      <div class="list-item"><span style="flex:1">AI scribe & assist</span><span class="pill">Not connected</span></div>
+      <div class="list-item"><span style="flex:1">Branding · client app accent</span><input type="color" value="#7AAFD7" aria-label="Brand color"></div></div></div>
+    <div class="card"><div class="card-head"><h2>Services & fees</h2><button class="btn sm" onclick="notLive()">+ Add service</button></div>${none("No services yet.")}</div>
+    <div class="card"><h2 style="margin-bottom:10px">Integrations</h2>${["Card payments","Calendar sync","Supplement ordering","Wearables","ePrescribe","eFax","API and webhooks"].map(n=>`<div class="list-item"><span style="flex:1">${n}</span><span class="pill">Not connected</span></div>`).join("")}</div>
+  </div>`;
+
+V.portal = () => {
+  const tabs=[["home","Home"],["plan","My plan"],["journal","Journal"],["msgs","Messages"],["pay","Billing"]];
+  const box=(t,b)=>`<div class="card" style="margin-top:10px"><b>${t}</b><div class="muted" style="font-size:13px;margin-top:4px">${b}</div></div>`;
+  const scr={
+    home:`<h2 style="font-family:var(--font-display);font-size:22px">Welcome</h2>${box("Next appointment","Nothing booked.")}${box("To do","Nothing to do right now.")}<button class="btn" style="width:100%;justify-content:center;margin-top:10px" onclick="notLive()">Book an appointment</button>`,
+    plan:`<h2>My plan</h2>${box("Plans","Nothing has been shared with you yet.")}`,
+    journal:`<h2>Journal</h2>${box("Mood","No entries yet.")}${box("Food","No photos yet.")}${box("Workouts","Nothing logged yet.")}`,
+    msgs:`<h2>Messages</h2>${box("Inbox","No messages.")}`,
+    pay:`<h2>Billing</h2><div class="card" style="margin-top:10px"><span class="muted" style="font-size:12px">BALANCE</span><b style="display:block;font-size:24px">$0</b><span class="muted" style="font-size:12px">No card on file</span></div>${box("Documents","No invoices or receipts yet.")}`
+  };
+  return `<div class="view-head"><div><h1>Client app preview</h1><p class="muted">What clients will see on web and phone</p></div></div>
+  <div class="grid g2" style="align-items:start">
+    <div class="phone"><div class="phone-screen">${scr[state.portalTab]}</div><div class="phone-bar">${tabs.map(([id,l])=>`<button class="btn ghost sm" style="flex-direction:column;gap:0;padding:4px 2px;min-width:0;${state.portalTab===id?"color:var(--accent-text)":""}" onclick="state.portalTab='${id}';render()">${l}</button>`).join("")}</div></div>
+    <div class="card"><h2 style="margin-bottom:10px">What clients will be able to do</h2>${["Book, reschedule and cancel within your rules","Fill out intake forms, consents and measures","Join video sessions from the app","Message each provider (routed by discipline)","See their treatment, meal and workout plans","Log food photos, mood, symptoms and workouts","Pay, buy packages, download superbills","Manage care-team sharing consent"].map(x=>`<div class="list-item">${x}</div>`).join("")}</div>
+  </div>`;
+};
+
+V.booking = () => `
+  <div class="view-head"><div><h1>Booking page</h1><p class="muted">A public booking page and embeddable widget for the practice</p></div><button class="btn" onclick="notLive()">Copy embed code</button></div>
+  <div class="card" style="max-width:640px;margin:0 auto">
+    <div class="row" style="margin-bottom:16px">${["Service","Time","Details","Confirm"].map((x,i)=>`<span class="pill ${i===0?"accent":""}">${i+1}. ${x}</span>`).join("")}</div>
+    ${none("No services set up yet. Once services and hours are added in Settings, clients pick a service here, then a time, then confirm.")}
+  </div>`;
+
+/* =========================================================================
+   PWA install (prototype) — real install requires manifest.json + sw.js
+   ========================================================================= */
+function installModal(){
+  modal(`<h2>Install the desktop app</h2><p class="muted">The finished product will install from the browser and open in its own window. This demonstration cannot be installed yet.</p>
+  <div class="stack" style="margin:14px 0">
+    <div class="list-item"><b style="width:120px">Chrome / Edge</b><span>Click the install icon (⊕) in the address bar, or open the menu and choose Install app</span></div>
+    <div class="list-item"><b style="width:120px">Mac Safari</b><span>File → Add to Dock</span></div>
+    <div class="list-item"><b style="width:120px">iPhone / iPad</b><span>Share → Add to Home Screen</span></div>
+    <div class="list-item"><b style="width:120px">Android</b><span>Menu → Install app</span></div>
+  </div>
+  <div class="row" style="justify-content:flex-end"><button class="btn primary" onclick="closeModal()">Got it</button></div>`);
+}
+let deferredPrompt=null;
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;});
+$("#installBtn").addEventListener("click",()=>{ if(deferredPrompt){deferredPrompt.prompt();deferredPrompt=null;} else installModal(); });
+
+/* =========================================================================
+   ROUTER + BOOT
+   ========================================================================= */
+function render(){
+  let r=(location.hash||"#dashboard").slice(1);
+  if(!V[r]) r="dashboard";
+  const flag=NAV.flatMap(g=>g.items).find(i=>i[0]===r)?.[2];
+  if(!navAllowed(flag)) r="dashboard";
+  renderNav(r);
+  $("#view").innerHTML=V[r]();
+  $("#nav").classList.remove("open");
+}
+$("#roleSel").innerHTML=USERS.map(u=>`<option value="${u.id}">${esc(u.name)}${u.cred?", "+u.cred:""} · ${u.role}${u.disc.length?" ("+u.disc.map(d=>DISC[d].short).join("/")+")":""}</option>`).join("");
+if(USERS.length<2) $("#roleSel").closest(".field").style.display="none";
+$("#roleSel").addEventListener("change",e=>{state.user=e.target.value;toast("Now viewing as "+me().name);render();});
+$("#navToggle").addEventListener("click",()=>$("#nav").classList.toggle("open"));
+$("#themeBtn").addEventListener("click",()=>{const r=document.documentElement;const dark=r.dataset.theme?r.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches;r.dataset.theme=dark?"light":"dark";});
+$("#globalSearch").addEventListener("keydown",e=>{if(e.key==="Enter"){const q=e.target.value.toLowerCase();const c=CLIENTS.find(x=>x.name.toLowerCase().includes(q));if(c)openChart(c.id);else toast("No client matches “"+e.target.value+"”");}});
+window.addEventListener("hashchange",render);
+render();
+</script>
+</body>
+</html>

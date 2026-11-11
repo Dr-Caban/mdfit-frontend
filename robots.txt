@@ -25,6 +25,7 @@ Disallow: /
 User-agent: *
 Disallow: /account
 Disallow: /admin
+Disallow: /workspace-preview
 Disallow: /api/
 Allow: /api/site$
 Allow: /api/reviews$
