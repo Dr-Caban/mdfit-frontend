@@ -24,7 +24,7 @@
   const KEY = "mdfit_ws_token";
   const store = { get: () => { try { return sessionStorage.getItem(KEY) || ""; } catch { return ""; } }, set: (t) => { try { t ? sessionStorage.setItem(KEY, t) : sessionStorage.removeItem(KEY); } catch {} } };
   let token = store.get();
-  const state = { chartClient: null, chartTab: "overview", thread: null, calWeek: 0, clientQ: "" };
+  const state = { chartClient: null, chartTab: "overview", thread: null, calWeek: 0, clientQ: "", insTab: "analytics", insDays: 30 };
   const cache = { clients: null, unread: 0, waiting: 0, me: null };
 
   async function api(method, path, body) {
@@ -82,7 +82,7 @@
     fitness: '<path d="M6 7v10M18 7v10M3 10v4M21 10v4M6 12h12"/>',
     payments: '<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/>',
     newsletter: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
-    reports: '<path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/>',
+    insights: '<path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/>',
     team: '<circle cx="12" cy="7" r="4"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/>',
     feedback: '<path d="M12 2l3 6 6 .9-4.5 4.3 1 6.3L12 16.8 6.5 19.5l1-6.3L3 8.9 9 8z"/>',
     security: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
@@ -93,8 +93,8 @@
   const NAV = [
     { g: "Practice", items: [["dashboard", "Dashboard"], ["calendar", "Calendar"], ["clients", "Clients"], ["chart", "Client chart"], ["leads", "Leads"], ["messages", "Messages"], ["telehealth", "Telehealth"]] },
     { g: "Clinical", items: [["notes", "Notes & AI scribe"], ["forms", "Forms & intake"], ["programs", "Programs"], ["nutrition", "Nutrition"], ["fitness", "Fitness"]] },
-    { g: "Business", items: [["payments", "Payments"], ["newsletter", "Newsletter"], ["reports", "Reports"]] },
-    { g: "Admin", items: [["team", "Team & roles"], ["feedback", "Reviews & feedback"], ["security", "Security & audit"], ["settings", "Modules & settings"]] },
+    { g: "Business", items: [["payments", "Payments"], ["newsletter", "Newsletter"]] },
+    { g: "Admin", items: [["team", "Team & roles"], ["feedback", "Reviews & feedback"], ["security", "Security & audit"], ["settings", "Modules & settings"], ["insights", "Insights"]] },
     { g: "Client-facing", items: [["portal", "Client app"], ["booking", "Booking page"]] }
   ];
   function renderNav(active) {
@@ -366,12 +366,37 @@
     ${list.map((s) => `<tr><td>${esc(s.email)}</td><td class="muted">${when(s.createdAt)}</td><td><button class="btn sm danger" data-act="unsubscribe" data-email="${esc(s.email)}">Remove</button></td></tr>`).join("") || noneRow(3, "No subscribers yet.")}</tbody></table></div></div>`;
   };
 
-  V.reports = async () => {
-    const [a, st] = await Promise.all([get("/analytics"), get("/stats")]);
-    return `<div class="view-head"><div><h1>Reports</h1><p class="muted">Website traffic over the last ${a.rangeDays || 30} days, and bookings</p></div>${adminLink("analytics", "Full analytics")}</div>
-    <div class="grid g4" style="margin-bottom:16px">${kpi("Page views", a.summary.totalViews, `${a.summary.todayViews} today`)}${kpi("Visitors", a.summary.totalUnique, `${a.summary.todayUnique} today`)}${kpi("Requests", st.leads30d, "last 30 days")}${kpi("Sessions", st.sessionsThisWeek, "this week")}</div>
-    <div class="grid g2"><div class="card" style="padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>Top pages</h2></div><div class="table-wrap"><table><thead><tr><th>Page</th><th class="num">Views</th></tr></thead><tbody>${(a.pages || []).slice(0, 12).map((p) => `<tr><td>${esc(p.page)}</td><td class="num">${p.views}</td></tr>`).join("") || noneRow(2, "No visits recorded.")}</tbody></table></div></div>
-    <div class="card" style="padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>By day</h2></div><div class="table-wrap"><table><thead><tr><th>Date</th><th class="num">Views</th><th class="num">Visitors</th></tr></thead><tbody>${(a.days || []).slice(-14).reverse().map((d) => `<tr><td>${fmtDate(d.date)}</td><td class="num">${d.views}</td><td class="num">${d.unique}</td></tr>`).join("") || noneRow(3, "No visits recorded.")}</tbody></table></div></div></div>`;
+  // Insights: the admin portal's Insights section. Analytics (website traffic, search, email alerts) and Audit.
+  const ledgerTable = (a) => `<div class="card" style="padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>Audit ledger</h2><span class="muted" style="font-size:12px">Newest ${Math.min(100, a.entries.length)} entries</span></div>
+    <div class="table-wrap"><table><thead><tr><th>#</th><th>Time</th><th>Who</th><th>Action</th><th>Subject</th></tr></thead><tbody>
+    ${a.entries.slice(0, 100).map((e) => `<tr><td class="num muted">${e.seq}</td><td class="num">${when(e.ts)}</td><td>${esc(e.actor)}</td><td>${esc(e.action)}</td><td class="muted">${esc(e.subject || "")}</td></tr>`).join("") || noneRow(5, "No entries.")}</tbody></table></div></div>`;
+  const mixCard = (title, rows) => `<div class="card"><h2 style="margin-bottom:10px">${title}</h2>${(rows || []).length ? rows.map((r) => `<div style="margin-bottom:10px"><div class="row" style="justify-content:space-between"><span>${esc(r.name)}</span><span class="num muted">${esc(r.pct)}% · ${esc(r.views)}</span></div><div class="bar"><i style="width:${Math.max(2, Math.min(100, Number(r.pct) || 0))}%"></i></div></div>`).join("") : none("No data yet.")}</div>`;
+  V.insights = async () => {
+    const tabs = `<div class="tabs" role="tablist">${[["analytics", "Analytics"], ["audit", "Audit"]].map(([t, l]) => `<button class="tab ${state.insTab === t ? "active" : ""}" role="tab" data-act="insTab" data-tab="${t}">${l}</button>`).join("")}</div>`;
+    if (state.insTab === "audit") {
+      const a = await get("/audit");
+      return `<div class="view-head"><div><h1>Insights</h1><p class="muted">Every sign-in, every look at a record and every change</p></div><button class="btn primary" data-act="auditVerify">Verify the ledger</button></div>${tabs}
+      <div class="card" style="margin-bottom:16px"><h2 style="margin-bottom:10px">Ledger check</h2><div id="auditResult">${none("Not checked in this session. Press Verify.")}</div></div>${ledgerTable(a)}`;
+    }
+    const days = state.insDays;
+    const [d, sa, mail] = await Promise.all([get(`/analytics?days=${days}`), get(`/search-analytics?days=${days}`).catch(() => null), get("/email-log").catch(() => null)]);
+    const s = d.summary, m = d.mix || {}, st = (sa && sa.totals) || {};
+    const qRows = (list) => (list || []).slice(0, 10).map((r) => `<tr><td>${esc(r.q)}</td><td class="num">${esc(r.impressions)}</td><td class="num">${esc(r.clicks)}</td><td class="num">${esc(r.ctr)}%</td></tr>`).join("") || noneRow(4, "No data yet.");
+    return `<div class="view-head"><div><h1>Insights</h1><p class="muted">Website traffic, search and alerts</p></div>
+      <select class="input" style="width:auto" data-change="insDays" aria-label="Period">${[7, 30, 90].map((n) => `<option value="${n}"${n === days ? " selected" : ""}>Last ${n} days</option>`).join("")}</select></div>${tabs}
+    <div class="grid g4" style="margin-bottom:16px">${kpi("Views today", s.todayViews, "page views")}${kpi("Visitors today", s.todayUnique, "people")}${kpi(`Views (${d.rangeDays || days}d)`, s.totalViews, "page views")}${kpi(`Visitors (${d.rangeDays || days}d)`, s.totalUnique, "people")}</div>
+    <div class="grid g2">
+      <div class="card" style="padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>By day</h2></div><div class="table-wrap"><table><thead><tr><th>Date</th><th class="num">Views</th><th class="num">Visitors</th></tr></thead><tbody>${(d.days || []).slice().reverse().slice(0, 31).map((r) => `<tr><td>${fmtDate(r.date)}</td><td class="num">${r.views}</td><td class="num">${r.unique}</td></tr>`).join("") || noneRow(3, "No data yet.")}</tbody></table></div></div>
+      <div class="card" style="padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>Top pages</h2></div><div class="table-wrap"><table><thead><tr><th>Page</th><th class="num">Views</th></tr></thead><tbody>${(d.pages || []).slice(0, 15).map((r) => `<tr><td>${esc(r.page)}</td><td class="num">${r.views}</td></tr>`).join("") || noneRow(2, "No data yet.")}</tbody></table></div></div>
+    </div>
+    <div class="grid g3" style="margin-top:16px">${mixCard("Device", m.devices)}${mixCard("Where they came from", m.sources)}${mixCard("Location", m.places)}${mixCard("Operating system", m.os)}${mixCard("Browser", m.browsers)}${mixCard("Country", m.countries)}</div>
+    <div class="card" style="padding:0;margin-top:16px"><div class="card-head" style="padding:14px 16px 0"><h2>Referring sites</h2></div><div class="table-wrap"><table><thead><tr><th>Source</th><th class="num">Views</th></tr></thead><tbody>${(d.referrers || []).map((r) => `<tr><td>${esc(r.source)}</td><td class="num">${r.views}</td></tr>`).join("") || noneRow(2, "No referral traffic yet.")}</tbody></table></div></div>
+    <div class="grid g2" style="margin-top:16px">
+      <div class="card" style="padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>Site search: top queries</h2><span class="muted" style="font-size:12px">${st.events || 0} searches · ${st.uniqueQueries || 0} different</span></div><div class="table-wrap"><table><thead><tr><th>Query</th><th class="num">Shown</th><th class="num">Clicks</th><th class="num">CTR</th></tr></thead><tbody>${qRows(sa && sa.top)}</tbody></table></div></div>
+      <div class="card" style="padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>Site search: nothing found</h2></div><div class="table-wrap"><table><thead><tr><th>Query</th><th class="num">Shown</th><th class="num">Clicks</th><th class="num">CTR</th></tr></thead><tbody>${qRows(sa && sa.zeroResult)}</tbody></table></div></div>
+    </div>
+    <div class="card" style="margin-top:16px"><div class="card-head"><h2>Email alerts</h2><span class="pill ${mail && mail.enabled ? "ok" : "warn"}">${mail && mail.enabled ? "On" : "Off"}</span></div>
+      ${mail ? `<p class="muted" style="margin:0">Alerts go to ${esc((mail.alertsTo || []).join(", ") || "nobody yet")}. ${plural((mail.failures || []).length, "failed send")} on record.</p>` : none("Email log unavailable.")}</div>`;
   };
 
   V.team = async () => {
@@ -401,9 +426,7 @@
       <div class="card"><h2 style="margin-bottom:10px">Sign-in</h2><div class="list-item"><span style="flex:1">Two-step sign-in by email code</span><span class="pill ${mfa.enabled ? "ok" : "warn"}">${mfa.enabled ? "On" : "Off"}</span></div><div class="list-item"><span style="flex:1">Signs out when idle</span><span class="pill ok">15 minutes</span></div>${adminLink("settings", "Change sign-in settings")}</div>
       <div class="card"><h2 style="margin-bottom:10px">Not connected</h2>${none("Sensitivity tiers, break-glass access and per-vendor agreement tracking are not in this system yet.")}</div>
     </div>
-    <div class="card" style="padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>Audit ledger</h2><span class="muted" style="font-size:12px">Newest ${Math.min(100, a.entries.length)} entries</span></div>
-    <div class="table-wrap"><table><thead><tr><th>#</th><th>Time</th><th>Who</th><th>Action</th><th>Subject</th></tr></thead><tbody>
-    ${a.entries.slice(0, 100).map((e) => `<tr><td class="num muted">${e.seq}</td><td class="num">${when(e.ts)}</td><td>${esc(e.actor)}</td><td>${esc(e.action)}</td><td class="muted">${esc(e.subject || "")}</td></tr>`).join("") || noneRow(5, "No entries.")}</tbody></table></div></div>`;
+    ${ledgerTable(a)}`;
   };
 
   V.settings = async () => {
@@ -441,6 +464,7 @@
     chartClose: (el, e) => { e.preventDefault(); state.chartClient = null; render(); },
     chartTab: (el) => { state.chartTab = el.dataset.tab; document.querySelectorAll(".tabs .tab").forEach((b) => b.classList.toggle("active", b === el)); $("#chartBody").innerHTML = chartTab(); if (state.chartTab === "plans") loadPool(); },
     thread: (el) => { state.thread = el.dataset.id; if (location.hash === "#messages") render(); else location.hash = "messages"; },
+    insTab: (el) => { state.insTab = el.dataset.tab; render(); },
     calWeek: (el) => { const d = Number(el.dataset.d); state.calWeek = d ? state.calWeek + d : 0; render(); },
     convert: async (el) => { const r = await api("PUT", `/api/admin/emr/${state.chartClient}/patient`, { active: el.dataset.on === "1" }); toast(r.patient ? "Now an active patient." : "No longer marked as a patient."); render(); },
     rmNote: async (el) => { if (!confirm("Remove this note? The patient will no longer see it.")) return; await api("DELETE", `/api/admin/emr/${state.chartClient}/notes/${el.dataset.id}`); toast("Note removed."); await reChart(); },
@@ -486,7 +510,10 @@
 
   document.addEventListener("click", (e) => { const el = e.target.closest("[data-act]"); if (!el || !token) return; const fn = ACT[el.dataset.act]; if (fn) guard(fn)(el, e); });
   document.addEventListener("submit", (e) => { const f = e.target.closest("[data-form]"); if (!f) return; e.preventDefault(); const fn = FORMS[f.dataset.form]; if (fn && token) guard(fn)(f); });
-  document.addEventListener("change", (e) => { if (e.target.matches("[data-change=leadStatus]")) guard(ACT.leadSave)(e.target); });
+  document.addEventListener("change", (e) => {
+    if (e.target.matches("[data-change=leadStatus]")) guard(ACT.leadSave)(e.target);
+    if (e.target.matches("[data-change=insDays]")) { state.insDays = Number(e.target.value) || 30; render(); }
+  });
   document.addEventListener("input", (e) => {
     if (e.target.id === "mvSearch") {
       const q = e.target.value.trim().toLowerCase().split(/\s+/).filter(Boolean), box = $("#mvResults");
@@ -499,7 +526,7 @@
   let seq = 0;
   async function render() {
     if (!token) return;
-    let r = (location.hash || "#dashboard").slice(1); if (!V[r]) r = "dashboard";
+    let r = (location.hash || "#dashboard").slice(1); if (r === "reports") r = "insights"; if (!V[r]) r = "dashboard";
     renderNav(r); $("#nav").classList.remove("open");
     const my = ++seq, view = $("#view");
     if (!view.innerHTML) view.innerHTML = `<p class="spin">Loading…</p>`;

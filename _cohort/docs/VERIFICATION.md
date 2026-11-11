@@ -106,13 +106,14 @@ backend. `workspace.html` holds the screens and styles from the uploaded prototy
 `workspace-app.js` signs in and reads and writes through the same `/api/admin/*` endpoints as `/admin`.
 `/admin` is unchanged.
 
-**Connected: 41 of the backend's 87 admin endpoints.** Sign-in (with the emailed-code step), dashboard,
+**Connected: 43 of the backend's 87 admin endpoints.** Sign-in (with the emailed-code step), dashboard,
 week calendar with appointment status and notes, classes and class bookings, clients, the client chart
 (record, patient notes add and remove, movements prescribe and remove, intake documents, pain log, video
 visit scheduling, patient conversion), leads, messages, programs, payments and members (read), newsletter,
-reviews and bug reports, reports, team, the audit ledger with its verify check, and settings (read).
+reviews and bug reports, team, the audit ledger with its verify check, settings (read), and Insights at
+the bottom of the Admin group (analytics with a period selector, site search, email alerts, and an Audit tab).
 
-**Not connected: the other 46.** Mostly editing screens: settings, content, classes and daily activities
+**Not connected: the other 44.** Mostly editing screens: settings, content, classes and daily activities
 editors, hours and calendar sync, messages to many people, two-step sign-in setup, client contact, plan,
 program and membership edits, CSV downloads, email log, push devices, video migration. Each affected
 screen links to the matching `/admin` screen instead.
@@ -125,11 +126,11 @@ Tested in Chromium against the real backend run locally with made-up people:
 
 | Check | Result |
 |---|---|
-| Walk-through of 46 steps: wrong password refused, sign in, all 21 screens, 8 chart tabs, add and remove a note, prescribe and remove a movement, view documents, schedule a video visit, send a message, change a lead, save an appointment, verify the ledger, search, sign out | 46 of 46 |
-| API calls during the walk-through | 35 distinct; the only refusals were the two the test provokes on purpose (wrong password, video visit with no link) |
+| Walk-through of 49 steps: wrong password refused, sign in, all 21 screens, 8 chart tabs, Insights period and Audit tab, add and remove a note, prescribe and remove a movement, view documents, schedule a video visit, send a message, change a lead, save an appointment, verify the ledger, search, sign out | 49 of 49 |
+| API calls during the walk-through | 37 distinct; the only refusals were the two the test provokes on purpose (wrong password, video visit with no link) |
 | HTML typed into a client's name | Shown as text, not run |
 | Sign-out | Names gone from the page, token gone from the browser |
-| The site's layout rule on the sign-in screen at its five widths, and on all 21 screens and 6 chart tabs signed in at 320, 390 and 1366 | 89 of 89 |
+| The site's layout rule on the sign-in screen at its five widths, and on all 21 screens and 6 chart tabs signed in at 320, 390 and 1366 | 92 of 92 |
 | `scripts/seo/check.js` for the whole site | 237 pages ok |
 
 Protections match `/admin`: private path in `middleware.js`, no-cache and noindex headers in
