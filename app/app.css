@@ -512,6 +512,8 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
 .cal-d em { display: flex; gap: 3px; height: 7px; max-width: 100%; overflow: hidden; }
 .cal-d em i, .cal-legend i { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
 .k-workout { background: var(--accent); } .k-visit { background: var(--navy); box-shadow: 0 0 0 1px #fff; } .k-pain { background: var(--gold); }
+.k-care { background: #2e7d4f; }
+.k-class { background: #8a5fb0; }
 .cal-d.picked .k-visit { background: #fff; }
 .cal-legend { list-style: none; padding: 0; margin: 12px 0 4px; display: flex; gap: 16px; font-size: 12.5px; color: var(--muted); }
 .cal-legend li { display: flex; align-items: center; gap: 6px; }
@@ -520,6 +522,8 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
 .cal-day .check { width: 14px; height: 14px; border-radius: 50%; }
 .cal-day .act { grid-template-columns: 14px 1fr; }
 .k-bg-workout { background: var(--accent) !important; } .k-bg-visit { background: var(--navy) !important; } .k-bg-pain { background: var(--gold) !important; }
+.k-bg-care { background: #2e7d4f !important; }
+.k-bg-class { background: #8a5fb0 !important; }
 .badges { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; }
 .badge { display: grid; justify-items: center; text-align: center; gap: 4px; padding: 12px 8px; border-radius: 14px; background: var(--card-2); }
 .b-ic { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; background: #e2ddd1; color: #a19c90; }

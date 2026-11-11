@@ -1131,7 +1131,52 @@
     const code = client.referralCode;
     if (code && $("#ref-code").textContent === "—") $("#ref-code").textContent = code;
   }
-  $("#logout").addEventListener("click", () => { auth.clear(); location.href = "/"; });
+  const signOut = () => { auth.clear(); location.href = "/"; };
+  $("#logout").addEventListener("click", signOut);
+  $("#logout-top").addEventListener("click", signOut);
+
+  // Close my account. The server decides between erasing the account outright and keeping the clinical record
+  // (a practice may not destroy a chart on request), and we say which one applies before anything is confirmed.
+  const caSheet = $("#close-account-sheet");
+  $("#close-account").addEventListener("click", async () => {
+    const msg = $("#ca-msg"); msg.textContent = ""; msg.className = "form-msg";
+    $("#ca-password").value = ""; $("#ca-confirm").value = "";
+    let info;
+    try { info = await apiAuth("GET", "/api/me/account/deletion"); }
+    catch (e) { return toast(e.message); }
+    const erase = info.mode === "erase";
+    $("#ca-what").innerHTML = erase
+      ? "This removes your MD Fit account and everything on it. It cannot be undone."
+      : "You have a record with the clinic, so your chart is kept for the period the practice is required to keep it. Everything that identifies you or opens this account is removed. This cannot be undone.";
+    $("#ca-list").innerHTML = (erase
+      ? ["Your login, profile and progress", "Your pain log, workouts and plans", "Your messages with Dr. Jared", "Notifications to your devices"]
+      : ["<b>Removed:</b> your login, name, email, phone, messages and notifications",
+         "<b>Removed:</b> every device signed in to this account",
+         "<b>Kept:</b> your intake documents, visit notes and pain history, as part of your clinical record",
+         "<b>Kept:</b> payment records the practice has to retain"]
+    ).map((x) => `<li>${x}</li>`).join("");
+    const bill = $("#ca-billing");
+    bill.hidden = !info.membership;
+    if (info.membership) bill.textContent = "Your membership is cancelled as part of this, so you will not be billed again.";
+    $("#ca-pw-row").hidden = !info.needsPassword;
+    caSheet.showModal();
+  });
+  $("#ca-go").addEventListener("click", async () => {
+    const btn = $("#ca-go"), msg = $("#ca-msg");
+    msg.className = "form-msg";
+    if ($("#ca-confirm").value.trim().toUpperCase() !== "DELETE") {
+      msg.className = "form-msg err"; msg.textContent = "Type DELETE to confirm."; return;
+    }
+    btn.disabled = true; msg.textContent = "Closing your account…";
+    try {
+      await apiAuth("POST", "/api/me/account/deletion", { confirm: "DELETE", password: $("#ca-password").value });
+      auth.clear();
+      location.href = "/?closed=1";
+    } catch (e) {
+      btn.disabled = false; msg.className = "form-msg err"; msg.textContent = e.message;
+    }
+  });
+  caSheet.addEventListener("click", (e) => { if (e.target.closest("[data-close]") || e.target === caSheet) caSheet.close(); });
 
   async function loadReferral() {
     try {
@@ -1155,6 +1200,21 @@
     if (navigator.share) navigator.share({ title: "Join MD Fit", text: `Sign up with my referral code ${code} and get 3 months free!`, url }).catch(() => {});
     else navigator.clipboard.writeText(url).then(() => toast("Share link copied!")).catch(() => toast("Couldn't copy the link."));
   });
+
+  // Group classes the member booked on the events page. Matched by email on the server, so nothing is booked twice.
+  let myClasses = { upcoming: [], past: [] };
+  function loadClasses() {
+    return apiAuth("GET", "/api/me/classes")
+      .then((c) => { myClasses = c; renderCalendar(); renderMyClasses(); })
+      .catch(() => {});
+  }
+  function renderMyClasses() {
+    const box = $("#p-classes"); if (!box) return;
+    const li = (c) => `<li><b>${esc(c.title)}</b><span class="muted small">${fmtDate(c.date, { weekday: "long", month: "short", day: "numeric" })} at ${fmtTime(c.time)}${c.minutes ? ` · ${c.minutes} min` : ""}${c.coach ? ` · ${esc(c.coach)}` : ""}</span></li>`;
+    box.innerHTML = myClasses.upcoming.length
+      ? `<ul class="act-list">${myClasses.upcoming.map(li).join("")}</ul>`
+      : `<p class="muted small">No classes booked. <a href="/events">See what's on</a>.</p>`;
+  }
 
   async function loadAppointments() {
     appts = await apiAuth("GET", "/api/me/appointments");
@@ -2613,7 +2673,7 @@
       el.hidden = !show; if (show) { $(body).innerHTML = html; $(dt).textContent = date; }
     }
   }
-  function loadCarePlan() { return apiAuth("GET", "/api/me/chart").then((c) => { carePlan = c; renderCarePlan(); loadVisitOptions(); }).catch(() => {}); }
+  function loadCarePlan() { return apiAuth("GET", "/api/me/chart").then((c) => { carePlan = c; renderCarePlan(); renderCalendar(); loadVisitOptions(); }).catch(() => {}); }
   document.addEventListener("click", async (e) => {
     const v = e.target.closest("[data-care-video]");
     if (v) { const x = byId.get(v.dataset.careVideo); playVideo(v.dataset.careVideo, x ? x.name : v.dataset.careName, x ? exMeta(x) : "Prescribed by Dr. Jared"); return; }
@@ -2904,7 +2964,16 @@
       ...allWorkouts.filter((w) => w.date === d).map((w) => ({ k: "workout", t: w.title, s: `${w.minutes} min · ${w.exercises} exercises` })),
       ...[...appts.upcoming, ...appts.past].filter((a) => a.date === d && a.status !== "cancelled").map((a) => ({ k: "visit", t: a.typeName, s: `${fmtTime(a.time)} · ${a.minutes} min${a.status === "booked" && d >= todayInTz() ? " · upcoming" : ""}`,
         link: a.status === "booked" && d >= todayInTz() ? a.meetingLink || "" : "", video: /telehealth|video|remote|online/i.test(a.typeName + " " + a.typeId) })),
-      ...painLog.filter((p) => p.date === d).map((p) => ({ k: "pain", t: `${p.area} pain ${p.level}/10`, s: p.note || "Pain log" }))
+      ...painLog.filter((p) => p.date === d).map((p) => ({ k: "pain", t: `${p.area} pain ${p.level}/10`, s: p.note || "Pain log" })),
+      // What Dr. Jared left in the chart, on the day he left it, so the calendar carries the clinic's side too
+      ...((carePlan && carePlan.notes) || []).filter((n) => String(n.at).slice(0, 10) === d)
+        .map((n) => ({ k: "care", t: "Note from Dr. Jared", s: String(n.text).split("\n")[0].slice(0, 90) })),
+      ...((carePlan && carePlan.movements) || []).filter((m) => String(m.at).slice(0, 10) === d)
+        .map((m) => ({ k: "care", t: m.name, s: m.dose ? `Prescribed · ${m.dose}` : "Prescribed movement", video: m.videoId || "" })),
+      ...((carePlan && carePlan.paidVisits) || []).filter((v) => String(v.paidAt).slice(0, 10) === d)
+        .map((v) => ({ k: "care", t: v.name || "Video visit", s: "Paid, waiting for a time" })),
+      ...[...myClasses.upcoming, ...myClasses.past].filter((c) => c.date === d)
+        .map((c) => ({ k: "class", t: c.title, s: `${fmtTime(c.time)}${c.minutes ? ` · ${c.minutes} min` : ""}${c.coach ? ` · ${c.coach}` : ""}` }))
     ];
   }
   function renderCalendar() {
@@ -2930,7 +2999,7 @@
     const canRepair = d < t && !items.length && repairs && repairs.available >= 1 && !alreadyRepaired;
     $("#cal-day").innerHTML = `<p class="label">${d === t ? "Today" : fmtDate(d, { weekday: "long", month: "short", day: "numeric" })}</p>` + (items.length
       ? `<ul class="activity">${items.map((x) => `<li class="act"><span class="check k-bg-${x.k}"></span><div><b>${esc(x.t)}</b><span>${esc(x.s)}</span>${
-          x.link ? `<a class="btn-blue sm join-link" href="${esc(x.link)}" target="_blank" rel="noopener">Join video visit</a>` : x.video && x.s.includes("upcoming") ? `<span class="muted small">Your video link will be emailed before the visit.</span>` : ""}</div></li>`).join("")}</ul>`
+          x.k === "care" && x.video ? `<button type="button" class="link sm" data-care-video="${esc(x.video)}" data-care-name="${esc(x.t)}">Watch it</button>` : x.link ? `<a class="btn-blue sm join-link" href="${esc(x.link)}" target="_blank" rel="noopener">Join video visit</a>` : x.video && x.s.includes("upcoming") ? `<span class="muted small">Your video link will be emailed before the visit.</span>` : ""}</div></li>`).join("")}</ul>`
       : `<p class="muted small">Nothing logged. ${d === t ? "A quick workout keeps your streak alive." : ""}</p>`)
       + (alreadyRepaired ? `<p class="muted small"><b>Streak repair applied</b> — this missed day is bridged for your streak.</p>` : "")
       + (canRepair ? `<button type="button" class="btn-gold sm" data-repair="${d}">Use 1 repair to bridge this day</button>` : "");
@@ -3026,7 +3095,7 @@
       renderProfile(); renderPlan();
     } catch (err) { toast("Couldn't reach MD Fit right now. Call 941-313-0562 if you need help."); return; }
     const [s, , , sched, wl, lb] = await Promise.allSettled([
-      apiAuth("GET", "/api/me/stats"), loadAppointments(), loadPain(), Promise.resolve(), apiAuth("GET", "/api/me/workouts"), apiAuth("GET", "/api/me/library"), loadReferral()
+      apiAuth("GET", "/api/me/stats"), loadAppointments(), loadPain(), loadClasses(), apiAuth("GET", "/api/me/workouts"), apiAuth("GET", "/api/me/library"), loadReferral()
     ]);
     if (s.status === "fulfilled") stats = s.value;
     if (wl.status === "fulfilled") allWorkouts = wl.value;
