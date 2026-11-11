@@ -1201,6 +1201,21 @@
     else navigator.clipboard.writeText(url).then(() => toast("Share link copied!")).catch(() => toast("Couldn't copy the link."));
   });
 
+  // Group classes the member booked on the events page. Matched by email on the server, so nothing is booked twice.
+  let myClasses = { upcoming: [], past: [] };
+  function loadClasses() {
+    return apiAuth("GET", "/api/me/classes")
+      .then((c) => { myClasses = c; renderCalendar(); renderMyClasses(); })
+      .catch(() => {});
+  }
+  function renderMyClasses() {
+    const box = $("#p-classes"); if (!box) return;
+    const li = (c) => `<li><b>${esc(c.title)}</b><span class="muted small">${fmtDate(c.date, { weekday: "long", month: "short", day: "numeric" })} at ${fmtTime(c.time)}${c.minutes ? ` · ${c.minutes} min` : ""}${c.coach ? ` · ${esc(c.coach)}` : ""}</span></li>`;
+    box.innerHTML = myClasses.upcoming.length
+      ? `<ul class="act-list">${myClasses.upcoming.map(li).join("")}</ul>`
+      : `<p class="muted small">No classes booked. <a href="/events">See what's on</a>.</p>`;
+  }
+
   async function loadAppointments() {
     appts = await apiAuth("GET", "/api/me/appointments");
     if (typeof renderPatient === "function") renderPatient();
@@ -2933,7 +2948,9 @@
       ...((carePlan && carePlan.movements) || []).filter((m) => String(m.at).slice(0, 10) === d)
         .map((m) => ({ k: "care", t: m.name, s: m.dose ? `Prescribed · ${m.dose}` : "Prescribed movement", video: m.videoId || "" })),
       ...((carePlan && carePlan.paidVisits) || []).filter((v) => String(v.paidAt).slice(0, 10) === d)
-        .map((v) => ({ k: "care", t: v.name || "Video visit", s: "Paid, waiting for a time" }))
+        .map((v) => ({ k: "care", t: v.name || "Video visit", s: "Paid, waiting for a time" })),
+      ...[...myClasses.upcoming, ...myClasses.past].filter((c) => c.date === d)
+        .map((c) => ({ k: "class", t: c.title, s: `${fmtTime(c.time)}${c.minutes ? ` · ${c.minutes} min` : ""}${c.coach ? ` · ${c.coach}` : ""}` }))
     ];
   }
   function renderCalendar() {
@@ -3055,7 +3072,7 @@
       renderProfile(); renderPlan();
     } catch (err) { toast("Couldn't reach MD Fit right now. Call 941-313-0562 if you need help."); return; }
     const [s, , , sched, wl, lb] = await Promise.allSettled([
-      apiAuth("GET", "/api/me/stats"), loadAppointments(), loadPain(), Promise.resolve(), apiAuth("GET", "/api/me/workouts"), apiAuth("GET", "/api/me/library"), loadReferral()
+      apiAuth("GET", "/api/me/stats"), loadAppointments(), loadPain(), loadClasses(), apiAuth("GET", "/api/me/workouts"), apiAuth("GET", "/api/me/library"), loadReferral()
     ]);
     if (s.status === "fulfilled") stats = s.value;
     if (wl.status === "fulfilled") allWorkouts = wl.value;
