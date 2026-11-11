@@ -160,7 +160,7 @@ svg { fill: currentColor; }
 .plan-ex { list-style: none; padding: 0; margin: 0 0 12px; display: grid; gap: 8px; }
 .plan-ex li { background: var(--card-2); border-radius: 12px; padding: 10px 12px; }
 .plan-ex b { display: block; color: var(--navy); }
-.plan-ex span { color: var(--muted); font-size: 14px; }
+.plan-ex span { color: var(--muted); font-size: 14px; white-space: pre-line; display: block; }
 .guides { display: grid; gap: 8px; }
 .guide { color: var(--text); display: grid; grid-template-columns: 52px 1fr; gap: 12px; align-items: center; background: var(--card-2); border: 0; border-radius: 12px; padding: 8px; text-align: left; cursor: pointer; }
 .guide:hover { background: var(--gold-soft); }
