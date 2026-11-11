@@ -352,13 +352,13 @@
           <span class="tele-who" id="teleWho"></span>
           <div class="tele-idle" id="teleIdle"><b>No visit in progress</b><span>Admit a patient from the waiting room to start. Your camera turns on when you admit.</span></div>
         </div>
-        <div class="row tele-controls" id="teleControls" hidden>
-          <button type="button" class="btn" id="teleMic" data-act="teleMic" aria-pressed="false">Mute</button>
-          <button type="button" class="btn" id="teleCam" data-act="teleCam" aria-pressed="false">Camera off</button>
-          <button type="button" class="btn" id="teleShare" data-act="teleShare" aria-pressed="false">Share screen</button>
-          <button type="button" class="btn tele-end" data-act="teleEnd">${ui("phoneOff", 15)}End visit</button>
-          <span class="muted" id="teleStatus" role="status" style="font-size:12.5px"></span>
+        <div class="vcontrols" id="teleControls" hidden>
+          <button type="button" class="vbtn on" id="teleMic" data-act="teleMic" aria-pressed="true" aria-label="Microphone on. Press to mute" title="Mute">${ui("mic", 18)}</button>
+          <button type="button" class="vbtn on" id="teleCam" data-act="teleCam" aria-pressed="true" aria-label="Camera on. Press to turn off" title="Camera">${ui("camera", 18)}</button>
+          <button type="button" class="vbtn" id="teleShare" data-act="teleShare" aria-pressed="false" aria-label="Share your screen" title="Share screen">${ui("screen", 18)}</button>
+          <button type="button" class="vbtn end" data-act="teleEnd" aria-label="End visit" title="End visit">End</button>
         </div>
+        <p class="muted" id="teleStatus" role="status" style="font-size:12.5px;text-align:center;margin:8px 0 0;min-height:1.4em"></p>
       </div>
       <div class="stack">
         <div class="card"><div class="card-head"><h2>Waiting room</h2><span class="pill" id="teleCount">Empty</span></div><div id="teleWaiting"></div></div>
@@ -746,13 +746,26 @@
       stream.getTracks().forEach((t) => pc.addTrack(t, stream));
       pc.ontrack = (e) => { tele.remote = e.streams[0] || new MediaStream([e.track]); const v = $("#teleRemote"); if (v) v.srcObject = tele.remote; teleMount(); };
       pc.onicecandidate = (e) => { if (e.candidate) MDFitRT.emit("tele_signal", { candidate: e.candidate }); };
+      // Same approach as the Connect Studio: this side makes every offer (first one and any re-offer), and a path
+      // that drops is looked for again (ICE restart) before the visit is given up on.
+      let offering = false, retry = 0, tries = 0;
+      pc.onnegotiationneeded = async () => {
+        if (offering || tele.pc !== pc) return; offering = true;
+        try { await pc.setLocalDescription(await pc.createOffer()); MDFitRT.emit("tele_signal", { sdp: pc.localDescription }); }
+        catch (err) { teleSay("Set-up problem: " + err.message); }
+        finally { offering = false; }
+      };
       pc.onconnectionstatechange = () => {
-        const s = pc.connectionState;
-        teleSay(s === "connected" ? "Connected, encrypted browser to browser" : s === "connecting" ? "Connecting…" : s === "disconnected" ? "Connection interrupted. Trying to recover…" : s === "failed" ? "Could not connect: one of the two networks blocks direct video. Ask the patient to try another network." : "");
+        const s = pc.connectionState; clearTimeout(retry);
+        if (s === "connected") { tries = 0; teleSay("Connected, encrypted browser to browser"); }
+        else if (s === "connecting") teleSay("Connecting…");
+        else if (s === "disconnected") { teleSay("Connection interrupted. Trying to recover…"); retry = setTimeout(() => { if (tele.pc === pc && pc.connectionState === "disconnected") { try { pc.restartIce(); } catch {} } }, 4000); }
+        else if (s === "failed") {
+          if (tries++ < 2) { teleSay("Connection lost. Reconnecting…"); try { pc.restartIce(); } catch {} }
+          else teleSay("Could not connect: one of the two networks blocks direct video. Ask the patient to try another network.");
+        }
       };
       teleSay("Connecting…");
-      await pc.setLocalDescription(await pc.createOffer());
-      MDFitRT.emit("tele_signal", { sdp: pc.localDescription });
       clearInterval(tele.tick);
       tele.tick = setInterval(() => { teleClock(); idleBump(); /* a visit counts as activity */ }, 1000);
       if (route() === "telehealth") teleMount(); else toast(`Video visit with ${tele.call.name} started. Open Telehealth to see it.`);
@@ -786,8 +799,11 @@
     stage.classList.toggle("live", teleIn()); stage.classList.toggle("has-remote", !!tele.remote);
     $("#teleWho").textContent = tele.call ? `${tele.call.name}${tele.call.visit ? " · " + tele.call.visit : ""}` : "";
     $("#teleIdle").hidden = teleIn(); $("#teleControls").hidden = !teleIn();
-    const set = (id, icon, on, a, b) => { const el = $(id); if (el) { el.classList.toggle("off", on); el.innerHTML = ui(icon, 15) + `<span>${on ? b : a}</span>`; el.setAttribute("aria-pressed", String(on)); } };
-    set("#teleMic", "mic", tele.micOff, "Mute", "Unmute"); set("#teleCam", "camera", tele.camOff, "Camera off", "Camera on"); set("#teleShare", "screen", !!tele.screen, "Share screen", "Stop sharing");
+    // Round icon buttons, filled while the thing is on (microphone live, camera live, screen being shared)
+    const set = (id, on, labelOn, labelOff) => { const el = $(id); if (el) { el.classList.toggle("on", on); el.setAttribute("aria-pressed", String(on)); el.setAttribute("aria-label", on ? labelOn : labelOff); el.title = on ? labelOn : labelOff; } };
+    set("#teleMic", !tele.micOff, "Microphone on. Press to mute", "Muted. Press to unmute");
+    set("#teleCam", !!tele.cam && !tele.camOff, "Camera on. Press to turn off", "Camera off. Press to turn on");
+    set("#teleShare", !!tele.screen, "Sharing your screen. Press to stop", "Share your screen");
     if ($("#teleCam")) $("#teleCam").disabled = !tele.cam;
     teleSay(tele.status); teleClock();
     const w = $("#teleWaiting");

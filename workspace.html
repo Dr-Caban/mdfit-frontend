@@ -173,9 +173,9 @@ textarea.input{min-height:120px;resize:vertical;line-height:1.55}
 .tele-stage.live .tele-timer,.tele-stage.live .tele-who{display:block}
 .tele-idle{position:absolute;inset:0;display:grid;place-content:center;gap:6px;text-align:center;color:#E8F0F7;padding:20px}
 .tele-idle span{color:#9BB0C4;font-size:13px;max-width:36ch}
-.tele-controls{margin-top:12px;flex-wrap:wrap}
-.tele-controls .btn.off{background:var(--accent-soft);color:var(--accent-text)}
-.btn.tele-end{background:var(--bad);color:#fff;border-color:transparent}
+.vbtn{color:var(--ink)}.vbtn:disabled{opacity:.45;cursor:default}
+.vbtn:focus-visible{outline:3px solid var(--accent-text);outline-offset:2px}
+.vbtn.end{font-weight:700;font-size:13px}
 .appt b{display:block;font-weight:600}
 /* Busy on another calendar: times only, drawn behind MD Fit's own visits and not clickable */
 .appt.busy{--c:var(--muted);left:2px;right:2px;cursor:default;color:var(--muted);border-left-style:dashed;background:repeating-linear-gradient(135deg,var(--wash) 0 7px,color-mix(in srgb,var(--muted) 10%,var(--surface)) 7px 14px)}
@@ -274,6 +274,6 @@ textarea.input{min-height:120px;resize:vertical;line-height:1.55}
 <script src="config.js?v=aac711e3"></script>
 <script src="realtime.js?v=dccfd156"></script>
 <script src="app/exercises.js?v=e75f9690"></script>
-<script src="workspace-app.js?v=027b58b4"></script>
+<script src="workspace-app.js?v=8c070234"></script>
 </body>
 </html>
