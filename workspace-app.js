@@ -697,6 +697,13 @@
     <div class="table-wrap"><table><thead><tr><th>#</th><th>Time</th><th>Who</th><th>Action</th><th>Subject</th></tr></thead><tbody>
     ${a.entries.slice(0, 100).map((e) => `<tr><td class="num muted">${e.seq}</td><td class="num">${when(e.ts)}</td><td>${esc(e.actor)}</td><td>${esc(e.action)}</td><td class="muted">${esc(e.subject || "")}</td></tr>`).join("") || noneRow(5, "No entries.")}</tbody></table></div></div>`;
   const mixCard = (title, rows) => `<div class="card"><h2 style="margin-bottom:10px">${title}</h2>${(rows || []).length ? rows.map((r) => `<div style="margin-bottom:10px"><div class="row" style="justify-content:space-between"><span>${esc(r.name)}</span><span class="num muted">${esc(r.pct)}% · ${esc(r.views)}</span></div><div class="bar"><i style="width:${Math.max(2, Math.min(100, Number(r.pct) || 0))}%"></i></div></div>`).join("") : none("No data yet.")}</div>`;
+  // The people behind one of the counts on Insights: who they are, and a button to each chart
+  function insPeople() {
+    const g = state.insList && cache.insGroups && cache.insGroups[state.insList]; if (!g) return "";
+    const [title, list] = g, rows = list.slice().sort((a, b) => ((a.createdAt || "") < (b.createdAt || "") ? 1 : -1));
+    return `<div class="card" style="margin-bottom:16px;padding-bottom:6px"><div class="card-head"><h2>${esc(title)} <span class="muted" style="font-weight:500">(${rows.length})</span></h2><button type="button" class="btn sm ghost" data-act="insList" data-key="${esc(state.insList)}" aria-label="Close this list">${ui("x", 14)}</button></div>
+      <div style="max-height:440px;overflow:auto">${rows.map((c) => `<div class="list-item">${avatar(c.name, 28)}<span style="flex:1;min-width:0"><b>${esc(c.name)}</b><div class="muted" style="font-size:12px;overflow-wrap:anywhere">${esc(c.email)} · joined ${when(c.createdAt)}${c.membership ? ` · ${esc(tierName(c.membership.tier))}${c.membership.until ? ", paid through " + esc(c.membership.until) : ""}` : ""}</div></span><button type="button" class="btn sm" data-act="chart" data-id="${esc(c.id)}">Chart</button></div>`).join("") || none("Nobody in this group.")}</div></div>`;
+  }
   V.insights = async () => {
     const tabs = `<div class="tabs" role="tablist">${[["analytics", "Analytics"], ["audit", "Audit"]].map(([t, l]) => `<button class="tab ${state.insTab === t ? "active" : ""}" role="tab" data-act="insTab" data-tab="${t}">${l}</button>`).join("")}</div>`;
     if (state.insTab === "audit") {
@@ -710,15 +717,21 @@
     // a membership set by hand (no card on a schedule) is counted separately so the two are never confused.
     const since = Date.now() - days * 864e5, fresh = people.filter((c) => c.createdAt && Date.parse(c.createdAt) >= since).length;
     const paying = people.filter((c) => c.membership && c.membership.stripeSubscriptionId), byHand = people.filter((c) => c.membership && !c.membership.stripeSubscriptionId);
-    const tierRows = tiers().map((t) => ({ name: t.name, price: t.price, pay: paying.filter((c) => c.membership.tier === t.id).length, hand: byHand.filter((c) => c.membership.tier === t.id).length })).filter((r) => r.pay || r.hand);
+    const tierRows = tiers().map((t) => ({ id: t.id, name: t.name, price: t.price, pay: paying.filter((c) => c.membership.tier === t.id).length, hand: byHand.filter((c) => c.membership.tier === t.id).length })).filter((r) => r.pay || r.hand);
     const monthly = tierRows.reduce((n, r) => n + r.pay * (Number(r.price) || 0), 0);
+    // Every count on this screen opens the list of people behind it, each with a button to their chart
+    const groups = { all: ["All sign-ups", people], fresh: [`New sign-ups in the last ${days} days`, people.filter((c) => c.createdAt && Date.parse(c.createdAt) >= since)], paying: ["Paying members", paying], hand: ["Members set by hand", byHand] };
+    for (const t of tiers()) { groups["paying:" + t.id] = [`${t.name}: paying`, paying.filter((c) => c.membership.tier === t.id)]; groups["hand:" + t.id] = [`${t.name}: set by hand`, byHand.filter((c) => c.membership.tier === t.id)]; }
+    cache.insGroups = groups;
+    const tile = (key, label, val, sub, kind) => `<button type="button" class="card kpi kpi-btn" data-act="insList" data-key="${key}" aria-expanded="${state.insList === key}" aria-controls="insPeople"><span class="muted">${label}</span><b class="num">${val}</b><small class="${kind ? "pill " + kind : "muted"}">${sub}</small><span class="kpi-more">${ui("next", 12)} See the list</span></button>`;
     const s = d.summary, m = d.mix || {}, st = (sa && sa.totals) || {};
     const qRows = (list) => (list || []).slice(0, 10).map((r) => `<tr><td>${esc(r.q)}</td><td class="num">${esc(r.impressions)}</td><td class="num">${esc(r.clicks)}</td><td class="num">${esc(r.ctr)}%</td></tr>`).join("") || noneRow(4, "No data yet.");
     return `<div class="view-head"><div><h1>Insights</h1><p class="muted">Sign-ups, members, website traffic, search and alerts</p></div>
       <select class="input" style="width:auto" data-change="insDays" aria-label="Period">${[7, 30, 90].map((n) => `<option value="${n}"${n === days ? " selected" : ""}>Last ${n} days</option>`).join("")}</select></div>${tabs}
-    <div class="grid g4" style="margin-bottom:16px">${kpi("Total sign-ups", people.length, "accounts, all time")}${kpi(`New sign-ups (${days}d)`, fresh, "accounts created")}${kpi("Paying members", paying.length, "card subscription running", paying.length ? "ok" : "")}${kpi("Members set by hand", byHand.length, "no card subscription")}</div>
+    <div class="grid g4" style="margin-bottom:16px">${tile("all", "Total sign-ups", people.length, "accounts, all time")}${tile("fresh", `New sign-ups (${days}d)`, fresh, "accounts created")}${tile("paying", "Paying members", paying.length, "card subscription running", paying.length ? "ok" : "")}${tile("hand", "Members set by hand", byHand.length, "no card subscription")}</div>
+    <div id="insPeople">${insPeople()}</div>
     <div class="card" style="margin-bottom:16px"><div class="card-head"><h2>Members by type</h2><span class="muted" style="font-size:12px">${paying.length ? `About ${money(Math.round(monthly))} a month from card subscriptions, before discounts` : "No card subscriptions running"}</span></div>
-      ${tierRows.map((r) => `<div class="list-item"><span style="flex:1"><b>${esc(r.name)}</b></span><span class="pill ${r.pay ? "ok" : ""}">${r.pay} paying</span>${r.hand ? `<span class="pill">${r.hand} set by hand</span>` : ""}</div>`).join("") || none("Nobody has a membership yet.")}</div>
+      ${tierRows.map((r) => `<div class="list-item"><span style="flex:1"><b>${esc(r.name)}</b></span><button type="button" class="pill pill-btn ${r.pay ? "ok" : ""}" data-act="insList" data-key="paying:${esc(r.id)}"${r.pay ? "" : " disabled"}>${r.pay} paying</button>${r.hand ? `<button type="button" class="pill pill-btn" data-act="insList" data-key="hand:${esc(r.id)}">${r.hand} set by hand</button>` : ""}</div>`).join("") || none("Nobody has a membership yet.")}</div>
     <div class="grid g4" style="margin-bottom:16px">${kpi("Views today", s.todayViews, "page views")}${kpi("Visitors today", s.todayUnique, "people")}${kpi(`Views (${d.rangeDays || days}d)`, s.totalViews, "page views")}${kpi(`Visitors (${d.rangeDays || days}d)`, s.totalUnique, "people")}</div>
     <div class="grid g2">
       <div class="card" style="padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>By day</h2></div><div class="table-wrap"><table><thead><tr><th>Date</th><th class="num">Views</th><th class="num">Visitors</th></tr></thead><tbody>${(d.days || []).slice().reverse().slice(0, 31).map((r) => `<tr><td>${fmtDate(r.date)}</td><td class="num">${r.views}</td><td class="num">${r.unique}</td></tr>`).join("") || noneRow(3, "No data yet.")}</tbody></table></div></div>
@@ -953,6 +966,13 @@
     copyRoom: async (el) => { try { await navigator.clipboard.writeText(el.dataset.url); toast("Room link copied."); } catch { toast("Couldn't copy. Select the link and copy it."); } },
     thread: (el) => { state.thread = el.dataset.id; if (location.hash === "#messages") render(); else location.hash = "messages"; },
     insTab: (el) => { state.insTab = el.dataset.tab; render(); },
+    // Open (or close) the list of people behind a count on Insights
+    insList: (el) => {
+      state.insList = state.insList === el.dataset.key ? "" : el.dataset.key;
+      document.querySelectorAll('[data-act="insList"][aria-expanded]').forEach((b) => b.setAttribute("aria-expanded", String(b.dataset.key === state.insList)));
+      const box = $("#insPeople"); if (!box) return; box.innerHTML = insPeople();
+      if (state.insList) box.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    },
     calWeek: (el) => { const d = Number(el.dataset.d); state.calWeek = d ? state.calWeek + d : 0; render(); },
     convert: async (el) => { const r = await api("PUT", `/api/admin/emr/${state.chartClient}/patient`, { active: el.dataset.on === "1" }); toast(r.patient ? "Now an active patient." : "No longer marked as a patient."); render(); },
     rmNote: async (el) => { if (!confirm("Remove this note? The patient will no longer see it.")) return; await api("DELETE", `/api/admin/emr/${state.chartClient}/notes/${el.dataset.id}`); toast("Note removed."); await reChart(); },

@@ -146,6 +146,14 @@ textarea.input{min-height:120px;resize:vertical;line-height:1.55}
 .tab.active{color:var(--accent-text);border-bottom-color:var(--accent)}
 .kpi b{display:block;font-size:26px;font-weight:700;letter-spacing:-.02em}
 .kpi small{font-size:12px}
+.kpi-btn{font:inherit;color:inherit;text-align:left;cursor:pointer;width:100%;display:block}
+.kpi-btn:hover,.kpi-btn[aria-expanded="true"]{border-color:var(--accent)}
+.kpi-btn:focus-visible,.pill-btn:focus-visible{outline:3px solid var(--accent-text);outline-offset:2px}
+.kpi-more{display:flex;align-items:center;gap:4px;margin-top:8px;font-size:12px;color:var(--accent-text);font-weight:600}
+.kpi-btn[aria-expanded="true"] .kpi-more svg{transform:rotate(90deg)}
+.pill-btn{font:inherit;font-size:12px;cursor:pointer}
+.pill-btn:disabled{cursor:default}
+.pill-btn:not(:disabled):hover{border-color:var(--accent)}
 .list-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
 .list-item:last-child{border-bottom:0}
 .list-item .pill{white-space:normal;text-align:right}
@@ -331,6 +339,6 @@ textarea.input{min-height:120px;resize:vertical;line-height:1.55}
 <script src="config.js?v=aac711e3"></script>
 <script src="realtime.js?v=dccfd156"></script>
 <script src="app/exercises.js?v=d121be98"></script>
-<script src="workspace-app.js?v=b5c5e82e"></script>
+<script src="workspace-app.js?v=23e5c07b"></script>
 </body>
 </html>
