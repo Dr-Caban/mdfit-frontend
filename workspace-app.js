@@ -98,7 +98,7 @@
     token = ""; store.set(""); if (window.MDFitRT) { if (teleIn()) MDFitRT.emit("tele_end"); MDFitRT.disconnect(); } teleDrop(); stopDictation();
     for (const k of Object.keys(cache)) cache[k] = (k === "unread" || k === "waiting") ? 0 : null; // every cached list, the open chart included
     mem.clear(); forget(); freshAsk = null; shown = ""; shownHtml = ""; visited.length = 0; clearTimeout(warmT); clearTimeout(repaintT); warmRun++;
-    state.chartClient = null; state.thread = null; state.clientQ = ""; state.formsQ = ""; state.formsShow = ""; state.scribeText = ""; tele.transcript = ""; noteReset(null);
+    qaClose(); state.chartClient = null; state.thread = null; state.clientQ = ""; state.formsQ = ""; state.formsShow = ""; state.scribeText = ""; tele.transcript = ""; noteReset(null);
     $("#view").innerHTML = ""; $("#nav").innerHTML = ""; $("#whoami").textContent = ""; $("#globalSearch").value = ""; closeModal();
     $("#app").hidden = true; $("#signin").hidden = false; clearTimeout(idleTimer);
     // /admin shares this tab: signing out here signs out there as well
@@ -187,13 +187,14 @@
     settings: '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/>',
     portal: '<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>',
     economics: '<circle cx="12" cy="12" r="9"/><path d="M15 9.5c-.5-1-1.6-1.5-3-1.5-1.700 0-3 .8-3 2s1.300 1.800 3 2 3 .8 3 2-1.300 2-3 2c-1.400 0-2.500-.5-3-1.500M12 6v2M12 16v2"/>',
-    booking: '<path d="M3 9h18M7 3v4M17 3v4"/><rect x="3" y="5" width="18" height="16" rx="2"/><path d="m9 15 2 2 4-4"/>'
+    booking: '<path d="M3 9h18M7 3v4M17 3v4"/><rect x="3" y="5" width="18" height="16" rx="2"/><path d="m9 15 2 2 4-4"/>',
+    guide: '<path d="M7 18.500a4.500 4.500 0 0 1-.700-8.950A6 6 0 0 1 17.900 10.600 4 4 0 0 1 17.500 18.500z"/><path d="M9 14.500h.01M12 14.500h.01M15 14.500h.01"/>'
   };
   const NAV = [
     { g: "Practice", items: [["dashboard", "Dashboard"], ["calendar", "Calendar"], ["clients", "Clients"], ["chart", "Client chart"], ["leads", "Leads"], ["messages", "Messages"], ["telehealth", "Telehealth"]] },
     { g: "Clinical", items: [["notes", "Notes & AI scribe"], ["forms", "Forms & intake"], ["programs", "Programs"], ["nutrition", "Nutrition"], ["fitness", "Fitness"]] },
     { g: "Business", items: [["payments", "Payments"], ["newsletter", "Newsletter"]] },
-    { g: "Admin", items: [["team", "Team & roles"], ["feedback", "Reviews & feedback"], ["security", "Security & audit"], ["settings", "Modules & settings"], ["insights", "Insights"], ["economics", "System economics"]] },
+    { g: "Admin", items: [["team", "Team & roles"], ["feedback", "Reviews & feedback"], ["security", "Security & audit"], ["settings", "Modules & settings"], ["insights", "Insights"], ["economics", "System economics"], ["guide", "MD Fit guide"]] },
     { g: "Client-facing", items: [["portal", "Client app"], ["booking", "Booking page"]] }
   ];
   function renderNav(active) {
@@ -446,7 +447,7 @@
           <div class="row"><button class="btn primary">Add to ${first}'s program</button></div></form>
           ${(plan.exercises || []).map((x, i) => `<div class="list-item" style="align-items:flex-start"><span style="flex:1;min-width:0"><b>${esc(x.name)}</b>${x.detail ? `<div class="muted note-text" style="font-size:12.5px">${esc(x.detail)}</div>` : ""}</span><button class="btn sm danger" data-act="prRemove" data-i="${i}">Remove</button></div>`).join("") || none(`Nothing in ${first}'s program yet.`)}</div></div>
       <div class="grid g2" style="margin-top:16px"><div class="card"><div class="card-head"><h2>All protocols</h2><span class="muted" style="font-size:12px">Everything you have written, most used first</span></div><div id="prPool">${none("Loading…")}</div></div>
-        <div class="card"><div class="card-head"><h2>All programs</h2><span class="muted" style="font-size:12px">${plural(progs.length, "program")} in the library</span></div>
+        <div class="card" id="chartPrograms"><div class="card-head"><h2>All programs</h2><span class="muted" style="font-size:12px">${plural(progs.length, "program")} in the library</span></div>
           ${progs.map((p) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(p.title)}</b><div class="muted" style="font-size:12px">${[p.category, p.level, p.weeks ? p.weeks + " weeks" : ""].filter(Boolean).map(esc).join(" · ")}</div></span>${mine.has(p.id) ? `<span class="pill ok">Assigned</span><button class="btn sm danger" data-act="prUnassign" data-id="${esc(p.id)}">Remove</button>` : `<button class="btn sm" data-act="prAssign" data-id="${esc(p.id)}">Add to ${first}'s program</button>`}</div>`).join("") || none("No programs in the library.")}</div></div>
       <div class="card stack" style="margin-top:16px"><div class="card-head"><h2>Movements for ${first}</h2><span class="muted" style="font-size:12px">Each one plays its video in the app</span></div>
         <div id="mvPool"></div>
@@ -565,6 +566,9 @@
 
   V.messages = async () => {
     const t = await load("/messages"); cache.unread = t.unread || 0;
+    // someone who has never been written to has no conversation in the list yet: they are shown at the top of it
+    const fresh = state.thread && !t.threads.find((x) => x.clientId === state.thread) ? (await clients().catch(() => [])).find((c) => c.id === state.thread) : null;
+    if (fresh) t.threads = [{ clientId: fresh.id, name: fresh.name, unread: 0, last: null }, ...t.threads];
     if (!t.threads.find((x) => x.clientId === state.thread)) state.thread = t.threads[0] ? t.threads[0].clientId : null;
     // The list of people is drawn at once. A conversation that is not in memory yet follows as soon as it arrives:
     // it is never loaded ahead of time, because opening one marks its messages as read.
@@ -575,7 +579,7 @@
     renderNav();
     return `<div class="view-head"><div><h1>Messages</h1><p class="muted">Conversations with members · stored encrypted on the server</p></div><button type="button" class="btn" data-act="broadcast">${ui("broadcast", 15)}Broadcast</button></div>
     <div class="card chat" style="padding:0">
-      <div class="threads">${t.threads.map((x) => `<div class="thread ${x.clientId === state.thread ? "active" : ""}" data-act="thread" data-id="${esc(x.clientId)}">${avatar(x.name, 36)}<div style="flex:1;min-width:0"><div class="row" style="justify-content:space-between"><b>${esc(x.name)}</b>${x.unread ? `<span class="badge">${x.unread}</span>` : ""}</div><div class="muted" style="font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${x.last ? (x.last.from === "doctor" ? "You: " : "") + esc(x.last.body) : ""}</div></div></div>`).join("") || `<p class="muted" style="padding:16px;margin:0">No messages yet.</p>`}</div>
+      <div class="threads">${t.threads.map((x) => `<div class="thread ${x.clientId === state.thread ? "active" : ""}" data-act="thread" data-id="${esc(x.clientId)}">${avatar(x.name, 36)}<div style="flex:1;min-width:0"><div class="row" style="justify-content:space-between"><b>${esc(x.name)}</b>${x.unread ? `<span class="badge">${x.unread}</span>` : ""}</div><div class="muted" style="font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${x.last ? (x.last.from === "doctor" ? "You: " : "") + esc(x.last.body) : "No messages yet"}</div></div></div>`).join("") || `<p class="muted" style="padding:16px;margin:0">No messages yet.</p>`}</div>
       <div class="msgs">${th ? `<div style="padding:12px 16px;border-bottom:1px solid var(--line)" class="row"><b>${esc(th.client.name)}</b><span class="muted" style="font-size:12px">${esc(th.client.email)}</span><button class="btn sm" style="margin-left:auto" data-act="chart" data-id="${esc(th.client.id)}">Chart</button></div>
         <div class="msg-list" id="msgList">${th.messages.map((m) => `<div class="bubble ${m.from === "doctor" ? "me" : ""}">${esc(m.body)}<div class="muted" style="font-size:11px;margin-top:2px">${when(m.at)}</div></div>`).join("")}</div>
         <form class="composer" data-form="message"><input name="body" class="input" placeholder="Write a message" autocomplete="off" maxlength="4000" aria-label="Message" required><button class="btn primary">Send</button></form>` : `<p class="muted" style="padding:16px;margin:0">${tid ? "Opening the conversation…" : "Pick a conversation."}</p>`}</div>
@@ -991,6 +995,80 @@
       ${sum("Card payments", usd(card))}${sum("Paid another way", usd(outside))}${refunds ? sum("Refunds", "-" + usd(refunds)) : ""}${sum("Revenue", usd(revenue), true)}${sum("Expenses", "-" + usd(expenses))}${sum("System cost", "-" + usd(d.systemMonthly))}${sum("Left", usd(left), true)}
       ${S.truncated ? `<p class="muted" style="margin:8px 0 0;font-size:12.5px">Stripe holds more entries than were read for this month.</p>` : ""}</div>`;
   }
+
+  // ---- The MD Fit guide in numbers: who opened it, how many answers it gave, who reached the daily free limit and
+  // who upgraded after that. Counts only: nothing anyone typed to the guide is kept or shown here.
+  const GUIDE_DAYS = [7, 30, 90];
+  const dayName = (d, long) => new Date(d + "T12:00:00Z").toLocaleDateString("en-US", { timeZone: "UTC", month: "short", day: "numeric", ...(long ? { weekday: "short" } : {}) });
+  // One row a day up to a month, one a week beyond that, so a column is never too thin to read. A day the server
+  // did not list had nothing happen on it.
+  function guideRows(byDay, days) {
+    const got = new Map((byDay || []).map((x) => [x.date, x])), last = [...got.keys()].sort().pop() || isoDay(new Date()), list = [];
+    for (let i = days - 1; i >= 0; i--) { const date = new Date(Date.parse(last + "T12:00:00Z") - i * 864e5).toISOString().slice(0, 10), x = got.get(date) || {}; list.push({ date, opens: Number(x.opens) || 0, answers: Number(x.answers) || 0, limitHits: Number(x.limitHits) || 0, upgradeTaps: Number(x.upgradeTaps) || 0 }); }
+    if (days <= 31) return list.map((x) => ({ ...x, label: dayName(x.date), long: dayName(x.date, true) }));
+    const out = [], sum = (w, k) => w.reduce((n, x) => n + x[k], 0);
+    for (let i = list.length % 7; i < list.length; i += 7) { const w = list.slice(i, i + 7); out.push({ date: w[0].date, label: dayName(w[0].date), long: `${dayName(w[0].date)} to ${dayName(w[w.length - 1].date)}`, opens: sum(w, "opens"), answers: sum(w, "answers"), limitHits: sum(w, "limitHits"), upgradeTaps: sum(w, "upgradeTaps") }); }
+    if (list.length % 7) { const w = list.slice(0, list.length % 7); out.unshift({ date: w[0].date, label: dayName(w[0].date), long: `${dayName(w[0].date)} to ${dayName(w[w.length - 1].date)}`, opens: sum(w, "opens"), answers: sum(w, "answers"), limitHits: sum(w, "limitHits"), upgradeTaps: sum(w, "upgradeTaps") }); }
+    return out;
+  }
+  // Answers given and times the limit was reached, side by side on one count axis. Resting on (or tabbing to) a
+  // column shows its numbers; the Table view holds the same figures.
+  function guideChart(rows, byWeek) {
+    const top = Math.max(1, ...rows.flatMap((r) => [r.answers, r.limitHits]));
+    const step = [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000].find((x) => x * 4 >= top) || Math.ceil(top / 4), max = step * 4;
+    const col = (v, k) => `<span class="eco-bar s${k}" style="height:${Math.max(0, Math.min(100, (v / max) * 100)).toFixed(2)}%"></span>`;
+    const key = (k, label) => `<span class="eco-key"><i class="s${k}"></i>${label}</span>`, every = Math.ceil(rows.length / 7);
+    return `<div class="eco-chart${rows.length > 14 ? " dense" : ""}" id="guideChart" role="group" aria-label="Answers given and times the daily limit was reached, by ${byWeek ? "week" : "day"}. The same figures are in the table view.">
+      <div class="eco-legend">${key(1, "Answers given")}${key(2, "Reached the daily limit")}</div>
+      <div class="eco-plot"><div class="eco-y" aria-hidden="true">${[4, 3, 2, 1, 0].map((k) => `<span>${(step * k).toLocaleString("en-US")}</span>`).join("")}</div>
+        <div class="eco-area">${[0, 1, 2, 3, 4].map((k) => `<i class="eco-grid" style="bottom:${k * 25}%"></i>`).join("")}
+          ${rows.map((r, n) => `<div class="eco-g${n > rows.length / 2 ? " late" : ""}" tabindex="0" role="img" aria-label="${esc(r.long)}: ${plural(r.answers, "answer")} given, the daily limit reached ${plural(r.limitHits, "time")}, ${plural(r.opens, "open")}, ${plural(r.upgradeTaps, "upgrade tap")}">
+            <div class="eco-cols">${col(r.answers, 1)}${col(r.limitHits, 2)}</div>
+            ${(rows.length - 1 - n) % every === 0 ? `<div class="eco-m" aria-hidden="true">${r.label}</div>` : ""}
+            <div class="eco-tip" aria-hidden="true"><b>${esc(r.long)}</b>
+              <span><i class="s1"></i><b class="num">${r.answers}</b> Answers given</span><span><i class="s2"></i><b class="num">${r.limitHits}</b> Reached the daily limit</span>
+              <span class="eco-left"><b class="num">${r.opens}</b> ${r.opens === 1 ? "open" : "opens"} · <b class="num">${r.upgradeTaps}</b> upgrade ${r.upgradeTaps === 1 ? "tap" : "taps"}</span></div></div>`).join("")}</div></div>
+</div>`;
+  }
+  V.guide = async () => {
+    const days = GUIDE_DAYS.includes(state.guideDays) ? state.guideDays : 30; let g = null, why = "";
+    try { g = await load(`/guide/stats?days=${days}`); } catch (err) { why = err.message; }
+    cache.guide = g;
+    const head = `<div class="view-head"><div><h1>MD Fit guide</h1><p class="muted">How members use the guide in the app, and who upgrades after reaching the daily free limit · counts only, nothing anyone typed is kept</p></div>
+      <div class="seg" role="group" aria-label="Days shown">${GUIDE_DAYS.map((d) => `<button type="button" data-act="guideDays" data-d="${d}" aria-pressed="${d === days}">${d} days</button>`).join("")}</div></div>`;
+    if (!g) return `${head}<div class="card" id="guideErr"><b>The guide's numbers could not be loaded.</b><p class="muted" style="margin:6px 0 0">${esc(why)}</p></div>`;
+    const T = g.totals || {}, n = (k) => Number(T[k]) || 0, S = g.settings || {};
+    const any = ["opens", "people", "answers", "limitHits", "limitPeople", "upgradeTaps", "upgraded"].some((k) => n(k) > 0);
+    const reached = n("limitPeople"), up = n("upgraded"), byWeek = days > 31, rows = guideRows(g.byDay, days), table = state.guideView === "table";
+    const right = 'style="text-align:right"';
+    const numbers = !any ? `<div class="card" id="guideNone" style="margin-bottom:16px"><b>No guide activity yet</b><p class="muted" style="margin:6px 0 0">Nobody opened the guide in the last ${days} days. The numbers appear here as members use it in the app.</p></div>` : `
+    <div class="grid" id="guideTiles" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr));margin-bottom:16px">
+      ${kpi("People who opened it", n("people"), `${plural(n("opens"), "open")} in ${days} days`)}
+      ${kpi("Answers given", n("answers"), n("people") ? `${(n("answers") / n("people")).toFixed(1)} per person` : "")}
+      ${kpi("People who reached the limit", reached, `${plural(n("limitHits"), "time")} in all`)}
+      ${kpi("Upgrade taps", n("upgradeTaps"), "taps on Upgrade in the guide")}
+      ${kpi("Upgraded after the limit", up, "started a membership after reaching it")}
+    </div>
+    <div class="card" id="guideRate" style="margin-bottom:16px"><div class="card-head"><h2>Conversion</h2><span class="muted" style="font-size:12px">last ${days} days</span></div>
+      ${reached ? `<p style="margin:0;font-size:17px"><b class="num">${up} of ${reached}</b> who reached the limit upgraded</p><p class="muted" style="margin:4px 0 0">That is ${Math.round((up / reached) * 100)}% of the ${reached === 1 ? "1 person" : reached + " people"} who reached it.</p>`
+        : `<p style="margin:0"><b>Not enough data yet.</b></p><p class="muted" style="margin:4px 0 0">Nobody reached the daily limit in the last ${days} days, so there is no conversion rate to show.</p>`}</div>
+    <div class="card" style="margin-bottom:16px"><div class="card-head"><h2>Answers and limit, by ${byWeek ? "week" : "day"}</h2>
+        <div class="seg" role="group" aria-label="Show as"><button type="button" data-act="guideView" data-v="chart" aria-pressed="${!table}">Chart</button><button type="button" data-act="guideView" data-v="table" aria-pressed="${table}">Table</button></div></div>
+      ${table ? `<div class="table-wrap" id="guideTable" style="max-height:420px;overflow-y:auto"><table><thead><tr><th>${byWeek ? "Week" : "Day"}</th><th ${right}>Opens</th><th ${right}>Answers given</th><th ${right}>Reached the limit</th><th ${right}>Upgrade taps</th></tr></thead><tbody>
+        ${[...rows].reverse().map((r) => `<tr><td>${esc(r.long)}</td><td class="num" ${right}>${r.opens}</td><td class="num" ${right}>${r.answers}</td><td class="num" ${right}>${r.limitHits}</td><td class="num" ${right}>${r.upgradeTaps}</td></tr>`).join("")}</tbody></table></div>` : guideChart(rows, byWeek)}</div>`;
+    const ai = !!S.ai, canAi = !!S.aiReady, hasAi = "ai" in S || "aiReady" in S;
+    return `${head}${numbers}
+    <div class="grid g2">
+      <div class="card stack"><div class="card-head"><h2>Free answers a day</h2><span class="muted" style="font-size:12px">members have no limit</span></div>
+        <form class="row" data-form="guideLimit" style="align-items:flex-end"><div class="field" style="margin:0;width:230px;max-width:100%"><label for="guideFree">Answers a day on the free plan</label><input id="guideFree" name="freePerDay" class="input num" type="number" min="1" max="500" step="1" required value="${esc(S.freePerDay ?? "")}"></div><button class="btn primary">Save</button></form>
+        <p class="muted" style="margin:0;font-size:12.5px">Most people should never reach it on a normal day; the ones who do are your likeliest upgrades.</p>
+        <p class="muted" style="margin:0;font-size:12.5px">Any whole number from 1 to 500. Opening the pain tool, booking and calling the clinic are never counted.</p></div>
+      ${hasAi ? `<div class="card stack" id="guideAiCard"><div class="card-head"><h2>AI answers</h2><button type="button" class="switch" id="guideAi" role="switch" aria-checked="${ai}" aria-label="AI answers" data-act="guideAi"${!ai && !canAi ? " disabled" : ""}></button></div>
+        <p style="margin:0" id="guideAiState">${ai ? `<b>On:</b> members' messages are read by ${esc(S.aiModel || "the AI model")} at ${esc(S.aiHost || "the AI service")} to find the right place. Nothing typed is saved.` : `<b>Off:</b> the guide understands messages on the member's own device and nothing they type leaves it.`}</p>
+        ${!canAi ? `<p class="muted" style="margin:0;font-size:12.5px" id="guideAiWhy">${ai ? "The AI service is not ready" : "It cannot be turned on"}: ${esc(S.aiWhy || "no AI service is connected on the server.")}</p>` : ""}
+        ${state.guideAiErr ? `<p style="margin:0;color:var(--bad)" id="guideAiErr" role="alert">Not changed: ${esc(state.guideAiErr)}</p>` : ""}</div>` : ""}
+    </div>`;
+  };
   V.team = async () => {
     const [me, mfa] = await Promise.all([load("/me"), load("/mfa")]);
     return `<div class="view-head"><div><h1>Team & roles</h1><p class="muted">This system has one sign-in: the practice owner</p></div></div>
@@ -1395,6 +1473,22 @@
           ${fld("rfAmt", "amount", "Amount to refund ($)", (left / 100).toFixed(2), { type: "number", attrs: `required min="0.01" max="${(left / 100).toFixed(2)}" step="0.01"` })}
           <div class="field"><label for="rfPass">Owner password</label><input id="rfPass" name="password" class="input" type="password" required autocomplete="current-password"><p class="muted" style="margin:4px 0 0;font-size:12.5px">Asked for every refund, even though you are signed in.</p></div>
           <div class="row"><button class="btn primary">Refund to the card</button><span class="muted" id="rfMsg" role="status" style="font-size:12.5px"></span></div></form>`); },
+    // ---- MD Fit guide (Insights): the range, chart or table, and the AI switch
+    guideDays: (el) => { state.guideDays = Number(el.dataset.d) || 30; return render(); },
+    guideView: (el) => { state.guideView = el.dataset.v === "table" ? "table" : "chart"; return render(); },
+    // Off is one click. On asks first, in the page: members type health details, so the service must have signed.
+    guideAi: async () => {
+      const S = (cache.guide && cache.guide.settings) || {}; state.guideAiErr = "";
+      if (S.ai) {
+        try { await api("PUT", "/api/admin/guide/settings", { ai: false }); } catch (err) { state.guideAiErr = err.message; await render(); return; }
+        await render(); toast("AI answers are off. Messages are understood on the member's own device again."); return;
+      }
+      modal(`<div class="card-head"><h2>Turn on AI answers</h2>${xBtn}</div>
+        <form class="stack" data-form="guideAiOn">
+          <p style="margin:0">Members often type health details. Turn this on only if ${esc(S.aiHost || "the AI service")} has signed a business associate agreement with MD Fit and does not keep or train on what it is sent.</p>
+          <label class="row" for="gaSigned" style="gap:8px;flex-wrap:nowrap"><input type="checkbox" id="gaSigned" name="signed"><span>They have signed one</span></label>
+          <div class="row"><button class="btn primary" id="gaGo" disabled>Turn on AI answers</button><button type="button" class="btn" data-act="closeModal">Cancel</button></div></form>`);
+    },
     // ---- Invoice generator (Payments): draft once, pick the people, write the email, send
     igAll: () => { state.genAll = true; render(); },
     igNew: () => { state.igPeople = []; const g = cache.gen || {};
@@ -1557,6 +1651,17 @@
       closeModal(); if (kind === "link") await render(); else await loadBilling();
       toast(`${usd(r.amount)} refunded to the card.${r.left ? ` ${usd(r.left)} of the payment remains.` : ""}`);
     },
+    guideLimit: async (f) => {
+      const n = Number(f.freePerDay.value);
+      if (!Number.isInteger(n) || n < 1 || n > 500) { toast("Enter a whole number from 1 to 500."); f.freePerDay.focus(); return; }
+      await api("PUT", "/api/admin/guide/settings", { freePerDay: n }); await render();
+      toast(`Saved. People on the free plan get ${plural(n, "guide answer")} a day.`);
+    },
+    guideAiOn: async (f) => {
+      if (!f.signed.checked) return;
+      try { await api("PUT", "/api/admin/guide/settings", { ai: true }); } catch (err) { closeModal(); state.guideAiErr = err.message; await render(); return; }
+      closeModal(); await render(); toast("AI answers are on.");
+    },
     igCreate: async (f, e) => {
       const send = !!(e && e.submitter && e.submitter.value === "send"), typed = [];
       for (const raw of f.typed.value.split("\n").map((x) => x.trim()).filter(Boolean)) { const at = raw.lastIndexOf(","), name = at > 0 ? raw.slice(0, at).trim() : "", email = at > 0 ? raw.slice(at + 1).trim() : ""; if (!name || !/^\S+@\S+\.\S+$/.test(email)) { toast(`"${raw}" needs a name, a comma, then an email address.`); f.typed.focus(); return; } typed.push({ name, email }); }
@@ -1564,7 +1669,7 @@
       if (!recipients.length) { toast("Add at least one person to send it to."); $("#igFind").focus(); return; }
       if (send && recipients.length > 1 && !confirm(`Email this invoice to ${recipients.length} people? Each gets their own invoice for $${Number(f.amount.value).toFixed(2)}.`)) return;
       const r = await api("POST", "/api/admin/invoices", { description: f.description.value.trim(), amount: Number(f.amount.value), recipients, subject: f.subject.value.trim(), message: f.message.value.trim(), send });
-      state.igPeople = []; closeModal(); await render(); toast(`${plural(r.created, "invoice")} created${r.sent ? " and emailed" : ". Nothing was emailed: use Send or copy the link"}.`);
+      state.igPeople = []; closeModal(); await render(); toast(`${plural(r.created, "invoice")} created${r.sent ? " and emailed. Clients with the MD Fit app are notified there too" : ". Nothing was emailed: use Send or copy the link"}.`);
     },
     igSend: async (f) => { await api("POST", `/api/admin/invoices/${f.dataset.id}/send`, { subject: f.subject.value.trim(), message: f.message.value.trim() }); closeModal(); await render(); toast("Invoice emailed."); },
     igPaid: async (f) => { await api("POST", `/api/admin/invoices/${f.dataset.id}/status`, { status: "paid", method: f.method.value }); closeModal(); await render(); toast("Marked paid."); },
@@ -1743,6 +1848,7 @@
     if (e.target.matches("[data-change=bcTo]")) { const p = $("#bcPick"); if (p) p.hidden = e.target.value !== "selected"; }
     if (e.target.matches("[data-change=insDays]")) { state.insDays = Number(e.target.value) || 30; render(); }
     if (e.target.matches("[data-change=ecoMonths]")) { state.ecoMonths = Number(e.target.value) || 6; render(); }
+    if (e.target.id === "gaSigned") { const go = $("#gaGo"); if (go) go.disabled = !e.target.checked; }
   });
   document.addEventListener("input", (e) => {
     if (e.target.id === "mvSearch") {
@@ -1788,6 +1894,7 @@
   const routeNow = () => { let r = (location.hash || "#dashboard").slice(1); if (r === "reports") r = "insights"; return V[r] ? r : "dashboard"; };
   function paint(r, html, again) {
     const view = $("#view"); view.innerHTML = html; shown = r; shownHtml = html;
+    qaSeat(r);
     if (r === "chart" && state.chartClient) chartAfter();
     if (r === "telehealth") { if (window.MDFitRT) MDFitRT.emit("tele_list"); teleMount(); }
     if (r === "economics" && state.ecoOpen) ecoDetail();
@@ -1835,7 +1942,8 @@
   // the scribe's status for the note screen, what the telehealth screen and an empty chart screen show, the money totals.
   const AHEAD = {
     messages: () => load("/messages"), notes: () => Promise.all([clients(), load("/scribe")]), telehealth: () => Promise.all([load("/appointments?all=1"), load("/settings"), load("/telehealth/devices")]),
-    chart: () => Promise.all([load("/emr"), content()]), economics: () => load(`/economics?months=${state.ecoMonths || 6}`)
+    chart: () => Promise.all([load("/emr"), content()]), economics: () => load(`/economics?months=${state.ecoMonths || 6}`),
+    guide: () => load(`/guide/stats?days=${GUIDE_DAYS.includes(state.guideDays) ? state.guideDays : 30}`)
   };
   const early = (r) => (WARM.includes(r) ? V[r]() : AHEAD[r] ? AHEAD[r]() : Promise.resolve());
   const visited = []; let warmT = 0, warmRun = 0, warmedAt = 0, warming = false, lastTouch = 0;
@@ -2271,7 +2379,7 @@
     $("#signin").hidden = true; $("#app").hidden = false; idleArm(); goLive();
     get("/me").then((me) => { cache.me = me; $("#whoami").textContent = me.email; }).catch(() => {});
     const tk = token;
-    render().then(() => setTimeout(() => { if (token && tk === token) { warmedAt = Date.now(); warm(["clients", "calendar", "dashboard", "messages", "chart", "telehealth", "notes", "leads", "forms", "payments", ...WARM.filter((r) => !["clients", "calendar", "dashboard", "leads", "forms", "payments"].includes(r)), "economics"]); } }, 600));
+    render().then(() => setTimeout(() => { if (token && tk === token) { warmedAt = Date.now(); warm(["clients", "calendar", "dashboard", "messages", "chart", "telehealth", "notes", "leads", "forms", "payments", ...WARM.filter((r) => !["clients", "calendar", "dashboard", "leads", "forms", "payments"].includes(r)), "economics", "guide"]); } }, 600));
   }
   window.addEventListener("pointerdown", () => { lastTouch = Date.now(); }, true);
   window.addEventListener("keydown", () => { lastTouch = Date.now(); }, true);
@@ -2315,6 +2423,124 @@
   $("#globalSearch").addEventListener("focus", (e) => { if (gWords(e.target.value).length && gRes.hidden) e.target.dispatchEvent(new Event("input")); });
   document.addEventListener("click", (e) => { if (!e.target.closest(".search")) gClose(); });
   ACT.searchOpen = (el) => { $("#globalSearch").value = ""; gClose(); openChart(el.dataset.id); };
+
+  // ---------------------------------------------------------------- "+" quick actions
+  // One round button in reach on every screen: pick what to send or open, then who it is for (the open chart's
+  // client is offered first), and it lands in the screen or form that already does that job. Nothing here talks to
+  // the server by a route of its own, so what the client is sent is exactly what those screens send.
+  const QA = [
+    ["invoice", "Invoice", "payments", "Emails a pay link and notifies their app"],
+    ["tele", "Telehealth invite", "telehealth", "Emails the join link and notifies their app"],
+    ["book", "Booking link", "booking", "Emails a link to pick a time and notifies their app"],
+    ["note", "Note", "notes", "Opens a new clinical note. The client is not notified"],
+    ["forms", "Forms to sign", "forms", "Notifies their app and emails them to finish their documents"],
+    ["program", "Program", "programs", "Add one on their chart. They are notified in the app and by email"],
+    ["message", "Message", "messages", "Opens your conversation. They are notified when you send"]
+  ];
+  const QA_DOCK = new Set(["messages", "telehealth"]); // where a button in the corner would sit on the box to write in or the visit's controls
+  const qa = { open: false, act: "", other: false, list: [], at: 0 };
+  const qaHas = (words) => (c) => words.every((w) => `${c.name} ${c.email} ${c.phone || ""}`.toLowerCase().includes(w));
+  // The client the menu acts on without asking: the one whose chart is on the screen
+  const qaWho = () => (qa.other || shown !== "chart" || !state.chartClient ? null : (cache.clients || []).find((c) => c.id === state.chartClient) || (cache.chart && cache.chart.d && cache.chart.d.name ? { id: state.chartClient, name: cache.chart.d.name, email: cache.chart.d.email || "" } : null));
+  function qaPlace() {
+    const m = $("#qaMenu"), b = $("#qaBtn"); if (!m || !b || m.hidden) return;
+    const r = b.getBoundingClientRect();
+    m.style.right = Math.max(8, window.innerWidth - r.right) + "px";
+    if (b.classList.contains("docked")) { m.style.top = r.bottom + 8 + "px"; m.style.bottom = "auto"; m.style.maxHeight = `calc(100vh - ${Math.round(r.bottom + 24)}px)`; }
+    else { m.style.bottom = window.innerHeight - r.top + 10 + "px"; m.style.top = "auto"; m.style.maxHeight = `${Math.max(200, Math.round(r.top - 26))}px`; }
+  }
+  // In the corner, except on the two screens where that corner is in use: there it moves into the bar at the top
+  function qaSeat(r) {
+    const b = $("#qaBtn"), top = $(".top"), corner = $("#qa"), view = $("#view"); if (!b || !top || !corner) return;
+    const dock = QA_DOCK.has(r);
+    if (dock && b.parentElement !== top) { top.insertBefore(b, $("#refreshBtn")); b.classList.add("docked"); }
+    else if (!dock && b.parentElement !== corner) { corner.appendChild(b); b.classList.remove("docked"); }
+    if (view) view.classList.toggle("fab-pad", !dock);
+    qaPlace();
+  }
+  function qaList() {
+    const res = $("#qaRes"); if (!res) return;
+    res.innerHTML = qa.list.map((c, i) => `<button type="button" role="option" aria-selected="${i === qa.at}" class="qa-opt${i === qa.at ? " on" : ""}" data-act="qaPick" data-id="${esc(c.id)}">${avatar(c.name, 28)}<span><b>${esc(c.name)}</b><small>${esc(c.email)}</small></span></button>`).join("") || `<p class="qa-note">No client matches.</p>`;
+  }
+  // Results come from the list already in memory, so they are there as the key goes down; the server is only asked
+  // when nothing in memory matches (someone who signed up a minute ago).
+  function qaFill() {
+    const box = $("#qaFind"); if (!box) return;
+    const words = gWords(box.value), has = qaHas(words);
+    const show = (list) => {
+      const now = $("#qaFind"); if (!now || gWords(now.value).join(" ") !== words.join(" ")) return;
+      const hit = (list || []).filter(has);
+      if (words.length) { const starts = (c) => (String(c.name || "").toLowerCase().split(/\s+/).some((p) => p.startsWith(words[0])) ? 0 : 1); hit.sort((a, b) => starts(a) - starts(b) || String(a.name).localeCompare(String(b.name))); }
+      else hit.sort((a, b) => String(b.createdAt || "").localeCompare(String(a.createdAt || "")));
+      qa.list = hit.slice(0, 8); qa.at = 0; qaList();
+      const lab = $("#qaResLabel"); if (lab) lab.textContent = words.length ? "" : qa.list.length ? "Newest clients" : "";
+    };
+    if (cache.clients) show(cache.clients);
+    (words.length ? clientsHit((l) => l.some(has), box) : clients()).then(show).catch(() => {});
+  }
+  function qaDraw(focus) {
+    const m = $("#qaMenu"); if (!m) return;
+    if (qa.act) {
+      const a = QA.find((x) => x[0] === qa.act);
+      m.innerHTML = `<div class="qa-head"><button type="button" class="btn sm ghost" data-act="qaBack" aria-label="Back to the actions">${ui("prev", 14)}</button><b style="flex:1">${a[1]} for</b></div>
+        <div class="search in qa-find">${ui("search", 15)}<input id="qaFind" type="search" autocomplete="off" placeholder="Name or email" aria-label="Find the client for this ${a[1].toLowerCase()}" role="combobox" aria-controls="qaRes" aria-expanded="true"></div>
+        <p class="qa-note" id="qaResLabel"></p><div id="qaRes" role="listbox" aria-label="Clients"></div>`;
+      qaFill(); if (focus !== false) $("#qaFind").focus();
+    } else {
+      const who = qaWho();
+      m.innerHTML = `<div class="qa-head" id="qaFor">${who ? `<span class="who">For <b>${esc(who.name)}</b></span><button type="button" class="btn sm" data-act="qaOther">Someone else</button>` : `<b>Quick actions</b><span class="muted" style="font-size:12px">Pick one, then the client</span>`}</div>
+        ${QA.map(([k, label, icon, sub]) => `<button type="button" class="qa-row" data-act="qaDo" data-k="${k}"><svg viewBox="0 0 24 24" aria-hidden="true">${ICON[icon]}</svg><span><b>${label}</b><small>${sub}</small></span></button>`).join("")}`;
+      if (focus !== false) { const first = m.querySelector(".qa-row"); if (first) first.focus(); }
+    }
+    qaPlace();
+  }
+  function qaOpen() { const m = $("#qaMenu"), b = $("#qaBtn"); qa.open = true; qa.act = ""; qa.other = false; m.hidden = false; b.setAttribute("aria-expanded", "true"); qaDraw(); clients().catch(() => {}); }
+  function qaClose(back) { const m = $("#qaMenu"), b = $("#qaBtn"); if (!qa.open) return; qa.open = false; m.hidden = true; m.innerHTML = ""; b.setAttribute("aria-expanded", "false"); if (back) b.focus(); }
+  // Go to a screen and wait until it is drawn (the address changes too, so Back works as usual)
+  const qaGo = async (r) => { if (location.hash !== "#" + r) history.pushState(null, "", "#" + r); await render(); };
+  async function qaChart(id, tab) {
+    const there = shown === "chart" && state.chartClient === id && cache.chart;
+    if (there && (!tab || state.chartTab === tab)) return;
+    state.chartClient = id; state.chartTab = tab || "overview"; await qaGo("chart");
+  }
+  async function qaRun(k, c) {
+    qaClose(); const first = String(c.name || "").split(" ")[0];
+    if (k === "invoice") { // the invoice generator, with this person already added
+      if (!cache.gen) cache.gen = await load("/invoices").catch(() => null);
+      ACT.igNew(); state.igPeople = [{ id: c.id, name: c.name, email: c.email }]; igDraw(); const d = $("#igDesc"); if (d) d.focus();
+    } else if (k === "tele") { // the invitation the Telehealth screen sends; its own notice says how they were told
+      if (!(window.MDFitRT && MDFitRT.connected())) { toast("Not connected to the live service. Reload the page."); return; }
+      ACT.teleInvite({ dataset: { id: c.id } }); await qaGo("telehealth");
+    } else if (k === "book") { await qaChart(c.id); await ACT.book(); const t = $("#blType"); if (t) { t.closest("form").scrollIntoView({ block: "nearest" }); t.focus(); } }
+    else if (k === "note") {
+      if (route() === "notes" && shown === "notes") { if (note.clientId !== c.id) await noteClientSwitch(c.id); } else { state.chartClient = c.id; await qaGo("notes"); }
+      const box = $("#nBody"); if (box) box.focus();
+    } else if (k === "forms") { const b = document.createElement("button"); b.dataset.id = c.id; b.dataset.name = c.name; await ACT.intakeRemind(b); }
+    else if (k === "program") { await qaChart(c.id, "plans"); const card = $("#chartPrograms"); if (card) { card.scrollIntoView({ block: "start" }); const add = card.querySelector("[data-act=prAssign]"); if (add) add.focus({ preventScroll: true }); } toast(`Pick a program to add for ${first}. They are notified in the app and by email.`); }
+    else if (k === "message") { // the conversation is drawn a moment after the list of people, so the box to write in is waited for
+      state.thread = c.id; await qaGo("messages");
+      for (let i = 0; i < 40 && routeNow() === "messages" && state.thread === c.id; i++) { const box = $(".composer input[name=body]"); if (box && cache.msgShown === c.id) { box.focus(); break; } await new Promise((go) => setTimeout(go, 100)); }
+    }
+  }
+  Object.assign(ACT, {
+    qaToggle: () => (qa.open ? qaClose() : qaOpen()),
+    qaOther: () => { qa.other = true; qaDraw(); },
+    qaBack: () => { qa.act = ""; qaDraw(); },
+    qaDo: (el) => { const who = qaWho(); if (who) return qaRun(el.dataset.k, who); qa.act = el.dataset.k; qaDraw(); },
+    qaPick: (el) => { const c = qa.list.find((x) => x.id === el.dataset.id) || (cache.clients || []).find((x) => x.id === el.dataset.id); if (c) return qaRun(qa.act, c); }
+  });
+  document.addEventListener("input", (e) => { if (e.target.id === "qaFind") qaFill(); });
+  document.addEventListener("keydown", (e) => {
+    if (!qa.open) return;
+    if (e.key === "Escape") { e.preventDefault(); qaClose(true); return; }
+    if (e.target.id !== "qaFind" || e.isComposing) return;
+    if ((e.key === "ArrowDown" || e.key === "ArrowUp") && qa.list.length) { e.preventDefault(); qa.at = (qa.at + (e.key === "ArrowDown" ? 1 : qa.list.length - 1)) % qa.list.length; qaList(); const on = $("#qaRes .on"); if (on) on.scrollIntoView({ block: "nearest" }); }
+    else if (e.key === "Enter") { e.preventDefault(); const c = qa.list[qa.at]; if (c && token) guard(qaRun)(qa.act, c); }
+  });
+  // A press anywhere else puts the menu away (looked at before the buttons inside it redraw anything)
+  document.addEventListener("pointerdown", (e) => { if (qa.open && !(e.target.closest && e.target.closest("#qaMenu, #qaBtn"))) qaClose(); }, true);
+  window.addEventListener("hashchange", () => qaClose());
+  window.addEventListener("resize", qaPlace);
   // A restored session keeps its old last-input time: a reload must not hand out a fresh 15 minutes
   if (token && idleFor() >= IDLE_MS) idleOut();
   else if (token) { if (!idleFor()) idleStamp(); start(); } else { $("#signin").hidden = false; $("#app").hidden = true; }
