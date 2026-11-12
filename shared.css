@@ -1,0 +1,60 @@
+/* /shared: a workout or program opened from a shared link. Light grey page, navy header, blue accent —
+   the same visual language as /chat, so a shared link looks like the rest of MD Fit. */
+:root { --navy:#0A1A2E; --navy-2:#10233b; --gold:#7AAFD7; --gold-hover:#6AA2CD; --gold-soft:#EAF3FA; --accent:#7AAFD7;
+  --accent-soft:#EAF3FA; --accent-text:#2F6E9E; --bg:#F2F4F6; --card:#fff; --card-2:#E8ECF0; --line:#DBE1E7;
+  --muted:#5f6772; --ok:#2e7d4f; --ok-soft:#e6f2ea; --err:#c62828;
+  --head:"Libre Baskerville",Georgia,serif; --body:"Montserrat",system-ui,-apple-system,sans-serif; color-scheme:light; }
+* { box-sizing:border-box; }
+html { overflow-x:hidden; }
+body { margin:0; background:var(--bg); color:var(--navy); font:400 15px/1.5 var(--body); -webkit-text-size-adjust:100%; overflow-x:hidden; }
+button { font:inherit; color:inherit; cursor:pointer; }
+.vh { position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0; }
+
+.top { background:var(--navy); color:#fff; padding:calc(14px + env(safe-area-inset-top)) 16px 14px; }
+.top-in, main { max-width:620px; margin:0 auto; }
+.brand { font:700 19px var(--head); letter-spacing:.2px; }
+.brand small { display:block; font:500 12px var(--body); color:var(--accent); letter-spacing:.4px; margin-top:2px; }
+main { padding:20px 16px calc(48px + env(safe-area-inset-bottom)); }
+
+.card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px; margin:0 0 14px; }
+.kicker { margin:0; font:600 11.5px var(--body); letter-spacing:.9px; text-transform:uppercase; color:var(--accent-text); }
+h1 { font:700 23px/1.25 var(--head); margin:6px 0 6px; overflow-wrap:anywhere; }
+.by { margin:0; color:var(--muted); font-size:13px; }
+.by b { color:var(--navy); font-weight:600; }
+.facts { display:flex; flex-wrap:wrap; gap:6px; margin:12px 0 0; padding:0; list-style:none; }
+.facts li { padding:3px 10px; border-radius:999px; background:var(--accent-soft); color:var(--accent-text); font-size:12px; font-weight:600; }
+
+.block { font:600 12px var(--body); letter-spacing:.8px; text-transform:uppercase; color:var(--muted); margin:18px 2px 8px; }
+.ex { list-style:none; margin:14px 0 0; padding:0; display:grid; gap:8px; }
+.ex li { display:grid; grid-template-columns:30px 1fr; gap:10px; align-items:center; background:var(--card-2); border-radius:12px; padding:10px 12px; }
+.ex .n { width:30px; height:30px; border-radius:9px; background:var(--navy); color:var(--gold); display:grid; place-items:center; font-weight:700; font-size:13px; }
+.ex b { display:block; font-size:15px; overflow-wrap:anywhere; }
+.ex span { color:var(--muted); font-size:12.5px; }
+.note { color:var(--muted); font-size:12.5px; margin:12px 0 0; }
+
+.act h2 { font:700 17px var(--head); margin:0 0 6px; }
+.act p { margin:0 0 12px; color:var(--muted); font-size:14px; }
+.act p.done { color:var(--ok); font-weight:600; }
+.row { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.btn { display:inline-flex; align-items:center; justify-content:center; min-height:44px; border:0; border-radius:12px;
+  padding:12px 18px; font-weight:700; background:var(--navy); color:#fff; text-decoration:none; }
+.btn:hover { background:var(--navy-2); }
+.btn:disabled { opacity:.45; cursor:not-allowed; }
+.btn.ghost { background:#fff; color:var(--navy); border:1px solid var(--line); }
+.btn.ghost:hover { background:#fff; border-color:var(--navy); }
+.btn:focus-visible, a:focus-visible, button:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+@media (max-width:420px) { .row { display:grid; } .btn { width:100%; } }
+
+.empty { text-align:center; color:var(--muted); padding:34px 12px; margin:0; }
+.gone { text-align:center; }
+.gone h1 { font-size:21px; }
+.gone .row { justify-content:center; }
+.foot { margin-top:22px; text-align:center; color:var(--muted); font-size:12.5px; }
+.foot a { color:var(--accent-text); }
+
+.toast { position:fixed; left:50%; bottom:calc(22px + env(safe-area-inset-bottom)); transform:translateX(-50%);
+  background:var(--navy); color:#fff; padding:11px 16px; border-radius:12px; font-size:14px; font-weight:600;
+  width:max-content; max-width:calc(100vw - 32px); box-shadow:0 6px 24px rgba(10,26,46,.25); z-index:5; }
+.toast small { display:block; font-weight:400; color:#c9d1dc; overflow-wrap:anywhere; user-select:all; }
+@media (prefers-reduced-motion:reduce) { * { scroll-behavior:auto !important; transition:none !important; animation:none !important; } }
+[hidden] { display:none !important; }
