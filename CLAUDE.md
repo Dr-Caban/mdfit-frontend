@@ -5,6 +5,13 @@
   the newer `/conditions/*` and `/blog/*`, or the six `*-sarasota.html` landing pages. Edit the data, run
   `node scripts/seo/build.js`, then `node scripts/seo/check.js`.
 - Shared header: `node scripts/site-header.js`. After CSS/JS edits: `node scripts/version-assets.js`.
+- **Member app looks.** `app-theme.css` (black theme, compact layout) is generated: after changing `app/app.css`,
+  `account.css` or `guides.css`, run `node scripts/theme/build.js`, then `version-assets.js`. Never edit it by hand;
+  the hand-written parts are in `scripts/theme/parts/`. `app-theme.js` applies the saved choice before first paint.
+- **The MD Fit guide** (the cloud in the member app) is `mdfit-guide.js` + `mdfit-guide.css`; the server side is
+  `lib/guide.js` and `lib/guide-ai.js` in the backend. What a member types is understood on the device and is never
+  sent, unless the owner has switched "AI answers" on in the workspace (Insights → MD Fit guide). Keep the line of
+  small print under the box true in both modes.
 - `/admin` is the practice workspace: `workspace.html` (screens and styles) plus `workspace-app.js`, served at both
   `/admin` (a rewrite in `vercel.json`) and `/workspace`. The earlier admin is `admin-classic.html` + `admin.js` at
   `/admin-classic`; it stays until every setting it holds has a screen in the workspace. Patients join video visits at

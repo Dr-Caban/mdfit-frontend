@@ -1,0 +1,43 @@
+/* The member app's looks: Black theme and Compact layout. White / Comfortable is the app as it has always been:
+   every rule here applies only under html[data-theme="black"] or html[data-layout="compact"], apart from the few
+   lines for the "Make it yours" card itself (#p-looks). app-theme.js sets the two attributes before first paint.
+
+   How it is put together:
+   1. Black: the app's own colour tokens are given dark values.
+   2. Black: a copy of every colour-carrying declaration in app/app.css, account.css and guides.css follows, in the
+      same order, with each colour mapped to its dark value. The condition sits inside :where(), which adds no
+      specificity, so the cascade resolves exactly as it does in white.
+   3. Black: hand-written corrections for what a mapping cannot know (primary buttons, small discs, the calendar).
+   4. Compact: the same kind of copy for padding, margins, gaps and type sizes, tightened, plus two corrections.
+   Parts 2 and 4 are written by a script from those three stylesheets. When colours or spacing change there, build
+   this file again rather than editing the copies by hand; a hand edit belongs in part 3 or at the very end. */
+
+/* ---- "Make it yours" on the Profile tab (both themes) */
+#p-looks .looks-name { margin: 12px 0 0; font-size: 13px; font-weight: 700; color: var(--heading); }
+#p-looks .p-looks { grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 6px 0 4px; }
+#p-looks .p-looks button { min-height: 56px; font-size: 14px; }
+#p-looks .p-looks button small { font-size: 12px; }
+
+/* ---- 1. Tokens */
+html[data-theme="black"] {
+  color-scheme: dark;
+  --bg: #0B0D11;
+  --card: #15181E;
+  --card-2: #1F232B;
+  --line: #2D323C;
+  --text: #D9D6CF;
+  --heading: #F3F1EB;
+  --muted: #A3A9B3;
+  --navy: #F3F1EB;          /* in white this is both the ink and the dark surface; here it is the ink, */
+  --t-deep: #000000;        /* and the dark surfaces use this */
+  --navy-2: #11141A;
+  --navy-3: #2A303B;
+  --accent-text: #8EC0E6;
+  --accent-soft: #14222F;
+  --gold-soft: #272012;
+  --ok: #62C48F;
+  --err: #FF8A80;
+  --shadow: 0 12px 30px -14px rgba(0, 0, 0, .8);
+}
+
+/* ---- 2. The copy (made by a script; do not edit by hand) */

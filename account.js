@@ -3067,6 +3067,7 @@
   const monthAdd = (m, n) => { const [y, mo] = m.split("-").map(Number); const d = new Date(Date.UTC(y, mo - 1 + n, 1)); return d.toISOString().slice(0, 7); };
   function dayItems(d) {
     return [
+      ...(window.MDFitGuide && window.MDFitGuide.day ? window.MDFitGuide.day(d) : []), // reminders the guide saved (mdfit-guide.js): { k: "reminder", t, s }
       ...allWorkouts.filter((w) => w.date === d).map((w) => ({ k: "workout", t: w.title, s: `${w.minutes} min · ${w.exercises} exercises` })),
       ...[...appts.upcoming, ...appts.past].filter((a) => a.date === d && a.status !== "cancelled").map((a) => ({ k: "visit", t: a.typeName, s: `${fmtTime(a.time)} · ${a.minutes} min${a.status === "booked" && d >= todayInTz() ? " · upcoming" : ""}`,
         link: a.status === "booked" && d >= todayInTz() ? a.meetingLink || "" : "", video: /telehealth|video|remote|online/i.test(a.typeName + " " + a.typeId) })),
@@ -3188,6 +3189,12 @@
   // Paid membership? (content access "member"/"premium"; "free" otherwise). Loads the content once if needed.
   const isPaid = async () => { if (!C) await (contentLoading || loadContent()).catch(() => {}); return !!(C && C.access && C.access !== "free"); };
   window.MDFitApp = { startPlayer, go, loadRewards, toast, celebrateToast, exMeta, byId, gemIcon: GEM_ICON, rewards: () => reward, isPaid, showPaywall,
+    // For the guide (mdfit-guide.js) and the theme switch (app-theme.js): who is signed in, what the app holds, and two places to open
+    client: () => client, content: async () => { if (!C) await (contentLoading || loadContent()).catch(() => {}); return C; },
+    openBook: () => { go("profile"); setTimeout(() => $("#p-book-open") && $("#p-book-open").click(), 60); },
+    redrawCalendar: () => { try { renderCalendar(); } catch {} },
+    // What is waiting for this member right now, so the guide can offer it first (all of it already loaded by the app)
+    state: () => ({ appts, invoices: myInvoices, invited: teleAsked, docs: patientDocs, reward, unread: parseInt(($("#msg-badge") || {}).textContent, 10) || 0 }),
     showBoard: (period, league) => { boardPeriod = period; boardLeague = league; if (location.hash === "#leaders") loadBoard(); else go("leaders"); } };
 
   // ================= Load

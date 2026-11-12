@@ -22,6 +22,9 @@
   <link rel="stylesheet" href="app/app.css?v=3f4bdad1">
   <link rel="stylesheet" href="account.css?v=b1463d6a">
   <link rel="stylesheet" href="guides.css?v=704fb203">
+  <link rel="stylesheet" href="app-theme.css?v=3a7100b4">
+  <link rel="stylesheet" href="mdfit-guide.css?v=3dc9d38b">
+  <script src="app-theme.js?v=3afc6baa"></script>
 </head>
 <body class="mdapp">
   <div class="app">
@@ -383,7 +386,7 @@
               <div class="cal-nav"><button type="button" class="icon-btn" id="cal-prev" aria-label="Previous month"><svg viewBox="0 0 24 24"><path d="M15.4 7.4 14 6l-6 6 6 6 1.4-1.4-4.6-4.6z"/></svg></button><b id="cal-title"></b><button type="button" class="icon-btn" id="cal-next" aria-label="Next month"><svg viewBox="0 0 24 24"><path d="M8.6 16.6 10 18l6-6-6-6-1.4 1.4 4.6 4.6z"/></svg></button></div>
             </div>
             <div class="cal" id="cal"></div>
-            <ul class="cal-legend"><li><i class="k-workout"></i>Workout</li><li><i class="k-visit"></i>Visit</li><li><i class="k-pain"></i>Pain log</li><li><i class="k-care"></i>Care plan</li><li><i class="k-class"></i>Class</li></ul>
+            <ul class="cal-legend"><li><i class="k-workout"></i>Workout</li><li><i class="k-visit"></i>Visit</li><li><i class="k-pain"></i>Pain log</li><li><i class="k-care"></i>Care plan</li><li><i class="k-class"></i>Class</li><li><i class="k-reminder"></i>Reminder</li></ul>
             <div class="cal-day" id="cal-day"></div>
           </div>
           <div class="card checkin" id="checkin">
@@ -470,6 +473,7 @@
       </div>
 
       <div class="profile-grid">
+      <div class="card" id="p-looks" hidden></div>
       <div class="card" id="p-goal-card">
         <div class="card-head"><span class="label">My daily XP goal</span></div>
         <p class="muted small">How much XP counts as a full day for you. Reach it to keep your streak and paint the day gold on your calendar. A change applies from today.</p>
@@ -748,8 +752,9 @@
   <script src="musclereports.js?v=cd9ced26"></script>
   <script src="guides.js?v=8521968d"></script>
   <script src="stripe-checkout.js?v=087989ec"></script>
-  <script src="account.js?v=962621b4"></script>
+  <script src="account.js?v=f31eb261"></script>
   <script src="account-xp.js?v=5f3c6968"></script>
   <script src="account-habits.js?v=294905ab"></script>
+  <script src="mdfit-guide.js?v=731335c2"></script>
 </body>
 </html>
