@@ -2,14 +2,15 @@
    every rule here applies only under html[data-theme="black"] or html[data-layout="compact"], apart from the few
    lines for the "Make it yours" card itself (#p-looks). app-theme.js sets the two attributes before first paint.
 
-   How the black theme is put together:
-   1. The app's own colour tokens are given dark values.
-   2. A copy of every colour-carrying declaration in app/app.css, account.css and guides.css follows, in the same
-      order, with each colour mapped to its dark value. The theme condition sits inside :where(), which adds no
-      specificity, so the cascade resolves exactly as it does in white. It is produced by a script, not by hand:
-      when colours change in those three files, build it again rather than editing the copy.
-   3. Hand-written corrections for what a mapping cannot know (primary buttons, pictures, selected states).
-   4. The compact layout. */
+   How it is put together:
+   1. Black: the app's own colour tokens are given dark values.
+   2. Black: a copy of every colour-carrying declaration in app/app.css, account.css and guides.css follows, in the
+      same order, with each colour mapped to its dark value. The condition sits inside :where(), which adds no
+      specificity, so the cascade resolves exactly as it does in white.
+   3. Black: hand-written corrections for what a mapping cannot know (primary buttons, small discs, the calendar).
+   4. Compact: the same kind of copy for padding, margins, gaps and type sizes, tightened, plus two corrections.
+   Parts 2 and 4 are written by a script from those three stylesheets. When colours or spacing change there, build
+   this file again rather than editing the copies by hand; a hand edit belongs in part 3 or at the very end. */
 
 /* ---- "Make it yours" on the Profile tab (both themes) */
 #p-looks .looks-name { margin: 12px 0 0; font-size: 13px; font-weight: 700; color: var(--heading); }

@@ -44,7 +44,8 @@
     var sent = { theme: cur.theme, layout: cur.layout };
     try {
       window.MDFit.apiAuth("PUT", "/api/me/prefs", sent).then(function () {
-        if (sent.theme === cur.theme && sent.layout === cur.layout) { unsent = false; writeSaved(true); }
+        // still signed in (signing out wipes the device, and must stay wiped) and still the current choice
+        if (signedIn() && sent.theme === cur.theme && sent.layout === cur.layout) { unsent = false; writeSaved(true); }
       }).catch(function () {});
     } catch (e) {}
   }
@@ -56,10 +57,10 @@
     // an unknown value is ignored, not turned into the default
     if (next.theme !== undefined && THEMES.indexOf(next.theme) < 0) want.theme = cur.theme;
     if (next.layout !== undefined && LAYOUTS.indexOf(next.layout) < 0) want.layout = cur.layout;
-    var changed = want.theme !== cur.theme || want.layout !== cur.layout;
+    if (want.theme === cur.theme && want.layout === cur.layout) { if (unsent) send(); return get(); } // nothing to change
     cur = want; chosenHere = true; unsent = true;
     apply(); writeSaved(false);
-    if (changed) announce();
+    announce();
     send();
     return get();
   }

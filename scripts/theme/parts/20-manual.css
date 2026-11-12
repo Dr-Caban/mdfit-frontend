@@ -1,0 +1,23 @@
+
+/* ---- 3. Corrections */
+/* Primary buttons: navy on a light card in white; here the light ink on a dark card, so they stay the loudest thing */
+html[data-theme="black"] .btn-blue, html[data-theme="black"] .note-go, html[data-theme="black"] .patient-card .pc-go { background: var(--navy); color: #0A1A2E; }
+html[data-theme="black"] .btn-blue:hover, html[data-theme="black"] .note-go:hover { background: #D9D6CF; }
+html[data-theme="black"] .install .btn-blue { background: var(--gold); color: #0A1A2E; }
+html[data-theme="black"] .install .btn-blue:hover { background: var(--gold-hover); }
+/* Small navy discs and tiles (step numbers, icons, dates): lifted off the card instead of sinking into it */
+html[data-theme="black"] .step-num, html[data-theme="black"] .pex-n, html[data-theme="black"] .a2hs-n, html[data-theme="black"] .tk-n,
+html[data-theme="black"] .avatar, html[data-theme="black"] .pg-ic, html[data-theme="black"] .mc-rank, html[data-theme="black"] .patient-card .pc-ic,
+html[data-theme="black"] .ch-ic, html[data-theme="black"] .ev-date:not(.gold), html[data-theme="black"] .note-ic { background: var(--navy-3); }
+/* What sits behind a sheet or dialog: black, not navy */
+html[data-theme="black"] dialog:not(.tip-lightbox)::backdrop { background: rgba(0, 0, 0, .66); }
+/* Calendar: a visit is the ink-coloured dot; on a picked (gold) day it turns dark so it still shows */
+html[data-theme="black"] .k-visit { background: var(--navy); box-shadow: 0 0 0 1px var(--card); }
+html[data-theme="black"] .cal-d.picked .k-visit { background: #0A1A2E; box-shadow: none; }
+html[data-theme="black"] .k-bg-visit { background: var(--navy) !important; }
+/* The check-in's weight box is a plain browser field; give it the app's dark field instead of the browser's grey */
+html[data-theme="black"] #ci-form input[type="number"] { background-color: var(--bg); border: 1px solid var(--line); color: var(--heading); }
+/* The ring around the tick on a chosen option matches the gold it now sits on */
+html[data-theme="black"] .opt[aria-checked="true"]::after, html[data-theme="black"] .pill[aria-checked="true"]::after { box-shadow: 0 0 0 2px var(--card); }
+/* Search: the matched word keeps a gold wash, with ink that reads on it */
+html[data-theme="black"] .qsearch-txt mark { background: rgba(232, 194, 94, .24); color: var(--heading); }
