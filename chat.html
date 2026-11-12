@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+  <title>Notes &amp; objectives | MD Fit</title>
+  <link rel="icon" href="assets/icon-64.png" type="image/png">
+  <link rel="apple-touch-icon" href="assets/logo.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="chat.css?v=26f42916">
+</head>
+<body>
+<!-- 1. The wall: a passcode before anything is shown. The server checks it; the code is never in this page. -->
+<section class="wall" id="wall" hidden>
+  <form class="wall-in" id="wall-form" autocomplete="off" novalidate>
+    <div class="accent">MD Fit</div>
+    <h1>Notes &amp; objectives</h1>
+    <p>Enter the passcode to continue.</p>
+    <label for="code" class="vh">Passcode</label>
+    <input class="code" id="code" name="code" inputmode="numeric" pattern="[0-9]*" maxlength="12" autocomplete="one-time-code" aria-describedby="wall-msg">
+    <button class="btn" type="submit" id="wall-go">Continue</button>
+    <div class="msg" id="wall-msg" role="alert"></div>
+  </form>
+</section>
+
+<!-- 2. First time on a device: say who you are, so each note carries a name. Same access either way. -->
+<section class="wall" id="whoami" hidden>
+  <div class="wall-in">
+    <div class="accent">MD Fit</div>
+    <h1>Who's on this device?</h1>
+    <p>Only used to put your name on what you write. You both see and can do the same things.</p>
+    <div class="pick"><button type="button" data-me="jared">Jared</button><button type="button" data-me="dev">Developer</button></div>
+  </div>
+</section>
+
+<!-- 3. A shared link (/chat?n=key) opens just that one entry, to read. No passcode; the board stays behind the wall. -->
+<section class="view" id="view" hidden>
+  <header class="top"><div class="top-in"><div class="brand">MD Fit<small>Notes &amp; objectives</small></div></div></header>
+  <main>
+    <p class="lead">Shared with you · view only</p>
+    <div id="view-body"></div>
+    <div class="row"><a class="btn" id="view-open" href="/chat">Open the full board</a><span class="hint flat">The board asks for the passcode.</span></div>
+  </main>
+</section>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<div id="app" hidden>
+<header class="top">
+  <div class="top-in">
+    <div class="brand">MD Fit<small>Notes &amp; objectives</small></div>
+    <div class="who"><button type="button" class="me" id="me-btn" aria-label="Change who is using this device"></button></div>
+  </div>
+</header>
+
+<main>
+  <section class="card" id="composer" aria-labelledby="composer-h">
+    <h2 id="composer-h">Add something</h2>
+    <div class="kind" role="group" aria-label="What is it">
+      <button type="button" data-kind="note" aria-pressed="true">Note</button>
+      <button type="button" data-kind="objective" aria-pressed="false">Objective</button>
+      <button type="button" data-kind="done" aria-pressed="false">Done</button>
+    </div>
+    <div class="dictate">
+      <button type="button" class="mic" id="mic" aria-label="Start dictating" aria-pressed="false"></button>
+      <div><b id="mic-title">Tap the microphone and talk</b><span id="mic-sub">Your words appear below. Fix anything before saving.</span></div>
+    </div>
+    <label for="body" class="vh">Your note</label>
+    <textarea id="body"></textarea>
+    <div class="row"><button type="button" class="btn" id="save" disabled>Save note</button><span class="hint flat">Saved with your name, the date and the time.</span></div>
+  </section>
+
+  <div class="tabs" role="tablist" aria-label="Lists">
+    <button type="button" role="tab" id="t-note" data-tab="note" aria-controls="list" aria-selected="true">Notes<span class="count" id="c-note"></span></button>
+    <button type="button" role="tab" id="t-obj" data-tab="obj" aria-controls="list" aria-selected="false">Objectives<span class="count" id="c-obj"></span></button>
+    <button type="button" role="tab" id="t-done" data-tab="done" aria-controls="list" aria-selected="false">Done<span class="count" id="c-done"></span></button>
+  </div>
+  <div class="tools"><span id="summary"></span>
+    <span class="tools-r"><label id="arch-wrap"><input type="checkbox" id="show-arch"> Show archived</label></span></div>
+  <div id="list" role="tabpanel" aria-labelledby="t-note"></div>
+
+  <p class="foot">Website and business notes only. Please keep patient details out of this page.</p>
+</main>
+</div>
+
+<noscript><p class="foot">This page needs JavaScript turned on.</p></noscript>
+<script src="config.js?v=aac711e3"></script>
+<script src="chat.js?v=4c29c4d2"></script>
+</body>
+</html>
