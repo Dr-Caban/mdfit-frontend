@@ -443,6 +443,7 @@
   });
 
   let teleAsked = false; // an open invitation to a video session (set by teleBanner below)
+  let myInvoices = [];   // unpaid invoices MD Fit sent this member (loaded below; kept in the bell until paid)
   const agoMs = (ms) => { const m = Math.round((Date.now() - ms) / 60000); return m < 1 ? "just now" : m < 60 ? `${m}m ago` : m < 1440 ? `${Math.round(m / 60)}h ago` : `${Math.round(m / 1440)}d ago`; };
   function renderNotes() {
     const t = todayInTz(), live = [];
@@ -455,8 +456,10 @@
     }
     // An invitation to a video session stands at the top of the bell for as long as it is open
     if (teleAsked) live.unshift({ kind: "video", title: "Dr. Jared invited you to a video session", body: "Tap Join to go in.", action: "Join", go: "/visit" });
+    // Invoices waiting to be paid: each stays here until it is paid
+    for (const v of myInvoices) live.push({ kind: "invoice", title: `Invoice ${v.number}: $${(v.amount / 100).toFixed(2)}`, body: "From MD Fit. Pay securely by card.", action: "Pay", go: v.path });
     if (stats && stats.streak > 0 && !stats.week[stats.todayIndex]) live.push({ kind: "streak", title: `Keep your ${stats.streak}-day streak going`, body: "Do a workout today.", action: "Start", go: "#generate" });
-    const icon = (k) => k === "video" ? '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3z"/></svg>' : ({ reward: "🏆", level: "⭐", message: "💬", visit: "📅", plan: "📋", streak: "🔥" })[k] || "🔔";
+    const icon = (k) => k === "invoice" ? '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></svg>' : k === "video" ? '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3z"/></svg>' : ({ reward: "🏆", level: "⭐", message: "💬", visit: "📅", plan: "📋", streak: "🔥" })[k] || "🔔";
     const row = (n, i, src) => `<div class="note-row${src === "h" && i < inbox.unseen ? " new" : ""}"><span class="notif-ic">${icon(n.kind)}</span><div class="note-txt"><b>${esc(n.title)}</b>${n.body ? `<span>${esc(n.body)}</span>` : ""}${n.at ? `<em>${agoMs(n.at)}</em>` : ""}</div>${n.go ? `<button type="button" class="note-go" data-go="${esc(n.go)}">${esc(n.action || "Open")}</button>` : ""}</div>`;
     const count = inbox.unseen + live.length;
     $("#bell .dot").hidden = true;
@@ -2034,6 +2037,28 @@
     b.querySelector("button").addEventListener("click", () => b.remove());
     document.body.appendChild(b);
   }
+  // ---- Invoices from MD Fit: in the bell until paid, and a banner with one button when a new one arrives
+  function invoiceBanner(v) {
+    const old = document.getElementById("inv-banner"); if (old) old.parentNode.removeChild(old);
+    if (!v) return;
+    const b = document.createElement("div"); b.id = "inv-banner"; b.setAttribute("role", "status");
+    b.style.cssText = "position:fixed;left:12px;right:12px;bottom:calc(88px + env(safe-area-inset-bottom));z-index:59;max-width:560px;margin:0 auto;background:#0A1A2E;color:#fff;border-radius:14px;padding:12px 14px;display:flex;gap:10px;align-items:center;box-shadow:0 10px 30px rgba(0,0,0,.3)";
+    const text = document.createElement("span"); text.style.cssText = "flex:1;font-weight:600"; text.textContent = `MD Fit sent you invoice ${v.number}: $${(v.amount / 100).toFixed(2)}.`;
+    const pay = document.createElement("a"); pay.href = v.path; pay.textContent = "Pay"; pay.style.cssText = "background:#7AAFD7;color:#0A1A2E;font-weight:700;padding:10px 16px;border-radius:10px;text-decoration:none";
+    const x = document.createElement("button"); x.type = "button"; x.setAttribute("aria-label", "Dismiss"); x.style.cssText = "background:none;border:0;color:#fff;padding:6px;cursor:pointer;display:inline-flex";
+    x.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+    x.addEventListener("click", () => { if (b.parentNode) b.parentNode.removeChild(b); });
+    b.append(text, pay, x); document.body.appendChild(b);
+  }
+  const loadInvoices = (announce) => apiAuth("GET", "/api/me/invoices").then((r) => {
+    const had = new Set(myInvoices.map((v) => v.number)); myInvoices = (r && r.invoices) || [];
+    const fresh = myInvoices.find((v) => !had.has(v.number));
+    try { renderNotes(); } catch {}
+    if (announce && fresh) invoiceBanner(fresh); else if (!myInvoices.length) invoiceBanner(null);
+  }).catch(() => {});
+  loadInvoices(true);
+  if (window.MDFitRT) MDFitRT.on("invoice_sent", () => loadInvoices(true));
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) loadInvoices(false); });
   apiAuth("GET", "/api/me/telehealth/invite").then((r) => teleBanner(!!(r && r.invited))).catch(() => {});
   if (window.MDFitRT) MDFitRT.on("tele_invited", () => teleBanner(true));
   setInterval(() => { if (!document.hidden && $("#view-messages").hidden) pollUnread(); }, 60000);

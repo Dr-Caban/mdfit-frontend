@@ -32,25 +32,28 @@
   // 1. Any change made from this page throws every copy away, so nothing older than your own last change is shown.
   // 2. An answer that was asked for before a change, or before a different sign-in, is not kept.
   // 3. Signing out, or 15 idle minutes, empties it with the rest of the page.
-  const mem = new Map(), flying = new Map(), FRESH_MS = 5000;
-  let epoch = 0, pending = 0, netT = 0;
+  const mem = new Map(), flying = new Map(), FRESH_MS = 20000;
+  let epoch = 0, pending = 0, shownBusy = 0, netT = 0;
   const forget = () => { epoch++; flying.clear(); };
   // A thin line at the top of the page whenever the server is being asked for something that takes a moment
   function netBar(d) {
-    pending = Math.max(0, pending + d); const b = $("#netbar"); if (!b) return;
-    if (pending) { if (!netT) netT = setTimeout(() => b.classList.add("on"), 180); } else { clearTimeout(netT); netT = 0; b.classList.remove("on"); }
+    shownBusy = Math.max(0, shownBusy + d); const b = $("#netbar"); if (!b) return;
+    if (shownBusy) { if (!netT) netT = setTimeout(() => b.classList.add("on"), 180); } else { clearTimeout(netT); netT = 0; b.classList.remove("on"); }
   }
   async function api(method, path, body) {
     const write = method !== "GET" && path !== "/api/admin/login";
     if (write) forget();
-    netBar(1);
+    // the line at the top is for work the person is waiting on: a screen on its way, or a change being saved.
+    // Loading ahead and checking in the background stay out of sight.
+    const seen = method !== "GET" || seq !== done;
+    pending++; if (seen) netBar(1);
     try {
       const res = await fetch(API + path, { method, headers: { "Content-Type": "application/json", ...(token ? { Authorization: "Bearer " + token } : {}) }, body: body === undefined ? undefined : JSON.stringify(body) });
       if (res.status === 401 && path !== "/api/admin/login") { signOut(); throw new Error("Session expired. Sign in again."); }
       const data = res.headers.get("content-type")?.includes("json") ? await res.json() : null;
       if (!res.ok) throw new Error((data && data.error) || "Request failed.");
       return data;
-    } finally { netBar(-1); if (write) { forget(); rewarm(method, path); } }
+    } finally { pending = Math.max(0, pending - 1); if (seen) netBar(-1); if (write) { forget(); rewarm(method, path); } }
   }
   // get: always asks the server (what the buttons use). load: what the screens use, described above.
   const get = (p) => { const at = epoch, tk = token; return api("GET", "/api/admin" + p).then((data) => { if (at === epoch && tk === token) mem.set(p, { raw: JSON.stringify(data), at: Date.now(), epoch: at }); return data; }); };
@@ -64,6 +67,16 @@
     }).finally(() => { if (flying.get(p) === run) flying.delete(p); });
     flying.set(p, run); return run;
   }
+  // For the slow part of a screen that the rest does not depend on (reading Google Calendar can take seconds): what
+  // is in memory if it is there; otherwise undefined at once, and the screen is redrawn when the answer arrives.
+  // null means it was asked and could not be read.
+  const soft = (p) => {
+    const e = mem.get(p);
+    if (e && e.epoch === epoch) { if (Date.now() - e.at > FRESH_MS) pull(p).catch(() => {}); return JSON.parse(e.raw); }
+    const at = epoch;
+    pull(p).then(() => changed(), () => { if (at === epoch) { mem.set(p, { raw: "null", at: Date.now(), epoch: at }); changed(); } });
+    return undefined;
+  };
   let lagSaid = 0;
   async function load(p) {
     const e = mem.get(p);
@@ -84,8 +97,8 @@
   function signOut() {
     token = ""; store.set(""); if (window.MDFitRT) { if (teleIn()) MDFitRT.emit("tele_end"); MDFitRT.disconnect(); } teleDrop(); stopDictation();
     for (const k of Object.keys(cache)) cache[k] = (k === "unread" || k === "waiting") ? 0 : null; // every cached list, the open chart included
-    mem.clear(); forget(); shown = ""; shownHtml = ""; visited.length = 0; clearTimeout(warmT); clearTimeout(repaintT); warmRun++;
-    state.chartClient = null; state.thread = null; state.clientQ = ""; state.scribeText = ""; tele.transcript = ""; noteReset(null);
+    mem.clear(); forget(); freshAsk = null; shown = ""; shownHtml = ""; visited.length = 0; clearTimeout(warmT); clearTimeout(repaintT); warmRun++;
+    state.chartClient = null; state.thread = null; state.clientQ = ""; state.formsQ = ""; state.formsShow = ""; state.scribeText = ""; tele.transcript = ""; noteReset(null);
     $("#view").innerHTML = ""; $("#nav").innerHTML = ""; $("#whoami").textContent = ""; $("#globalSearch").value = ""; closeModal();
     $("#app").hidden = true; $("#signin").hidden = false; clearTimeout(idleTimer);
     // /admin shares this tab: signing out here signs out there as well
@@ -184,21 +197,31 @@
     { g: "Client-facing", items: [["portal", "Client app"], ["booking", "Booking page"]] }
   ];
   function renderNav(active) {
-    const badge = (id) => id === "messages" && cache.unread ? `<span class="badge">${cache.unread}</span>` : id === "clients" && cache.waiting ? `<span class="badge">${cache.waiting}</span>` : "";
-    $("#nav").innerHTML = `<div class="brand"><div class="logo"><img src="assets/logo.webp" alt="" width="160" height="160"></div><div><b>MD Fit</b><div class="muted" style="font-size:12px">Physical Rehab &amp; Fitness</div></div></div>` +
-      NAV.map((g) => `<div class="nav-group"><span>${g.g}</span>${g.items.map(([id, label]) => `<a href="#${id}" class="${active === id ? "active" : ""}"><svg viewBox="0 0 24 24">${ICON[id]}</svg>${label}${badge(id)}</a>`).join("")}</div>`).join("") +
-      `<div class="nav-group"><a href="/admin-classic" class="muted" style="font-size:12.5px">Earlier admin screens</a></div>`;
+    const nav = $("#nav"), count = (id) => (id === "messages" ? cache.unread : id === "clients" ? cache.waiting : 0) || 0;
+    if (!nav.querySelector(".brand")) {
+      nav.innerHTML = `<div class="brand"><div class="logo"><img src="assets/logo.webp" alt="" width="160" height="160"></div><div><b>MD Fit</b><div class="muted" style="font-size:12px">Physical Rehab &amp; Fitness</div></div></div>` +
+        NAV.map((g) => `<div class="nav-group"><span>${g.g}</span>${g.items.map(([id, label]) => `<a href="#${id}" data-nav="${id}"><svg viewBox="0 0 24 24">${ICON[id]}</svg>${label}</a>`).join("")}</div>`).join("") +
+        `<div class="nav-group"><a href="/admin-classic" class="muted" style="font-size:12.5px">Earlier admin screens</a></div>`;
+    }
+    for (const a of nav.querySelectorAll("a[data-nav]")) {
+      const id = a.dataset.nav, n = count(id); let b = a.querySelector(".badge");
+      if (active !== undefined) a.classList.toggle("active", id === active); // a screen loading in the background only updates the counts
+      if (n && !b) { b = document.createElement("span"); b.className = "badge"; a.appendChild(b); }
+      if (b) { if (n) { if (b.textContent !== String(n)) b.textContent = n; } else b.remove(); }
+    }
   }
-
   async function clients(fresh) { return (cache.clients = await (fresh ? get : load)("/clients")); }
   // For a search box: the list in memory, unless it holds no match, in which case the server is asked once (someone
   // who signed up a minute ago is found without a refresh).
-  let askedFresh = 0;
+  let askedFresh = 0, freshAsk = null;
   // When the list in memory is being checked against the server at that moment, the box is asked again once the
   // answer is in, so the results on screen are never left a step behind.
   async function clientsHit(has, box) {
     let list = await clients();
-    if (!has(list) && Date.now() - askedFresh > 8000) { askedFresh = Date.now(); list = await clients(true); }
+    // (two searches at once share the one question to the server, so a slower stale answer can never land on top)
+    if (!has(list)) { if (!freshAsk || Date.now() - askedFresh > 8000) { askedFresh = Date.now(); freshAsk = clients(true); } list = await freshAsk.catch(() => list); }
+    // someone searching wants the newest list: if the copy is more than a few seconds old it is checked now
+    const held = mem.get("/clients"); if (held && held.epoch === epoch && Date.now() - held.at > 4000 && !flying.get("/clients")) pull("/clients").catch(() => {});
     const f = flying.get("/clients");
     if (f && box && !box._again) { box._again = true; const done = () => { box._again = false; }; f.then(() => { done(); if (box.isConnected && box.value.trim()) box.dispatchEvent(new Event("input", { bubbles: true })); }, done); }
     return list;
@@ -219,7 +242,8 @@
 
   V.dashboard = async () => {
     const todayIso = isoDay(new Date());
-    const [st, msgs, emr, list, sync] = await Promise.all([load("/stats"), load("/messages"), load("/emr"), clients(), load(`/busy?from=${todayIso}&days=7`).catch(() => null)]);
+    const [st, msgs, emr, list] = await Promise.all([load("/stats"), load("/messages"), load("/emr"), clients()]);
+    const sync = soft(`/busy?from=${todayIso}&days=7`); // the screen does not wait for Google
     // Your day is what is on your calendar, not only what was booked through MD Fit: the events on the connected
     // calendars are counted and listed here too (MD Fit's own bookings are not counted twice).
     const outside = ((sync && sync.busy) || []).filter((b) => !b.allDay).sort((a, b) => (a.date + String(a.start).padStart(5, "0") < b.date + String(b.start).padStart(5, "0") ? -1 : 1));
@@ -227,7 +251,7 @@
     const clock = (min) => fmtTime(`${String(Math.floor(min / 60)).padStart(2, "0")}:${String(min % 60).padStart(2, "0")}`);
     const outRow = (b, day) => `<div class="list-item"><span class="muted num" style="flex:0 0 ${day ? 150 : 84}px;font-size:12.5px">${day ? fmtDate(b.date) + " · " : ""}${clock(b.start)}</span><span style="flex:1;min-width:0"><b>${esc(b.title || "Busy")}</b><div class="muted" style="font-size:12px">until ${clock(b.end)} · ${b.source === "simplepractice" ? "SimplePractice" : "Google Calendar"}</div></span></div>`;
     const nToday = st.appointmentsToday + outToday.length, nWeek = st.appointmentsWeek + outside.length;
-    cache.unread = msgs.unread || 0; cache.waiting = emr.waiting.length; renderNav(routeNow());
+    cache.unread = msgs.unread || 0; cache.waiting = emr.waiting.length; renderNav();
     const h = new Date().getHours(), hello = h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening";
     const paidWaiting = emr.patients.concat(emr.waiting).reduce((n, p) => n + (p.paidVisits || 0), 0);
     const attention = [
@@ -240,7 +264,7 @@
     <div class="view-head"><div><h1>${hello}</h1><p class="muted">${new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })} · ${nToday} on your calendar today</p></div>
     <div class="row"><a class="btn" href="#calendar">Open calendar</a><a class="btn primary" href="#clients">Clients</a></div></div>
     <div class="grid g4" style="margin-bottom:16px">
-      ${kpi("Today", nToday, sync ? `${st.appointmentsToday} booked here · ${outToday.length} on your calendar` : "booked here (your other calendar could not be read)")}${kpi("Next 7 days", nWeek, sync ? `${st.appointmentsWeek} booked here · ${outside.length} on your calendar` : "booked here")}
+      ${kpi("Today", nToday, sync ? `${st.appointmentsToday} booked here · ${outToday.length} on your calendar` : sync === undefined ? "booked here · reading your calendar…" : "booked here (your other calendar could not be read)")}${kpi("Next 7 days", nWeek, sync ? `${st.appointmentsWeek} booked here · ${outside.length} on your calendar` : "booked here")}
       ${kpi("New requests", st.leadsNew, `${st.leads30d} in the last 30 days`, st.leadsNew ? "warn" : "")}${kpi("Unread messages", cache.unread, "from members", cache.unread ? "warn" : "")}
     </div>
     <div class="grid g-side">
@@ -264,7 +288,7 @@
     // The practice's other calendars (SimplePractice, Google Calendar) for the week on screen, drawn behind MD Fit's
     // own visits. Google events carry their titles (shown here only, never stored); anything else is a "Busy" block.
     const [appts, classes, bookings, sync] = await Promise.all([load("/appointments?all=1"), load("/classes"), load("/bookings"),
-      load(`/busy?from=${isoDay(mon)}&days=7`).catch(() => null)]);
+      Promise.resolve(soft(`/busy?from=${isoDay(mon)}&days=7`))]);
     cache.appts = appts; cache.classes = classes;
     const busy = (sync && sync.busy) || [], srcName = (x) => (x === "simplepractice" ? "SimplePractice" : "Google Calendar");
     const START = 6, END = 20, top = (t) => { const [h, m] = t.split(":").map(Number); return (h + m / 60 - START) * 56; };
@@ -285,7 +309,7 @@
     <div class="row"><button class="btn sm" data-act="calWeek" data-d="-1" aria-label="Previous week">${ui("prev", 14)}</button><button class="btn sm" data-act="calWeek" data-d="0">Today</button><button class="btn sm" data-act="calWeek" data-d="1" aria-label="Next week">${ui("next", 14)}</button>
     <button type="button" class="btn sm primary" data-act="calAdd" aria-label="Add an event to your calendar">${ui("plus", 14)} Add</button></div></div>
     <div class="row" style="margin-bottom:12px"><span class="pill"><span class="dot" style="background:var(--body)"></span>Booked</span><span class="pill"><span class="dot" style="background:var(--ok)"></span>Completed</span><span class="pill"><span class="dot" style="background:var(--fit)"></span>Class</span><span class="pill"><span class="dot" style="background:var(--muted)"></span>Your other calendars</span>
-    <span class="muted" style="font-size:12.5px">${!sync ? "Your other calendars could not be read just now." : sync.simplepractice === "off" && sync.google === "off" ? "No outside calendar is connected, so only MD Fit bookings show." : `Showing ${[sync.simplepractice !== "off" && "SimplePractice", sync.google !== "off" && "Google Calendar"].filter(Boolean).join(" and ")}${sync.titles ? " events, shown only on this screen" : " busy times (times only)"}${sync.lastError ? ". Last sync reported a problem" : ""}.`}</span></div>
+    <span class="muted" style="font-size:12.5px">${sync === undefined ? "Reading your Google Calendar…" : !sync ? "Your other calendars could not be read just now." : sync.simplepractice === "off" && sync.google === "off" ? "No outside calendar is connected, so only MD Fit bookings show." : `Showing ${[sync.simplepractice !== "off" && "SimplePractice", sync.google !== "off" && "Google Calendar"].filter(Boolean).join(" and ")}${sync.titles ? " events, shown only on this screen" : " busy times (times only)"}${sync.lastError ? ". Last sync reported a problem" : ""}.`}</span></div>
     <div class="table-wrap"><div class="cal">
       <div style="border-bottom:1px solid var(--line)"></div>${days.map((d) => `<div class="cal-h ${isoDay(d) === today ? "today" : ""}">${d.toLocaleDateString("en-US", { weekday: "short" })} ${d.getDate()}${((all) => all.slice(0, 1).map((b) => ` <span class="pill" style="font-weight:500;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:bottom" title="${esc(all.map((x) => x.title || "Busy").join(", "))} · all day on ${srcName(b.source)}">${esc(b.title || "Busy all day")}${all.length > 1 ? ` +${all.length - 1}` : ""}</span>`).join(""))(busy.filter((b) => b.allDay && b.date === isoDay(d)))}</div>`).join("")}
       <div class="cal-times" style="grid-row:2">${Array.from({ length: 28 }, (_, i) => `<div>${i % 2 === 0 ? fmtTime(`${START + i / 2}:00`).replace(":00", "") : ""}</div>`).join("")}</div>
@@ -300,19 +324,39 @@
   };
 
   V.clients = async () => {
+    const drawn = seq; // only the pass that reaches the page keeps its list for "show more" (a background load must not replace it)
     const [list, emr] = await Promise.all([clients(), load("/emr"), content()]);
-    cache.waiting = emr.waiting.length; renderNav(routeNow());
+    cache.waiting = emr.waiting.length; renderNav();
     const patients = new Set(emr.patients.map((p) => p.id)), waiting = new Set(emr.waiting.map((p) => p.id));
     const q = state.clientQ.toLowerCase().split(/\s+/).filter(Boolean);
     const shown = list.filter((c) => q.every((w) => `${c.name} ${c.email} ${c.phone}`.toLowerCase().includes(w)));
+    if (drawn === seq || !cache.clientView) cache.clientView = { rows: shown, patients, waiting };
     return `
     <div class="view-head"><div><h1>Clients</h1><p class="muted">${plural(list.length, "account")} · ${plural(patients.size, "active patient")} · ${waiting.size} waiting to be converted</p></div>
     <div class="row"><input class="input" id="clientQ" style="width:240px" placeholder="Filter by name, email or phone" value="${esc(state.clientQ)}" aria-label="Filter clients"><button class="btn" data-act="exportAsk" id="exportBtn">${ui("download", 14)} <span id="exportLabel">${state.picked.size ? `Export ${state.picked.size} selected` : "Export all"}</span></button></div></div>
     <div class="card" style="padding:0"><div class="table-wrap"><table>
       <thead><tr><th style="width:34px"><input type="checkbox" data-change="pickAll" aria-label="Select everyone shown"${shown.length && shown.every((c) => state.picked.has(c.id)) ? " checked" : ""}></th><th>Client</th><th>Status</th><th>Documents</th><th>Next visit</th><th>Membership</th><th>Last sign-in</th></tr></thead>
-      <tbody id="clientRows">${clientRows(shown, patients, waiting) || noneRow(7, list.length ? "No one matches." : "No clients yet.")}</tbody>
-    </table></div></div>`;
+      <tbody id="clientRows">${clientRows(shown.slice(0, ROWS_FIRST), patients, waiting) || noneRow(7, list.length ? "No one matches." : "No clients yet.")}</tbody>
+    </table></div>${moreRows(shown.length, ROWS_FIRST)}</div>`;
   };
+  // A long list is drawn a screenful at a time: the first rows at once, the rest as the bottom comes into view (or on
+  // the button). Building every row of a few hundred people was the slowest thing in the workspace.
+  const ROWS_FIRST = 40, ROWS_MORE = 80;
+  const moreRows = (total, drawn) => total > drawn ? `<div id="rowsMore" style="padding:12px 16px;display:flex;gap:10px;align-items:center"><span class="muted" style="font-size:12.5px" id="rowsMoreText">Showing ${drawn} of ${total}</span><button type="button" class="btn sm" data-act="rowsMore">Show more</button></div>` : "";
+  let rowsWatch = null;
+  function rowsMoreNow() {
+    const v = cache.clientView, body = $("#clientRows"), more = $("#rowsMore"); if (!v || !body || !more) return;
+    const have = body.querySelectorAll("tr[data-id]").length, next = v.rows.slice(have, have + ROWS_MORE);
+    if (next.length) body.insertAdjacentHTML("beforeend", clientRows(next, v.patients, v.waiting));
+    const now = have + next.length;
+    if (now >= v.rows.length) { if (rowsWatch) rowsWatch.disconnect(); more.remove(); } else $("#rowsMoreText").textContent = `Showing ${now} of ${v.rows.length}`;
+  }
+  function rowsArm() {
+    if (rowsWatch) rowsWatch.disconnect();
+    const more = $("#rowsMore"); if (!more || !("IntersectionObserver" in window)) return;
+    rowsWatch = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) rowsMoreNow(); }, { root: $("#view"), rootMargin: "600px 0px" });
+    rowsWatch.observe(more);
+  }
   function clientRows(list, patients, waiting) {
     return list.map((c) => `<tr class="click" data-act="chart" data-id="${esc(c.id)}">
       <td data-act="stop"><input type="checkbox" data-change="pickOne" data-id="${esc(c.id)}" aria-label="Select ${esc(c.name)}"${state.picked.has(c.id) ? " checked" : ""}></td>
@@ -526,7 +570,7 @@
     const tid = state.thread, held = tid && mem.get(`/messages/${tid}`), open = shown === "messages" && cache.msgShown === tid && !!$("#msgList");
     const th = tid && ((held && held.epoch === epoch) || open) ? await load(`/messages/${tid}`) : null; cache.msgShown = th ? tid : null;
     if (tid && !th) load(`/messages/${tid}`).then(() => { if (token && routeNow() === "messages" && state.thread === tid) render(); }, (err) => { if (token && routeNow() === "messages" && state.thread === tid) { const box = $(".msgs"); if (box) box.innerHTML = `<p class="muted" style="padding:16px;margin:0">This conversation could not be loaded: ${esc(err.message)}</p>`; } });
-    renderNav(routeNow());
+    renderNav();
     return `<div class="view-head"><div><h1>Messages</h1><p class="muted">Conversations with members · stored encrypted on the server</p></div><button type="button" class="btn" data-act="broadcast">${ui("broadcast", 15)}Broadcast</button></div>
     <div class="card chat" style="padding:0">
       <div class="threads">${t.threads.map((x) => `<div class="thread ${x.clientId === state.thread ? "active" : ""}" data-act="thread" data-id="${esc(x.clientId)}">${avatar(x.name, 36)}<div style="flex:1;min-width:0"><div class="row" style="justify-content:space-between"><b>${esc(x.name)}</b>${x.unread ? `<span class="badge">${x.unread}</span>` : ""}</div><div class="muted" style="font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${x.last ? (x.last.from === "doctor" ? "You: " : "") + esc(x.last.body) : ""}</div></div></div>`).join("") || `<p class="muted" style="padding:16px;margin:0">No messages yet.</p>`}</div>
@@ -707,10 +751,24 @@
 
   V.forms = async () => {
     const list = await clients();
+    const q = state.formsQ || "", todo = list.filter((c) => c.documents && !c.documents.complete).length;
     return `<div class="view-head"><div><h1>Forms & intake</h1><p class="muted">New patient documents: client information, pain assessment, history and consent</p></div></div>
-    <div class="card" style="padding:0"><div class="table-wrap"><table><thead><tr><th>Client</th><th>Documents</th><th></th></tr></thead><tbody>
-      ${list.map((c) => `<tr><td><b>${esc(c.name)}</b><div class="muted" style="font-size:12px">${esc(c.email)}</div></td><td>${c.documents ? (c.documents.complete ? `<span class="pill ok">Complete</span>` : `<span class="pill">${c.documents.done} of ${c.documents.total}</span>`) : "—"}</td><td><div class="row" style="justify-content:flex-end;flex-wrap:nowrap">${c.documents && !c.documents.complete ? `<button class="btn sm primary" data-act="intakeRemind" data-id="${esc(c.id)}" data-name="${esc(c.name)}">Notify to sign</button>` : ""}${c.documents && c.documents.done ? `<button class="btn sm" data-act="docsModal" data-id="${esc(c.id)}">View</button>` : ""}</div></td></tr>`).join("") || noneRow(3, "No clients yet.")}</tbody></table></div></div>`;
+    <div class="row" style="margin-bottom:12px;gap:10px"><div class="search" style="position:relative;flex:1 1 280px;max-width:440px"><input id="formsQ" class="input" type="search" autocomplete="off" placeholder="Search this list by name or email" aria-label="Search forms and intake by name or email" value="${esc(q)}"></div>
+      <div class="seg" role="group" aria-label="Which clients to show"><button type="button" data-act="formsShow" data-show="" aria-pressed="${!state.formsShow}">All</button><button type="button" data-act="formsShow" data-show="todo" aria-pressed="${state.formsShow === "todo"}">Not finished (${todo})</button><button type="button" data-act="formsShow" data-show="done" aria-pressed="${state.formsShow === "done"}">Complete</button></div>
+      <span class="muted" id="formsCount" style="font-size:12.5px" role="status"></span></div>
+    <div class="card" style="padding:0"><div class="table-wrap"><table><thead><tr><th>Client</th><th>Documents</th><th></th></tr></thead><tbody id="formsRows">
+      ${list.map((c) => `<tr data-hay="${esc(`${c.name} ${c.email}`.toLowerCase())}" data-st="${c.documents && c.documents.complete ? "done" : c.documents ? "todo" : ""}"><td><b>${esc(c.name)}</b><div class="muted" style="font-size:12px">${esc(c.email)}</div></td><td>${c.documents ? (c.documents.complete ? `<span class="pill ok">Complete</span>` : `<span class="pill">${c.documents.done} of ${c.documents.total}</span>`) : "—"}</td><td><div class="row" style="justify-content:flex-end;flex-wrap:nowrap">${c.documents && !c.documents.complete ? `<button class="btn sm primary" data-act="intakeRemind" data-id="${esc(c.id)}" data-name="${esc(c.name)}">Notify to sign</button>` : ""}${c.documents && c.documents.done ? `<button class="btn sm" data-act="docsModal" data-id="${esc(c.id)}">View</button>` : ""}</div></td></tr>`).join("") || noneRow(3, "No clients yet.")}<tr id="formsNone" hidden><td colspan="3"><p class="muted" style="margin:0">No client matches.</p></td></tr></tbody></table></div></div>`;
   };
+  // Forms & intake: the search box and the three buttons narrow the list that is already on the screen (nothing is
+  // fetched, so it answers as you type)
+  function formsFilter() {
+    const box = $("#formsRows"); if (!box) return;
+    const words = (state.formsQ || "").trim().toLowerCase().split(/\s+/).filter(Boolean), show = state.formsShow || "";
+    let n = 0, all = 0;
+    for (const tr of box.querySelectorAll("tr[data-hay]")) { all++; const on = words.every((w) => tr.dataset.hay.includes(w)) && (!show || tr.dataset.st === show); tr.hidden = !on; if (on) n++; }
+    const none = $("#formsNone"); if (none) none.hidden = n > 0 || !all;
+    const c = $("#formsCount"); if (c) c.textContent = words.length || show ? `${n} of ${all}` : `${all} clients`;
+  }
 
   // ---- Small form pieces shared by the editing screens
   const fld = (id, name, label, val, o = {}) => `<div class="field"><label for="${id}">${label}</label>${o.area ? `<textarea id="${id}" name="${name}" class="input" rows="${o.rows || 3}" maxlength="${o.max || 500}" ${o.attrs || ""}>${esc(val ?? "")}</textarea>` : `<input id="${id}" name="${name}" class="input" type="${o.type || "text"}" value="${esc(val ?? "")}" ${o.max ? `maxlength="${o.max}"` : ""} ${o.attrs || ""}>`}</div>`;
@@ -1322,6 +1380,8 @@
         <div class="row"><button class="btn primary"${(r.models || []).length ? "" : " disabled"}>Use this model</button></div></form>`);
     },
     stop: () => {},
+    rowsMore: () => rowsMoreNow(),
+    formsShow: (el) => { state.formsShow = el.dataset.show; for (const b of el.parentElement.querySelectorAll("button")) b.setAttribute("aria-pressed", String(b === el)); formsFilter(); },
     // ---- Invoice generator (Payments): draft once, pick the people, write the email, send
     igAll: () => { state.genAll = true; render(); },
     igNew: () => { state.igPeople = []; const g = cache.gen || {};
@@ -1627,6 +1687,8 @@
     if (r && r !== shown && (WARM.includes(r) || AHEAD[r])) hoverT = setTimeout(() => { if (token) early(r).catch(() => {}); }, wait);
   };
   document.addEventListener("pointerover", (e) => { if (e.pointerType === "mouse") ahead(e, 90); });
+  // The menu answers the press itself: the highlight moves at once, and the screen follows from memory.
+  document.addEventListener("pointerdown", (e) => { const a = token && e.target.closest && e.target.closest("#nav a[data-nav]"); if (a && e.button === 0) { lastTouch = Date.now(); for (const x of $("#nav").querySelectorAll("a[data-nav]")) x.classList.toggle("active", x === a); } }, true);
   document.addEventListener("pointerdown", (e) => {
     ahead(e, 0);
     const el = token && e.target.closest && e.target.closest("[data-act]");
@@ -1636,6 +1698,8 @@
     if (e.target.matches("[data-change=leadStatus]")) guard(ACT.leadSave)(e.target);
     if (e.target.matches("[data-change=chartFile]")) guard(chartUpload)(e.target);
     if (e.target.matches("[data-change=pickOne], [data-change=pickAll]")) {
+      // "everyone shown" is everyone the filter matches, including rows not drawn yet
+      if (e.target.matches("[data-change=pickAll]")) for (const c of ((cache.clientView || {}).rows || [])) { if (e.target.checked) state.picked.add(c.id); else state.picked.delete(c.id); }
       if (e.target.matches("[data-change=pickAll]")) document.querySelectorAll("[data-change=pickOne]").forEach((b) => { b.checked = e.target.checked; if (b.checked) state.picked.add(b.dataset.id); else state.picked.delete(b.dataset.id); });
       else if (e.target.checked) state.picked.add(e.target.dataset.id); else state.picked.delete(e.target.dataset.id);
       const l = $("#exportLabel"); if (l) l.textContent = state.picked.size ? `Export ${state.picked.size} selected` : "Export all";
@@ -1674,6 +1738,7 @@
         box.innerHTML = list.filter((c) => q.every((w) => `${c.name} ${c.email}`.toLowerCase().includes(w))).slice(0, 8).map((c) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(c.name)}</b><div class="muted" style="font-size:12px;overflow-wrap:anywhere">${esc(c.email)}</div>${devLine((cache.devices || {})[c.id], true)}</span>${here.has(c.id) ? `<span class="pill ok">Here</span>` : `<button type="button" class="btn sm primary" data-act="teleInvite" data-id="${esc(c.id)}">${asked.has(c.id) ? "Invite again" : "Invite to telehealth"}</button>`}</div>`).join("") || none("No client matches.");
       }).catch(() => {});
     }
+    if (e.target.id === "formsQ") { state.formsQ = e.target.value; formsFilter(); }
     if (e.target.id === "igFind") {
       const q = e.target.value.trim().toLowerCase().split(/\s+/).filter(Boolean), box = $("#igRes");
       if (!q.length) { box.innerHTML = ""; return; }
@@ -1703,6 +1768,8 @@
     if (r === "chart" && state.chartClient) chartAfter();
     if (r === "telehealth") { if (window.MDFitRT) MDFitRT.emit("tele_list"); teleMount(); }
     if (r === "economics" && state.ecoOpen) ecoDetail();
+    if (r === "forms") formsFilter();
+    if (r === "clients") rowsArm();
     if (r === "messages") { fitChat(); if (!again) { const l = $("#msgList"); if (l) l.scrollTop = l.scrollHeight; } } // a conversation opens at its newest message
   }
   // The conversation card ends where the window ends, whatever is above it, so the box to write in is always on screen
@@ -1748,22 +1815,25 @@
     chart: () => Promise.all([load("/emr"), content()]), economics: () => load(`/economics?months=${state.ecoMonths || 6}`)
   };
   const early = (r) => (WARM.includes(r) ? V[r]() : AHEAD[r] ? AHEAD[r]() : Promise.resolve());
-  const visited = []; let warmT = 0, warmRun = 0, warmedAt = 0, warming = false;
+  const visited = []; let warmT = 0, warmRun = 0, warmedAt = 0, warming = false, lastTouch = 0;
+  const quietNow = async () => { for (let i = 0; i < 200 && (seq !== done || pending > 0 || Date.now() - lastTouch < 1500); i++) await new Promise((go) => setTimeout(go, 150)); };
   async function warm(list) {
     const my = ++warmRun, tk = token; warming = true;
     try {
       for (const r of list) {
         if (my !== warmRun || !token || tk !== token) return;
         if (r === shown || document.hidden) continue;
+        await quietNow(); // the person's own clicks always go first
+        if (my !== warmRun || !token || tk !== token) return;
         try { await early(r); } catch {}
-        await new Promise((go) => setTimeout(go, 80));
+        await new Promise((go) => setTimeout(go, 120));
       }
     } finally { if (my === warmRun) warming = false; }
   }
   function rewarm(method, path) {
     if (!token || (method !== "DELETE" && /^\/api\/admin\/notes(\/[^/]+)?$/.test(path))) return; // a draft saving itself as you type is not a reason to reload the other screens
     clearTimeout(warmT);
-    warmT = setTimeout(() => { if (!token) return; warmedAt = Date.now(); warm(visited.filter((r) => WARM.includes(r) || AHEAD[r]).slice(0, 5)); }, Math.max(900, warmedAt + 8000 - Date.now()));
+    warmT = setTimeout(() => { if (!token) return; warmedAt = Date.now(); warm(visited.filter((r) => WARM.includes(r) || AHEAD[r]).slice(0, 3)); }, Math.max(1500, warmedAt + 8000 - Date.now()));
   }
   const noteAppend = (text) => { const box = $("#nBody"); if (!box) return; box.value = (box.value.trimEnd() ? box.value.trimEnd() + "\n\n" : "") + text; noteTouch(); box.focus(); box.scrollTop = box.scrollHeight; };
   document.addEventListener("input", (e) => { if (e.target.matches && e.target.matches("[data-input=note]")) noteTouch(); });
@@ -2178,8 +2248,10 @@
     $("#signin").hidden = true; $("#app").hidden = false; idleArm(); goLive();
     get("/me").then((me) => { cache.me = me; $("#whoami").textContent = me.email; }).catch(() => {});
     const tk = token;
-    render().then(() => setTimeout(() => { if (token && tk === token) { warmedAt = Date.now(); warm([...WARM, ...Object.keys(AHEAD)]); } }, 300));
+    render().then(() => setTimeout(() => { if (token && tk === token) { warmedAt = Date.now(); warm(["clients", "calendar", "dashboard", "messages", "chart", "telehealth", "notes", "leads", "forms", "payments", ...WARM.filter((r) => !["clients", "calendar", "dashboard", "leads", "forms", "payments"].includes(r)), "economics"]); } }, 600));
   }
+  window.addEventListener("pointerdown", () => { lastTouch = Date.now(); }, true);
+  window.addEventListener("keydown", () => { lastTouch = Date.now(); }, true);
   window.addEventListener("hashchange", () => { if (location.hash !== "#chart") {} render(); });
   $("#navToggle").addEventListener("click", () => $("#nav").classList.toggle("open"));
   // Light is the default on every device; dark is a choice, remembered on this device (a display setting, no patient data)
