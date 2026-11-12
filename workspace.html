@@ -232,13 +232,14 @@ textarea.input{min-height:120px;resize:vertical;line-height:1.55}
 .appt:hover{filter:brightness(.97)}
 
 /* Chat */
-.chat{display:grid;grid-template-columns:280px 1fr;height:calc(100vh - 190px);min-height:420px}
+.chat{display:grid;grid-template-columns:280px minmax(0,1fr);grid-template-rows:minmax(0,1fr);height:calc(100vh - 190px);height:calc(100dvh - 190px);min-height:300px;overflow:hidden}
+.threads,.msgs,.msg-list{min-height:0}.msgs{min-width:0}
 .threads{border-right:1px solid var(--line);overflow-y:auto}
 .thread{padding:12px 14px;border-bottom:1px solid var(--line);cursor:pointer;display:flex;gap:10px}
 .thread.active{background:var(--accent-soft)}
 .msgs{display:flex;flex-direction:column}
 .msg-list{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
-.bubble{max-width:70%;padding:9px 12px;border-radius:12px;background:var(--bg)}
+.bubble{max-width:70%;padding:9px 12px;border-radius:12px;background:var(--bg);overflow-wrap:anywhere;white-space:pre-wrap}
 .bubble.me{align-self:flex-end;background:var(--accent);color:var(--accent-ink)}
 .composer{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line)}
 
@@ -272,7 +273,15 @@ textarea.input{min-height:120px;resize:vertical;line-height:1.55}
 .set-row.three{grid-template-columns:minmax(0,2fr) minmax(0,1fr) 90px;border:0;padding:6px 0 0}
 .chart-types{gap:8px 10px;margin:-4px 0 14px;font-size:13px;color:var(--muted)}
 .chart-types select{width:auto;min-height:36px;padding:6px 10px}
-.tier-pick{width:auto;min-width:130px;min-height:34px;padding:4px 8px;font-size:13px;color:var(--muted)}
+.tier-pick,select.tier-pick{width:auto;min-width:130px;max-width:100%;min-height:34px;padding:4px 8px;font-size:13px;color:var(--muted)}
+.member-row{flex-wrap:wrap}.member-row .who{flex:1 1 170px;min-width:0}.member-row select.tier-pick{flex:0 1 210px}
+#netbar{position:fixed;top:0;left:0;right:0;height:2px;z-index:300;pointer-events:none;opacity:0;background:linear-gradient(90deg,transparent,var(--accent),transparent) no-repeat;background-size:40% 100%}
+#netbar.on{opacity:1;animation:netbar 1s linear infinite}
+@keyframes netbar{from{background-position:-70% 0}to{background-position:170% 0}}
+[aria-busy="true"]{cursor:progress}
+.btn[aria-busy="true"],form[aria-busy="true"] button:not([type="button"]){animation:busy 1s .15s ease-in-out infinite}
+@keyframes busy{50%{opacity:.5}}
+@media (prefers-reduced-motion:reduce){#netbar.on{animation:none;background:var(--accent)}.btn[aria-busy="true"],form[aria-busy="true"] button:not([type="button"]){animation:none;opacity:.6}}
 .tier-pick.on{color:var(--ok);font-weight:600;border-color:color-mix(in srgb,var(--ok) 35%,var(--line))}
 .doc{color:#111;background:#fff;padding:18px;border:1px solid var(--line);border-radius:10px;font-size:13px;line-height:1.45}
 .doc-top{display:flex;justify-content:space-between;gap:20px;margin-bottom:14px}
@@ -304,7 +313,9 @@ textarea.input{min-height:120px;resize:vertical;line-height:1.55}
   .nav.open{transform:none;box-shadow:0 0 40px rgba(0,0,0,.3)}
   .mobile-nav-btn{display:inline-flex}
   .g2,.g3,.g4,.g-side{grid-template-columns:minmax(0,1fr)}
-  .chat{grid-template-columns:1fr}.threads{display:none}
+  .chat{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr)}
+  .threads{display:flex;overflow-x:auto;overflow-y:hidden;border-right:0;border-bottom:1px solid var(--line)}
+  .thread{flex:0 0 210px;border-bottom:0;border-right:1px solid var(--line)}
   .view{padding:16px}.top{padding:10px 16px}
 }
 </style>
@@ -338,11 +349,12 @@ textarea.input{min-height:120px;resize:vertical;line-height:1.55}
 </div>
 <div class="modal-back" id="modalBack"><div class="modal" id="modal" role="dialog" aria-modal="true"></div></div>
 <div class="toast" id="toast" role="status"></div>
+<div id="netbar" aria-hidden="true"></div>
 
 <div id="printDoc"></div>
 <script src="config.js?v=aac711e3"></script>
 <script src="realtime.js?v=dccfd156"></script>
 <script src="app/exercises.js?v=d121be98"></script>
-<script src="workspace-app.js?v=b97516b3"></script>
+<script src="workspace-app.js?v=fc108f65"></script>
 </body>
 </html>
