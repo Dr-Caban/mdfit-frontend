@@ -171,13 +171,14 @@
     security: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
     settings: '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/>',
     portal: '<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>',
+    economics: '<circle cx="12" cy="12" r="9"/><path d="M15 9.5c-.5-1-1.6-1.5-3-1.5-1.700 0-3 .8-3 2s1.300 1.800 3 2 3 .8 3 2-1.300 2-3 2c-1.400 0-2.500-.5-3-1.500M12 6v2M12 16v2"/>',
     booking: '<path d="M3 9h18M7 3v4M17 3v4"/><rect x="3" y="5" width="18" height="16" rx="2"/><path d="m9 15 2 2 4-4"/>'
   };
   const NAV = [
     { g: "Practice", items: [["dashboard", "Dashboard"], ["calendar", "Calendar"], ["clients", "Clients"], ["chart", "Client chart"], ["leads", "Leads"], ["messages", "Messages"], ["telehealth", "Telehealth"]] },
     { g: "Clinical", items: [["notes", "Notes & AI scribe"], ["forms", "Forms & intake"], ["programs", "Programs"], ["nutrition", "Nutrition"], ["fitness", "Fitness"]] },
     { g: "Business", items: [["payments", "Payments"], ["newsletter", "Newsletter"]] },
-    { g: "Admin", items: [["team", "Team & roles"], ["feedback", "Reviews & feedback"], ["security", "Security & audit"], ["settings", "Modules & settings"], ["insights", "Insights"]] },
+    { g: "Admin", items: [["team", "Team & roles"], ["feedback", "Reviews & feedback"], ["security", "Security & audit"], ["settings", "Modules & settings"], ["insights", "Insights"], ["economics", "System economics"]] },
     { g: "Client-facing", items: [["portal", "Client app"], ["booking", "Booking page"]] }
   ];
   function renderNav(active) {
@@ -212,7 +213,7 @@
     const clock = (min) => fmtTime(`${String(Math.floor(min / 60)).padStart(2, "0")}:${String(min % 60).padStart(2, "0")}`);
     const outRow = (b, day) => `<div class="list-item"><span class="muted num" style="flex:0 0 ${day ? 150 : 84}px;font-size:12.5px">${day ? fmtDate(b.date) + " · " : ""}${clock(b.start)}</span><span style="flex:1;min-width:0"><b>${esc(b.title || "Busy")}</b><div class="muted" style="font-size:12px">until ${clock(b.end)} · ${b.source === "simplepractice" ? "SimplePractice" : "Google Calendar"}</div></span></div>`;
     const nToday = st.appointmentsToday + outToday.length, nWeek = st.appointmentsWeek + outside.length;
-    cache.unread = msgs.unread || 0; cache.waiting = emr.waiting.length; renderNav("dashboard");
+    cache.unread = msgs.unread || 0; cache.waiting = emr.waiting.length; renderNav(routeNow());
     const h = new Date().getHours(), hello = h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening";
     const paidWaiting = emr.patients.concat(emr.waiting).reduce((n, p) => n + (p.paidVisits || 0), 0);
     const attention = [
@@ -286,7 +287,7 @@
 
   V.clients = async () => {
     const [list, emr] = await Promise.all([clients(), load("/emr"), content()]);
-    cache.waiting = emr.waiting.length; renderNav("clients");
+    cache.waiting = emr.waiting.length; renderNav(routeNow());
     const patients = new Set(emr.patients.map((p) => p.id)), waiting = new Set(emr.waiting.map((p) => p.id));
     const q = state.clientQ.toLowerCase().split(/\s+/).filter(Boolean);
     const shown = list.filter((c) => q.every((w) => `${c.name} ${c.email} ${c.phone}`.toLowerCase().includes(w)));
@@ -311,7 +312,7 @@
   }
 
   // ---- Client chart. Every sub-tab is worked from here: nothing is handed off to another screen to edit.
-  const usd = (cents) => "$" + (Number(cents || 0) / 100).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const usd = (c) => (c < 0 ? "-" : "") + "$" + (Math.abs(Number(c) || 0) / 100).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const sizeOf = (n) => (n < 1024 ? n + " B" : n < 1048576 ? Math.round(n / 1024) + " KB" : (n / 1048576).toFixed(1) + " MB");
   const tiers = () => (cache.content && cache.content.tiers) || [];
   const tierName = (id) => (tiers().find((x) => x.id === id) || {}).name || id || "";
@@ -505,14 +506,19 @@
   V.messages = async () => {
     const t = await load("/messages"); cache.unread = t.unread || 0;
     if (!t.threads.find((x) => x.clientId === state.thread)) state.thread = t.threads[0] ? t.threads[0].clientId : null;
-    const th = state.thread ? await load(`/messages/${state.thread}`) : null;
-    renderNav("messages");
+    // The list of people is drawn at once. A conversation that is not in memory yet follows as soon as it arrives:
+    // it is never loaded ahead of time, because opening one marks its messages as read.
+    // (A conversation already on the screen is simply waited for, so sending a message never blanks it.)
+    const tid = state.thread, held = tid && mem.get(`/messages/${tid}`), open = shown === "messages" && cache.msgShown === tid && !!$("#msgList");
+    const th = tid && ((held && held.epoch === epoch) || open) ? await load(`/messages/${tid}`) : null; cache.msgShown = th ? tid : null;
+    if (tid && !th) load(`/messages/${tid}`).then(() => { if (token && routeNow() === "messages" && state.thread === tid) render(); }, (err) => { if (token && routeNow() === "messages" && state.thread === tid) { const box = $(".msgs"); if (box) box.innerHTML = `<p class="muted" style="padding:16px;margin:0">This conversation could not be loaded: ${esc(err.message)}</p>`; } });
+    renderNav(routeNow());
     return `<div class="view-head"><div><h1>Messages</h1><p class="muted">Conversations with members · stored encrypted on the server</p></div><button type="button" class="btn" data-act="broadcast">${ui("broadcast", 15)}Broadcast</button></div>
     <div class="card chat" style="padding:0">
       <div class="threads">${t.threads.map((x) => `<div class="thread ${x.clientId === state.thread ? "active" : ""}" data-act="thread" data-id="${esc(x.clientId)}">${avatar(x.name, 36)}<div style="flex:1;min-width:0"><div class="row" style="justify-content:space-between"><b>${esc(x.name)}</b>${x.unread ? `<span class="badge">${x.unread}</span>` : ""}</div><div class="muted" style="font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${x.last ? (x.last.from === "doctor" ? "You: " : "") + esc(x.last.body) : ""}</div></div></div>`).join("") || `<p class="muted" style="padding:16px;margin:0">No messages yet.</p>`}</div>
       <div class="msgs">${th ? `<div style="padding:12px 16px;border-bottom:1px solid var(--line)" class="row"><b>${esc(th.client.name)}</b><span class="muted" style="font-size:12px">${esc(th.client.email)}</span><button class="btn sm" style="margin-left:auto" data-act="chart" data-id="${esc(th.client.id)}">Chart</button></div>
         <div class="msg-list" id="msgList">${th.messages.map((m) => `<div class="bubble ${m.from === "doctor" ? "me" : ""}">${esc(m.body)}<div class="muted" style="font-size:11px;margin-top:2px">${when(m.at)}</div></div>`).join("")}</div>
-        <form class="composer" data-form="message"><input name="body" class="input" placeholder="Write a message" autocomplete="off" maxlength="4000" aria-label="Message" required><button class="btn primary">Send</button></form>` : `<p class="muted" style="padding:16px;margin:0">Pick a conversation.</p>`}</div>
+        <form class="composer" data-form="message"><input name="body" class="input" placeholder="Write a message" autocomplete="off" maxlength="4000" aria-label="Message" required><button class="btn primary">Send</button></form>` : `<p class="muted" style="padding:16px;margin:0">${tid ? "Opening the conversation…" : "Pick a conversation."}</p>`}</div>
     </div>`;
   };
 
@@ -796,6 +802,77 @@
       ${mail ? `<p class="muted" style="margin:0">Alerts go to ${esc((mail.alertsTo || []).join(", ") || "nobody yet")}. ${plural((mail.failures || []).length, "failed send")} on record.</p>` : none("Email log unavailable.")}</div>`;
   };
 
+  // ---- System economics: what the system takes in, what it costs to run, and what is left. Every figure is read
+  // from a record (Stripe's balance history, the invoices on the charts, the member list, the calendar); the running
+  // costs are the owner's own entries. Where a source cannot be read the screen says so and leaves the figure out.
+  const monthName = (ym, long) => new Date(ym + "-15T12:00:00Z").toLocaleDateString("en-US", { month: long ? "long" : "short", year: "numeric", timeZone: "UTC" });
+  const ECO_USES = ["Railway (server)", "Vercel (website)", "Bunny (video)", "Resend (email)", "AI scribe"];
+  // Revenue, expenses and system cost side by side, month by month. Columns share one dollar axis; the same numbers
+  // are in the table underneath, and resting on (or tabbing to) a month shows them all.
+  function ecoChart(rows) {
+    const top = Math.max(1, ...rows.flatMap((r) => [r.revenue, r.expenses, r.system]));
+    const step = [1, 2, 2.5, 5, 10].map((k) => k * 10 ** Math.floor(Math.log10(top / 4))).find((x) => x * 4 >= top) || top / 4, max = step * 4;
+    const tick = (c) => { const d = c / 100; return "$" + (max >= 1000000 ? (d / 1000).toLocaleString("en-US", { maximumFractionDigits: 1 }) + "K" : d.toLocaleString("en-US", { maximumFractionDigits: d < 10 && d % 1 ? 2 : 0 })); };
+    const col = (v, k) => `<span class="eco-bar s${k}" style="height:${Math.max(0, Math.min(100, (v / max) * 100)).toFixed(2)}%"></span>`;
+    const key = (k, label) => `<span class="eco-key"><i class="s${k}"></i>${label}</span>`;
+    return `<div class="eco-chart" role="group" aria-label="Revenue, expenses and system cost by month. The same figures are in the table below.">
+      <div class="eco-legend">${key(1, "Revenue")}${key(2, "Expenses")}${key(3, "System cost")}</div>
+      <div class="eco-plot"><div class="eco-y" aria-hidden="true">${[4, 3, 2, 1, 0].map((k) => `<span>${tick(step * k)}</span>`).join("")}</div>
+        <div class="eco-area">${[0, 1, 2, 3, 4].map((k) => `<i class="eco-grid" style="bottom:${k * 25}%"></i>`).join("")}
+          ${rows.map((r, n) => `<div class="eco-g${n > rows.length / 2 ? " late" : ""}" tabindex="0" aria-label="${esc(monthName(r.m, true))}${r.partial ? " so far" : ""}: revenue ${usd(r.revenue)}, expenses ${usd(r.expenses)}, system cost ${usd(r.system)}, left ${usd(r.left)}">
+            <div class="eco-cols">${col(r.revenue, 1)}${col(r.expenses, 2)}${col(r.system, 3)}</div>
+            <div class="eco-m" aria-hidden="true">${monthName(r.m).replace(/ \d+$/, "")}${r.m.slice(5) === "01" || r === rows[0] ? `<small>${r.m.slice(0, 4)}</small>` : ""}</div>
+            <div class="eco-tip" aria-hidden="true"><b>${monthName(r.m, true)}${r.partial ? " · so far" : ""}</b>
+              <span><i class="s1"></i><b class="num">${usd(r.revenue)}</b> Revenue</span><span><i class="s2"></i><b class="num">${usd(r.expenses)}</b> Expenses</span><span><i class="s3"></i><b class="num">${usd(r.system)}</b> System cost</span>
+              <span class="eco-left"><b class="num">${usd(r.left)}</b> Left</span></div></div>`).join("")}</div></div>
+</div>`;
+  }
+  V.economics = async () => {
+    const n = state.ecoMonths || 6, e = await load(`/economics?months=${n}`); cache.eco = e;
+    const S = e.stripe, read = S.on && !S.error, cur = e.currentMonth, last = e.months[e.months.length - 2], M = e.members;
+    // Revenue: card payments and invoices settled another way, less refunds. Expenses: Stripe's fees (and anything it
+    // clawed back) plus the expenses kept here. System cost: what the software costs to run. Left: revenue less both.
+    const rows = e.months.map((m) => { const s = S.byMonth[m] || {}, out = e.outside[m] || 0, fees = (s.fees || 0) - Math.min(0, s.other || 0);
+      const revenue = (s.gross || 0) + out - (s.refunds || 0) + Math.max(0, s.other || 0), expenses = fees + e.expensesMonthly, system = e.systemMonthly;
+      return { m, partial: m === cur, card: s.gross || 0, out, refunds: s.refunds || 0, fees, payments: s.payments || 0, revenue, expenses, system, left: revenue - expenses - system }; });
+    const now = rows[rows.length - 1], prev = rows[rows.length - 2];
+    const avg = M.paying ? M.listMonthly / M.paying : 0, need = avg ? Math.ceil(e.costsMonthly / avg) : null;
+    const right = 'style="text-align:right"', line = (label, val, sub) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${label}</b>${sub ? `<div class="muted" style="font-size:12px">${sub}</div>` : ""}</span><b class="num">${val}</b></div>`;
+    const lines = e.costs, more = lines.length < 40 ? [{ id: "", name: "", kind: "system", monthly: "" }] : [];
+    const missing = ECO_USES.filter((u) => !lines.some((x) => x.name.toLowerCase().includes(u.split(" ")[0].toLowerCase())));
+    return `<div class="view-head"><div><h1>System economics</h1><p class="muted">Revenue against expenses and what the system costs to run · totals only, read from Stripe, the invoices on the charts and the member list</p></div>
+      <div class="field" style="margin:0"><label for="ecoMonths" class="muted" style="font-size:12px">Months shown</label><select id="ecoMonths" class="input" data-change="ecoMonths" style="width:auto">${[3, 6, 12].map((x) => `<option value="${x}"${x === n ? " selected" : ""}>${x} months</option>`).join("")}</select></div></div>
+    ${!S.on ? `<div class="card" style="margin-bottom:16px">${none("Stripe is not connected on the server, so card revenue cannot be read. Everything else on this screen is still from your records.")}</div>` : S.error ? `<div class="card" style="margin-bottom:16px"><b>Card revenue could not be read.</b><p class="muted" style="margin:6px 0 0">${esc(S.error)}</p></div>` : !S.fees ? `<div class="card" style="margin-bottom:16px">${none("This Stripe key can read charges and refunds but not Stripe's fees, so fees are missing from Expenses. Giving the key read access to Balance transactions adds them.")}</div>` : ""}
+    <div class="grid g4" style="margin-bottom:16px">
+      ${kpi(`Revenue, ${monthName(cur)} so far`, usd(now.revenue), read ? `${plural(now.payments, "card payment")} · ${usd(now.out)} outside Stripe` : `${usd(now.out)} outside Stripe · card revenue not read`)}
+      ${kpi("Expenses, per month", usd(e.expensesMonthly), `plus Stripe's fees${read && S.fees && prev ? `: ${usd(prev.fees)} in ${monthName(prev.m)}` : ""}`)}
+      ${kpi("System cost, per month", usd(e.systemMonthly), lines.some((x) => x.kind === "system") ? plural(lines.filter((x) => x.kind === "system").length, "line") : "none entered yet", lines.some((x) => x.kind === "system") ? "" : "warn")}
+      ${kpi(`Left, ${monthName(last)}`, usd(prev.left), read ? "after expenses and system cost" : "card revenue not read", prev.left < 0 ? "bad" : prev.left > 0 ? "ok" : "")}
+    </div>
+    <div class="card" style="margin-bottom:16px"><div class="card-head"><h2>Revenue vs expenses vs system cost</h2><span class="muted" style="font-size:12px">${read && S.checkedAt ? `Stripe read ${when(S.checkedAt)}` : ""}</span></div>
+      ${ecoChart(rows)}
+      <div class="table-wrap" style="margin-top:14px"><table><thead><tr><th>Month</th><th ${right}>Card payments</th><th ${right}>Outside Stripe</th><th ${right}>Refunds</th><th ${right}>Revenue</th><th ${right}>Expenses</th><th ${right}>System cost</th><th ${right}>Left</th><th ${right}>Sign-ups</th><th ${right}>Visits</th></tr></thead><tbody>
+      ${[...rows].reverse().map((r) => `<tr><td><b>${monthName(r.m)}</b>${r.partial ? ` <span class="pill">so far</span>` : ""}</td><td class="num" ${right}>${read ? usd(r.card) : "—"}</td><td class="num" ${right}>${usd(r.out)}</td><td class="num" ${right}>${read ? usd(r.refunds) : "—"}</td><td class="num" ${right}><b>${usd(r.revenue)}</b></td><td class="num" ${right}>${usd(r.expenses)}</td><td class="num" ${right}>${usd(r.system)}</td><td class="num" ${right}><b>${usd(r.left)}</b></td><td class="num" ${right}>${e.people.signups[r.m] || 0}</td><td class="num" ${right}>${e.visits[r.m] || 0}</td></tr>`).join("")}
+      </tbody></table></div>
+      <p class="muted" style="margin:10px 0 0;font-size:12.5px"><b>Revenue</b> is card payments recorded by Stripe plus invoices you marked paid by cash, check or another way, less refunds. <b>Expenses</b> is Stripe's fees plus the expenses you keep below. <b>System cost</b> is what the software costs to run, from the list below. <b>Left</b> is revenue less both. Expenses and system cost use today's list for every month, and the current month is charged the whole amount. Payouts to your bank are not revenue and are not counted.${S.truncated ? " Stripe holds more entries than were read for this period: the oldest months may be short." : ""}${e.unreadableCharts ? ` ${plural(e.unreadableCharts, "chart")} could not be opened with the server's keys, so any invoices on ${e.unreadableCharts === 1 ? "it" : "them"} are not counted.` : ""}</p></div>
+    <div class="grid g2">
+      <div class="card stack"><div class="card-head"><h2>Expenses and system cost</h2><span class="muted" style="font-size:12px">${usd(e.costsMonthly)} a month</span></div>
+        <form class="stack" data-form="ecoCosts">${[...lines, ...more].map((x, i) => `<div class="set-row eco-row"><input type="hidden" name="id${i}" value="${esc(x.id)}"><input name="name${i}" class="input" value="${esc(x.name)}" maxlength="60" placeholder="${x.id ? "Name" : "Add a line"}" aria-label="Line ${i + 1} name"><select name="kind${i}" class="input" aria-label="Line ${i + 1} is a"><option value="system"${x.kind !== "expense" ? " selected" : ""}>System cost</option><option value="expense"${x.kind === "expense" ? " selected" : ""}>Expense</option></select><input name="monthly${i}" class="input" type="number" min="0" max="1000000" step="0.01" value="${x.id ? (x.monthly / 100).toFixed(2) : ""}" placeholder="$ a month" aria-label="Line ${i + 1} dollars a month"></div>`).join("")}
+          ${missing.length && more.length ? `<div class="row" style="gap:6px"><span class="muted" style="font-size:12.5px">This system runs on:</span>${missing.map((u) => `<button type="button" class="btn sm" data-act="ecoUse" data-name="${esc(u)}">${ui("plus", 12)}${esc(u)}</button>`).join("")}</div>` : ""}
+          <p class="muted" style="margin:0;font-size:12.5px">System cost is what you pay each month for the software: the server, the website, video, email, the AI scribe. Expense is anything else the practice pays monthly, such as rent or insurance. These bills cannot be read from here, so the amounts are yours to enter. Clear a name to remove a line. Stripe's fees are read from Stripe and do not belong here.</p>
+          <div class="row"><button class="btn primary">Save</button></div></form></div>
+      <div class="card"><div class="card-head"><h2>Per member</h2><span class="muted" style="font-size:12px">${plural(e.people.total, "account")} · ${M.paying} paying · ${M.byHand} set by hand</span></div>
+        ${line("Memberships, per month", usd(M.listMonthly), `${plural(M.paying, "card membership")} running, at list price before discounts`)}
+        ${line("Average membership", M.paying ? usd(avg) + " a month" : "—", M.paying ? "" : "no card memberships running")}
+        ${line("System cost per paying member", M.paying && e.systemMonthly ? usd(e.systemMonthly / M.paying) + " a month" : "—", e.systemMonthly ? "" : "enter the system cost to see this")}
+        ${line("System cost per account", e.people.total && e.systemMonthly ? usd(e.systemMonthly / e.people.total) + " a month" : "—", "every sign-up, paying or not")}
+        ${line("Paying members needed to cover expenses and system cost", need === null || !lines.length ? "—" : String(need), need !== null && lines.length ? (M.paying >= need ? `you have ${M.paying}: covered by memberships alone` : `you have ${M.paying}: ${need - M.paying} short on memberships alone`) : "")}
+        ${line("Stripe's share of card payments", read && S.fees && prev.card ? ((prev.fees / prev.card) * 100).toFixed(1) + "%" : "—", read && S.fees && prev.card ? `${monthName(last, true)}: ${usd(prev.fees)} of ${usd(prev.card)}` : `no card payments with fees in ${monthName(last, true)}`)}
+        ${line("Invoices still owed to you", usd(e.owed.total), e.owed.count ? `${plural(e.owed.count, "unpaid invoice")} across the charts` : "nothing outstanding")}
+        <h3 style="margin:14px 0 4px">Membership types</h3>
+        ${M.kinds.map((k) => line(esc(k.name), usd(k.price * k.paying) + " a month", `${usd(k.price)} · ${k.paying} paying${k.byHand ? ` · ${k.byHand} set by hand (not charged)` : ""}`)).join("") || none("No membership types.")}</div>
+    </div>`;
+  };
   V.team = async () => {
     const [me, mfa] = await Promise.all([load("/me"), load("/mfa")]);
     return `<div class="view-head"><div><h1>Team & roles</h1><p class="muted">This system has one sign-in: the practice owner</p></div></div>
@@ -1183,6 +1260,8 @@
         <div class="row"><button class="btn primary"${(r.models || []).length ? "" : " disabled"}>Use this model</button></div></form>`);
     },
     stop: () => {},
+    // System economics: put a vendor this system uses into the empty cost line, ready for its amount
+    ecoUse: (el) => { const f = $('[data-form="ecoCosts"]'); if (!f) return; const rows = [...f.querySelectorAll(".set-row")], row = rows[rows.length - 1], name = row && row.querySelector('[name^="name"]'); if (!name) return; if (name.value.trim()) { toast("Save the line you are adding first."); return; } name.value = el.dataset.name; el.remove(); row.querySelector('[name^="monthly"]').focus(); },
     // Calendar: add an event straight onto the connected Google Calendar
     calAdd: () => { const today = isoDay(new Date());
       modal(`<div class="card-head"><h2>Add to your calendar</h2>${xBtn}</div>
@@ -1287,6 +1366,12 @@
   });
   Object.assign(FORMS, {
     scribeModel: async (f) => { const r = await api("PUT", "/api/admin/scribe/model", { model: f.model.value }); closeModal(); await render(); toast(`AI scribe now uses ${r.model}.`); },
+    ecoCosts: async (f) => {
+      const rows = rowsOf(f, ["id", "name", "kind", "monthly"]).filter((r) => r.name);
+      for (const r of rows) if (r.monthly === "" || !(Number(r.monthly) >= 0)) { toast(`Enter what ${r.name} costs a month.`); f["monthly" + r.i].focus(); return; }
+      await api("PUT", "/api/admin/economics/costs", { costs: rows.map((r) => ({ ...(r.id ? { id: r.id } : {}), name: r.name, kind: r.kind, monthly: Number(r.monthly) })) });
+      await render(); toast("Saved.");
+    },
     calEvent: async (f) => { await api("POST", "/api/admin/calendar/events", { title: f.title.value.trim(), date: f.date.value, time: f.time.value, minutes: Number(f.minutes.value), note: f.note.value.trim() }); closeModal(); await render(); toast("Added to your Google Calendar."); },
     summary: async (f) => { await api("PUT", `/api/admin/emr/${cid()}/summary`, { summary: f.summary.value.trim(), tags: f.tags.value.split(",").map((x) => x.trim()).filter(Boolean) }); await chartRedo(); toast("Summary saved."); },
     planNotes: async (f) => { stopDictation(); await putPlan({ notes: f.notes.value.trim() }); await chartRedo(); toast(`Treatment plan saved. ${firstOf()} can see it in the app.`); },
@@ -1418,7 +1503,7 @@
     if (!token || !e.target.closest) return;
     const a = e.target.closest('a[href^="#"]'), r = a ? a.getAttribute("href").slice(1) : "";
     clearTimeout(hoverT);
-    if (r && r !== shown && (WARM.includes(r) || r === "messages")) hoverT = setTimeout(() => { if (token) (r === "messages" ? load("/messages") : V[r]()).catch(() => {}); }, wait);
+    if (r && r !== shown && (WARM.includes(r) || AHEAD[r])) hoverT = setTimeout(() => { if (token) early(r).catch(() => {}); }, wait);
   };
   document.addEventListener("pointerover", (e) => { if (e.pointerType === "mouse") ahead(e, 90); });
   document.addEventListener("pointerdown", (e) => {
@@ -1449,6 +1534,7 @@
     if (e.target.matches("[data-change=noteTier]")) { note.tier = e.target.value; if (note.id || $("#nBody").value.trim()) noteTouch(); }
     if (e.target.matches("[data-change=bcTo]")) { const p = $("#bcPick"); if (p) p.hidden = e.target.value !== "selected"; }
     if (e.target.matches("[data-change=insDays]")) { state.insDays = Number(e.target.value) || 30; render(); }
+    if (e.target.matches("[data-change=ecoMonths]")) { state.ecoMonths = Number(e.target.value) || 6; render(); }
   });
   document.addEventListener("input", (e) => {
     if (e.target.id === "mvSearch") {
@@ -1523,6 +1609,13 @@
   // change the ones opened most recently. Only screens that show the same thing whoever is looking and that change
   // nothing by being loaded: not a chart, a conversation (opening one marks it read), the note editor or a visit.
   const WARM = ["dashboard", "calendar", "clients", "leads", "forms", "payments", "programs", "nutrition", "fitness", "newsletter", "insights", "team", "feedback", "security", "settings", "booking"];
+  // The screens left out of that list still get everything they can have ahead of time: the list of conversations,
+  // the scribe's status for the note screen, what the telehealth screen and an empty chart screen show, the money totals.
+  const AHEAD = {
+    messages: () => load("/messages"), notes: () => Promise.all([clients(), load("/scribe")]), telehealth: () => Promise.all([load("/appointments?all=1"), load("/settings")]),
+    chart: () => Promise.all([load("/emr"), content()]), economics: () => load(`/economics?months=${state.ecoMonths || 6}`)
+  };
+  const early = (r) => (WARM.includes(r) ? V[r]() : AHEAD[r] ? AHEAD[r]() : Promise.resolve());
   const visited = []; let warmT = 0, warmRun = 0, warmedAt = 0, warming = false;
   async function warm(list) {
     const my = ++warmRun, tk = token; warming = true;
@@ -1530,7 +1623,7 @@
       for (const r of list) {
         if (my !== warmRun || !token || tk !== token) return;
         if (r === shown || document.hidden) continue;
-        try { await V[r](); } catch {}
+        try { await early(r); } catch {}
         await new Promise((go) => setTimeout(go, 80));
       }
     } finally { if (my === warmRun) warming = false; }
@@ -1538,7 +1631,7 @@
   function rewarm(method, path) {
     if (!token || (method !== "DELETE" && /^\/api\/admin\/notes(\/[^/]+)?$/.test(path))) return; // a draft saving itself as you type is not a reason to reload the other screens
     clearTimeout(warmT);
-    warmT = setTimeout(() => { if (!token) return; warmedAt = Date.now(); warm(visited.filter((r) => WARM.includes(r)).slice(0, 5)); }, Math.max(900, warmedAt + 8000 - Date.now()));
+    warmT = setTimeout(() => { if (!token) return; warmedAt = Date.now(); warm(visited.filter((r) => WARM.includes(r) || AHEAD[r]).slice(0, 5)); }, Math.max(900, warmedAt + 8000 - Date.now()));
   }
   const noteAppend = (text) => { const box = $("#nBody"); if (!box) return; box.value = (box.value.trimEnd() ? box.value.trimEnd() + "\n\n" : "") + text; noteTouch(); box.focus(); box.scrollTop = box.scrollHeight; };
   document.addEventListener("input", (e) => { if (e.target.matches && e.target.matches("[data-input=note]")) noteTouch(); });
@@ -1942,7 +2035,7 @@
     $("#signin").hidden = true; $("#app").hidden = false; idleArm(); goLive();
     get("/me").then((me) => { cache.me = me; $("#whoami").textContent = me.email; }).catch(() => {});
     const tk = token;
-    render().then(() => setTimeout(() => { if (token && tk === token) { warmedAt = Date.now(); warm(WARM); } }, 300));
+    render().then(() => setTimeout(() => { if (token && tk === token) { warmedAt = Date.now(); warm([...WARM, ...Object.keys(AHEAD)]); } }, 300));
   }
   window.addEventListener("hashchange", () => { if (location.hash !== "#chart") {} render(); });
   $("#navToggle").addEventListener("click", () => $("#nav").classList.toggle("open"));
