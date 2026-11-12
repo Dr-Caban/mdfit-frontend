@@ -98,7 +98,7 @@
     token = ""; store.set(""); if (window.MDFitRT) { if (teleIn()) MDFitRT.emit("tele_end"); MDFitRT.disconnect(); } teleDrop(); stopDictation();
     for (const k of Object.keys(cache)) cache[k] = (k === "unread" || k === "waiting") ? 0 : null; // every cached list, the open chart included
     mem.clear(); forget(); freshAsk = null; shown = ""; shownHtml = ""; visited.length = 0; clearTimeout(warmT); clearTimeout(repaintT); warmRun++;
-    qaClose(); state.chartClient = null; state.thread = null; state.clientQ = ""; state.formsQ = ""; state.formsShow = ""; state.scribeText = ""; tele.transcript = ""; noteReset(null);
+    qaClose(); state.guideAiErr = ""; state.chartClient = null; state.thread = null; state.clientQ = ""; state.formsQ = ""; state.formsShow = ""; state.scribeText = ""; tele.transcript = ""; noteReset(null);
     $("#view").innerHTML = ""; $("#nav").innerHTML = ""; $("#whoami").textContent = ""; $("#globalSearch").value = ""; closeModal();
     $("#app").hidden = true; $("#signin").hidden = false; clearTimeout(idleTimer);
     // /admin shares this tab: signing out here signs out there as well
