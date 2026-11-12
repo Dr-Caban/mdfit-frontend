@@ -54,9 +54,11 @@
       <span class="hb-pts">+${h.points}</span></button>`;
   }
 
-  // Daily XP goal levels (owner's names): Beginner 50, Advanced 75, Elite 100+. Stored ids stay beginner/intermediate/pro.
-  const GOAL_NAMES = { beginner: "Beginner", intermediate: "Advanced", pro: "Elite" };
-  const goalButtons = (d) => Object.entries(d.goalLevels).map(([k, v]) => `<button type="button" role="radio" data-goal-level="${k}" aria-checked="${d.goalLevel === k}">${GOAL_NAMES[k] || k} <small>${v}${k === "pro" ? "+" : ""} XP</small></button>`).join("");
+  // Daily XP goal levels (owner's names, Nov 2026): Novice 30, Amateur 50, Advanced 75, Elite 100. The server sends
+  // the levels and their XP in the order they are shown, so a level added later needs no change here.
+  const GOAL_NAMES = { novice: "Novice", amateur: "Amateur", advanced: "Advanced", elite: "Elite",
+    beginner: "Amateur", intermediate: "Advanced", pro: "Elite" }; // the ids these replaced, in case an old reply is cached
+  const goalButtons = (d) => Object.entries(d.goalLevels).map(([k, v]) => `<button type="button" role="radio" data-goal-level="${k}" aria-checked="${d.goalLevel === k}">${GOAL_NAMES[k] || k} <small>${v} XP</small></button>`).join("");
   // The same picker sits at the top of the Profile, where members expect to find a setting
   const profileGoal = $("#p-goal");
   function renderProfileGoal() {
@@ -77,7 +79,7 @@
     if (e.target.closest(".hb-toggle")) { setOpen(!open); return; }
     if (e.target.id === "hb-retry") return load();
     if (e.target.closest("[data-hb-all]")) { showAll = true; render(); return; }
-    // Daily XP norm: Beginner 50 / Advanced 75 / Elite 100 (applies from today)
+    // Daily XP norm: Novice 30 / Amateur 50 / Advanced 75 / Elite 100 (applies from today)
     const gl = e.target.closest("[data-goal-level]");
     if (gl) {
       if (gl.getAttribute("aria-checked") === "true") return;
