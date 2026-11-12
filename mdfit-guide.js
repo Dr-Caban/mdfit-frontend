@@ -297,7 +297,8 @@
       const n = Number(s.unread) || 0;
       if (n) { say(n === 1 ? "You have a new message." : `You have ${n} new messages.`); offer([{ label: n === 1 ? "Read your new message" : "Read your new messages", hash: "messages", name: "Messages", gold: true }]); }
       else { say("I don't see an unread message right now."); offer([opt("messages")]); } } };
-    if (/\b(what (do|should) i (need to )?do|what'?s next|what is next|need to do|to do|todo|waiting (for|on) me|anything (for me|waiting|pending|i need)|catch me up)\b/.test(t)) return { kind: "other", run: () => {
+    // "what should I do" on its own (or with next/now/today) is about their list; "what should I do for my hip" is not
+    if (/\bwhat (do|should) i (need to |have to )?do( next| now| today| first| here)?\s*$/.test(t) || /\b(what'?s next|what is next|to-?do list|waiting (for|on) me|anything (for me|waiting|pending)|catch me up|what did i miss)\b/.test(t)) return { kind: "other", run: () => {
       const w = waiting(); lastSig = w.sig;
       if (w.opts.length) { say(w.line || "Here's what is waiting for you:"); offer(w.opts); }
       else { say("I couldn't find anything waiting on you right now. Here's where people usually head next:"); offer([opt("generate"), opt("programs"), opt("book")]); } } };

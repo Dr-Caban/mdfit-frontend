@@ -1024,15 +1024,26 @@
         <div class="eco-area">${[0, 1, 2, 3, 4].map((k) => `<i class="eco-grid" style="bottom:${k * 25}%"></i>`).join("")}
           ${rows.map((r, n) => `<div class="eco-g${n > rows.length / 2 ? " late" : ""}" tabindex="0" role="img" aria-label="${esc(r.long)}: ${plural(r.answers, "answer")} given, the daily limit reached ${plural(r.limitHits, "time")}, ${plural(r.opens, "open")}, ${plural(r.upgradeTaps, "upgrade tap")}">
             <div class="eco-cols">${col(r.answers, 1)}${col(r.limitHits, 2)}</div>
-            ${(rows.length - 1 - n) % every === 0 ? `<div class="eco-m" aria-hidden="true">${r.label}</div>` : ""}
+            ${(rows.length - 1 - n) % every === 0 ? `<div class="eco-m${(rows.length - 1 - n) % (every * 2) ? " thin" : ""}" aria-hidden="true">${r.label}</div>` : ""}
             <div class="eco-tip" aria-hidden="true" style="--f:${((n + 0.5) / rows.length).toFixed(3)}"><b>${esc(r.long)}</b>
               <span><i class="s1"></i><b class="num">${r.answers}</b> Answers given</span><span><i class="s2"></i><b class="num">${r.limitHits}</b> Reached the daily limit</span>
               <span class="eco-left"><b class="num">${r.opens}</b> ${r.opens === 1 ? "open" : "opens"} · <b class="num">${r.upgradeTaps}</b> upgrade ${r.upgradeTaps === 1 ? "tap" : "taps"}</span></div></div>`).join("")}</div></div>
 </div>`;
   }
+  // A read that failed is kept the way a good one is: shown at once on the next visit and asked again behind the
+  // screen, so this item in the menu never waits on the server just to say the same thing again.
+  const guideBad = new Map();
+  async function guideStats(days) {
+    const p = `/guide/stats?days=${days}`, bad = guideBad.get(days);
+    if (bad && bad.epoch === epoch) {
+      if (Date.now() - bad.at > FRESH_MS) { bad.at = Date.now(); pull(p).then(() => { guideBad.delete(days); changed(); }, (err) => { bad.why = err.message; }); }
+      throw new Error(bad.why);
+    }
+    try { const g = await load(p); guideBad.delete(days); return g; } catch (err) { guideBad.set(days, { why: err.message, at: Date.now(), epoch }); throw err; }
+  }
   V.guide = async () => {
     const days = GUIDE_DAYS.includes(state.guideDays) ? state.guideDays : 30; let g = null, why = "";
-    try { g = await load(`/guide/stats?days=${days}`); } catch (err) { why = err.message; }
+    try { g = await guideStats(days); } catch (err) { why = err.message; }
     cache.guide = g;
     const head = `<div class="view-head"><div><h1>MD Fit guide</h1><p class="muted">How members use the guide in the app, and who upgrades after reaching the daily free limit · counts only, nothing anyone typed is kept</p></div>
       <div class="seg" role="group" aria-label="Days shown">${GUIDE_DAYS.map((d) => `<button type="button" data-act="guideDays" data-d="${d}" aria-pressed="${d === days}">${d} days</button>`).join("")}</div></div>`;
@@ -1943,7 +1954,7 @@
   const AHEAD = {
     messages: () => load("/messages"), notes: () => Promise.all([clients(), load("/scribe")]), telehealth: () => Promise.all([load("/appointments?all=1"), load("/settings"), load("/telehealth/devices")]),
     chart: () => Promise.all([load("/emr"), content()]), economics: () => load(`/economics?months=${state.ecoMonths || 6}`),
-    guide: () => load(`/guide/stats?days=${GUIDE_DAYS.includes(state.guideDays) ? state.guideDays : 30}`)
+    guide: () => guideStats(GUIDE_DAYS.includes(state.guideDays) ? state.guideDays : 30)
   };
   const early = (r) => (WARM.includes(r) ? V[r]() : AHEAD[r] ? AHEAD[r]() : Promise.resolve());
   const visited = []; let warmT = 0, warmRun = 0, warmedAt = 0, warming = false, lastTouch = 0;
