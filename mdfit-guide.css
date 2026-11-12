@@ -97,3 +97,6 @@ html[data-theme="black"] #mg { box-shadow: 0 18px 50px rgba(0, 0, 0, .6); }
   #mg-btn .mg-echo { opacity: 0; }
   #mg-btn, #mg-tag { transition: none; }
 }
+/* The calendar's key gained "Reminder": let it wrap on a phone instead of breaking words */
+.cal-legend { flex-wrap: wrap; gap: 6px 14px; }
+.cal-legend li { white-space: nowrap; }
