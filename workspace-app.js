@@ -394,7 +394,9 @@
       <div class="card"><div class="card-head"><h2>Waiting to be converted</h2></div>${emr.waiting.map(pick).join("") || none("Nobody is waiting.")}</div></div>`;
     }
     const [d, c, cn] = await Promise.all([load(`/emr/${id}`), load(`/clients/${id}`), load(`/notes?clientId=${id}`).catch(() => ({ notes: [] })), content()]);
-    cache.chart = { d, c, cn: cn.notes || [] }; cache.billing = null;
+    // (the Billing tab's own list is only dropped when the chart is for someone else: this function also runs in the
+    // background to check for anything newer, and must not blank what the buttons on that tab work from)
+    cache.chart = { d, c, cn: cn.notes || [] }; if (cache.billingFor !== id) cache.billing = null;
     const tabs = [["overview", "Overview"], ["notes", "Clinical notes"], ["plans", "Plans & protocols"], ["measures", "Measures"], ["meds", "Meds & allergies"], ["files", "Files"], ["billing", "Billing"], ["consent", "Sharing & consent"]];
     const tier = (c.membership && c.membership.tier) || "";
     return `
@@ -541,10 +543,10 @@
   async function loadBilling() {
     const id = state.chartClient, b = await load(`/emr/${id}/billing`).catch((e) => ({ error: e.message, invoices: [] }));
     if (state.chartClient !== id || !$("#billRows")) return;
-    cache.billing = b;
+    cache.billing = b; cache.billingFor = id;
     $("#billRows").innerHTML = b.error ? noneRow(6, esc(b.error)) : b.invoices.map((x) => `<tr><td>${esc(x.number || "—")}</td><td>${x.date ? fmtDate(x.date) : "—"}</td><td>${esc(x.description || "")}</td><td class="num">${x.amount == null ? "—" : usd(x.amount)}</td>
-      <td><span class="pill ${STATUS[x.status] ?? "ok"}">${esc(x.status === "paid" && x.method ? `Paid · ${x.method}` : x.status.charAt(0).toUpperCase() + x.status.slice(1))}</span></td>
-      <td><div class="row" style="gap:6px;flex-wrap:nowrap;justify-content:flex-end">${x.custom && x.status === "unpaid" ? `<button class="btn sm primary" data-act="invSend" data-id="${esc(x.id)}">Send invoice</button><button class="btn sm" data-act="invPay" data-id="${esc(x.id)}">Mark paid</button><button class="btn sm ghost" data-act="invVoid" data-id="${esc(x.id)}" aria-label="Void invoice ${esc(x.number)}">${ui("x", 14)}</button>` : x.custom && !x.online && (x.status === "paid" || x.status === "void") ? `<button class="btn sm" data-act="invUnpaid" data-id="${esc(x.id)}">Mark unpaid</button>` : x.receiptUrl ? `<a class="btn sm" href="${esc(x.receiptUrl)}" target="_blank" rel="noopener noreferrer">Receipt</a>` : ""}</div></td></tr>`).join("") || noneRow(6, "No invoices or payments yet.");
+      <td><span class="pill ${STATUS[x.status] ?? "ok"}">${esc(x.status === "paid" && x.method ? `Paid · ${x.method}` : x.status.charAt(0).toUpperCase() + x.status.slice(1))}</span>${x.refunded && x.status !== "refunded" ? `<div class="muted" style="font-size:12px;margin-top:3px">${usd(x.refunded)} refunded</div>` : ""}</td>
+      <td><div class="row" style="gap:6px;flex-wrap:nowrap;justify-content:flex-end">${x.custom && x.status === "unpaid" ? `<button class="btn sm primary" data-act="invSend" data-id="${esc(x.id)}">Send invoice</button><button class="btn sm" data-act="invPay" data-id="${esc(x.id)}">Mark paid</button><button class="btn sm ghost" data-act="invVoid" data-id="${esc(x.id)}" aria-label="Void invoice ${esc(x.number)}">${ui("x", 14)}</button>` : x.custom && !x.online && (x.status === "paid" || x.status === "void") ? `<button class="btn sm" data-act="invUnpaid" data-id="${esc(x.id)}">Mark unpaid</button>` : x.receiptUrl ? `<a class="btn sm" href="${esc(x.receiptUrl)}" target="_blank" rel="noopener noreferrer">Receipt</a>` : ""}${refundBtn(x, x.custom ? "invoice" : "charge")}</div></td></tr>`).join("") || noneRow(6, "No invoices or payments yet.");
     $("#billPay").innerHTML = `<div class="list-item"><span style="flex:1">Card on file${b.card && b.card.exp ? `<div class="muted" style="font-size:12px">expires ${esc(b.card.exp)}</div>` : ""}</span><b>${b.card ? `${esc(b.card.brand.charAt(0).toUpperCase() + b.card.brand.slice(1))} ••${esc(b.card.last4)}` : "None"}</b><button type="button" class="btn sm${b.card ? "" : " primary"}" data-act="cardAdd">${b.card ? "Replace" : "Add card"}</button></div>
       <div class="list-item"><span style="flex:1">Autopay</span><span class="pill ${b.autopay ? "ok" : ""}">${b.autopay ? "On" : "Off"}</span></div>
       <div class="list-item"><span style="flex:1">Balance</span><b class="num">${usd(b.balance || 0)}</b></div>`;
@@ -803,12 +805,12 @@
     const [p, members, s, c, list, gen] = await Promise.all([load("/payments"), load("/members"), load("/settings"), load("/content"), clients(), load("/invoices").catch(() => null)]);
     cache.content = c; cache.settings = s; cache.gen = gen;
     const sent = (gen && gen.invoices) || [], unpaid = sent.filter((x) => x.status === "unpaid");
-    const stPill = (x) => x.status === "paid" ? `<span class="pill ok">Paid${x.method ? " · " + esc(x.method) : ""}</span>` : x.status === "void" ? `<span class="pill">Void</span>` : `<span class="pill warn">Unpaid</span>`;
+    const stPill = (x) => (x.status === "paid" ? `<span class="pill ok">Paid${x.method ? " · " + esc(x.method) : ""}</span>` : x.status === "refunded" ? `<span class="pill">Refunded</span>` : x.status === "void" ? `<span class="pill">Void</span>` : `<span class="pill warn">Unpaid</span>`) + (x.refunded && x.status === "paid" ? ` <span class="muted" style="font-size:12px">${usd(x.refunded)} refunded</span>` : "");
     const genRow = (x) => `<tr><td><b>${esc(x.number)}</b><div class="muted" style="font-size:12px">${when(x.createdAt)}</div></td>
       <td><b>${esc(x.name)}</b><div class="muted" style="font-size:12px;overflow-wrap:anywhere">${esc(x.email)}${x.clientId ? "" : " · no account"}</div></td>
       <td style="max-width:260px;overflow-wrap:anywhere">${esc(x.description)}</td><td class="num" style="text-align:right"><b>${usd(x.amount)}</b></td>
       <td>${stPill(x)}${x.afterVoid ? ` <span class="pill bad">paid after void</span>` : ""}<div class="muted" style="font-size:12px;margin-top:3px">${x.status === "paid" && x.paidAt ? "paid " + when(x.paidAt) : x.emailedAt ? "emailed " + when(x.emailedAt) : "not emailed"}</div></td>
-      <td><div class="row" style="gap:6px;justify-content:flex-end">${x.status === "unpaid" ? `<button type="button" class="btn sm primary" data-act="igSend" data-id="${esc(x.id)}">${x.emailedAt ? "Send again" : "Send"}</button><button type="button" class="btn sm" data-act="igCopy" data-id="${esc(x.id)}">${ui("copy", 13)}Link</button><button type="button" class="btn sm" data-act="igPaid" data-id="${esc(x.id)}">Mark paid</button><button type="button" class="btn sm ghost" data-act="igVoid" data-id="${esc(x.id)}" aria-label="Void invoice ${esc(x.number)}">${ui("x", 13)}</button>` : ""}${x.clientId ? `<button type="button" class="btn sm" data-act="chartBilling" data-id="${esc(x.clientId)}">Billing</button>` : ""}</div></td></tr>`;
+      <td><div class="row" style="gap:6px;justify-content:flex-end">${x.status === "unpaid" ? `<button type="button" class="btn sm primary" data-act="igSend" data-id="${esc(x.id)}">${x.emailedAt ? "Send again" : "Send"}</button><button type="button" class="btn sm" data-act="igCopy" data-id="${esc(x.id)}">${ui("copy", 13)}Link</button><button type="button" class="btn sm" data-act="igPaid" data-id="${esc(x.id)}">Mark paid</button><button type="button" class="btn sm ghost" data-act="igVoid" data-id="${esc(x.id)}" aria-label="Void invoice ${esc(x.number)}">${ui("x", 13)}</button>` : ""}${refundBtn(x, "link")}${x.clientId ? `<button type="button" class="btn sm" data-act="chartBilling" data-id="${esc(x.clientId)}">Billing</button>` : ""}</div></td></tr>`;
     return `<div class="view-head"><div><h1>Payments</h1><p class="muted">Self-pay only · card payments through Stripe · send an invoice from here, or write one on a client's chart</p></div><a class="btn" href="#settings">Services &amp; fees</a></div>
     <div class="grid g3" style="margin-bottom:16px">${kpi("Card payments", p.enabled ? "On" : "Off", p.enabled ? "Stripe connected" : "Stripe not set up", p.enabled ? "ok" : "warn")}${kpi("Payment confirmations", p.webhook ? "On" : "Off", "from Stripe", p.webhook ? "ok" : "warn")}${kpi("Members and requests", members.length, "people")}</div>
     <div class="card" style="margin-bottom:16px" id="genCard"><div class="card-head"><div><h2>Invoices</h2><p class="muted" style="margin:2px 0 0;font-size:12.5px">Draft one invoice, send it to one person or many. Each gets their own, with a link to pay by card.${unpaid.length ? ` <b>${plural(unpaid.length, "invoice")} unpaid: ${usd(unpaid.reduce((n, x) => n + x.amount, 0))}.</b>` : ""}</p></div>
@@ -1294,6 +1296,9 @@
     apptSave: async (f) => { await api("PATCH", `/api/admin/appointments/${f.dataset.id}`, { status: f.status.value, adminNotes: f.adminNotes.value }); cache.appts = null; closeModal(); toast("Appointment updated."); render(); }
   };
   const typeTurn = {};
+  // Refund: only for money that came in by card (an invoice paid online, or a card payment), and only what is left of it
+  const refundBtn = (x, kind) => { const left = (x.amount || 0) - (x.refunded || 0), byCard = kind === "charge" ? /^(ch|py)_/.test(x.id || "") && (x.status === "paid" || x.status === "part refunded") : x.online && x.status === "paid";
+    return byCard && left > 0 ? `<button type="button" class="btn sm" data-act="refundAsk" data-kind="${kind}" data-id="${esc(x.id)}" data-left="${left}" data-what="${esc(x.number || x.description || "this payment")}">Refund</button>` : ""; };
   // What a member last opened MD Fit with, and whether they can be seen and heard on it
   const devLine = (d, always) => d ? `<div class="muted" style="font-size:12px;display:flex;gap:5px;align-items:flex-start">${ui("phone", 13)}<span><b style="font-weight:600;color:${d.speak === false ? "var(--warn)" : "inherit"}">${esc(d.label)}</b>: ${esc(d.note)}</span></div>` : always ? `<div class="muted" style="font-size:12px">Has not opened MD Fit since devices started being recorded</div>` : "";
   // The people picked for a new invoice, shown as removable chips
@@ -1382,6 +1387,14 @@
     stop: () => {},
     rowsMore: () => rowsMoreNow(),
     formsShow: (el) => { state.formsShow = el.dataset.show; for (const b of el.parentElement.querySelectorAll("button")) b.setAttribute("aria-pressed", String(b === el)); formsFilter(); },
+    // Refund: asks how much and for the owner's password; the server checks the password and sends the money back
+    refundAsk: (el) => { const left = Number(el.dataset.left) || 0;
+      modal(`<div class="card-head"><h2>Refund ${esc(el.dataset.what)}</h2>${xBtn}</div>
+        <form class="stack" data-form="refund" data-kind="${esc(el.dataset.kind)}" data-id="${esc(el.dataset.id)}" data-left="${left}" autocomplete="off">
+          <p class="muted" style="margin:0">The money goes back to the card it was paid with, through Stripe. This cannot be undone. Up to ${usd(left)} can be refunded.</p>
+          ${fld("rfAmt", "amount", "Amount to refund ($)", (left / 100).toFixed(2), { type: "number", attrs: `required min="0.01" max="${(left / 100).toFixed(2)}" step="0.01"` })}
+          <div class="field"><label for="rfPass">Owner password</label><input id="rfPass" name="password" class="input" type="password" required autocomplete="current-password"><p class="muted" style="margin:4px 0 0;font-size:12.5px">Asked for every refund, even though you are signed in.</p></div>
+          <div class="row"><button class="btn primary">Refund to the card</button><span class="muted" id="rfMsg" role="status" style="font-size:12.5px"></span></div></form>`); },
     // ---- Invoice generator (Payments): draft once, pick the people, write the email, send
     igAll: () => { state.genAll = true; render(); },
     igNew: () => { state.igPeople = []; const g = cache.gen || {};
@@ -1534,6 +1547,16 @@
   });
   Object.assign(FORMS, {
     scribeModel: async (f) => { const r = await api("PUT", "/api/admin/scribe/model", { model: f.model.value }); closeModal(); await render(); toast(`AI scribe now uses ${r.model}.`); },
+    refund: async (f) => {
+      const dollars = Number(f.amount.value), left = Number(f.dataset.left) / 100, msg = $("#rfMsg");
+      if (!(dollars > 0) || dollars > left + 0.001) { msg.textContent = `Enter an amount up to $${left.toFixed(2)}.`; return; }
+      if (!confirm(`Refund $${dollars.toFixed(2)} to the card? This cannot be undone.`)) return;
+      const kind = f.dataset.kind, body = { password: f.password.value, amount: dollars, ...(kind === "link" ? { linkId: f.dataset.id } : { clientId: cid(), ...(kind === "invoice" ? { invoiceId: f.dataset.id } : { chargeId: f.dataset.id }) }) };
+      msg.textContent = "Sending the refund…";
+      let r; try { r = await api("POST", "/api/admin/refunds", body); } catch (err) { msg.textContent = err.message; f.password.value = ""; f.password.focus(); return; }
+      closeModal(); if (kind === "link") await render(); else await loadBilling();
+      toast(`${usd(r.amount)} refunded to the card.${r.left ? ` ${usd(r.left)} of the payment remains.` : ""}`);
+    },
     igCreate: async (f, e) => {
       const send = !!(e && e.submitter && e.submitter.value === "send"), typed = [];
       for (const raw of f.typed.value.split("\n").map((x) => x.trim()).filter(Boolean)) { const at = raw.lastIndexOf(","), name = at > 0 ? raw.slice(0, at).trim() : "", email = at > 0 ? raw.slice(at + 1).trim() : ""; if (!name || !/^\S+@\S+\.\S+$/.test(email)) { toast(`"${raw}" needs a name, a comma, then an email address.`); f.typed.focus(); return; } typed.push({ name, email }); }

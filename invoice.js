@@ -18,6 +18,7 @@
     if (v.message) { $("note").textContent = v.message; $("note").hidden = false; }
     btn.hidden = v.status !== "unpaid"; $("paid").hidden = v.status !== "paid";
     if (v.status === "void") say("This invoice was withdrawn. If that is a surprise, call 941-313-0562.", "err");
+    if (v.status === "refunded") say("This invoice was paid and then refunded. The refund goes back to the card it was paid with.");
   }
   if (!/^[0-9a-f]{32}$/.test(id)) { say("This invoice link is incomplete. Open the link from your email again, or call 941-313-0562.", "err"); return; }
   btn.addEventListener("click", async () => {
