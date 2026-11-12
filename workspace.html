@@ -297,7 +297,14 @@ textarea.input{min-height:120px;resize:vertical;line-height:1.55}
 .eco-g:hover .eco-tip,.eco-g:focus .eco-tip{display:grid;gap:4px}
 .eco-tip>b{color:var(--ink)}.eco-tip span{display:flex;align-items:center;gap:6px;white-space:nowrap}.eco-tip span b{color:var(--ink)}
 .eco-tip .eco-left{border-top:1px solid var(--line);padding-top:5px;margin-top:2px}
+.eco-g{cursor:pointer}.eco-g[aria-expanded="true"]{background:color-mix(in srgb,var(--accent) 18%,transparent)}
+.eco-hint{font-size:11.5px;color:var(--accent-text)}
+.eco-tr{cursor:pointer}.eco-tr:hover td,.eco-tr[aria-expanded="true"] td{background:var(--accent-soft)}.eco-tr:focus-visible{outline:3px solid var(--accent-text);outline-offset:-3px}
 .eco-m{position:absolute;top:calc(100% + 6px);left:0;right:0;text-align:center;font-size:11.5px;line-height:14px;color:var(--muted);white-space:nowrap}.eco-m small{display:block;font-size:10.5px}
+#refreshBtn{position:relative}#refreshBtn.spin svg{animation:turn .6s linear}
+@keyframes turn{to{transform:rotate(360deg)}}
+.live-dot{position:absolute;top:3px;right:3px;width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 2px var(--surface)}
+.live-dot.off{background:var(--warn)}
 #netbar{position:fixed;top:0;left:0;right:0;height:2px;z-index:300;pointer-events:none;opacity:0;background:linear-gradient(90deg,transparent,var(--accent),transparent) no-repeat;background-size:40% 100%}
 #netbar.on{opacity:1;animation:netbar 1s linear infinite}
 @keyframes netbar{from{background-position:-70% 0}to{background-position:170% 0}}
@@ -364,6 +371,7 @@ textarea.input{min-height:120px;resize:vertical;line-height:1.55}
       <div class="spacer"></div>
       <span class="muted" id="whoami" style="font-size:12.5px"></span>
       <button class="btn sm" id="installBtn" hidden><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12M7 11l5 5 5-5"/><path d="M4 20h16"/></svg>Install app</button>
+      <button class="btn ghost sm" id="refreshBtn" aria-label="Refresh" title="Refresh"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.300-5.600"/><path d="M20 4v4h-4"/></svg><span class="live-dot" id="liveDot" aria-hidden="true"></span></button>
       <button class="btn sm" id="signOut">Sign out</button>
       <button class="btn ghost sm" id="themeBtn" aria-label="Switch between light and dark"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg></button>
     </header>
@@ -376,8 +384,8 @@ textarea.input{min-height:120px;resize:vertical;line-height:1.55}
 
 <div id="printDoc"></div>
 <script src="config.js?v=aac711e3"></script>
-<script src="realtime.js?v=dccfd156"></script>
+<script src="realtime.js?v=22ae7ae5"></script>
 <script src="app/exercises.js?v=d121be98"></script>
-<script src="workspace-app.js?v=de6e7b29"></script>
+<script src="workspace-app.js?v=465d7f52"></script>
 </body>
 </html>

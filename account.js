@@ -442,6 +442,7 @@
     if (row.dataset.url) location.href = row.dataset.url;
   });
 
+  let teleAsked = false; // an open invitation to a video session (set by teleBanner below)
   const agoMs = (ms) => { const m = Math.round((Date.now() - ms) / 60000); return m < 1 ? "just now" : m < 60 ? `${m}m ago` : m < 1440 ? `${Math.round(m / 60)}h ago` : `${Math.round(m / 1440)}d ago`; };
   function renderNotes() {
     const t = todayInTz(), live = [];
@@ -452,8 +453,10 @@
       live.push({ kind: "plan", title: "Dr. Jared updated your plan", body: "See \u201cFrom Dr. Jared\u201d on Home.", action: "Open", go: "#home" });
       if (seenStore.get("plan-dot") !== p.updatedAt) { seenStore.set("plan-dot", p.updatedAt); dotFor("#home"); }
     }
+    // An invitation to a video session stands at the top of the bell for as long as it is open
+    if (teleAsked) live.unshift({ kind: "video", title: "Dr. Jared invited you to a video session", body: "Tap Join to go in.", action: "Join", go: "/visit" });
     if (stats && stats.streak > 0 && !stats.week[stats.todayIndex]) live.push({ kind: "streak", title: `Keep your ${stats.streak}-day streak going`, body: "Do a workout today.", action: "Start", go: "#generate" });
-    const icon = (k) => ({ reward: "🏆", level: "⭐", message: "💬", visit: "📅", plan: "📋", streak: "🔥" })[k] || "🔔";
+    const icon = (k) => k === "video" ? '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3z"/></svg>' : ({ reward: "🏆", level: "⭐", message: "💬", visit: "📅", plan: "📋", streak: "🔥" })[k] || "🔔";
     const row = (n, i, src) => `<div class="note-row${src === "h" && i < inbox.unseen ? " new" : ""}"><span class="notif-ic">${icon(n.kind)}</span><div class="note-txt"><b>${esc(n.title)}</b>${n.body ? `<span>${esc(n.body)}</span>` : ""}${n.at ? `<em>${agoMs(n.at)}</em>` : ""}</div>${n.go ? `<button type="button" class="note-go" data-go="${esc(n.go)}">${esc(n.action || "Open")}</button>` : ""}</div>`;
     const count = inbox.unseen + live.length;
     $("#bell .dot").hidden = true;
@@ -464,7 +467,7 @@
   $("#bell").addEventListener("click", () => { const open = $("#notes").hidden; $("#notes").hidden = !open; if (open) { renderNotes(); inbox.unseen = 0; seenStore.set("inbox-unseen", 0); const bc = $("#bell .bell-count"); bc.hidden = true; } });
   $("#notes").addEventListener("click", (e) => {
     if (e.target.closest(".notes-clear")) { inbox.items = []; inbox.unseen = 0; saveInbox(); return; }
-    const g = e.target.closest("[data-go]"); if (g) { $("#notes").hidden = true; location.hash = g.dataset.go; }
+    const g = e.target.closest("[data-go]"); if (g) { $("#notes").hidden = true; if (g.dataset.go.startsWith("/")) location.href = g.dataset.go; else location.hash = g.dataset.go; }
   });
 
   // ================= Generate: numbered steps, summary and add-ons (MD Fit generator design)
@@ -2021,6 +2024,8 @@
   // nothing about why. Shown when the invitation arrives while the app is open, and on opening the app while it stands.
   function teleBanner(on) {
     let b = document.getElementById("tele-invite");
+    // the bell carries it too, with a count, so it is there after the banner is dismissed
+    if (teleAsked !== !!on) { teleAsked = !!on; try { renderNotes(); } catch {} }
     if (!on) { if (b) b.remove(); return; }
     if (b) return;
     b = document.createElement("div"); b.id = "tele-invite"; b.setAttribute("role", "status");
@@ -2068,10 +2073,14 @@
     const view = () => (location.hash.slice(1).split("/")[0] || "home").toLowerCase();
     const send = (seconds) => {
       const sess = auth.get(); if (!sess || !sess.token) return;
-      const body = JSON.stringify({ seconds: Math.max(0, Math.min(120, seconds)), view: view(), platform: window.MDFitNative ? "ios" : "web" });
+      // what this is running on: the app or a browser, the kind of device, and whether the page can use a camera
+      const ua = navigator.userAgent, ios = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1), android = /Android/.test(ua), app = !!window.MDFitNative || /; wv\)/.test(ua);
+      const device = { app, os: ios ? "ios" : android ? "android" : /Mac/.test(ua) ? "mac" : /Win/.test(ua) ? "windows" : "other", browser: /Edg\//.test(ua) ? "edge" : /CriOS|Chrome\//.test(ua) ? "chrome" : /FxiOS|Firefox\//.test(ua) ? "firefox" : /Safari\//.test(ua) ? "safari" : "other", media: !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) };
+      const body = JSON.stringify({ seconds: Math.max(0, Math.min(120, seconds)), view: view(), platform: app ? (android ? "android" : "ios") : "web", device });
       fetch(API + "/api/me/presence", { method: "POST", keepalive: true, headers: { "content-type": "application/json", authorization: "Bearer " + sess.token }, body }).catch(() => {});
     };
     const beat = () => { const now = Date.now(); const secs = Math.round((now - last) / 1000); last = now; if (secs >= 1) send(secs); };
+    send(0); // the moment the app opens: what it is running on is on record before anything else happens
     const start = () => { last = Date.now(); clearInterval(timer); timer = setInterval(beat, 60000); };
     document.addEventListener("visibilitychange", () => { if (document.hidden) { beat(); clearInterval(timer); } else start(); });
     window.addEventListener("pagehide", beat);
