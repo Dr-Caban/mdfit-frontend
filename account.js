@@ -637,7 +637,8 @@
     const w = p.workout;
     return `<li class="program" data-program="${p.id}"><span class="pg-ic"><svg viewBox="0 0 24 24"><path d="M15 6H3v2h12zm0 4H3v2h12zM3 16h8v-2H3zM17 6v8.2A3 3 0 1 0 19 17V8h3V6z"/></svg></span>
       <div><b>${esc(p.name)}</b><span>${esc(w.goal)} · ${w.circuit.length} × ${w.rounds} rounds · about ${w.minutes} min</span></div>
-      <button type="button" class="ev-act" data-play>Start</button>${del ? `<button type="button" class="icon-btn pg-del" data-del-program aria-label="Delete ${esc(p.name)}"><svg viewBox="0 0 24 24"><path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6zM19 4h-3.5l-1-1h-5l-1 1H5v2h14z"/></svg></button>` : ""}</li>`;
+      <span class="pg-acts"><button type="button" class="ev-act" data-play>Start</button>
+      <button type="button" class="icon-btn sh-btn" data-share-item="${esc(p.id)}" data-share-kind="program" data-share-title="${esc(p.name)}"></button>${del ? `<button type="button" class="icon-btn pg-del" data-del-program aria-label="Delete ${esc(p.name)}"><svg viewBox="0 0 24 24"><path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6zM19 4h-3.5l-1-1h-5l-1 1H5v2h14z"/></svg></button>` : ""}</span></li>`;
   };
   function renderPrograms() {
     const ps = lib.programs;
@@ -646,6 +647,7 @@
     $("#program-list").innerHTML = ps.map((p) => programLi(p, true)).join("");
     $("#home-programs").hidden = !ps.length;
     $("#home-program-list").innerHTML = ps.slice(0, 3).map((p) => programLi(p, false)).join("");
+    if (window.MDFitShare) window.MDFitShare.paint();   // the share button on each row (account-share.js)
   }
   document.addEventListener("click", async (e) => {
     const li = e.target.closest("[data-program]");

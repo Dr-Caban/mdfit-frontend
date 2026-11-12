@@ -625,3 +625,26 @@
 .thumb.none svg { width: 24px; height: 24px; fill: currentColor; }
 .care-move .thumb.none { display: grid; place-items: center; }
 .care-move .cm-soon { font-size: 10px; line-height: 1.1; color: var(--muted); text-align: center; }
+
+/* Shared with me: copies this member saved from someone else's link, plus the links they handed out */
+.shared-card .card-head { margin-bottom: 8px; }
+.sh-intro { margin: 0; }
+.sh-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.sh-item { display: grid; gap: 8px; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
+.sh-txt { display: grid; gap: 2px; min-width: 0; }
+.sh-txt b { color: var(--heading); overflow-wrap: anywhere; }
+.sh-txt span { font-size: 13px; color: var(--muted); }
+.sh-acts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.sh-acts .btn-blue, .sh-acts .btn-ghost { padding: 8px 14px; }
+.sh-del { width: 44px; height: 44px; color: var(--muted); }
+.sh-del svg { width: 19px; height: 19px; }
+.sh-del:hover { color: var(--err); }
+.sh-links { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; margin-top: 10px; border: 0; background: none; cursor: pointer; color: var(--accent-text); font-weight: 600; }
+.sh-links svg { width: 17px; height: 17px; }
+.sh-sheet { display: none; }
+.sh-sheet[open] { display: block; }
+.sh-link-list { list-style: none; margin: 0 0 12px; padding: 0; display: grid; gap: 10px; }
+.sh-link-list li { display: grid; gap: 8px; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
+.sh-link-list .btn-ghost svg { width: 17px; height: 17px; }
+.sh-stop { min-height: 44px; border: 0; background: none; cursor: pointer; color: var(--err); font-weight: 600; }
+.sh-stop:disabled { opacity: .45; cursor: not-allowed; }
