@@ -144,6 +144,8 @@
     chat: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
     person: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/>',
     carry: '<path d="M4 12a8 8 0 1 0 2.5-5.8"/><path d="M4 4v5h5"/>',
+    refresh: '<path d="M20 12a8 8 0 1 1-2.300-5.600"/><path d="M20 4v4h-4"/>',
+    phone: '<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>',
     plus: '<path d="M12 5v14M5 12h14"/>',
     upload: '<path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/>',
     download: '<path d="M12 4v12M7 11l5 5 5-5"/><path d="M4 20h16"/>',
@@ -189,6 +191,18 @@
   }
 
   async function clients(fresh) { return (cache.clients = await (fresh ? get : load)("/clients")); }
+  // For a search box: the list in memory, unless it holds no match, in which case the server is asked once (someone
+  // who signed up a minute ago is found without a refresh).
+  let askedFresh = 0;
+  // When the list in memory is being checked against the server at that moment, the box is asked again once the
+  // answer is in, so the results on screen are never left a step behind.
+  async function clientsHit(has, box) {
+    let list = await clients();
+    if (!has(list) && Date.now() - askedFresh > 8000) { askedFresh = Date.now(); list = await clients(true); }
+    const f = flying.get("/clients");
+    if (f && box && !box._again) { box._again = true; const done = () => { box._again = false; }; f.then(() => { done(); if (box.isConnected && box.value.trim()) box.dispatchEvent(new Event("input", { bubbles: true })); }, done); }
+    return list;
+  }
   const byEmail = (list, email) => list.find((c) => c.email && email && c.email.toLowerCase() === String(email).toLowerCase());
   function openChart(id) { state.chartClient = id; state.chartTab = "overview"; if (location.hash === "#chart") render(); else location.hash = "chart"; }
 
@@ -523,7 +537,8 @@
   };
 
   V.telehealth = async () => {
-    const [appts, settings] = await Promise.all([load("/appointments?all=1"), load("/settings")]), today = isoDay(new Date());
+    const [appts, settings, devices] = await Promise.all([load("/appointments?all=1"), load("/settings"), load("/telehealth/devices").catch(() => ({}))]); cache.devices = devices || {};
+    const today = isoDay(new Date());
     const room = (settings.booking && settings.booking.telehealthUrl) || "", own = location.origin + "/visit", usingOwn = room === own;
     const video = appts.filter((a) => a.date >= today && a.status === "booked" && (a.meetingLink || /remote|video|online|call/i.test(`${a.typeId} ${a.typeName}`)));
     const vb = (id, act, icon, label, on) => `<button type="button" class="vbtn${on ? " on" : ""}" id="${id}" data-act="${act}" aria-pressed="${on ? "true" : "false"}" aria-label="${label}" title="${label}">${ui(icon, 18)}</button>`;
@@ -554,7 +569,7 @@
       <div class="stack">
         <div class="card stack"><div class="card-head"><h2>Invite a client</h2><span class="muted" style="font-size:12px">App notice and email</span></div>
           <input class="input" id="teleInviteQ" type="search" placeholder="Search by name or email" aria-label="Search for a client to invite" autocomplete="off"><div id="teleInviteRes"></div></div>
-        <div class="card"><div class="card-head"><h2>Waiting room</h2><span class="pill" id="teleCount">Empty</span></div><div id="teleWaiting"></div><div id="telePending"></div></div>
+        <div class="card"><div class="card-head"><h2>Waiting room</h2><div class="row" style="gap:6px"><span class="pill" id="teleCount">Empty</span><button type="button" class="btn sm ghost" data-act="refresh" aria-label="Refresh the waiting room" title="Refresh">${ui("refresh", 14)}</button></div></div><div id="teleWaiting"></div><div id="telePending"></div></div>
         <div class="card" id="teleRoomCard" hidden><div class="card-head"><h2>In the room</h2><span class="pill" id="teleRoomCount"></span></div><div id="teleRoom"></div></div>
         <div class="card"><div class="card-head"><h2>Session tools</h2></div>
           <div class="list-item"><span style="flex:1;min-width:0">Live room<div class="muted" style="font-size:12px" id="telePeople">One to one · private</div></span><label class="toggle"><input type="checkbox" id="teleGroupSw" data-change="teleGroup" aria-label="Live room: admit several people as viewers"><span></span></label></div>
@@ -727,10 +742,21 @@
   };
 
   V.payments = async () => {
-    const [p, members, s, c] = await Promise.all([load("/payments"), load("/members"), load("/settings"), load("/content"), clients()]);
-    cache.content = c; cache.settings = s;
-    return `<div class="view-head"><div><h1>Payments</h1><p class="muted">Self-pay only · card payments through Stripe · invoices are written from each client's chart</p></div><a class="btn" href="#settings">Services &amp; fees</a></div>
+    const [p, members, s, c, list, gen] = await Promise.all([load("/payments"), load("/members"), load("/settings"), load("/content"), clients(), load("/invoices").catch(() => null)]);
+    cache.content = c; cache.settings = s; cache.gen = gen;
+    const sent = (gen && gen.invoices) || [], unpaid = sent.filter((x) => x.status === "unpaid");
+    const stPill = (x) => x.status === "paid" ? `<span class="pill ok">Paid${x.method ? " · " + esc(x.method) : ""}</span>` : x.status === "void" ? `<span class="pill">Void</span>` : `<span class="pill warn">Unpaid</span>`;
+    const genRow = (x) => `<tr><td><b>${esc(x.number)}</b><div class="muted" style="font-size:12px">${when(x.createdAt)}</div></td>
+      <td><b>${esc(x.name)}</b><div class="muted" style="font-size:12px;overflow-wrap:anywhere">${esc(x.email)}${x.clientId ? "" : " · no account"}</div></td>
+      <td style="max-width:260px;overflow-wrap:anywhere">${esc(x.description)}</td><td class="num" style="text-align:right"><b>${usd(x.amount)}</b></td>
+      <td>${stPill(x)}${x.afterVoid ? ` <span class="pill bad">paid after void</span>` : ""}<div class="muted" style="font-size:12px;margin-top:3px">${x.status === "paid" && x.paidAt ? "paid " + when(x.paidAt) : x.emailedAt ? "emailed " + when(x.emailedAt) : "not emailed"}</div></td>
+      <td><div class="row" style="gap:6px;justify-content:flex-end">${x.status === "unpaid" ? `<button type="button" class="btn sm primary" data-act="igSend" data-id="${esc(x.id)}">${x.emailedAt ? "Send again" : "Send"}</button><button type="button" class="btn sm" data-act="igCopy" data-id="${esc(x.id)}">${ui("copy", 13)}Link</button><button type="button" class="btn sm" data-act="igPaid" data-id="${esc(x.id)}">Mark paid</button><button type="button" class="btn sm ghost" data-act="igVoid" data-id="${esc(x.id)}" aria-label="Void invoice ${esc(x.number)}">${ui("x", 13)}</button>` : ""}${x.clientId ? `<button type="button" class="btn sm" data-act="chartBilling" data-id="${esc(x.clientId)}">Billing</button>` : ""}</div></td></tr>`;
+    return `<div class="view-head"><div><h1>Payments</h1><p class="muted">Self-pay only · card payments through Stripe · send an invoice from here, or write one on a client's chart</p></div><a class="btn" href="#settings">Services &amp; fees</a></div>
     <div class="grid g3" style="margin-bottom:16px">${kpi("Card payments", p.enabled ? "On" : "Off", p.enabled ? "Stripe connected" : "Stripe not set up", p.enabled ? "ok" : "warn")}${kpi("Payment confirmations", p.webhook ? "On" : "Off", "from Stripe", p.webhook ? "ok" : "warn")}${kpi("Members and requests", members.length, "people")}</div>
+    <div class="card" style="margin-bottom:16px" id="genCard"><div class="card-head"><div><h2>Invoices</h2><p class="muted" style="margin:2px 0 0;font-size:12.5px">Draft one invoice, send it to one person or many. Each gets their own, with a link to pay by card.${unpaid.length ? ` <b>${plural(unpaid.length, "invoice")} unpaid: ${usd(unpaid.reduce((n, x) => n + x.amount, 0))}.</b>` : ""}</p></div>
+        <button type="button" class="btn primary" data-act="igNew">${ui("plus", 14)} New invoice</button></div>
+      ${!gen ? none("Invoices could not be loaded.") : sent.length ? `<div class="table-wrap"><table><thead><tr><th>Invoice</th><th>To</th><th>For</th><th style="text-align:right">Amount</th><th>Status</th><th></th></tr></thead><tbody>${sent.slice(0, state.genAll ? 300 : 12).map(genRow).join("")}</tbody></table></div>${sent.length > 12 && !state.genAll ? `<p style="margin:10px 0 0"><button type="button" class="btn sm" data-act="igAll">Show all ${sent.length}</button></p>` : ""}` : none("No invoices sent from here yet.")}
+      ${gen && !gen.payments ? `<p class="muted" style="margin:10px 0 0;font-size:12.5px">Card payments are not switched on, so invoices can be written and marked paid by hand but not emailed with a payment link.</p>` : gen && !gen.email ? `<p class="muted" style="margin:10px 0 0;font-size:12.5px">Email is not switched on for the server: create invoices and copy their links.</p>` : ""}</div>
     <div class="grid g2"><div class="card"><div class="card-head"><h2>Members and requests</h2><span class="muted" style="font-size:12px">Change a membership type here</span></div>${members.map((m) => `<div class="list-item member-row"><span class="who"><b>${esc(m.name)}</b><div class="muted" style="font-size:12px;overflow-wrap:anywhere">${esc(m.email)}</div>${m.request && !m.membership ? `<div class="muted" style="font-size:12px">Asked for ${esc(tierName(m.request.tier))}</div>` : ""}</span><select class="input tier-pick${m.membership ? " on" : ""}" data-change="rowTier" data-id="${esc(m.id)}" data-name="${esc(m.name)}" aria-label="Membership type for ${esc(m.name)}">${tierOptions((m.membership && m.membership.tier) || "")}</select><button class="btn sm" data-act="chart" data-id="${esc(m.id)}">Chart</button></div>`).join("") || none("No members or requests yet.")}</div>
     <div class="card stack"><div class="card-head"><h2>Membership types</h2><span class="muted" style="font-size:12px">What members can sign up for</span></div>
       <form class="stack" data-form="setTiers">${(c.tiers || []).map((t, i) => `<div class="stack" style="border-bottom:1px solid var(--line);padding-bottom:12px"><div class="grid g2">${fld("tn" + i, "name" + i, "Name", t.name, { max: 60 })}${fld("tp" + i, "price" + i, "Price per month ($)", t.price, { type: "number", attrs: 'min="0" step="0.01"' })}</div>
@@ -819,12 +845,12 @@
       <div class="eco-legend">${key(1, "Revenue")}${key(2, "Expenses")}${key(3, "System cost")}</div>
       <div class="eco-plot"><div class="eco-y" aria-hidden="true">${[4, 3, 2, 1, 0].map((k) => `<span>${tick(step * k)}</span>`).join("")}</div>
         <div class="eco-area">${[0, 1, 2, 3, 4].map((k) => `<i class="eco-grid" style="bottom:${k * 25}%"></i>`).join("")}
-          ${rows.map((r, n) => `<div class="eco-g${n > rows.length / 2 ? " late" : ""}" tabindex="0" aria-label="${esc(monthName(r.m, true))}${r.partial ? " so far" : ""}: revenue ${usd(r.revenue)}, expenses ${usd(r.expenses)}, system cost ${usd(r.system)}, left ${usd(r.left)}">
+          ${rows.map((r, n) => `<div class="eco-g${n > rows.length / 2 ? " late" : ""}" tabindex="0" role="button" data-act="ecoOpen" data-m="${r.m}" aria-expanded="${state.ecoOpen === r.m}" aria-controls="ecoDetail" aria-label="${esc(monthName(r.m, true))}${r.partial ? " so far" : ""}: revenue ${usd(r.revenue)}, expenses ${usd(r.expenses)}, system cost ${usd(r.system)}, left ${usd(r.left)}">
             <div class="eco-cols">${col(r.revenue, 1)}${col(r.expenses, 2)}${col(r.system, 3)}</div>
             <div class="eco-m" aria-hidden="true">${monthName(r.m).replace(/ \d+$/, "")}${r.m.slice(5) === "01" || r === rows[0] ? `<small>${r.m.slice(0, 4)}</small>` : ""}</div>
             <div class="eco-tip" aria-hidden="true"><b>${monthName(r.m, true)}${r.partial ? " · so far" : ""}</b>
               <span><i class="s1"></i><b class="num">${usd(r.revenue)}</b> Revenue</span><span><i class="s2"></i><b class="num">${usd(r.expenses)}</b> Expenses</span><span><i class="s3"></i><b class="num">${usd(r.system)}</b> System cost</span>
-              <span class="eco-left"><b class="num">${usd(r.left)}</b> Left</span></div></div>`).join("")}</div></div>
+              <span class="eco-left"><b class="num">${usd(r.left)}</b> Left</span><span class="eco-hint">Click for the detail</span></div></div>`).join("")}</div></div>
 </div>`;
   }
   V.economics = async () => {
@@ -839,24 +865,28 @@
     const avg = M.paying ? M.listMonthly / M.paying : 0, need = avg ? Math.ceil(e.costsMonthly / avg) : null;
     const right = 'style="text-align:right"', line = (label, val, sub) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${label}</b>${sub ? `<div class="muted" style="font-size:12px">${sub}</div>` : ""}</span><b class="num">${val}</b></div>`;
     const lines = e.costs, more = lines.length < 40 ? [{ id: "", name: "", kind: "system", monthly: "" }] : [];
+    if (state.ecoOpen && !e.months.includes(state.ecoOpen)) state.ecoOpen = "";
+    // Every tile opens what it is made of: a month's payments line by line, or the list the figure comes from
+    const tile = (label, val, sub, kind, m, more) => `<button type="button" class="card kpi kpi-btn" data-act="ecoOpen" ${m ? `data-m="${m}" aria-expanded="${state.ecoOpen === m}" aria-controls="ecoDetail"` : `data-to="costs"`}><span class="muted">${label}</span><b class="num">${val}</b><small class="${kind ? "pill " + kind : "muted"}">${sub}</small><span class="kpi-more">${ui("next", 12)} ${more}</span></button>`;
     const missing = ECO_USES.filter((u) => !lines.some((x) => x.name.toLowerCase().includes(u.split(" ")[0].toLowerCase())));
     return `<div class="view-head"><div><h1>System economics</h1><p class="muted">Revenue against expenses and what the system costs to run · totals only, read from Stripe, the invoices on the charts and the member list</p></div>
       <div class="field" style="margin:0"><label for="ecoMonths" class="muted" style="font-size:12px">Months shown</label><select id="ecoMonths" class="input" data-change="ecoMonths" style="width:auto">${[3, 6, 12].map((x) => `<option value="${x}"${x === n ? " selected" : ""}>${x} months</option>`).join("")}</select></div></div>
     ${!S.on ? `<div class="card" style="margin-bottom:16px">${none("Stripe is not connected on the server, so card revenue cannot be read. Everything else on this screen is still from your records.")}</div>` : S.error ? `<div class="card" style="margin-bottom:16px"><b>Card revenue could not be read.</b><p class="muted" style="margin:6px 0 0">${esc(S.error)}</p></div>` : !S.fees ? `<div class="card" style="margin-bottom:16px">${none("This Stripe key can read charges and refunds but not Stripe's fees, so fees are missing from Expenses. Giving the key read access to Balance transactions adds them.")}</div>` : ""}
     <div class="grid g4" style="margin-bottom:16px">
-      ${kpi(`Revenue, ${monthName(cur)} so far`, usd(now.revenue), read ? `${plural(now.payments, "card payment")} · ${usd(now.out)} outside Stripe` : `${usd(now.out)} outside Stripe · card revenue not read`)}
-      ${kpi("Expenses, per month", usd(e.expensesMonthly), `plus Stripe's fees${read && S.fees && prev ? `: ${usd(prev.fees)} in ${monthName(prev.m)}` : ""}`)}
-      ${kpi("System cost, per month", usd(e.systemMonthly), lines.some((x) => x.kind === "system") ? plural(lines.filter((x) => x.kind === "system").length, "line") : "none entered yet", lines.some((x) => x.kind === "system") ? "" : "warn")}
-      ${kpi(`Left, ${monthName(last)}`, usd(prev.left), read ? "after expenses and system cost" : "card revenue not read", prev.left < 0 ? "bad" : prev.left > 0 ? "ok" : "")}
+      ${tile(`Revenue, ${monthName(cur)} so far`, usd(now.revenue), read ? `${plural(now.payments, "card payment")} · ${usd(now.out)} outside Stripe` : `${usd(now.out)} outside Stripe · card revenue not read`, "", cur, "See each payment")}
+      ${tile("Expenses, per month", usd(e.expensesMonthly), `plus Stripe's fees${read && S.fees && prev ? `: ${usd(prev.fees)} in ${monthName(prev.m)}` : ""}`, "", "", "See and edit the lines")}
+      ${tile("System cost, per month", usd(e.systemMonthly), lines.some((x) => x.kind === "system") ? plural(lines.filter((x) => x.kind === "system").length, "line") : "none entered yet", lines.some((x) => x.kind === "system") ? "" : "warn", "", "See and edit the lines")}
+      ${tile(`Left, ${monthName(last)}`, usd(prev.left), read ? "after expenses and system cost" : "card revenue not read", prev.left < 0 ? "bad" : prev.left > 0 ? "ok" : "", last, "See how it adds up")}
     </div>
     <div class="card" style="margin-bottom:16px"><div class="card-head"><h2>Revenue vs expenses vs system cost</h2><span class="muted" style="font-size:12px">${read && S.checkedAt ? `Stripe read ${when(S.checkedAt)}` : ""}</span></div>
       ${ecoChart(rows)}
       <div class="table-wrap" style="margin-top:14px"><table><thead><tr><th>Month</th><th ${right}>Card payments</th><th ${right}>Outside Stripe</th><th ${right}>Refunds</th><th ${right}>Revenue</th><th ${right}>Expenses</th><th ${right}>System cost</th><th ${right}>Left</th><th ${right}>Sign-ups</th><th ${right}>Visits</th></tr></thead><tbody>
-      ${[...rows].reverse().map((r) => `<tr><td><b>${monthName(r.m)}</b>${r.partial ? ` <span class="pill">so far</span>` : ""}</td><td class="num" ${right}>${read ? usd(r.card) : "—"}</td><td class="num" ${right}>${usd(r.out)}</td><td class="num" ${right}>${read ? usd(r.refunds) : "—"}</td><td class="num" ${right}><b>${usd(r.revenue)}</b></td><td class="num" ${right}>${usd(r.expenses)}</td><td class="num" ${right}>${usd(r.system)}</td><td class="num" ${right}><b>${usd(r.left)}</b></td><td class="num" ${right}>${e.people.signups[r.m] || 0}</td><td class="num" ${right}>${e.visits[r.m] || 0}</td></tr>`).join("")}
+      ${[...rows].reverse().map((r) => `<tr class="eco-tr" data-act="ecoOpen" data-m="${r.m}" tabindex="0" aria-expanded="${state.ecoOpen === r.m}" aria-controls="ecoDetail"><td><b>${monthName(r.m)}</b>${r.partial ? ` <span class="pill">so far</span>` : ""}</td><td class="num" ${right}>${read ? usd(r.card) : "—"}</td><td class="num" ${right}>${usd(r.out)}</td><td class="num" ${right}>${read ? usd(r.refunds) : "—"}</td><td class="num" ${right}><b>${usd(r.revenue)}</b></td><td class="num" ${right}>${usd(r.expenses)}</td><td class="num" ${right}>${usd(r.system)}</td><td class="num" ${right}><b>${usd(r.left)}</b></td><td class="num" ${right}>${e.people.signups[r.m] || 0}</td><td class="num" ${right}>${e.visits[r.m] || 0}</td></tr>`).join("")}
       </tbody></table></div>
-      <p class="muted" style="margin:10px 0 0;font-size:12.5px"><b>Revenue</b> is card payments recorded by Stripe plus invoices you marked paid by cash, check or another way, less refunds. <b>Expenses</b> is Stripe's fees plus the expenses you keep below. <b>System cost</b> is what the software costs to run, from the list below. <b>Left</b> is revenue less both. Expenses and system cost use today's list for every month, and the current month is charged the whole amount. Payouts to your bank are not revenue and are not counted.${S.truncated ? " Stripe holds more entries than were read for this period: the oldest months may be short." : ""}${e.unreadableCharts ? ` ${plural(e.unreadableCharts, "chart")} could not be opened with the server's keys, so any invoices on ${e.unreadableCharts === 1 ? "it" : "them"} are not counted.` : ""}</p></div>
+      <p class="muted" style="margin:10px 0 0;font-size:12.5px">Click a month, in the graph or the table, to see every payment in it. <b>Revenue</b> is card payments recorded by Stripe plus invoices you marked paid by cash, check or another way, less refunds. <b>Expenses</b> is Stripe's fees plus the expenses you keep below. <b>System cost</b> is what the software costs to run, from the list below. <b>Left</b> is revenue less both. Expenses and system cost use today's list for every month, and the current month is charged the whole amount. Payouts to your bank are not revenue and are not counted.${S.truncated ? " Stripe holds more entries than were read for this period: the oldest months may be short." : ""}${e.unreadableCharts ? ` ${plural(e.unreadableCharts, "chart")} could not be opened with the server's keys, so any invoices on ${e.unreadableCharts === 1 ? "it" : "them"} are not counted.` : ""}</p></div>
+    <div id="ecoDetail" aria-live="polite"></div>
     <div class="grid g2">
-      <div class="card stack"><div class="card-head"><h2>Expenses and system cost</h2><span class="muted" style="font-size:12px">${usd(e.costsMonthly)} a month</span></div>
+      <div class="card stack" id="ecoCostsCard"><div class="card-head"><h2>Expenses and system cost</h2><span class="muted" style="font-size:12px">${usd(e.costsMonthly)} a month</span></div>
         <form class="stack" data-form="ecoCosts">${[...lines, ...more].map((x, i) => `<div class="set-row eco-row"><input type="hidden" name="id${i}" value="${esc(x.id)}"><input name="name${i}" class="input" value="${esc(x.name)}" maxlength="60" placeholder="${x.id ? "Name" : "Add a line"}" aria-label="Line ${i + 1} name"><select name="kind${i}" class="input" aria-label="Line ${i + 1} is a"><option value="system"${x.kind !== "expense" ? " selected" : ""}>System cost</option><option value="expense"${x.kind === "expense" ? " selected" : ""}>Expense</option></select><input name="monthly${i}" class="input" type="number" min="0" max="1000000" step="0.01" value="${x.id ? (x.monthly / 100).toFixed(2) : ""}" placeholder="$ a month" aria-label="Line ${i + 1} dollars a month"></div>`).join("")}
           ${missing.length && more.length ? `<div class="row" style="gap:6px"><span class="muted" style="font-size:12.5px">This system runs on:</span>${missing.map((u) => `<button type="button" class="btn sm" data-act="ecoUse" data-name="${esc(u)}">${ui("plus", 12)}${esc(u)}</button>`).join("")}</div>` : ""}
           <p class="muted" style="margin:0;font-size:12.5px">System cost is what you pay each month for the software: the server, the website, video, email, the AI scribe. Expense is anything else the practice pays monthly, such as rent or insurance. These bills cannot be read from here, so the amounts are yours to enter. Clear a name to remove a line. Stripe's fees are read from Stripe and do not belong here.</p>
@@ -873,6 +903,34 @@
         ${M.kinds.map((k) => line(esc(k.name), usd(k.price * k.paying) + " a month", `${usd(k.price)} · ${k.paying} paying${k.byHand ? ` · ${k.byHand} set by hand (not charged)` : ""}`)).join("") || none("No membership types.")}</div>
     </div>`;
   };
+  // One month opened: every card payment (who, what kind, amount, Stripe's fee), refunds, invoices settled another
+  // way, and the cost lines, ending in the same sum the overview shows.
+  async function ecoDetail() {
+    const box = $("#ecoDetail"), m = state.ecoOpen; if (!box) return;
+    if (!m) { box.innerHTML = ""; return; }
+    box.innerHTML = `<div class="card" style="margin-bottom:16px"><p class="spin" style="padding:0;margin:0">Loading ${monthName(m, true)}…</p></div>`;
+    let d; try { d = await load(`/economics/month?m=${m}`); } catch (err) { if (state.ecoOpen === m && $("#ecoDetail")) $("#ecoDetail").innerHTML = `<div class="card" style="margin-bottom:16px"><b>${monthName(m, true)} could not be loaded.</b><p class="muted" style="margin:6px 0 0">${esc(err.message)}</p></div>`; return; }
+    const out = $("#ecoDetail"); if (!out || state.ecoOpen !== m) return;
+    const S = d.stripe, right = 'style="text-align:right"', who = (x) => x.name ? esc(x.name) : `<span class="muted">Not matched to a client</span>`;
+    const chartBtn = (x, billing) => x.clientId ? `<button type="button" class="btn sm" data-act="${billing ? "chartBilling" : "chart"}" data-id="${esc(x.clientId)}">${billing ? "Billing" : "Chart"}</button>` : "";
+    const pays = S.lines.filter((x) => x.kind === "charge"), rest = S.lines.filter((x) => x.kind !== "charge");
+    const card = pays.reduce((n, x) => n + x.amount, 0), refunds = rest.filter((x) => x.kind === "refund").reduce((n, x) => n + x.amount, 0);
+    const fees = S.lines.reduce((n, x) => n + (x.fee || 0) + (x.kind === "fee" ? x.amount : 0), 0), outside = d.outside.reduce((n, x) => n + x.amount, 0);
+    const revenue = card + outside - refunds, expenses = fees + d.expensesMonthly, left = revenue - expenses - d.systemMonthly;
+    const sum = (label, val, strong) => `<div class="list-item"><span style="flex:1">${strong ? `<b>${label}</b>` : label}</span><${strong ? "b" : "span"} class="num">${val}</${strong ? "b" : "span"}></div>`;
+    const cost = (kind) => d.costs.filter((x) => x.kind === kind).map((x) => sum(esc(x.name), usd(x.monthly))).join("");
+    out.innerHTML = `<div class="card" style="margin-bottom:16px" id="ecoMonthCard"><div class="card-head"><h2>${monthName(m, true)} in detail</h2><button type="button" class="btn sm ghost" data-act="ecoOpen" data-m="${m}" aria-label="Close the detail">${ui("x", 14)}</button></div>
+      ${!S.on ? none("Stripe is not connected on the server, so card payments cannot be listed.") : S.error ? `<p class="muted" style="margin:0">${esc(S.error)}</p>` : `<h3 style="margin:4px 0 6px">Card payments <span class="muted" style="font-weight:400;font-size:12.5px">${pays.length ? `${pays.length} · ${usd(card)}` : ""}</span></h3>
+      ${pays.length ? `<div class="table-wrap"><table><thead><tr><th>Date</th><th>Who</th><th>What</th><th ${right}>Amount</th><th ${right}>Stripe fee</th><th ${right}>You keep</th><th></th></tr></thead><tbody>${pays.map((x) => `<tr><td class="num">${when(x.at)}</td><td>${who(x)}</td><td>${esc(x.what || "Card payment")}</td><td class="num" ${right}>${usd(x.amount)}</td><td class="num" ${right}>${S.fees ? usd(x.fee) : "—"}</td><td class="num" ${right}><b>${S.fees ? usd(x.amount - x.fee) : "—"}</b></td><td ${right}>${chartBtn(x, true)}</td></tr>`).join("")}</tbody></table></div>` : none("No card payments in this month.")}
+      ${rest.length ? `<h3 style="margin:14px 0 6px">Refunds and Stripe charges</h3><div class="table-wrap"><table><tbody>${rest.map((x) => `<tr><td class="num">${when(x.at)}</td><td>${x.kind === "refund" ? "Refund" : x.kind === "fee" ? "Stripe charge" : "Adjustment"}</td><td class="num" ${right}>-${usd(x.amount)}</td></tr>`).join("")}</tbody></table></div>` : ""}`}
+      <h3 style="margin:14px 0 6px">Paid another way <span class="muted" style="font-weight:400;font-size:12.5px">${d.outside.length ? `${d.outside.length} · ${usd(outside)}` : ""}</span></h3>
+      ${d.outside.length ? `<div class="table-wrap"><table><thead><tr><th>Date</th><th>Who</th><th>Invoice</th><th>How</th><th ${right}>Amount</th><th></th></tr></thead><tbody>${d.outside.map((x) => `<tr><td class="num">${x.at ? when(x.at) : "—"}</td><td>${esc(x.name)}</td><td>${esc(x.number)}</td><td>${esc(x.method || "")}</td><td class="num" ${right}>${usd(x.amount)}</td><td ${right}>${chartBtn(x, true)}</td></tr>`).join("")}</tbody></table></div>` : none("No invoices were marked paid by cash, check or another way in this month.")}
+      <div class="grid g2" style="margin-top:14px"><div><h3 style="margin:0 0 4px">Expenses</h3>${S.on && !S.error && S.fees ? sum("Stripe's fees", usd(fees)) : ""}${cost("expense")}${!cost("expense") && !(S.on && !S.error && S.fees) ? none("No expense lines entered.") : ""}</div>
+        <div><h3 style="margin:0 0 4px">System cost</h3>${cost("system") || none("No system cost lines entered.")}</div></div>
+      <h3 style="margin:14px 0 4px">How it adds up</h3>
+      ${sum("Card payments", usd(card))}${sum("Paid another way", usd(outside))}${refunds ? sum("Refunds", "-" + usd(refunds)) : ""}${sum("Revenue", usd(revenue), true)}${sum("Expenses", "-" + usd(expenses))}${sum("System cost", "-" + usd(d.systemMonthly))}${sum("Left", usd(left), true)}
+      ${S.truncated ? `<p class="muted" style="margin:8px 0 0;font-size:12.5px">Stripe holds more entries than were read for this month.</p>` : ""}</div>`;
+  }
   V.team = async () => {
     const [me, mfa] = await Promise.all([load("/me"), load("/mfa")]);
     return `<div class="view-head"><div><h1>Team & roles</h1><p class="muted">This system has one sign-in: the practice owner</p></div></div>
@@ -1066,7 +1124,7 @@
         </form>
         ${past.length ? `<h3 style="margin:14px 0 4px">Recent broadcasts</h3>${past.slice(0, 5).map((b) => `<div class="list-item"><span style="flex:1;min-width:0"><div class="muted" style="font-size:12px">${when(b.at)}${b.sending ? " · emails still going out" : ""}</div><div style="overflow-wrap:anywhere">${esc(b.preview)}${b.preview && b.preview.length >= 120 ? "…" : ""}</div></span><span class="pill">${b.read}/${b.recipients} read</span></div>`).join("")}` : ""}`);
     },
-    teleRole: (el) => { const p = tele.peers.get(el.dataset.id); if (!p) return; MDFitRT.emit("tele_role", { clientId: p.id, role: el.dataset.role }); if (el.dataset.role === "speaker") toast(`${firstName(p.name)} was asked to speak. Their camera turns on once they agree.`); },
+    teleRole: (el) => { const p = tele.peers.get(el.dataset.id); if (!p) return; p.byHost = el.dataset.role === "speaker" && !p.asking; MDFitRT.emit("tele_role", { clientId: p.id, role: el.dataset.role }); if (el.dataset.role === "speaker") toast(p.asking ? `${firstName(p.name)} is coming on screen.` : `${firstName(p.name)} was asked to speak. Their camera turns on once they agree.`); },
     teleKick: (el) => { const p = tele.peers.get(el.dataset.id); if (p && confirm(`Remove ${p.name} from the room? They cannot come back into this session.`)) MDFitRT.emit("tele_end", { clientId: p.id }); },
     teleAdmit: async (el) => {
       // Letting a second person into a private visit opens it as a live room: the one already in it becomes a viewer first
@@ -1178,6 +1236,10 @@
     apptSave: async (f) => { await api("PATCH", `/api/admin/appointments/${f.dataset.id}`, { status: f.status.value, adminNotes: f.adminNotes.value }); cache.appts = null; closeModal(); toast("Appointment updated."); render(); }
   };
   const typeTurn = {};
+  // What a member last opened MD Fit with, and whether they can be seen and heard on it
+  const devLine = (d, always) => d ? `<div class="muted" style="font-size:12px;display:flex;gap:5px;align-items:flex-start">${ui("phone", 13)}<span><b style="font-weight:600;color:${d.speak === false ? "var(--warn)" : "inherit"}">${esc(d.label)}</b>: ${esc(d.note)}</span></div>` : always ? `<div class="muted" style="font-size:12px">Has not opened MD Fit since devices started being recorded</div>` : "";
+  // The people picked for a new invoice, shown as removable chips
+  function igDraw() { const box = $("#igPeople"); if (box) box.innerHTML = state.igPeople.map((p) => `<span class="pill accent" style="display:inline-flex;align-items:center;gap:4px">${esc(p.name)}<button type="button" class="btn sm ghost" style="padding:0 2px;min-height:0" data-act="igDrop" data-id="${esc(p.id)}" aria-label="Remove ${esc(p.name)}">${ui("x", 12)}</button></span>`).join(""); const n = $("#igCount"); if (n) n.textContent = state.igPeople.length ? `${plural(state.igPeople.length, "client")} picked` : ""; }
   // ---- Client chart: what the buttons do
   const cid = () => state.chartClient;
   const firstOf = () => String(cache.chart.d.name).split(" ")[0];
@@ -1260,6 +1322,52 @@
         <div class="row"><button class="btn primary"${(r.models || []).length ? "" : " disabled"}>Use this model</button></div></form>`);
     },
     stop: () => {},
+    // ---- Invoice generator (Payments): draft once, pick the people, write the email, send
+    igAll: () => { state.genAll = true; render(); },
+    igNew: () => { state.igPeople = []; const g = cache.gen || {};
+      modal(`<div class="card-head"><h2>New invoice</h2>${xBtn}</div>
+        <form class="stack" data-form="igCreate">
+          <div class="grid g-side" style="grid-template-columns:minmax(0,2fr) minmax(0,1fr)">${fld("igDesc", "description", "What it is for", "", { max: 200, attrs: 'required placeholder="Workshop seat, custom package, supplies"' })}${fld("igAmt", "amount", "Amount each ($)", "", { type: "number", attrs: 'required min="0.5" max="20000" step="0.01"' })}</div>
+          <p class="muted" style="margin:-6px 0 0;font-size:12.5px">What it is for stays in your records and on the client's chart. It is not put in the email and is not sent to Stripe: say what you want the person to read in the message below.</p>
+          <div class="field" style="margin:0"><label for="igFind">Send to: clients</label><div class="search" style="position:relative"><input id="igFind" class="input" autocomplete="off" placeholder="Search by name or email, then add"></div><div id="igRes"></div><div id="igPeople" class="row" style="gap:6px;margin-top:6px"></div></div>
+          ${fld("igTyped", "typed", "Send to: someone without an account (Name, Email, one per line)", "", { area: true, rows: 2, max: 4000, attrs: 'placeholder="Jordan Lee, jordan@example.com"' })}
+          ${fld("igSubject", "subject", "Email subject", "", { max: 120, attrs: 'placeholder="MD Fit invoice (its number is added if you leave this empty)"' })}
+          ${fld("igMsg", "message", "Message", "", { area: true, rows: 4, max: 600, attrs: 'placeholder="A few words of your own. The invoice number, the amount and the payment link are added underneath."' })}
+          <div class="row"><button class="btn primary" name="how" value="send"${g.payments && g.email ? "" : " disabled"}>Email the invoice</button><button class="btn" name="how" value="save">Create without sending</button><span class="muted" id="igCount" style="font-size:12.5px"></span></div>
+          ${g.payments && g.email ? "" : `<p class="muted" style="margin:0;font-size:12.5px">${g.payments ? "Email is not switched on for the server" : "Card payments are not switched on"}, so the invoice can be created here but not emailed with a payment link.</p>`}
+        </form>`); $("#modal").classList.add("wide"); },
+    igAdd: (el) => { const c = (cache.clients || []).find((x) => x.id === el.dataset.id); if (!c || state.igPeople.some((p) => p.id === c.id)) return; state.igPeople.push({ id: c.id, name: c.name, email: c.email }); igDraw(); const q = $("#igFind"); if (q) { q.value = ""; q.focus(); } $("#igRes").innerHTML = ""; },
+    igDrop: (el) => { state.igPeople = state.igPeople.filter((p) => p.id !== el.dataset.id); igDraw(); },
+    igSend: (el) => { const x = ((cache.gen || {}).invoices || []).find((y) => y.id === el.dataset.id); if (!x) return;
+      modal(`<div class="card-head"><h2>Send invoice ${esc(x.number)}</h2>${xBtn}</div>
+        <form class="stack" data-form="igSend" data-id="${esc(x.id)}"><p class="muted" style="margin:0">To ${esc(x.name)} · ${esc(x.email)} · ${usd(x.amount)}</p>
+          ${fld("igsSubject", "subject", "Email subject", "", { max: 120, attrs: `placeholder="MD Fit invoice ${esc(x.number)}"` })}
+          ${fld("igsMsg", "message", "Message", x.message || "", { area: true, rows: 4, max: 600 })}
+          <p class="muted" style="margin:0;font-size:12.5px">The invoice number, the amount and the payment link are added underneath your message. The link keeps working until the invoice is paid or voided.</p>
+          <div class="row"><button class="btn primary">Send invoice</button></div></form>`); },
+    igCopy: async (el) => { const x = ((cache.gen || {}).invoices || []).find((y) => y.id === el.dataset.id); if (!x) return; try { await navigator.clipboard.writeText(x.url); toast("Payment link copied. It works until the invoice is paid or voided."); } catch { prompt("Copy this payment link:", x.url); } },
+    igPaid: (el) => { const x = ((cache.gen || {}).invoices || []).find((y) => y.id === el.dataset.id); if (!x) return;
+      modal(`<div class="card-head"><h2>Mark ${esc(x.number)} paid</h2>${xBtn}</div><form class="stack" data-form="igPaid" data-id="${esc(x.id)}"><p class="muted" style="margin:0">${esc(x.name)} · ${usd(x.amount)}</p>${sel("igpHow", "method", "How it was paid", [["cash", "Cash"], ["check", "Check"], ["card", "Card, taken another way"], ["other", "Other"]], "cash")}<div class="row"><button class="btn primary">Mark paid</button></div></form>`); },
+    igVoid: async (el) => { const x = ((cache.gen || {}).invoices || []).find((y) => y.id === el.dataset.id); if (!x || !confirm(`Void invoice ${x.number} for ${x.name}? Its payment link stops working.`)) return; await api("POST", `/api/admin/invoices/${x.id}/status`, { status: "void" }); await render(); toast(`Invoice ${x.number} voided.`); },
+    // Refresh: no reload. Throw away what is in memory, check the live connection really answers (and bring it back if
+    // it does not), ask it for the waiting room again, and draw the screen from the server.
+    refresh: async () => {
+      const b = $("#refreshBtn"); if (b) b.classList.add("spin");
+      forget();
+      let ms = null, live = !!window.MDFitRT;
+      if (live) { if (!MDFitRT.connected()) await MDFitRT.connect({ namespace: "/admin", token }); else ms = await MDFitRT.ping(3000); if (ms === null && MDFitRT.connected()) ms = await MDFitRT.revive(); MDFitRT.emit("tele_list"); }
+      await render(); liveDot();
+      toast(!live ? "Up to date." : ms !== null ? `Up to date. Live connection answered in ${ms} ms.` : MDFitRT.connected() ? "Up to date. Live connection is back." : "Up to date. The live connection is reconnecting…");
+      setTimeout(() => { if (b) b.classList.remove("spin"); }, 600);
+    },
+    // System economics: open a month's detail (the same month again closes it), or go to the list a tile is made of
+    ecoOpen: async (el) => {
+      if (el.dataset.to === "costs") { const c = $("#ecoCostsCard"); if (c) { c.scrollIntoView({ block: "start", behavior: "smooth" }); const i = c.querySelector("input.input"); if (i) i.focus({ preventScroll: true }); } return; }
+      state.ecoOpen = state.ecoOpen === el.dataset.m ? "" : el.dataset.m;
+      document.querySelectorAll('[data-act="ecoOpen"][data-m]').forEach((b) => b.setAttribute("aria-expanded", String(b.dataset.m === state.ecoOpen)));
+      await ecoDetail();
+      const card = $("#ecoMonthCard"); if (card) card.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    },
     // System economics: put a vendor this system uses into the empty cost line, ready for its amount
     ecoUse: (el) => { const f = $('[data-form="ecoCosts"]'); if (!f) return; const rows = [...f.querySelectorAll(".set-row")], row = rows[rows.length - 1], name = row && row.querySelector('[name^="name"]'); if (!name) return; if (name.value.trim()) { toast("Save the line you are adding first."); return; } name.value = el.dataset.name; el.remove(); row.querySelector('[name^="monthly"]').focus(); },
     // Calendar: add an event straight onto the connected Google Calendar
@@ -1366,6 +1474,17 @@
   });
   Object.assign(FORMS, {
     scribeModel: async (f) => { const r = await api("PUT", "/api/admin/scribe/model", { model: f.model.value }); closeModal(); await render(); toast(`AI scribe now uses ${r.model}.`); },
+    igCreate: async (f, e) => {
+      const send = !!(e && e.submitter && e.submitter.value === "send"), typed = [];
+      for (const raw of f.typed.value.split("\n").map((x) => x.trim()).filter(Boolean)) { const at = raw.lastIndexOf(","), name = at > 0 ? raw.slice(0, at).trim() : "", email = at > 0 ? raw.slice(at + 1).trim() : ""; if (!name || !/^\S+@\S+\.\S+$/.test(email)) { toast(`"${raw}" needs a name, a comma, then an email address.`); f.typed.focus(); return; } typed.push({ name, email }); }
+      const recipients = [...state.igPeople.map((p) => ({ clientId: p.id })), ...typed];
+      if (!recipients.length) { toast("Add at least one person to send it to."); $("#igFind").focus(); return; }
+      if (send && recipients.length > 1 && !confirm(`Email this invoice to ${recipients.length} people? Each gets their own invoice for $${Number(f.amount.value).toFixed(2)}.`)) return;
+      const r = await api("POST", "/api/admin/invoices", { description: f.description.value.trim(), amount: Number(f.amount.value), recipients, subject: f.subject.value.trim(), message: f.message.value.trim(), send });
+      state.igPeople = []; closeModal(); await render(); toast(`${plural(r.created, "invoice")} created${r.sent ? " and emailed" : ". Nothing was emailed: use Send or copy the link"}.`);
+    },
+    igSend: async (f) => { await api("POST", `/api/admin/invoices/${f.dataset.id}/send`, { subject: f.subject.value.trim(), message: f.message.value.trim() }); closeModal(); await render(); toast("Invoice emailed."); },
+    igPaid: async (f) => { await api("POST", `/api/admin/invoices/${f.dataset.id}/status`, { status: "paid", method: f.method.value }); closeModal(); await render(); toast("Marked paid."); },
     ecoCosts: async (f) => {
       const rows = rowsOf(f, ["id", "name", "kind", "monthly"]).filter((r) => r.name);
       for (const r of rows) if (r.monthly === "" || !(Number(r.monthly) >= 0)) { toast(`Enter what ${r.name} costs a month.`); f["monthly" + r.i].focus(); return; }
@@ -1496,6 +1615,8 @@
   const press = (el, run) => { going.add(el); el.setAttribute("aria-busy", "true"); const off = () => { going.delete(el); el.removeAttribute("aria-busy"); }; run.then(off, off); };
   document.addEventListener("click", (e) => { const el = e.target.closest("[data-act]"); if (!el || !token) return; const fn = ACT[el.dataset.act]; if (fn) press(el, guard(fn)(el, e)); });
   document.addEventListener("submit", (e) => { const f = e.target.closest("[data-form]"); if (!f) return; e.preventDefault(); const fn = FORMS[f.dataset.form]; if (!fn || !token) return; if (going.has(f) && !RESEND.has(f.dataset.form)) return; press(f, guard(fn)(f, e)); });
+  // Things that act as buttons without being one (a month in the graph, a row in a table) answer Enter and Space too
+  document.addEventListener("keydown", (e) => { if ((e.key === "Enter" || e.key === " ") && e.target.matches && e.target.matches("[data-act][tabindex]:not(button):not(a):not(input)")) { e.preventDefault(); e.target.click(); } });
   // Getting ahead of the click: resting the pointer on a link to a screen, or pressing down on it, starts loading that
   // screen, and pressing down on a client starts loading their chart. Only screens that are safe to load unseen.
   let hoverT = 0;
@@ -1546,9 +1667,19 @@
     if (e.target.id === "teleInviteQ") {
       const q = e.target.value.trim().toLowerCase().split(/\s+/).filter(Boolean), box = $("#teleInviteRes");
       if (!q.length) { box.innerHTML = ""; return; }
-      clients().then((list) => { if ($("#teleInviteQ").value.trim().toLowerCase().split(/\s+/).filter(Boolean).join(" ") !== q.join(" ")) return;
+      // what each person is using may have changed since this screen was drawn (they may have just opened the app)
+      if (Date.now() - (cache.devAt || 0) > 8000) { cache.devAt = Date.now(); get("/telehealth/devices").then((d) => { cache.devices = d || {}; const b = $("#teleInviteQ"); if (b && b.value.trim()) b.dispatchEvent(new Event("input", { bubbles: true })); }).catch(() => {}); }
+      clientsHit((l) => l.some((c) => q.every((w) => `${c.name} ${c.email}`.toLowerCase().includes(w))), e.target).then((list) => { if (!$("#teleInviteQ") || $("#teleInviteQ").value.trim().toLowerCase().split(/\s+/).filter(Boolean).join(" ") !== q.join(" ")) return;
         const here = new Set([...tele.peers.keys(), ...tele.waiting.map((p) => p.clientId)]), asked = new Set(tele.invited.map((p) => p.clientId));
-        box.innerHTML = list.filter((c) => q.every((w) => `${c.name} ${c.email}`.toLowerCase().includes(w))).slice(0, 8).map((c) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(c.name)}</b><div class="muted" style="font-size:12px;overflow-wrap:anywhere">${esc(c.email)}</div></span>${here.has(c.id) ? `<span class="pill ok">Here</span>` : `<button type="button" class="btn sm primary" data-act="teleInvite" data-id="${esc(c.id)}">${asked.has(c.id) ? "Invite again" : "Invite to telehealth"}</button>`}</div>`).join("") || none("No client matches.");
+        box.innerHTML = list.filter((c) => q.every((w) => `${c.name} ${c.email}`.toLowerCase().includes(w))).slice(0, 8).map((c) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(c.name)}</b><div class="muted" style="font-size:12px;overflow-wrap:anywhere">${esc(c.email)}</div>${devLine((cache.devices || {})[c.id], true)}</span>${here.has(c.id) ? `<span class="pill ok">Here</span>` : `<button type="button" class="btn sm primary" data-act="teleInvite" data-id="${esc(c.id)}">${asked.has(c.id) ? "Invite again" : "Invite to telehealth"}</button>`}</div>`).join("") || none("No client matches.");
+      }).catch(() => {});
+    }
+    if (e.target.id === "igFind") {
+      const q = e.target.value.trim().toLowerCase().split(/\s+/).filter(Boolean), box = $("#igRes");
+      if (!q.length) { box.innerHTML = ""; return; }
+      clientsHit((l) => l.some((c) => q.every((w) => `${c.name} ${c.email}`.toLowerCase().includes(w))), e.target).then((list) => { const now = $("#igFind"); if (!now || now.value.trim().toLowerCase().split(/\s+/).filter(Boolean).join(" ") !== q.join(" ")) return;
+        const have = new Set(state.igPeople.map((p) => p.id));
+        box.innerHTML = list.filter((c) => !have.has(c.id) && q.every((w) => `${c.name} ${c.email}`.toLowerCase().includes(w))).slice(0, 8).map((c) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(c.name)}</b><div class="muted" style="font-size:12px;overflow-wrap:anywhere">${esc(c.email)}</div></span><button type="button" class="btn sm primary" data-act="igAdd" data-id="${esc(c.id)}">Add</button></div>`).join("") || none("No client matches.");
       }).catch(() => {});
     }
     if (e.target.id === "nClientQ") noteClientType(e.target);
@@ -1571,6 +1702,7 @@
     const view = $("#view"); view.innerHTML = html; shown = r; shownHtml = html;
     if (r === "chart" && state.chartClient) chartAfter();
     if (r === "telehealth") { if (window.MDFitRT) MDFitRT.emit("tele_list"); teleMount(); }
+    if (r === "economics" && state.ecoOpen) ecoDetail();
     if (r === "messages") { fitChat(); if (!again) { const l = $("#msgList"); if (l) l.scrollTop = l.scrollHeight; } } // a conversation opens at its newest message
   }
   // The conversation card ends where the window ends, whatever is above it, so the box to write in is always on screen
@@ -1612,7 +1744,7 @@
   // The screens left out of that list still get everything they can have ahead of time: the list of conversations,
   // the scribe's status for the note screen, what the telehealth screen and an empty chart screen show, the money totals.
   const AHEAD = {
-    messages: () => load("/messages"), notes: () => Promise.all([clients(), load("/scribe")]), telehealth: () => Promise.all([load("/appointments?all=1"), load("/settings")]),
+    messages: () => load("/messages"), notes: () => Promise.all([clients(), load("/scribe")]), telehealth: () => Promise.all([load("/appointments?all=1"), load("/settings"), load("/telehealth/devices")]),
     chart: () => Promise.all([load("/emr"), content()]), economics: () => load(`/economics?months=${state.ecoMonths || 6}`)
   };
   const early = (r) => (WARM.includes(r) ? V[r]() : AHEAD[r] ? AHEAD[r]() : Promise.resolve());
@@ -1952,15 +2084,15 @@
     const rm = $("#teleRoomCard"), rl = $("#teleRoom");
     if (rm) {
       rm.hidden = !teleIn();
-      rl.innerHTML = all.map((p) => `<div class="list-item" style="flex-wrap:wrap;row-gap:6px"><span style="flex:1 1 120px;min-width:0;overflow-wrap:anywhere"><b>${esc(p.name)}</b><div class="muted" style="font-size:12px">${p.state === "connected" ? "Connected" : p.state === "failed" ? "Could not connect" : "Connecting…"}</div></span>
-        <span class="pill ${p.role === "speaker" ? "ok" : ""}">${!tele.group ? "In the visit" : p.role !== "speaker" ? "Viewer" : p.remote.getTracks().some((t) => !t.muted && t.readyState === "live") ? "Speaker" : "Asked to speak"}</span>
-        ${tele.group ? `<button type="button" class="btn sm${p.role === "speaker" ? "" : " primary"}" data-act="teleRole" data-id="${esc(p.id)}" data-role="${p.role === "speaker" ? "viewer" : "speaker"}">${p.role === "speaker" ? "Make viewer" : "Make speaker"}</button>` : ""}
+      rl.innerHTML = all.map((p) => `<div class="list-item" style="flex-wrap:wrap;row-gap:6px"><span style="flex:1 1 120px;min-width:0;overflow-wrap:anywhere"><b>${esc(p.name)}</b><div class="muted" style="font-size:12px">${p.state === "connected" ? "Connected" : p.state === "failed" ? "Could not connect" : "Connecting…"}</div>${devLine((cache.devices || {})[p.id])}</span>
+        <span class="pill ${p.role === "speaker" ? "ok" : p.asking ? "warn" : ""}">${!tele.group ? "In the visit" : p.role !== "speaker" ? (p.asking ? "Asks to speak" : "Viewer") : p.remote.getTracks().some((t) => !t.muted && t.readyState === "live") ? "Speaker" : p.byHost ? "Invited to speak" : "Coming on screen"}</span>
+        ${tele.group ? `<button type="button" class="btn sm${p.role === "speaker" ? "" : " primary"}" data-act="teleRole" data-id="${esc(p.id)}" data-role="${p.role === "speaker" ? "viewer" : "speaker"}">${p.role === "speaker" ? "Make viewer" : p.asking ? `${ui("broadcast", 14)}Admit` : "Make speaker"}</button>${p.asking && p.role !== "speaker" ? `<button type="button" class="btn sm" data-act="teleRole" data-id="${esc(p.id)}" data-role="viewer">Not now</button>` : ""}` : ""}
         ${all.length > 1 || tele.group ? `<button type="button" class="btn sm ghost" data-act="teleKick" data-id="${esc(p.id)}" aria-label="Remove ${esc(p.name)} from the room">${ui("x", 14)}</button>` : ""}</div>`).join("");
       const rc = $("#teleRoomCount"); if (rc) rc.textContent = tele.group ? `${all.length} in the room` : "One to one";
     }
     teleSay(tele.status); teleClock();
     const w = $("#teleWaiting"), canAdmit = true; // in a private visit, Admit asks before opening it to more people
-    if (w) w.innerHTML = tele.waiting.map((p) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(p.name)}</b><div class="muted" style="font-size:12px">${esc(p.visit || "No video visit booked today")} · waiting ${Math.max(0, Math.round((Date.now() - p.since) / 60000))} min</div></span><button class="btn sm primary" data-act="teleAdmit" data-id="${esc(p.clientId)}"${canAdmit ? "" : " disabled"}>Admit</button><button class="btn sm ghost" data-act="teleDecline" data-id="${esc(p.clientId)}" aria-label="Turn away ${esc(p.name)}">${ui("x", 14)}</button></div>`).join("") || none(MDFitRT && MDFitRT.connected() ? "Nobody is waiting. People appear here when they open the session link." : "Not connected to the live service. Reload the page.");
+    if (w) w.innerHTML = tele.waiting.map((p) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(p.name)}</b><div class="muted" style="font-size:12px">${esc(p.visit || "No video visit booked today")} · waiting ${Math.max(0, Math.round((Date.now() - p.since) / 60000))} min</div>${devLine(p.device || (cache.devices || {})[p.clientId])}</span><button class="btn sm primary" data-act="teleAdmit" data-id="${esc(p.clientId)}"${canAdmit ? "" : " disabled"}>Admit</button><button class="btn sm ghost" data-act="teleDecline" data-id="${esc(p.clientId)}" aria-label="Turn away ${esc(p.name)}">${ui("x", 14)}</button></div>`).join("") || none(MDFitRT && MDFitRT.connected() ? "Nobody is waiting. People appear here when they open the session link." : "Not connected to the live service. Reload the page.");
     const pend = $("#telePending"); if (pend) pend.innerHTML = tele.invited.map((p) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(p.name)}</b><div class="muted" style="font-size:12px">invited ${Math.max(0, Math.round((Date.now() - p.at) / 60000))} min ago · let in on arrival</div></span><span class="pill warn">Pending</span><button class="btn sm ghost" data-act="teleUninvite" data-id="${esc(p.clientId)}" aria-label="Withdraw the invitation to ${esc(p.name)}">${ui("x", 14)}</button></div>`).join("");
     const n = $("#teleCount"); if (n) { n.textContent = tele.waiting.length ? `${tele.waiting.length} waiting` : tele.invited.length ? `${tele.invited.length} pending` : "Empty"; n.className = "pill" + (tele.waiting.length ? " ok" : tele.invited.length ? " warn" : ""); }
   }
@@ -2009,7 +2141,8 @@
       // the server is the record of the room's mode and of who is a viewer or a speaker
       tele.group = !!(ev && ev.group); let moved = false;
       tele.roomIds = new Set(((ev && ev.room) || []).map((m) => m.clientId));
-      for (const m of (ev && ev.room) || []) { const p = tele.peers.get(m.clientId); if (p && p.role !== m.role) { p.role = m.role; moved = true; } }
+      for (const m of (ev && ev.room) || []) { const p = tele.peers.get(m.clientId); if (!p) continue; if (p.role !== m.role) { p.role = m.role; moved = true; }
+        if (m.asking && !p.asking && token) toast(`${firstName(p.name)} asks to speak. ${route() === "telehealth" ? "Press Admit to bring them on screen." : "Open Telehealth to admit them."}`); p.asking = !!m.asking; }
       if (moved) teleRelay();
       if (route() === "telehealth") teleMount(); else if (fresh && token) toast(`${fresh.name} is in the video waiting room`);
     });
@@ -2027,10 +2160,20 @@
       clearTimeout(tele.resumeT);
       tele.resumeT = setTimeout(() => { for (const p of [...tele.peers.values()]) if (!(tele.roomIds && tele.roomIds.has(p.id))) { toast(`The connection dropped and ${firstName(p.name)}'s visit could not be picked back up. They can rejoin from the waiting room.`); if (tele.peers.size === 1) teleOver(""); else teleLeft({ clientId: p.id, why: "lost" }); } }, 30000);
     });
+    // The dot on the refresh button: green while the live connection is up, amber while it is not. When it comes
+    // back after being down, anything that happened meanwhile was missed, so what is in memory is thrown away and
+    // the screen is redrawn from the server (never underneath something being typed).
+    let wasDown = false;
+    document.addEventListener("mdfit:disconnected", () => { wasDown = true; liveDot(); });
+    document.addEventListener("mdfit:connected", () => { liveDot(); if (wasDown && token) { wasDown = false; forget(); changed(); MDFitRT.emit("tele_list"); } });
+    document.addEventListener("mdfit:rt-error", (e) => { liveDot(); if (token && /token|admin|log in/i.test((e.detail && e.detail.message) || "")) toast("The live connection was refused. Sign out and in again to restore live updates."); });
     MDFitRT.on("tele_invited", (ev) => { if (ev) toast(`${firstName(ev.name || "They")} was invited: ${ev.emailed ? "emailed and " : ""}notified in the app. They are let in when they arrive.`); });
     MDFitRT.on("calendar_changed", () => { forget(); if (token && route() === "calendar" && !$("#modalBack").classList.contains("open")) render(); });
     setInterval(() => { if (token && route() === "messages" && !document.hidden && !MDFitRT.connected() && !$("#modalBack").classList.contains("open")) { forget(); refreshMessages(); } }, 15000);
   }
+  function liveDot() { const d = $("#liveDot"), up = !!(window.MDFitRT && MDFitRT.connected()); if (d) d.classList.toggle("off", !up); const b = $("#refreshBtn"); if (b) { const t = up ? "Refresh · live connection on" : "Refresh · live connection is reconnecting"; b.title = t; b.setAttribute("aria-label", t); } }
+  $("#refreshBtn").addEventListener("click", () => { if (token) guard(ACT.refresh)(); });
+  setInterval(liveDot, 5000);
   async function start() {
     $("#signin").hidden = true; $("#app").hidden = false; idleArm(); goLive();
     get("/me").then((me) => { cache.me = me; $("#whoami").textContent = me.email; }).catch(() => {});
@@ -2058,7 +2201,7 @@
   $("#globalSearch").addEventListener("input", guard(async (e) => {
     if (!token) return;
     const words = gWords(e.target.value); if (!words.length) return gClose();
-    const list = await clients();
+    const list = await clientsHit((l) => l.some((c) => words.every((w) => `${c.name} ${c.email} ${c.phone || ""}`.toLowerCase().includes(w))), e.target);
     if (gWords($("#globalSearch").value).join(" ") !== words.join(" ")) return; // they kept typing while the list loaded
     const hit = list.filter((c) => words.every((w) => `${c.name} ${c.email} ${c.phone || ""}`.toLowerCase().includes(w)));
     const starts = (c) => (String(c.name || "").toLowerCase().split(/\s+/).some((part) => part.startsWith(words[0])) ? 0 : 1);

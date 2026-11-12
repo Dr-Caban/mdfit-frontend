@@ -11,7 +11,7 @@
       ]
     },
     {
-      "source": "/:page(account|book|login|admin|admin-classic|workspace|visit|cancel|intake)",
+      "source": "/:page(account|book|login|admin|admin-classic|workspace|visit|cancel|intake|invoice)",
       "headers": [
         {
           "key": "Cache-Control",
@@ -97,6 +97,19 @@
         {
           "key": "X-Robots-Tag",
           "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/invoice",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "no-referrer"
         }
       ]
     },

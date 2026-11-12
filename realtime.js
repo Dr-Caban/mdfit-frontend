@@ -48,6 +48,11 @@
         socket.on("disconnect", function () {
           document.dispatchEvent(new CustomEvent("mdfit:disconnected"));
         });
+        // The server turned the connection down (a sign-in that is no longer good): socket.io does not try again by
+        // itself after that, so the page is told and can say so instead of looking connected to nothing.
+        socket.on("connect_error", function (err) {
+          document.dispatchEvent(new CustomEvent("mdfit:rt-error", { detail: { message: (err && err.message) || "" } }));
+        });
 
         listeners.forEach(function (l) { socket.on(l.event, l.fn); });
         return socket;
@@ -71,6 +76,36 @@
       if (socket) { socket.disconnect(); socket = null; }
     },
 
-    connected: function () { return socket && socket.connected; }
+    connected: function () { return socket && socket.connected; },
+
+    // "Are you there?": resolves with the milliseconds the server took to answer, or null if it did not within the
+    // wait. A connection can look open and be dead (a laptop that slept, a phone that changed networks).
+    ping: function (waitMs) {
+      return new Promise(function (resolve) {
+        if (!socket || !socket.connected) return resolve(null);
+        var t0 = Date.now(), done = false;
+        var timer = setTimeout(function () { if (!done) { done = true; resolve(null); } }, waitMs || 3000);
+        socket.emit("rt_ping", function () { if (done) return; done = true; clearTimeout(timer); resolve(Date.now() - t0); });
+      });
+    },
+
+    // Make sure the connection is really alive: connect if it is down; if it claims to be up but does not answer,
+    // drop it and connect afresh. Resolves with the answer time in ms, or null if it is still coming back.
+    revive: function () {
+      if (!socket) return Promise.resolve(null);
+      if (!socket.connected) { socket.connect(); return Promise.resolve(null); }
+      return window.MDFitRT.ping(3000).then(function (ms) {
+        if (ms === null && socket) { socket.disconnect(); socket.connect(); }
+        return ms;
+      });
+    }
   };
+
+  // Coming back to the page, or back online, is when a connection is most likely to be stale: check it then.
+  var checking = 0;
+  function check() { if (!socket || document.hidden) return; var now = Date.now(); if (now - checking < 4000) return; checking = now; window.MDFitRT.revive(); }
+  document.addEventListener("visibilitychange", check);
+  window.addEventListener("online", check);
+  window.addEventListener("pageshow", check);
+  window.addEventListener("focus", check);
 })();

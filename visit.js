@@ -33,7 +33,7 @@
   const note = (t) => { const n = $("#note"); n.textContent = t || ""; n.hidden = !t; };
   // state: idle | waiting | call.  role: viewer | speaker.  tx: the two sending slots once we have ever sent.
   const st = { local: null, cam: null, pc: null, dc: null, queue: [], ice: null, state: "idle", role: "speaker", group: false, invited: false,
-    micOff: false, camOff: false, chat: [], hostSid: null, streams: new Map(), dock: [], tx: null };
+    micOff: false, camOff: false, chat: [], hostSid: null, streams: new Map(), dock: [], tx: null, asked: false };
   const RT = window.MDFitRT;
 
   async function media() {
@@ -75,8 +75,14 @@
     $("#startCam").hidden = !!st.local || (inCall && (st.group || st.role !== "speaker"));
     $("#startCam").textContent = inCall ? "Turn on my camera and microphone" : "Check my camera and microphone";
     $("#mic").hidden = $("#cam").hidden = !speaking;
-    $("#mic").textContent = st.micOff ? "Unmute" : "Mute"; $("#mic").classList.toggle("off", st.micOff); $("#mic").setAttribute("aria-pressed", String(st.micOff));
-    $("#cam").textContent = st.camOff ? "Camera on" : "Camera off"; $("#cam").classList.toggle("off", st.camOff); $("#cam").setAttribute("aria-pressed", String(st.camOff)); $("#cam").disabled = !st.cam;
+    // Microphone and camera: one round button each, as on any video call. Red with a line through it means off.
+    const lab = (el, text) => { el.setAttribute("aria-label", text); el.title = text; };
+    $("#mic").classList.toggle("off", st.micOff); $("#mic").setAttribute("aria-pressed", String(st.micOff)); lab($("#mic"), st.micOff ? "Unmute my microphone" : "Mute my microphone");
+    const noCam = st.camOff || !st.cam;
+    $("#cam").classList.toggle("off", noCam); $("#cam").setAttribute("aria-pressed", String(noCam)); $("#cam").disabled = !st.cam; lab($("#cam"), !st.cam ? "No camera on this device" : st.camOff ? "Turn my camera on" : "Turn my camera off");
+    // A viewer in a live room can ask to speak; Dr. Jared admits them
+    const canAsk = inCall && st.group && st.role === "viewer" && !st.invited;
+    $("#ask").hidden = !canAsk; $("#ask").setAttribute("aria-pressed", String(st.asked)); $("#askText").textContent = st.asked ? "Asked to speak · cancel" : "Ask to speak";
     $("#stepDown").hidden = !(speaking && st.group);
     $("#leave").hidden = idle; $("#leave").textContent = inCall ? (st.group ? "Leave the room" : "Leave") : "Leave the waiting room";
     $("#invite").hidden = !st.invited;
@@ -90,7 +96,7 @@
   }
   function hangUp() {
     if (st.pc) { try { st.pc.close(); } catch {} }
-    Object.assign(st, { pc: null, dc: null, queue: [], chat: [], hostSid: null, streams: new Map(), dock: [], tx: null, invited: false });
+    Object.assign(st, { pc: null, dc: null, queue: [], chat: [], hostSid: null, streams: new Map(), dock: [], tx: null, invited: false, asked: false });
     $("#chat").hidden = true; $("#pain").hidden = true; cv.hidden = true; $("#chatList").innerHTML = "";
     $("#remote").srcObject = null; $("#stage").classList.remove("has-remote"); note("");
   }
@@ -136,14 +142,27 @@
   // Into the dock, or back to the audience. Nothing turns on until the person says yes on this screen.
   RT.on("tele_role", async (ev) => {
     if (st.state !== "call") return;
-    if (ev && ev.role === "speaker") { st.invited = true; say("Dr. Jared invited you to speak."); paint(); const b = $("#inviteYes"); if (b) b.focus(); }
-    else { st.invited = false; st.role = "viewer"; if (ev && ev.opened) st.group = true; await stopSending(); send({ t: "reneg" }); say(ev && ev.opened ? "Dr. Jared opened this session to more people, so your camera and microphone are now off. Nobody new can see or hear you. He can invite you to speak." : "You're back in the audience. Your camera and microphone are off."); paint(); }
+    if (ev && ev.role === "speaker" && ev.asked && st.asked) {
+      // They asked and were admitted: asking was the yes, so the camera and microphone come on now
+      st.asked = false;
+      try { st.role = "speaker"; await startSending(); send({ t: "reneg" }); say("Dr. Jared admitted you. You're on screen: everyone in the room can see and hear you."); }
+      catch (err) { st.role = "viewer"; send({ t: "declined" }); say(err.message); }
+      paint();
+    }
+    else if (ev && ev.role === "speaker") { st.asked = false; st.invited = true; say("Dr. Jared invited you to speak."); paint(); const b = $("#inviteYes"); if (b) b.focus(); }
+    else { st.invited = false; st.asked = false; st.role = "viewer"; if (ev && ev.opened) st.group = true; await stopSending(); send({ t: "reneg" }); say(ev && ev.opened ? "Dr. Jared opened this session to more people, so your camera and microphone are now off. Nobody new can see or hear you. He can invite you to speak." : "You're back in the audience. Your camera and microphone are off."); paint(); }
   });
   $("#inviteYes").addEventListener("click", async () => {
     try { st.role = "speaker"; await startSending(); st.invited = false; send({ t: "reneg" }); say("You're on screen. Everyone in the room can see and hear you."); }
     catch (err) { st.role = "viewer"; st.invited = false; send({ t: "declined" }); say(err.message); }
     paint();
   });
+  $("#ask").addEventListener("click", () => {
+    if (st.state !== "call" || st.role !== "viewer") return;
+    st.asked = !st.asked; RT.emit("tele_ask", st.asked ? {} : { off: true });
+    say(st.asked ? "You asked to speak. Your camera and microphone turn on when Dr. Jared admits you." : "You took your request back. You're still a viewer."); paint();
+  });
+  RT.on("tele_ask_declined", () => { if (!st.asked) return; st.asked = false; say("Dr. Jared kept you as a viewer for now."); paint(); });
   $("#inviteNo").addEventListener("click", () => { st.invited = false; st.role = "viewer"; send({ t: "declined" }); say("You're staying a viewer. Your camera and microphone are off."); paint(); });
   $("#stepDown").addEventListener("click", () => { st.role = "viewer"; send({ t: "declined" }); stopSending().then(() => { send({ t: "reneg" }); say("You stepped down. Your camera and microphone are off."); paint(); }); });
 
@@ -231,6 +250,20 @@
   $("#leave").addEventListener("click", () => { const was = st.state; RT.emit("tele_leave"); mediaOff(); reset(was === "call" ? "You left." : "You left the waiting room."); });
   window.addEventListener("pagehide", () => { try { RT.emit("tele_leave"); } catch {} });
 
+  // What this page is running on is put on record as it opens (the app sends the same when it opens)
+  { const ua = navigator.userAgent, ios = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1), android = /Android/.test(ua), app = !!window.MDFitNative || /; wv\)/.test(ua); const device = { app, os: ios ? "ios" : android ? "android" : /Mac/.test(ua) ? "mac" : /Win/.test(ua) ? "windows" : "other", browser: /Edg\//.test(ua) ? "edge" : /CriOS|Chrome\//.test(ua) ? "chrome" : /FxiOS|Firefox\//.test(ua) ? "firefox" : /Safari\//.test(ua) ? "safari" : "other", media: !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) };
+    fetch(API + "/api/me/presence", { method: "POST", keepalive: true, headers: { "content-type": "application/json", authorization: "Bearer " + session.token }, body: JSON.stringify({ seconds: 0, view: "visit", platform: app ? (android ? "android" : "ios") : "web", device }) }).catch(() => {}); }
+  // Refresh: no reload. It checks the live connection really answers, brings it back if not, and takes this page's
+  // place in the waiting room or the session again.
+  $("#resync").addEventListener("click", async () => {
+    const b = $("#resync"); b.disabled = true; b.classList.add("spin");
+    try {
+      if (!RT.connected()) { await connectLive(); say("Reconnected to MD Fit."); }
+      else { const ms = await RT.ping(3000); if (ms === null) { await RT.revive(); say("The connection had gone quiet. Reconnecting…"); } else say(st.state === "call" ? `Connection is good (answered in ${ms} ms). Your session continues.` : `Connection is good (answered in ${ms} ms).`); }
+      if (st.state === "waiting") RT.emit("tele_knock"); else if (st.state === "call") RT.emit("tele_here");
+    } catch (err) { say(err.message); }
+    setTimeout(() => { b.disabled = false; b.classList.remove("spin"); }, 600);
+  });
   say("Join when you're ready. You can check your camera and microphone first.");
   paint();
 })();
