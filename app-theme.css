@@ -1199,6 +1199,6 @@ html[data-theme="black"] .step-num, html[data-theme="black"] .pex-n, html[data-t
 html[data-theme="black"] .avatar, html[data-theme="black"] .pg-ic, html[data-theme="black"] .mc-rank, html[data-theme="black"] .patient-card .pc-ic,
 html[data-theme="black"] .ch-ic, html[data-theme="black"] .ev-date:not(.gold), html[data-theme="black"] .note-ic { background: var(--navy-3); }
 /* What sits behind a sheet or dialog: black, not navy */
-html[data-theme="black"] dialog::backdrop { background: rgba(0, 0, 0, .66); }
+html[data-theme="black"] dialog:not(.tip-lightbox)::backdrop { background: rgba(0, 0, 0, .66); }
 
 /* ---- 4. Compact layout */

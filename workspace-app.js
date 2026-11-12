@@ -1025,7 +1025,7 @@
           ${rows.map((r, n) => `<div class="eco-g${n > rows.length / 2 ? " late" : ""}" tabindex="0" role="img" aria-label="${esc(r.long)}: ${plural(r.answers, "answer")} given, the daily limit reached ${plural(r.limitHits, "time")}, ${plural(r.opens, "open")}, ${plural(r.upgradeTaps, "upgrade tap")}">
             <div class="eco-cols">${col(r.answers, 1)}${col(r.limitHits, 2)}</div>
             ${(rows.length - 1 - n) % every === 0 ? `<div class="eco-m" aria-hidden="true">${r.label}</div>` : ""}
-            <div class="eco-tip" aria-hidden="true"><b>${esc(r.long)}</b>
+            <div class="eco-tip" aria-hidden="true" style="--f:${((n + 0.5) / rows.length).toFixed(3)}"><b>${esc(r.long)}</b>
               <span><i class="s1"></i><b class="num">${r.answers}</b> Answers given</span><span><i class="s2"></i><b class="num">${r.limitHits}</b> Reached the daily limit</span>
               <span class="eco-left"><b class="num">${r.opens}</b> ${r.opens === 1 ? "open" : "opens"} · <b class="num">${r.upgradeTaps}</b> upgrade ${r.upgradeTaps === 1 ? "tap" : "taps"}</span></div></div>`).join("")}</div></div>
 </div>`;
