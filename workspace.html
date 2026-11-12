@@ -275,6 +275,29 @@ textarea.input{min-height:120px;resize:vertical;line-height:1.55}
 .chart-types select{width:auto;min-height:36px;padding:6px 10px}
 .tier-pick,select.tier-pick{width:auto;min-width:130px;max-width:100%;min-height:34px;padding:4px 8px;font-size:13px;color:var(--muted)}
 .member-row{flex-wrap:wrap}.member-row .who{flex:1 1 170px;min-width:0}.member-row select.tier-pick{flex:0 1 210px}
+.eco-row{grid-template-columns:minmax(0,2fr) 128px 112px}
+.eco-chart{--s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a;--eco-h:230px}
+:root[data-theme="dark"] .eco-chart{--s1:#3987e5;--s2:#d95926;--s3:#199e70}
+.eco-chart .s1{background:var(--s1)}.eco-chart .s2{background:var(--s2)}.eco-chart .s3{background:var(--s3)}
+.eco-legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin-bottom:10px;font-size:12.5px;color:var(--muted)}
+.eco-key{display:inline-flex;align-items:center;gap:6px}.eco-key i,.eco-tip i{width:10px;height:10px;border-radius:3px;flex:0 0 auto}
+.eco-plot{display:flex;gap:8px}
+.eco-y{display:flex;flex-direction:column;justify-content:space-between;height:calc(var(--eco-h) + 14px);font-size:11px;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums;flex:0 0 auto;margin:-7px 0}
+.eco-y span{line-height:14px}
+.eco-area{position:relative;flex:1;min-width:0;height:var(--eco-h);display:flex;margin-bottom:36px}
+.eco-area:hover .eco-g:not(:hover) .eco-tip{display:none}
+.eco-grid{position:absolute;left:0;right:0;height:1px;background:var(--line)}
+.eco-g{position:relative;flex:1;min-width:0;display:flex;justify-content:center;border-radius:6px;outline:0}
+.eco-g:hover,.eco-g:focus-visible{background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.eco-g:focus-visible{box-shadow:inset 0 0 0 2px var(--accent-text)}
+.eco-cols{display:flex;align-items:flex-end;justify-content:center;gap:2px;height:100%;width:100%;padding:0 4px;position:relative}
+.eco-bar{flex:0 1 24px;min-width:3px;border-radius:4px 4px 0 0}
+.eco-tip{display:none;position:absolute;z-index:5;top:6px;left:calc(50% + 8px);min-width:178px;padding:9px 11px;border-radius:10px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);font-size:12.5px;color:var(--muted);pointer-events:none}
+.eco-g.late .eco-tip{left:auto;right:calc(50% + 8px)}
+.eco-g:hover .eco-tip,.eco-g:focus .eco-tip{display:grid;gap:4px}
+.eco-tip>b{color:var(--ink)}.eco-tip span{display:flex;align-items:center;gap:6px;white-space:nowrap}.eco-tip span b{color:var(--ink)}
+.eco-tip .eco-left{border-top:1px solid var(--line);padding-top:5px;margin-top:2px}
+.eco-m{position:absolute;top:calc(100% + 6px);left:0;right:0;text-align:center;font-size:11.5px;line-height:14px;color:var(--muted);white-space:nowrap}.eco-m small{display:block;font-size:10.5px}
 #netbar{position:fixed;top:0;left:0;right:0;height:2px;z-index:300;pointer-events:none;opacity:0;background:linear-gradient(90deg,transparent,var(--accent),transparent) no-repeat;background-size:40% 100%}
 #netbar.on{opacity:1;animation:netbar 1s linear infinite}
 @keyframes netbar{from{background-position:-70% 0}to{background-position:170% 0}}
@@ -355,6 +378,6 @@ textarea.input{min-height:120px;resize:vertical;line-height:1.55}
 <script src="config.js?v=aac711e3"></script>
 <script src="realtime.js?v=dccfd156"></script>
 <script src="app/exercises.js?v=d121be98"></script>
-<script src="workspace-app.js?v=fc108f65"></script>
+<script src="workspace-app.js?v=de6e7b29"></script>
 </body>
 </html>
