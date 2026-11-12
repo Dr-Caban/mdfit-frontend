@@ -162,7 +162,15 @@
   }
 
   V.dashboard = async () => {
-    const [st, msgs, emr, list] = await Promise.all([get("/stats"), get("/messages"), get("/emr"), clients()]);
+    const todayIso = isoDay(new Date());
+    const [st, msgs, emr, list, sync] = await Promise.all([get("/stats"), get("/messages"), get("/emr"), clients(), get(`/busy?from=${todayIso}&days=7`).catch(() => null)]);
+    // Your day is what is on your calendar, not only what was booked through MD Fit: the events on the connected
+    // calendars are counted and listed here too (MD Fit's own bookings are not counted twice).
+    const outside = ((sync && sync.busy) || []).filter((b) => !b.allDay).sort((a, b) => (a.date + String(a.start).padStart(5, "0") < b.date + String(b.start).padStart(5, "0") ? -1 : 1));
+    const outToday = outside.filter((b) => b.date === todayIso), outLater = outside.filter((b) => b.date > todayIso);
+    const clock = (min) => fmtTime(`${String(Math.floor(min / 60)).padStart(2, "0")}:${String(min % 60).padStart(2, "0")}`);
+    const outRow = (b, day) => `<div class="list-item"><span class="muted num" style="flex:0 0 ${day ? 150 : 84}px;font-size:12.5px">${day ? fmtDate(b.date) + " · " : ""}${clock(b.start)}</span><span style="flex:1;min-width:0"><b>${esc(b.title || "Busy")}</b><div class="muted" style="font-size:12px">until ${clock(b.end)} · ${b.source === "simplepractice" ? "SimplePractice" : "Google Calendar"}</div></span></div>`;
+    const nToday = st.appointmentsToday + outToday.length, nWeek = st.appointmentsWeek + outside.length;
     cache.unread = msgs.unread || 0; cache.waiting = emr.waiting.length; renderNav("dashboard");
     const h = new Date().getHours(), hello = h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening";
     const paidWaiting = emr.patients.concat(emr.waiting).reduce((n, p) => n + (p.paidVisits || 0), 0);
@@ -173,16 +181,16 @@
       paidWaiting ? [`${plural(paidWaiting, "paid video visit")} still need a time`, "clients"] : null
     ].filter(Boolean);
     return `
-    <div class="view-head"><div><h1>${hello}</h1><p class="muted">${new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })} · ${plural(st.appointmentsToday, "appointment")} today</p></div>
+    <div class="view-head"><div><h1>${hello}</h1><p class="muted">${new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })} · ${nToday} on your calendar today</p></div>
     <div class="row"><a class="btn" href="#calendar">Open calendar</a><a class="btn primary" href="#clients">Clients</a></div></div>
     <div class="grid g4" style="margin-bottom:16px">
-      ${kpi("Today", st.appointmentsToday, "appointments")}${kpi("Next 7 days", st.appointmentsWeek, "appointments")}
+      ${kpi("Today", nToday, sync ? `${st.appointmentsToday} booked here · ${outToday.length} on your calendar` : "booked here (your other calendar could not be read)")}${kpi("Next 7 days", nWeek, sync ? `${st.appointmentsWeek} booked here · ${outside.length} on your calendar` : "booked here")}
       ${kpi("New requests", st.leadsNew, `${st.leads30d} in the last 30 days`, st.leadsNew ? "warn" : "")}${kpi("Unread messages", cache.unread, "from members", cache.unread ? "warn" : "")}
     </div>
     <div class="grid g-side">
       <div class="stack">
-        <div class="card"><div class="card-head"><h2>Today's schedule</h2></div>${(st.today || []).map((a) => apptRow(a, list)).join("") || none("No appointments today.")}</div>
-        <div class="card"><div class="card-head"><h2>Coming up</h2></div>${(st.nextAppointments || []).map((a) => apptRow(a, list)).join("") || none("Nothing booked in the next week.")}</div>
+        <div class="card"><div class="card-head"><h2>Today's schedule</h2><span class="muted" style="font-size:12px">${nToday ? plural(nToday, "item") : ""}</span></div>${(st.today || []).map((a) => apptRow(a, list)).join("") + outToday.map((b) => outRow(b, false)).join("") || none("Nothing on your calendar today.")}</div>
+        <div class="card"><div class="card-head"><h2>Coming up</h2><span class="muted" style="font-size:12px">Next 7 days</span></div>${(st.nextAppointments || []).map((a) => apptRow(a, list)).join("") + outLater.slice(0, 12).map((b) => outRow(b, true)).join("") || none("Nothing in the next week.")}${outLater.length > 12 ? `<p class="muted" style="margin:8px 0 0;font-size:12.5px">${outLater.length - 12} more on the <a href="#calendar">calendar</a>.</p>` : ""}</div>
       </div>
       <div class="stack">
         <div class="card"><div class="card-head"><h2>Needs attention</h2></div>
@@ -219,7 +227,7 @@
     return `
     <div class="view-head"><div><h1>Calendar</h1><p class="muted">Week of ${mon.toLocaleDateString("en-US", { month: "long", day: "numeric" })}</p></div>
     <div class="row"><button class="btn sm" data-act="calWeek" data-d="-1" aria-label="Previous week">${ui("prev", 14)}</button><button class="btn sm" data-act="calWeek" data-d="0">Today</button><button class="btn sm" data-act="calWeek" data-d="1" aria-label="Next week">${ui("next", 14)}</button>
-    <a class="btn sm" href="#settings">Hours &amp; calendar sync</a></div></div>
+    <button type="button" class="btn sm primary" data-act="calAdd" aria-label="Add an event to your calendar">${ui("plus", 14)} Add</button></div></div>
     <div class="row" style="margin-bottom:12px"><span class="pill"><span class="dot" style="background:var(--body)"></span>Booked</span><span class="pill"><span class="dot" style="background:var(--ok)"></span>Completed</span><span class="pill"><span class="dot" style="background:var(--fit)"></span>Class</span><span class="pill"><span class="dot" style="background:var(--muted)"></span>Your other calendars</span>
     <span class="muted" style="font-size:12.5px">${!sync ? "Your other calendars could not be read just now." : sync.simplepractice === "off" && sync.google === "off" ? "No outside calendar is connected, so only MD Fit bookings show." : `Showing ${[sync.simplepractice !== "off" && "SimplePractice", sync.google !== "off" && "Google Calendar"].filter(Boolean).join(" and ")}${sync.titles ? " events, shown only on this screen" : " busy times (times only)"}${sync.lastError ? ". Last sync reported a problem" : ""}.`}</span></div>
     <div class="table-wrap"><div class="cal">
@@ -252,8 +260,9 @@
   function clientRows(list, patients, waiting) {
     return list.map((c) => `<tr class="click" data-act="chart" data-id="${esc(c.id)}">
       <td data-act="stop"><input type="checkbox" data-change="pickOne" data-id="${esc(c.id)}" aria-label="Select ${esc(c.name)}"${state.picked.has(c.id) ? " checked" : ""}></td>
-      <td><div class="row">${avatar(c.name)}<div style="min-width:0"><b>${esc(c.name)}</b><div class="muted" style="font-size:12px">${esc(c.email)}${c.phone ? " · " + esc(c.phone) : ""}</div></div></div></td>
-      <td>${patients.has(c.id) ? `<span class="pill ok">Active patient</span>` : waiting.has(c.id) ? `<span class="pill warn">Waiting</span>` : `<span class="pill">Member</span>`}${c.clientType === "inpatient" ? ` <span class="pill">Inpatient</span>` : ""}</td>
+      <td><div class="row" style="flex-wrap:nowrap">${avatar(c.name)}<div style="min-width:0"><b>${esc(c.name)}</b><div class="muted" style="font-size:12px;overflow-wrap:anywhere">${esc(c.email)}${c.phone ? " · " + esc(c.phone) : ""}</div></div></div></td>
+      <td data-act="stop"><div class="seg" role="group" aria-label="Client type for ${esc(c.name)}"><button type="button" data-act="typeSet" data-type="inpatient" data-id="${esc(c.id)}" data-name="${esc(c.name)}" aria-pressed="${c.clientType === "inpatient"}">In-patient</button><button type="button" data-act="typeSet" data-type="outpatient" data-id="${esc(c.id)}" data-name="${esc(c.name)}" aria-pressed="${c.clientType !== "inpatient"}">Out-patient</button></div>
+        <div class="muted" style="font-size:12px;margin-top:4px">${patients.has(c.id) ? "Active patient" : waiting.has(c.id) ? "Documents done, not yet converted" : "Member"}</div></td>
       <td>${c.documents ? (c.documents.complete ? `<span class="pill ok">Complete</span>` : `${c.documents.done} of ${c.documents.total}`) : "—"}</td>
       <td class="num">${c.next ? `${fmtDate(c.next.date)} · ${fmtTime(c.next.time)}` : `<span class="muted">Not booked</span>`}</td>
       <td data-act="stop"><select class="input tier-pick${c.membership ? " on" : ""}" data-change="rowTier" data-id="${esc(c.id)}" data-name="${esc(c.name)}" aria-label="Membership type for ${esc(c.name)}">${tierOptions((c.membership && c.membership.tier) || "")}</select></td>
@@ -638,8 +647,7 @@
     const list = await clients(true);
     return `<div class="view-head"><div><h1>Forms & intake</h1><p class="muted">New patient documents: client information, pain assessment, history and consent</p></div></div>
     <div class="card" style="padding:0"><div class="table-wrap"><table><thead><tr><th>Client</th><th>Documents</th><th></th></tr></thead><tbody>
-      ${list.map((c) => `<tr><td><b>${esc(c.name)}</b><div class="muted" style="font-size:12px">${esc(c.email)}</div></td><td>${c.documents ? (c.documents.complete ? `<span class="pill ok">Complete</span>` : `<span class="pill">${c.documents.done} of ${c.documents.total}</span>`) : "—"}</td><td>${c.documents && c.documents.done ? `<button class="btn sm" data-act="docsModal" data-id="${esc(c.id)}">View</button>` : ""}</td></tr>`).join("") || noneRow(3, "No clients yet.")}</tbody></table></div></div>
-    <div class="card" style="margin-top:16px"><div class="card-head"><h2>Form builder</h2><span class="pill">Not connected</span></div>${none("The four intake documents are fixed. A builder for custom forms is not built yet.")}</div>`;
+      ${list.map((c) => `<tr><td><b>${esc(c.name)}</b><div class="muted" style="font-size:12px">${esc(c.email)}</div></td><td>${c.documents ? (c.documents.complete ? `<span class="pill ok">Complete</span>` : `<span class="pill">${c.documents.done} of ${c.documents.total}</span>`) : "—"}</td><td><div class="row" style="justify-content:flex-end;flex-wrap:nowrap">${c.documents && !c.documents.complete ? `<button class="btn sm primary" data-act="intakeRemind" data-id="${esc(c.id)}" data-name="${esc(c.name)}">Notify to sign</button>` : ""}${c.documents && c.documents.done ? `<button class="btn sm" data-act="docsModal" data-id="${esc(c.id)}">View</button>` : ""}</div></td></tr>`).join("") || noneRow(3, "No clients yet.")}</tbody></table></div></div>`;
   };
 
   // ---- Small form pieces shared by the editing screens
@@ -1133,6 +1141,27 @@
         <div class="row"><button class="btn primary"${(r.models || []).length ? "" : " disabled"}>Use this model</button></div></form>`);
     },
     stop: () => {},
+    // Calendar: add an event straight onto the connected Google Calendar
+    calAdd: () => { const today = isoDay(new Date());
+      modal(`<div class="card-head"><h2>Add to your calendar</h2>${xBtn}</div>
+        <form class="stack" data-form="calEvent">${fld("ceTitle", "title", "What is it?", "", { max: 120, attrs: 'required placeholder="Follow-up, meeting, time off"' })}
+        <div class="grid g3">${fld("ceDate", "date", "Date", today, { type: "date", attrs: "required" })}${fld("ceTime", "time", "Starts", "09:00", { type: "time", attrs: 'required step="300"' })}${sel("ceLen", "minutes", "Length", [[15, "15 min"], [30, "30 min"], [45, "45 min"], [60, "1 hour"], [90, "1.5 hours"], [120, "2 hours"], [180, "3 hours"], [240, "4 hours"], [480, "8 hours"]], 60)}</div>
+        ${fld("ceNote", "note", "Note (optional)", "", { max: 500 })}
+        <p class="muted" style="margin:0;font-size:12.5px">This goes on your Google Calendar and blocks that time for online booking. To book a client's visit with a reminder and a video link, use Book on their chart.</p>
+        <div class="row"><button class="btn primary">Add to calendar</button></div></form>`); },
+    // Clients list: one click switches a person between in-patient and out-patient
+    typeSet: async (el) => {
+      if (el.getAttribute("aria-pressed") === "true") return;
+      const type = el.dataset.type; el.disabled = true;
+      try { await api("PUT", `/api/admin/clients/${el.dataset.id}/type`, { type }); cache.clients = null; el.parentElement.querySelectorAll("[data-act=typeSet]").forEach((b) => b.setAttribute("aria-pressed", String(b === el))); toast(`${String(el.dataset.name).split(" ")[0]} is now ${type === "inpatient" ? "an in-patient: visits are not charged" : "an out-patient"}.`); }
+      finally { el.disabled = false; }
+    },
+    // Forms & intake: ask someone to finish and sign their new patient documents (app notice, push and email)
+    intakeRemind: async (el) => {
+      el.disabled = true;
+      try { const r = await api("POST", `/api/admin/clients/${el.dataset.id}/intake/remind`, {}); el.textContent = "Notified"; el.classList.remove("primary"); toast(`${String(el.dataset.name).split(" ")[0]} was notified in the app${r.emailed ? " and by email" : ""} to finish their documents (${r.done} of ${r.total} done).`); }
+      catch (err) { el.disabled = false; throw err; }
+    },
     // Export: the people ticked on the Clients list, or everyone when nobody is ticked
     exportAsk: async () => {
       const n = state.picked.size, all = !n, total = (await clients()).length;
@@ -1213,6 +1242,7 @@
   });
   Object.assign(FORMS, {
     scribeModel: async (f) => { const r = await api("PUT", "/api/admin/scribe/model", { model: f.model.value }); closeModal(); await render(); toast(`AI scribe now uses ${r.model}.`); },
+    calEvent: async (f) => { await api("POST", "/api/admin/calendar/events", { title: f.title.value.trim(), date: f.date.value, time: f.time.value, minutes: Number(f.minutes.value), note: f.note.value.trim() }); closeModal(); await render(); toast("Added to your Google Calendar."); },
     summary: async (f) => { await api("PUT", `/api/admin/emr/${cid()}/summary`, { summary: f.summary.value.trim(), tags: f.tags.value.split(",").map((x) => x.trim()).filter(Boolean) }); await chartRedo(); toast("Summary saved."); },
     planNotes: async (f) => { stopDictation(); await putPlan({ notes: f.notes.value.trim() }); await chartRedo(); toast(`Treatment plan saved. ${firstOf()} can see it in the app.`); },
     protocol: async (f) => { stopDictation(); const name = f.name.value.trim(); if (!name) return; let detail = f.detail.value.trim(); if (!detail) { const known = (cache.protocols || []).find((p) => p.name.toLowerCase() === name.toLowerCase()); if (known) detail = known.detail || ""; }

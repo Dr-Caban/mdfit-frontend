@@ -146,6 +146,10 @@ textarea.input{min-height:120px;resize:vertical;line-height:1.55}
 .tab.active{color:var(--accent-text);border-bottom-color:var(--accent)}
 .kpi b{display:block;font-size:26px;font-weight:700;letter-spacing:-.02em}
 .kpi small{font-size:12px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--surface)}
+.seg button{font:inherit;font-size:12px;font-weight:600;padding:5px 10px;border:0;background:none;color:var(--muted);cursor:pointer;white-space:nowrap}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.seg button:focus-visible{outline:3px solid var(--accent-text);outline-offset:-3px}
 .kpi-btn{font:inherit;color:inherit;text-align:left;cursor:pointer;width:100%;display:block}
 .kpi-btn:hover,.kpi-btn[aria-expanded="true"]{border-color:var(--accent)}
 .kpi-btn:focus-visible,.pill-btn:focus-visible{outline:3px solid var(--accent-text);outline-offset:2px}
@@ -339,6 +343,6 @@ textarea.input{min-height:120px;resize:vertical;line-height:1.55}
 <script src="config.js?v=aac711e3"></script>
 <script src="realtime.js?v=dccfd156"></script>
 <script src="app/exercises.js?v=d121be98"></script>
-<script src="workspace-app.js?v=44edc9b1"></script>
+<script src="workspace-app.js?v=b97516b3"></script>
 </body>
 </html>
