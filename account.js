@@ -2476,7 +2476,7 @@
         ${textList(wk.principles).length ? `<ul class="proto-wprin">${textList(wk.principles).map((t) => `<li>${esc(t)}</li>`).join("")}</ul>` : ""}
         ${wk.notes ? `<p class="prog-notes">${esc(wk.notes).replace(/\n/g, "<br>")}</p>` : ""}
         ${extraSections(wk, STD_WK)}
-        ${wk.driveId ? `<button type="button" class="proto-sheet" data-sheet="${esc(wk.key)}" aria-label="Open the ${esc(wk.label)} sheet full size"><img src="${sheetSrc(pr, wk, 960)}" srcset="${sheetSrc(pr, wk, 960)} 960w, ${sheetSrc(pr, wk, 1600)} 1600w" sizes="(max-width: 820px) 100vw, 760px" alt="Dr. Jared's ${esc(pr.title)} sheet, ${esc(wk.label)}" loading="lazy" decoding="async" onerror="this.closest('.proto-sheet').hidden=true"><span>Tap to enlarge</span></button>` : ""}
+        ${wk.driveId || wk.sheet ? `<button type="button" class="proto-sheet" data-sheet="${esc(wk.key)}" aria-label="Open the ${esc(wk.label)} sheet full size"><img src="${sheetSrc(pr, wk, 960)}" srcset="${sheetSrc(pr, wk, 960)} 960w, ${sheetSrc(pr, wk, 1600)} 1600w" sizes="(max-width: 820px) 100vw, 760px" alt="Dr. Jared's ${esc(pr.title)} sheet, ${esc(wk.label)}" loading="lazy" decoding="async" onerror="this.closest('.proto-sheet').hidden=true"><span>Tap to enlarge</span></button>` : ""}
         ${groupedExercises(wk, p)}
       </div>
       <nav class="proto-pn" aria-label="Other weeks">

@@ -1,6 +1,7 @@
 {
- "version": "1693e1a30d",
+ "version": "a00d927306",
  "ids": [
+  "bunion-4",
   "golf-advanced",
   "golf-intermediate",
   "golf",
@@ -20,6 +21,7 @@
   "tennis-elbow-4"
  ],
  "weeks": {
+  "bunion-4": 4,
   "golf-advanced": 6,
   "golf-intermediate": 6,
   "golf": 5,

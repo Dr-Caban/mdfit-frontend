@@ -1,0 +1,680 @@
+{
+ "id": "bunion-4",
+ "title": "Bunion Correction Protocol",
+ "tagline": "Realign · Mobilize · Strengthen",
+ "goal": "",
+ "principles": [],
+ "dailyBasics": [],
+ "progression": {
+  "overview": [],
+  "guidelines": [],
+  "expect": [],
+  "remember": "",
+  "callouts": [],
+  "footer": ""
+ },
+ "weeks": [
+  {
+   "key": "1",
+   "label": "Week 1: Start Here",
+   "driveId": "",
+   "sheet": true,
+   "focus": "Reduce toe crowding, restore mobility and begin realignment.",
+   "notes": "BASELINE (DAILY): Toe spacers (2 spacers); foot and toe stretching with great toe abduction.\n\nHOW OFTEN? Daily, about 10–15 minutes.",
+   "editorNotes": "Sheet: \"Week 1 of 4\", toe spacers marked \"(Baseline)\". The left column's Program Overview (4 Weeks), Baseline, Frequency and Time panels are written into focus and notes; the goals strip is in focus.",
+   "exercises": [
+    {
+     "n": 1,
+     "name": "Toe Spacer Wear",
+     "isNew": false,
+     "whenToUse": "Holds the toes apart so the great toe can start to sit straighter.",
+     "howTo": [
+      "Wear 2 spacers daily."
+     ],
+     "focus": [],
+     "dosage": {
+      "sets": "",
+      "reps": "",
+      "tempo": "",
+      "hold": "",
+      "frequency": "Daily",
+      "other": {
+       "Time": "30–60 min (build to 2–4 hrs)"
+      }
+     },
+     "steps": [],
+     "proTip": ""
+    },
+    {
+     "n": 2,
+     "name": "Assisted Great Toe Abduction",
+     "isNew": false,
+     "whenToUse": "Teaches the great toe to move away from the others, with your hand helping.",
+     "howTo": [
+      "Gently assist the great toe away from the other toes."
+     ],
+     "focus": [],
+     "dosage": {
+      "sets": "2–3",
+      "reps": "10",
+      "tempo": "",
+      "hold": "5 sec",
+      "frequency": "",
+      "other": {
+       "Sets & Reps": "2–3 sets × 10 reps (5 sec hold)"
+      }
+     },
+     "steps": [],
+     "proTip": ""
+    },
+    {
+     "n": 3,
+     "name": "Toe Splay & Spread",
+     "isNew": false,
+     "whenToUse": "Opens up all five toes so they stop crowding each other.",
+     "howTo": [
+      "Gently spread all toes apart, keeping them relaxed."
+     ],
+     "focus": [],
+     "dosage": {
+      "sets": "2–3",
+      "reps": "10",
+      "tempo": "",
+      "hold": "5 sec",
+      "frequency": "",
+      "other": {
+       "Sets & Reps": "2–3 sets × 10 reps (5 sec hold)"
+      }
+     },
+     "steps": [],
+     "proTip": ""
+    },
+    {
+     "n": 4,
+     "name": "Great Toe Stretch",
+     "isNew": false,
+     "whenToUse": "Lengthens the tissue that is holding the great toe in.",
+     "howTo": [
+      "Use your hand to gently stretch the great toe into abduction."
+     ],
+     "focus": [],
+     "dosage": {
+      "sets": "2–3",
+      "reps": "",
+      "tempo": "",
+      "hold": "30 sec",
+      "frequency": "",
+      "other": {
+       "Sets & Time": "2–3 sets × 30 sec hold"
+      }
+     },
+     "steps": [],
+     "proTip": ""
+    },
+    {
+     "n": 5,
+     "name": "Foot Arch Activation (Short Foot)",
+     "isNew": false,
+     "whenToUse": "Wakes up the small muscles that support the arch.",
+     "howTo": [
+      "Gently lift the arch without curling the toes."
+     ],
+     "focus": [],
+     "dosage": {
+      "sets": "2–3",
+      "reps": "10",
+      "tempo": "",
+      "hold": "5 sec",
+      "frequency": "",
+      "other": {
+       "Sets & Reps": "2–3 sets × 10 reps (5 sec hold)"
+      }
+     },
+     "steps": [],
+     "proTip": ""
+    },
+    {
+     "n": 6,
+     "name": "Calf & Plantar Fascia Stretch",
+     "isNew": false,
+     "whenToUse": "Takes the pull off the bottom of the foot and the back of the leg.",
+     "howTo": [
+      "Stretch the calf and bottom of the foot (both sides)."
+     ],
+     "focus": [],
+     "dosage": {
+      "sets": "2–3",
+      "reps": "",
+      "tempo": "",
+      "hold": "30 sec",
+      "frequency": "",
+      "other": {
+       "Sets & Time": "2–3 sets × 30 sec hold"
+      }
+     },
+     "steps": [],
+     "proTip": ""
+    },
+    {
+     "n": 7,
+     "name": "Acupressure Mat (Underfoot)",
+     "isNew": false,
+     "whenToUse": "Stimulates the sole of the foot.",
+     "howTo": [
+      "Stand or gently shift weight on an acupressure mat to stimulate the foot."
+     ],
+     "focus": [],
+     "dosage": {
+      "sets": "",
+      "reps": "",
+      "tempo": "",
+      "hold": "",
+      "frequency": "Daily",
+      "other": {
+       "Time": "5–10 minutes daily"
+      }
+     },
+     "steps": [],
+     "proTip": ""
+    }
+   ]
+  },
+  {
+   "key": "2",
+   "label": "Week 2: Longer Wear & Strength",
+   "driveId": "",
+   "sheet": true,
+   "focus": "Increase toe alignment, improve foot strength and build daily tolerance.",
+   "notes": "THIS WEEK: Longer wear time, strength, and continued mobility.\n\nTOE SPACER GOAL: Wear throughout the day; sleep in toe spacers (nightly).\n\nHOW OFTEN? Daily, about 15–20 minutes (plus daily wear).",
+   "editorNotes": "Sheet: \"Week 2 of 4\", toe spacers marked \"(Ongoing)\". Eccentric Heel Drops is highlighted on the sheet as the week's new work.",
+   "exercises": [
+    {
+     "n": 1,
+     "name": "Toe Spacer Wear",
+     "isNew": false,
+     "whenToUse": "More hours in the spacers, now including overnight.",
+     "howTo": [
+      "Day: As much as possible (goal: 8+ hours).",
+      "Night: Sleep in toe spacers (6–8 hours)."
+     ],
+     "focus": [],
+     "dosage": {
+      "sets": "",
+      "reps": "",
+      "tempo": "",
+      "hold": "",
+      "frequency": "Daily",
+      "other": {
+       "Day": "As much as possible (goal: 8+ hours)",
+       "Night": "Sleep in toe spacers (6–8 hours)"
+      }
+     },
+     "steps": [],
+     "proTip": ""
+    },
+    {
+     "n": 2,
+     "name": "Assisted Great Toe Abduction",
+     "isNew": false,
+     "whenToUse": "Teaches the great toe to move away from the others, with your hand helping.",
+     "howTo": [
+      "Gently assist the great toe away from the other toes."
+     ],
+     "focus": [],
+     "dosage": {
+      "sets": "2–3",
+      "reps": "10",
+      "tempo": "",
+      "hold": "5 sec",
+      "frequency": "",
+      "other": {
+       "Sets & Reps": "2–3 sets × 10 reps (5 sec hold)"
+      }
+     },
+     "steps": [],
+     "proTip": ""
+    },
+    {
+     "n": 3,
+     "name": "Toe Splay & Spread",
+     "isNew": false,
+     "whenToUse": "Opens up all five toes so they stop crowding each other.",
+     "howTo": [
+      "Gently spread all toes apart, keeping them relaxed."
+     ],
+     "focus": [],
+     "dosage": {
+      "sets": "2–3",
+      "reps": "10",
+      "tempo": "",
+      "hold": "5 sec",
+      "frequency": "",
+      "other": {
+       "Sets & Reps": "2–3 sets × 10 reps (5 sec hold)"
+      }
+     },
+     "steps": [],
+     "proTip": ""
+    },
+    {
+     "n": 4,
+     "name": "Great Toe Stretch",
+     "isNew": false,
+     "whenToUse": "Lengthens the tissue that is holding the great toe in.",
+     "howTo": [
+      "Use your hand to gently stretch the great toe into abduction."
+     ],
+     "focus": [],
+     "dosage": {
+      "sets": "2–3",
+      "reps": "",
+      "tempo": "",
+      "hold": "30 sec",
+      "frequency": "",
+      "other": {
+       "Sets & Time": "2–3 sets × 30 sec hold"
+      }
+     },
+     "steps": [],
+     "proTip": ""
+    },
+    {
+     "n": 5,
+     "name": "Eccentric Heel Drops",
+     "isNew": true,
+     "whenToUse": "Loads the calf and the back of the foot slowly, on the way down.",
+     "howTo": [
+      "Stand on a step (balls of feet).",
+      "Rise up on both feet.",
+      "Lower slowly (eccentric) for 5–10 sec."
+     ],
+     "focus": [],
+     "dosage": {
+      "sets": "2–3",
+      "reps": "10–15",
+      "tempo": "Lower slowly for 5–10 sec",
+      "hold": "",
+      "frequency": "",
+      "other": {
+       "Sets & Reps": "2–3 sets × 10–15 reps"
+      }
+     },
+     "steps": [
+      "Up (assist)",
+      "Down (slow 5–10 sec)"
+     ],
+     "proTip": ""
+    },
+    {
+     "n": 6,
+     "name": "Calf & Plantar Fascia Stretch",
+     "isNew": false,
+     "whenToUse": "Takes the pull off the bottom of the foot and the back of the leg.",
+     "howTo": [
+      "Stretch the calf and bottom of the foot (both sides)."
+     ],
+     "focus": [],
+     "dosage": {
+      "sets": "2–3",
+      "reps": "",
+      "tempo": "",
+      "hold": "30 sec",
+      "frequency": "",
+      "other": {
+       "Sets & Time": "2–3 sets × 30 sec hold"
+      }
+     },
+     "steps": [],
+     "proTip": ""
+    },
+    {
+     "n": 7,
+     "name": "Acupressure Mat (Underfoot)",
+     "isNew": false,
+     "whenToUse": "Stimulates the sole of the foot.",
+     "howTo": [
+      "Stand or gently shift weight on an acupressure mat to stimulate the foot."
+     ],
+     "focus": [],
+     "dosage": {
+      "sets": "",
+      "reps": "",
+      "tempo": "",
+      "hold": "",
+      "frequency": "Daily",
+      "other": {
+       "Time": "5–10 minutes daily"
+      }
+     },
+     "steps": [],
+     "proTip": ""
+    }
+   ]
+  },
+  {
+   "key": "3",
+   "label": "Week 3: Unassisted Control & Footwear",
+   "driveId": "",
+   "sheet": true,
+   "focus": "Build foot strength, improve toe control and alignment, and add daily function (shoes, walking, standing).",
+   "notes": "THIS WEEK: Unassisted toe control, greater strength, and real-world integration (shoes and daily activity).\n\nFOOTWEAR: Use shoes with a wider toe box to allow natural toe spread and alignment.\n\nHOW OFTEN? Daily, about 15–25 minutes (plus daily wear).",
+   "editorNotes": "Sheet: \"Week 3 of 4\", toe spacers marked \"(Ongoing)\". Unassisted Great Toe Abduction and Heel Calf Raises are highlighted on the sheet as this week's changes.",
+   "exercises": [
+    {
+     "n": 1,
+     "name": "Toe Spacer Wear",
+     "isNew": false,
+     "whenToUse": "All-day and overnight wear continues.",
+     "howTo": [
+      "Wear toe spacers throughout the day (goal: 8+ hours).",
+      "Sleep in toe spacers nightly (6–8 hours)."
+     ],
+     "focus": [],
+     "dosage": {
+      "sets": "",
+      "reps": "",
+      "tempo": "",
+      "hold": "",
+      "frequency": "Daily",
+      "other": {
+       "Day": "Throughout the day (goal: 8+ hours)",
+       "Night": "Nightly (6–8 hours)"
+      }
+     },
+     "steps": [],
+     "proTip": ""
+    },
+    {
+     "n": 2,
+     "name": "Unassisted Great Toe Abduction",
+     "isNew": true,
+     "whenToUse": "The great toe now moves on its own, without your hand.",
+     "howTo": [
+      "Actively move the great toe away from the other toes without assistance."
+     ],
+     "focus": [],
+     "dosage": {
+      "sets": "2–3",
+      "reps": "10–15",
+      "tempo": "",
+      "hold": "5 sec",
+      "frequency": "",
+      "other": {
+       "Sets & Reps": "2–3 sets × 10–15 reps (5 sec hold)"
+      }
+     },
+     "steps": [],
+     "proTip": ""
+    },
+    {
+     "n": 3,
+     "name": "Toe Splay & Spread",
+     "isNew": false,
+     "whenToUse": "Opens up all five toes so they stop crowding each other.",
+     "howTo": [
+      "Gently spread all toes apart, keeping them relaxed."
+     ],
+     "focus": [],
+     "dosage": {
+      "sets": "2–3",
+      "reps": "10–15",
+      "tempo": "",
+      "hold": "5 sec",
+      "frequency": "",
+      "other": {
+       "Sets & Reps": "2–3 sets × 10–15 reps (5 sec hold)"
+      }
+     },
+     "steps": [],
+     "proTip": ""
+    },
+    {
+     "n": 4,
+     "name": "Great Toe Stretch",
+     "isNew": false,
+     "whenToUse": "Lengthens the tissue that is holding the great toe in.",
+     "howTo": [
+      "Use your hand to gently stretch the great toe into abduction."
+     ],
+     "focus": [],
+     "dosage": {
+      "sets": "2–3",
+      "reps": "",
+      "tempo": "",
+      "hold": "30 sec",
+      "frequency": "",
+      "other": {
+       "Sets & Time": "2–3 sets × 30 sec hold"
+      }
+     },
+     "steps": [],
+     "proTip": ""
+    },
+    {
+     "n": 5,
+     "name": "Heel Calf Raises (Full Range – Slow Eccentric)",
+     "isNew": true,
+     "whenToUse": "Full-range calf work, still lowering slowly.",
+     "howTo": [
+      "Full range calf raises (both feet).",
+      "Rise up, then lower slowly (5–10 seconds)."
+     ],
+     "focus": [],
+     "dosage": {
+      "sets": "2–3",
+      "reps": "10–15",
+      "tempo": "Lower slowly (5–10 seconds)",
+      "hold": "",
+      "frequency": "",
+      "other": {
+       "Sets & Reps": "2–3 sets × 10–15 reps"
+      }
+     },
+     "steps": [
+      "Up (rise)",
+      "Down (slow 5–10 sec)"
+     ],
+     "proTip": ""
+    },
+    {
+     "n": 6,
+     "name": "Wider Toe-Box Footwear",
+     "isNew": true,
+     "whenToUse": "Shoes stop undoing the work between sessions.",
+     "howTo": [
+      "Choose shoes with a wider toe box.",
+      "Allow room for natural toe spread and alignment.",
+      "Wear daily for walking, training, and activity."
+     ],
+     "focus": [],
+     "dosage": {
+      "sets": "",
+      "reps": "",
+      "tempo": "",
+      "hold": "",
+      "frequency": "Daily",
+      "other": {}
+     },
+     "steps": [],
+     "proTip": ""
+    },
+    {
+     "n": 7,
+     "name": "Acupressure Mat (Underfoot)",
+     "isNew": false,
+     "whenToUse": "Stimulates the sole of the foot.",
+     "howTo": [
+      "Stand or gently shift weight on an acupressure mat to stimulate the foot."
+     ],
+     "focus": [],
+     "dosage": {
+      "sets": "",
+      "reps": "",
+      "tempo": "",
+      "hold": "",
+      "frequency": "Daily",
+      "other": {
+       "Time": "5–10 minutes daily"
+      }
+     },
+     "steps": [],
+     "proTip": ""
+    }
+   ]
+  },
+  {
+   "key": "4",
+   "label": "Week 4: Resistance & Daily Life",
+   "driveId": "",
+   "sheet": true,
+   "focus": "Maintain alignment, build strength and control, and integrate it into daily life.",
+   "notes": "THIS WEEK: Long-term alignment, active toe control, and real-world integration.\n\nKEY UPDATE: Use thin toe spacers inside large toe box shoes and continue daily wear.\n\nFUNCTIONAL GOAL: Actively use great toe abduction during everyday movements (walking, standing, training).\n\nHOW OFTEN? Daily, about 15–25 minutes (plus daily wear).",
+   "editorNotes": "Sheet: \"Week 4 of 4\", toe spacers marked \"(Ongoing)\". This sheet has six cards, not seven: the Great Toe Stretch and the Calf & Plantar Fascia Stretch are not printed on it. Resisted Great Toe Abduction (Band) is highlighted as the change.",
+   "exercises": [
+    {
+     "n": 1,
+     "name": "Toe Spacer Wear (Thin Option)",
+     "isNew": true,
+     "whenToUse": "Thin spacers go inside the shoe, so wear carries through the day.",
+     "howTo": [
+      "Use thin toe spacers in large toe box shoes.",
+      "Wear toe spacers throughout the day (as tolerated)."
+     ],
+     "focus": [],
+     "dosage": {
+      "sets": "",
+      "reps": "",
+      "tempo": "",
+      "hold": "",
+      "frequency": "Daily",
+      "other": {}
+     },
+     "steps": [],
+     "proTip": ""
+    },
+    {
+     "n": 2,
+     "name": "Resisted Great Toe Abduction (Band)",
+     "isNew": true,
+     "whenToUse": "Adds light resistance to the movement the toe has learned.",
+     "howTo": [
+      "Actively move the great toe away from the other toes with light resistance (band)."
+     ],
+     "focus": [],
+     "dosage": {
+      "sets": "2–3",
+      "reps": "10–15",
+      "tempo": "",
+      "hold": "5 sec",
+      "frequency": "",
+      "other": {
+       "Sets & Reps": "2–3 sets × 10–15 reps (5 sec hold)"
+      }
+     },
+     "steps": [],
+     "proTip": ""
+    },
+    {
+     "n": 3,
+     "name": "Toe Splay & Spread",
+     "isNew": false,
+     "whenToUse": "Opens up all five toes so they stop crowding each other.",
+     "howTo": [
+      "Gently spread all toes apart, keeping them relaxed."
+     ],
+     "focus": [],
+     "dosage": {
+      "sets": "2–3",
+      "reps": "10–15",
+      "tempo": "",
+      "hold": "5 sec",
+      "frequency": "",
+      "other": {
+       "Sets & Reps": "2–3 sets × 10–15 reps (5 sec hold)"
+      }
+     },
+     "steps": [],
+     "proTip": ""
+    },
+    {
+     "n": 4,
+     "name": "Heel Calf Raises (Full Range – Slow Eccentric)",
+     "isNew": false,
+     "whenToUse": "Full-range calf work, still lowering slowly.",
+     "howTo": [
+      "Full range calf raises (both feet).",
+      "Rise up, then lower slowly (5–10 seconds)."
+     ],
+     "focus": [],
+     "dosage": {
+      "sets": "2–3",
+      "reps": "10–15",
+      "tempo": "Lower slowly (5–10 seconds)",
+      "hold": "",
+      "frequency": "",
+      "other": {
+       "Sets & Reps": "2–3 sets × 10–15 reps"
+      }
+     },
+     "steps": [
+      "Up (rise)",
+      "Down (slow 5–10 sec)"
+     ],
+     "proTip": ""
+    },
+    {
+     "n": 5,
+     "name": "Wider Toe-Box Footwear",
+     "isNew": false,
+     "whenToUse": "Shoes stop undoing the work between sessions.",
+     "howTo": [
+      "Continue using shoes with a wider toe box.",
+      "Allow room for natural toe spread and alignment.",
+      "Wear for all daily activities (walking, standing, training)."
+     ],
+     "focus": [],
+     "dosage": {
+      "sets": "",
+      "reps": "",
+      "tempo": "",
+      "hold": "",
+      "frequency": "Daily",
+      "other": {}
+     },
+     "steps": [],
+     "proTip": ""
+    },
+    {
+     "n": 6,
+     "name": "Acupressure Mat (Underfoot)",
+     "isNew": false,
+     "whenToUse": "Stimulates the sole of the foot.",
+     "howTo": [
+      "Stand or gently shift weight on an acupressure mat to stimulate the foot."
+     ],
+     "focus": [],
+     "dosage": {
+      "sets": "",
+      "reps": "",
+      "tempo": "",
+      "hold": "",
+      "frequency": "Daily",
+      "other": {
+       "Time": "5–10 minutes daily"
+      }
+     },
+     "steps": [],
+     "proTip": ""
+    }
+   ]
+  }
+ ],
+ "uncertain": [
+  "The sheets name the same movement two ways in places: the Week 2 card is \"Eccentric Heel Drops\" while Weeks 3 and 4 call it \"Heel Calf Raises (Full Range – Slow Eccentric)\". Kept as printed on each week.",
+  "The checklist strip at the foot of each sheet uses shorter names than the cards above it (for example \"Heel drops (eccentric)\", \"Wide toe-box shoes\", \"Assisted abduction\"). The card names are used here; the checklist wording is on the sheet image.",
+  "Week 4 prints six cards, not seven: the Great Toe Stretch and the Calf & Plantar Fascia Stretch are not on that sheet. Transcribed as printed; Dr. Jared to confirm whether they are meant to continue.",
+  "Weeks 1–3 print \"Toe Spacer Wear\"; Week 4 prints \"Toe Spacer Wear (Thin Option)\". Kept as printed.",
+  "No cue on any sheet says which foot, or whether to do both. Kept as printed."
+ ],
+ "sourceNotes": "Transcribed from Dr. Jared's four Bunion Correction Protocol sheets (Week 1 of 4 to Week 4 of 4), supplied November 2026. Panel text, dosages and card order follow the sheets; the left-hand Program Overview, Frequency and Time panels are folded into each week's focus and notes."
+}
