@@ -623,7 +623,7 @@
     </div>
     <div class="stack">
       <div class="card stack"><div class="card-head"><h2 class="row" style="gap:6px">${ui("spark", 18)}AI scribe</h2><span class="pill ${ai ? "ok" : ""}">${ai ? "On" : "Off"}</span></div>
-        ${scribe.model || scribe.host ? `<div class="row" style="justify-content:space-between;font-size:12.5px"><span class="muted" style="overflow-wrap:anywhere">Model: <b id="sModel">${esc(scribe.model || "none chosen")}</b></span><button type="button" class="btn sm" data-act="scribeModels">Change model</button></div>` : ""}
+        ${scribe.model || scribe.host ? `<div class="row" style="justify-content:space-between;font-size:12.5px"><span class="muted" style="overflow-wrap:anywhere">Model: <b id="sModel">${esc(scribe.model || "none chosen")}</b>${(scribe.backups || []).length ? ` · backup: ${scribe.backups.map((b) => esc(b.model)).join(", ")}` : ""}</span><button type="button" class="btn sm" data-act="scribeModels">Change model</button></div>` : ""}
         <div class="row"><button type="button" class="btn sm mic" data-act="dictate" data-for="sText" aria-pressed="false">${ui("mic", 14)}<span>Dictate</span></button><button type="button" class="btn sm" disabled title="Needs a speech-to-text service with a signed agreement. None is connected.">${ui("upload", 14)}Upload audio</button></div>
         <div class="field" style="margin:0"><label for="sText">Or paste a summary or transcript</label><textarea id="sText" class="input" style="min-height:130px" maxlength="20000" placeholder="Right knee 3 weeks post-op, swelling down, soft tissue on the quad, heel slides 2x10 twice a day, back in a week.">${esc(heard)}</textarea></div>
         <button type="button" class="btn primary" data-act="noteScribe" style="justify-content:center"${ai && cid ? "" : " disabled"}>Draft <span id="sKind" style="margin:0 .3em">${esc(TEMPLATES[note.template])}</span></button>
@@ -876,7 +876,7 @@
       try {
         const r = await api("POST", "/api/admin/scribe/draft", { clientId: note.clientId, text, kind: note.template });
         box.value = r.draft; box.focus(); box.setSelectionRange(0, 0); box.scrollTop = 0; noteTouch();
-        msg.textContent = `Draft ready. Read it and edit before you sign.${r.removed ? ` ${r.removed} name, contact or date ${r.removed === 1 ? "detail was" : "details were"} removed before sending.` : ""}`;
+        msg.textContent = `Draft ready. Read it and edit before you sign.${r.removed ? ` ${r.removed} name, contact or date ${r.removed === 1 ? "detail was" : "details were"} removed before sending.` : ""}${r.backup ? ` The first AI service could not answer, so the backup (${r.host}, ${r.model}) drafted this.` : ""}`;
       } catch (err) { msg.textContent = err.message; }
       finally { el.disabled = false; }
     },
@@ -1127,7 +1127,8 @@
     scribeModels: async () => {
       const r = await get("/scribe/models");
       modal(`<div class="card-head"><h2>AI scribe model</h2>${xBtn}</div><p class="muted" style="margin:0 0 12px">These are the models ${esc(r.host || "the AI service")} offers your key. Pick the one drafts should use.</p>
-        <form class="stack" data-form="scribeModel"><div class="field"><label for="smPick">Model</label><select id="smPick" name="model" class="input">${(r.models || []).map((m) => `<option${m === r.current ? " selected" : ""}>${esc(m)}</option>`).join("")}</select></div>
+        <form class="stack" data-form="scribeModel">${(r.models || []).length > 12 ? `<div class="field"><label for="smFind">Find a model (${r.models.length} offered)</label><input id="smFind" class="input" type="search" placeholder="Type part of a name, e.g. kimi or free" autocomplete="off"></div>` : ""}
+        <div class="field"><label for="smPick">Model</label><select id="smPick" name="model" class="input"${(r.models || []).length > 12 ? ' size="8" style="height:auto"' : ""}>${(r.models || []).map((m) => `<option${m === r.current ? " selected" : ""}>${esc(m)}</option>`).join("")}</select></div>
         ${(r.models || []).includes(r.current) ? "" : `<p class="muted" style="margin:0;font-size:12.5px">The one set now, ${esc(r.current || "none")}, is not on this list, which is why drafts fail.</p>`}
         <div class="row"><button class="btn primary"${(r.models || []).length ? "" : " disabled"}>Use this model</button></div></form>`);
     },
@@ -1361,6 +1362,7 @@
       box.innerHTML = q.length ? (EXERCISES.filter((x) => q.every((w) => `${x.name} ${x.region} ${x.cat}`.toLowerCase().includes(w))).slice(0, 10).map((x) => `<div class="list-item"><span style="flex:1"><b>${esc(x.name)}</b><div class="muted" style="font-size:12px">${esc(x.region)} · ${esc(x.cat)} · level ${x.level}</div></span><button type="button" class="btn sm" data-act="mvPick" data-id="${esc(x.id)}">Choose</button></div>`).join("") || none("No movement matches.")) : "";
     }
     if (e.target.dataset && e.target.dataset.svc) { const sv = ((cache.settings && cache.settings.services) || []).find((x) => x.name === e.target.value), fee = e.target.parentElement.querySelector('[name^="fee"]'); if (sv && fee && !fee.value) fee.value = sv.rate; }
+    if (e.target.id === "smFind") { const words = e.target.value.trim().toLowerCase().split(/\s+/).filter(Boolean), pick = $("#smPick"); let first = null; for (const o of pick.options) { o.hidden = !words.every((w) => o.value.toLowerCase().includes(w)); if (!o.hidden && !first) first = o; } if (first && (pick.selectedOptions[0] || {}).hidden) first.selected = true; }
     if (e.target.id === "teleInviteQ") {
       const q = e.target.value.trim().toLowerCase().split(/\s+/).filter(Boolean), box = $("#teleInviteRes");
       if (!q.length) { box.innerHTML = ""; return; }
