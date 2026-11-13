@@ -150,7 +150,9 @@
     const nothing = !weeks.some((w) => w.workouts || w.activeDays) && !areas.length && !progs.length && !VITALS.some(([k]) => (vit[k] || []).length);
     // headline tiles
     const pc = h.painChange;
-    const painText = !pc ? ["—", "Log two pain check-ins to see a change"] : pc.delta < 0 ? [`↓ ${Math.abs(pc.delta)}`, `points less pain in your ${pc.area}`] : pc.delta > 0 ? [`↑ ${pc.delta}`, `points more pain in your ${pc.area}`] : ["Same", `pain level in your ${pc.area}`];
+    // Area names come from the app's list ("Knee", "Lower back"); in a sentence they read lowercase
+    const where = pc ? String(pc.area || "").toLowerCase() : "", pts = (n) => (Math.abs(n) === 1 ? "point" : "points");
+    const painText = !pc ? ["—", "Log two pain check-ins to see a change"] : pc.delta < 0 ? [`↓ ${Math.abs(pc.delta)}`, `${pts(pc.delta)} less pain in your ${where}`] : pc.delta > 0 ? [`↑ ${pc.delta}`, `${pts(pc.delta)} more pain in your ${where}`] : ["Same", `pain level in your ${where}`];
     const tiles = document.createElement("div"); tiles.className = "pg-tiles";
     const who = opts.admin ? "" : "your ";
     tiles.innerHTML = [
