@@ -2016,9 +2016,12 @@
   async function loadMessages(scroll) {
     let d; try { d = await apiAuth("GET", "/api/me/messages"); } catch { return; }
     msgData = d;
-    $("#msg-gate").hidden = d.member;
-    $("#chat-form").hidden = !d.member;
-    $("#chat").hidden = !d.member && !d.messages.length;
+    // Who may write to Dr. Jared is the server's call (canSend; older servers said member). History always shows.
+    const can = typeof d.canSend === "boolean" ? d.canSend : !!d.member;
+    $("#msg-gate").hidden = can;
+    if (!can) $("#msg-gate-why").textContent = d.why || "Messaging Dr. Jared directly is part of Expert Advice ($50/mo) and the 1-on-1 tiers.";
+    $("#chat-form").hidden = !can;
+    $("#chat").hidden = !can && !d.messages.length;
     const list = $("#chat-list");
     let lastDay = "";
     list.innerHTML = d.messages.length ? d.messages.map((m) => {
@@ -2091,7 +2094,7 @@
     e.preventDefault(); const f = e.target, body = f.body.value.trim(); if (!body) return;
     const btn = $("button", f); btn.disabled = true;
     try { await apiAuth("POST", "/api/me/messages", { body }); f.reset(); growTA(f.body); loadMessages(true); earn("message"); }
-    catch (err) { if (/membership/i.test(err.message)) showPaywall("Messaging Dr. Jared is part of membership."); else toast(err.message); }
+    catch (err) { toast(err.message); if (err.status === 403 || /membership|expert advice/i.test(err.message)) loadMessages(false); } // not allowed: the gate shows
     finally { btn.disabled = false; }
   });
   $("#chat-form textarea").addEventListener("keydown", (e) => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) $("#chat-form").requestSubmit(); });
@@ -2644,14 +2647,17 @@
         </div>`;
       }).catch(() => {});
     }
-    $("#tier-grid").innerHTML = C.tiers.map((t, i) => `<article class="tier${i === 1 ? " featured" : ""}${cur && cur.id === t.id ? " current" : ""}">
+    $("#tier-grid").innerHTML = C.tiers.map((t, i) => `<article class="tier${i === 1 ? " featured" : ""}${cur && cur.id === t.id ? " current" : ""}" data-tier-card="${esc(t.id)}">
       ${i === 1 ? `<span class="tag">Most popular</span>` : ""}
       <h3>${esc(t.name)}</h3><p class="tier-price"><b>${money(t.price)}</b>/month</p>
+      <p class="tier-ai">Unlimited Sunny (MD Fit Intelligence)</p>
+      ${t.directMessages ? `<p class="tier-dm"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"/></svg>Message Dr. Jared directly</p>` : ""}
       ${t.meetings ? `<p class="tier-meet">${t.meetings} remote 1-on-1 sessions a month · ${t.meetingMinutes} min each</p>` : t.accountability ? `<p class="tier-meet">$1 off per active day · 20 active days = <b>${money(t.floor || 0)}</b> that month</p>` : ""}
       <ul>${t.perks.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>
       ${cur && cur.id === t.id ? `<span class="tier-cur">Your plan</span>` : `<button type="button" class="${i === 1 ? "btn-gold" : "btn-ghost"} sm" data-tier="${t.id}">${payOn ? "Subscribe" : "Request"} ${esc(t.name)}</button>`}
     </article>`).join("");
     renderPayments();
+    setTimeout(highlightTier, 60);
     const mc = $("#meetings-card");
     mc.hidden = C.access !== "premium";
     if (mc.hidden) return;
@@ -3181,19 +3187,82 @@
     apiAuth("GET", "/api/me/intake").then((p) => { patientDocs = p; renderPatient(); }).catch(() => {});
   }
 
-  // ================= My plans on Home: programs Dr. Jared assigned ("From Dr. Jared") + programs the member saved
+  // ================= My plans on Home: programs Dr. Jared assigned ("Recommended by Dr. Jared"), programs the member
+  // saved, and what Sunny (MD Fit Intelligence) suggested ("Suggested for you"). The two labels never mix: Recommended
+  // comes from Dr. Jared, Suggested from Sunny, and a suggestion never changes what Dr. Jared recommended.
+  const ACCESS_RANK = { free: 0, member: 1, premium: 2 };
+  // Locked = the program needs more than this person's access (server: C.access, which is "premium" for inpatients)
+  const lockedFor = (p) => !!p && (ACCESS_RANK[p.access || "free"] || 0) > (ACCESS_RANK[(C && C.access) || "free"] || 0);
+  const TAG_REC = `<span class="mp-tag rec">Recommended</span>`, TAG_SUG = `<span class="mp-tag sug">Suggested</span>`;
+  const DISMISS = (kind, id, what) => `<button type="button" class="mp-x" data-sug-x="${esc(kind)}" data-sug-id="${esc(id)}" aria-label="Remove ${esc(what)} from Suggested for you"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>`;
   function renderMyPlans() {
     const box = $("#my-plans"); if (!box || !C || !client) return;
-    const byId = new Map((C.programs || []).map((p) => [p.id, p]));
-    const assigned = (client.assignedPrograms || []).filter((x) => byId.has(x.id));
-    const saved = (client.pinnedPrograms || []).filter((id) => byId.has(id) && !assigned.some((x) => x.id === id));
-    const row = (p, note) => { const st = progStats(p); return `<li><button type="button" class="mp-item" data-fp="${esc(p.id)}">
+    const pById = new Map((C.programs || []).map((p) => [p.id, p]));
+    const assigned = (client.assignedPrograms || []).filter((x) => pById.has(x.id));
+    const saved = (client.pinnedPrograms || []).filter((id) => pById.has(id) && !assigned.some((x) => x.id === id));
+    const row = (p, note, tag) => { const st = progStats(p); return `<li><button type="button" class="mp-item" data-fp="${esc(p.id)}">
         ${p.image ? progImg(p.image, "", "56px", { sizes: "56px" }) : `<span class="fp-ic pp-blank"></span>`}
-        <span class="mp-body"><b>${esc(p.title)}</b>${note ? `<span class="mp-note">${esc(note)}</span>` : ""}<span class="muted small">${esc(lvlName(p.level))} · ${st.isProto ? partsLabel(st.nWeeks, p) : `${p.weeks} weeks`}${st.done ? ` · ${st.done} of ${st.sessions} ${st.isProto ? "started" : "done"}` : note !== undefined ? " · not started yet" : ""}</span></span>
+        <span class="mp-body">${tag || ""}<b>${esc(p.title)}</b>${note ? `<span class="mp-note">${esc(note)}</span>` : ""}<span class="muted small">${esc(lvlName(p.level))} · ${st.isProto ? partsLabel(st.nWeeks, p) : `${p.weeks} weeks`}${st.done ? ` · ${st.done} of ${st.sessions} ${st.isProto ? "started" : "done"}` : note !== undefined ? " · not started yet" : ""}</span></span>
         <span class="mp-go">Open ›</span></button></li>`; };
-    $("#mp-assigned").innerHTML = assigned.length ? `<span class="label accent">From Dr. Jared</span><ul class="mp-list">${assigned.map((x) => row(byId.get(x.id), x.note)).join("")}</ul>` : "";
-    $("#mp-saved").innerHTML = saved.length ? `<span class="label">My saved plans</span><ul class="mp-list">${saved.map((id) => row(byId.get(id))).join("")}</ul>` : "";
-    box.hidden = !assigned.length && !saved.length;
+    $("#mp-assigned").innerHTML = assigned.length ? `<span class="label accent">Recommended by Dr. Jared</span><ul class="mp-list">${assigned.map((x) => row(pById.get(x.id), x.note, TAG_REC)).join("")}</ul>` : "";
+    $("#mp-saved").innerHTML = saved.length ? `<span class="label">My saved plans</span><ul class="mp-list">${saved.map((id) => row(pById.get(id))).join("")}</ul>` : "";
+    // Suggested for you: only items the app really has; a members-only program shows a lock and opens the membership page
+    const sg = (client && client.suggested) || {};
+    const sp = (sg.programs || []).filter((x) => x && pById.has(x.id) && !assigned.some((a) => a.id === x.id)).slice(0, 6);
+    const sv = (sg.videos || []).filter((x) => x && byId.get(x.id)).slice(0, 8);
+    const st = (sg.tips || []).filter((x) => x && x.id && x.text).slice(0, 3);
+    const sugRow = (x) => { const p = pById.get(x.id), lk = lockedFor(p);
+      return `<li class="mp-sug"><button type="button" class="mp-item${lk ? " mp-locked" : ""}" ${lk ? `data-unlock="member"` : `data-fp="${esc(p.id)}"`}>
+        ${p.image ? progImg(p.image, "", "56px", { sizes: "56px" }) : `<span class="fp-ic pp-blank"></span>`}
+        <span class="mp-body">${TAG_SUG}${lk ? lockBadge : ""}<b>${esc(p.title)}</b><span class="muted small">${esc(lvlName(p.level))}${p.category ? " · " + esc(p.category) : ""}</span></span>
+        <span class="mp-go">${lk ? "Unlock ›" : "Open ›"}</span></button>${DISMISS("programs", x.id, p.title)}</li>`; };
+    const vidRow = (x) => { const e = byId.get(x.id);
+      return `<li class="mp-sug"><button type="button" class="mp-item mp-vid" data-sug-play="${esc(e.id)}">
+        <span class="fp-ic mp-play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+        <span class="mp-body">${TAG_SUG}<b>${esc(e.name)}</b><span class="muted small">${esc(exMeta(e))}</span></span>
+        <span class="mp-go">Play ›</span></button>${DISMISS("videos", x.id, e.name)}</li>`; };
+    const tipRow = (x) => `<li class="mp-sug"><div class="mp-item mp-tip"><span class="fp-ic mp-tip-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21h6v-1H9zm3-19a7 7 0 0 0-4 12.7V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.3A7 7 0 0 0 12 2z"/></svg></span>
+        <span class="mp-body">${TAG_SUG}<span class="mp-tip-text">${esc(x.text)}</span></span></div>${DISMISS("tips", x.id, "this tip")}</li>`;
+    const anySug = sp.length || sv.length || st.length;
+    const sugBox = $("#mp-suggested");
+    if (sugBox) sugBox.innerHTML = anySug ? `<span class="label">Suggested for you <span class="muted small">by Sunny</span></span>
+      ${sp.length ? `<ul class="mp-list">${sp.map(sugRow).join("")}</ul>` : ""}
+      ${sv.length ? `<p class="mp-sub muted small">Videos</p><ul class="mp-list">${sv.map(vidRow).join("")}</ul>` : ""}
+      ${st.length ? `<p class="mp-sub muted small">Tips</p><ul class="mp-list">${st.map(tipRow).join("")}</ul>` : ""}
+      <p class="muted small mp-fine">Suggestions from Sunny, not medical advice. What Dr. Jared recommends is marked Recommended.</p>` : "";
+    box.hidden = !assigned.length && !saved.length && !anySug;
+  }
+  // Sunny's suggestions arrive with an answer (mdfit-guide.js) or with GET /api/me; both land here
+  function setSuggested(s) {
+    if (!client || !s || typeof s !== "object") return;
+    client.suggested = { programs: Array.isArray(s.programs) ? s.programs : [], videos: Array.isArray(s.videos) ? s.videos : [], tips: Array.isArray(s.tips) ? s.tips : [] };
+    auth.set({ ...auth.get(), client }); renderMyPlans();
+  }
+  document.addEventListener("click", async (e) => {
+    const x = e.target.closest("[data-sug-x]");
+    if (x) {
+      x.disabled = true;
+      try { const r = await apiAuth("DELETE", `/api/me/suggested/${encodeURIComponent(x.dataset.sugX)}/${encodeURIComponent(x.dataset.sugId)}`); setSuggested(r && r.suggested); toast("Removed from Suggested for you."); }
+      catch (err) { x.disabled = false; toast(err.message); }
+      return;
+    }
+    const pl = e.target.closest("[data-sug-play]");
+    if (pl) { const ex = byId.get(pl.dataset.sugPlay); if (ex) playVideo(ex.id, ex.name, exMeta(ex)); return; }
+    const un = e.target.closest("[data-unlock]");
+    if (un) showTier(un.dataset.unlock);
+  });
+  // The membership page with one tier picked out (a locked suggestion, the messaging upgrade, Sunny's limit)
+  let hlTier = "";
+  function showTier(id) {
+    hlTier = String(id || "");
+    if (location.hash === "#premium") highlightTier(); else go("premium");
+  }
+  function highlightTier() {
+    if (!hlTier) return;
+    const el = document.querySelector(`#tier-grid [data-tier-card="${CSS.escape(hlTier)}"]`); if (!el) return;
+    hlTier = "";
+    el.classList.remove("tier-hl"); void el.offsetWidth; el.classList.add("tier-hl");
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
   }
   const isSaved = (pid) => (client && client.pinnedPrograms || []).includes(pid);
   document.addEventListener("click", async (e) => {
@@ -3217,6 +3286,10 @@
     // For the guide (mdfit-guide.js) and the theme switch (app-theme.js): who is signed in, what the app holds, and two places to open
     client: () => client, content: async () => { if (!C) await (contentLoading || loadContent()).catch(() => {}); return C; },
     openBook: () => { go("profile"); setTimeout(() => $("#p-book-open") && $("#p-book-open").click(), 60); },
+    // For Sunny: her suggestions on Home, a suggested video, and the membership page with a tier picked out
+    setSuggested, showTier, lockedFor,
+    playExercise: (id) => { const ex = byId.get(id); if (ex) playVideo(ex.id, ex.name, exMeta(ex)); return !!ex; },
+    exercise: (id) => byId.get(id) || null,
     redrawCalendar: () => { try { renderCalendar(); } catch {} },
     // What is waiting for this member right now, so the guide can offer it first (all of it already loaded by the app)
     state: () => ({ appts, invoices: myInvoices, invited: teleAsked, docs: patientDocs, reward, unread: parseInt(($("#msg-badge") || {}).textContent, 10) || 0 }),

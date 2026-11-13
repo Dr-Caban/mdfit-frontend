@@ -1,4 +1,4 @@
-/* The MD Fit guide (mdfit-guide.js): the cloud, its label, and the chat it opens. Colours come from the app's own
+/* Sunny, MD Fit Intelligence (mdfit-guide.js): the cloud, its label, and the chat it opens. Colours come from the app's own
    variables (app/app.css), so the white and black themes both carry through. Everything is prefixed mg-. */
 :root { --mg-gold: var(--gold, #C8A763); --mg-gold-hi: #FFE7A8; --mg-deep: #0A1A2E; --mg-lift: 0px; }
 
@@ -54,6 +54,11 @@ body:has([data-view="pain"]:not([hidden])) #mg-tag { display: none; }
 .mg-opts { display: flex; flex-wrap: wrap; gap: 8px; }
 .mg-opt { font: 600 13.5px/1.25 var(--body, system-ui, sans-serif); min-height: 40px; padding: 9px 13px; border-radius: 12px; border: 1.5px solid var(--mg-gold); background: var(--card, #fff); color: var(--heading, #0A1A2E); cursor: pointer; text-align: left; text-decoration: none; display: inline-flex; flex-direction: column; justify-content: center; transition: background-color .12s; -webkit-tap-highlight-color: transparent; }
 .mg-opt:hover { background: var(--gold-soft, #f6efdf); }
+/* a members-only suggestion: a lock, and it opens the membership page */
+.mg-opt.mg-lock { position: relative; padding-left: 34px; border-style: dashed; }
+.mg-lock-ic { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; fill: currentColor; }
+/* the small "Suggested" tag on a tip from Sunny */
+.mg-sug { display: inline-block; margin: 0 6px 2px 0; padding: 1px 7px; border-radius: 999px; font-size: 10.5px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; background: var(--gold-soft, #f6efdf); color: #7a5a14; border: 1px solid var(--mg-gold); vertical-align: middle; }
 .mg-opt small { display: block; font-weight: 500; font-size: 11.5px; color: var(--muted, #6b6a6e); margin-top: 2px; }
 .mg-opt.mg-gold { background: var(--mg-gold); color: #0A1A2E; }
 .mg-opt.mg-gold small { color: #3a3120; }

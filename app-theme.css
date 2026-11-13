@@ -468,6 +468,9 @@ html[data-theme="black"] {
 :where(html[data-theme=black]) .tier-meet { color: var(--accent-text); }
 :where(html[data-theme=black]) .tier.featured .tier-meet { color: var(--accent-bright); }
 :where(html[data-theme=black]) .tier-cur { color: var(--gold); }
+:where(html[data-theme=black]) .tier-dm, :where(html[data-theme=black]) .tier-ai { color: var(--navy); }
+:where(html[data-theme=black]) .tier-dm svg { fill: var(--gold); }
+:where(html[data-theme=black]) .tier.featured .tier-dm, :where(html[data-theme=black]) .tier.featured .tier-ai { color: #fff; }
 :where(html[data-theme=black]) .meet-list li { background: var(--card-2); }
 :where(html[data-theme=black]) .meet-list .pill { background: var(--gold-soft); }
 :where(html[data-theme=black]) .nums-form .full { color: var(--muted); }
@@ -913,6 +916,15 @@ html[data-theme="black"] {
 :where(html[data-theme=black]) .mp-item { color: inherit; background: none; border: 1px solid var(--line); }
 :where(html[data-theme=black]) .mp-body b { color: var(--navy); }
 :where(html[data-theme=black]) .mp-go { color: var(--accent-text, #91b8de); }
+:where(html[data-theme=black]) .mp-tag.rec { background: var(--t-deep); color: #fff; }
+:where(html[data-theme=black]) .mp-tag.sug { background: var(--gold-soft, #362c17); color: #e6c989; border: 1px solid var(--gold, #C8A763); }
+:where(html[data-theme=black]) .mp-x { border: 0; background: transparent; color: var(--muted, var(--muted)); }
+:where(html[data-theme=black]) .mp-x:hover, :where(html[data-theme=black]) .mp-x:focus-visible { background: var(--line); }
+:where(html[data-theme=black]) .mp-x svg { fill: none; stroke: currentColor; }
+:where(html[data-theme=black]) .mp-item .mp-play, :where(html[data-theme=black]) .mp-item .mp-tip-ic { background: var(--gold-soft, #362c17); }
+:where(html[data-theme=black]) .mp-play svg, :where(html[data-theme=black]) .mp-tip-ic svg { fill: var(--gold, #C8A763); }
+:where(html[data-theme=black]) .mp-tip-text { color: var(--heading, var(--navy)); }
+:where(html[data-theme=black]) .mp-locked .mp-go { color: #e6c989; }
 :where(html[data-theme=black]) .save-plan.on { background: #193424; color: #9ad59d; border-color: #3b5e48; }
 :where(html[data-theme=black]) .hb-level { color: var(--muted); }
 :where(html[data-theme=black]) .hb-level select { color: var(--heading); background: var(--accent-soft); border: 1px solid var(--line); background-image: linear-gradient(45deg, transparent 50%, var(--heading) 50%), linear-gradient(135deg, var(--heading) 50%, transparent 50%); background-position: right 14px center, right 9px center; background-size: 5px 5px; background-repeat: no-repeat; }
@@ -1653,6 +1665,7 @@ html[data-theme="black"] .qsearch-txt mark { background: rgba(232, 194, 94, .24)
 :where(html[data-layout=compact]) .tier-price b { font-size: 30px; }
 :where(html[data-layout=compact]) .tier-meet { margin: 0; font-size: 14px; }
 :where(html[data-layout=compact]) .tier ul { margin: 6px 0 6px; padding-left: 13px; gap: 4px; font-size: 14px; }
+:where(html[data-layout=compact]) .tier-dm, :where(html[data-layout=compact]) .tier-ai { gap: 6px; margin: 0; font-size: 13px; }
 :where(html[data-layout=compact]) .meet-list { padding: 0; margin: 8.5px 0 0; gap: 6px; }
 :where(html[data-layout=compact]) .meet-list li { gap: 4px 8px; padding: 8px 8.5px; }
 :where(html[data-layout=compact]) .meet-list .pill { font-size: 11px; padding: 2px 8px; }
@@ -2121,6 +2134,12 @@ html[data-theme="black"] .qsearch-txt mark { background: rgba(232, 194, 94, .24)
 :where(html[data-layout=compact]) .my-plans { gap: 8.5px; }
 :where(html[data-layout=compact]) .mp-list { margin: 6px 0 0; padding: 0; gap: 6px; }
 :where(html[data-layout=compact]) .mp-item { gap: 8.5px; font-size: inherit; padding: 6px; }
+:where(html[data-layout=compact]) .mp-tag { font-size: 10.5px; padding: 2px 6px; margin: 0 6px 3px 0; }
+:where(html[data-layout=compact]) .mp-body .lock { margin: 0 6px 3px 0; }
+:where(html[data-layout=compact]) .mp-sug .mp-item { padding-right: 40px; }
+:where(html[data-layout=compact]) .mp-tip-text { font-size: 14px; }
+:where(html[data-layout=compact]) .mp-sub { margin: 8px 0 0; font-size: 11px; }
+:where(html[data-layout=compact]) .mp-fine { margin: 6px 0 0; }
 :where(html[data-layout=compact]) .save-plan { margin-top: 8px; }
 :where(html[data-layout=compact]) .hb-head { gap: 6px; margin-bottom: 8px; }
 :where(html[data-layout=compact]) .hb-head h2.label { margin: 0; }
