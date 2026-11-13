@@ -149,6 +149,7 @@
     if (tabDots.delete(tab)) renderDots();
     if (tab === "videos") renderVideos();
     if (tab === "profile") renderProfileMembership().catch(() => {}); // plan + review offer can change while the app is open
+    if (tab === "profile") renderProgress();
     if (tab === "pain" && !show.painMap) { show.painMap = true; if (window.MDFitPainMap) window.MDFitPainMap.init($("[data-painmap='app']")); }
     if (tab === "progress") renderCalendar();
     if (tab === "leaders" && typeof loadBoard === "function") loadBoard();
@@ -3179,6 +3180,15 @@
   }
   function loadPatientDocs() {
     apiAuth("GET", "/api/me/intake").then((p) => { patientDocs = p; renderPatient(); }).catch(() => {});
+  }
+
+  // ================= My progress on Profile: graphs built from what the member logs (progress-charts.js). Loaded the
+  // first time Profile opens and refreshed on every later visit, since a workout or check-in may have been logged since.
+  let progressView = null;
+  function renderProgress() {
+    const box = $("#p-progress-body"); if (!box || !window.MDFitProgress) return;
+    if (progressView) return progressView.reload();
+    progressView = window.MDFitProgress.mount(box, { load: (days) => apiAuth("GET", `/api/me/progress?days=${days}`), upgradeHref: "#premium" });
   }
 
   // ================= My plans on Home: programs Dr. Jared assigned ("From Dr. Jared") + programs the member saved
