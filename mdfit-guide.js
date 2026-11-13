@@ -325,6 +325,95 @@
       try { const res = await M.apiAuth("DELETE", "/api/me/reminders/" + encodeURIComponent(r.id)); setReminders((res && res.reminders) || G.reminders.filter((x) => x.id !== r.id)); say("Removed."); }
       catch { say("I couldn't remove that just now. Please try again in a moment."); } } }))]);
   }
+  // The member's unpaid invoices, said plainly: the number, the amount, what it is for and when it was sent. `why` =
+  // they asked why they got it, so lead with what it is for. All from what the app already holds; nothing is sent.
+  let lastTopic = "";
+  const sentOn = (v) => { const d = String((v && v.at) || "").slice(0, 10); try { return /^\d{4}-\d{2}-\d{2}$/.test(d) ? M.fmtDate(d, { month: "short", day: "numeric" }) : ""; } catch { return ""; } };
+  function invoiceTalk(why) {
+    const inv = (state().invoices || []).filter((v) => v && v.number && v.path);
+    lastTopic = "invoice";
+    if (!inv.length) { say("I couldn't find an unpaid invoice on your account."); offer([opt("premium"), opt("call")]); return; }
+    const about = (v) => `${v.number} is ${money(v.amount)}${v.description ? ` for ${String(v.description).replace(/[.\s]+$/, "")}` : ""}${sentOn(v) ? `, sent ${sentOn(v)}` : ""}.`;
+    if (why) say(inv.length === 1 ? `Dr. Jared's office sent it. Invoice ${about(inv[0])} If it doesn't look right, message Dr. Jared or call the clinic.` : `Dr. Jared's office sent them. ${inv.slice(0, 3).map((v) => "Invoice " + about(v)).join(" ")} If one doesn't look right, message Dr. Jared or call the clinic.`);
+    else say(inv.length === 1 ? `You have one unpaid invoice. ${about(inv[0])}` : `You have ${inv.length} unpaid invoices. ${inv.slice(0, 3).map(about).join(" ")}`);
+    offer([...inv.slice(0, 4).map((v) => ({ label: `Pay invoice ${v.number}`, sub: money(v.amount), href: v.path, gold: true })), ...(why ? [opt("messages"), opt("call")] : [opt("premium")])]);
+  }
+  // ---------- what Sunny can say on the phone, with no AI: real picks from the app's own programs, and plain answers
+  // to the questions people ask next. Everything here is the practice's own wording; nothing typed is sent anywhere.
+  const GOALS = [ // words a member might use -> words to look for in a program's title or category
+    { w: ["strength", "stronger", "strong", "muscle", "build", "bulk", "size", "hypertrophy", "lift", "lifting", "barbell", "powerlifting", "bodybuilding"], f: ["hypertrophy", "strength", "growth"] },
+    { w: ["weight", "lean", "fat", "lose", "tone", "toned", "slim", "diet"], f: ["weight loss", "lean"] },
+    { w: ["mobility", "flexible", "flexibility", "stretch", "stretching", "stiff", "loosen", "limber"], f: ["mobility"] },
+    { w: ["golf", "golfer"], f: ["golf"] }, { w: ["pickleball"], f: ["pickleball"] }, { w: ["run", "running", "runner", "5k", "10k", "jog", "jogging"], f: ["running"] },
+    { w: ["marathon"], f: ["marathon"] }, { w: ["ski", "skiing"], f: ["ski"] },
+    { w: ["inflammation", "inflammatory", "inflamed"], f: ["anti-inflammatory"] }, { w: ["posture", "desk", "sitting"], f: ["posture", "posterior chain", "mobility"] }
+  ];
+  const RECOMMEND = /\b(recommend|reccomend|recomend|reccommend|suggest|suggestion|suggestions|which (program|plan|one)|what (program|programs|plan|plans)|what should i (do|start|try|pick|choose)|best (program|plan|one)|where (do|should) i start|how (do|should) i start|not sure (what|which|where|how)|help me (pick|choose|start)|pick (one|a program|something) for me|what do you (recommend|suggest|think))\b/;
+  const LEVEL_WORD = { beginner: "Beginner", intermediate: "Intermediate", advanced: "Advanced", elite: "Elite" };
+  async function recommend(u) {
+    const c = App.client() || {}; let C = null; try { C = await App.content(); } catch {}
+    const progs = ((C && C.programs) || []).filter((p) => p && p.id && p.title);
+    const subOf = (p) => [p.category, LEVEL_WORD[p.level] || "", p.weeks ? `${p.weeks} weeks` : ""].filter(Boolean).join(" · ");
+    const row = (p, gold, sub) => (p.locked === true && !gold) // locked only where the app really locks it
+      ? { label: p.title, sub: "Members · unlock with Membership", lock: true, run: () => { tell("upgrade"); if (App.showTier) App.showTier("member"); else App.go("premium"); }, name: "Membership" }
+      : { label: p.title, sub: sub || subOf(p), gold: !!gold, hash: `programs/${p.id}`, name: p.title, pick: p.title };
+    const picked = [], seen = new Set(), add = (p, gold, sub) => { if (p && !seen.has(p.id) && picked.length < 4) { seen.add(p.id); picked.push(row(p, gold, sub)); } };
+    const hit = (p, words) => words.some((w) => has(norm(p.title + " " + (p.category || "")), w));
+    // 1. what Dr. Jared recommended for them
+    const mineP = (c.assignedPrograms || []).map((x) => progs.find((p) => p.id === x.id)).filter(Boolean);
+    mineP.slice(0, 2).forEach((p) => add(p, true, "Recommended by Dr. Jared"));
+    // 2. a goal or a body area in what they just typed
+    const goal = GOALS.find((g) => g.w.some((w) => has(u.text, w))), area = u.area || ctx.area || "";
+    if (goal) progs.filter((p) => hit(p, goal.f)).sort((a, b) => (a.level === "beginner" ? -1 : 0) - (b.level === "beginner" ? -1 : 0)).slice(0, 3).forEach((p) => add(p));
+    if (area && AREAS[area]) progs.filter((p) => hit(p, AREAS[area].f)).slice(0, 2).forEach((p) => add(p));
+    // 3. the area of their last pain check-in
+    const last = norm(App.lastPain ? App.lastPain() : ""), pkey = last.trim() ? Object.keys(AREAS).find((k) => AREAS[k].f.some((w) => has(last, w)) || has(last, k)) : "";
+    if (!goal && !area && pkey) progs.filter((p) => hit(p, AREAS[pkey].f)).slice(0, 2).forEach((p) => add(p));
+    // 4. good places to start: one of each kind, beginner first
+    const specific = !!(goal || area || pkey || mineP.length);
+    if (picked.length < ((goal || area) && picked.length ? 1 : 3)) for (const cat of ["Mobility", "Rehabilitation", "Hypertrophy", "Weight loss", "Sport Performance", "Anti-inflammatory"]) {
+      add(progs.filter((p) => p.category === cat).sort((a, b) => (a.level === "beginner" ? -1 : 0) - (b.level === "beginner" ? -1 : 0))[0]);
+      if (picked.length >= (specific ? 3 : 4)) break;
+    }
+    lastTopic = "programs";
+    if (!picked.length) { say("The programs are all in one place. Tell me what you're working on and I'll narrow it down."); offer([opt("programs"), opt("pain")]); return; }
+    const first = mineP[0];
+    say(first ? `Start with ${first.title}: Dr. Jared recommended it for you. ${picked.length > 1 ? "These fit too:" : ""}`.trim()
+      : goal || area ? "Here's what I'd start with for that:"
+      : pkey ? `Since you logged your ${pkey}, I'd start here:`
+      : "Here are good ones to start with. Tell me your goal (a sore spot, strength, weight loss, golf, running) and I'll narrow it down:");
+    sys(first ? "Recommended and suggested" : "Suggested programs");
+    offer(picked);
+    offer([opt("programs"), ...(pkey || area ? [opt("pain")] : [])]);
+  }
+  // Plain answers to what people ask next. Each is the practice's own position, said the same way every time.
+  const priceOf = async () => { try { const C = await App.content(); const t = ((C && C.tiers) || []).find((x) => x.id === "member"); return t ? money(Math.round(Number(t.price) * 100)) : ""; } catch { return ""; } };
+  const FAQ = [
+    { re: /\b(will|do|does|did|can|could) (it|they|this|that|these|those|the programs?|the app) (really |actually )?(work|help)\b|\b(does|do) (it|they|this|these) (really |actually )?work\b|\bis (it|this) (any )?good\b|\bare (they|these) (any )?good\b|\bworth it\b/, run: async () => {
+      say("They're the same programs Dr. Jared uses with his clinic patients, built on how he treats in person: release what's tight, correct how you move, then build strength. What makes them work is doing the sessions regularly. If something isn't improving after a few weeks, book an evaluation so he can look at it himself.");
+      offer([opt("programs"), opt("progress"), opt("book")]); } },
+    { re: /\bhow long\b|\bhow many (weeks|days|minutes|sessions)\b|\bhow much time\b|\bwhen will i (see|feel|notice)\b/, run: async () => {
+      let C = null; try { C = await App.content(); } catch {}
+      const w = ((C && C.programs) || []).map((p) => Number(p.weeks)).filter((n) => n > 0), lo = w.length ? Math.min(...w) : 4, hi = w.length ? Math.max(...w) : 12;
+      say(`Programs run ${lo} to ${hi} weeks, and each one lists its length and sessions before you start. Most sessions are short enough to fit a normal day. Your Progress screen shows how it's going week by week.`);
+      offer([opt("programs"), opt("progress")]); } },
+    { re: /\b(is|are) (it|this|they|the app|sunny|the programs?) free\b|\bhow much (is|does|do|are)\b|\b(cost|costs|price|prices|pricing|pay for|paid|subscription)\b/, run: async () => {
+      const p = await priceOf();
+      say(`The app is free: the pain tool, the exercise videos and I are all included. Membership${p ? ` is ${p} a month and` : ""} adds every program, the lecture library, the live Q&A and unlimited time with me.`);
+      offer([opt("premium"), opt("programs"), opt("pain")]); } },
+    { re: /\b(who are you|what are you|are you (a )?(real|human|person|bot|robot|ai)|what can you do|what do you do|how (do|can) you help)\b|^\s*help( me)?( please)?[\s!?.]*$/, run: async () => {
+      say("I'm Sunny, the assistant in your MD Fit app. I can pick a program for you, find the right video, take you to the pain tool, book a visit, set a reminder, and tell you what's waiting on your account. For a question about your own body, Dr. Jared is the one to ask.");
+      offer([{ label: "Pick a program for me", more: () => beat(() => recommend({ text: " ", area: "" })) }, opt("pain"), opt("book")]); } },
+    { re: /\b(who is|who'?s|about) (dr\.? ?jared|dr\.? ?caban|the doctor|the doc)\b/, run: async () => {
+      say("Dr. Jared Caban leads MD Fit in Sarasota. He's a Certified Clinical Exercise Physiologist and Licensed Massage Therapist with medical training, and he built every program and video in this app.");
+      offer([opt("book"), opt("messages"), opt("learn")]); } },
+    { re: /^\s*(thanks|thank you|thx|ty|cheers|appreciate it|great|awesome|perfect|cool|ok|okay|got it|nice)[\s!.]*$/, run: async () => { say("Anytime. I'm here whenever you need me."); } }
+  ];
+  const faqFor = (raw, t) => FAQ.find((f) => f.re.test(t) || f.re.test(String(raw || "").toLowerCase()));
+
+  // A short follow-up ("why?", "what for?", "how much?") is about what was just talked about
+  const FOLLOW = /^\s*(why|why\?*|how come|what for|what is (it|that|this) for|what'?s (it|that|this) for|what is (it|that)|what'?s that|explain|how much|when|huh|\?+)\s*\??\s*$/i;
+
   // Questions about the member's own account, answered from what the app has already loaded
   function own(u) {
     const t = u.text, s = state();
@@ -332,10 +421,7 @@
       const v = nextVisit(s);
       if (v) { say(`Your next visit is ${v.typeName ? v.typeName + " " : ""}${whenWords(v)}.`); offer([{ label: "See my appointments", hash: "profile", name: "your profile" }, ...(v.meetingLink && v.date === M.todayInTz() ? [opt("visit")] : []), opt("book")]); }
       else { say("I couldn't find an upcoming visit on your account."); offer([opt("book"), { label: "See my appointments", hash: "profile", name: "your profile" }, opt("call")]); } } };
-    if (/\b(owe|owed|balance|invoice|invoices|bill|bills|due)\b/.test(t) || (/\bpay\b/.test(t) && !/\bmembership\b/.test(t))) return { kind: "membership", run: () => {
-      const inv = (s.invoices || []).filter((v) => v && v.number && v.path);
-      if (inv.length) { say(inv.length === 1 ? `You have one unpaid invoice: ${inv[0].number}, ${money(inv[0].amount)}.` : `You have ${inv.length} unpaid invoices.`); offer([...inv.slice(0, 4).map((v) => ({ label: `Pay invoice ${v.number}`, sub: money(v.amount), href: v.path, gold: true })), opt("premium")]); }
-      else { say("I couldn't find an unpaid invoice on your account."); offer([opt("premium"), opt("call")]); } } };
+    if (/\b(owe|owed|balance|invoice|invoices|bill|bills|due)\b/.test(t) || (/\bpay\b/.test(t) && !/\bmembership\b/.test(t))) return { kind: "membership", run: () => invoiceTalk(/\b(why|what for|what is it for|what'?s it for|how come|explain)\b/.test(t)) };
     if (/\b(streak|xp|level|rank|points|how am i doing)\b/.test(t)) return { kind: "progress", run: () => {
       const r = s.reward, n = parseInt((document.getElementById("streak-n") || {}).textContent, 10), bits = [];
       if (n > 0) bits.push(`You're on a ${n}-day streak.`);
@@ -368,13 +454,20 @@
     if (/\b(layout|theme|customi[sz]e|personali[sz]e|make it mine|look and feel)\b/.test(t)) return { kind: "looks", run: () => look(null, "Here's what you can change. Pick one, or just tell me.") };
     if (/\b(remind me|set a reminder|reminder (for|to|at)|save (it|that|this)|put (it|that|this) (in|on)|add (it|that|this) to|(on|in|to) my calendar)\b/.test(t)) return { kind: "reminder", run: () => remind(u, raw) };
     if (/\breminders?\b/.test(t)) return { kind: "reminder", run: myReminders };
+    if (FOLLOW.test(String(raw || "")) && lastTopic === "invoice") return { kind: "membership", own: true, run: () => invoiceTalk(true) };
     const acct = own(u); if (acct) return { ...acct, own: true };
+    // On the phone: a real pick from the app's programs, and plain answers to the usual next questions
+    if (RECOMMEND.test(t) && !u.pained) return { kind: "programs", run: () => recommend(u) };
+    // A goal said plainly ("I want to get stronger", "lose weight", "better at golf") is asking for a pick too
+    if (!u.pained && GOALS.some((g) => g.w.some((w) => has(t, w))) && !u.places.some((p) => ["book", "messages", "profile", "premium", "call", "visit", "generate", "videos"].includes(p.id))) return { kind: "programs", run: () => recommend(u) };
+    if (!u.pained && !/\b(appointment|appointments|visit|visits|invoice|invoices|bill|owe|reminder)\b/.test(t)) { const f = faqFor(raw, t); if (f) return { kind: "other", run: f.run }; }
+    if (FOLLOW.test(String(raw || "")) && lastTopic === "programs") return { kind: "programs", run: FAQ[0].run };
     if (u.pained) return { kind: "pain", run: () => hurting(u.area, u.places.filter((p) => !["pain", "book", "call"].includes(p.id)).slice(0, 1).map((p) => opt(p.id))) };
     if (u.area) return { kind: (u.places[0] || {}).kind || "programs", run: () => showArea(u.area) };
     if (u.places.length) return { kind: u.places[0].kind, run: () => { say(u.places.length === 1 ? "Got it. This is the place for that:" : "Got it. These look like what you're after:"); offer([...u.places.slice(0, 4).map((p) => opt(p.id)), ...(u.places.some((p) => p.id === "call") ? [] : [opt("call")])]); } };
     return { kind: "other", run: async () => {
       const m = await mine(), theirs = own3(m);
-      say(theirs.length ? "I'm not sure I caught that. Here's what you have going, and the places people use most. Or tell me a little more:" : "I'm not sure I caught that. Here are the places people use most, or tell me a little more:");
+      say(theirs.length ? "I didn't quite get that one. Try telling me what you're working on, like a sore knee, getting stronger, or booking a visit. Here's what you have going:" : "I didn't quite get that one. Try telling me what you're working on, like a sore knee, getting stronger, or booking a visit. Or start here:");
       offer([...theirs, opt("pain"), opt("programs"), opt("generate"), opt("book"), opt("messages"), opt("call")]); } };
   }
   async function ask(raw) {
@@ -391,7 +484,8 @@
     const ok = ai || plan.free ? true : await count(plan.kind); // a hello is never counted
     const rest = 750 - (Date.now() - t0); if (rest > 0) await wait(rest);
     d.remove();
-    try { if (ai) aiAnswer(ai); else if (!ok) limit(); else await plan.run(); } catch { say("Something went wrong on my side. You can still get anywhere from the menu, or call the clinic."); offer([opt("call")]); }
+    lastTopic = ""; // a follow-up belongs to the answer just given; the answer below sets it again if it has one
+    try { if (ai) await aiAnswer(ai); else if (!ok) limit(); else await plan.run(); } catch { say("Something went wrong on my side. You can still get anywhere from the menu, or call the clinic."); offer([opt("call")]); }
     busy = false; end();
     return true;
   }
@@ -408,18 +502,19 @@
     return null;
   }
   const FROM_SERVER = { workout: "generate", membership: "premium" };
-  function aiAnswer(r) {
+  async function aiAnswer(r) {
     if (r.ok === false) return limit();
     if (r.urgent) return emergency();
     const area = AREAS[r.area] ? r.area : ""; if (area) ctx.area = area;
     const ids = [...new Set((Array.isArray(r.places) ? r.places : []).map((x) => FROM_SERVER[x] || x))].filter((id) => id !== "call" && PLACES.some((p) => p.id === id)).slice(0, 5);
     say(String(r.say || "").trim().slice(0, 600) || "Here's where I can take you:");
     offer([...(area ? [{ label: `Programs for your ${area}`, more: () => beat(() => showArea(area)) }] : []), ...ids.map(opt), opt("call")]);
-    suggest(r.suggested);
+    let C = null; try { C = await App.content(); } catch {}
+    suggest(r.suggested, new Map(((C && C.programs) || []).map((p) => [p.id, p])));
   }
   // Sunny's suggestions with an answer: programs (a members-only one shows locked and opens the membership page),
   // exercise videos and a general tip, each tagged Suggested. The server has already put them on the member's Home.
-  function suggest(sg) {
+  function suggest(sg, byId = new Map()) {
     if (!sg || typeof sg !== "object") return;
     const progs = (Array.isArray(sg.programs) ? sg.programs : []).filter((p) => p && typeof p.id === "string" && typeof p.title === "string").slice(0, 3);
     const vids = (Array.isArray(sg.videos) ? sg.videos : []).filter((v) => v && typeof v.id === "string" && (App.exercise ? App.exercise(v.id) : v.name)).slice(0, 4);
@@ -428,7 +523,8 @@
     if (!progs.length && !vids.length && !tip && !guides.length) return;
     if (progs.length) {
       sys("Suggested programs");
-      offer(progs.map((p) => p.locked
+      // A lock only where the app really locks that program (what the Programs screen shows), so the two never disagree
+      offer(progs.map((p) => (byId.get(p.id) || {}).locked === true
         ? { label: p.title, sub: "Members · unlock with Membership", lock: true, run: () => { tell("upgrade"); if (App.showTier) App.showTier("member"); else App.go("premium"); }, name: "Membership" }
         : { label: p.title, sub: "Suggested", hash: `programs/${p.id}`, name: p.title, pick: p.title }));
     }
@@ -493,8 +589,16 @@
   const hideFor = () => { const p = document.getElementById("player"), on = !!(p && !p.hidden); btn.classList.toggle("mg-away", on); tag.classList.toggle("mg-away", on); if (on && !box.hidden) shut(); };
   const player = document.getElementById("player"); if (player && window.MutationObserver) { new MutationObserver(hideFor).observe(player, { attributes: true, attributeFilter: ["hidden"] }); hideFor(); }
   const notifs = document.getElementById("notifs");
-  const lift = () => { let px = 0; if (notifs && notifs.children.length) { const n = notifs.getBoundingClientRect(), b = btn.getBoundingClientRect(); if (n.height && n.right > b.left - 8) px = Math.round(n.height + 22); } document.documentElement.style.setProperty("--mg-lift", px + "px"); };
+  const lift = () => { let px = 0;
+    // (measured against where the cloud sits unlifted, so being lifted does not make it drop back)
+    for (const el of [notifs && notifs.children.length ? notifs : null, document.getElementById("inv-banner")]) {
+      if (!el || el.hidden) continue; const n = el.getBoundingClientRect(), b = btn.getBoundingClientRect();
+      if (n.height && n.right > b.left - 8) px = Math.max(px, Math.round(n.height + 22)); }
+    document.documentElement.style.setProperty("--mg-lift", px + "px"); };
   if (notifs && window.MutationObserver) new MutationObserver(lift).observe(notifs, { childList: true, subtree: true });
+  // The "new invoice" banner is added to and removed from the page itself; it must never sit on top of the cloud
+  if (window.MutationObserver) new MutationObserver(lift).observe(document.body, { childList: true });
+  lift();
 
   load();
   window.MDFitGuide = { day: dayRows, understand, open: () => open(false), shut, reminders: () => G.reminders.slice() };

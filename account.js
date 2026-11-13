@@ -3202,7 +3202,7 @@
   // comes from Dr. Jared, Suggested from Sunny, and a suggestion never changes what Dr. Jared recommended.
   const ACCESS_RANK = { free: 0, member: 1, premium: 2 };
   // Locked = the program needs more than this person's access (server: C.access, which is "premium" for inpatients)
-  const lockedFor = (p) => !!p && (ACCESS_RANK[p.access || "free"] || 0) > (ACCESS_RANK[(C && C.access) || "free"] || 0);
+  const lockedFor = (p) => !!p && p.locked === true; // what the Programs screen locks (the server decides), so Home never shows a lock on something they can open
   const TAG_REC = `<span class="mp-tag rec">Recommended</span>`, TAG_SUG = `<span class="mp-tag sug">Suggested</span>`;
   const DISMISS = (kind, id, what) => `<button type="button" class="mp-x" data-sug-x="${esc(kind)}" data-sug-id="${esc(id)}" aria-label="Remove ${esc(what)} from Suggested for you"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>`;
   function renderMyPlans() {
