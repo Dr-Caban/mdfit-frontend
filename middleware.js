@@ -37,7 +37,12 @@ export default async function middleware(request) {
   // public page addresses and carry no personal or clinical data. Google fetches them from outside the United States,
   // and the country lock below answered those fetches with this HTML notice instead, so Search Console reported
   // "Sitemap could not be read" and none of the 237 pages were queued.
-  const OPEN_TO_ALL = url.pathname === "/sitemap.xml" || url.pathname === "/robots.txt";
+  // The same goes for the search engines themselves on any public page: Googlebot, Bingbot and Applebot crawl from
+  // outside the United States, and answering them by country stopped the site being crawled at all. The owner's aim
+  // here is to keep AI training crawlers out, and that is step 2's job, by name, from every country. A search engine
+  // never reaches a private page: step 2 closes those to it wherever it comes from.
+  const OPEN_TO_ALL = url.pathname === "/sitemap.xml" || url.pathname === "/robots.txt"
+    || (SEARCH.test(ua) && !PRIVATE.test(url.pathname));
 
   // 1. Country lock (header is always set on Vercel; only missing in local development)
   if (!OPEN_TO_ALL && country && !ALLOWED.has(country)) return page(403, "Not available in your region", "MD Fit's website and app are only available in the United States.");

@@ -32,6 +32,103 @@ const videoLink = (name) => { const e = findExercise(name); return e ? `<a href=
 const PHASE = { calm: "Phase 1 · Calm it down", restore: "Phase 2 · Restore movement", strengthen: "Phase 3 · Strengthen" };
 const shortName = (name) => name.replace(/\s*\([^)]*\)/g, "").replace(/,\s*/, " ").replace(/\s+/g, " ").trim();
 
+// ---------- Meta descriptions, built from each page's own facts
+// A description must tell a searcher something true about THIS page, not a sentence with the name swapped in, or
+// Google reads 120+ near-identical descriptions as scaled content. Everything below comes from painmuscles.js and
+// musclereports.js: where the muscle actually refers, what actually aggravates it, what it is actually mistaken for.
+const DESC_MIN = 120, DESC_MAX = 158;
+// Whole clauses only, never a mid-phrase cut. Aggravator clauses are dropped: those are added separately.
+function descClauses(text, budget) {
+  const first = String(text || "").replace(/\s+/g, " ").trim().split(/(?<=\.)\s+/)[0].replace(/\.$/, "");
+  const parts = first.split(/\s*;\s*|,\s*/).filter((x) => x && !/^(worse|aches|hurts|sore|painful)\b/i.test(x));
+  let out = "";
+  for (const x of parts) { const next = out ? `${out}, ${x}` : x; if (out && next.length > budget) break; out = next; }
+  return (out || parts[0] || "").replace(/^[A-Z](?![A-Z])/, (c) => c.toLowerCase());
+}
+const descList = (a, n) => { const x = (a || []).slice(0, n).map((v) => String(v).toLowerCase().trim()); return x.length > 1 ? `${x.slice(0, -1).join(", ")} and ${x[x.length - 1]}` : (x[0] || ""); };
+const descHash = (str) => { let h = 0; for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) | 0; return Math.abs(h); };
+const descPick = (cands) => {
+  const tidy = cands.map((c) => String(c).replace(/\s+/g, " ").replace(/\s+([.,])/g, "$1").replace(/\.\./g, ".").trim());
+  const ok = tidy.filter((c) => c.length >= DESC_MIN && c.length <= DESC_MAX);
+  if (ok.length) return ok.sort((a, b) => b.length - a.length)[0];
+  const under = tidy.filter((c) => c.length <= DESC_MAX).sort((a, b) => b.length - a.length)[0];
+  return under || tidy.sort((a, b) => a.length - b.length)[0];
+};
+// The referral phrase can start with a place ("mid-buttock"), a direction ("up the side of the neck") or a noun
+// phrase ("a band of headache"). Each needs a different connector, or the sentence reads "shows up at up the side".
+const DIRECTIONAL = /^(up|down|across|along|into|under|over|behind|around|between|through|toward|from|next to|deep)\b/i;
+// "jaw, cheek" -> "jaw and cheek"; left alone when it already reads as a sentence
+const list = (s) => (s.includes(" and ") || !s.includes(",") ? s : s.replace(/,\s*([^,]+)$/, " and $1"));
+// "front of the shoulder" -> "the front of the shoulder"; a phrase that already has its own article is left alone
+const article = (s) => (/^(the|a|an|his|her|their|one)\b/i.test(s) ? s : "the " + s);
+const NOUNISH = /^(a |an |the |ache|aching|pain|soreness|burning|tightness|stiffness|numbness|tingling)|\b(pain|ache)\b/i;
+function M_OPEN(n, ref, i) {
+  // a phrase that already contains "pain" or "ache" is a thing the muscle CAUSES, not a place it refers TO
+  if (NOUNISH.test(ref)) return [
+    `${n} trigger points cause ${ref}`,
+    `Tight ${n.toLowerCase()} causes ${ref}`,
+    `${n} pain: ${ref}`
+  ][i];
+  if (DIRECTIONAL.test(ref)) return [
+    `${n} trigger points refer pain ${ref}`,
+    `Tight ${n.toLowerCase()} refers pain ${ref}`,
+    `${n} pain is felt ${ref}`
+  ][i];
+  // A bare body part needs an article and a readable list, or it reads "shows up at jaw, cheek".
+  const place = article(list(ref));
+  return [
+    `${n} trigger points refer pain to ${place}`,
+    `Tight ${n.toLowerCase()} refers pain to ${place}`,
+    `${n} pain shows up at ${place}`
+  ][i];
+}
+const M_CLOSE = ["Self-check and relief.", "The self-check and what helps.", "How to check it and settle it."];
+function muscleDescription(id, m, r, short) {
+  const h = descHash(id), oi = h % 3, open = (nm, ref) => M_OPEN(nm, ref, oi), close = M_CLOSE[(h >> 3) % M_CLOSE.length];
+  const mim = ((r && r.mimics) || [])[0] ? String(r.mimics[0]).replace(/\s*\([^)]*\)/g, "").replace(/\.$/, "").trim() : "";
+  const cands = [];
+  for (const budget of [92, 78, 66, 54, 44]) {
+    const ref = descClauses(m.refers, budget);
+    for (const nW of [3, 2, 1, 0]) {
+      const w = nW ? descList(m.worse, nW) : "";
+      for (const withMim of [true, false]) {
+        cands.push(`${open(short, ref)}${w ? `, worse with ${w}` : ""}.${withMim && mim ? ` Often mistaken for ${mim}.` : ""} ${close}`);
+      }
+    }
+  }
+  // one long comma-free referral: use a compact frame rather than cutting the phrase
+  if (!cands.some((c) => c.replace(/\s+/g, " ").trim().length <= DESC_MAX)) {
+    const ref = descClauses(m.refers, 999);
+    cands.push(`${short} pain: ${ref}. Self-check and relief.`, `${short} pain: ${ref}. The self-check.`, `Where ${short.toLowerCase()} pain is felt: ${ref}. Self-check and relief.`);
+  }
+  return descPick(cands);
+}
+// Pain locations: the muscles that genuinely refer there, what aggravates them, and the warning signs that region carries.
+const P_URGENT = new Set(["head", "neck", "chest", "abdomen", "back", "leg", "groin"]);
+function painDescription(p, at, names, aggr) {
+  const h = descHash(p.slug);
+  const urgent = P_URGENT.has(p.flags);
+  const close = urgent
+    ? ["Self-checks, a free exercise track and the signs that need urgent care.", "Self-checks, an exercise track and when it needs urgent care."][h % 2]
+    : ["Self-checks, a free exercise track and the warning signs.", "Self-checks, an exercise track and what to watch for."][h % 2];
+  const lead = [
+    (a, who) => `Pain ${a} most often comes from ${who}`,
+    (a, who, many) => `${who.charAt(0).toUpperCase()}${who.slice(1)} ${many ? "are" : "is"} the usual source of pain ${a}`,
+    (a, who) => `Most pain ${a} traces back to ${who}`
+  ][h % 3];
+  const cands = [];
+  for (const nM of [3, 2, 1]) {
+    const who = descList(names.slice(0, nM), nM);
+    if (!who) continue;
+    for (const nA of [3, 2, 1, 0]) {
+      const w = nA ? descList(aggr, nA) : "";
+      cands.push(`${lead(at, who, nM > 1 && names.length > 1)}${w ? `, worse with ${w}` : ""}. ${close}`);
+    }
+  }
+  if (!cands.length) cands.push(`Pain ${at}: the muscles that refer pain here, what makes it worse and the warning signs. ${close}`);
+  return descPick(cands);
+}
+
 // ---------- Muscle pages (Phase 1)
 function muscleFaq(id, m, r, locs) {
   const n = shortName(m.name), where = locs[0] ? locs[0].name.toLowerCase() : "nearby areas";
@@ -47,7 +144,7 @@ function buildMuscle(id) {
   const m = M[id], r = reports[id], slug = slugs[id], url = muscleUrl(id);
   const name = m.name, short = shortName(name), locs = painForMuscle(id), folded = foldedForMuscle(id), trk = tracksForMuscle(id);
   const title = [`${short} Pain & Trigger Points | MD Fit`, `${short} Pain & Relief | MD Fit`, `${short} Pain | MD Fit`].find((t) => t.length <= 60);
-  const description = `${short}: where it refers pain, symptoms, self-check and Dr. Jared Caban's 3-phase relief plan with free exercise videos. MD Fit, Sarasota FL.`.slice(0, 160);
+  const description = muscleDescription(id, m, r, short);
   const faq = withInsuranceFaq(muscleFaq(id, m, r, locs));
   const neighbors = [...new Set(trk.flatMap((t) => t.pts))].filter((x) => x !== id && M[x]).slice(0, 6);
   const siblings = neighbors.length ? neighbors : Object.keys(M).filter((x) => x !== id && regionOf(x) === regionOf(id)).slice(0, 6);
@@ -195,7 +292,8 @@ function buildPain(p) {
   const lead = at.split(" ")[0].toLowerCase();
   const base = own && !SMALL.has(lead) ? tc(`pain ${at}`).replace(/^Pain (\p{L})/u, (m, c) => `Pain ${c.toUpperCase()}`) : tc(`pain ${at}`);
   const t2 = [`${base}: Causes & Relief | MD Fit`, `${base} | MD Fit`].find((t) => t.length <= 60);
-  const description = `Pain ${at}: the muscles that most often refer pain here, what makes it worse, a free exercise track and the warning signs. From Dr. Jared Caban, MD Fit Sarasota.`.slice(0, 160);
+  const descNames = [...new Set([...owned, ...ranked.filter((x) => !owned.includes(x))].map((x) => shortName(M[x.id].name).toLowerCase()))];
+  const description = painDescription(p, at, descNames, aggr);
   const flags = FLAGS[p.flags] || FLAGS.default;
   const nearby = pain.pages.filter((x) => x.region === p.region && x.slug !== p.slug).map((x) => painUrl(x.slug));
   const related = [...new Set(ranked.flatMap((m) => foldedForMuscle(m.id)))].slice(0, 4);
@@ -258,7 +356,7 @@ function buildPain(p) {
 }
 function buildPainHub() {
   const url = "/pain/", title = "Where Does It Hurt? Pain by Location | MD Fit";
-  const description = "Pick where it hurts and see the muscles that most often refer pain there, what makes it worse, warning signs and Dr. Jared's free exercise track for that area.";
+  const description = "Pick where it hurts and see the muscles that refer pain there, what makes it worse, the warning signs and a free exercise track for that area.";
   const byRegion = {};
   for (const p of pain.pages) (byRegion[p.region] ||= []).push(p);
   const trail = [{ name: "Home", href: "/" }, { name: "Pain locations", href: url }];
