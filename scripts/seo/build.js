@@ -178,10 +178,22 @@ function buildPain(p) {
   const trk = ownedTracks.length ? ownedTracks : sortedTracks.slice(0, 1);
   const aggr = [...new Set((owned.length ? owned : ranked.slice(0, 2)).flatMap((m) => m.worse))];
   const lower = p.name.toLowerCase();
-  const at = /^(where|right )/i.test(lower) ? lower : `at the ${lower}`; // "pain where the neck meets the shoulder"
-  const SMALL = new Set(["at", "the", "of", "or", "and", "beside", "behind", "below", "on", "in", "meets"]);
-  const tc = (str) => str.split(" ").map((w, i) => (i > 0 && SMALL.has(w.replace(/[()]/g, ""))) ? w : w.replace(/^\(?[a-z]/, (c) => c.toUpperCase())).join(" ");
-  const base = tc(`pain ${at}`); // "Pain Where the Neck Meets the Shoulder"
+  // Names that already begin with a preposition ("between the shoulder blades") read as "Pain between ..." and must
+  // NOT take another "at the", or the title says "Pain at the Between the Shoulder Blades".
+  const LEADS = /^(where|right |behind|along|under|over|above|below|beside|around|across|between|deep|on the|in the|next to)/i;
+  const own = LEADS.test(lower);
+  const at = own ? lower : `at the ${lower}`; // "pain where the neck meets the shoulder"
+  // genuinely small words only: a verb ("meets") or a longer preposition ("beside") is capitalised like any other word
+  const SMALL = new Set(["at", "the", "of", "or", "and", "on", "in", "to", "a", "an"]);
+  const ACRONYM = { si: "SI", tmj: "TMJ" }; // never "it": it is an ordinary word here ("just below it")
+  const tc = (str) => str.split(" ").map((w, i) => {
+    const bare = w.replace(/[()]/g, "").toLowerCase();
+    if (ACRONYM[bare]) return w.replace(/[a-z]+/i, ACRONYM[bare]);
+    return (i > 0 && SMALL.has(bare)) ? w : w.replace(/^\(?[a-z]/, (c) => c.toUpperCase());
+  }).join(" ");
+  // the word straight after "Pain" is the start of the phrase, so it is capitalised even when it is a small word
+  const lead = at.split(" ")[0].toLowerCase();
+  const base = own && !SMALL.has(lead) ? tc(`pain ${at}`).replace(/^Pain (\p{L})/u, (m, c) => `Pain ${c.toUpperCase()}`) : tc(`pain ${at}`);
   const t2 = [`${base}: Causes & Relief | MD Fit`, `${base} | MD Fit`].find((t) => t.length <= 60);
   const description = `Pain ${at}: the muscles that most often refer pain here, what makes it worse, a free exercise track and the warning signs. From Dr. Jared Caban, MD Fit Sarasota.`.slice(0, 160);
   const flags = FLAGS[p.flags] || FLAGS.default;
