@@ -4,7 +4,10 @@
   "title": "Thoracic Outlet Symptoms in Sarasota | MD Fit",
   "h1": "Thoracic Outlet Symptoms in Sarasota, FL",
   "description": "Numb hands at night, a heavy arm, tingling into the fingers: the nerves and vessels to the arm can be squeezed by neck and chest muscles. MD Fit, Sarasota.",
-  "about": { "type": "MedicalCondition", "name": "Thoracic outlet syndrome" },
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Thoracic outlet syndrome"
+  },
   "lead": "The thoracic outlet is the narrow passage between the neck and the armpit where the nerves and blood vessels to the arm pass between muscle, collarbone and the first rib. When that passage tightens, the arm and hand complain. Thoracic outlet syndrome is a physician's diagnosis; this page is about the muscular side of it and how MD Fit helps.",
   "sections": [
     {
@@ -42,14 +45,48 @@
     "Symptoms that began after a fall, collarbone fracture or neck injury that has not been evaluated."
   ],
   "faq": [
-    { "q": "Can MD Fit diagnose thoracic outlet syndrome?", "a": "No. It is a medical diagnosis made by a physician, often with nerve or vascular testing. MD Fit assesses and treats the muscular contributors once serious causes have been excluded." },
-    { "q": "Why are my symptoms worse at night?", "a": "Sleeping with the arm overhead or under the pillow stretches the nerves over tight scalenes and pec minor. Changing arm position and releasing those muscles often reduces night symptoms." },
-    { "q": "Is this the same as carpal tunnel?", "a": "Not usually, though they can coexist. Carpal tunnel compresses the median nerve at the wrist; thoracic outlet symptoms come from higher up, between the neck and the armpit, and often involve the whole arm." },
-    { "q": "What does the free app give me?", "a": "Dr. Jared assigns breathing drills, scalene and pec minor stretches, and shoulder blade exercises you do daily between visits." }
+    {
+      "q": "Can MD Fit diagnose thoracic outlet syndrome?",
+      "a": "No. It is a medical diagnosis made by a physician, often with nerve or vascular testing. MD Fit assesses and treats the muscular contributors once serious causes have been excluded."
+    },
+    {
+      "q": "Why are my symptoms worse at night?",
+      "a": "Sleeping with the arm overhead or under the pillow stretches the nerves over tight scalenes and pec minor. Changing arm position and releasing those muscles often reduces night symptoms."
+    },
+    {
+      "q": "Is this the same as carpal tunnel?",
+      "a": "Not usually, though they can coexist. Carpal tunnel compresses the median nerve at the wrist; thoracic outlet symptoms come from higher up, between the neck and the armpit, and often involve the whole arm."
+    },
+    {
+      "q": "What does the free app give me?",
+      "a": "Dr. Jared assigns breathing drills, scalene and pec minor stretches, and shoulder blade exercises you do daily between visits."
+    }
   ],
-  "muscles": ["scalenes", "pec-minor", "subclavius", "upper-trap", "scm"],
-  "pain": ["under-collarbone", "thumb-and-index-finger", "ring-and-little-finger", "front-of-neck"],
-  "guides": ["scalenes"],
-  "related": ["/conditions/carpal-tunnel-wrist-pain", "/conditions/neck-pain", "/conditions/shoulder-pain", "/conditions/chest-wall-pain", "/conditions/desk-neck-pain", "/treatments/functional-mobility", "/muscles/scalenes", "/muscles/pectoralis-minor"],
-  "reviewStatus": "draft"
+  "muscles": [
+    "scalenes",
+    "pec-minor",
+    "subclavius",
+    "upper-trap",
+    "scm"
+  ],
+  "pain": [
+    "under-collarbone",
+    "thumb-and-index-finger",
+    "ring-and-little-finger",
+    "front-of-neck"
+  ],
+  "guides": [
+    "scalenes"
+  ],
+  "related": [
+    "/conditions/carpal-tunnel-wrist-pain",
+    "/conditions/neck-pain",
+    "/conditions/shoulder-pain",
+    "/conditions/chest-wall-pain",
+    "/conditions/desk-neck-pain",
+    "/treatments/functional-mobility",
+    "/muscles/scalenes",
+    "/muscles/pectoralis-minor"
+  ],
+  "reviewStatus": "approved"
 }

@@ -4,7 +4,10 @@
   "title": "Postpartum Return to Exercise in Sarasota | MD Fit",
   "h1": "Postpartum Return to Exercise in Sarasota",
   "description": "A conservative, movement-based return to exercise after pregnancy: common aches, the muscles involved, pelvic floor awareness and when to get checked.",
-  "about": { "type": "Thing", "name": "Postpartum return to exercise" },
+  "about": {
+    "type": "Thing",
+    "name": "Postpartum return to exercise"
+  },
   "lead": "Returning to exercise after having a baby is not a question of willpower or a six-week countdown. It is a question of what the body can currently do, which changes week to week and is different for every person. This page describes how we think about it at MD Fit, starting with the one rule we never skip: clearance from your OB or midwife comes first.",
   "sections": [
     {
@@ -43,13 +46,37 @@
     "Thoughts of harming yourself or your baby: contact your provider or emergency services immediately."
   ],
   "faq": [
-    { "q": "When can I start exercising after having a baby?", "a": "That is your OB or midwife's decision and depends on your delivery and recovery. Once they have cleared you, we help you decide how to return, not when." },
-    { "q": "Do I need to see a pelvic floor therapist before coming to MD Fit?", "a": "If you have pelvic floor symptoms, yes, or at least alongside us. If you have none and have been cleared, we can start with a movement assessment and refer you if anything comes up." },
-    { "q": "Can I come back to running or CrossFit?", "a": "Many people do. The path usually runs through walking, strength and control first, with impact and intensity added gradually and only when symptoms allow. The timeline varies widely and we do not promise one." }
+    {
+      "q": "When can I start exercising after having a baby?",
+      "a": "That is your OB or midwife's decision and depends on your delivery and recovery. Once they have cleared you, we help you decide how to return, not when."
+    },
+    {
+      "q": "Do I need to see a pelvic floor therapist before coming to MD Fit?",
+      "a": "If you have pelvic floor symptoms, yes, or at least alongside us. If you have none and have been cleared, we can start with a movement assessment and refer you if anything comes up."
+    },
+    {
+      "q": "Can I come back to running or CrossFit?",
+      "a": "Many people do. The path usually runs through walking, strength and control first, with impact and intensity added gradually and only when symptoms allow. The timeline varies widely and we do not promise one."
+    }
   ],
-  "muscles": ["glute-med", "ql", "psoas", "iliacus", "upper-trap", "levator"],
-  "pain": ["si-joint", "outside-of-hip", "where-neck-meets-shoulder", "back-of-wrist"],
-  "guides": ["lateral-hip", "iliopsoas"],
+  "muscles": [
+    "glute-med",
+    "ql",
+    "psoas",
+    "iliacus",
+    "upper-trap",
+    "levator"
+  ],
+  "pain": [
+    "si-joint",
+    "outside-of-hip",
+    "where-neck-meets-shoulder",
+    "back-of-wrist"
+  ],
+  "guides": [
+    "lateral-hip",
+    "iliopsoas"
+  ],
   "related": [
     "/conditions/pelvic-floor-rehab",
     "/conditions/low-back-pain",
@@ -60,5 +87,5 @@
     "/treatments/medical-massage"
   ],
   "programs": [],
-  "reviewStatus": "draft"
+  "reviewStatus": "approved"
 }

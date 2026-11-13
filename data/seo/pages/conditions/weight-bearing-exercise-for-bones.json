@@ -1,0 +1,89 @@
+{
+  "group": "conditions",
+  "slug": "weight-bearing-exercise-for-bones",
+  "title": "Weight-Bearing Exercise for Bones | MD Fit",
+  "h1": "Weight-Bearing Exercise for Bones: What Actually Loads Them",
+  "description": "Swimming and cycling are great for your heart and do little for your hip and spine. Here is what actually loads bone, and why walking alone is rarely enough.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Bone health"
+  },
+  "lead": "Bone adapts to the forces placed on it. That single idea explains most of what follows, including why two people who both exercise five days a week can have very different skeletons, and why the most popular forms of exercise are often the least useful ones for bone.",
+  "sections": [
+    {
+      "h2": "The principle in plain terms",
+      "html": "<p>Bone is living tissue that is constantly being removed and rebuilt. Load it meaningfully and the balance shifts toward building. Remove load and it shifts the other way, which is why extended bed rest costs bone quickly.</p><p>Two details about that signal explain nearly all the practical advice:</p><ul><li><b>The load has to be greater than what the bone already handles.</b> Your skeleton is already well adapted to walking around, so more walking is not much of a new message.</li><li><b>The effect is local.</b> Loading the hip does not strengthen the wrist. This is why bone density is measured at specific sites, and why a programme has to load the places you care about rather than producing a general effect.</li></ul>"
+    },
+    {
+      "h2": "Why swimming and cycling do little for bone",
+      "html": "<p>This surprises people, because both are excellent exercise and both feel demanding. The issue is where the load goes.</p><p>In swimming, the water supports your body weight. In cycling, the frame and saddle do. In both cases the heart, lungs and muscles work hard while the skeleton is largely carried by something else. They are genuinely good for cardiovascular fitness, for joints that do not tolerate impact, and for staying active, and they should not be given up. They are simply not the tool for this particular job, and relying on them alone is one of the most common reasons someone active is surprised by a low result.</p><p>The usual solution is addition rather than substitution: keep the swimming, add something weight-bearing and loaded.</p>"
+    },
+    {
+      "h2": "Why walking alone is usually not enough",
+      "html": "<p>Walking is weight-bearing, which is better than not weight-bearing, and it has real benefits for the heart, weight and mood. But the forces involved are the ones your hips and spine already experience daily, so the stimulus for adaptation is modest.</p><p>Walking becomes more useful when it is made harder: hills, stairs, a weighted pack, a brisk pace with purposeful foot strike, or intervals that include short bursts. At that point you are asking something new, which is the whole point.</p>"
+    },
+    {
+      "h2": "The two kinds of loading that do work",
+      "html": "<p><b>Impact loading</b> means forces that arrive quickly: hopping, skipping, jumping down from a low step, running, and the sudden pushes in tennis and pickleball. Bone appears to respond well to loads that are rapid and come from varied directions, and a modest amount spread through the week tends to be more useful than a long session. Whether impact suits you depends on your joints, your bone density and your physician's view.</p><p><b>Resistance loading</b> means moving meaningful weight: squats, hip hinges, presses, pulls and loaded carries. For anyone who cannot or should not do impact, this is the main route, and it has the advantage of being progressive and precisely controllable. It also builds the muscle and strength that keep you upright, which matters at least as much as density.</p><p>The muscles doing that work are <a href=\"/muscles/gluteus-maximus\">gluteus maximus</a> and <a href=\"/muscles/gluteus-medius\">gluteus medius</a> at the hip, the back extensors <a href=\"/muscles/iliocostalis\">iliocostalis</a> and <a href=\"/muscles/longissimus\">longissimus</a>, <a href=\"/muscles/multifidus\">multifidus</a> for spinal control, and <a href=\"/muscles/quadratus-lumborum\">quadratus lumborum</a>, which is usually the first to complain when load is added to a trunk that is not ready for it.</p>"
+    },
+    {
+      "h2": "Putting it together without giving anything up",
+      "html": "<p>A practical week for most people keeps everything they already enjoy and adds two sessions of genuine resistance work, with some impact if it is appropriate and some balance work throughout. Nothing has to be abandoned. The swimming stays, the cycling stays, the walking stays; what gets added is the part that was missing.</p><p>Where bone density is already significantly reduced, the impact component is the piece most likely to be modified, and loaded spinal flexion and forceful twisting are the positions usually avoided. That is covered in more detail on <a href=\"/conditions/osteoporosis-exercises-to-avoid\">exercises to avoid with osteoporosis</a>.</p>"
+    },
+    {
+      "h2": "A note for Sarasota",
+      "html": "<p>Swimming, cycling and walking are the three most popular forms of exercise among our neighbours, and all three are carried, low-impact or already-adapted. That combination produces people who are genuinely fit and often surprised by a bone density result. The fix is rarely to stop any of it. It is to add two sessions a week that the skeleton actually notices.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": "Strength improves within weeks and balance within a similar window. Bone adapts far more slowly and is assessed by your physician on a repeat scan, typically a year or more apart.",
+  "redFlags": [
+    "Chest pain, breathlessness, or dizziness during exercise: stop and seek medical attention.",
+    "Sudden severe back pain after a minor strain or lift, particularly with known low bone density.",
+    "Any fracture from a fall from standing height or less, which should be reported to your physician.",
+    "New joint pain that worsens as you continue an activity rather than warming up, which may indicate a bone stress injury.",
+    "Pinpoint bone tenderness that persists at rest or at night: stop loading it and see a physician."
+  ],
+  "faq": [
+    {
+      "q": "Is swimming bad for my bones?",
+      "a": "Not bad, just not loading. The water supports your body weight, so the skeleton is doing little while the heart and muscles work. It is worth keeping and worth pairing with something weight-bearing."
+    },
+    {
+      "q": "Is walking weight-bearing exercise?",
+      "a": "Yes, but the forces are ones your hips and spine already handle daily, so the stimulus is modest. Hills, stairs, a weighted pack or intervals make it more demanding."
+    },
+    {
+      "q": "How much impact is useful?",
+      "a": "A modest amount spread across the week generally appears more useful than one long session, and this page will not prescribe a number. Whether impact suits you depends on your joints, your density and your physician's advice."
+    },
+    {
+      "q": "Does loading one area help the whole skeleton?",
+      "a": "Largely no. The effect is local, which is why a programme targets the hips and spine specifically rather than relying on general activity."
+    }
+  ],
+  "muscles": [
+    "glute-max",
+    "glute-med",
+    "iliocostalis",
+    "longissimus",
+    "multifidus",
+    "ql"
+  ],
+  "pain": [
+    "beside-the-spine",
+    "upper-buttock",
+    "between-shoulder-blades"
+  ],
+  "guides": [],
+  "related": [
+    "/conditions/osteoporosis-and-exercise",
+    "/conditions/exercise-for-osteopenia",
+    "/conditions/bone-density-testing-explained",
+    "/conditions/osteoporosis-exercises-to-avoid",
+    "/conditions/balance-fall-prevention",
+    "/activities/swimming",
+    "/treatments/clinical-exercise-physiology"
+  ],
+  "reviewStatus": "approved"
+}

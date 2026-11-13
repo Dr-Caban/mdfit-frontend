@@ -1,3 +1,21 @@
+/* Self-hosted so the brand faces are there at first paint. Loading them from Google cost two cross-origin hops
+   and swapped the font in ~500ms later, reflowing every heading: that swap was the whole of the homepage's CLS
+   (measured 0.163 with the swap, 0.000 with the fonts blocked). Both families are OFL-licensed, so self-hosting is
+   permitted. Montserrat is one variable file covering 400-800; Libre Baskerville's roman covers 400 and 700.
+   Latin subset only, which is what an English-language site needs. The hashed filenames let them be cached forever. */
+@font-face {
+  font-family: "Montserrat"; font-style: normal; font-weight: 400 800; font-display: swap;
+  src: url("/assets/fonts/montserrat-var.a5ec5492.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Libre Baskerville"; font-style: normal; font-weight: 400 700; font-display: swap;
+  src: url("/assets/fonts/libre-baskerville.b1bcbff3.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Libre Baskerville"; font-style: italic; font-weight: 400; font-display: swap;
+  src: url("/assets/fonts/libre-baskerville-italic.f6180342.woff2") format("woff2");
+}
+
 /* MD Fit brand tokens, taken from mdfitsrq.com (Breakdance global settings). */
 :root {
   --ink: #0A1A2E;          /* brand navy */
@@ -82,6 +100,16 @@ a { color: inherit; }
 .hero-card { background: #fff; color: var(--text); border-radius: 20px; padding: 28px; box-shadow: 0 30px 60px -20px rgba(0,0,0,.5); display: grid; gap: 14px; }
 .hero-card h2 { font: 700 24px/1.15 var(--display); letter-spacing: -.01em; margin: 0; }
 .hero-card .muted { margin: -6px 0 2px; font-size: 14px; }
+/* The nine area chips are injected by app.js (the list is editable in admin, so they cannot be baked into the HTML).
+   Until they arrive the box is 0 tall and everything below the hero jumps down: that single growth was the whole of
+   the homepage's 0.174 CLS. These reserve the height the chips settle at, measured at each width — they wrap to
+   2, 3, 4 or 6 rows depending on how wide the hero card is. min-height only reserves: a longer area list still fits. */
+.hero-card .chips { min-height: 141px; }
+@media (min-width: 961px) and (max-width: 1199px) { .hero-card .chips { min-height: 191px; } }
+@media (max-width: 960px) { .hero-card .chips { min-height: 91px; } }
+@media (max-width: 520px) { .hero-card .chips { min-height: 141px; } }
+@media (max-width: 470px) { .hero-card .chips { min-height: 191px; } }
+@media (max-width: 340px) { .hero-card .chips { min-height: 290px; } }
 
 /* Chips */
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }

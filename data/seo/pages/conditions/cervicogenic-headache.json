@@ -4,7 +4,10 @@
   "title": "Cervicogenic Headache Care in Sarasota | MD Fit",
   "h1": "Cervicogenic Headache Care in Sarasota, FL",
   "description": "One-sided headache that starts at the base of the skull and changes with neck position? MD Fit in Sarasota treats the neck muscles and joints behind it.",
-  "about": { "type": "MedicalCondition", "name": "Cervicogenic headache" },
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Cervicogenic headache"
+  },
   "lead": "A cervicogenic headache is a headache that originates in the neck. The upper neck joints and the muscles around them share nerve pathways with the head, so irritation there is felt as pain behind the eye, over the temple or across one side of the skull.",
   "sections": [
     {
@@ -42,14 +45,48 @@
     "Numbness, weakness or tingling in the arms or hands alongside the headache."
   ],
   "faq": [
-    { "q": "What is the difference between a cervicogenic headache and a migraine?", "a": "Cervicogenic pain starts in the neck, usually on one side, and is triggered by neck movement or position. Migraine tends to throb, comes with nausea and light sensitivity, and is less tied to neck position. A physician can help distinguish them." },
-    { "q": "Will neck release really change a headache?", "a": "When the headache is coming from the neck, releasing the suboccipitals and nearby muscles often reduces it quickly. Keeping it away depends on posture, breathing and strength work." },
-    { "q": "Is it safe to have my neck worked on?", "a": "After a physician has excluded serious causes, gentle soft-tissue release and mobility are appropriate. Dr. Jared does not use forceful thrust manipulation of the neck." },
-    { "q": "How soon should I expect fewer headaches?", "a": "It depends on how long the pattern has been present and what is driving it. Dr. Jared will outline expectations after your assessment." }
+    {
+      "q": "What is the difference between a cervicogenic headache and a migraine?",
+      "a": "Cervicogenic pain starts in the neck, usually on one side, and is triggered by neck movement or position. Migraine tends to throb, comes with nausea and light sensitivity, and is less tied to neck position. A physician can help distinguish them."
+    },
+    {
+      "q": "Will neck release really change a headache?",
+      "a": "When the headache is coming from the neck, releasing the suboccipitals and nearby muscles often reduces it quickly. Keeping it away depends on posture, breathing and strength work."
+    },
+    {
+      "q": "Is it safe to have my neck worked on?",
+      "a": "After a physician has excluded serious causes, gentle soft-tissue release and mobility are appropriate. Dr. Jared does not use forceful thrust manipulation of the neck."
+    },
+    {
+      "q": "How soon should I expect fewer headaches?",
+      "a": "It depends on how long the pattern has been present and what is driving it. Dr. Jared will outline expectations after your assessment."
+    }
   ],
-  "muscles": ["suboccipitals", "splenius", "levator", "upper-trap", "lower-trap", "scm"],
-  "pain": ["base-of-skull", "back-of-head", "behind-the-eye", "top-of-head"],
-  "guides": ["posterior-neck"],
-  "related": ["/conditions/tension-headache", "/conditions/neck-pain", "/conditions/whiplash", "/conditions/desk-neck-pain", "/treatments/functional-mobility", "/treatments/medical-massage", "/muscles/suboccipitals"],
-  "reviewStatus": "draft"
+  "muscles": [
+    "suboccipitals",
+    "splenius",
+    "levator",
+    "upper-trap",
+    "lower-trap",
+    "scm"
+  ],
+  "pain": [
+    "base-of-skull",
+    "back-of-head",
+    "behind-the-eye",
+    "top-of-head"
+  ],
+  "guides": [
+    "posterior-neck"
+  ],
+  "related": [
+    "/conditions/tension-headache",
+    "/conditions/neck-pain",
+    "/conditions/whiplash",
+    "/conditions/desk-neck-pain",
+    "/treatments/functional-mobility",
+    "/treatments/medical-massage",
+    "/muscles/suboccipitals"
+  ],
+  "reviewStatus": "approved"
 }

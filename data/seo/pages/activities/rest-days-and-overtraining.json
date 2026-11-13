@@ -1,0 +1,85 @@
+{
+  "group": "activities",
+  "slug": "rest-days-and-overtraining",
+  "title": "Rest Days and Overtraining: How Much Is Too Much | MD Fit",
+  "h1": "Rest Days and Overtraining",
+  "description": "How to tell productive fatigue from too much, the warning signs worth acting on, and why more sessions often means less progress.",
+  "about": {
+    "type": "Thing",
+    "name": "Rest days and overtraining"
+  },
+  "lead": "Training is the stimulus; the adaptation happens in between. People who train hard and progress badly are usually not training too little — they are not leaving enough room for the work to take effect.",
+  "sections": [
+    {
+      "h2": "The basic trade",
+      "html": "<p>A training session temporarily makes you worse: tired, sore, slightly weaker. The improvement comes afterwards, during recovery, and only if recovery is allowed to happen.</p><p>Stack sessions too closely and you accumulate fatigue faster than you adapt. For a while this looks like discipline. Then performance flattens, then it declines, and the instinctive response — train harder — makes it worse.</p><p>This is the single most common pattern we see in motivated people who have stopped progressing. It is rarely a programming subtlety. It is usually too much, too often, with no easy days.</p>"
+    },
+    {
+      "h2": "What it looks like when it is tipping",
+      "html": "<ul><li>Sessions that feel disproportionately hard at weights or paces that were comfortable a fortnight ago.</li><li>Sleep getting worse rather than better, despite being tired.</li><li>Resting heart rate drifting upward over a week or two.</li><li>Irritability, low motivation, a flat mood around training specifically.</li><li>Niggles multiplying — several small complaints rather than one clear injury.</li><li>Getting ill more often than usual.</li></ul><p>One bad session means nothing. Several of these together across two or three weeks means something.</p>"
+    },
+    {
+      "h2": "How much rest",
+      "html": "<p>At least one full day off a week for most people, and often two. Beyond that, the useful question is not how many days off but how many genuinely hard days are in the week.</p><p>Two to three hard sessions a week is plenty for most people who are not athletes. The rest can be easy aerobic work, mobility, or light technical practice. A week with six hard sessions is not six times better than a week with two; it is usually worse.</p><p>Every eight to twelve weeks, a lighter week — reducing volume by around half while keeping movement quality — lets accumulated fatigue clear. See <a href=\"/activities/deload-weeks\">deload weeks</a>.</p>"
+    },
+    {
+      "h2": "Age changes the arithmetic",
+      "html": "<p>Recovery between hard sessions tends to take longer with age. That is not a reason to train less hard; it is a reason to train hard less often.</p><p>Many people in their fifties and sixties get better results from two quality sessions a week with real recovery between them than from four mediocre ones. The stimulus still needs to be meaningful — easy training does not maintain muscle or bone — but the spacing matters more than it did at twenty-five.</p>"
+    },
+    {
+      "h2": "Overreaching and overtraining are not the same thing",
+      "html": "<p>Deliberately pushing a hard block and feeling flat for a week or two is normal, and performance usually rebounds above where it started once the load eases. That is functional overreaching and it is a tool rather than a mistake.</p><p>Genuine overtraining syndrome is a different and much rarer thing: months of reduced performance, persistent fatigue and mood changes that do not resolve with a week off. It mostly affects athletes training at high volume, not people doing four sessions a week.</p><p>The practical point is that a short dip after a hard block does not mean you are overtrained, and a lighter week is usually all that is needed. If a fortnight of genuine rest changes nothing, that is when to look further.</p>"
+    },
+    {
+      "h2": "What to do when you have overdone it",
+      "html": "<ol><li>Take two to three easy days. Walking, mobility, nothing taxing.</li><li>Return at a reduced load — roughly two thirds of what you were doing — and build back over a fortnight.</li><li>Cut the number of hard sessions rather than the length of each one.</li><li>Look at sleep honestly before changing anything else in the programme.</li></ol><p>If fatigue persists after a genuinely light fortnight, that is worth a medical conversation rather than a programming one. Thyroid problems, anaemia, sleep apnoea and a number of other conditions present exactly like overtraining, and training harder will not fix any of them.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Fatigue that persists after two weeks of genuinely light training and adequate sleep.",
+    "Resting heart rate that stays elevated, or unexplained breathlessness.",
+    "Unintentional weight loss, night sweats or fever.",
+    "Loss of periods in women who train, which needs medical assessment.",
+    "Low mood or loss of interest that extends beyond training into the rest of life."
+  ],
+  "faq": [
+    {
+      "q": "How many rest days do I need?",
+      "a": "At least one complete day a week suits most people, often two. What matters more is limiting genuinely hard sessions to two or three a week."
+    },
+    {
+      "q": "Is it bad to train every day?",
+      "a": "Not if most days are easy. Daily movement is fine; daily hard training is where people run into trouble."
+    },
+    {
+      "q": "How do I know the difference between laziness and needing rest?",
+      "a": "Fatigue that lifts once you start moving is usually inertia. Fatigue that persists or deepens through a session, especially alongside poor sleep and flat mood, is a signal worth heeding."
+    },
+    {
+      "q": "Will I lose fitness taking a week easy?",
+      "a": "No. Fitness is not lost over a week, and most people return from a lighter week performing better than they did going into it."
+    }
+  ],
+  "muscles": [
+    "glute-max",
+    "rectus-femoris",
+    "lats",
+    "upper-trap"
+  ],
+  "pain": [
+    "beside-the-spine",
+    "between-shoulder-blades"
+  ],
+  "guides": [],
+  "related": [
+    "/activities/active-recovery-days",
+    "/activities/deload-weeks",
+    "/activities/how-many-days-a-week",
+    "/activities/muscle-soreness-and-doms",
+    "/treatments/clinical-exercise-physiology"
+  ],
+  "programs": [],
+  "reviewStatus": "approved"
+}

@@ -1,0 +1,92 @@
+{
+  "slug": "front-squat",
+  "title": "Front Squat: Form, Faults and Fixes | MD Fit",
+  "h1": "The Front Squat: Form, Faults and Fixes",
+  "description": "How the front squat differs from the back squat, the rack position problem, what the upper back actually limits, and when it is the friendlier option.",
+  "about": {
+    "type": "Thing",
+    "name": "Front squat"
+  },
+  "lead": "The front squat is often introduced as a harder back squat, which misses the point. Holding the bar in front changes where the load sits, forces the torso upright, and moves the limiting factor from the hips to the upper back and the wrists. For some lifters it is the version of squatting that stops hurting.",
+  "sections": [
+    {
+      "h2": "What changes when the bar moves to the front",
+      "html": "<p>With the bar resting across the front of the shoulders, the weight sits in front of the spine rather than behind it. To keep the bar over mid-foot, the torso has to stay far more upright than in a back squat. That has three consequences: the knees travel further forward, the quadriceps do more of the work, and the demand on the hips and low back drops.</p><p>It also means you cannot hide a loss of position. In a back squat a lifter can fold forward and grind the weight up with the hips and back. In a front squat the bar simply rolls off the shoulders. That self-limiting quality is why some coaches use it with people who tend to over-rely on their back.</p>"
+    },
+    {
+      "h2": "The rack position is usually the real problem",
+      "html": "<p>Most people who dislike the front squat dislike the rack position, not the squat. The bar should sit on the shelf formed by the front deltoids and the collarbones, with the elbows held high, not be gripped in the hands. The hands are there to stop the bar rolling forward, nothing more.</p><p>Two things commonly block it. Limited wrist and shoulder range makes the clean grip uncomfortable or impossible, often involving the <a href=\"/muscles/wrist-extensors\">wrist extensors</a>, the <a href=\"/muscles/triceps-long-head\">long head of triceps</a> and the <a href=\"/muscles/latissimus-dorsi\">latissimus dorsi</a>, which pulls the arm down and in. Second, upper back stiffness makes it hard to keep the chest and elbows up under load. A cross-arm grip or straps are reasonable alternatives while that range is worked on, and are not a lesser version of the lift.</p>"
+    },
+    {
+      "h2": "What tends to go wrong",
+      "html": "<ul><li><b>Elbows dropping.</b> As soon as the elbows fall, the chest follows, and the bar starts to roll. This is usually upper back endurance giving out rather than a technique flaw, and it shows up as the last reps of a set.</li><li><b>Wrist pain.</b> Almost always a sign the bar is being held in the hands instead of resting on the shoulders. Pain is felt at <a href=\"/pain/back-of-wrist\">the back of the wrist</a> or <a href=\"/pain/palm-side-of-wrist\">the palm side</a>.</li><li><b>Bar crushing the throat.</b> Uncomfortable but usually a positioning issue, not an injury risk. The shelf is the shoulders, not the neck.</li><li><b>Upper back rounding.</b> The one worth taking seriously under heavy load, and the reason not to chase a maximum front squat while the position is unreliable.</li></ul>"
+    },
+    {
+      "h2": "When the front squat is the kinder choice",
+      "html": "<p>Because it reduces forward lean, the front squat often lets someone with an irritable low back keep squatting while that settles. It is also frequently easier on the hips at depth, since the more upright trunk changes the angle at which the thigh bone meets the socket.</p><p>It is usually harder on the knees than a back squat, so it is a poor substitute if the knee is the complaint. And it demands more from the shoulders and wrists, which makes it a bad choice during a shoulder flare. The useful question is not which squat is better, but which one your current body can load without symptoms this month.</p>"
+    },
+    {
+      "h2": "Building the position",
+      "html": "<p>Front rack range improves with consistent, unloaded work far more than with occasional forced stretching. Holding an empty bar in the rack position for time, working on upper back extension, and loosening the lats and triceps all tend to help. Expect it to take weeks rather than sessions.</p><p>If your rack position has not changed in months despite consistent work, something structural may be limiting it, and that is worth an assessment rather than more of the same. Dr. Jared works with lifters to separate the restrictions that will respond to work from the ones that need the lift adapted around them, then uses soft-tissue work and targeted strengthening to change what can be changed. Members get the matching exercise videos in the MD Fit app.</p>"
+    }
+  ],
+  "redFlags": [
+    "Numbness or tingling in the hands that persists after you rack the bar.",
+    "Shoulder pain that continues at rest or disturbs sleep, rather than only under the bar.",
+    "A wrist that is swollen, visibly deformed or will not take any weight after a session.",
+    "Back pain that travels down a leg, or any weakness in the foot.",
+    "Dizziness or light-headedness during heavy sets, which is worth reviewing before you train again."
+  ],
+  "faq": [
+    {
+      "q": "Is the front squat better than the back squat?",
+      "a": "Neither is better in general. The front squat is more upright and more quad-dominant, the back squat lets you load more weight. The better one for you is the one you can load without symptoms right now."
+    },
+    {
+      "q": "My wrists hurt in the front rack. What should I change?",
+      "a": "Usually the bar is being gripped rather than rested on the shoulders. Loosening the fingers so the bar sits on the shelf, or using a cross-arm or strap grip, removes most wrist complaints."
+    },
+    {
+      "q": "Why does my upper back give out before my legs?",
+      "a": "That is normal in the front squat and is often the limiting factor rather than a fault. Upper back endurance improves with consistent exposure, and it is a reason the lift builds trunk strength well."
+    },
+    {
+      "q": "Can I front squat with a sore low back?",
+      "a": "Often yes, and it is a common way to keep squatting while a back settles, because the upright position reduces the demand on it. That is a judgement to make with someone who has assessed you, not a rule."
+    }
+  ],
+  "muscles": [
+    "vastus-lateralis",
+    "vmo",
+    "vastus-intermedius",
+    "lower-trap",
+    "lats",
+    "triceps-long"
+  ],
+  "pain": [
+    "back-of-wrist",
+    "below-kneecap",
+    "between-shoulder-blades",
+    "beside-the-spine"
+  ],
+  "guides": [
+    "quads"
+  ],
+  "related": [
+    "/activities/barbell-back-squat",
+    "/activities/why-squat-depth-differs",
+    "/activities/ankle-mobility-and-squat",
+    "/activities/shoulder-shape-and-overhead-lifting",
+    "/conditions/low-back-pain",
+    "/activities/leg-training",
+    "/treatments/strength-and-performance"
+  ],
+  "programs": [
+    "knee-6",
+    "mobility-12"
+  ],
+  "group": "activities",
+  "steps": null,
+  "timeline": null,
+  "reviewStatus": "approved"
+}

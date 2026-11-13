@@ -1,0 +1,88 @@
+{
+  "group": "conditions",
+  "slug": "sports-massage",
+  "title": "Sports Massage in Sarasota, FL | MD Fit",
+  "h1": "Sports Massage in Sarasota, FL",
+  "description": "How soft-tissue work before an event, after an event and inside a training block are three different jobs, and how to time each one around competition.",
+  "about": {
+    "type": "MedicalTherapy",
+    "name": "Sports massage"
+  },
+  "lead": "Sports massage is not one technique. Work done the morning of a match, the evening after it, and in the middle of a build week have different goals, different intensities and different timing rules. Treating them as interchangeable is how people end up flat on race day.",
+  "sections": [
+    {
+      "h2": "Before an event",
+      "html": "<p>Pre-event work is short, brisk and stimulating rather than deep. The goal is to raise tissue temperature, increase blood flow and leave you feeling ready, not loose and sleepy. It supplements a warm-up rather than replacing it.</p><p>The main rule is restraint. Deep, heavy work in the hours before competing can leave muscles feeling vague and slightly weaker, and it risks next-day soreness landing exactly when you need to perform. A hard session is not a pre-event session. If you want deep work in a competition week, it belongs several days out.</p><p>For Sarasota's year-round tennis, pickleball and golf calendar, that usually means heavy work early in the week and light work close to play.</p>"
+    },
+    {
+      "h2": "After an event",
+      "html": "<p>Post-event work is slower, lighter and aimed at comfort and settling the system down. Tissue is already stressed, sometimes with small amounts of damage, and adding heavy pressure on top is a reliable way to be more sore rather than less.</p><p>What is reasonable to expect is feeling better, moving more comfortably and sleeping more easily. What is not well supported is the idea that massage flushes lactic acid out of the muscle. Lactate clears on its own within an hour or so of finishing, long before you reach the table, and it is not what makes you sore two days later anyway.</p>"
+    },
+    {
+      "h2": "Inside a training block",
+      "html": "<p>This is where sports massage does its most useful work, and where most athletes under-use it. In a build phase the targets are the tissues that take the brunt of your sport and keep tightening between sessions:</p><ul><li>Runners: the <a href=\"/muscles/soleus\">soleus</a>, <a href=\"/muscles/gastrocnemius\">gastrocnemius</a> and <a href=\"/muscles/tibialis-posterior\">tibialis posterior</a> through mileage increases.</li><li>Racquet and paddle players: the <a href=\"/muscles/infraspinatus\">infraspinatus</a>, <a href=\"/muscles/subscapularis\">subscapularis</a> and forearm <a href=\"/muscles/wrist-extensors\">wrist extensors</a>.</li><li>Golfers: the <a href=\"/muscles/latissimus-dorsi\">latissimus dorsi</a>, <a href=\"/muscles/quadratus-lumborum\">quadratus lumborum</a> and lead-side hip.</li><li>Lifters: hips, <a href=\"/muscles/gluteus-maximus\">glutes</a> and the upper back between heavy weeks.</li></ul><p>Scheduled on an easy day or a rest day, this is the version that keeps a block running rather than rescuing it afterwards.</p>"
+    },
+    {
+      "h2": "What it does not do",
+      "html": "<p>Massage does not prevent injury on its own, and no honest practitioner should promise that. Most overuse injuries come from the shape of the training week: volume rising too quickly, insufficient recovery, or a capacity gap somewhere in the chain. Hands-on work can keep you comfortable while those things are addressed, but it cannot substitute for addressing them.</p><p>It also does not make a strained muscle safe to compete on. Pain that is sharp, that changed suddenly, or that followed a specific moment during play deserves assessment before the next match, not a massage and a hope.</p>"
+    },
+    {
+      "h2": "Fitting it to your calendar",
+      "html": "<p>A workable pattern for most amateur athletes: deeper work early in the week or on a rest day, lighter work within forty-eight hours of competing, nothing new or aggressive in the final day. If you have never had deep work before, a competition week is the wrong week to try it.</p><p>Between sessions, the <a href=\"/treatments/strength-and-performance\">strength work</a> and the mobility homework in your free MD Fit app do the part that massage cannot: building the capacity that stops the same tissue complaining every block.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": "Light pre-event and post-event work should leave you feeling better the same day with no lingering soreness. Deeper in-block work can leave mild tenderness for a day, which is why it belongs on an easy day rather than before a hard session or a match.",
+  "redFlags": [
+    "A sharp pain that appeared suddenly during play, especially with a pop, swelling or an inability to bear weight.",
+    "Swelling, redness or warmth in one calf, which needs a physician before any massage.",
+    "Pain that is getting worse week on week despite reduced training.",
+    "Numbness, tingling or weakness in a limb rather than muscular soreness.",
+    "Pain in the chest, or breathlessness out of proportion to the effort: stop and seek emergency care, calling 911 if severe."
+  ],
+  "faq": [
+    {
+      "q": "How long before a match should I book?",
+      "a": "Keep anything deep at least a few days out and keep work within forty-eight hours of competing light and brief. Hard pressure close to an event can leave you feeling flat and sore at the wrong moment."
+    },
+    {
+      "q": "Does massage flush out lactic acid?",
+      "a": "No. Lactate clears on its own shortly after exercise and is not the cause of soreness a day or two later. Post-event work can help you feel better and move more comfortably, which is a reasonable goal in itself."
+    },
+    {
+      "q": "Will regular massage stop me getting injured?",
+      "a": "It cannot do that alone. Most overuse problems come from how the training week is built, so massage works best alongside sensible progression and the strength work that closes the capacity gap."
+    },
+    {
+      "q": "I compete most weekends. When do I fit deep work in?",
+      "a": "Early in the week or on a dedicated rest day, keeping the days immediately before competition light. During a dense competition block, less and lighter is usually the better call."
+    }
+  ],
+  "muscles": [
+    "soleus",
+    "gastroc",
+    "infraspinatus",
+    "lats",
+    "ql",
+    "wrist-ext"
+  ],
+  "pain": [
+    "lower-calf",
+    "deep-shoulder-joint",
+    "forearm",
+    "flank"
+  ],
+  "guides": [
+    "calf",
+    "rotator-cuff"
+  ],
+  "related": [
+    "/treatments/medical-massage",
+    "/conditions/sports-injury-rehab",
+    "/treatments/strength-and-performance",
+    "/activities/tennis",
+    "/conditions/deep-tissue-massage",
+    "/conditions/achilles-tendon-pain"
+  ],
+  "reviewStatus": "approved"
+}

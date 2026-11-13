@@ -4,7 +4,10 @@
   "title": "Desk Neck Pain Relief in Sarasota, FL | MD Fit",
   "h1": "Desk Neck Pain Relief in Sarasota, FL",
   "description": "Neck that aches by 3 pm, shoulders up around your ears, headaches after a long screen day? MD Fit in Sarasota treats tech neck at the muscle and the desk.",
-  "about": { "type": "MedicalCondition", "name": "Postural neck pain" },
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Postural neck pain"
+  },
   "lead": "Call it tech neck, text neck or desk neck: the pattern is the same. A head that drifts forward toward a screen, shoulders that creep upward, and a set of neck muscles that work all day to hold a twelve-pound head in a position it was never meant to stay in.",
   "sections": [
     {
@@ -42,14 +45,49 @@
     "Trouble swallowing, a lump in the neck, or a change in your voice."
   ],
   "faq": [
-    { "q": "Is a standing desk the answer?", "a": "Standing helps the low back and hips more than the neck. A screen at eye level and regular movement breaks matter more than whether you sit or stand." },
-    { "q": "How many hours a day of screen time is too much?", "a": "The total matters less than how long you stay still. Thirty-minute blocks with a short reset between them are tolerated far better than three hours straight." },
-    { "q": "Why does my neck pain cause headaches?", "a": "The suboccipitals and upper trapezius refer pain into the head. A forward head posture loads them all day, so the headache often arrives late afternoon." },
-    { "q": "Can I do the exercises at my desk?", "a": "Yes. The routine Dr. Jared assigns in the free MD Fit app is built for a chair: chin glides, scapular resets, upper trap and levator stretches, and breathing." }
+    {
+      "q": "Is a standing desk the answer?",
+      "a": "Standing helps the low back and hips more than the neck. A screen at eye level and regular movement breaks matter more than whether you sit or stand."
+    },
+    {
+      "q": "How many hours a day of screen time is too much?",
+      "a": "The total matters less than how long you stay still. Thirty-minute blocks with a short reset between them are tolerated far better than three hours straight."
+    },
+    {
+      "q": "Why does my neck pain cause headaches?",
+      "a": "The suboccipitals and upper trapezius refer pain into the head. A forward head posture loads them all day, so the headache often arrives late afternoon."
+    },
+    {
+      "q": "Can I do the exercises at my desk?",
+      "a": "Yes. The routine Dr. Jared assigns in the free MD Fit app is built for a chair: chin glides, scapular resets, upper trap and levator stretches, and breathing."
+    }
   ],
-  "muscles": ["upper-trap", "levator", "suboccipitals", "scm", "pec-minor", "lower-trap"],
-  "pain": ["back-of-neck", "where-neck-meets-shoulder", "base-of-skull"],
-  "guides": ["posterior-neck", "scalenes"],
-  "related": ["/conditions/neck-pain", "/conditions/tension-headache", "/conditions/cervicogenic-headache", "/conditions/postural-kyphosis", "/conditions/upper-back-rhomboid-pain", "/conditions/thoracic-outlet-symptoms", "/treatments/functional-mobility", "/muscles/levator-scapulae"],
-  "reviewStatus": "draft"
+  "muscles": [
+    "upper-trap",
+    "levator",
+    "suboccipitals",
+    "scm",
+    "pec-minor",
+    "lower-trap"
+  ],
+  "pain": [
+    "back-of-neck",
+    "where-neck-meets-shoulder",
+    "base-of-skull"
+  ],
+  "guides": [
+    "posterior-neck",
+    "scalenes"
+  ],
+  "related": [
+    "/conditions/neck-pain",
+    "/conditions/tension-headache",
+    "/conditions/cervicogenic-headache",
+    "/conditions/postural-kyphosis",
+    "/conditions/upper-back-rhomboid-pain",
+    "/conditions/thoracic-outlet-symptoms",
+    "/treatments/functional-mobility",
+    "/muscles/levator-scapulae"
+  ],
+  "reviewStatus": "approved"
 }

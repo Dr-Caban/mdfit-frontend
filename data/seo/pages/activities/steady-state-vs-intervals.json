@@ -1,0 +1,84 @@
+{
+  "group": "activities",
+  "slug": "steady-state-vs-intervals",
+  "title": "Steady State vs Intervals: Which and When | MD Fit",
+  "h1": "Steady State vs Intervals",
+  "description": "How steady cardio and interval training differ, what each one actually trains, and how to split a week between them without doing both badly.",
+  "about": {
+    "type": "Thing",
+    "name": "Steady state and interval cardio training"
+  },
+  "lead": "Steady state and intervals are not rivals. They train overlapping but different things, and the common mistake is not picking the wrong one — it is doing a blurred version of both and getting the benefits of neither.",
+  "sections": [
+    {
+      "h2": "The difference in one paragraph",
+      "html": "<p>Steady state means holding one comfortable effort for a prolonged stretch: thirty to sixty minutes where the pace barely changes and you could talk throughout. Intervals mean alternating hard efforts with recovery, where the hard part is genuinely uncomfortable and the recovery is genuinely easy.</p><p>Steady work builds the engine's efficiency and your ability to keep going. Intervals push the ceiling of what you can do when you go hard. Both improve fitness; they get there by different routes and on different timescales.</p>"
+    },
+    {
+      "h2": "The grey zone, and why it is a trap",
+      "html": "<p>Most people's cardio lands in the middle: breathing hard enough that conversation is awkward, not hard enough to be a real effort. It feels productive because it is uncomfortable.</p><p>The trouble is that it is tiring out of proportion to what it delivers. It is too hard to accumulate the volume that makes steady work valuable, and too easy to push the top end the way intervals do. People who train exclusively in that zone often plateau for months and conclude that cardio does not work for them.</p><p>The fix is to make the easy sessions properly easy and the hard sessions properly hard. The discomfort of going slower than feels impressive is the main obstacle.</p>"
+    },
+    {
+      "h2": "Splitting the week",
+      "html": "<p>A pattern that suits most people who also lift:</p><ul><li>Two to three easy aerobic sessions of thirty to forty-five minutes.</li><li>One, occasionally two, interval sessions.</li><li>Two to three strength sessions.</li><li>At least one genuinely easy or off day.</li></ul><p>If that is more than your week holds, cut the intervals before you cut the easy work or the strength work. The easy aerobic base and the resistance training are doing the most for long-term health; intervals are the refinement on top.</p>"
+    },
+    {
+      "h2": "Which to start with",
+      "html": "<p>If you are returning after a long gap, start with steady work. It is kinder to joints and tendons, it builds the tolerance that makes harder work survivable, and it is far less likely to produce the kind of session that puts someone off exercise for a month.</p><p>If you already have a base and are short of time, intervals give more fitness per minute. That is a real advantage as long as you are not using it to justify skipping the easy work entirely.</p>"
+    },
+    {
+      "h2": "What the body feels, and what it means",
+      "html": "<p>Steady state tends to produce dull, widespread tiredness in the working muscles — the calves, quads and glutes after a long walk or ride. Intervals produce something sharper and more localised, and a day or two of soreness if the format is new.</p><p>Either can irritate an existing problem. Long steady sessions tend to expose repetitive-load issues: the <a href=\"/muscles/soleus\">soleus</a>, the plantar fascia, the outside of the knee. Intervals tend to expose tissue that does not like speed or force: hamstrings, <a href=\"/muscles/gastrocnemius\">calves</a>, the <a href=\"/conditions/achilles-tendon-pain\">achilles</a>. Knowing which you are doing helps make sense of what hurts.</p>"
+    },
+    {
+      "h2": "Fitting it around pain",
+      "html": "<p>Most people with a grumbling joint can keep training cardio by changing the tool rather than the dose. A knee that dislikes running may be fine on a bike; a foot that dislikes the treadmill may be fine in the pool or on a rower.</p><p>That is most of what we do at MD Fit with people who want to stay active while something settles: find the version of the work that does not provoke it, keep the aerobic fitness, and fix the underlying cause in parallel rather than waiting for it to resolve on its own.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Chest pressure or pain, or pain spreading to the jaw, neck or arm, during any cardio: stop and seek emergency care.",
+    "Fainting, near-fainting or a new irregular heartbeat.",
+    "Pain that gets sharper as a session goes on, rather than easing once you are warm.",
+    "Swelling, warmth or redness in one calf, which needs same-day medical assessment.",
+    "Joint pain that is still worse two days after a session than it was during it."
+  ],
+  "faq": [
+    {
+      "q": "Can I do both in one session?",
+      "a": "You can, and a steady session with a few harder efforts at the end is a reasonable format. Just be clear which one you are prioritising, because trying to do both fully usually means doing neither well."
+    },
+    {
+      "q": "Does steady state burn more fat?",
+      "a": "A larger share of the fuel used during easy work comes from fat, but total energy used across the week matters far more than the mix within a session. Choose based on fitness goals and what you will keep doing."
+    },
+    {
+      "q": "How do I know my easy pace is easy enough?",
+      "a": "You should be able to say a full sentence out loud without pausing to breathe. If you cannot, slow down, even if it feels embarrassingly slow at first."
+    }
+  ],
+  "muscles": [
+    "gastroc",
+    "soleus",
+    "rectus-femoris",
+    "glute-max"
+  ],
+  "pain": [
+    "lower-calf",
+    "outside-of-knee",
+    "sole-of-foot"
+  ],
+  "guides": [
+    "calf"
+  ],
+  "related": [
+    "/activities/zone-2-cardio",
+    "/activities/hiit-explained",
+    "/activities/cardio-for-beginners",
+    "/activities/rest-days-and-overtraining",
+    "/treatments/clinical-exercise-physiology"
+  ],
+  "programs": [],
+  "reviewStatus": "approved"
+}

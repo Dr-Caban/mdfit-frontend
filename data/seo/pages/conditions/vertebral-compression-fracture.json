@@ -1,0 +1,88 @@
+{
+  "group": "conditions",
+  "slug": "vertebral-compression-fracture",
+  "title": "Spinal Compression Fracture Care, Sarasota | MD Fit",
+  "h1": "Vertebral Compression Fracture Support in Sarasota, FL",
+  "description": "After a spinal compression fracture, posture, hip strength and balance matter. Exercise-based support in Sarasota alongside your physician's plan.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Vertebral compression fracture"
+  },
+  "lead": "A vertebral compression fracture is when one of the bones of the spine loses height, usually in someone whose bone density is already low. It is diagnosed and managed by a physician. What this page describes is the exercise and posture work that comes afterwards, and why it matters more than most people are told.",
+  "sections": [
+    {
+      "h2": "How these fractures usually happen",
+      "html": "<p>The surprising part, for most people, is how little it takes. Where bone density is low, a vertebra can lose height during a strong cough, a stumble that did not end in a fall, lifting a suitcase, or simply bending to pick something off the floor. There is often no dramatic event to point to.</p><p>The pattern that follows is usually:</p><ul><li>Sudden back pain, frequently in the mid or lower back, that is sharply worse with movement and eases when lying still.</li><li>Pain with rolling over in bed, standing from a chair, or coughing and sneezing.</li><li>Tenderness over one spot on the spine.</li><li>Over time, loss of height, and a rounding of the upper back.</li></ul><p>Some compression fractures produce little pain at all and are discovered incidentally on imaging done for another reason.</p>"
+    },
+    {
+      "h2": "What belongs to your physician",
+      "html": "<p>Everything about the fracture itself. The diagnosis, the imaging, pain management, whether a brace is appropriate, whether a procedure such as vertebroplasty or kyphoplasty is worth considering, and the medical treatment of the underlying bone density. Those decisions are theirs, and nothing here substitutes for them.</p><p>It is also their job to investigate why the bone was fragile. A compression fracture is frequently the event that leads to the first DXA scan, and it changes the urgency of that conversation.</p>"
+    },
+    {
+      "h2": "What exercise-based support adds afterwards",
+      "html": "<p>Two things tend to happen after a compression fracture, and both are addressable. The first is that the upper back rounds further forward, which shifts load toward the front of the vertebral bodies, exactly where the fracture occurred. The second is that people move less, which costs strength and balance at a point when both are protecting them from the next fall.</p><p>The work, once your physician clears it, is built around holding yourself upright and moving without loading the front of the spine:</p><ul><li><a href=\"/muscles/iliocostalis\">Iliocostalis</a> and <a href=\"/muscles/longissimus\">longissimus</a>, the long back extensors, are trained to hold the chest up for longer before fatiguing.</li><li><a href=\"/muscles/multifidus\">Multifidus</a> and the deep stabilizers are commonly inhibited after a painful episode and need deliberate reactivation.</li><li><a href=\"/muscles/gluteus-maximus\">Gluteus maximus</a> supplies hip extension so the low back does not have to, which it otherwise does with every step.</li><li><a href=\"/muscles/quadratus-lumborum\">Quadratus lumborum</a> shortens on one side as posture becomes asymmetrical and adds <a href=\"/pain/flank\">flank</a> ache.</li><li><a href=\"/muscles/psoas\">Psoas</a> tightens with time spent sitting or lying and pulls the lumbar spine into a deeper arch when you stand.</li></ul><p>Hip hinging is taught deliberately, because the alternative, rounding the back to reach the floor, is the movement most worth replacing. It is used dozens of times a day.</p>"
+    },
+    {
+      "h2": "What is generally left alone",
+      "html": "<p>Positions that load the front of the vertebral bodies are usually avoided after a compression fracture, at least until your physician says otherwise. That typically means end-range forward bending of the spine, crunches and sit-ups, loaded twisting, and lifting from a rounded-back position. It does not mean avoiding movement, which is the mistake that costs the most.</p><p>Walking, upright strength work within tolerance, and balance training are generally encouraged, and they are the things that reduce the chance of another fall.</p>"
+    },
+    {
+      "h2": "Pain that lingers after the fracture has healed",
+      "html": "<p>It is common for the acute fracture pain to settle while a duller, more diffuse ache remains, often <a href=\"/pain/beside-the-spine\">beside the spine</a> or <a href=\"/pain/between-shoulder-blades\">between the shoulder blades</a>. That later pain is frequently muscular, coming from extensors working overtime to hold up a trunk that has changed shape. Hands-on release and graded strength work usually help it, and distinguishing it from fracture pain is part of the assessment.</p>"
+    },
+    {
+      "h2": "A note for Sarasota",
+      "html": "<p>This is a condition of the decades that describe a large part of our community, and the fear that follows a compression fracture is often as limiting as the pain. People stop gardening, stop lifting grandchildren, stop travelling. Rebuilding confidence through graded, supervised loading is a genuine part of the work, and it runs alongside <a href=\"/conditions/balance-fall-prevention\">balance and fall prevention</a> and the bone-density plan your physician sets out in <a href=\"/conditions/osteoporosis-and-exercise\">osteoporosis care</a>.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": "The healing timeline for the fracture itself belongs to your physician. Posture, strength and balance work typically begins once they clear it, and the gains in confidence and steadiness are usually noticed well before any change in shape.",
+  "redFlags": [
+    "New numbness or weakness in the legs, or any change in bladder or bowel control: go to the emergency room now.",
+    "Sudden severe back pain after a minor strain, cough or fall, particularly if bone density is known to be low.",
+    "Back pain that is worse lying flat at night, or comes with fever, chills or unexplained weight loss.",
+    "A history of cancer with new back pain, which your physician should evaluate promptly.",
+    "Rapidly increasing height loss or a visibly worsening forward curve."
+  ],
+  "faq": [
+    {
+      "q": "Should I rest completely after a compression fracture?",
+      "a": "Early rest is often necessary, but prolonged rest costs bone, muscle and balance quickly. Most physicians want gentle movement resumed as soon as pain allows, and the graded work here starts once they clear it."
+    },
+    {
+      "q": "Will exercise cause another fracture?",
+      "a": "Appropriately chosen and dosed exercise is generally protective, because strength and balance reduce falls. What is avoided is loaded spinal flexion and twisting, which is why the programme is built rather than guessed at."
+    },
+    {
+      "q": "Can you fix the rounding in my back?",
+      "a": "The shape of a healed fracture does not reverse. What often does improve is how much further the back rounds on top of it, because that extra rounding is postural and muscular."
+    },
+    {
+      "q": "Do I need my physician's clearance first?",
+      "a": "Yes. This is a medical diagnosis, and any exercise programme should start with their agreement and any restrictions they set."
+    }
+  ],
+  "muscles": [
+    "iliocostalis",
+    "longissimus",
+    "multifidus",
+    "glute-max",
+    "ql",
+    "psoas"
+  ],
+  "pain": [
+    "beside-the-spine",
+    "between-shoulder-blades",
+    "flank"
+  ],
+  "guides": [],
+  "related": [
+    "/conditions/osteoporosis-and-exercise",
+    "/conditions/postural-kyphosis",
+    "/conditions/balance-fall-prevention",
+    "/conditions/low-back-pain",
+    "/treatments/clinical-exercise-physiology",
+    "/activities/seniors-strength-balance"
+  ],
+  "reviewStatus": "approved"
+}

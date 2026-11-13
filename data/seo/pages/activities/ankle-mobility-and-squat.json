@@ -1,0 +1,94 @@
+{
+  "group": "activities",
+  "slug": "ankle-mobility-and-squat",
+  "title": "Ankle Mobility and the Squat: What It Changes | MD Fit",
+  "h1": "Ankle Mobility and the Squat",
+  "description": "Ankle range decides how far your knees travel and how upright you squat. How to test it, what mobility work genuinely changes, and when to use a heel lift.",
+  "about": {
+    "type": "Thing",
+    "name": "Ankle mobility and squat mechanics"
+  },
+  "lead": "Ankle range is the quietest limit in the squat. It rarely hurts, it is easy to test, and restoring it often does more for a squat than weeks of hip work. It is also the one most commonly blamed when the real limit is somewhere else.",
+  "sections": [
+    {
+      "h2": "What the ankle is doing in a squat",
+      "html": "<p>To squat, your knee has to travel forward over your foot while your heel stays down. That movement is dorsiflexion, and it happens at the ankle. The more you have, the further the knee can travel, and the further the knee travels, the less your hips have to go backwards and the more upright your torso can stay.</p><p>That makes ankle range one of the few genuine dials on the shape of your squat. Add range, and the squat gets more upright. Take it away, and the body compensates: the heels lift, the feet turn out hard, the torso folds forward, or you simply stop short of depth.</p><p>It also interacts with shin length. A long shin needs more dorsiflexion to achieve the same knee position, which is one reason the same ankle range serves one lifter well and leaves another struggling.</p>"
+    },
+    {
+      "h2": "Testing it properly",
+      "html": "<p>The knee-to-wall test is the standard and it takes thirty seconds.</p><ol><li>Take your shoes off and face a wall in a half-kneeling position, front foot flat.</li><li>Drive the front knee forward to touch the wall, keeping the heel firmly down.</li><li>If the knee touches easily, slide the foot back and try again. Keep going until the heel starts to lift.</li><li>Measure the gap between your big toe and the wall at that point.</li></ol><p>Compare left with right. A clear difference between sides is often more informative than the absolute number, and a stiffer side frequently traces back to an old <a href=\"/conditions/ankle-sprain\">ankle sprain</a> that never fully recovered its range.</p>"
+    },
+    {
+      "h2": "What is usually limiting it",
+      "html": "<ul><li><b>Calf tissue.</b> The <a href=\"/muscles/soleus\">soleus</a> in particular, since it crosses only the ankle and is the main restraint with a bent knee, which is the squat position. The <a href=\"/muscles/gastrocnemius\">gastrocnemius</a> matters more with a straight leg.</li><li><b>The joint itself.</b> The talus needs to glide backwards as the shin moves forward. After a sprain that glide is often restricted even once the pain has gone.</li><li><b>Scarring and stiffness</b> from previous injury or surgery around the ankle.</li><li><b>Bony contact</b> at the front of the ankle, which is less common and does not respond to stretching.</li></ul><p>The first three usually improve with work. The fourth does not, and a few weeks of honest effort will tell you which you are dealing with.</p>"
+    },
+    {
+      "h2": "What mobility work genuinely changes",
+      "html": "<p>Calf length and joint glide both respond to consistent work, and the change is often quick enough to notice within a couple of weeks. Worth doing, two or three times a week:</p><ul><li>Loaded calf stretching with a bent knee, holding the position rather than bouncing.</li><li>Knee-to-wall rocking at the end of your range, slow and controlled, for sets of ten to fifteen.</li><li>Eccentric calf work, lowering slowly off a step, which builds tissue tolerance as well as length.</li><li>Soft-tissue work on the calf, which tends to help most when the tissue is guarding rather than genuinely short.</li></ul><p>What it will not change is shin length or bone shape. If your knee-to-wall distance has not moved at all after several weeks of consistent work, the useful response is to adjust the squat rather than keep pushing.</p>"
+    },
+    {
+      "h2": "Using a heel lift honestly",
+      "html": "<p>Elevating the heels in lifting shoes or on a wedge borrows the range you do not have. The knee gets to travel further forward, the hips come back underneath, and the torso comes up. For a <a href=\"/activities/long-femurs-squat\">long-femur lifter</a> it is often the single most effective change available.</p><p>Two honest caveats. It moves load towards the knee, so a lifter who already has plenty of knee travel and a history of front-of-knee pain may find it makes things worse. And it is a workaround rather than a fix: if your ankle range is restricted because of an old sprain, the shoes let you squat well while leaving the restriction in place, and that restriction shows up elsewhere, in running, in single-leg work and in balance.</p><p>Using both at once is reasonable. Lift with elevated heels, and work on the ankle separately.</p>"
+    },
+    {
+      "h2": "How MD Fit assesses it",
+      "html": "<p>Dr. Jared tests the ankle on the table as well as in standing, which separates calf tightness from a joint that is not gliding. Those feel identical to the person doing the test and respond to completely different treatment: one to soft-tissue work and loaded stretching, the other to hands-on joint work.</p><p>The assessment also checks whether the ankle is genuinely the limit at all, since hip range and femur length produce similar-looking squats. From there it is hands-on release, corrective work to own the new range, daily homework through the free MD Fit app video library, and a squat setup that suits what you currently have while the range is being rebuilt.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Ankle pain, swelling or a feeling of giving way, rather than simple stiffness.",
+    "Sharp pain at the front of the ankle at the end of the knee-to-wall test.",
+    "An ankle that locks or catches.",
+    "Calf pain with swelling, warmth or redness, which needs prompt medical assessment.",
+    "A sudden sharp pain in the calf or back of the heel during a lift, followed by weakness pushing off."
+  ],
+  "faq": [
+    {
+      "q": "How much ankle range do I need to squat?",
+      "a": "Enough to reach your working depth with the heels down and without the feet turning out hard. The number matters less than whether the position is available and whether the two sides match."
+    },
+    {
+      "q": "Are lifting shoes cheating?",
+      "a": "No. They change the demand of the lift in the same way a wider stance does. The only caution is that they move load towards the knee, so they suit some builds better than others."
+    },
+    {
+      "q": "Why is one ankle stiffer than the other?",
+      "a": "An old sprain is the usual reason. Range is often lost at the time and never deliberately rebuilt, because the pain resolves and the stiffness is not obvious in daily life."
+    },
+    {
+      "q": "How long before ankle work shows up in my squat?",
+      "a": "When the limit is calf tissue or joint glide, people often notice a difference within two to three weeks of consistent work. No change after several weeks suggests a structural limit."
+    }
+  ],
+  "muscles": [
+    "soleus",
+    "gastroc",
+    "tib-post",
+    "peroneals",
+    "tib-ant"
+  ],
+  "pain": [
+    "lower-calf",
+    "front-of-ankle",
+    "upper-calf"
+  ],
+  "guides": [
+    "calf"
+  ],
+  "related": [
+    "/activities/femur-length-and-squat",
+    "/activities/long-femurs-squat",
+    "/activities/why-squat-depth-differs",
+    "/activities/train-for-your-build",
+    "/conditions/ankle-sprain",
+    "/conditions/chronic-ankle-instability",
+    "/conditions/achilles-tendon-pain"
+  ],
+  "programs": [
+    "mobility-12",
+    "knee-6"
+  ],
+  "reviewStatus": "approved"
+}

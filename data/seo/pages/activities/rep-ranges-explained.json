@@ -1,0 +1,88 @@
+{
+  "slug": "rep-ranges-explained",
+  "title": "Rep Ranges Explained | MD Fit",
+  "h1": "Rep Ranges: What Each One Is Good For",
+  "description": "What low, moderate and high repetition work actually produces, where the old strength and hypertrophy zones hold up, and where they do not.",
+  "about": {
+    "type": "Thing",
+    "name": "Rep ranges in strength training"
+  },
+  "lead": "The familiar chart assigning one to five reps to strength, six to twelve to size and fifteen plus to endurance is a reasonable rough guide that gets treated as a law. The more accurate version is that muscle grows across a wide range when sets are hard, while maximal strength is more specific to heavy weights.",
+  "sections": [
+    {
+      "h2": "Where the traditional ranges hold up",
+      "html": "<p>Maximal strength really is somewhat specific. Lifting a heavy weight for one to five repetitions practises producing high force and the skill of the lift itself at the weights you want to be strong at. If your goal is a bigger one-rep max, you need to spend time near it.</p><p>At the other end, very high repetition work builds tolerance to sustained effort and is useful for muscular endurance. Both ends of the chart are broadly right about what they produce.</p>"
+    },
+    {
+      "h2": "Where it falls apart",
+      "html": "<p>The part that does not hold up well is the idea that muscle only grows in a narrow middle band. Muscle growth appears to be driven more by how close a set is taken to failure than by the specific number of repetitions, which means a hard set of six and a hard set of eighteen can both be productive.</p><p>What actually differs is the cost. Heavier sets are more demanding on joints, connective tissue and nervous system. Very high repetition sets become limited by burning and breathlessness before the muscle has been fully challenged. The middle ranges are popular not because they are magic but because they balance stimulus against cost well.</p>"
+    },
+    {
+      "h2": "Choosing by movement rather than by goal",
+      "html": "<p>A practical approach is to let the exercise suggest the range. Heavy compound lifts loading the spine and large joints tend to suit lower and moderate repetitions, where the position can be held and the fatigue is manageable. Isolation work and machines tolerate higher repetitions well, because the joint stress is lower and failure is less risky.</p><p>That means a session might contain a set of five on the squat and a set of fifteen on a leg extension without contradiction. They are doing different jobs at different costs.</p>"
+    },
+    {
+      "h2": "Rep ranges when something hurts",
+      "html": "<p>This is where range selection becomes genuinely useful rather than academic. An irritable joint often tolerates lighter weights for more repetitions far better than heavy work, while the muscle still gets trained. Moving a cranky shoulder's pressing from sets of five to sets of twelve is frequently the difference between training and not training.</p><p>The same applies in reverse for tendon complaints, where slow, controlled work at moderate loads is often better tolerated than either very heavy or very fast work. See <a href=\"/activities/training-around-an-injury\">training around an injury</a>.</p>"
+    },
+    {
+      "h2": "The practical answer",
+      "html": "<p>Most people do well with a mix: some lower repetition work to maintain the skill of lifting heavy, a large proportion in the moderate range where stimulus and cost balance well, and some higher repetition work on movements where loading the joint hard has no benefit.</p><p>Members get the workout generator in the MD Fit app, which builds the ranges into the sessions rather than leaving it as another thing to decide. Dr. Jared Caban is a physician-trained clinical exercise physiologist, and adjusting range and load around an irritable joint is a routine part of what the programme review covers.</p>"
+    }
+  ],
+  "redFlags": [
+    "Joint pain that appears specifically in one rep range and persists between sessions.",
+    "A sharp pain during a rep rather than the diffuse burning of a hard set.",
+    "Numbness, tingling or weakness in an arm or leg.",
+    "Soreness so severe you cannot straighten a limb, with dark urine or feeling unwell: seek medical care the same day.",
+    "Chest pain, pressure, shortness of breath or light-headedness during training: stop and call 911."
+  ],
+  "faq": [
+    {
+      "q": "What rep range builds the most muscle?",
+      "a": "Muscle grows across a broad range when sets are taken close to failure. Moderate ranges are popular because they balance stimulus against joint stress and fatigue well, not because they are uniquely effective."
+    },
+    {
+      "q": "Do I need to lift heavy to get strong?",
+      "a": "For maximal strength, yes to some extent, because lifting near your limit is partly a skill. For muscle size and general strength, a much wider range of loads works."
+    },
+    {
+      "q": "Are high reps bad for strength?",
+      "a": "No, but very high repetition sets tend to be limited by discomfort and breathlessness before the muscle is fully challenged, which makes them less efficient for that purpose."
+    },
+    {
+      "q": "Should I change rep ranges if a joint hurts?",
+      "a": "Often that is one of the most useful adjustments available. An irritable joint frequently tolerates lighter weights for more repetitions while the muscle still gets trained properly."
+    }
+  ],
+  "muscles": [
+    "vastus-lateralis",
+    "pec-major-stern",
+    "lats",
+    "glute-max",
+    "biceps-femoris",
+    "middle-trap"
+  ],
+  "pain": [
+    "front-of-shoulder",
+    "below-kneecap",
+    "beside-the-spine",
+    "point-of-elbow"
+  ],
+  "guides": [],
+  "related": [
+    "/activities/hypertrophy-training-basics",
+    "/activities/rpe-and-rir",
+    "/activities/progressive-overload",
+    "/activities/training-around-an-injury",
+    "/activities/training-volume-and-frequency",
+    "/treatments/strength-and-performance"
+  ],
+  "programs": [
+    "mobility-12"
+  ],
+  "group": "activities",
+  "steps": null,
+  "timeline": null,
+  "reviewStatus": "approved"
+}

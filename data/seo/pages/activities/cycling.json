@@ -4,7 +4,10 @@
   "title": "Cycling Pain & Injury Care in Sarasota, FL | MD Fit",
   "h1": "Cycling Pain & Injury Care in Sarasota, FL",
   "description": "Knee, low back, neck and hand pain from road and trail cycling: the muscles behind each, MD Fit's hands-on approach and safe steps for Sarasota riders.",
-  "about": { "type": "Thing", "name": "Cycling" },
+  "about": {
+    "type": "Thing",
+    "name": "Cycling"
+  },
   "lead": "Cycling is gentle on the joints and brutal on posture. You hold one shape for hours, repeat the same pedal stroke thousands of times and rarely use your glutes the way you think you do. Most cycling pain is a position problem or a muscle-balance problem, and both can be changed.",
   "sections": [
     {
@@ -46,13 +49,37 @@
     "Chest pain, unusual breathlessness or palpitations during a ride, which need emergency care: call 911."
   ],
   "faq": [
-    { "q": "Is my knee pain from the bike fit or from my body?", "a": "Often both. Fit sets the position, but weak glutes or tight hip flexors decide whether you can hold that position well. We address the body side and encourage a professional fit for the bike side." },
-    { "q": "Should I stop cycling with low back pain?", "a": "Usually not entirely. Shorter rides, standing up regularly and daily hip flexor and glute work often let riders keep going while the back settles. Pain that travels into the leg or involves numbness should be assessed first." },
-    { "q": "Why do my hands go numb on long rides?", "a": "Pressure on the nerves at the palm and wrist from leaning on the bars, often made worse by tight chest and neck muscles that irritate the same nerves higher up. Changing hand position helps; persistent numbness should be evaluated." }
+    {
+      "q": "Is my knee pain from the bike fit or from my body?",
+      "a": "Often both. Fit sets the position, but weak glutes or tight hip flexors decide whether you can hold that position well. We address the body side and encourage a professional fit for the bike side."
+    },
+    {
+      "q": "Should I stop cycling with low back pain?",
+      "a": "Usually not entirely. Shorter rides, standing up regularly and daily hip flexor and glute work often let riders keep going while the back settles. Pain that travels into the leg or involves numbness should be assessed first."
+    },
+    {
+      "q": "Why do my hands go numb on long rides?",
+      "a": "Pressure on the nerves at the palm and wrist from leaning on the bars, often made worse by tight chest and neck muscles that irritate the same nerves higher up. Changing hand position helps; persistent numbness should be evaluated."
+    }
   ],
-  "muscles": ["psoas", "iliacus", "rectus-femoris", "glute-med", "suboccipitals", "upper-trap"],
-  "pain": ["below-kneecap", "outside-of-knee", "front-of-hip", "base-of-skull"],
-  "guides": ["iliopsoas", "quads"],
+  "muscles": [
+    "psoas",
+    "iliacus",
+    "rectus-femoris",
+    "glute-med",
+    "suboccipitals",
+    "upper-trap"
+  ],
+  "pain": [
+    "below-kneecap",
+    "outside-of-knee",
+    "front-of-hip",
+    "base-of-skull"
+  ],
+  "guides": [
+    "iliopsoas",
+    "quads"
+  ],
   "related": [
     "/conditions/knee-pain",
     "/conditions/it-band-syndrome",
@@ -63,6 +90,10 @@
     "/treatments/functional-mobility",
     "/running-injury-sarasota"
   ],
-  "programs": ["posterior-chain-6", "knee-6", "hip-6"],
-  "reviewStatus": "draft"
+  "programs": [
+    "posterior-chain-6",
+    "knee-6",
+    "hip-6"
+  ],
+  "reviewStatus": "approved"
 }

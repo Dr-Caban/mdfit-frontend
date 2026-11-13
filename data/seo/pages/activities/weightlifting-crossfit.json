@@ -4,7 +4,10 @@
   "title": "Weightlifting & CrossFit Injury Rehab in Sarasota | MD Fit",
   "h1": "Weightlifting & CrossFit Injury Rehab in Sarasota",
   "description": "Shoulder, low back, hip, knee and elbow pain from barbell training and CrossFit. How MD Fit assesses lifters, keeps you training and rebuilds load tolerance.",
-  "about": { "type": "Thing", "name": "Weightlifting and CrossFit" },
+  "about": {
+    "type": "Thing",
+    "name": "Weightlifting and CrossFit"
+  },
   "lead": "Lifters do not want to be told to stop lifting, and most of the time they should not be. What they need is an honest look at which positions their body cannot currently get into, which muscles are compensating, and a plan that modifies the training instead of removing it. That is how Dr. Jared works with barbell athletes in Sarasota.",
   "sections": [
     {
@@ -42,14 +45,41 @@
     "Dark urine, severe muscle swelling and extreme soreness after a high-rep workout, which can signal rhabdomyolysis and needs emergency care."
   ],
   "faq": [
-    { "q": "Will I be told to stop lifting?", "a": "Rarely. In most cases the plan modifies the lift, the load or the range for a period while the limiting tissue is treated, then rebuilds. Acute injuries with weakness, swelling or nerve symptoms are the exception." },
-    { "q": "My shoulder only hurts overhead. Is it the shoulder or something else?", "a": "Often the shoulder is the victim of tight lats, a stiff upper back and a lower trapezius that is not doing its job. Fixing overhead mechanics usually matters more than treating the painful spot alone." },
-    { "q": "Is it safe to deadlift with a history of low back pain?", "a": "For most people a well-coached hinge is one of the best things for the back. The question is whether you can brace and hinge without the spine moving, which is exactly what the assessment checks." },
-    { "q": "Which MD Fit programs suit lifters?", "a": "The Back Stability protocol builds bracing and hip-driven movement, the six-week shoulder, neck and trap protocol restores overhead mechanics, and the full mobility system addresses the posterior chain. Dr. Jared assigns what fits." }
+    {
+      "q": "Will I be told to stop lifting?",
+      "a": "Rarely. In most cases the plan modifies the lift, the load or the range for a period while the limiting tissue is treated, then rebuilds. Acute injuries with weakness, swelling or nerve symptoms are the exception."
+    },
+    {
+      "q": "My shoulder only hurts overhead. Is it the shoulder or something else?",
+      "a": "Often the shoulder is the victim of tight lats, a stiff upper back and a lower trapezius that is not doing its job. Fixing overhead mechanics usually matters more than treating the painful spot alone."
+    },
+    {
+      "q": "Is it safe to deadlift with a history of low back pain?",
+      "a": "For most people a well-coached hinge is one of the best things for the back. The question is whether you can brace and hinge without the spine moving, which is exactly what the assessment checks."
+    },
+    {
+      "q": "Which MD Fit programs suit lifters?",
+      "a": "The Back Stability protocol builds bracing and hip-driven movement, the six-week shoulder, neck and trap protocol restores overhead mechanics, and the full mobility system addresses the posterior chain. Dr. Jared assigns what fits."
+    }
   ],
-  "muscles": ["lats", "lower-trap", "ql", "multifidus", "psoas", "glute-max"],
-  "pain": ["front-of-shoulder", "beside-the-spine", "front-of-hip", "below-kneecap"],
-  "guides": ["rotator-cuff", "iliopsoas"],
+  "muscles": [
+    "lats",
+    "lower-trap",
+    "ql",
+    "multifidus",
+    "psoas",
+    "glute-max"
+  ],
+  "pain": [
+    "front-of-shoulder",
+    "beside-the-spine",
+    "front-of-hip",
+    "below-kneecap"
+  ],
+  "guides": [
+    "rotator-cuff",
+    "iliopsoas"
+  ],
   "related": [
     "/conditions/shoulder-impingement",
     "/conditions/low-back-pain",
@@ -60,6 +90,10 @@
     "/treatments/strength-and-performance",
     "/treatments/clinical-exercise-physiology"
   ],
-  "programs": ["low-back-6", "shoulder-6", "mobility-12"],
-  "reviewStatus": "draft"
+  "programs": [
+    "low-back-6",
+    "shoulder-6",
+    "mobility-12"
+  ],
+  "reviewStatus": "approved"
 }

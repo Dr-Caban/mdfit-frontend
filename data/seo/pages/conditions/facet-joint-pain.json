@@ -1,0 +1,86 @@
+{
+  "group": "conditions",
+  "slug": "facet-joint-pain",
+  "title": "Facet Joint Pain Care in Sarasota, FL | MD Fit",
+  "h1": "Facet Joint Pain in Sarasota, FL",
+  "description": "Back pain that is worse arching, standing or walking downhill, and better sitting? That pattern often points to the facet joints rather than a disc.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Facet joint pain"
+  },
+  "lead": "The facet joints are the small paired joints at the back of each spinal segment that guide how the spine bends and twists. When they become irritated or arthritic, the pain has a distinctive pattern, and it is close to the opposite of disc pain.",
+  "sections": [
+    {
+      "h2": "The pattern that points to the facets",
+      "html": "<p>What makes facet pain recognisable is which positions make it worse:</p><ul><li>Worse arching backward, reaching overhead, or standing for a long time.</li><li>Worse walking downhill or down stairs, and often better walking uphill.</li><li>Better sitting, leaning forward, or curling up.</li><li>Stiff and sore in the morning, easing after moving about, then returning by evening.</li><li>Pain usually local and often one-sided, felt <a href=\"/pain/beside-the-spine\">beside the spine</a>, sometimes spreading into the <a href=\"/pain/upper-buttock\">upper buttock</a> or <a href=\"/pain/flank\">flank</a>, but rarely below the knee.</li></ul><p>In the neck, the same joints refer pain into the shoulder, the base of the skull and the upper back, and are a frequent contributor to <a href=\"/conditions/cervicogenic-headache\">headaches that start in the neck</a>.</p>"
+    },
+    {
+      "h2": "How this differs from a disc or stenosis",
+      "html": "<p>This distinction is worth getting right because the exercises point in opposite directions.</p><ul><li><a href=\"/conditions/herniated-disc\">Disc pain</a> is typically worse with sitting, bending forward and coughing, and frequently sends pain down the leg past the knee. Facet pain is the reverse: worse arching, better sitting.</li><li><a href=\"/conditions/spinal-stenosis\">Spinal stenosis</a> also eases with bending forward, but its hallmark is a shrinking walking distance with heaviness in both legs that settles within minutes of sitting.</li><li><a href=\"/conditions/si-joint-pain\">SI joint pain</a> sits lower and more to the side, over the dimple at the back of the pelvis, and is often provoked by standing on one leg or rolling over in bed.</li></ul><p>These coexist frequently, particularly in the decades when facet arthritis becomes common. Your physician makes the formal assessment.</p>"
+    },
+    {
+      "h2": "The muscles that load the facets",
+      "html": "<p>Facet joints are compressed when the spine is held in extension. What holds it there is usually a combination of tight hip flexors tipping the pelvis forward and weak glutes failing to supply hip extension, so the back extends instead with every step.</p><ul><li><a href=\"/muscles/psoas\">Psoas</a> and <a href=\"/muscles/iliacus\">iliacus</a> shorten with sitting and driving, then pull the lumbar spine into a deeper arch when you stand.</li><li><a href=\"/muscles/quadratus-lumborum\">Quadratus lumborum</a> tightens on the painful side and adds a flank ache that frequently travels with facet pain.</li><li><a href=\"/muscles/multifidus\">Multifidus</a> sits directly over these joints and commonly switches off after a painful episode, leaving the segment poorly controlled.</li><li><a href=\"/muscles/iliocostalis\">Iliocostalis</a> and <a href=\"/muscles/longissimus\">longissimus</a> hold the spine in extension for hours and become tender ropes alongside it.</li><li><a href=\"/muscles/gluteus-maximus\">Gluteus maximus</a> should supply hip extension; when it does not, the lumbar spine supplies it instead, which loads the facets on every stride.</li></ul>"
+    },
+    {
+      "h2": "How MD Fit approaches it",
+      "html": "<p>The assessment identifies the direction that provokes and the direction that relieves, checks hip extension and hip flexor length, and looks at how you stand, walk and get out of a chair. Hands-on release of the hip flexors and quadratus lumborum frequently eases standing tolerance in the same visit, because the arch reduces.</p><p>Correction teaches a neutral pelvis in standing and walking, which takes the constant compression off the joints. Strengthening then builds the glutes and the deep spinal stabilizers so that neutral position holds without conscious effort. Exercise selection is biased away from end-range arching, at least initially. Short daily routines come through the free MD Fit app.</p><p>Where your physician has used injections or nerve blocks, this work sits alongside them, and the window of relief they provide is often a good time to build strength.</p>"
+    },
+    {
+      "h2": "A note for Sarasota",
+      "html": "<p>Golf is the local activity that loads these joints hardest, because the follow-through combines extension and rotation, which is exactly the position facet joints dislike. Improving hip rotation and thoracic rotation lets the swing come from above and below the lumbar spine rather than through it, and that change usually does more for the back than any amount of stretching it.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": "Standing and walking tolerance frequently improve within the first few visits as the hip flexors release and posture changes. Building the glute and deep core strength that holds it commonly takes a couple of months of consistent short sessions.",
+  "redFlags": [
+    "New loss of bladder or bowel control, or numbness in the groin or inner thighs: go to the emergency room now.",
+    "Progressive leg weakness, foot drop, or numbness that is spreading.",
+    "Back pain with fever, chills, night sweats or unexplained weight loss.",
+    "A history of cancer with new back pain, which needs prompt medical evaluation.",
+    "Sudden severe back pain after a minor strain in someone with low bone density, which may be a compression fracture."
+  ],
+  "faq": [
+    {
+      "q": "How do I know it is the facets and not a disc?",
+      "a": "The directional pattern is the clearest clue: facet pain is usually worse arching and better sitting, while disc pain is usually worse sitting and bending forward. Your physician confirms it, sometimes with imaging or a diagnostic block."
+    },
+    {
+      "q": "Does facet arthritis show on an X-ray?",
+      "a": "Often, yes, and it is extremely common in people over a certain age who have no pain at all. That is why the findings are interpreted alongside your symptoms rather than on their own."
+    },
+    {
+      "q": "Should I stop extending my back?",
+      "a": "Usually only at first, and only at end range. The aim is to stop living in extension, not to avoid the movement permanently, and loaded arching is reintroduced as control improves."
+    },
+    {
+      "q": "Why does walking downhill hurt more?",
+      "a": "Going downhill tends to put the lower back into more extension with each step, which closes the facet joints down. Uphill does the opposite, which is why many people find it easier."
+    }
+  ],
+  "muscles": [
+    "psoas",
+    "iliacus",
+    "ql",
+    "multifidus",
+    "iliocostalis",
+    "glute-max"
+  ],
+  "pain": [
+    "beside-the-spine",
+    "upper-buttock",
+    "flank"
+  ],
+  "guides": [
+    "iliopsoas"
+  ],
+  "related": [
+    "/conditions/low-back-pain",
+    "/conditions/herniated-disc",
+    "/conditions/spinal-stenosis",
+    "/conditions/si-joint-pain",
+    "/conditions/spondylolisthesis",
+    "/treatments/chronic-pain-program"
+  ],
+  "reviewStatus": "approved"
+}

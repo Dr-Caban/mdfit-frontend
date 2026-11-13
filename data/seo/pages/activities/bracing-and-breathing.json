@@ -1,0 +1,89 @@
+{
+  "slug": "bracing-and-breathing",
+  "title": "Bracing and Breathing Under Load | MD Fit",
+  "h1": "Bracing and Breathing Under Load",
+  "description": "How to brace properly for heavy lifts, what the Valsalva manoeuvre does to blood pressure, and who should be careful with breath-holding.",
+  "about": {
+    "type": "Thing",
+    "name": "Bracing and breathing under load"
+  },
+  "lead": "Bracing is how you keep your trunk from folding under load, and it is a skill rather than a reflex. It is also the one technique point on this site with a genuine medical consideration attached, because holding your breath under a heavy bar does measurable things to your blood pressure.",
+  "sections": [
+    {
+      "h2": "What a brace actually is",
+      "html": "<p>Bracing is not sucking your stomach in, and it is not simply tightening your abdominals. It is creating pressure inside the abdomen that supports the spine from the inside, by taking a breath into the belly and then tensing the whole trunk around it as if preparing to be pushed.</p><p>A useful instruction: breathe in through the nose so the belly and the sides of the waist expand outward, not so the chest rises. Then tense as though bracing for a light punch to the stomach, while keeping the air in. The ribs should stay down rather than flaring up. That combination of air and tension is what holds the trunk rigid.</p>"
+    },
+    {
+      "h2": "Where people go wrong",
+      "html": "<ul><li><b>Breathing into the chest.</b> A high chest breath produces almost no useful pressure. The expansion should be around the waist.</li><li><b>Bracing without air, or air without bracing.</b> Both halves are needed; either alone is much weaker.</li><li><b>Flaring the ribs.</b> Driving the chest up arches the low back and loses the position you are trying to protect.</li><li><b>Losing it mid-rep.</b> Most back complaints from lifting trace to the brace softening at the hardest point rather than to the shape of the spine.</li><li><b>Exhaling on the way down.</b> The brace is held for the whole repetition, not released at the bottom.</li></ul>"
+    },
+    {
+      "h2": "The Valsalva manoeuvre and blood pressure",
+      "html": "<p>Holding your breath against a closed throat while straining is called the Valsalva manoeuvre. It is what most lifters do instinctively under a heavy bar, and it makes bracing more effective. It also produces a sharp, temporary rise in blood pressure during the hold, followed by a drop as you release. That is the mechanism behind feeling light-headed or seeing spots after a heavy set.</p><p>In healthy people this is generally tolerated. The caution applies if you have high blood pressure, any known heart condition, a history of stroke, an aneurysm, certain eye conditions, or are pregnant. In those situations breath-holding under load is something to discuss with your physician before relying on it, and this page is general education rather than clearance to do so. See <a href=\"/conditions/exercise-and-high-blood-pressure\">exercise and high blood pressure</a>.</p>"
+    },
+    {
+      "h2": "Breathing on lighter work",
+      "html": "<p>Breath-holding is for the heaviest efforts. On moderate and light sets there is no need for it, and continuous breathing is usually better: exhale through the harder portion of the movement and inhale as you return. For higher-repetition sets, trying to hold one breath for twelve reps is neither possible nor useful.</p><p>A reasonable rule of thumb is that the heavier and more spine-loaded the lift, the more a deliberate brace matters. A heavy squat or deadlift warrants a full brace with a held breath; a set of lateral raises does not.</p>"
+    },
+    {
+      "h2": "Belts and what they add",
+      "html": "<p>A belt gives the abdominal wall something to push against, which usually produces more pressure and a firmer brace. It works by improving a brace you already have, not by creating one, which is why learning to brace without a belt first is worth the time.</p><p>Worn correctly it sits across the belly rather than high on the ribs or low on the hips, tight enough to brace against but loose enough to let the belly expand into it. A belt is also not protective equipment: it does not make an unsafe position safe. Dr. Jared Caban, a physician-trained clinical exercise physiologist and licensed massage therapist, teaches bracing as part of rebuilding load tolerance after a back episode, and members get the matching videos in the MD Fit app.</p>"
+    }
+  ],
+  "redFlags": [
+    "Chest pain, pressure, unusual shortness of breath or light-headedness during or after a heavy set: stop and call 911.",
+    "Fainting, or repeatedly feeling close to fainting, after heavy sets.",
+    "A severe or sudden headache during exertion.",
+    "Visual changes, such as spots or blurring, that persist after you have recovered from a set.",
+    "Known high blood pressure, heart condition, aneurysm or recent eye surgery: discuss breath-holding under load with your physician before using it."
+  ],
+  "faq": [
+    {
+      "q": "Should I hold my breath when lifting heavy?",
+      "a": "Most lifters do, and it makes the brace more effective. It also raises blood pressure sharply during the hold, so it is something to discuss with your physician if you have high blood pressure or a heart condition."
+    },
+    {
+      "q": "Why do I feel dizzy after a heavy set?",
+      "a": "The pressure change when you release a held breath commonly causes brief light-headedness. If it is frequent, severe, or you come close to fainting, it is worth getting checked rather than accepting it as normal."
+    },
+    {
+      "q": "Do I need a belt to brace properly?",
+      "a": "No. A belt improves a brace you already have by giving the abdominal wall something to push against. Learning to brace without one first means the belt is adding to a skill rather than replacing it."
+    },
+    {
+      "q": "Where should a lifting belt sit?",
+      "a": "Across the belly rather than high on the ribs or down on the hips, tight enough to brace against but loose enough that your belly can expand into it as you breathe in."
+    }
+  ],
+  "muscles": [
+    "ext-oblique",
+    "multifidus",
+    "ql",
+    "psoas",
+    "intercostals",
+    "longissimus"
+  ],
+  "pain": [
+    "beside-the-spine",
+    "si-joint",
+    "side-of-ribs",
+    "side-of-abdomen"
+  ],
+  "guides": [],
+  "related": [
+    "/conditions/exercise-and-high-blood-pressure",
+    "/activities/barbell-back-squat",
+    "/activities/conventional-deadlift",
+    "/activities/lifting-with-back-pain",
+    "/conditions/low-back-pain",
+    "/treatments/clinical-exercise-physiology",
+    "/treatments/strength-and-performance"
+  ],
+  "programs": [
+    "low-back-6"
+  ],
+  "group": "activities",
+  "steps": null,
+  "timeline": null,
+  "reviewStatus": "approved"
+}

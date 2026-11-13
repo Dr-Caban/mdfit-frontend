@@ -4,7 +4,10 @@
   "title": "Hamstring Strain Recovery in Sarasota, FL | MD Fit",
   "h1": "Hamstring Strain Recovery in Sarasota, FL",
   "description": "Pulled hamstring in Sarasota? Dr. Jared Caban on why hamstrings tear, the glute and hip muscles behind it, and how MD Fit rebuilds the back of the thigh.",
-  "about": { "type": "MedicalCondition", "name": "Hamstring strain" },
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Hamstring strain"
+  },
   "lead": "A hamstring strain is the injury that keeps coming back. The tear heals, you feel fine, you sprint for a pickleball drop shot and it grabs again. Breaking that cycle means fixing why the hamstring was overloaded in the first place.",
   "sections": [
     {
@@ -42,14 +45,47 @@
     "Pain that is worsening after the first week instead of improving."
   ],
   "faq": [
-    { "q": "Should I stretch a pulled hamstring?", "a": "Not aggressively in the early days. Gentle movement is helpful, but hard stretching can re-tear healing fibers. Lengthening comes later through controlled strengthening." },
-    { "q": "Why does my hamstring keep re-tearing?", "a": "Usually because the glutes are not sharing the load and the hamstring was never strengthened at long lengths before returning to speed. Both are addressed in the MD Fit plan." },
-    { "q": "Can massage help a hamstring strain?", "a": "Hands-on release helps with guarding and scar tissue once the acute phase has passed. Deep work in the first days is avoided." },
-    { "q": "When can I run again?", "a": "When you can walk briskly, hinge and hop without pain and your strength is close to the other side. Speed is added gradually rather than all at once." }
+    {
+      "q": "Should I stretch a pulled hamstring?",
+      "a": "Not aggressively in the early days. Gentle movement is helpful, but hard stretching can re-tear healing fibers. Lengthening comes later through controlled strengthening."
+    },
+    {
+      "q": "Why does my hamstring keep re-tearing?",
+      "a": "Usually because the glutes are not sharing the load and the hamstring was never strengthened at long lengths before returning to speed. Both are addressed in the MD Fit plan."
+    },
+    {
+      "q": "Can massage help a hamstring strain?",
+      "a": "Hands-on release helps with guarding and scar tissue once the acute phase has passed. Deep work in the first days is avoided."
+    },
+    {
+      "q": "When can I run again?",
+      "a": "When you can walk briskly, hinge and hop without pain and your strength is close to the other side. Speed is added gradually rather than all at once."
+    }
   ],
-  "muscles": ["biceps-femoris", "medial-hamstrings", "glute-max", "glute-med", "adductor-magnus"],
-  "pain": ["back-of-thigh", "buttock-crease", "behind-the-knee"],
-  "guides": ["lateral-hip"],
-  "related": ["/conditions/sports-injury-rehab", "/conditions/sciatica", "/conditions/piriformis-syndrome", "/conditions/groin-strain", "/conditions/low-back-pain", "/treatments/strength-and-performance", "/pain/back-of-thigh", "/muscles/biceps-femoris"],
-  "reviewStatus": "draft"
+  "muscles": [
+    "biceps-femoris",
+    "medial-hamstrings",
+    "glute-max",
+    "glute-med",
+    "adductor-magnus"
+  ],
+  "pain": [
+    "back-of-thigh",
+    "buttock-crease",
+    "behind-the-knee"
+  ],
+  "guides": [
+    "lateral-hip"
+  ],
+  "related": [
+    "/conditions/sports-injury-rehab",
+    "/conditions/sciatica",
+    "/conditions/piriformis-syndrome",
+    "/conditions/groin-strain",
+    "/conditions/low-back-pain",
+    "/treatments/strength-and-performance",
+    "/pain/back-of-thigh",
+    "/muscles/biceps-femoris"
+  ],
+  "reviewStatus": "approved"
 }

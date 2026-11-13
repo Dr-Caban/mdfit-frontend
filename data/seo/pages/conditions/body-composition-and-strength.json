@@ -1,0 +1,82 @@
+{
+  "group": "conditions",
+  "slug": "body-composition-and-strength",
+  "title": "Body Composition and Strength | MD Fit",
+  "h1": "Body Composition and Strength in Sarasota, FL",
+  "description": "The scale measures the wrong thing. What muscle and fat you carry, and what you can do, matter more. Measured properly by a Clinical Exercise Physiologist.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Body composition"
+  },
+  "lead": "Two people can weigh exactly the same and be in completely different physical situations. The scale cannot tell them apart, which is why it is such a poor guide on its own — and why so many people doing the right things conclude that nothing is working.",
+  "sections": [
+    {
+      "h2": "What the scale cannot see",
+      "html": "<p>Body weight is the sum of muscle, fat, bone, organs and water. A single number conceals all of it. Some common situations where it actively misleads:</p><ul><li>You start resistance training, gain muscle and lose fat at a similar rate, and the scale does not move. Clothes fit differently, strength is up, and you conclude you have failed.</li><li>You lose weight quickly through diet alone and a substantial share of what left was muscle — which makes the next phase harder, not easier.</li><li>You weigh the same at sixty as at forty, and assume nothing has changed. Often a good deal of muscle has gone and fat has replaced it.</li><li>Water shifts move the number two or three pounds overnight for reasons that have nothing to do with anything you did.</li></ul><p>That third one has a name — sometimes described as normal-weight obesity — and it is common in people who have never been heavy and therefore never thought about it.</p>"
+    },
+    {
+      "h2": "Why muscle is the part to protect",
+      "html": "<p>Muscle is metabolically active, it is where most glucose goes after a meal, it is what holds you up and keeps you steady, and it is the reserve you draw on through illness or surgery. Fat loss is usually the stated goal; muscle preservation is the thing that determines whether the result lasts and whether you are better off afterwards.</p><p>This is the main argument for resistance training during any period of weight loss. Diet alone, or diet plus walking alone, tends to take muscle along with the fat. Loading during the process signals the body to keep what it has.</p><p>It matters increasingly with age, because muscle is already being lost in the background — see <a href=\"/conditions/sarcopenia-and-muscle-loss\">sarcopenia</a> — and a poorly-run weight loss attempt can accelerate that considerably.</p>"
+    },
+    {
+      "h2": "What to measure instead",
+      "html": "<p>Better measures are mostly simple, cheap and repeatable. At the evaluation I record a set and then repeat them, so change is visible rather than argued about:</p><ul><li><b>Waist circumference</b>, which tracks the fat distribution that matters metabolically far better than weight does.</li><li><b>Grip strength</b>, a surprisingly good proxy for whole-body strength.</li><li><b>A timed sit-to-stand</b>, which everyone recognises the meaning of immediately.</li><li><b>What you can actually lift</b>, recorded properly, so progression has somewhere to go.</li><li><b>How clothes fit</b>, which is unscientific and genuinely informative.</li><li>Weight too — but as one line on the page rather than the headline.</li></ul><p>Methods like bioelectrical impedance scales exist and are convenient, but single readings bounce around with hydration enough that I would not have anyone make decisions from one.</p>"
+    },
+    {
+      "h2": "What the training actually is",
+      "html": "<p>Resistance work on the large muscle groups, two or three times a week, with genuine progression: <a href=\"/muscles/gluteus-maximus\">gluteus maximus</a>, the <a href=\"/muscles/vastus-lateralis\">quadriceps</a>, <a href=\"/muscles/latissimus-dorsi\">latissimus dorsi</a>, the <a href=\"/muscles/pectoralis-major-upper\">chest and shoulders</a>. Aerobic work alongside it for cardiorespiratory fitness and general health. Protein intake discussed as part of the plan, because loading without raw material underperforms.</p><p>What I will not do is design your diet in detail. General guidance on protein and eating patterns is within scope; medical nutrition therapy for kidney disease, complex diabetes or an eating disorder is not, and those are referrals to a registered dietitian. I also do not prescribe weight-loss medication or advise on it — that is a conversation with your physician.</p>"
+    },
+    {
+      "h2": "Setting a goal that is actually worth having",
+      "html": "<p>A target weight is a weak goal because it says nothing about what you are made of or what you can do. More useful versions, in my experience with people who stick with it:</p><ul><li>Getting off the floor without using your hands.</li><li>Carrying all the shopping in one trip.</li><li>Playing eighteen holes, or three sets, without the last few being survival.</li><li>A specific lift at a specific weight.</li><li>A waist measurement, if a metabolic marker is the concern.</li></ul><p>These are measurable, they mean something to you, and — unlike a scale reading — they keep improving in the weeks where weight stubbornly does not.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Unintended weight loss that you did not set out to achieve should be assessed by your physician rather than welcomed.",
+    "Rapid weight gain over days, particularly with ankle swelling or breathlessness, needs prompt medical attention.",
+    "Severe food restriction, loss of periods, or distress around eating and body image: please speak to your physician, as this is outside what exercise care should be managing.",
+    "Dizziness, fainting or unusual weakness while dieting and training, which usually means intake is too low.",
+    "Dark-coloured urine or severe muscle soreness after unusually hard exercise: contact a physician promptly."
+  ],
+  "faq": [
+    {
+      "q": "Why hasn't the scale moved even though I'm training?",
+      "a": "Commonly because muscle is being gained while fat is lost, which the scale averages into no change. Waist measurement, strength and how clothes fit will usually show what the weight is hiding."
+    },
+    {
+      "q": "Do you do body fat testing?",
+      "a": "Simple repeatable measures are used rather than single-reading devices, because methods like impedance scales shift with hydration enough that decisions should not be made from one reading."
+    },
+    {
+      "q": "Should I do cardio or weights to lose fat?",
+      "a": "Both have a role, but resistance training is the one that protects muscle during weight loss. Losing weight without loading usually means losing muscle alongside the fat, which makes the result harder to keep."
+    },
+    {
+      "q": "Will you write me a diet plan?",
+      "a": "General guidance on protein and eating patterns is part of the plan. Detailed medical nutrition therapy is a registered dietitian's work and will be referred rather than improvised."
+    }
+  ],
+  "muscles": [
+    "glute-max",
+    "vastus-lateralis",
+    "lats",
+    "pec-major-clav",
+    "glute-med"
+  ],
+  "pain": [
+    "front-of-thigh",
+    "outside-of-hip"
+  ],
+  "guides": [],
+  "related": [
+    "/treatments/clinical-exercise-physiology",
+    "/conditions/sarcopenia-and-muscle-loss",
+    "/conditions/returning-to-exercise-after-a-long-break",
+    "/treatments/strength-and-performance",
+    "/conditions/vo2max-and-cardiorespiratory-fitness",
+    "/activities/weightlifting-crossfit"
+  ],
+  "reviewStatus": "approved"
+}

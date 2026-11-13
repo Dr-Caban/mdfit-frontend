@@ -4,7 +4,10 @@
   "title": "Spinal Stenosis Exercise Care in Sarasota | MD Fit",
   "h1": "Spinal Stenosis Exercise Care in Sarasota, FL",
   "description": "Living with lumbar spinal stenosis? MD Fit in Sarasota offers exercise-based care alongside your physician's plan: hip mobility, posture, strength and walking.",
-  "about": { "type": "MedicalCondition", "name": "Spinal stenosis" },
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Spinal stenosis"
+  },
   "lead": "Spinal stenosis is a narrowing of the canal that houses the spinal cord and nerves. It is a medical diagnosis made by a physician with imaging. What MD Fit offers is the exercise and soft-tissue side of care, which can make a real difference in how far you walk and how well you tolerate your day.",
   "sections": [
     {
@@ -42,14 +45,47 @@
     "Leg pain with walking that stops when you stand still, which may indicate a circulation problem."
   ],
   "faq": [
-    { "q": "Can exercise fix spinal stenosis?", "a": "Exercise does not change the bony narrowing. It can change posture, hip mobility and strength, which often improves walking tolerance and comfort. Your physician manages the medical side." },
-    { "q": "Do I need an MRI before coming to MD Fit?", "a": "Stenosis is diagnosed by a physician, typically with imaging. Please bring that diagnosis and any restrictions your doctor has given, so care is built around them." },
-    { "q": "Why does bending forward help?", "a": "Flexing the spine opens the canal and takes pressure off the nerves. That is why leaning on a cart or sitting relieves symptoms, and why the exercises lean that direction." },
-    { "q": "Is walking good or bad for stenosis?", "a": "Walking in intervals, stopping to sit or lean forward when symptoms begin, is generally encouraged. Dr. Jared will help set a starting distance based on your assessment." }
+    {
+      "q": "Can exercise fix spinal stenosis?",
+      "a": "Exercise does not change the bony narrowing. It can change posture, hip mobility and strength, which often improves walking tolerance and comfort. Your physician manages the medical side."
+    },
+    {
+      "q": "Do I need an MRI before coming to MD Fit?",
+      "a": "Stenosis is diagnosed by a physician, typically with imaging. Please bring that diagnosis and any restrictions your doctor has given, so care is built around them."
+    },
+    {
+      "q": "Why does bending forward help?",
+      "a": "Flexing the spine opens the canal and takes pressure off the nerves. That is why leaning on a cart or sitting relieves symptoms, and why the exercises lean that direction."
+    },
+    {
+      "q": "Is walking good or bad for stenosis?",
+      "a": "Walking in intervals, stopping to sit or lean forward when symptoms begin, is generally encouraged. Dr. Jared will help set a starting distance based on your assessment."
+    }
   ],
-  "muscles": ["psoas", "iliacus", "ql", "glute-max", "glute-med", "multifidus"],
-  "pain": ["beside-the-spine", "upper-buttock", "back-of-thigh"],
-  "guides": ["iliopsoas"],
-  "related": ["/conditions/sciatica", "/conditions/low-back-pain", "/conditions/herniated-disc", "/conditions/balance-fall-prevention", "/treatments/chronic-pain-program", "/treatments/clinical-exercise-physiology", "/conditions/hip-osteoarthritis"],
-  "reviewStatus": "draft"
+  "muscles": [
+    "psoas",
+    "iliacus",
+    "ql",
+    "glute-max",
+    "glute-med",
+    "multifidus"
+  ],
+  "pain": [
+    "beside-the-spine",
+    "upper-buttock",
+    "back-of-thigh"
+  ],
+  "guides": [
+    "iliopsoas"
+  ],
+  "related": [
+    "/conditions/sciatica",
+    "/conditions/low-back-pain",
+    "/conditions/herniated-disc",
+    "/conditions/balance-fall-prevention",
+    "/treatments/chronic-pain-program",
+    "/treatments/clinical-exercise-physiology",
+    "/conditions/hip-osteoarthritis"
+  ],
+  "reviewStatus": "approved"
 }

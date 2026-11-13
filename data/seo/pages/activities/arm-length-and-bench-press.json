@@ -1,0 +1,95 @@
+{
+  "group": "activities",
+  "slug": "arm-length-and-bench-press",
+  "title": "Arm Length and the Bench Press | MD Fit",
+  "h1": "Arm Length and the Bench Press",
+  "description": "Long arms make the same weight a longer lift. How arm length changes bench press range, grip width and set-up, and where the shoulder pays for it.",
+  "about": {
+    "type": "Thing",
+    "name": "Arm length and bench press mechanics"
+  },
+  "lead": "Two lifters bench the same weight for the same reps and one of them has done considerably more work. Arm length decides how far the bar has to travel, and a longer arm means a longer rep, every rep, for the whole of your training life.",
+  "sections": [
+    {
+      "h2": "Why the same weight is a different lift",
+      "html": "<p>The bar starts at arm's length and finishes on your chest. The distance between those two points is set by how long your arms are and how thick your chest is. A lifter with long arms and a flat chest moves the bar a long way. A lifter with short arms and a deep ribcage moves it a short way.</p><p>Work is force multiplied by distance, so a longer range at the same load is simply more work per rep. That alone explains a good deal of why bench press numbers vary so much between people of similar size and training history.</p><p>There is a second effect that matters just as much. A longer arm is a longer lever, so the same weight produces more rotational demand at the shoulder and elbow. The long-armed lifter is not just working further, they are working at a mechanical disadvantage the whole way.</p>"
+    },
+    {
+      "h2": "How to tell this is you",
+      "html": "<ul><li>Your wingspan is noticeably greater than your height. Stand with arms out and have someone measure fingertip to fingertip against your height.</li><li>Your bench has always lagged behind your squat and deadlift relative to what other people manage.</li><li>You feel the bottom of the bench press far more than the top, and the bar stalls close to your chest.</li><li>Pressing feels better on an incline or with dumbbells than it does flat with a barbell.</li><li>Your elbows travel well below the bench at the bottom of a dumbbell press.</li></ul>"
+    },
+    {
+      "h2": "What to change in your set-up",
+      "html": "<ol><li><b>Widen your grip, within reason.</b> A wider grip shortens the distance the bar travels. It also places more demand on the shoulder joint, so widen gradually and stop at the point where the front of the shoulder starts to complain rather than chasing the widest grip you can hold.</li><li><b>Set your shoulder blades first.</b> Pull the shoulder blades down and together and hold them there for the whole set. This raises the chest, shortens the range and gives the shoulder a stable base. For long-armed lifters it is the difference between a controlled press and a shoulder-led one.</li><li><b>Use the arch you have.</b> A moderate upper-back arch with the feet planted raises the chest and shortens the stroke. It does not need to be extreme to help.</li><li><b>Keep the elbows tucked somewhat.</b> Flaring the elbows straight out to the sides puts the shoulder in its least forgiving position. Somewhere between forty-five and sixty degrees from the torso suits most people.</li><li><b>Train partials deliberately.</b> Board presses, pin presses and floor presses let you load the top of the range heavily while the bottom catches up. For long arms that is a sensible long-term strategy, not a shortcut.</li></ol>"
+    },
+    {
+      "h2": "Where it shows up as pain",
+      "html": "<p>The front of the shoulder is the usual complaint. At the bottom of a wide-grip bench with long arms, the shoulder sits in deep extension and the structures at the front of the joint take the stretch. Repeated often enough, that is a common background to <a href=\"/conditions/shoulder-impingement\">shoulder impingement</a> and to irritation of the long head of the biceps tendon, which shows up as <a href=\"/conditions/biceps-tendinopathy\">biceps tendinopathy</a>.</p><p>The muscles involved are usually the <a href=\"/muscles/pectoralis-major-lower\">pectoralis major</a>, the <a href=\"/muscles/pectoralis-minor\">pectoralis minor</a> which pulls the shoulder blade forward and down into exactly the position you are trying to avoid, the <a href=\"/muscles/subscapularis\">subscapularis</a> at the front of the shoulder blade, and the <a href=\"/muscles/anterior-deltoid\">anterior deltoid</a>. All four refer pain to the front of the shoulder and down the arm, which is why a pressing shoulder often feels like a joint problem when the tissue is muscular.</p><p>Inside-of-elbow pain is the other common one, particularly with a very wide grip or a thick bar.</p>"
+    },
+    {
+      "h2": "What not to do about it",
+      "html": "<ul><li><b>Do not bounce the bar off your chest</b> to get past the bottom. It loads the ribs and the shoulder at the worst possible moment.</li><li><b>Do not flare the elbows wide</b> to shorten the range. The range you save costs you shoulder position.</li><li><b>Do not abandon pressing</b> because the numbers are unflattering. Long-armed lifters often do very well on incline work, dumbbells and overhead pressing, where the leverages differ.</li><li><b>Do not train through sharp front-of-shoulder pain.</b> Soreness settles in a couple of days; a pinch that returns every session is worth assessing.</li></ul>"
+    },
+    {
+      "h2": "How MD Fit works with pressing shoulders",
+      "html": "<p>The assessment looks at shoulder range on the table, how your shoulder blade moves when you raise and lower your arm, and how your press looks from the side. A shoulder that lacks range, a shoulder blade that does not move well, and a pressing position that asks too much of the joint all produce the same complaint and need different work.</p><p>Treatment combines hands-on release of the muscles holding the shoulder forward, corrective work for the shoulder blade, daily homework through the free MD Fit app video library, and a pressing set-up built around your leverages. The app's workout generator can build sessions around the pressing variations that suit your arms, which usually means keeping you pressing rather than stopping.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "A pop or tearing sensation in the chest or shoulder during a press, followed by weakness, bruising or a visible change in shape.",
+    "Pain, numbness or tingling travelling down the arm into the hand.",
+    "A shoulder that gives way, catches or feels like it is slipping out of position.",
+    "Night pain in the shoulder that wakes you and does not settle with position changes.",
+    "Front-of-shoulder pain that is worsening week on week despite reducing load."
+  ],
+  "faq": [
+    {
+      "q": "Will a wider grip make my bench stronger?",
+      "a": "It shortens the range, which usually means more weight moved. It also asks more of the shoulder joint, so the useful grip is the widest one you can use comfortably over months rather than the widest you can hold for one set."
+    },
+    {
+      "q": "Should long-armed lifters bother with flat barbell bench?",
+      "a": "It is still a good lift for building pressing strength, but it does not have to be the measure of progress. Incline and dumbbell work often suit long arms better and build the same qualities."
+    },
+    {
+      "q": "Is arching dangerous for my back?",
+      "a": "A moderate arch with the feet planted and the ribcage lifted is a normal pressing position for most people. Extreme arching under heavy load is a different matter and is worth building up to carefully."
+    },
+    {
+      "q": "Why does the bottom of the press hurt but not the top?",
+      "a": "The bottom is where the shoulder is in its most demanding position, especially with long arms and a wide grip. It usually points to the set-up or the range rather than the weight itself."
+    }
+  ],
+  "muscles": [
+    "pec-major-stern",
+    "pec-minor",
+    "subscapularis",
+    "ant-delt",
+    "biceps-long",
+    "triceps-long"
+  ],
+  "pain": [
+    "front-of-shoulder",
+    "deep-shoulder-joint",
+    "front-of-elbow"
+  ],
+  "guides": [
+    "rotator-cuff"
+  ],
+  "related": [
+    "/activities/train-for-your-build",
+    "/activities/shoulder-shape-and-overhead-lifting",
+    "/activities/weightlifting-crossfit",
+    "/conditions/shoulder-impingement",
+    "/conditions/biceps-tendinopathy",
+    "/conditions/rotator-cuff-tear",
+    "/treatments/strength-and-performance"
+  ],
+  "programs": [
+    "shoulder-6",
+    "mobility-12"
+  ],
+  "reviewStatus": "approved"
+}

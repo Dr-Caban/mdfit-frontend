@@ -19,11 +19,11 @@
   <link rel="icon" href="assets/icon-64.png" type="image/png">
   <link rel="apple-touch-icon" href="assets/logo.webp">
   <link rel="manifest" href="/manifest.webmanifest">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="/assets/fonts/montserrat-var.a5ec5492.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="/assets/fonts/libre-baskerville.b1bcbff3.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="/assets/fonts/libre-baskerville-italic.f6180342.woff2">
   <link rel="stylesheet" href="app-demo.css?v=d0a376c6">
-  <link rel="stylesheet" href="styles.css?v=45de4d22">
+  <link rel="stylesheet" href="styles.css?v=3e518721">
   <link rel="stylesheet" href="guides.css?v=704fb203">
   <script type="application/ld+json">
   {"@context": "https://schema.org", "@graph": [{"@type": ["MedicalClinic", "HealthAndBeautyBusiness", "ExerciseGym"], "@id": "https://www.mymdfit.com/#clinic", "name": "MD Fit", "alternateName": "MD Fit SRQ", "description": "Physical rehabilitation and pain treatment in Sarasota, FL: low back pain, sciatica, neck, shoulder, knee and hip pain, post-surgical and sports injury rehab, chronic pain, medical massage, and strength & performance training with Dr. Jared Caban, MD, MSc, CEP.", "url": "https://www.mymdfit.com/", "telephone": "+1-941-313-0562", "image": "https://www.mymdfit.com/assets/logo.webp", "logo": "https://www.mymdfit.com/assets/logo.webp", "priceRange": "$$", "address": {"@type": "PostalAddress", "streetAddress": "3214 Clark Road", "addressLocality": "Sarasota", "addressRegion": "FL", "postalCode": "34231", "addressCountry": "US"}, "hasMap": "https://maps.google.com/?cid=18426672193642042879", "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "08:00", "closes": "16:00"}], "aggregateRating": {"@type": "AggregateRating", "ratingValue": "5.0", "reviewCount": 89, "bestRating": "5"}, "areaServed": [{"@type": "City", "name": "Sarasota"}, {"@type": "City", "name": "Bradenton"}, {"@type": "City", "name": "Lakewood Ranch"}, {"@type": "City", "name": "Venice"}, {"@type": "City", "name": "Osprey"}, {"@type": "City", "name": "Siesta Key"}], "availableService": [{"@type": "MedicalTherapy", "name": "Injury and post-surgical rehabilitation"}, {"@type": "MedicalTherapy", "name": "Low back pain and sciatica treatment"}, {"@type": "MedicalTherapy", "name": "Neck and shoulder pain treatment"}, {"@type": "MedicalTherapy", "name": "Knee and hip pain treatment"}, {"@type": "MedicalTherapy", "name": "Sports injury rehabilitation"}, {"@type": "MedicalTherapy", "name": "Chronic pain treatment"}, {"@type": "MedicalTherapy", "name": "Medical massage"}, {"@type": "MedicalTherapy", "name": "Functional mobility"}, {"@type": "MedicalTherapy", "name": "Balance and fall prevention"}, {"@type": "MedicalTherapy", "name": "Strength and performance training"}], "founder": {"@type": "Person", "name": "Jared Caban", "honorificPrefix": "Dr.", "honorificSuffix": "MD, MSc, CEP, CCEP, LMT", "jobTitle": "Clinical Exercise Physiologist"}, "potentialAction": {"@type": "ReserveAction", "target": "https://www.mymdfit.com/book", "name": "Book an evaluation"}, "sameAs": ["https://www.facebook.com/MDFitSRQ/", "https://maps.google.com/?cid=18426672193642042879"]}, {"@type": "WebSite", "@id": "https://www.mymdfit.com/#site", "url": "https://www.mymdfit.com/", "name": "MD Fit", "publisher": {"@id": "https://www.mymdfit.com/#clinic"}}]}
@@ -361,7 +361,7 @@
       <div class="wrap coach">
         <div class="coach-photo-wrap">
           <img class="coach-photo" alt="" hidden>
-          <div class="coach-placeholder"><img src="assets/dr-jared.jpg" alt="Dr. Jared Caban treating a patient"></div>
+          <div class="coach-placeholder"><img src="assets/dr-jared.jpg" alt="Dr. Jared Caban treating a patient" width="503" height="690" loading="lazy" decoding="async"></div>
         </div>
         <div>
           <p class="eyebrow">Meet your doctor of movement</p>
@@ -537,21 +537,21 @@
     </form>
   </dialog>
 
-  <script src="config.js?v=aac711e3"></script>
+  <script src="config.js?v=aac711e3" defer></script>
   <script src="analytics.js?v=f3f61f9e" defer></script>
-  <script src="realtime.js?v=22ae7ae5"></script>
-  <script src="common.js?v=c5aaed4f"></script>
-  <script src="booking.js?v=0a43ead4"></script>
-  <script src="stripe-checkout.js?v=087989ec"></script>
-  <script src="pricing.js?v=a8ba1305"></script>
-  <script src="app.js?v=b2cdd571"></script>
-  <script src="painmuscles.js?v=74e3b348"></script>
-  <script src="painpatterns.js?v=eefa906e"></script>
-  <script src="paintracks.js?v=4bf3f9a9"></script>
-  <script src="guides.js?v=8521968d"></script>
+  <script src="realtime.js?v=22ae7ae5" defer></script>
+  <script src="common.js?v=c5aaed4f" defer></script>
+  <script src="booking.js?v=0a43ead4" defer></script>
+  <script src="stripe-checkout.js?v=087989ec" defer></script>
+  <script src="pricing.js?v=a8ba1305" defer></script>
+  <script src="app.js?v=b2cdd571" defer></script>
+  <script src="painmuscles.js?v=29827557" defer></script>
+  <script src="painpatterns.js?v=eefa906e" defer></script>
+  <script src="paintracks.js?v=4bf3f9a9" defer></script>
+  <script src="guides.js?v=8521968d" defer></script>
   <script src="app-demo.js?v=c3a2e7bc" defer></script>
-  <script src="painmap.js?v=52dd4372"></script>
-<script>if(window.MDFitRT)MDFitRT.connect({namespace:"/public"});</script>
+  <script src="painmap.js?v=52dd4372" defer></script>
+<script>document.addEventListener("DOMContentLoaded",function(){if(window.MDFitRT)MDFitRT.connect({namespace:"/public"});});</script>
 <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>

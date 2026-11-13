@@ -1,0 +1,89 @@
+{
+  "slug": "rpe-and-rir",
+  "title": "RPE and RIR: Rating Your Sets | MD Fit",
+  "h1": "RPE and RIR: Judging How Hard a Set Was",
+  "description": "How to rate effort with reps in reserve, why most people misjudge it, and how auto-regulating load beats following a fixed percentage.",
+  "about": {
+    "type": "Thing",
+    "name": "RPE and reps in reserve"
+  },
+  "lead": "Fixed percentages assume every day is the same, which no one who has trained for a year believes. Rating effort lets the weight respond to the day you are actually having, which is useful for progress and useful for not training heavily on a day your body is not ready for.",
+  "sections": [
+    {
+      "h2": "What the two scales mean",
+      "html": "<p>Reps in reserve is the simpler of the two: how many more repetitions you genuinely could have completed if you had kept going. Stopping with two good reps left is two reps in reserve.</p><p>Rating of perceived exertion in lifting is usually the same idea inverted onto a ten-point scale, where ten is an all-out effort with nothing left, nine is one rep left, eight is two reps left and so on. They measure the same thing and which you use is preference.</p>"
+    },
+    {
+      "h2": "Almost everyone underestimates how hard a set was",
+      "html": "<p>The consistent finding when people are asked to rate a set and then taken to failure is that most have more left than they thought, particularly those newer to training. A set rated as having one rep left often turns out to have had three or four.</p><p>This matters because the effort is what drives the result. A programme of sets that feel hard but stop five reps short will produce much less than the same programme performed closer to the limit. Occasionally taking a set to genuine failure on a safe movement, such as a machine or a dumbbell exercise, recalibrates your sense of where the limit actually is.</p>"
+    },
+    {
+      "h2": "Why it beats fixed percentages",
+      "html": "<p>A percentage-based programme assumes your maximum is a constant. It is not. Sleep, stress, food, time of day and what you did two days ago all change what a given weight feels like, sometimes by a lot.</p><p>Rating effort lets the load follow that. On a good day the prescribed effort means more weight; on a poor day it means less, and you still get an appropriate training stress rather than either grinding through something unwise or wasting the session. For anyone over forty or managing an existing injury, that flexibility is particularly valuable: see <a href=\"/activities/powerlifting-after-40\">powerlifting after 40</a>.</p>"
+    },
+    {
+      "h2": "Using it in practice",
+      "html": "<p>A common application is to prescribe sets at a target effort rather than a target weight: four sets of six at two reps in reserve. You choose the weight that produces that, which may differ from last week.</p><p>Two practical cautions. Judging effort is a skill that takes months to develop, so beginners are usually better served by a simple fixed progression. And the scale becomes unreliable at very high repetitions, where discomfort arrives long before true failure and tends to be mistaken for it.</p>"
+    },
+    {
+      "h2": "Effort ratings as a warning system",
+      "html": "<p>There is a diagnostic use that gets overlooked. If a weight that was comfortably two reps in reserve last week is now an all-out effort, something has changed, and it is usually recovery rather than lost strength. Tracking that number across weeks picks up accumulating fatigue before performance visibly declines.</p><p>That is often the earliest sign that a deload is due, or that something outside training is competing for recovery. See <a href=\"/activities/deload-weeks\">deload weeks</a>. Members get the workout generator and exercise library in the MD Fit app, and Dr. Jared Caban, a physician-trained clinical exercise physiologist, uses the same logic when progressing load after an injury: the number on the bar follows the effort it costs, not the calendar.</p>"
+    }
+  ],
+  "redFlags": [
+    "A weight that suddenly feels far harder than usual without an obvious explanation, sustained over more than a week.",
+    "Persistent fatigue, worsening sleep or declining performance across several weeks.",
+    "Joint pain that persists between sessions rather than ordinary muscle soreness.",
+    "Numbness, tingling or weakness in an arm or leg.",
+    "Chest pain, pressure, shortness of breath or light-headedness during training: stop and call 911."
+  ],
+  "faq": [
+    {
+      "q": "What does RPE 8 mean?",
+      "a": "On the lifting scale it means roughly two repetitions left in reserve: you could have completed two more with good technique before failing."
+    },
+    {
+      "q": "Am I good at judging reps in reserve?",
+      "a": "Probably less than you think, which is normal. Most people have more left than they estimate, and occasionally taking a safe movement to genuine failure helps recalibrate."
+    },
+    {
+      "q": "Should beginners use RPE?",
+      "a": "Usually not as the main tool. Judging effort is a skill that takes time, and a simple fixed progression gives a newer lifter clearer feedback while they build it."
+    },
+    {
+      "q": "Is it better than percentages?",
+      "a": "For most people it suits real training better, because what a given weight feels like changes day to day with sleep, stress and recovery. Percentages assume a constant that does not exist."
+    }
+  ],
+  "muscles": [
+    "glute-max",
+    "vastus-lateralis",
+    "pec-major-stern",
+    "lats",
+    "ql",
+    "biceps-femoris"
+  ],
+  "pain": [
+    "beside-the-spine",
+    "front-of-shoulder",
+    "below-kneecap",
+    "top-of-shoulder"
+  ],
+  "guides": [],
+  "related": [
+    "/activities/hypertrophy-training-basics",
+    "/activities/progressive-overload",
+    "/activities/deload-weeks",
+    "/activities/rep-ranges-explained",
+    "/activities/peaking-for-a-meet",
+    "/activities/powerlifting-after-40",
+    "/treatments/strength-and-performance"
+  ],
+  "programs": [
+    "mobility-12"
+  ],
+  "group": "activities",
+  "steps": null,
+  "timeline": null,
+  "reviewStatus": "approved"
+}

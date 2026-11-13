@@ -1,0 +1,88 @@
+{
+  "group": "conditions",
+  "slug": "massage-during-pregnancy",
+  "title": "Pregnancy Massage in Sarasota, FL | MD Fit",
+  "h1": "Massage During Pregnancy in Sarasota, FL",
+  "description": "Positioning, what changes by trimester, which areas are approached cautiously, and the symptoms that mean contacting your provider instead of booking.",
+  "about": {
+    "type": "MedicalTherapy",
+    "name": "Prenatal massage therapy"
+  },
+  "lead": "Pregnancy changes posture, ligament laxity and circulation, and the aches that follow are extremely common. Soft-tissue work can help with them. It is also an area where caution is appropriate, and where your obstetric provider's view comes before ours.",
+  "sections": [
+    {
+      "h2": "Clear it with your provider first",
+      "html": "<p>For an uncomplicated pregnancy, massage is widely considered reasonable, but \"widely considered reasonable\" is not the same as right for you. Check with your obstetrician or midwife before booking, and particularly if you have high blood pressure, preeclampsia, a history of preterm labour, bleeding, placental concerns, a multiple pregnancy, or a clotting disorder.</p><p>Bring whatever they tell you to the session. If they advise against it, that decision stands.</p>"
+    },
+    {
+      "h2": "Positioning, and why it changes",
+      "html": "<p>The main practical adjustment is how you lie. Face-down becomes unworkable early, and lying flat on the back for an extended period is generally avoided after the first trimester, because the weight of the uterus can press on the large vein returning blood to the heart and leave you lightheaded.</p><p>Side-lying with pillows between the knees and under the bump is the standard working position, and it is comfortable for most people. Semi-reclined and seated positions are also used, particularly for neck and shoulder work. If you ever feel dizzy, breathless or unwell in a position, say so immediately and it is changed.</p>"
+    },
+    {
+      "h2": "What tends to need attention",
+      "html": "<p>The pattern is fairly consistent as pregnancy progresses:</p><ul><li><b>Low back and pelvis.</b> A growing bump tilts the pelvis forward and loads the <a href=\"/muscles/quadratus-lumborum\">quadratus lumborum</a> and the spinal muscles. Pain around the <a href=\"/conditions/si-joint-pain\">SI joint</a> is very common as ligaments soften.</li><li><b>Hips and glutes.</b> The <a href=\"/muscles/gluteus-medius\">gluteus medius</a> works harder to keep the pelvis level, and side-sleeping adds to outer-hip soreness.</li><li><b>Neck, upper back and chest.</b> Breast changes and altered posture load the <a href=\"/muscles/upper-trapezius\">upper trapezius</a>, <a href=\"/muscles/levator-scapulae\">levator scapulae</a> and <a href=\"/muscles/pectoralis-minor\">pectoralis minor</a>.</li><li><b>Legs and feet.</b> Often tired and swollen, especially in a Florida summer.</li></ul>"
+    },
+    {
+      "h2": "What is approached cautiously, and the honest reason",
+      "html": "<p>Deep work on the lower legs is avoided during pregnancy. The reason is circulatory rather than mystical: clotting risk is higher in pregnancy, and firm pressure over a vein with an undiagnosed clot is a genuine hazard. Light work is generally fine; heavy calf work is not worth the risk. Any new swelling, redness, warmth or pain in one calf should be reported to your provider before any massage.</p><p>You may also read that certain pressure points must be avoided because they can bring on labour. The evidence that any specific point reliably induces labour is weak, and the claim is often overstated. The practical position taken here is straightforward: these areas are treated gently or left alone because there is no benefit in pressing them hard, and because being conservative in pregnancy costs nothing.</p><p>Strong abdominal work is not done. Pressure is generally moderate throughout, which is not a limitation worth mourning, since comfort and sleep are usually the goals rather than depth.</p>"
+    },
+    {
+      "h2": "Afterwards, and into postpartum",
+      "html": "<p>Most people feel more comfortable and sleep better for a few days. Gentle movement, side-sleeping support and whatever your provider has advised about activity do more for pregnancy-related back pain than massage alone.</p><p>After delivery, the picture changes again: carrying, feeding positions and a trunk that needs rebuilding. The <a href=\"/activities/postpartum-return-to-exercise\">postpartum return to exercise</a> page covers that phase, and soft-tissue work for the neck, upper back and hips is usually welcome once you have had your postnatal check.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": "Relief is usually immediate but short-lived, often a few days, because the load producing it is still increasing. Many people find a regular lighter session more useful than occasional deep work as pregnancy progresses.",
+  "redFlags": [
+    "Vaginal bleeding, fluid leaking, or regular contractions: contact your provider or go to hospital rather than attending a session.",
+    "A severe headache, vision changes, or sudden swelling of the face and hands, which can indicate preeclampsia and needs urgent assessment.",
+    "Reduced or absent fetal movement: contact your provider immediately.",
+    "New swelling, redness, warmth or pain in one calf: no massage, and contact your provider promptly.",
+    "Chest pain or breathlessness: call 911.",
+    "Any pregnancy complication, or advice from your obstetric provider against massage, which takes precedence."
+  ],
+  "faq": [
+    {
+      "q": "Is massage safe during pregnancy?",
+      "a": "For an uncomplicated pregnancy it is widely considered reasonable, with positioning adjusted and deep leg work avoided. Check with your obstetrician or midwife first, particularly if there are any complications."
+    },
+    {
+      "q": "Can I lie on my front or my back?",
+      "a": "Face-down becomes unworkable early, and lying flat on the back for long periods is generally avoided after the first trimester. Side-lying with pillow support is the usual position and suits most people well."
+    },
+    {
+      "q": "Are there pressure points that can start labour?",
+      "a": "The evidence that any specific point reliably induces labour is weak. Those areas are still treated gently here, simply because there is nothing to gain from firm pressure there and caution costs nothing."
+    },
+    {
+      "q": "Why avoid deep work on my calves?",
+      "a": "Clotting risk is higher in pregnancy, and firm pressure over an undiagnosed clot is genuinely hazardous. Light work is generally fine, and any new one-sided calf swelling should be checked by your provider first."
+    }
+  ],
+  "muscles": [
+    "ql",
+    "glute-med",
+    "upper-trap",
+    "levator",
+    "pec-minor",
+    "multifidus"
+  ],
+  "pain": [
+    "si-joint",
+    "outside-of-hip",
+    "top-of-shoulder",
+    "beside-the-spine"
+  ],
+  "guides": [
+    "lateral-hip"
+  ],
+  "related": [
+    "/activities/postpartum-return-to-exercise",
+    "/conditions/si-joint-pain",
+    "/conditions/low-back-pain",
+    "/treatments/medical-massage",
+    "/conditions/massage-for-low-back-pain",
+    "/conditions/neck-pain"
+  ],
+  "reviewStatus": "approved"
+}

@@ -1,0 +1,95 @@
+{
+  "slug": "conventional-deadlift",
+  "title": "Conventional Deadlift: Form and Pain | MD Fit",
+  "h1": "The Conventional Deadlift: Form, Faults and Pain",
+  "description": "Setup, bar path and the faults that cause low back pain in the conventional deadlift, plus when a rounded back is a real problem and when it is not.",
+  "about": {
+    "type": "Thing",
+    "name": "Conventional deadlift"
+  },
+  "lead": "The deadlift has a reputation for hurting backs that it only partly deserves. Backs are built to lift things. What causes trouble is loading a position you cannot hold, adding weight faster than your tissues adapt, or repeating a setup that puts the bar in the wrong place before you have even pulled.",
+  "sections": [
+    {
+      "h2": "The setup decides most of the lift",
+      "html": "<p>Almost everything that goes wrong in a deadlift has already gone wrong before the bar leaves the floor. Three things are worth getting consistent. The bar should start over mid-foot, not against the shins and not out over the toes. The shoulder blades should sit roughly above the bar, which puts the arms vertical when viewed from the side. And the slack should be pulled out of the bar before the weight moves, so the lift begins with tension rather than a jerk.</p><p>How high your hips start is not a universal number. It depends on the length of your arms, torso and thigh bones. A long-armed lifter naturally starts with higher hips and a more horizontal back; a short-armed lifter sits lower. Being coached into someone else's start position is a common and avoidable cause of trouble, and <a href=\"/activities/build-and-deadlift-setup\">build and deadlift setup</a> covers why.</p>"
+    },
+    {
+      "h2": "Bar path and the moment it goes wrong",
+      "html": "<p>A well-executed deadlift keeps the bar close to the body in something near a straight vertical line. When the bar drifts forward, the load moves further from the hips and the back has to work much harder to hold the trunk angle. That is the moment most people feel it the next day.</p><p>The common sequence is this: the bar starts slightly forward, the hips rise first to compensate, the chest drops, and the lift finishes as a back extension rather than a leg drive. The fix is rarely a cue shouted at the top. It is usually a lighter bar, a corrected start position, and enough repetitions at that weight for the pattern to stick.</p>"
+    },
+    {
+      "h2": "Is a rounded back actually dangerous?",
+      "html": "<p>This is the most argued point in lifting and the honest answer has caveats. Plenty of strong lifters pull with some upper back rounding deliberately and without incident. What is more concerning is the low back rounding under load, particularly when it changes during the rep, because that means the position is being lost rather than chosen.</p><p>The practical distinction: a shape you hold deliberately and can repeat is different from a shape you fall into when the weight gets heavy. If your back position looks the same on rep one and rep five, that is control. If rep five looks nothing like rep one, the weight is beyond what you can currently hold, whatever the shape.</p>"
+    },
+    {
+      "h2": "Where deadlifting shows up as pain",
+      "html": "<p>Low back soreness, usually felt <a href=\"/pain/beside-the-spine\">beside the spine</a> or across the <a href=\"/pain/si-joint\">SI joint and back of the pelvis</a>, is the most frequent complaint. The muscles taking that load include <a href=\"/muscles/quadratus-lumborum\">quadratus lumborum</a>, <a href=\"/muscles/multifidus\">multifidus</a> and <a href=\"/muscles/longissimus\">longissimus</a>. Ordinary training soreness eases over a day or two and does not travel.</p><p>Hamstring pain near the sitting bone that builds over weeks rather than appearing suddenly is worth attention, as is any pain that runs down the back of the leg. A sudden sharp pain mid-rep with immediate loss of strength is a different category and should be assessed rather than trained through. See <a href=\"/conditions/low-back-pain\">low back pain</a> and <a href=\"/conditions/herniated-disc\">herniated disc</a> for what else those patterns can mean.</p>"
+    },
+    {
+      "h2": "Grip, straps and what they hide",
+      "html": "<p>A mixed grip lets you hold more weight but puts the biceps of the supinated arm in a vulnerable position, which is where the occasional dramatic tear comes from. A hook grip avoids that asymmetry and hurts for several weeks while you adapt. Straps remove grip as the limiting factor entirely.</p><p>None of these is cheating, but they do hide information. If your grip fails at the same weight your back position fails, straps let you keep loading past the point your trunk can hold. That is worth knowing about yourself before you decide to use them on every set.</p>"
+    },
+    {
+      "h2": "How MD Fit works with deadlifters",
+      "html": "<p>An assessment with Dr. Jared Caban, a physician-trained clinical exercise physiologist and licensed massage therapist, looks at what your hips, hamstrings and upper back can actually do before it looks at the bar. A start position that will not hold is often a range problem rather than a willpower problem, and no amount of coaching fixes a position the body cannot reach.</p><p>Soft-tissue work opens what is restricted, corrective work rebuilds the position, and the strengthening that follows is what makes it stay. Members get the matching exercise videos and the workout generator in the MD Fit app. Self-pay, no insurance paperwork, no referral needed.</p>"
+    }
+  ],
+  "redFlags": [
+    "Pain that travels down the back of the leg below the knee, or numbness, tingling or weakness in the foot.",
+    "A sudden sharp pain during a rep with immediate loss of strength, especially near the biceps or the back of the thigh.",
+    "Back pain that is worse at night or present at rest rather than only after lifting.",
+    "Any loss of bladder or bowel control, or numbness around the groin or inner thighs: this is an emergency, call 911 or go to an emergency department.",
+    "Pain that has not settled at all after two weeks of reduced loading."
+  ],
+  "faq": [
+    {
+      "q": "Should my back be completely flat when I deadlift?",
+      "a": "A neutral position you can hold is the usual goal, but small amounts of upper back rounding are common in strong lifters. What matters more is whether your position stays the same from the first rep to the last."
+    },
+    {
+      "q": "Why does my low back hurt the day after deadlifting?",
+      "a": "Ordinary muscle soreness beside the spine is common after heavy pulling and settles in a day or two. Pain that travels into the leg, or that keeps building week after week, is a different thing and worth having assessed."
+    },
+    {
+      "q": "Is sumo easier than conventional?",
+      "a": "It is different rather than easier. Sumo shortens the range and changes the demand towards the hips and quadriceps, and which one suits you depends partly on your proportions."
+    },
+    {
+      "q": "Do I need to deadlift at all?",
+      "a": "No single lift is compulsory. Hip hinging in some form is worth training, but a Romanian deadlift, a trap bar pull or a hip thrust can all serve the purpose if conventional pulling does not suit you right now."
+    }
+  ],
+  "muscles": [
+    "ql",
+    "multifidus",
+    "longissimus",
+    "glute-max",
+    "medial-hamstrings",
+    "lats"
+  ],
+  "pain": [
+    "beside-the-spine",
+    "si-joint",
+    "back-of-thigh",
+    "buttock-crease"
+  ],
+  "guides": [],
+  "related": [
+    "/activities/sumo-deadlift",
+    "/activities/romanian-deadlift",
+    "/activities/build-and-deadlift-setup",
+    "/activities/lifting-with-back-pain",
+    "/activities/bracing-and-breathing",
+    "/conditions/low-back-pain",
+    "/conditions/herniated-disc",
+    "/treatments/strength-and-performance"
+  ],
+  "programs": [
+    "low-back-6",
+    "posterior-chain-6"
+  ],
+  "group": "activities",
+  "steps": null,
+  "timeline": null,
+  "reviewStatus": "approved"
+}

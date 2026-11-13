@@ -1,0 +1,90 @@
+{
+  "group": "activities",
+  "slug": "hip-mobility-routine",
+  "title": "A Hip Mobility Routine That Works | MD Fit",
+  "h1": "Hip Mobility Routine",
+  "description": "A practical hip mobility routine covering flexion, extension and rotation, with how to tell a tight hip from a structural limit.",
+  "about": {
+    "type": "Thing",
+    "name": "Hip mobility routine"
+  },
+  "lead": "Hips stiffen in predictable directions for predictable reasons, and most hip routines only address one of them. Extension and rotation are the two that matter and the two that get skipped.",
+  "sections": [
+    {
+      "h2": "The three directions that matter",
+      "html": "<p>The hip is a ball and socket joint that should move in every direction. Modern life mostly uses one.</p><ul><li><b>Flexion</b> — knee toward chest. Plentiful in most people because sitting is flexion, though it may be limited by the socket.</li><li><b>Extension</b> — leg behind the body. Routinely limited by hours of sitting, and the loss shows up as the low back arching to compensate during walking and lifting.</li><li><b>Rotation</b> — turning in and out. The most neglected of the three and the one whose loss most reliably shows up as groin, buttock or low back trouble.</li></ul><p>A routine that only stretches the hamstrings and calls it hip mobility is working on the direction that is usually least restricted.</p>"
+    },
+    {
+      "h2": "The routine",
+      "html": "<ol><li><b>Half-kneeling hip flexor stretch, 45 seconds each side.</b> Squeeze the back glute and tuck the pelvis before leaning in. Without that, the stretch is felt in the low back instead of the <a href=\"/muscles/psoas\">psoas</a>.</li><li><b>90/90 switches, 8 each direction.</b> Seated, both knees bent at right angles, rotating side to side under control. Directly trains rotation.</li><li><b>90/90 lift-offs, 5 each side.</b> From the same position, lift the back knee off the floor. Active rotation, which is the part that makes range usable.</li><li><b>Deep squat hold, 30 to 60 seconds.</b> Heels down if possible, holding onto something. Elevate heels if needed.</li><li><b>Glute bridge, 10 slow.</b> Builds the extension you just stretched into, which is what makes it stick.</li><li><b>Side-lying hip abduction, 10 each side.</b> For the <a href=\"/muscles/gluteus-medius\">gluteus medius</a>, which controls the hip in walking and single-leg work.</li></ol><p>Stretch, then load. Stretching alone changes how it feels; adding the strength work is what keeps the range.</p>"
+    },
+    {
+      "h2": "Tight hip or structural limit",
+      "html": "<p>Worth knowing which you have, because they need opposite responses.</p><p>A muscular restriction feels like a stretch — a pulling sensation, usually in the front or back of the thigh, that eases as you warm up and improves over weeks. A structural limit feels like a block: a firm, bony stop, often with pinching at the front of the hip, that does not change with warming up or with months of stretching.</p><p>Hip socket depth and orientation vary considerably between people. If your hip stops hard and pinches at the front, pushing deeper is likely to irritate rather than improve it. See <a href=\"/activities/why-squat-depth-differs\">why squat depth differs</a> and <a href=\"/conditions/hip-labral-tear\">hip labral tear</a> if pinching is accompanied by catching or clicking.</p>"
+    },
+    {
+      "h2": "What stiff hips cause elsewhere",
+      "html": "<p>The hip is the biggest joint between ground and spine, and what it does not do, something else does. Limited extension usually means the low back extends instead, which is a common thread in people whose backs ache after walking or standing.</p><p>Limited rotation shows up in golf and pickleball particularly — if the hip will not turn, the lumbar spine takes the rotation, and the lumbar spine is not built to rotate much. See <a href=\"/conditions/low-back-pain\">low back pain</a> and <a href=\"/conditions/si-joint-pain\">SI joint pain</a>.</p>"
+    },
+    {
+      "h2": "Dose and expectations",
+      "html": "<p>Five to ten minutes most days beats forty minutes on a Sunday. Expect three to four weeks before a meaningful change, and expect the change to hold only if you keep loading the range.</p><p>If one hip is markedly stiffer than the other, or if stretching reliably produces groin pain or pinching, get it assessed rather than persisting — see <a href=\"/treatments/functional-mobility\">functional mobility</a>.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Sharp groin pain, catching, clicking or locking during hip movement.",
+    "Pain that travels down the leg, or numbness, tingling or weakness.",
+    "Night pain in the hip that wakes you and is not related to position.",
+    "A sudden loss of hip range with significant pain, particularly after a fall.",
+    "Hip pain with fever or feeling generally unwell, which needs prompt medical assessment."
+  ],
+  "faq": [
+    {
+      "q": "How long until my hips feel looser?",
+      "a": "Most people notice something within two to three weeks of daily work. Lasting change takes longer and depends on loading the new range, not just stretching into it."
+    },
+    {
+      "q": "Why does the hip flexor stretch hurt my back?",
+      "a": "Usually because the pelvis is not tucked and the glute is not squeezed, so the stretch is taken up by the lumbar spine instead of the hip flexors."
+    },
+    {
+      "q": "Can I stretch out a structural limit?",
+      "a": "No. If the end point is a firm bony block with pinching at the front, stretching harder tends to irritate the joint rather than improve it."
+    },
+    {
+      "q": "Should I stretch a hip that has arthritis?",
+      "a": "Gentle regular movement is usually helpful and often reduces stiffness. Forcing painful end range is not, and a programme for an arthritic hip is worth having tailored."
+    }
+  ],
+  "muscles": [
+    "psoas",
+    "iliacus",
+    "glute-med",
+    "glute-max",
+    "tfl",
+    "piriformis"
+  ],
+  "pain": [
+    "front-of-hip",
+    "groin",
+    "outside-of-hip",
+    "middle-of-buttock"
+  ],
+  "guides": [
+    "iliopsoas",
+    "lateral-hip"
+  ],
+  "related": [
+    "/activities/daily-mobility-routine",
+    "/activities/mobility-vs-flexibility",
+    "/activities/why-squat-depth-differs",
+    "/conditions/hip-pain",
+    "/treatments/functional-mobility"
+  ],
+  "programs": [
+    "hip-6"
+  ],
+  "reviewStatus": "approved"
+}

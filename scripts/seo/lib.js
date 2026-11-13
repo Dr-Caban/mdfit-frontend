@@ -74,8 +74,14 @@ const crumbs = (items) => `<p class="cd-crumbs">${items.map((c, i) => c.href && 
 const breadcrumbLd = (items) => ({ "@type": "BreadcrumbList", itemListElement: items.map((c, i) => ({ "@type": "ListItem", position: i + 1, name: c.name, ...(c.href ? { item: SITE + c.href } : {}) })) });
 const faqLd = (faq) => faq && faq.length ? { "@type": "FAQPage", mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) } : null;
 const faqHtml = (faq) => faq && faq.length ? `<h2>Frequently asked questions</h2>\n${faq.map((f) => `    <details class="cd-faq"><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join("\n")}` : "";
+// A page can name a related page that has not been written yet; it is left out until it exists, then appears by itself.
+const pageExists = (u) => { const rel = String(u).split(/[?#]/)[0].replace(/^\/+/, ""); if (!rel) return true;
+  const f = rel.endsWith("/") ? rel + "index.html" : rel + ".html";
+  if (fs.existsSync(path.join(root, f))) return true;
+  const m = rel.match(/^(conditions|activities|blog)\/([a-z0-9-]+)$/) || (/^[a-z0-9-]+$/.test(rel) ? [0, "landing", rel] : null);
+  return !!m && fs.existsSync(path.join(root, "data/seo/pages", m[1], m[2] + ".json")); };
 const linkList = (urls, title) => {
-  const items = urls.filter((u) => data.titles[u] || /^\/(muscles|pain|activities|conditions|blog)\//.test(u)).map((u) => `<li><a href="${attr(u)}">${esc(data.titles[u] || u)}</a></li>`);
+  const items = urls.filter((u) => (data.titles[u] || /^\/(muscles|pain|activities|conditions|blog)\//.test(u)) && pageExists(u)).map((u) => `<li><a href="${attr(u)}">${esc(data.titles[u] || u)}</a></li>`);
   return items.length ? `<h2>${esc(title)}</h2>\n    <ul class="cd-links">${items.join("")}</ul>` : "";
 };
 // MD Fit does not bill insurance. Said the same way everywhere (FAQ + CTA line) so no page implies otherwise.
@@ -111,9 +117,12 @@ function page({ url, title, description, body, graph, section, robots }) {
   <meta property="og:image" content="${SITE}/assets/logo.webp">
   <meta name="theme-color" content="#0A1A2E">
   <link rel="icon" href="/assets/icon-64.png" type="image/png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>/* Self-hosted: loading these from Google cost two cross-origin hops and swapped the font in half a second
+    later, reflowing every heading. Inline so there is no extra stylesheet to fetch before the faces are known.
+    Both families are OFL-licensed. Montserrat is one variable file covering 400-800; Baskerville's roman covers
+    400 and 700. Latin subset. Filenames carry a content hash, so they are cached for good (see vercel.json). */
+@font-face{font-family:"Montserrat";font-style:normal;font-weight:400 800;font-display:swap;src:url("/assets/fonts/montserrat-var.a5ec5492.woff2") format("woff2")}
+@font-face{font-family:"Libre Baskerville";font-style:normal;font-weight:400 700;font-display:swap;src:url("/assets/fonts/libre-baskerville.b1bcbff3.woff2") format("woff2")}</style>
   <link rel="stylesheet" href="/guides.css">
   <link rel="stylesheet" href="/conditions.css">
   <script type="application/ld+json">${JSON.stringify(ld).replace(/</g, "\\u003c")}</script>
@@ -148,5 +157,5 @@ const webPage = ({ url, title, description, about, lastReviewed, reviewed = fals
 
 const words = (html) => (String(html).replace(/<[^>]+>/g, " ").match(/[A-Za-z0-9][A-Za-z0-9'’-]*/g) || []).length;
 
-module.exports = { INSURANCE_FAQ, withInsuranceFaq, root, SITE, MAPS_URL, TODAY, esc, attr, read, readJson, write, data, muscleUrl, painUrl, findExercise, thumb, quote, REVIEW, RATING, RATING_LINE,
+module.exports = { pageExists, INSURANCE_FAQ, withInsuranceFaq, root, SITE, MAPS_URL, TODAY, esc, attr, read, readJson, write, data, muscleUrl, painUrl, findExercise, thumb, quote, REVIEW, RATING, RATING_LINE,
   crumbs, breadcrumbLd, faqLd, faqHtml, linkList, CTA, BOOK_ROW, RATING_P, stepsHtml, ABOUT_DR, page, webPage, words };

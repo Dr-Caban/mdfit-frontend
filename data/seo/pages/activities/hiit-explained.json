@@ -1,0 +1,90 @@
+{
+  "group": "activities",
+  "slug": "hiit-explained",
+  "title": "HIIT Explained: How to Use Intervals Safely | MD Fit",
+  "h1": "HIIT and Interval Training, Explained",
+  "description": "What high-intensity interval training actually is, who it suits, how often to do it, and the honest limits — from a clinical exercise physiologist in Sarasota.",
+  "about": {
+    "type": "Thing",
+    "name": "High-intensity interval training"
+  },
+  "lead": "High-intensity interval training means short bursts of hard work with recovery between them. It is efficient, it is genuinely useful, and it is also the most over-prescribed idea in fitness.",
+  "sections": [
+    {
+      "h2": "What counts as HIIT",
+      "html": "<p>A true interval session alternates efforts that are hard enough that you could not hold them for long with recovery periods long enough to let you repeat the effort. The work might last twenty seconds or four minutes depending on the format; the defining feature is that the hard part is genuinely hard and the easy part is genuinely easy.</p><p>Most group classes marketed as HIIT are not HIIT. They are continuous moderate-to-hard work with short pauses, which is a perfectly reasonable workout but a different thing. The difference matters because real intervals demand real recovery, and treating three of those classes a week as if they were intervals is how people get flat and sore rather than fitter.</p>"
+    },
+    {
+      "h2": "What it is good for",
+      "html": "<p>Intervals push the top end of cardiorespiratory fitness in less total time than steady work. For someone with limited hours in the week, that efficiency is the whole appeal, and it is a real one.</p><p>They also carry over well to sport. Pickleball, tennis and golf are all stop-start — a hard rally, a pause, another hard rally. Training that pattern deliberately makes the fourth set feel more like the first.</p><p>What intervals are not good for is being the only thing you do. They do not build the aerobic base that lets you recover between them, and they do not load muscle and bone the way resistance training does.</p>"
+    },
+    {
+      "h2": "How often, honestly",
+      "html": "<p>One to two genuinely hard interval sessions a week is enough for most people, with easier aerobic work and strength training filling the rest. Three is a lot. Four is usually a mistake that shows up six weeks later as poor sleep, stalled progress and a body that feels heavy.</p><p>The common error is doing intervals on consecutive days, or stacking them on top of heavy leg training. Spread them out. If a session feels hard in the first thirty seconds in a way it usually does not, that is information — take the easy option that day.</p>"
+    },
+    {
+      "h2": "Formats that work",
+      "html": "<ul><li><b>Thirty on, ninety off.</b> Hard for thirty seconds, easy for ninety, repeated six to ten times. Forgiving and a reasonable starting point.</li><li><b>Four by four.</b> Four minutes hard, three minutes easy, four rounds. Demanding, and closer to what research on cardiorespiratory fitness often uses.</li><li><b>Hill or incline repeats.</b> Walking or running up an incline, strolling back down. Easier on the joints than flat sprinting because speed stays low.</li></ul><p>Bikes, rowers and incline treadmills are kinder than outdoor sprinting for most people over forty, because the force through the knee and achilles is far lower at the same cardiovascular cost.</p>"
+    },
+    {
+      "h2": "Who should be careful",
+      "html": "<p>If you have a heart condition, high blood pressure, or have been inactive for a long stretch, intervals are not where to start. The sensible order is a few months of easy aerobic work and strength first, and a conversation with your physician before adding genuinely maximal efforts.</p><p>That is not a reason never to do them — it is a reason to earn them. Our pages on <a href=\"/conditions/exercise-and-high-blood-pressure\">exercise and high blood pressure</a> and <a href=\"/conditions/returning-to-exercise-after-a-long-break\">returning to exercise after a long break</a> cover the groundwork.</p><p>Old injuries deserve the same caution. Hard efforts expose whatever is least robust: a cranky <a href=\"/conditions/achilles-tendon-pain\">achilles</a>, a knee that has never quite been right, a back that tightens under fatigue. Intervals on a machine that does not aggravate it is usually the answer rather than avoiding intensity altogether.</p>"
+    },
+    {
+      "h2": "Warming up properly",
+      "html": "<p>Intervals are the one place where a token warm-up genuinely costs you. Going hard on cold tissue is where calf and hamstring strains happen, and it also makes the first interval feel far worse than it should.</p><p>Ten minutes of progressively building easy work, then two or three short efforts at about the intensity you are about to do, is enough. See <a href=\"/activities/warming-up-for-lifting\">warming up</a> for the same principle applied to the gym.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Chest pressure, tightness or pain during or after an interval, or pain spreading to the jaw, neck or arm: stop and seek emergency care.",
+    "Fainting, near-fainting or an irregular heartbeat during hard efforts.",
+    "Breathlessness that does not settle within a few minutes of stopping.",
+    "A sudden sharp pain in the calf or back of the thigh mid-effort, which usually means a muscle strain rather than fatigue.",
+    "Persistent poor sleep, rising resting heart rate and stalled progress across several weeks, which suggests the dose is too high."
+  ],
+  "faq": [
+    {
+      "q": "Is HIIT better than steady cardio?",
+      "a": "Neither is better; they do different jobs. Intervals push the top end of fitness efficiently, steady work builds the base that lets you recover and repeat. Most people do best with some of both."
+    },
+    {
+      "q": "How long should a HIIT session be?",
+      "a": "Including warm-up and cool-down, twenty-five to forty minutes is plenty. If a session routinely runs an hour, the hard parts almost certainly are not hard enough to count as intervals."
+    },
+    {
+      "q": "Can I do HIIT if I'm over sixty?",
+      "a": "Often yes, with a sensible build-up and on equipment that keeps joint forces low, such as a bike or incline walking. Clearance from your physician first is a reasonable step if you have any cardiac history."
+    },
+    {
+      "q": "Why am I more sore after intervals than after lifting?",
+      "a": "Hard efforts involve a lot of rapid, repeated contraction, and if the movement is unfamiliar the soreness can be substantial. It usually settles within a few sessions as you adapt."
+    }
+  ],
+  "muscles": [
+    "gastroc",
+    "soleus",
+    "rectus-femoris",
+    "glute-max",
+    "biceps-femoris"
+  ],
+  "pain": [
+    "lower-calf",
+    "back-of-thigh",
+    "below-kneecap"
+  ],
+  "guides": [
+    "calf"
+  ],
+  "related": [
+    "/activities/zone-2-cardio",
+    "/activities/steady-state-vs-intervals",
+    "/activities/cardio-for-beginners",
+    "/activities/rest-days-and-overtraining",
+    "/activities/warming-up-for-lifting",
+    "/treatments/clinical-exercise-physiology"
+  ],
+  "programs": [],
+  "reviewStatus": "approved"
+}

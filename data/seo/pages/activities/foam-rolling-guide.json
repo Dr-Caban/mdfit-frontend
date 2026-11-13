@@ -1,0 +1,86 @@
+{
+  "group": "activities",
+  "slug": "foam-rolling-guide",
+  "title": "Foam Rolling: What It Does and Does Not Do | MD Fit",
+  "h1": "Foam Rolling, Honestly",
+  "description": "What foam rolling actually achieves, what the common explanations get wrong, and how to use it usefully as part of a plan rather than as the plan.",
+  "about": {
+    "type": "Thing",
+    "name": "Foam rolling"
+  },
+  "lead": "Foam rolling makes people feel better and the usual explanation for why is almost certainly wrong. That matters less than it sounds, but it changes how you should use it.",
+  "sections": [
+    {
+      "h2": "What it probably does",
+      "html": "<p>The common claim is that rolling breaks up adhesions, releases fascia or irons out knots. Fascia is tough, collagenous tissue; the forces a person can generate leaning on a foam cylinder are not plausibly reshaping it, and the effects of rolling appear and fade far too quickly for a structural change to be the explanation.</p><p>What is more likely is that rolling works through the nervous system. Sustained pressure on a sensitive area tends to reduce the perceived tension and increase tolerance to stretch for a while. The feeling of looseness is real; the mechanism is probably neurological rather than mechanical.</p><p>This is not a reason to stop. It is a reason to be clear about what you are buying: short-term comfort and improved tolerance, not a permanent change to tissue.</p>"
+    },
+    {
+      "h2": "Where it earns its place",
+      "html": "<ul><li><b>In a warm-up.</b> A minute or two on an area that feels restricted, followed by movement that uses the range, is a reasonable use.</li><li><b>For comfort.</b> A tight <a href=\"/muscles/tensor-fasciae-latae\">TFL</a>, stiff <a href=\"/muscles/rectus-femoris\">quads</a> or a sore <a href=\"/muscles/gastrocnemius\">calf</a> often feel better afterwards, and feeling better has value.</li><li><b>As a check.</b> Rolling tells you what is sensitive today, which is useful information before a session.</li></ul><p>Where it does not earn its place is as a substitute for the thing that would actually change the problem. Rolling the IT band every day for a month while the hip that causes the problem stays weak is a lot of discomfort for no durable gain.</p>"
+    },
+    {
+      "h2": "How to do it without making it worse",
+      "html": "<p>Slow and moderate. The instinct to press as hard as possible on the most painful spot is common and counterproductive — pressure hard enough to make you hold your breath and brace tends to increase guarding rather than reduce it.</p><ol><li>Find the area, not the single most painful point.</li><li>Apply pressure you could hold while breathing normally.</li><li>Move slowly, or rest on a sensitive spot for twenty to thirty seconds.</li><li>One to two minutes per area is plenty.</li><li>Follow it immediately with movement through the range you just worked on.</li></ol><p>That last step is what converts a temporary change into something useful.</p>"
+    },
+    {
+      "h2": "Where not to roll",
+      "html": "<p>Avoid rolling directly over bone, over a joint line, or over the back of the knee and the front of the neck where nerves and vessels sit close to the surface. Avoid rolling an area that is acutely injured, swollen, bruised or inflamed.</p><p>The IT band deserves a specific mention: it is a dense band of connective tissue, not a muscle, and rolling it directly is painful and of questionable value. The muscles that tension it — the <a href=\"/muscles/tensor-fasciae-latae\">TFL</a> and <a href=\"/muscles/gluteus-medius\">gluteus medius</a> — are the more sensible target. See <a href=\"/conditions/it-band-syndrome\">IT band syndrome</a>.</p>"
+    },
+    {
+      "h2": "Who should be cautious",
+      "html": "<p>If you take blood thinners, bruise easily, have reduced bone density, or have neuropathy affecting sensation, deep pressure work deserves a conversation first. Reduced sensation in particular means you cannot rely on pain to tell you when pressure is excessive.</p><p>Soft tissue work done properly, as part of an assessment and a plan, is a large part of what we do at MD Fit — see <a href=\"/treatments/medical-massage\">medical massage</a>. A roller is a reasonable self-care tool between those sessions, not a replacement for working out why something is tight.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Pain that is sharp, shooting or electrical rather than a deep ache, especially travelling down a limb.",
+    "Numbness or tingling during or after rolling an area.",
+    "Significant bruising after rolling, particularly if you take blood thinners.",
+    "Rolling an area that is swollen, hot or acutely injured, which should be assessed first.",
+    "Calf pain with swelling, warmth or redness in one leg: do not roll it, seek same-day medical assessment."
+  ],
+  "faq": [
+    {
+      "q": "Does foam rolling break up scar tissue?",
+      "a": "Almost certainly not. The forces involved are not sufficient to remodel connective tissue, and the effects come and go far too quickly for that explanation."
+    },
+    {
+      "q": "Should it hurt?",
+      "a": "It should be tolerable. Pressure that makes you hold your breath tends to increase protective tension rather than reduce it."
+    },
+    {
+      "q": "How often should I foam roll?",
+      "a": "Daily is fine if you find it useful. There is no accumulating benefit to chase, so use it when it helps rather than as an obligation."
+    },
+    {
+      "q": "Is rolling better than stretching?",
+      "a": "They do similar things over a similar short timeframe. Neither changes range durably on its own; strength through range does more of that."
+    }
+  ],
+  "muscles": [
+    "tfl",
+    "rectus-femoris",
+    "gastroc",
+    "glute-med",
+    "lats"
+  ],
+  "pain": [
+    "outside-of-thigh",
+    "outside-of-knee",
+    "lower-calf"
+  ],
+  "guides": [
+    "lateral-hip",
+    "quads"
+  ],
+  "related": [
+    "/activities/mobility-vs-flexibility",
+    "/activities/daily-mobility-routine",
+    "/conditions/it-band-syndrome",
+    "/treatments/medical-massage",
+    "/activities/muscle-soreness-and-doms"
+  ],
+  "programs": [],
+  "reviewStatus": "approved"
+}

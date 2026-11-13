@@ -4,7 +4,10 @@
   "title": "Upper Back & Rhomboid Pain in Sarasota | MD Fit",
   "h1": "Upper Back and Rhomboid Pain in Sarasota, FL",
   "description": "That burning knot between the shoulder blade and spine usually has a cause elsewhere. MD Fit in Sarasota finds it, releases it and builds the back to hold.",
-  "about": { "type": "MedicalCondition", "name": "Rhomboid muscle pain" },
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Rhomboid muscle pain"
+  },
   "lead": "The spot between the shoulder blade and the spine is where a lot of people carry their day. It burns, it begs to be rubbed, and no amount of rolling on a ball seems to fix it. That is usually because the rhomboids are the victim, not the cause.",
   "sections": [
     {
@@ -38,14 +41,48 @@
     "Numbness, weakness or tingling in the arm or hand with the back pain."
   ],
   "faq": [
-    { "q": "Why does massage on the knot only help for a day?", "a": "Because the rhomboids are usually being overstretched by tight chest muscles and a forward head. Until the pecs and scalenes are released and the back is strengthened, the knot returns." },
-    { "q": "Should I foam roll between my shoulder blades?", "a": "Gentle rolling can ease the ache temporarily. Pair it with chest stretching and shoulder blade strengthening, and stop if it causes sharp pain or numbness." },
-    { "q": "Can neck problems cause rhomboid pain?", "a": "Yes. The levator scapulae and scalenes both refer pain to the inner shoulder blade, and cervical nerve irritation can do the same. That is why the neck is part of the assessment." },
-    { "q": "Is the popping in my shoulder blade a problem?", "a": "Painless snapping is common and usually comes from muscle gliding over the ribs. Painful or new grinding is worth having assessed." }
+    {
+      "q": "Why does massage on the knot only help for a day?",
+      "a": "Because the rhomboids are usually being overstretched by tight chest muscles and a forward head. Until the pecs and scalenes are released and the back is strengthened, the knot returns."
+    },
+    {
+      "q": "Should I foam roll between my shoulder blades?",
+      "a": "Gentle rolling can ease the ache temporarily. Pair it with chest stretching and shoulder blade strengthening, and stop if it causes sharp pain or numbness."
+    },
+    {
+      "q": "Can neck problems cause rhomboid pain?",
+      "a": "Yes. The levator scapulae and scalenes both refer pain to the inner shoulder blade, and cervical nerve irritation can do the same. That is why the neck is part of the assessment."
+    },
+    {
+      "q": "Is the popping in my shoulder blade a problem?",
+      "a": "Painless snapping is common and usually comes from muscle gliding over the ribs. Painful or new grinding is worth having assessed."
+    }
   ],
-  "muscles": ["rhomboid-major", "rhomboid-minor", "middle-trap", "pec-minor", "levator", "scalenes"],
-  "pain": ["between-shoulder-blades", "inner-edge-of-shoulder-blade", "bottom-of-shoulder-blade"],
-  "guides": ["scalenes"],
-  "related": ["/conditions/neck-pain", "/conditions/postural-kyphosis", "/conditions/desk-neck-pain", "/conditions/shoulder-pain", "/conditions/chest-wall-pain", "/treatments/medical-massage", "/muscles/rhomboid-major", "/pain/between-shoulder-blades"],
-  "reviewStatus": "draft"
+  "muscles": [
+    "rhomboid-major",
+    "rhomboid-minor",
+    "middle-trap",
+    "pec-minor",
+    "levator",
+    "scalenes"
+  ],
+  "pain": [
+    "between-shoulder-blades",
+    "inner-edge-of-shoulder-blade",
+    "bottom-of-shoulder-blade"
+  ],
+  "guides": [
+    "scalenes"
+  ],
+  "related": [
+    "/conditions/neck-pain",
+    "/conditions/postural-kyphosis",
+    "/conditions/desk-neck-pain",
+    "/conditions/shoulder-pain",
+    "/conditions/chest-wall-pain",
+    "/treatments/medical-massage",
+    "/muscles/rhomboid-major",
+    "/pain/between-shoulder-blades"
+  ],
+  "reviewStatus": "approved"
 }
