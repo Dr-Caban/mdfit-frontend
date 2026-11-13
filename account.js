@@ -1606,7 +1606,29 @@
     $("#p-timer").textContent = "0:00";
     const v = $("#p-video");
     v.onended = () => { if (!P.paused && !P.done) advance(); };
-    v.onerror = () => { const e = P.steps[P.i] && P.steps[P.i].e; if (e) { v.hidden = true; const ifr = document.createElement("iframe"); ifr.src = `https://drive.google.com/file/d/${encodeURIComponent(e.id)}/preview`; ifr.title = e.name; ifr.allow = "autoplay; fullscreen"; ifr.allowFullscreen = true; ifr.className = "p-fallback-iframe"; $("#p-vwrap").appendChild(ifr); } };
+    // Mute is for the whole workout, not one clip: whichever control turns the sound off -- the Sound button or
+    // the native full-screen player, which we don't own -- the choice is remembered and reapplied to every
+    // movement that follows, so music playing in the background is never interrupted by the next video.
+    v.onvolumechange = () => {
+      if (P.done) return;
+      const on = !v.muted;
+      if (on === !!P.opt.sound) return;                 // already what the member asked for (e.g. set by renderStep)
+      if (!on && P.forcedMute) { P.forcedMute = false; return; } // the browser muted us to autoplay; not a choice
+      P.opt.sound = on; P.opt.soundSet = true; saveOpt(); renderOpts(); soundBlocked(false);
+    };
+    v.onerror = () => {
+      const e = P.steps[P.i] && P.steps[P.i].e; if (!e) return;
+      v.hidden = true;
+      // Drive's own player is on another origin, so it cannot be muted from here and would play over the member's
+      // music. With the workout on mute their music wins: this step runs on the timer instead.
+      if (!P.opt.sound) {
+        $("#p-vwrap").hidden = true;
+        const m = $("#p-body .p-meta");
+        if (m) m.textContent = "This clip only plays with sound. Turn Sound on to watch it, or use the timer and go at your own pace.";
+        return;
+      }
+      const ifr = document.createElement("iframe"); ifr.src = `https://drive.google.com/file/d/${encodeURIComponent(e.id)}/preview`; ifr.title = e.name; ifr.allow = "autoplay; fullscreen"; ifr.allowFullscreen = true; ifr.className = "p-fallback-iframe"; $("#p-vwrap").appendChild(ifr);
+    };
     renderOpts();
     renderStep();
     goFs(pl);
@@ -1659,6 +1681,7 @@
     const upNext = next ? `<div class="p-next">Up next: <b>${esc(next.e.name)}</b> · ${esc(next.e.sets)}${next.label !== st.label && next.label === "Cool-down" ? " · cool-down starts" : ""}</div>` : `<div class="p-next">Last one. Finish strong.</div>`;
     const vwrap = $("#p-vwrap"), v = $("#p-video");
     const oldIfr = vwrap.querySelector(".p-fallback-iframe"); if (oldIfr) oldIfr.remove();
+    P.forcedMute = false;
     v.hidden = false;
     if (st.rest) {
       vwrap.hidden = true; v.pause();
@@ -1697,7 +1720,7 @@
     const nx = P.steps.slice(P.i + 1).find((x) => x.e && offered(x.e.id));
     if (nx && typeof warmVideo === "function") try { warmVideo(nx.e.id, "auto"); } catch {}
     // A browser that blocks sound until a tap: play muted and ask for one tap on Sound
-    const pr = v.play(); if (pr) pr.catch((err) => { if (err && err.name === "NotAllowedError" && !v.muted) { v.muted = true; soundBlocked(true); v.play().catch(() => {}); } });
+    const pr = v.play(); if (pr) pr.catch((err) => { if (err && err.name === "NotAllowedError" && !v.muted) { P.forcedMute = true; v.muted = true; soundBlocked(true); v.play().catch(() => {}); } });
     if (!v.muted) soundBlocked(false);
     const wt = $("#p-weight");
     if (wt) wt.addEventListener("input", () => { P.log[e.id] = { name: e.name, weight: wt.value.trim().slice(0, 12) }; });
