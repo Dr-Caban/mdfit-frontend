@@ -4,7 +4,10 @@
   "title": "Knee Replacement Rehab in Sarasota, FL | MD Fit",
   "h1": "Knee Replacement Rehab in Sarasota, FL",
   "description": "Rehab after a knee replacement in Sarasota. Dr. Jared Caban works within your surgeon's protocol to restore bending, straightening and quad strength.",
-  "about": { "type": "MedicalCondition", "name": "Total knee arthroplasty recovery" },
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Total knee arthroplasty recovery"
+  },
   "lead": "The first months after a knee replacement are about two numbers: how straight the knee gets and how far it bends. The muscles around the joint, not the implant, decide both.",
   "sections": [
     {
@@ -46,14 +49,47 @@
     "A fall, a pop, or a new feeling of the knee giving way under you."
   ],
   "faq": [
-    { "q": "How soon after knee replacement can I see Dr. Jared?", "a": "Once your surgeon clears you for outpatient rehab. Early sessions focus on swelling, range of motion and quad activation within the protocol." },
-    { "q": "Is it normal for the knee to still be stiff and warm months later?", "a": "Mild warmth and stiffness can persist for a long time after a knee replacement. A sudden increase in heat, redness or swelling is different and should be reported to your surgeon." },
-    { "q": "Can massage help a replaced knee?", "a": "Soft-tissue release of the quads, hamstrings and calf often helps motion and pain. Work directly around the incision waits until it is healed and the surgeon has cleared it." },
-    { "q": "Why does my knee click?", "a": "Some clicking from the implant components is common and usually painless. Painful clunking or a sense of instability should be checked by your surgeon." }
+    {
+      "q": "How soon after knee replacement can I see Dr. Jared?",
+      "a": "Once your surgeon clears you for outpatient rehab. Early sessions focus on swelling, range of motion and quad activation within the protocol."
+    },
+    {
+      "q": "Is it normal for the knee to still be stiff and warm months later?",
+      "a": "Mild warmth and stiffness can persist for a long time after a knee replacement. A sudden increase in heat, redness or swelling is different and should be reported to your surgeon."
+    },
+    {
+      "q": "Can massage help a replaced knee?",
+      "a": "Soft-tissue release of the quads, hamstrings and calf often helps motion and pain. Work directly around the incision waits until it is healed and the surgeon has cleared it."
+    },
+    {
+      "q": "Why does my knee click?",
+      "a": "Some clicking from the implant components is common and usually painless. Painful clunking or a sense of instability should be checked by your surgeon."
+    }
   ],
-  "muscles": ["rectus-femoris", "vastus-lateralis", "vmo", "gastroc", "biceps-femoris"],
-  "pain": ["below-kneecap", "behind-the-knee", "front-of-thigh"],
-  "guides": ["quads", "calf"],
-  "related": ["/conditions/post-surgical-rehab", "/conditions/knee-osteoarthritis", "/conditions/knee-pain", "/conditions/hip-replacement-rehab", "/conditions/balance-fall-prevention", "/treatments/post-op-rehab-timelines", "/treatments/clinical-exercise-physiology"],
-  "reviewStatus": "draft"
+  "muscles": [
+    "rectus-femoris",
+    "vastus-lateralis",
+    "vmo",
+    "gastroc",
+    "biceps-femoris"
+  ],
+  "pain": [
+    "below-kneecap",
+    "behind-the-knee",
+    "front-of-thigh"
+  ],
+  "guides": [
+    "quads",
+    "calf"
+  ],
+  "related": [
+    "/conditions/post-surgical-rehab",
+    "/conditions/knee-osteoarthritis",
+    "/conditions/knee-pain",
+    "/conditions/hip-replacement-rehab",
+    "/conditions/balance-fall-prevention",
+    "/treatments/post-op-rehab-timelines",
+    "/treatments/clinical-exercise-physiology"
+  ],
+  "reviewStatus": "approved"
 }

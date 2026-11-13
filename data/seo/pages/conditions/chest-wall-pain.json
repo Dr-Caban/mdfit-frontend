@@ -4,7 +4,10 @@
   "title": "Chest Wall Pain Care in Sarasota, FL | MD Fit",
   "h1": "Chest Wall Pain Care in Sarasota, FL",
   "description": "Chest pain is an emergency until a physician says otherwise. Once heart and lungs are cleared, MD Fit in Sarasota treats muscular chest wall and rib pain.",
-  "about": { "type": "MedicalCondition", "name": "Chest wall pain" },
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Chest wall pain"
+  },
   "lead": "If you have chest pain right now with shortness of breath, sweating, nausea, pressure, or pain spreading to the arm, jaw or back, stop reading and call 911. MD Fit sees chest wall pain only after a physician has ruled out the heart, lungs and other internal causes.",
   "sections": [
     {
@@ -43,14 +46,48 @@
     "Any new chest pain that has not been evaluated by a physician."
   ],
   "faq": [
-    { "q": "I have chest pain now. Can I come in?", "a": "No. Chest pain that has not been evaluated needs a physician or emergency department first, and anything with shortness of breath, sweating, nausea or arm or jaw pain is a 911 call. MD Fit treats chest wall pain only after medical clearance." },
-    { "q": "My heart tests were normal but the pain is still there. Is that common?", "a": "Yes. Once serious causes are excluded, muscular and rib-joint pain is a frequent explanation, and it often reproduces when the right spot is pressed." },
-    { "q": "Why would my neck cause chest pain?", "a": "The scalenes in the side of the neck refer pain into the upper chest. It is one of the reasons chest pain must be medically cleared before anyone assumes it is muscular." },
-    { "q": "Is costochondritis a muscle problem?", "a": "It is irritation of rib cartilage, but it usually coexists with tight chest muscles and poor rib movement. Breathing, posture and gentle release often help once a physician has confirmed the diagnosis." }
+    {
+      "q": "I have chest pain now. Can I come in?",
+      "a": "No. Chest pain that has not been evaluated needs a physician or emergency department first, and anything with shortness of breath, sweating, nausea or arm or jaw pain is a 911 call. MD Fit treats chest wall pain only after medical clearance."
+    },
+    {
+      "q": "My heart tests were normal but the pain is still there. Is that common?",
+      "a": "Yes. Once serious causes are excluded, muscular and rib-joint pain is a frequent explanation, and it often reproduces when the right spot is pressed."
+    },
+    {
+      "q": "Why would my neck cause chest pain?",
+      "a": "The scalenes in the side of the neck refer pain into the upper chest. It is one of the reasons chest pain must be medically cleared before anyone assumes it is muscular."
+    },
+    {
+      "q": "Is costochondritis a muscle problem?",
+      "a": "It is irritation of rib cartilage, but it usually coexists with tight chest muscles and poor rib movement. Breathing, posture and gentle release often help once a physician has confirmed the diagnosis."
+    }
   ],
-  "muscles": ["pec-major-stern", "pec-minor", "intercostals", "serratus", "scalenes", "subclavius"],
-  "pain": ["front-of-chest", "side-of-ribs", "along-one-rib", "under-collarbone"],
-  "guides": ["scalenes"],
-  "related": ["/conditions/thoracic-outlet-symptoms", "/conditions/upper-back-rhomboid-pain", "/conditions/shoulder-pain", "/conditions/postural-kyphosis", "/conditions/post-surgical-rehab", "/treatments/medical-massage", "/muscles/intercostals"],
-  "reviewStatus": "draft"
+  "muscles": [
+    "pec-major-stern",
+    "pec-minor",
+    "intercostals",
+    "serratus",
+    "scalenes",
+    "subclavius"
+  ],
+  "pain": [
+    "front-of-chest",
+    "side-of-ribs",
+    "along-one-rib",
+    "under-collarbone"
+  ],
+  "guides": [
+    "scalenes"
+  ],
+  "related": [
+    "/conditions/thoracic-outlet-symptoms",
+    "/conditions/upper-back-rhomboid-pain",
+    "/conditions/shoulder-pain",
+    "/conditions/postural-kyphosis",
+    "/conditions/post-surgical-rehab",
+    "/treatments/medical-massage",
+    "/muscles/intercostals"
+  ],
+  "reviewStatus": "approved"
 }

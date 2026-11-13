@@ -4,7 +4,10 @@
   "title": "Whiplash Recovery in Sarasota, FL | MD Fit",
   "h1": "Whiplash Recovery in Sarasota, FL",
   "description": "Neck pain and headaches after a car accident or fall? Dr. Jared Caban's Sarasota clinic helps whiplash recover with hands-on release, mobility and strength.",
-  "about": { "type": "MedicalCondition", "name": "Whiplash" },
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Whiplash"
+  },
   "lead": "After any collision, fall or hard hit, get checked by a physician or the emergency room first. Once fractures, ligament damage and concussion have been ruled out, MD Fit helps the neck muscles that tightened to protect you learn to let go and work normally again.",
   "sections": [
     {
@@ -42,14 +45,49 @@
     "Difficulty swallowing, a change in your voice, or a pulsing sensation in the neck."
   ],
   "faq": [
-    { "q": "I was in a fender bender last week and my neck still hurts. Can I book directly with MD Fit?", "a": "Please see a physician or urgent care first so fractures, ligament injuries and concussion are excluded. Bring that clearance and we will start with hands-on release and gentle movement." },
-    { "q": "Why do I have headaches when the accident hurt my neck?", "a": "The suboccipitals, SCM and upper trapezius refer pain into the head. Releasing them often reduces the headache before the neck itself feels fully normal." },
-    { "q": "Should I wear a soft collar?", "a": "Follow your physician's advice. For most muscular whiplash, gentle movement within comfort recovers faster than prolonged immobilization, but that decision belongs to the doctor who examined you." },
-    { "q": "How long does whiplash take to settle?", "a": "It varies with the force of the injury and how long the muscles have been guarding. Dr. Jared discusses a realistic timeline at your first visit rather than quoting an average." }
+    {
+      "q": "I was in a fender bender last week and my neck still hurts. Can I book directly with MD Fit?",
+      "a": "Please see a physician or urgent care first so fractures, ligament injuries and concussion are excluded. Bring that clearance and we will start with hands-on release and gentle movement."
+    },
+    {
+      "q": "Why do I have headaches when the accident hurt my neck?",
+      "a": "The suboccipitals, SCM and upper trapezius refer pain into the head. Releasing them often reduces the headache before the neck itself feels fully normal."
+    },
+    {
+      "q": "Should I wear a soft collar?",
+      "a": "Follow your physician's advice. For most muscular whiplash, gentle movement within comfort recovers faster than prolonged immobilization, but that decision belongs to the doctor who examined you."
+    },
+    {
+      "q": "How long does whiplash take to settle?",
+      "a": "It varies with the force of the injury and how long the muscles have been guarding. Dr. Jared discusses a realistic timeline at your first visit rather than quoting an average."
+    }
   ],
-  "muscles": ["scm", "suboccipitals", "levator", "upper-trap", "splenius", "scalenes"],
-  "pain": ["back-of-neck", "base-of-skull", "where-neck-meets-shoulder", "side-of-neck"],
-  "guides": ["posterior-neck", "scalenes"],
-  "related": ["/conditions/neck-pain", "/conditions/cervicogenic-headache", "/conditions/tension-headache", "/conditions/thoracic-outlet-symptoms", "/treatments/medical-massage", "/treatments/functional-mobility", "/conditions/sports-injury-rehab"],
-  "reviewStatus": "draft"
+  "muscles": [
+    "scm",
+    "suboccipitals",
+    "levator",
+    "upper-trap",
+    "splenius",
+    "scalenes"
+  ],
+  "pain": [
+    "back-of-neck",
+    "base-of-skull",
+    "where-neck-meets-shoulder",
+    "side-of-neck"
+  ],
+  "guides": [
+    "posterior-neck",
+    "scalenes"
+  ],
+  "related": [
+    "/conditions/neck-pain",
+    "/conditions/cervicogenic-headache",
+    "/conditions/tension-headache",
+    "/conditions/thoracic-outlet-symptoms",
+    "/treatments/medical-massage",
+    "/treatments/functional-mobility",
+    "/conditions/sports-injury-rehab"
+  ],
+  "reviewStatus": "approved"
 }

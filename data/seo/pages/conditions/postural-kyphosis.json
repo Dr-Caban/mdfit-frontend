@@ -4,7 +4,10 @@
   "title": "Postural Kyphosis Correction in Sarasota | MD Fit",
   "h1": "Postural Kyphosis Correction in Sarasota, FL",
   "description": "Rounded upper back, forward head and a tired neck by noon? MD Fit in Sarasota treats postural kyphosis with release, mobility and the strength to stand tall.",
-  "about": { "type": "MedicalCondition", "name": "Postural kyphosis" },
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Postural kyphosis"
+  },
   "lead": "Kyphosis is the natural forward curve of the upper back. Postural kyphosis is that curve exaggerated by habit: hours of sitting, screens, driving and carrying, until the body settles into a rounded shape it can no longer easily undo. The good news is that a postural curve is still flexible, and flexible curves respond to treatment.",
   "sections": [
     {
@@ -42,14 +45,48 @@
     "A rounded back in a teenager that is rigid and painful, which may be Scheuermann's disease and needs a physician's evaluation."
   ],
   "faq": [
-    { "q": "Can posture really be changed as an adult?", "a": "A flexible, muscular curve responds to release, mobility and strength work at any age. Structural changes in the bone do not reverse, but the muscles around them can still improve comfort and function." },
-    { "q": "Do posture braces work?", "a": "They remind you to sit up but do not build the strength to stay there, and worn all day they can let the back muscles weaken further. Short-term use as a cue is reasonable." },
-    { "q": "Is my rounded back causing my neck pain?", "a": "Often. When the upper back rounds, the head moves forward and the neck muscles work overtime to hold it up. Treating the upper back is frequently part of fixing the neck." },
-    { "q": "How do I know if mine is structural?", "a": "Lie on your back on a firm surface. A postural curve flattens noticeably; a structural one stays. Your physician can confirm with an exam and, if needed, an X-ray." }
+    {
+      "q": "Can posture really be changed as an adult?",
+      "a": "A flexible, muscular curve responds to release, mobility and strength work at any age. Structural changes in the bone do not reverse, but the muscles around them can still improve comfort and function."
+    },
+    {
+      "q": "Do posture braces work?",
+      "a": "They remind you to sit up but do not build the strength to stay there, and worn all day they can let the back muscles weaken further. Short-term use as a cue is reasonable."
+    },
+    {
+      "q": "Is my rounded back causing my neck pain?",
+      "a": "Often. When the upper back rounds, the head moves forward and the neck muscles work overtime to hold it up. Treating the upper back is frequently part of fixing the neck."
+    },
+    {
+      "q": "How do I know if mine is structural?",
+      "a": "Lie on your back on a firm surface. A postural curve flattens noticeably; a structural one stays. Your physician can confirm with an exam and, if needed, an X-ray."
+    }
   ],
-  "muscles": ["pec-minor", "pec-major-stern", "lower-trap", "middle-trap", "longissimus", "serratus"],
-  "pain": ["between-shoulder-blades", "back-of-neck", "front-of-chest"],
-  "guides": ["posterior-neck"],
-  "related": ["/conditions/desk-neck-pain", "/conditions/upper-back-rhomboid-pain", "/conditions/neck-pain", "/conditions/scoliosis-support", "/conditions/shoulder-impingement", "/treatments/strength-and-performance", "/treatments/functional-mobility", "/muscles/lower-trapezius"],
-  "reviewStatus": "draft"
+  "muscles": [
+    "pec-minor",
+    "pec-major-stern",
+    "lower-trap",
+    "middle-trap",
+    "longissimus",
+    "serratus"
+  ],
+  "pain": [
+    "between-shoulder-blades",
+    "back-of-neck",
+    "front-of-chest"
+  ],
+  "guides": [
+    "posterior-neck"
+  ],
+  "related": [
+    "/conditions/desk-neck-pain",
+    "/conditions/upper-back-rhomboid-pain",
+    "/conditions/neck-pain",
+    "/conditions/scoliosis-support",
+    "/conditions/shoulder-impingement",
+    "/treatments/strength-and-performance",
+    "/treatments/functional-mobility",
+    "/muscles/lower-trapezius"
+  ],
+  "reviewStatus": "approved"
 }

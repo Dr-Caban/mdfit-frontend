@@ -4,7 +4,10 @@
   "title": "Knee Osteoarthritis Relief in Sarasota, FL | MD Fit",
   "h1": "Knee Osteoarthritis Relief in Sarasota, FL",
   "description": "Knee osteoarthritis in Sarasota: why the X-ray does not predict your pain, the quad and calf muscles that do, and Dr. Jared Caban's movement-first approach.",
-  "about": { "type": "MedicalCondition", "name": "Knee osteoarthritis" },
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Knee osteoarthritis"
+  },
   "lead": "If you have been told your knee is bone on bone and the only answer is a replacement someday, here is the part that often gets left out: how much the knee hurts has surprisingly little to do with what the X-ray shows and a great deal to do with the muscles around it.",
   "sections": [
     {
@@ -42,14 +45,49 @@
     "Unexplained weight loss or night pain that does not change with position."
   ],
   "faq": [
-    { "q": "Will exercise wear out my arthritic knee faster?", "a": "Appropriately dosed strengthening and walking are consistently associated with less pain and better function in knee arthritis, not faster wear. The dose matters, which is why it is prescribed rather than guessed." },
-    { "q": "Is massage helpful for knee osteoarthritis?", "a": "Hands-on release of the quadriceps, calf and popliteus often reduces pain and improves straightening. It works best combined with strengthening." },
-    { "q": "Do I need a knee replacement?", "a": "That is a decision between you and an orthopedic surgeon based on pain, function and how you respond to conservative care. Many people delay or avoid it with strength work." },
-    { "q": "Why does my knee hurt more going downstairs?", "a": "Descending stairs loads the quadriceps eccentrically and compresses the kneecap. Weak or tight quads, especially the vastus medialis, make that step painful." }
+    {
+      "q": "Will exercise wear out my arthritic knee faster?",
+      "a": "Appropriately dosed strengthening and walking are consistently associated with less pain and better function in knee arthritis, not faster wear. The dose matters, which is why it is prescribed rather than guessed."
+    },
+    {
+      "q": "Is massage helpful for knee osteoarthritis?",
+      "a": "Hands-on release of the quadriceps, calf and popliteus often reduces pain and improves straightening. It works best combined with strengthening."
+    },
+    {
+      "q": "Do I need a knee replacement?",
+      "a": "That is a decision between you and an orthopedic surgeon based on pain, function and how you respond to conservative care. Many people delay or avoid it with strength work."
+    },
+    {
+      "q": "Why does my knee hurt more going downstairs?",
+      "a": "Descending stairs loads the quadriceps eccentrically and compresses the kneecap. Weak or tight quads, especially the vastus medialis, make that step painful."
+    }
   ],
-  "muscles": ["vmo", "rectus-femoris", "vastus-lateralis", "popliteus", "gastroc", "glute-med"],
-  "pain": ["inside-of-knee", "below-kneecap", "behind-the-knee"],
-  "guides": ["quads", "calf"],
-  "related": ["/conditions/knee-pain", "/conditions/knee-replacement-rehab", "/conditions/meniscus-tear-recovery", "/conditions/hip-osteoarthritis", "/conditions/chronic-pain", "/treatments/chronic-pain-program", "/treatments/clinical-exercise-physiology", "/pain/inside-of-knee"],
-  "reviewStatus": "draft"
+  "muscles": [
+    "vmo",
+    "rectus-femoris",
+    "vastus-lateralis",
+    "popliteus",
+    "gastroc",
+    "glute-med"
+  ],
+  "pain": [
+    "inside-of-knee",
+    "below-kneecap",
+    "behind-the-knee"
+  ],
+  "guides": [
+    "quads",
+    "calf"
+  ],
+  "related": [
+    "/conditions/knee-pain",
+    "/conditions/knee-replacement-rehab",
+    "/conditions/meniscus-tear-recovery",
+    "/conditions/hip-osteoarthritis",
+    "/conditions/chronic-pain",
+    "/treatments/chronic-pain-program",
+    "/treatments/clinical-exercise-physiology",
+    "/pain/inside-of-knee"
+  ],
+  "reviewStatus": "approved"
 }

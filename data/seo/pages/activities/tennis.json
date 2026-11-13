@@ -4,7 +4,10 @@
   "title": "Tennis Injury Rehab & Performance in Sarasota | MD Fit",
   "h1": "Tennis Injury Rehab & Performance in Sarasota",
   "description": "Tennis elbow, shoulder pain, low back and calf problems in Sarasota tennis players: the muscles involved, how MD Fit treats them and what to do this week.",
-  "about": { "type": "Thing", "name": "Tennis" },
+  "about": {
+    "type": "Thing",
+    "name": "Tennis"
+  },
   "lead": "Tennis asks a lot of a few specific tissues: the forearm that steadies the racquet, the shoulder that serves, the trunk that rotates and the calf that pushes off hundreds of times a match. When one of them starts complaining, the fix is rarely rest alone. Here is how we think about tennis players at MD Fit in Sarasota.",
   "sections": [
     {
@@ -46,13 +49,37 @@
     "Calf pain with swelling, warmth and redness, which needs urgent medical evaluation to rule out a blood clot."
   ],
   "faq": [
-    { "q": "Do I have to stop playing tennis while my elbow heals?", "a": "Usually not completely. Reducing volume, fixing grip size and string tension, and loading the tendon with slow eccentric work often lets players keep hitting at a lower level while the tissue recovers. Sharp pain or loss of grip strength is different and should be assessed." },
-    { "q": "Is tennis elbow really an elbow problem?", "a": "The pain is at the elbow, but the load comes from the wrist extensors and often from a shoulder or trunk that is not rotating well, so the forearm overworks. That is why we assess the whole chain." },
-    { "q": "What causes shoulder pain on the serve?", "a": "Commonly an irritated rotator cuff or an impingement pattern from a shoulder blade that does not rotate upward well. Tight chest muscles and a stiff upper back are frequent contributors, and both respond well to release and corrective work." }
+    {
+      "q": "Do I have to stop playing tennis while my elbow heals?",
+      "a": "Usually not completely. Reducing volume, fixing grip size and string tension, and loading the tendon with slow eccentric work often lets players keep hitting at a lower level while the tissue recovers. Sharp pain or loss of grip strength is different and should be assessed."
+    },
+    {
+      "q": "Is tennis elbow really an elbow problem?",
+      "a": "The pain is at the elbow, but the load comes from the wrist extensors and often from a shoulder or trunk that is not rotating well, so the forearm overworks. That is why we assess the whole chain."
+    },
+    {
+      "q": "What causes shoulder pain on the serve?",
+      "a": "Commonly an irritated rotator cuff or an impingement pattern from a shoulder blade that does not rotate upward well. Tight chest muscles and a stiff upper back are frequent contributors, and both respond well to release and corrective work."
+    }
   ],
-  "muscles": ["wrist-ext", "supinator", "infraspinatus", "supraspinatus", "ql", "gastroc"],
-  "pain": ["front-of-shoulder", "forearm", "upper-calf", "flank"],
-  "guides": ["rotator-cuff", "calf"],
+  "muscles": [
+    "wrist-ext",
+    "supinator",
+    "infraspinatus",
+    "supraspinatus",
+    "ql",
+    "gastroc"
+  ],
+  "pain": [
+    "front-of-shoulder",
+    "forearm",
+    "upper-calf",
+    "flank"
+  ],
+  "guides": [
+    "rotator-cuff",
+    "calf"
+  ],
   "related": [
     "/conditions/tennis-elbow",
     "/conditions/golfers-elbow",
@@ -63,6 +90,10 @@
     "/pickleball-injury-rehab-sarasota",
     "/treatments/strength-and-performance"
   ],
-  "programs": ["tennis-elbow-4", "shoulder-6", "mobility-12"],
-  "reviewStatus": "draft"
+  "programs": [
+    "tennis-elbow-4",
+    "shoulder-6",
+    "mobility-12"
+  ],
+  "reviewStatus": "approved"
 }

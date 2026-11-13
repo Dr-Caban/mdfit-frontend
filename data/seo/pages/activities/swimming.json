@@ -4,7 +4,10 @@
   "title": "Swimmer's Shoulder & Swimming Injuries in Sarasota | MD Fit",
   "h1": "Swimmer's Shoulder & Swimming Injuries in Sarasota",
   "description": "Shoulder, neck, low back and knee pain from pool and open-water swimming in Sarasota. Muscles involved, MD Fit's release and strengthening approach, red flags.",
-  "about": { "type": "Thing", "name": "Swimming" },
+  "about": {
+    "type": "Thing",
+    "name": "Swimming"
+  },
   "lead": "Swimming is the sport people get sent to when everything else hurts, which makes it easy to forget that swimmers get hurt too. The shoulder does the bulk of the work and takes the bulk of the damage, but the neck, low back and knees have their own stories. This page is for lap swimmers, masters athletes, triathletes and Gulf swimmers around Sarasota.",
   "sections": [
     {
@@ -46,13 +49,35 @@
     "Sudden, severe headache or dizziness during or after a swim."
   ],
   "faq": [
-    { "q": "Can I keep swimming with swimmer's shoulder?", "a": "Often yes, at reduced volume and without paddles, while the tissue is treated and the shoulder blade mechanics are corrected. Sharp pain, night pain or weakness should be assessed before continuing." },
-    { "q": "Why does only one shoulder hurt when both do the same stroke?", "a": "Almost nobody is symmetrical in the water. Breathing side, a stronger pull on one arm, a stiffer upper back on one side or an old injury all shift load. Part of the assessment is finding that asymmetry." },
-    { "q": "Is swimming safe for my back?", "a": "For most people swimming is one of the kindest activities for the spine. If the low back aches, it is usually breaststroke or butterfly mechanics and tight hip flexors rather than the water itself." }
+    {
+      "q": "Can I keep swimming with swimmer's shoulder?",
+      "a": "Often yes, at reduced volume and without paddles, while the tissue is treated and the shoulder blade mechanics are corrected. Sharp pain, night pain or weakness should be assessed before continuing."
+    },
+    {
+      "q": "Why does only one shoulder hurt when both do the same stroke?",
+      "a": "Almost nobody is symmetrical in the water. Breathing side, a stronger pull on one arm, a stiffer upper back on one side or an old injury all shift load. Part of the assessment is finding that asymmetry."
+    },
+    {
+      "q": "Is swimming safe for my back?",
+      "a": "For most people swimming is one of the kindest activities for the spine. If the low back aches, it is usually breaststroke or butterfly mechanics and tight hip flexors rather than the water itself."
+    }
   ],
-  "muscles": ["supraspinatus", "subscapularis", "pec-minor", "lats", "scm"],
-  "pain": ["top-of-shoulder", "deep-shoulder-joint", "side-of-neck", "inside-of-knee"],
-  "guides": ["rotator-cuff"],
+  "muscles": [
+    "supraspinatus",
+    "subscapularis",
+    "pec-minor",
+    "lats",
+    "scm"
+  ],
+  "pain": [
+    "top-of-shoulder",
+    "deep-shoulder-joint",
+    "side-of-neck",
+    "inside-of-knee"
+  ],
+  "guides": [
+    "rotator-cuff"
+  ],
   "related": [
     "/conditions/shoulder-impingement",
     "/conditions/shoulder-pain",
@@ -62,6 +87,9 @@
     "/treatments/medical-massage",
     "/treatments/strength-and-performance"
   ],
-  "programs": ["shoulder-6", "mobility-12"],
-  "reviewStatus": "draft"
+  "programs": [
+    "shoulder-6",
+    "mobility-12"
+  ],
+  "reviewStatus": "approved"
 }

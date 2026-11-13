@@ -4,7 +4,10 @@
   "title": "Desk Worker Neck, Back & Wrist Pain in Sarasota | MD Fit",
   "h1": "Neck, Back & Wrist Pain for Desk Workers in Sarasota",
   "description": "Tech neck, headaches, mid-back and low back ache, wrist pain and tight hips from desk work: the muscles involved, MD Fit's approach and realistic fixes.",
-  "about": { "type": "Thing", "name": "Desk work and sedentary occupations" },
+  "about": {
+    "type": "Thing",
+    "name": "Desk work and sedentary occupations"
+  },
   "lead": "Eight hours at a screen is a sport, just a slow one. The same posture held all day loads the same handful of muscles, and they eventually push back with headaches, a stiff neck, an ache between the shoulder blades, a low back that complains when you stand up and wrists that burn by Friday. None of it needs a new chair first. It needs the body to move differently.",
   "sections": [
     {
@@ -42,13 +45,38 @@
     "Chest pain, pressure or pain into the left arm or jaw, which must be treated as cardiac until proven otherwise: call 911."
   ],
   "faq": [
-    { "q": "Will a standing desk fix my back pain?", "a": "It helps some people, mainly because it forces a change of position. Standing still for eight hours has its own problems. The best desk is the one you move away from regularly." },
-    { "q": "Why do I get headaches at work but not on weekends?", "a": "Commonly the suboccipital and upper trapezius muscles, loaded by hours of forward head posture and screen focus, refer pain into the head. The pattern often eases when the neck muscles are released and the posture that loads them is corrected." },
-    { "q": "Is my wrist pain carpal tunnel?", "a": "Sometimes, but wrist and hand symptoms in desk workers are often driven partly by tight forearm muscles and by chest and neck muscles compressing nerves higher up. The assessment sorts out where the pressure actually is." }
+    {
+      "q": "Will a standing desk fix my back pain?",
+      "a": "It helps some people, mainly because it forces a change of position. Standing still for eight hours has its own problems. The best desk is the one you move away from regularly."
+    },
+    {
+      "q": "Why do I get headaches at work but not on weekends?",
+      "a": "Commonly the suboccipital and upper trapezius muscles, loaded by hours of forward head posture and screen focus, refer pain into the head. The pattern often eases when the neck muscles are released and the posture that loads them is corrected."
+    },
+    {
+      "q": "Is my wrist pain carpal tunnel?",
+      "a": "Sometimes, but wrist and hand symptoms in desk workers are often driven partly by tight forearm muscles and by chest and neck muscles compressing nerves higher up. The assessment sorts out where the pressure actually is."
+    }
   ],
-  "muscles": ["suboccipitals", "upper-trap", "levator", "pec-minor", "psoas", "wrist-ext"],
-  "pain": ["base-of-skull", "where-neck-meets-shoulder", "between-shoulder-blades", "back-of-wrist"],
-  "guides": ["posterior-neck", "iliopsoas", "scalenes"],
+  "muscles": [
+    "suboccipitals",
+    "upper-trap",
+    "levator",
+    "pec-minor",
+    "psoas",
+    "wrist-ext"
+  ],
+  "pain": [
+    "base-of-skull",
+    "where-neck-meets-shoulder",
+    "between-shoulder-blades",
+    "back-of-wrist"
+  ],
+  "guides": [
+    "posterior-neck",
+    "iliopsoas",
+    "scalenes"
+  ],
   "related": [
     "/conditions/desk-neck-pain",
     "/conditions/tension-headache",
@@ -59,6 +87,9 @@
     "/conditions/de-quervains",
     "/treatments/medical-massage"
   ],
-  "programs": ["shoulder-6", "posterior-chain-6"],
-  "reviewStatus": "draft"
+  "programs": [
+    "shoulder-6",
+    "posterior-chain-6"
+  ],
+  "reviewStatus": "approved"
 }

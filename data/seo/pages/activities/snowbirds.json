@@ -4,7 +4,10 @@
   "title": "Snowbird Pain & Mobility Care in Sarasota | MD Fit",
   "h1": "Seasonal Residents: Pain & Mobility Care in Sarasota",
   "description": "Snowbirds in Sarasota, November to April: why pain spikes after arrival, the muscles involved, how MD Fit works with your home providers, first-week steps.",
-  "about": { "type": "Thing", "name": "Seasonal residents (snowbirds)" },
+  "about": {
+    "type": "Thing",
+    "name": "Seasonal residents (snowbirds)"
+  },
   "lead": "Every November a wave of people arrives in Sarasota after months of being indoors, unpacks the car and plays golf three days in a row. By Thanksgiving a predictable share of them are looking for someone to see their back, hip, shoulder or knee. If that is you, this page explains what is happening and how to use your season well.",
   "sections": [
     {
@@ -46,13 +49,38 @@
     "Sudden inability to bear weight on a leg or lift an arm after an awkward swing or step."
   ],
   "faq": [
-    { "q": "Can I be seen if I am only in Sarasota for a few months?", "a": "Yes. Most seasonal residents are here for four to six months, which is plenty of time to assess, treat and build a strength base. The app keeps the plan going after you leave." },
-    { "q": "Will Dr. Jared coordinate with my doctor at home?", "a": "With your permission, yes. He will share his findings and the plan so that your northern providers know what was done and can continue it." },
-    { "q": "Why did my knees do fine all summer and hurt the first week here?", "a": "Usually because activity multiplied overnight. Arthritic knees tolerate load they are used to; a sudden tripling of walking and sport exceeds that tolerance. A gradual ramp and stronger hips and quads usually restore it." }
+    {
+      "q": "Can I be seen if I am only in Sarasota for a few months?",
+      "a": "Yes. Most seasonal residents are here for four to six months, which is plenty of time to assess, treat and build a strength base. The app keeps the plan going after you leave."
+    },
+    {
+      "q": "Will Dr. Jared coordinate with my doctor at home?",
+      "a": "With your permission, yes. He will share his findings and the plan so that your northern providers know what was done and can continue it."
+    },
+    {
+      "q": "Why did my knees do fine all summer and hurt the first week here?",
+      "a": "Usually because activity multiplied overnight. Arthritic knees tolerate load they are used to; a sudden tripling of walking and sport exceeds that tolerance. A gradual ramp and stronger hips and quads usually restore it."
+    }
   ],
-  "muscles": ["psoas", "glute-med", "ql", "soleus", "foot-intrinsics", "upper-trap"],
-  "pain": ["flank", "outside-of-hip", "sole-of-foot", "where-neck-meets-shoulder"],
-  "guides": ["lateral-hip", "calf", "iliopsoas"],
+  "muscles": [
+    "psoas",
+    "glute-med",
+    "ql",
+    "soleus",
+    "foot-intrinsics",
+    "upper-trap"
+  ],
+  "pain": [
+    "flank",
+    "outside-of-hip",
+    "sole-of-foot",
+    "where-neck-meets-shoulder"
+  ],
+  "guides": [
+    "lateral-hip",
+    "calf",
+    "iliopsoas"
+  ],
   "related": [
     "/golf-performance-sarasota",
     "/pickleball-injury-rehab-sarasota",
@@ -63,6 +91,10 @@
     "/activities/seniors-strength-balance",
     "/treatments/functional-mobility"
   ],
-  "programs": ["mobility-12", "posterior-chain-6", "knee-6"],
-  "reviewStatus": "draft"
+  "programs": [
+    "mobility-12",
+    "posterior-chain-6",
+    "knee-6"
+  ],
+  "reviewStatus": "approved"
 }
