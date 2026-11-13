@@ -1,0 +1,85 @@
+{
+  "group": "activities",
+  "slug": "active-recovery-days",
+  "title": "Active Recovery Days: What to Actually Do | MD Fit",
+  "h1": "Active Recovery Days",
+  "description": "What an active recovery day is for, what to do on one, and the common mistake that turns it into a third hard session by accident.",
+  "about": {
+    "type": "Thing",
+    "name": "Active recovery"
+  },
+  "lead": "An active recovery day is light movement on a day you are not training hard. Done properly it helps you feel better and keeps the week moving. Done the way most people do it, it is just another moderate session wearing a different name.",
+  "sections": [
+    {
+      "h2": "What it is for",
+      "html": "<p>Gentle movement increases blood flow through tissue that is repairing, keeps joints moving through range, and for most people simply feels better than sitting still. Sore muscles typically ease once you are moving and stiffen again if you spend the day on the sofa.</p><p>It also keeps the habit intact. A week with two hard sessions and five blank days is fragile; a week where something happens most days is far more durable, and the easy days are what make that sustainable.</p><p>What it does not do is accelerate the underlying repair in any dramatic way. The claims about flushing out waste products are largely a hangover from the lactic acid story. Treat it as comfort and consistency rather than as a physiological intervention.</p>"
+    },
+    {
+      "h2": "The mistake that ruins it",
+      "html": "<p>Active recovery has to be genuinely easy. Most people do it at an effort that is light compared with their hard sessions but still meaningful — a brisk forty-minute ride, a circuit described as light, a yoga class that turns out to be demanding.</p><p>That is not recovery. It is a third moderate session, and it is the most common reason people accumulate fatigue while believing they are taking it easy. If you finish an active recovery day needing to recover from it, it was not one.</p><p>The test is simple: you should feel better at the end than you did at the start.</p>"
+    },
+    {
+      "h2": "What to actually do",
+      "html": "<ul><li><b>Twenty to forty minutes of easy walking.</b> The default, and hard to get wrong.</li><li><b>Easy cycling or swimming.</b> Non-impact, and useful if the legs are beaten up.</li><li><b>Mobility work.</b> See the <a href=\"/activities/daily-mobility-routine\">daily mobility routine</a> — an ideal fit for these days.</li><li><b>Light, unloaded versions of your training movements.</b> Bodyweight squats, hinges and presses, moving well, no fatigue.</li><li><b>Something that is not exercise at all.</b> A long walk with a dog, a slow swim, gardening. It still counts.</li></ul>"
+    },
+    {
+      "h2": "When to take a complete rest day instead",
+      "html": "<p>Active recovery is not always the right answer. Take a full day off when you are genuinely run down, sleeping badly, unusually irritable, or when the thought of moving feels like a burden rather than a mild chore.</p><p>People who train seriously often find complete rest harder than light activity, which is exactly why it is worth scheduling. See <a href=\"/activities/rest-days-and-overtraining\">rest days and overtraining</a>.</p><p>If you are unwell with a fever, body aches or anything below the neck, train nothing. That is not a recovery day question.</p>"
+    },
+    {
+      "h2": "Fitting it into the week",
+      "html": "<p>A reasonable pattern for someone training three or four times hard: easy days between the hard ones, with at least one day that is genuinely nothing.</p><p>For people in a rehabilitation programme, the light days are often where the prescribed work happens — the specific exercises, done well, when you are not fatigued from a hard session. That is usually the best time to do them, because quality of movement matters more than effort in that work.</p><p>If you are working around a sore area, the easy day is also when to move it deliberately through comfortable range rather than avoiding it. Tissue that is never moved stiffens, and a joint protected for weeks usually takes longer to settle than one that kept moving gently throughout.</p>"
+    },
+    {
+      "h2": "Why easy days matter more as you train more",
+      "html": "<p>The more hard sessions you do, the more the easy days are carrying. They are what let you repeat quality work rather than grinding through a series of mediocre ones.</p><p>People who train four or five times a week and never have a genuinely easy day end up with every session landing in the same moderate middle: too tired to go hard, too stubborn to go easy. The sessions blur together and progress stalls even though the hours have gone up.</p><p>Making the easy days properly easy is what makes the hard days properly hard. That is the whole argument, and it applies at every level of training.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Pain that increases during light movement rather than easing as you warm up.",
+    "Feeling unwell with fever, body aches or symptoms below the neck: rest rather than moving.",
+    "Persistent heavy fatigue that does not lift after several easy days.",
+    "Dizziness or breathlessness during activity that should be comfortable."
+  ],
+  "faq": [
+    {
+      "q": "How easy is easy enough?",
+      "a": "You should be able to hold a full conversation throughout and finish feeling better than you started. If you need to recover from it, it was too hard."
+    },
+    {
+      "q": "Is a yoga class active recovery?",
+      "a": "Sometimes. A gentle, mobility-focused class fits well; a strong, strength-based class is a training session and should be counted as one."
+    },
+    {
+      "q": "Should I do active recovery when sore?",
+      "a": "Usually yes. Gentle movement typically eases soreness more effectively than complete rest, as long as it does not involve loading the sore area hard."
+    },
+    {
+      "q": "How many active recovery days a week?",
+      "a": "As many as suit the rest of your week. Most people do well with two or three light days alongside their hard sessions and at least one genuinely off."
+    }
+  ],
+  "muscles": [
+    "gastroc",
+    "glute-max",
+    "rectus-femoris",
+    "psoas"
+  ],
+  "pain": [
+    "lower-calf",
+    "front-of-hip",
+    "beside-the-spine"
+  ],
+  "guides": [],
+  "related": [
+    "/activities/rest-days-and-overtraining",
+    "/activities/daily-mobility-routine",
+    "/activities/muscle-soreness-and-doms",
+    "/activities/how-many-days-a-week",
+    "/activities/walking-for-fitness"
+  ],
+  "programs": [],
+  "reviewStatus": "approved"
+}

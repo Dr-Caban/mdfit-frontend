@@ -1,0 +1,90 @@
+{
+  "slug": "hypertrophy-training-basics",
+  "title": "Hypertrophy Training Basics | MD Fit",
+  "h1": "Hypertrophy Training: What Actually Builds Muscle",
+  "description": "What muscle growth responds to, why effort matters more than the exercise you chose, and the things lifters worry about that make little difference.",
+  "about": {
+    "type": "Thing",
+    "name": "Hypertrophy training"
+  },
+  "lead": "Muscle growth is less complicated and less fragile than most training content suggests. A muscle grows when it is challenged close to its limit, often enough, with enough total work, and given the raw material and rest to rebuild. Most of the arguments are about the margins.",
+  "sections": [
+    {
+      "h2": "What actually drives growth",
+      "html": "<p>Three things carry most of the result. The first is taking sets close enough to failure that the muscle is genuinely challenged; a set stopped well short of effort contributes little regardless of what it looked like. The second is accumulating enough challenging sets per muscle across a week. The third is progressing over time, so that what was hard in January is no longer the hardest thing you do in June.</p><p>Everything else, including exercise selection, rest periods, tempo and order, adjusts the result at the margins. That is worth knowing because lifters routinely spend attention on the margins while the three things that matter go unmanaged.</p>"
+    },
+    {
+      "h2": "Proximity to failure is the thing people misjudge",
+      "html": "<p>Most people stop further from failure than they think. The useful mental model is reps in reserve: how many more repetitions you genuinely could have completed. For growth, sets taken to within a few reps of failure appear to be the productive range, and sets stopped many reps short contribute much less.</p><p>This does not mean every set should go to absolute failure. Training to failure constantly produces fatigue out of proportion to the extra stimulus, particularly on heavy compound lifts where the cost is highest. <a href=\"/activities/rpe-and-rir\">RPE and RIR</a> covers how to judge it.</p>"
+    },
+    {
+      "h2": "Load matters less than effort, within reason",
+      "html": "<p>Muscle grows across a broad range of loads provided the sets are taken close to failure. A hard set of six and a hard set of eighteen both produce growth. What changes is the cost and the limiting factor: heavy sets are more taxing on joints and connective tissue, very light sets become limited by discomfort and cardiovascular fatigue before the muscle is challenged.</p><p>In practice, most people do well with a mix, keeping the heavier work on movements that tolerate it and using higher repetitions where loading the joint hard is less appealing. <a href=\"/activities/rep-ranges-explained\">Rep ranges explained</a> goes into this.</p>"
+    },
+    {
+      "h2": "Range of motion and the lengthened position",
+      "html": "<p>Training a muscle through a full range, and particularly loading it while it is lengthened, appears to be more productive than working in a shortened range. This is one of the more practically useful findings for how people choose exercises.</p><p>It is also a reason to prefer movements that challenge a muscle at length: a Romanian deadlift for the hamstrings, an incline curl for the biceps, a deep split squat for the quadriceps. The caveat is that lengthened positions are also where tissue is most vulnerable, so range should be built rather than forced, especially on an irritable joint.</p>"
+    },
+    {
+      "h2": "What matters outside the gym",
+      "html": "<p>Muscle is built from protein and rebuilt during rest. Chronically under-eating, chronically under-sleeping, or training a muscle group hard again before it has recovered all limit the result regardless of how good the programme looks on paper.</p><p>This is where many people's results are actually constrained. If training has stalled despite a sensible programme, the limiting factor is more often recovery than the exercise selection. Dr. Jared Caban is a physician-trained clinical exercise physiologist, which means a programme review here looks at the training stress alongside what is supporting it. Members get the exercise library and workout generator in the MD Fit app.</p>"
+    }
+  ],
+  "redFlags": [
+    "Joint pain that persists between sessions rather than ordinary muscle soreness.",
+    "Pain that is sharp and specific during a rep rather than diffuse afterwards.",
+    "Numbness, tingling or weakness in an arm or leg during or after training.",
+    "Soreness so severe you cannot straighten a limb, with dark urine or feeling unwell: seek medical care the same day.",
+    "Chest pain, pressure, shortness of breath or light-headedness during training: stop and call 911."
+  ],
+  "faq": [
+    {
+      "q": "How many sets per muscle per week?",
+      "a": "A commonly used starting point is a moderate number of hard sets spread across the week, increased gradually as recovery allows. More is not automatically better, and the number that works varies between people."
+    },
+    {
+      "q": "Do I have to train to failure?",
+      "a": "No. Sets taken close to failure appear to drive most of the growth, and training to absolute failure constantly produces fatigue out of proportion to the extra benefit, especially on heavy compound lifts."
+    },
+    {
+      "q": "Heavy weights or high reps for muscle?",
+      "a": "Both work when the sets are taken close to failure. The practical difference is cost: heavy work is harder on joints, very light work becomes limited by discomfort before the muscle is challenged."
+    },
+    {
+      "q": "Why have I stopped making progress?",
+      "a": "Most commonly recovery rather than programming. Under-eating, under-sleeping or training a muscle again before it has recovered all limit results regardless of how the programme looks."
+    }
+  ],
+  "muscles": [
+    "pec-major-stern",
+    "lats",
+    "glute-max",
+    "vastus-lateralis",
+    "biceps-femoris",
+    "middle-trap"
+  ],
+  "pain": [
+    "front-of-shoulder",
+    "below-kneecap",
+    "beside-the-spine",
+    "between-shoulder-blades"
+  ],
+  "guides": [],
+  "related": [
+    "/activities/progressive-overload",
+    "/activities/training-volume-and-frequency",
+    "/activities/rep-ranges-explained",
+    "/activities/rpe-and-rir",
+    "/activities/choosing-a-training-split",
+    "/activities/chest-training",
+    "/treatments/strength-and-performance",
+    "/treatments/clinical-exercise-physiology"
+  ],
+  "programs": [
+    "mobility-12"
+  ],
+  "group": "activities",
+  "steps": null,
+  "timeline": null,
+  "reviewStatus": "approved"
+}
