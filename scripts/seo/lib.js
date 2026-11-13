@@ -144,7 +144,7 @@ function page({ url, title, description, body, graph, section, robots }) {
 ${body}
   </main>
   <footer class="cd-foot"><p><b>MD Fit</b> · 3214 Clark Road, Sarasota, FL 34231 · <a href="tel:+19413130562">941-313-0562</a> · Mon–Fri 8 AM–4 PM</p>
-  <p><a href="${MAPS_URL}" rel="noopener">★ ${RATING.value} on Google (${RATING.count} reviews)</a> · <a href="/privacy-policy">Privacy</a> · <a href="/terms">Terms</a></p>
+  <p><a href="${MAPS_URL}" rel="noopener">★ ${RATING.value} on Google (${RATING.count} reviews)</a> · <a href="/contact">Contact</a> · <a href="/privacy-policy">Privacy</a> · <a href="/terms">Terms</a></p>
   <p class="cd-fine">Educational information, not a diagnosis. In an emergency, call 911.</p></footer>
   <script src="/config.js"></script>
   <script src="/analytics.js" defer></script>

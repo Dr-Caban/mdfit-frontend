@@ -1,0 +1,75 @@
+{
+  "_note": "Real pages at addresses the old mdfitsrq.com site had indexed, so visitors from those search results land on a page instead of a redirect. Built by scripts/seo/build.js (buildInfoPages). Facts here come from the site itself; change them here and rebuild.",
+  "pages": [
+    {
+      "slug": "dr-jared",
+      "title": "Dr. Jared Caban, MD, MSc, CCEP, LMT | MD Fit",
+      "h1": "Dr. Jared Caban, MD, MSc, CEP, CCEP, LMT",
+      "description": "Meet Dr. Jared Caban, Certified Clinical Exercise Physiologist and Licensed Massage Therapist with medical training, who leads every plan at MD Fit in Sarasota.",
+      "schema": "ProfilePage",
+      "lead": "Dr. Jared Caban leads every plan at MD Fit on Clark Road in Sarasota. He combines medical training, clinical exercise physiology and hands-on medical massage, so the person who works out why something hurts is the same person who treats it and builds the plan that keeps it from coming back.",
+      "sections": [
+        {
+          "h2": "Training and credentials",
+          "html": "<ul><li><b>MD and MSc.</b> Medical training and a master's degree, which shape how he assesses a problem and when he sends someone to another clinician first.</li><li><b>CEP and CCEP.</b> Clinical Exercise Physiologist, and the advanced Certified Clinical Exercise Physiologist credential, both through the American College of Sports Medicine. A CEP uses exercise to prevent and manage chronic disease and designs programs for people whose medical history makes exercise more complex than going to the gym and figuring it out. He explains the credential in <a href=\"/blog/what-is-a-cep\">What is a Clinical Exercise Physiologist?</a></li><li><b>LMT.</b> Licensed Massage Therapist, so hands-on soft-tissue work is part of the same visit rather than a separate referral.</li></ul>"
+        },
+        {
+          "h2": "How he works",
+          "html": "<p>Every plan at MD Fit follows the same five steps, and Dr. Jared runs each of them himself:</p><ol><li><b>Assess.</b> A hands-on evaluation of how you move and which muscles reproduce your pain.</li><li><b>Release.</b> Targeted soft-tissue work on the muscle at the source.</li><li><b>Correct.</b> Mobility and movement fixes so the problem stops coming back.</li><li><b>Assign homework.</b> Short daily video routines in the free MD Fit app.</li><li><b>Strengthen.</b> Progressive strength work so you stay out of pain and keep doing what you love.</li></ol><p>The starting point is usually the source rather than the spot that hurts. Many pains are referred from a muscle somewhere else, which is why the site has a full <a href=\"/muscles/\">muscle library</a> showing where each one sends its pain.</p>"
+        },
+        {
+          "h2": "What he helps with",
+          "html": "<p>Rehabilitation after injury and surgery, chronic and persistent pain, medical massage, clinical exercise for people with medical conditions, functional mobility, strength training, and balance and fall prevention. The <a href=\"/conditions/\">conditions</a> and <a href=\"/treatments/\">treatments</a> pages go through each in detail, and the <a href=\"/activities/\">activities</a> pages cover training for specific sports and stages of life.</p><p>When something is outside what movement and soft-tissue work can address, he says so and points you to the right physician or specialist. That is part of the job, not a failure of it.</p>"
+        },
+        {
+          "h2": "Where to find him",
+          "html": "<p>MD Fit is at 3214 Clark Road, Sarasota, FL 34231, and sees people from Sarasota, Bradenton, Lakewood Ranch, Venice, Osprey and Siesta Key. It is a self-pay practice, with no insurance paperwork and no referral needed. You can <a href=\"/book?type=eval\">book an evaluation</a>, ask for a <a href=\"/book?type=call\">free phone consult</a>, or call 941-313-0562.</p><p>If you are not in Sarasota, the <a href=\"/mdfit-app\">free MD Fit app</a> has the pain tool, the exercise videos and the programs he uses with his clinic patients.</p>"
+        }
+      ],
+      "faq": [
+        { "q": "Is Dr. Jared a physical therapist?", "a": "No. He is a Certified Clinical Exercise Physiologist and Licensed Massage Therapist with medical training. The professions overlap; his article on what a CEP is explains how they differ and how they work together." },
+        { "q": "Do I need a referral to see Dr. Jared?", "a": "No. MD Fit is a self-pay practice, so no referral and no insurance paperwork are needed." },
+        { "q": "Where is MD Fit?", "a": "3214 Clark Road, Sarasota, FL 34231. Call 941-313-0562 or book online." }
+      ]
+    },
+    {
+      "slug": "testimonials",
+      "title": "MD Fit Reviews and Testimonials | Sarasota",
+      "h1": "MD Fit Reviews and Testimonials",
+      "description": "What patients say about Dr. Jared Caban and MD Fit in Sarasota: Google reviews from people treated for pain, injury and surgery recovery, and training.",
+      "schema": "WebPage",
+      "lead": "These are reviews people have left on Google after working with Dr. Jared Caban at MD Fit. They come in for persistent pain, recovery after injury or surgery, and training, and they say what changed.",
+      "liveReviews": true,
+      "sections": [
+        {
+          "h2": "Leave a review",
+          "html": "<p>If MD Fit has helped you, a review is the most useful thing you can do for the next person trying to decide. Good or bad, Dr. Jared reads every one. You can <a href=\"/#leave-review\">leave a review on this site</a> or on Google.</p>"
+        }
+      ],
+      "faq": []
+    },
+    {
+      "slug": "contact",
+      "title": "Contact MD Fit | Clark Road, Sarasota, FL",
+      "h1": "Contact MD Fit",
+      "description": "Call MD Fit at 941-313-0562, book online, or visit Dr. Jared Caban at 3214 Clark Road, Sarasota, FL 34231. Self-pay, no referral needed.",
+      "schema": "ContactPage",
+      "lead": "The quickest way to reach MD Fit is to call 941-313-0562 or book online. Visits are by appointment with Dr. Jared Caban at 3214 Clark Road in Sarasota.",
+      "sections": [
+        {
+          "h2": "Call or book",
+          "html": "<ul><li><b>Phone:</b> 941-313-0562</li><li><b>Book an evaluation:</b> <a href=\"/book?type=eval\">choose a time online</a></li><li><b>Free phone consult:</b> <a href=\"/book?type=call\">book a short call</a> if you want to talk it through first</li></ul>"
+        },
+        {
+          "h2": "Visit",
+          "html": "<p>3214 Clark Road, Sarasota, FL 34231. <a href=\"https://maps.google.com/?cid=18426672193642042879\" rel=\"noopener\">Open in Google Maps</a>.</p><p>MD Fit sees people from Sarasota, Bradenton, Lakewood Ranch, Venice, Osprey and Siesta Key. It is a self-pay practice, with no insurance paperwork and no referral needed.</p>"
+        },
+        {
+          "h2": "From anywhere",
+          "html": "<p>Not in Sarasota? The <a href=\"/mdfit-app\">free MD Fit app</a> has the pain tool, the exercise videos and the programs Dr. Jared uses with his clinic patients.</p>"
+        }
+      ],
+      "faq": []
+    }
+  ]
+}

@@ -474,6 +474,29 @@ function buildAppPage() {
   L.write("mdfit-app.html", page({ url, title: d.title, description: d.description, body, graph, section: "" }));
   generated.push({ url, title: "The MD Fit app", kind: "landing", snippet: d.lead.slice(0, 150), kw: ["app", "mdfit app", "exercise app", "rehab app", "workout app", "pain app"], priority: 0.9, file: "mdfit-app.html" });
 }
+// Real pages at addresses the old site had indexed (/dr-jared, /testimonials, /contact), so people arriving from those
+// search results land on a page instead of being bounced to the homepage. Words in data/seo/info-pages.json.
+function buildInfoPages() {
+  const d = L.readJson("data/seo/info-pages.json", null); if (!d) return;
+  for (const p of d.pages) {
+    const url = "/" + p.slug, trail = [{ name: "Home", href: "/" }, { name: p.h1.split(",")[0], href: url }];
+    const live = p.liveReviews ? `<div id="live-reviews">${quote(REVIEW)}</div>
+    <p><a class="cd-btn ghost" href="${attr(L.MAPS_URL)}" rel="noopener">Read every review on Google</a></p>` : "";
+    const body = `    ${crumbs(trail)}
+    <h1>${esc(p.h1)}</h1>
+    ${RATING_P}
+    <p class="cd-lead">${esc(p.lead)}</p>
+    ${live}
+    ${p.sections.map((x) => `<h2>${esc(x.h2)}</h2>\n    ${liveLinks(x.html)}`).join("\n    ")}
+    ${p.faq && p.faq.length ? faqHtml(p.faq) : ""}
+    ${L.cta("pain")}${p.liveReviews ? `\n    <script src="/testimonials.js" defer></script>` : ""}`;
+    const graph = [{ "@type": p.schema || "WebPage", url: SITE + url, name: p.title, description: p.description,
+      ...(p.slug === "dr-jared" ? { mainEntity: { "@id": `${SITE}/#dr-jared` } } : {}), provider: { "@id": `${SITE}/#clinic` } },
+      ...(p.faq && p.faq.length ? [faqLd(p.faq)] : []), breadcrumbLd(trail)];
+    L.write(p.slug + ".html", page({ url, title: p.title, description: p.description, body, graph, section: "" }));
+    generated.push({ url, title: p.h1.split(",")[0], kind: "landing", snippet: p.lead.slice(0, 150), kw: [p.slug.replace(/-/g, " "), "md fit", "sarasota"], priority: 0.8, file: p.slug + ".html" });
+  }
+}
 // Existing hub pages get the new entries appended to their grids (conditions hub, blog hub)
 function appendToHub(file, entries, marker) {
   const f = path.join(L.root, file);
@@ -548,6 +571,7 @@ if (want("content")) {
   const acts = content.filter((c) => c.p.group === "activities");
   buildActivitiesHub(acts);
   buildAppPage();
+  buildInfoPages();
   appendToHub("conditions/index.html", content.filter((c) => c.p.group === "conditions").map(({ url, p }) => ({ url, b: p.h1.replace(/ (Treatment |Recovery |Rehab |Relief |Support |Care )?in Sarasota, FL$/, ""), s: p.lead.split(/(?<=\.)\s/)[0].slice(0, 110) })), "conditions");
   appendToHub("blog/index.html", content.filter((c) => c.p.group === "blog").map(({ url, p }) => ({ url, b: p.h1, s: p.description.slice(0, 110) })), "blog");
   addMusclesToConditionPages();
