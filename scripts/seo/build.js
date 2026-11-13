@@ -7,7 +7,11 @@
 "use strict";
 const fs = require("fs"), path = require("path"), { execFileSync } = require("child_process");
 const L = require("./lib");
-const APPROVED = L.readJson("data/seo/approved.json", {}); // which generated groups Dr. Jared has signed off
+const APPROVED = L.readJson("data/seo/approved.json", {});
+// A hand-written link may use a muscle's short data id ("/muscles/ql") instead of its page ("/muscles/quadratus-lumborum").
+// 37 of the ids differ from their page, and writers keep reaching for the id, so links are corrected here at build time.
+const MUSCLE_PAGE = L.readJson("data/seo/muscle-slugs.json", {});
+const muscleHrefs = (html) => String(html).replace(/(href="\/muscles\/)([a-z0-9-]+)(?=["#])/g, (m, pre, id) => pre + (MUSCLE_PAGE[id] || id)); // which generated groups Dr. Jared has signed off
 const { esc, attr, data, muscleUrl, painUrl, findExercise, thumb, quote, REVIEW, RATING, RATING_P, BOOK_ROW, CTA, withInsuranceFaq, crumbs, breadcrumbLd, faqLd, faqHtml, linkList, stepsHtml, ABOUT_DR, page, webPage, SITE, TODAY } = L;
 
 const { M, AGGRAVATORS, SPOTS, rank, reports, tracks, patterns, slugs, pain, guides } = data;
@@ -404,7 +408,7 @@ function buildContent(p) {
     ${isBlog ? `<p class="muted small">By Dr. Jared Caban, MD, MSc, CEP · Published ${esc(p.datePublished)}${p.dateModified && p.dateModified !== p.datePublished ? ` · Updated ${esc(p.dateModified)}` : ""}</p>` : RATING_P}
     <p class="cd-lead">${esc(p.lead)}</p>
     ${isBlog ? "" : `${quote(REVIEW)}\n    ${BOOK_ROW}`}
-    ${p.sections.map((s) => `<h2>${esc(s.h2)}</h2>\n    ${s.html.trim()}`).join("\n    ")}
+    ${p.sections.map((s) => `<h2>${esc(s.h2)}</h2>\n    ${muscleHrefs(s.html.trim())}`).join("\n    ")}
     ${muscles.length ? `<h2>Muscles behind this pain</h2>
     <ul>${muscles.map((id) => `<li><a href="${muscleUrl(id)}">${esc(shortName(M[id].name))}</a>: ${esc(M[id].refers.split(/(?<=\.)\s/)[0])}</li>`).join("")}</ul>` : ""}
     ${!isBlog ? `<h2>How MD Fit ${p.group === "activities" ? "works with you" : `treats ${esc(p.h1.replace(/ (Treatment|Recovery|Rehab|Relief|Support|Care)? ?in Sarasota, FL$/, "").toLowerCase())}`}</h2>
