@@ -1,0 +1,91 @@
+{
+  "group": "activities",
+  "slug": "how-to-measure-femur-length",
+  "title": "How to Measure Your Femur Length at Home | MD Fit",
+  "h1": "How to Measure Your Femur Length at Home",
+  "description": "Three ways to work out whether your femurs are long or short: a chair test, a tape measure and a side-on video. What the ratios mean for your squat.",
+  "about": {
+    "type": "Thing",
+    "name": "Measuring femur length"
+  },
+  "lead": "You do not need a scan to find out how your thigh compares with the rest of you. A chair, a tape measure and a phone will tell you enough to change how you set up your squat, and the whole thing takes about five minutes.",
+  "sections": [
+    {
+      "h2": "Why it is worth knowing",
+      "html": "<p>Femur length is the usual reason two lifters with the same height squat completely differently. It decides how far your hips travel back, how much your torso has to lean, and therefore whether a cue like \"chest up\" is useful advice or an impossible instruction.</p><p>Knowing roughly where you sit lets you stop experimenting blind. It tells you whether to widen your stance or leave it alone, whether heel elevation is likely to help or make your knees ache, and which sticking point you are probably going to meet. <a href=\"/activities/femur-length-and-squat\">Femur length and the squat</a> covers what each build should change.</p><p>One caveat worth saying up front: this is a proportion check, not a medical measurement. You are looking for a clear tendency, not a precise number, and nothing here identifies an injury or a condition.</p>"
+    },
+    {
+      "h2": "The chair test, no equipment",
+      "html": "<p>The fastest version, and for most people it is enough.</p><ol><li>Sit on an ordinary dining chair, the kind with a flat seat around knee height, with your feet flat on the floor and your back upright.</li><li>Look at your knees relative to your hips from the side, or have someone take a photo.</li></ol><p>If your knees sit <b>noticeably higher</b> than your hip crease, your femurs are long relative to your shins. If they sit <b>level or slightly lower</b>, your femurs are on the shorter side. If it is close to level, you are somewhere in the middle, which is where most people are.</p><p>This works because a chair is a fixed height. With a long femur, the knee ends up further from the hip, and since the foot is pinned to the floor, the knee has to rise.</p>"
+    },
+    {
+      "h2": "Measuring with a tape",
+      "html": "<p>For actual ratios, take three measurements. Wear thin clothing and stand on a hard floor.</p><ul><li><b>Femur.</b> Stand up. Find the bony point on the outside of your hip, the one that moves under your fingers when you rotate your leg. Measure from there straight down to the outside of the knee joint line, the crease where the thigh meets the shin.</li><li><b>Tibia.</b> From that same knee crease down to the floor, with your shoe off.</li><li><b>Sitting height.</b> Sit on a flat, hard surface with your back against a wall and measure from the seat to the top of your head. This is your torso plus head, which is what counterbalances the bar.</li></ul><p>Take each measurement twice and use the average. A centimetre either way will not change what you do with the result.</p>"
+    },
+    {
+      "h2": "What the ratios tell you",
+      "html": "<p>Divide your femur measurement by your tibia measurement.</p><ul><li><b>Noticeably above 1.0</b> means a long femur relative to shin. Expect forward lean and read <a href=\"/activities/long-femurs-squat\">long femurs and the squat</a>.</li><li><b>Around 1.0</b> is a middle build. Standard coaching advice will mostly work for you.</li><li><b>Noticeably below 1.0</b> means a shorter femur relative to shin. Expect an upright squat and knee-dominant loading, and read <a href=\"/activities/short-femurs-squat\">short femurs and the squat</a>.</li></ul><p>Then compare your femur with your sitting height. A long femur paired with a short sitting height is the most pronounced version of the long-femur case, because a short torso is a short counterweight. A long femur with a long torso is far easier to balance.</p><p>These are rough bands on a spectrum rather than categories with hard edges. If two methods disagree, trust the video.</p>"
+    },
+    {
+      "h2": "The video check, which beats any number",
+      "html": "<p>Set a phone on the floor or a bench at about hip height, square to your side, and record a set of three squats with an empty bar or a broomstick held like a back squat. Watch it paused at the bottom.</p><p>What you are looking at is your torso angle relative to vertical, and where the bar sits over your foot. If the bar stays over the middle of the foot and your back holds its shape, the lift is doing its job regardless of how far forward you are. If the bar drifts over your toes, or your low back rounds or arches as you descend, that is a technique issue rather than a proportion one and is worth getting looked at.</p><p>Film the same three squats again with your heels on a small wedge or in lifting shoes, and again a hand-width wider with your toes turned out. Comparing the three videos tells you more about your build than any measurement will.</p>"
+    },
+    {
+      "h2": "What to do with the answer",
+      "html": "<p>Use it to pick a starting setup rather than to settle an argument. Long-femur tendency: start with a wider stance, toes out, consider a lower bar position and try heel elevation. Short-femur tendency: start narrow and flat, keep the bar high, and watch total knee volume across the week. Middle: standard setups will mostly suit you, so change one thing at a time.</p><p>Then judge by how the next few sessions feel rather than by the number. If a setup gives you a stronger, more comfortable squat, it is the right setup for you. If something hurts in a way that does not settle within a couple of days, that is worth assessing rather than working around.</p><p>If you train with the MD Fit app, the workout generator can build sessions around the variations that suit your build, and the free exercise video library covers the stance, bar and mobility options described here.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Hip or groin pain that pinches sharply at the bottom of a squat and does not settle when you reduce the range.",
+    "A knee or hip that locks, catches or gives way during the test squats.",
+    "Low back pain during the test squats, especially with pain or numbness travelling down a leg.",
+    "A back that visibly rounds or arches under a bare bar, which is worth assessing before loading it."
+  ],
+  "faq": [
+    {
+      "q": "Do I need a scan or a professional measurement?",
+      "a": "No. For choosing a squat setup, the chair test and a side-on video tell you what you need. Imaging is for diagnosing problems, not for picking a stance."
+    },
+    {
+      "q": "Does being tall mean I have long femurs?",
+      "a": "Not necessarily. Proportion is what matters, not height. A tall lifter with long shins and a long torso can be perfectly average in proportion."
+    },
+    {
+      "q": "My measurements say one thing and my squat looks like another. Which do I trust?",
+      "a": "The video. Hip joint shape, ankle range and old injuries all influence the bottom position, and the lift itself accounts for all of them at once."
+    },
+    {
+      "q": "Can I change the result with training?",
+      "a": "Bone length is fixed, but ankle and hip range are not, and improving them changes what your bottom position looks like. The setup changes usually matter more than the mobility work."
+    }
+  ],
+  "muscles": [
+    "glute-max",
+    "psoas",
+    "soleus",
+    "vastus-lateralis"
+  ],
+  "pain": [
+    "front-of-hip",
+    "beside-the-spine",
+    "below-kneecap"
+  ],
+  "guides": [
+    "quads",
+    "iliopsoas"
+  ],
+  "related": [
+    "/activities/femur-length-and-squat",
+    "/activities/long-femurs-squat",
+    "/activities/short-femurs-squat",
+    "/activities/why-squat-depth-differs",
+    "/activities/ankle-mobility-and-squat",
+    "/activities/train-for-your-build"
+  ],
+  "programs": [
+    "mobility-12"
+  ],
+  "reviewStatus": "approved"
+}

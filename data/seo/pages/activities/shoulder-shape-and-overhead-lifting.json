@@ -1,0 +1,97 @@
+{
+  "group": "activities",
+  "slug": "shoulder-shape-and-overhead-lifting",
+  "title": "Shoulder Shape and Overhead Lifting | MD Fit",
+  "h1": "Shoulder Shape and Overhead Lifting",
+  "description": "Not every shoulder reaches a clean overhead position. How to test what yours gives you, what training changes, and when a landmine press is the better lift.",
+  "about": {
+    "type": "Thing",
+    "name": "Shoulder anatomy and overhead lifting"
+  },
+  "lead": "Pressing overhead asks for a specific position: the arm beside the ear, the ribcage down, the bar over the midfoot. Some shoulders get there easily, some get there with work, and some do not get there at all. Knowing which you have saves years of pressing into a position you do not own.",
+  "sections": [
+    {
+      "h2": "Overhead is three joints, not one",
+      "html": "<p>Raising your arm overhead is a collaboration. The shoulder joint itself provides a good portion of the movement. The shoulder blade has to rotate upwards on the ribcage to supply much of the rest. And the upper back has to extend, because a rounded upper back takes the shoulder blade with it and limits how far it can rotate.</p><p>That matters because when one of the three does not contribute, the others compensate. The usual compensation is the lower back arching to get the bar overhead, which looks like an overhead press and is really a standing back extension with a loaded bar.</p><p>The <a href=\"/muscles/latissimus-dorsi\">latissimus dorsi</a> is the most common culprit. It is large, strong, and attaches from the arm all the way down to the pelvis, so a short lat physically restricts overhead reach and pulls the ribcage up when you force it. Lifters who do a lot of pulling are frequently limited this way without knowing it.</p>"
+    },
+    {
+      "h2": "Testing what your shoulder gives you",
+      "html": "<ol><li><b>Wall test.</b> Stand with your back against a wall, feet a short distance out, and flatten your low back against the wall. Keeping it flat, raise both arms overhead and try to touch the backs of your hands to the wall.</li><li>If your hands reach the wall with the low back flat, you have the range for strict overhead work.</li><li>If your low back has to arch, or your elbows bend, or your hands stop short, you do not have it yet in that position.</li><li><b>Test it lying down.</b> Lie on your back with knees bent and the low back flat, and raise the arms overhead. If the range is markedly better here than standing, motor control and ribcage position are likely involved rather than the joint itself.</li></ol><p>Compare the two sides. A clear difference often traces back to an old injury or to a dominant arm used heavily in one direction.</p>"
+    },
+    {
+      "h2": "What usually limits it, and what responds",
+      "html": "<ul><li><b>Short or guarded lats.</b> Very common, responds well to soft-tissue work and consistent stretching.</li><li><b>A shoulder blade that does not rotate upwards.</b> Usually a <a href=\"/muscles/lower-trapezius\">lower trapezius</a> and <a href=\"/muscles/serratus-anterior\">serratus anterior</a> that are underworked compared to the upper traps. Responds to training, not stretching.</li><li><b>A stiff upper back.</b> Responds to mobility work, and often quickly.</li><li><b>Shoulder joint capsule tightness,</b> often after injury or a long period of not using the range.</li><li><b>The shape of the bone itself</b> at the top of the shoulder blade, which varies between people and does not respond to anything you can do in a gym.</li></ul><p>The first four cover most people and improve with a few weeks of consistent work. If nothing moves after that, the fifth becomes more likely, and the sensible response is to choose lifts that suit the shoulder you have.</p>"
+    },
+    {
+      "h2": "Alternatives that are not consolation prizes",
+      "html": "<p>Strict overhead pressing is one way to build pressing strength, not the only one. These load the same muscles in positions most shoulders tolerate better.</p><ul><li><b>Landmine press.</b> One end of a barbell in a corner or a landmine attachment, pressing up and forward at an angle. It gets most of the benefit of overhead work at an angle almost every shoulder can reach.</li><li><b>Incline press.</b> Adjustable, so you can work at whatever angle is currently comfortable and raise it as range improves.</li><li><b>Half-kneeling single-arm press.</b> Removes the low back's ability to compensate, which both protects the back and tells you honestly what range you have.</li><li><b>Bottom-up kettlebell press.</b> The instability forces the shoulder to stabilise, and the loads involved are modest.</li></ul><p>Working at the angle you own and raising it gradually tends to build more pressing strength over a year than forcing a position you do not have.</p>"
+    },
+    {
+      "h2": "Where it shows up as pain",
+      "html": "<p>Pinching at the front or top of the shoulder as the arm passes about shoulder height is the classic pattern and is often labelled <a href=\"/conditions/shoulder-impingement\">shoulder impingement</a>. Aching at the top and outside of the shoulder that is worse at night points towards the rotator cuff and is worth reading about alongside <a href=\"/conditions/rotator-cuff-tear\">rotator cuff tear</a>.</p><p>The muscles that most often refer pain into this area are the <a href=\"/muscles/supraspinatus\">supraspinatus</a>, <a href=\"/muscles/infraspinatus\">infraspinatus</a>, <a href=\"/muscles/subscapularis\">subscapularis</a> and <a href=\"/muscles/lateral-deltoid\">lateral deltoid</a>. A trigger point in any of them can produce a deep shoulder ache that feels exactly like a joint problem.</p><p>If the low back is what hurts after overhead sessions, that is the compensation showing up rather than a back problem in its own right.</p>"
+    },
+    {
+      "h2": "How MD Fit assesses an overhead shoulder",
+      "html": "<p>Dr. Jared tests the shoulder on the table, which takes your compensations out of the equation, and watches how the shoulder blade moves as you raise and lower the arm. A shoulder that moves freely when relaxed but not when loaded is a control problem. A shoulder that stops at the same point either way is a range problem, and the two need different work.</p><p>From there it is hands-on release of the lats and the muscles holding the shoulder forward, training for the shoulder blade muscles that are not pulling their weight, daily homework through the free MD Fit app video library, and pressing variations chosen for the range you currently have. As that range improves, the angle of the press comes up with it.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Shoulder pain that wakes you at night and does not settle with position changes.",
+    "Sudden weakness lifting the arm, or an inability to hold it up, after an injury.",
+    "A pop or tearing sensation followed by bruising or a visible change in the shape of the arm or shoulder.",
+    "Pain, numbness or tingling travelling down the arm into the hand.",
+    "A shoulder that catches, locks or feels like it is slipping out of position."
+  ],
+  "faq": [
+    {
+      "q": "Should everyone be able to press overhead?",
+      "a": "Most people can get there with work on the lats, upper back and shoulder blade control. A minority have bony shapes that limit it, and for them an angled press builds the same strength without the pinch."
+    },
+    {
+      "q": "Why does my low back hurt after overhead pressing?",
+      "a": "Usually because the shoulder cannot reach the position and the low back arches to finish the movement. Fixing the shoulder range or lowering the press angle normally settles it."
+    },
+    {
+      "q": "Is the behind-the-neck press worth doing?",
+      "a": "It demands a great deal of shoulder range and offers little that other pressing variations do not. For most lifters there are better options for the same goal."
+    },
+    {
+      "q": "Will stretching my shoulders fix overhead position?",
+      "a": "Partly. Stretching helps a short lat or a stiff upper back, but a shoulder blade that is not rotating upwards needs strengthening rather than stretching, which is why mobility work alone often stalls."
+    }
+  ],
+  "muscles": [
+    "lats",
+    "lower-trap",
+    "serratus",
+    "supraspinatus",
+    "subscapularis",
+    "pec-minor"
+  ],
+  "pain": [
+    "front-of-shoulder",
+    "top-of-shoulder",
+    "deep-shoulder-joint",
+    "outside-of-shoulder"
+  ],
+  "guides": [
+    "rotator-cuff",
+    "posterior-neck"
+  ],
+  "related": [
+    "/activities/train-for-your-build",
+    "/activities/arm-length-and-bench-press",
+    "/activities/weightlifting-crossfit",
+    "/conditions/shoulder-impingement",
+    "/conditions/rotator-cuff-tear",
+    "/conditions/frozen-shoulder",
+    "/conditions/postural-kyphosis"
+  ],
+  "programs": [
+    "shoulder-6",
+    "mobility-12"
+  ],
+  "reviewStatus": "approved"
+}

@@ -1,0 +1,89 @@
+{
+  "slug": "choosing-a-training-split",
+  "title": "Choosing a Training Split | MD Fit",
+  "h1": "Choosing a Training Split That You Will Actually Do",
+  "description": "Full body, upper lower, push pull legs or body part splits: what each suits, and why the number of days you can genuinely commit to decides it.",
+  "about": {
+    "type": "Thing",
+    "name": "Choosing a training split"
+  },
+  "lead": "Training splits generate more argument than they deserve. Total weekly work and consistency decide most of the result. The split's real job is to organise that work so the sessions fit your week and the later sets are still performed well.",
+  "sections": [
+    {
+      "h2": "Start from the days you actually have",
+      "html": "<p>The most common mistake is choosing a split first and then trying to fit life around it. A five-day body part split performed three times a week is not a five-day split, it is an incoherent programme where two muscle groups never get trained.</p><p>Decide honestly how many days you will train in an ordinary, busy week, not a perfect one. Then choose the structure that distributes work sensibly across those days. A well-run three-day programme beats a four-day programme you complete half of.</p>"
+    },
+    {
+      "h2": "What each structure suits",
+      "html": "<ul><li><b>Full body, two to three days.</b> Each muscle trained frequently, sessions are long-ish but every muscle gets stimulus even if you miss a day. Good for beginners and for anyone with limited days.</li><li><b>Upper and lower, four days.</b> Splits the body in half, each half trained twice a week. Probably the most broadly useful structure for intermediate lifters.</li><li><b>Push, pull, legs, three or six days.</b> Groups movements by pattern. Works well at six days, is stretched thin at three unless you repeat it.</li><li><b>Body part splits, five or six days.</b> Each muscle once a week with high volume. Demands high attendance and concentrates fatigue, and a missed session means a muscle goes untrained for a fortnight.</li></ul>"
+    },
+    {
+      "h2": "Order within a session matters more than the split",
+      "html": "<p>Whatever structure you pick, performance declines across a session. Whatever you do first gets the best effort. That means the thing you most want to improve should be early, and the accessory work that matters less should be at the end.</p><p>A common error is putting the same lift first every single session for years. The muscles trained last never receive a good effort. Rotating which movement leads, even within a fixed split, addresses this without changing the structure.</p>"
+    },
+    {
+      "h2": "Building the split around a problem",
+      "html": "<p>If you have an area that needs work, let the split reflect it rather than treating all muscle groups as equal. A lifter with a longstanding sore shoulder and a weak upper back benefits from pulling appearing more often than pressing, which no standard template will do for them.</p><p>Similarly, someone rebuilding after a back episode may need their heavy hinging spread thinner and their single-leg work increased, which again is not a template decision. See <a href=\"/activities/training-around-an-injury\">training around an injury</a>.</p>"
+    },
+    {
+      "h2": "The split is the least important decision",
+      "html": "<p>If this page leaves you with one thing, make it this: the split matters far less than whether you do it. Total hard sets per muscle per week, progression over time, and consistency produce the results. The structure is just the container.</p><p>Members get the workout generator in the MD Fit app, which builds sessions around the days you have rather than a fixed template, plus the exercise video library. Dr. Jared Caban is a physician-trained clinical exercise physiologist and licensed massage therapist, and a programme review here starts from your week rather than from a template. Self-pay, no insurance paperwork, no referral needed.</p>"
+    }
+  ],
+  "redFlags": [
+    "Persistent fatigue, worsening sleep or declining performance across several weeks.",
+    "Joint pain that appears consistently on the same session each week.",
+    "Pain that persists between sessions rather than ordinary muscle soreness.",
+    "Numbness, tingling or weakness in an arm or leg.",
+    "Chest pain, pressure, shortness of breath or light-headedness during training: stop and call 911."
+  ],
+  "faq": [
+    {
+      "q": "What is the best training split?",
+      "a": "The one you will complete consistently with the days you genuinely have. Total weekly work and progression decide most of the result, and the split is mainly a way of organising them."
+    },
+    {
+      "q": "Is full body training only for beginners?",
+      "a": "No. It trains each muscle frequently and is resilient to missed sessions, which makes it a reasonable choice at any level, particularly for people training two or three days a week."
+    },
+    {
+      "q": "Can I train the same muscle two days in a row?",
+      "a": "It is usually better to leave a day between hard sessions for the same muscle, but light or technique work the following day is generally fine."
+    },
+    {
+      "q": "Does the order of exercises matter?",
+      "a": "Yes, more than the split does. Performance declines across a session, so what you do first gets your best effort and what you leave until last rarely gets trained well."
+    }
+  ],
+  "muscles": [
+    "pec-major-stern",
+    "lats",
+    "glute-max",
+    "vastus-lateralis",
+    "middle-trap",
+    "biceps-femoris"
+  ],
+  "pain": [
+    "front-of-shoulder",
+    "beside-the-spine",
+    "below-kneecap",
+    "between-shoulder-blades"
+  ],
+  "guides": [],
+  "related": [
+    "/activities/training-volume-and-frequency",
+    "/activities/hypertrophy-training-basics",
+    "/activities/progressive-overload",
+    "/activities/training-around-an-injury",
+    "/activities/deload-weeks",
+    "/treatments/strength-and-performance",
+    "/treatments/clinical-exercise-physiology"
+  ],
+  "programs": [
+    "mobility-12"
+  ],
+  "group": "activities",
+  "steps": null,
+  "timeline": null,
+  "reviewStatus": "approved"
+}

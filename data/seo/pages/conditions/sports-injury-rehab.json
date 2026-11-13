@@ -1,0 +1,92 @@
+{
+  "slug": "sports-injury-rehab",
+  "title": "Sports Injury Rehab in Sarasota, FL | MD Fit",
+  "h1": "Sports Injury Rehabilitation in Sarasota, FL",
+  "description": "Sports injury rehab in Sarasota. Dr. Jared Caban takes you past pain-free to genuinely ready, with the capacity testing most rehab skips.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Sports injury"
+  },
+  "lead": "Most sports rehab ends when the pain does. That is the point at which tissue has healed enough to be quiet, and well before it has the capacity to handle what the sport asks of it. The gap between those two is where re-injuries live.",
+  "sections": [
+    {
+      "h2": "The phases, and where people stop early",
+      "html": "<ol><li><b>Settle it.</b> Reduce irritation without going fully passive. Complete rest costs strength quickly and the tissue adapts to doing nothing.</li><li><b>Restore movement.</b> Range and quality, including the joints above and below, which stiffen while you protect the injury.</li><li><b>Rebuild strength.</b> Through full range, both sides, until the injured side matches the other.</li><li><b>Rebuild capacity.</b> Repeated effort and fatigue tolerance, because sport happens tired.</li><li><b>Restore speed and reaction.</b> Change of direction, landing, deceleration, responding to something unpredictable.</li></ol><p>Pain usually stops after stage two. Most people stop there too, return to sport, and get hurt again. Stages four and five are the ones that make the difference.</p>"
+    },
+    {
+      "h2": "What gets tested before return",
+      "html": "<p>Readiness is measured rather than guessed. The injured side is compared with the other for strength, for single-leg control, for how you land and absorb force, and for how all of that holds up once you are tired. Deficits that are invisible when fresh show up clearly at the end of a hard set.</p><p>For a hamstring that means strength at length, not just a pain-free jog. For an ankle it means hopping and cutting under control. For a shoulder it means overhead strength maintained through repetition. For a knee it means landing mechanics that do not fall apart on the twentieth rep.</p>"
+    },
+    {
+      "h2": "Why the injury is rarely where the fault is",
+      "html": "<p>A strained hamstring often reflects weak glutes and a pelvis that tips forward, putting the hamstring at a mechanical disadvantage on every stride. An ankle that keeps rolling usually has lost position sense rather than ligament integrity. A sore shoulder in an overhead athlete frequently traces to a stiff mid-back that stops the arm getting overhead without compensation.</p><p>Treating only the painful tissue leaves the cause in place, which is why the same injury recurs in the same athlete. Assessment looks at the chain, not the spot.</p>"
+    },
+    {
+      "h2": "How MD Fit works",
+      "html": "<p>Dr. Jared assesses the injured tissue and everything feeding into it, then uses hands-on work to settle symptoms and restore movement early. Loading begins as soon as it is appropriate rather than after an arbitrary wait, because tissue adapts to load and not to time.</p><p>Through the middle phases you keep training everything that is not injured, which preserves fitness and matters more psychologically than people expect. Daily work comes through the free MD Fit app so progress continues between visits. Where a surgical opinion or imaging is needed, he says so and refers.</p>"
+    },
+    {
+      "h2": "The sports people here actually play",
+      "html": "<p>In Sarasota that means pickleball, golf, running, tennis, cycling and swimming, often several of them in the same week and often by people in their sixties and seventies who have no intention of stopping. The demands differ: pickleball punishes sudden lateral movement and deceleration, golf asks for rotation under load, running is repetitive impact.</p><p>Rehab is built around the sport you are going back to. See <a href=\"/pickleball-injury-rehab-sarasota\">pickleball</a>, <a href=\"/golf-performance-sarasota\">golf</a> and <a href=\"/running-injury-sarasota\">running</a>.</p>"
+    },
+    {
+      "h2": "Returning without losing the season",
+      "html": "<p>Return is graded rather than binary. Most people go back to part of the sport before all of it: half a round, doubles before singles, shorter sessions with a day between. That staged return lets tissue adapt to real demands while the margin is still generous.</p><p>The common error is returning fully on the first good week. Capacity lags symptoms by a considerable margin, and the first full session back is where the re-injury usually happens.</p>"
+    }
+  ],
+  "timeline": null,
+  "redFlags": [
+    "Inability to bear weight after an injury, obvious deformity, or a joint that looks out of place: seek urgent care.",
+    "A loud pop at the time of injury with immediate swelling and instability.",
+    "Numbness, tingling or loss of circulation below an injury, which needs urgent assessment.",
+    "A head injury with confusion, repeated vomiting, worsening headache or loss of consciousness: call 911.",
+    "A hot, red, swollen joint with fever.",
+    "Calf swelling, redness, warmth and pain, which can indicate a blood clot and needs same-day assessment."
+  ],
+  "faq": [
+    {
+      "q": "How soon can I get back to my sport?",
+      "a": "It depends on the tissue and on how you progress through testing rather than on a fixed number of weeks. The aim is returning when capacity is genuinely restored, not when pain stops."
+    },
+    {
+      "q": "Can I keep training while I rehab?",
+      "a": "Almost always. You keep training everything that is not injured, which protects fitness and makes the return much easier."
+    },
+    {
+      "q": "Why did the same injury happen again?",
+      "a": "Usually because the return happened when symptoms settled rather than when capacity was restored, or because the underlying cause further up the chain was never addressed."
+    },
+    {
+      "q": "Do I need a scan first?",
+      "a": "Often not. The exam tells a great deal, and imaging is arranged through your physician when the findings warrant it."
+    }
+  ],
+  "muscles": [
+    "biceps-femoris",
+    "glute-med",
+    "glute-max",
+    "gastroc",
+    "supraspinatus",
+    "rectus-femoris"
+  ],
+  "pain": [
+    "back-of-thigh",
+    "outside-of-knee",
+    "outer-ankle",
+    "outside-of-shoulder"
+  ],
+  "guides": [
+    "quads"
+  ],
+  "related": [
+    "/conditions/hamstring-strain",
+    "/conditions/ankle-sprain",
+    "/conditions/acl-reconstruction-recovery",
+    "/conditions/chronic-ankle-instability",
+    "/pickleball-injury-rehab-sarasota",
+    "/treatments/strength-and-performance"
+  ],
+  "group": "conditions",
+  "steps": null,
+  "reviewStatus": "approved"
+}

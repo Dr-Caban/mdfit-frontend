@@ -1,0 +1,90 @@
+{
+  "group": "activities",
+  "slug": "muscle-soreness-and-doms",
+  "title": "Muscle Soreness and DOMS Explained | MD Fit",
+  "h1": "Muscle Soreness and DOMS",
+  "description": "Why you are sore two days after training, what helps, what does not, and how to tell ordinary soreness from an injury worth assessing.",
+  "about": {
+    "type": "Thing",
+    "name": "Delayed onset muscle soreness"
+  },
+  "lead": "Delayed onset muscle soreness peaks a day or two after unfamiliar training and settles on its own. It is not a measure of how good the session was, and nearly everything sold to prevent it does not.",
+  "sections": [
+    {
+      "h2": "What it is",
+      "html": "<p>Soreness after unfamiliar exercise is associated with microscopic disruption in muscle and the response that follows. It appears some hours after training, peaks around twenty-four to forty-eight hours, and fades over a few days.</p><p>It is not lactic acid. Lactate clears within an hour or so of finishing and has nothing to do with soreness two days later, despite how persistent that explanation is.</p><p>It is strongly associated with eccentric work — muscle lengthening under load. Walking downhill, lowering weights slowly, and the lowering phase of any lift all produce more soreness than the lifting phase, which is why a first hill walk can leave you worse than a hard flat session.</p>"
+    },
+    {
+      "h2": "Soreness is not a goal",
+      "html": "<p>Training that leaves you crippled is not necessarily better training. Soreness tracks novelty more than effectiveness: a brand-new exercise at modest weight will make you sorer than a familiar one at a hard weight, while the familiar one probably drove more adaptation.</p><p>As you repeat a movement, soreness diminishes markedly even as you get stronger. That is the repeated bout effect, and it means an absence of soreness in an experienced trainee usually signals adaptation rather than insufficient effort.</p>"
+    },
+    {
+      "h2": "What actually helps",
+      "html": "<ul><li><b>Gentle movement.</b> Easy activity through the sore area usually eases it more than rest. Walking, easy cycling, light movement of the same muscles.</li><li><b>Time.</b> The main ingredient, and the one nobody wants.</li><li><b>Sleep.</b> The repair is happening whether you help it or not, and sleep is the strongest lever you have over it.</li><li><b>Massage.</b> Appears to modestly reduce the sensation for many people. That has value even if it does not speed the underlying repair — see <a href=\"/treatments/medical-massage\">medical massage</a>.</li></ul>"
+    },
+    {
+      "h2": "What helps less than advertised",
+      "html": "<p>Stretching after exercise does not reliably reduce next-day soreness. Ice baths may reduce the sensation but there is reasonable concern they blunt some training adaptations when used routinely after strength work. Anti-inflammatory tablets reduce discomfort and carry the same theoretical concern alongside their own risks.</p><p>Compression garments and foam rolling have small or inconsistent effects on soreness itself. None of these is harmful in moderation; none is worth organising your training around.</p>"
+    },
+    {
+      "h2": "Ordinary soreness or something else",
+      "html": "<p>The distinction matters, and it is usually clear if you know what to look for.</p><p><b>Ordinary soreness</b> is spread through the belly of a muscle, affects both sides roughly equally if you trained both, appears a day after, eases as you warm up and improves daily.</p><p><b>Something else</b> is sharp rather than dull, located at a specific point — often over a tendon, a joint line or bone — came on suddenly during a session, affects one side only, is worse rather than better after warming up, or comes with swelling, bruising or a loss of strength.</p><p>A sudden sharp pain mid-session that stops you is a strain, not soreness. So is pain over a bone that worsens session on session — see <a href=\"/conditions/bone-stress-injury\">bone stress injury</a>.</p>"
+    },
+    {
+      "h2": "Training while sore",
+      "html": "<p>Training a sore muscle again is generally safe if the soreness is mild to moderate and movement is normal. Performance may be slightly reduced and that is acceptable.</p><p>If soreness is severe enough to alter how you move, train something else or go easy. Moving badly to work around pain is how a sore hamstring becomes a sore back, and it is one of the more common ways people turn a minor problem into a real one.</p><p>Severe soreness after unaccustomed heavy exercise, with very dark urine and marked swelling, is a rare but serious condition called rhabdomyolysis and needs urgent medical attention.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Very dark, cola-coloured urine after heavy unaccustomed exercise, with severe soreness and swelling: seek urgent medical care.",
+    "A sudden sharp pain during a session that stopped you, especially with bruising or a loss of strength.",
+    "Pain that is pinpoint over bone rather than spread through muscle, and worsens session on session.",
+    "Swelling of a joint, or a joint that locks or gives way.",
+    "Soreness that is not improving after a week, or that is getting worse day by day."
+  ],
+  "faq": [
+    {
+      "q": "Is soreness a sign of a good workout?",
+      "a": "No. It mostly reflects how unfamiliar the movement was. Experienced trainees often get strong results with little soreness."
+    },
+    {
+      "q": "Should I train if I'm still sore?",
+      "a": "Mild to moderate soreness is generally fine to train through. If it changes how you move, train something else that day."
+    },
+    {
+      "q": "How long should soreness last?",
+      "a": "Usually two to four days, improving each day. Soreness beyond a week, or worsening, is worth getting looked at."
+    },
+    {
+      "q": "Do ice baths help?",
+      "a": "They may reduce how sore you feel, but there is reasonable concern that routine use after strength training blunts some adaptations. Occasional use is unlikely to matter either way."
+    }
+  ],
+  "muscles": [
+    "rectus-femoris",
+    "biceps-femoris",
+    "glute-max",
+    "gastroc",
+    "lats"
+  ],
+  "pain": [
+    "front-of-thigh",
+    "back-of-thigh",
+    "lower-calf"
+  ],
+  "guides": [
+    "quads",
+    "calf"
+  ],
+  "related": [
+    "/activities/rest-days-and-overtraining",
+    "/activities/active-recovery-days",
+    "/treatments/medical-massage",
+    "/activities/stretching-before-or-after-exercise",
+    "/activities/how-many-days-a-week"
+  ],
+  "programs": [],
+  "reviewStatus": "approved"
+}

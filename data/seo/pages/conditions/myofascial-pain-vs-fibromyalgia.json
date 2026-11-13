@@ -1,0 +1,93 @@
+{
+  "group": "conditions",
+  "slug": "myofascial-pain-vs-fibromyalgia",
+  "title": "Myofascial Pain or Fibromyalgia? | MD Fit",
+  "h1": "Myofascial Pain or Fibromyalgia? Telling Them Apart",
+  "description": "Trigger points refer pain in predictable maps; fibromyalgia is widespread sensitivity. The difference changes the treatment, and deep work can backfire.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Myofascial pain syndrome"
+  },
+  "lead": "These two get used almost interchangeably, including by clinicians, and they are not the same problem. One responds well to firm, targeted soft-tissue work. The other is often made worse by it. Getting that the wrong way round is a common reason people conclude that massage does not help them.",
+  "sections": [
+    {
+      "h2": "The short version",
+      "html": "<p><b>Myofascial pain</b> is local. Specific muscles develop taut, tender spots that refer pain to a predictable place, often some distance away. Press the spot and you reproduce the person's actual complaint. Treat the muscle and the referred pain changes, often in the same visit.</p><p><b>Fibromyalgia</b> is widespread. The pain-processing system itself is turned up, so tenderness is general rather than mapped, pain moves, and it travels with fatigue, unrefreshing sleep and mental fog. There is no single muscle to press that explains the whole picture.</p><p>Both are real. Both hurt. They are not stages of one another, and a person can have both at once.</p>"
+    },
+    {
+      "h2": "What a trigger point actually does",
+      "html": "<p>The thing that makes myofascial pain identifiable is that referral patterns are consistent between people. The same muscle sends pain to roughly the same place in almost everyone, which is why they can be mapped and why pressing one can make someone say that is exactly it.</p><p>A few that account for a great deal of misdiagnosed pain:</p><ul><li><a href=\"/muscles/upper-trapezius\">Upper trapezius</a> refers up the side of the neck and into the temple, and is a common source of what gets called a tension headache.</li><li><a href=\"/muscles/gluteus-minimus\">Gluteus minimus</a> refers down the outside of the leg in a pattern people and clinicians routinely call sciatica.</li><li><a href=\"/muscles/scalenes\">Scalenes</a> refer into the chest, shoulder and down the arm, which has sent plenty of people for cardiac and cervical disc workups.</li><li><a href=\"/muscles/quadratus-lumborum\">Quadratus lumborum</a> refers into the hip and buttock and is a frequent missed cause of stubborn low back pain.</li></ul><p>None of these appear on imaging, which is why they are so often missed. The site has a page for each of the sixty-seven muscles with its own referral map.</p>"
+    },
+    {
+      "h2": "What widespread sensitisation looks like instead",
+      "html": "<p>With fibromyalgia the pattern does not sit in a map. Tenderness is found in many places rather than a few, it crosses both sides and both halves of the body, and it is accompanied by the things a local muscle problem does not cause: waking unrefreshed, cognitive fog, sensitivity to light, noise and temperature.</p><p>The other distinguishing feature is timing. Local muscular pain tends to respond to what you did while you were doing it. Sensitised pain often arrives a day or two after the effort, which makes cause and effect hard to see and makes people look inconsistent to others.</p><p>The mechanism behind it is explained in plain terms on the <a href=\"/conditions/central-sensitisation\">central sensitisation</a> page.</p>"
+    },
+    {
+      "h2": "Why this changes the treatment, and can change it badly",
+      "html": "<p>This is the practical reason the distinction matters rather than being a labelling exercise.</p><p>Myofascial pain generally tolerates and needs firm, specific pressure into the taut band, held long enough to change it, then movement and strengthening so it does not return. Deep work on the right muscle is often the fastest route to relief available.</p><p>A sensitised system frequently reads that same pressure as a threat rather than treatment. The result is relief for an hour, then a flare lasting days. People conclude that massage does not work for them, when what actually happened is that the dose was set for a different problem.</p><p>For widespread sensitivity the work is lighter, shorter, and led by the response in the following days rather than by what can be tolerated in the room. That is a harder thing to sell and a slower thing to do, and it is the correct answer.</p>"
+    },
+    {
+      "h2": "They very often coexist",
+      "html": "<p>This is where simple either-or thinking fails people. Having fibromyalgia does not protect anyone from also having an ordinary trigger point, and in practice sensitised systems seem to accumulate them. Years of guarding leaves muscle holding, and held muscle develops exactly the local problems everyone else gets.</p><p>The failure mode is that once a fibromyalgia label exists, every subsequent symptom gets attributed to it and nobody examines the shoulder. A treatable local problem then sits untreated for years inside a diagnosis that is also correct.</p><p>The useful question is not which one you have. It is which parts of what you feel today are local and reproducible, and which are not, because the first group can often be changed quickly.</p>"
+    },
+    {
+      "h2": "How it gets sorted out here",
+      "html": "<p>Mostly by hand, and by taking long enough. Dr. Jared palpates systematically to find whether a specific muscle reproduces a specific pain you recognise. That reproduction is the signal. Where it is present, there is something mechanical to treat. Where pressing anywhere hurts roughly equally and no pattern emerges, that points the other way.</p><p>History carries as much weight as the exam: whether pain is mapped or moving, whether sleep is restorative, whether there is fog, whether cost arrives immediately or two days later.</p><p>Fibromyalgia itself is a physician's call. What happens here is working out what is driving today's pain and treating what can be treated, alongside that medical care rather than in place of it.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Widespread pain with fever, unexplained weight loss, or night sweats, which needs medical assessment rather than soft-tissue treatment.",
+    "Joints that are visibly swollen, red and hot, which points towards an inflammatory condition treated medically.",
+    "New morning stiffness in the shoulders and hips lasting over an hour in someone over fifty, which needs a physician promptly.",
+    "Progressive weakness, numbness, or loss of bladder or bowel control, which needs urgent medical assessment.",
+    "Pain that is constant, unrelated to position or activity, and wakes you every night."
+  ],
+  "faq": [
+    {
+      "q": "Can I have both?",
+      "a": "Yes, and it is common. Sensitised systems still develop ordinary trigger points, and those remain treatable. The risk is that once a fibromyalgia label exists, a treatable local problem stops being looked for."
+    },
+    {
+      "q": "How can you tell which one is causing today's pain?",
+      "a": "Mainly by whether pressing a specific muscle reproduces the exact pain you recognise. That reproduction points to something local and mechanical. Tenderness that is general, with no pattern and no reproduction, points towards widespread sensitivity."
+    },
+    {
+      "q": "Is deep tissue massage bad for fibromyalgia?",
+      "a": "Not automatically, but it is frequently too much. Firm pressure that helps an ordinary muscular problem often provokes a flare in a sensitised system, so the pressure is set by your response over the following days rather than by what you can tolerate during the session."
+    },
+    {
+      "q": "Does a normal scan rule out myofascial pain?",
+      "a": "No. Trigger points do not show on imaging, which is a large part of why this kind of pain gets missed and why people are told nothing is wrong when something treatable is going on."
+    }
+  ],
+  "muscles": [
+    "upper-trap",
+    "glute-min",
+    "scalenes",
+    "ql",
+    "piriformis",
+    "multifidus"
+  ],
+  "pain": [
+    "where-neck-meets-shoulder",
+    "outside-of-thigh",
+    "beside-the-spine",
+    "temple"
+  ],
+  "guides": [
+    "posterior-neck",
+    "lateral-hip"
+  ],
+  "related": [
+    "/conditions/fibromyalgia",
+    "/conditions/central-sensitisation",
+    "/conditions/chronic-pain",
+    "/treatments/medical-massage",
+    "/conditions/exercise-pacing-and-flares",
+    "/conditions/tension-headache",
+    "/treatments/chronic-pain-program"
+  ],
+  "reviewStatus": "approved"
+}

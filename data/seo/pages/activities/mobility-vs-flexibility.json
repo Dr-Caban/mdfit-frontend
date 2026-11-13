@@ -1,0 +1,85 @@
+{
+  "group": "activities",
+  "slug": "mobility-vs-flexibility",
+  "title": "Mobility vs Flexibility: The Difference | MD Fit",
+  "h1": "Mobility vs Flexibility",
+  "description": "Flexibility is how far a joint can be moved. Mobility is how far you can move it yourself, with control. Why the difference decides what actually helps.",
+  "about": {
+    "type": "Thing",
+    "name": "Mobility and flexibility training"
+  },
+  "lead": "Flexibility is how far a joint can be taken. Mobility is how far you can take it yourself, under control. Most people who say they are tight have adequate flexibility and poor mobility, and the two need different work.",
+  "sections": [
+    {
+      "h2": "The distinction, made concrete",
+      "html": "<p>Lie on your back and have someone lift your straight leg toward your chest. How far it goes before it stops is flexibility — passive range.</p><p>Now lie there and lift the same leg yourself, without them. How far it goes now is mobility — active range, the part you can produce and control with your own muscle.</p><p>For most people the second number is considerably smaller than the first. The gap between them is range you technically possess but cannot use, and it is where a lot of injuries happen, because a joint taken into territory its muscles do not control is poorly protected.</p>"
+    },
+    {
+      "h2": "Why stretching often does not fix tightness",
+      "html": "<p>Tightness is a sensation, not a measurement. Muscles feel tight for several reasons and only one of them is actually being short.</p><ul><li><b>Protective tension.</b> A joint that feels unstable is often guarded by surrounding muscle. The hamstrings tightening around an irritable low back is the classic example, and stretching them harder does nothing for the cause.</li><li><b>Overwork.</b> A muscle doing a job that something else should be doing will feel tight and ache. The <a href=\"/muscles/upper-trapezius\">upper trapezius</a> doing the work of a weak <a href=\"/muscles/serratus-anterior\">serratus anterior</a> is the standard desk-work version.</li><li><b>Genuine shortness.</b> Real, and less common than assumed, usually after prolonged immobilisation or a long period in one position.</li></ul><p>This is why stretching a tight muscle gives half an hour of relief and then the tightness returns. The stretch addressed the sensation; nothing addressed the reason.</p>"
+    },
+    {
+      "h2": "What actually changes range",
+      "html": "<p>Strength through range is the most reliable tool. Loading a muscle in a lengthened position — a deep split squat, a Romanian deadlift to a comfortable depth, a controlled full-range press — tends to improve usable range more durably than passive stretching, because it builds control alongside the length.</p><p>Active range work matters too: moving a joint deliberately to its end point under your own power, holding briefly, repeating. It is unglamorous and it is what turns passive range into something you can use.</p><p>Passive stretching still has a place. It is useful for comfort, for a specific restriction, and for people who are genuinely short after immobilisation. It is just rarely the whole answer.</p>"
+    },
+    {
+      "h2": "Where the limit is structural",
+      "html": "<p>Some range limits are bone, not tissue. Hip socket depth and orientation vary considerably between people, and no amount of stretching changes the shape of a joint. Someone whose hips stop them squatting below parallel is not under-stretched.</p><p>Our <a href=\"/activities/why-squat-depth-differs\">why squat depth differs</a> page covers this properly. Recognising a structural limit saves people years of frustrated stretching and, often, the irritation that comes from forcing it.</p>"
+    },
+    {
+      "h2": "A sensible approach",
+      "html": "<ol><li>Work out whether the restriction is passive range, active control, or structure. A pain-free passive range that collapses under your own power points at control.</li><li>If control is the gap, load it — strength work through the range you have, gradually extending.</li><li>If a particular area is genuinely restricted, stretch it regularly, and expect weeks rather than days.</li><li>If a joint has a hard, bony end-feel, stop pushing it and work around it.</li></ol><p>See our <a href=\"/activities/daily-mobility-routine\">daily mobility routine</a> for something practical, and <a href=\"/treatments/functional-mobility\">functional mobility</a> for how we assess this in the clinic.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Pain that is sharp, electrical or shooting during a stretch rather than a pulling sensation, particularly down a limb.",
+    "Numbness, tingling or weakness that appears during or after stretching.",
+    "A joint that feels like it is slipping, catching or giving way at end range.",
+    "A sudden loss of range with swelling or significant pain, which suggests an injury rather than tightness."
+  ],
+  "faq": [
+    {
+      "q": "Should I stretch every day?",
+      "a": "If you have a specific restriction, daily short sessions work better than occasional long ones. If you simply feel tight, strength through range usually does more than daily stretching."
+    },
+    {
+      "q": "Why do my hamstrings feel tight no matter how much I stretch?",
+      "a": "Frequently because they are guarding an irritable low back or working hard to compensate elsewhere. Addressing the cause usually changes the sensation faster than more stretching."
+    },
+    {
+      "q": "Can I be too flexible?",
+      "a": "Yes. Range without the strength to control it is a risk rather than an asset, which is why hypermobile people often do better with strength work than with more stretching."
+    },
+    {
+      "q": "Does age make this harder?",
+      "a": "Range tends to reduce with age, largely because of reduced activity through full ranges rather than an unavoidable process. Regular loaded movement through range preserves a great deal of it."
+    }
+  ],
+  "muscles": [
+    "biceps-femoris",
+    "psoas",
+    "glute-med",
+    "upper-trap",
+    "serratus"
+  ],
+  "pain": [
+    "back-of-thigh",
+    "front-of-hip",
+    "top-of-shoulder"
+  ],
+  "guides": [
+    "iliopsoas",
+    "lateral-hip"
+  ],
+  "related": [
+    "/activities/daily-mobility-routine",
+    "/activities/stretching-before-or-after-exercise",
+    "/activities/hip-mobility-routine",
+    "/activities/why-squat-depth-differs",
+    "/treatments/functional-mobility"
+  ],
+  "programs": [],
+  "reviewStatus": "approved"
+}

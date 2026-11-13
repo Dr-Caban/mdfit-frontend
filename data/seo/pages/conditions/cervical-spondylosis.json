@@ -1,0 +1,94 @@
+{
+  "group": "conditions",
+  "slug": "cervical-spondylosis",
+  "title": "Neck Arthritis Care in Sarasota, FL | MD Fit",
+  "h1": "Cervical Spondylosis and Neck Arthritis in Sarasota, FL",
+  "description": "Stiff, aching neck with reduced rotation and grinding? Age-related neck changes are common and often manageable. What helps, and what needs a physician.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Cervical spondylosis"
+  },
+  "lead": "Cervical spondylosis is the general term for age-related change in the discs and joints of the neck. It appears on the imaging of a very large share of people past middle age, including many with no neck pain at all, which is the first useful thing to know about it.",
+  "sections": [
+    {
+      "h2": "What it usually feels like",
+      "html": "<ul><li>A deep ache at the <a href=\"/pain/back-of-neck\">back of the neck</a> that is worse at the end of the day or after sustained positions.</li><li>Stiffness in the morning, easing over fifteen or twenty minutes.</li><li>Loss of rotation, noticed reversing the car or checking a blind spot.</li><li>Grinding or crunching sounds with movement, which are usually not a sign of damage.</li><li>Ache spreading to the <a href=\"/pain/base-of-skull\">base of the skull</a>, the <a href=\"/pain/top-of-shoulder\">top of the shoulder</a> or between the shoulder blades.</li><li>Headaches that begin in the neck and travel forward, covered on the <a href=\"/conditions/cervicogenic-headache\">cervicogenic headache</a> page.</li></ul><p>Symptoms typically fluctuate over months and years rather than progressing steadily, and most people have good stretches and bad ones.</p>"
+    },
+    {
+      "h2": "Why the scan report often sounds worse than you feel",
+      "html": "<p>Reports of this region commonly list disc degeneration, osteophytes, facet arthrosis and loss of disc height. Those words land heavily, and they appear routinely in people who have never had a sore neck. Findings of this kind become steadily more common with each decade of life, which is why they are generally interpreted alongside your symptoms rather than on their own.</p><p>In practice this is reassuring. It means the findings do not determine how your neck must feel, and it means the parts that do respond to treatment, muscle tension, movement habits and strength, are available to work on.</p>"
+    },
+    {
+      "h2": "The three things worth separating",
+      "html": "<p>Your physician makes this distinction. It matters because the urgency differs sharply.</p><ul><li><b>Neck pain alone.</b> Aching, stiffness, reduced rotation. This is the usual presentation and responds well to hands-on work, movement and strengthening.</li><li><b>Radiculopathy.</b> A nerve root irritated where it exits, producing pain, numbness or weakness down one arm in a recognisable band. It frequently settles over time with conservative care, and your physician guides that. See <a href=\"/conditions/herniated-disc\">herniated disc</a>.</li><li><b>Myelopathy.</b> Pressure on the spinal cord itself. This is uncommon but important, and it is the reason the red flags below are worth reading. It needs prompt medical assessment rather than rehabilitation.</li></ul>"
+    },
+    {
+      "h2": "The muscles doing the complaining",
+      "html": "<p>A neck that has lost some of its range asks more of the muscles around it, and most of what people actually feel day to day is muscular rather than bony.</p><ul><li><a href=\"/muscles/suboccipitals\">Suboccipitals</a> sit at the base of the skull, work constantly to hold the head level, and refer a band of headache around the side of the head.</li><li><a href=\"/muscles/upper-trapezius\">Upper trapezius</a> carries the weight of a forward head position for hours and is almost always tender here.</li><li><a href=\"/muscles/levator-scapulae\">Levator scapulae</a> produces the sharp catch at the angle of the neck and shoulder that limits turning.</li><li><a href=\"/muscles/splenius-capitis-cervicis\">Splenius capitis and cervicis</a> restrict rotation directly and refer into the back of the head.</li><li><a href=\"/muscles/sternocleidomastoid\">Sternocleidomastoid</a> shortens with a forward head posture and refers pain into the face, ear and forehead.</li><li><a href=\"/muscles/scalenes\">Scalenes</a> can reproduce arm symptoms that mimic a nerve problem, which is one reason the assessment separates them carefully.</li></ul>"
+    },
+    {
+      "h2": "How MD Fit approaches it",
+      "html": "<p>The assessment measures actual rotation and extension, identifies which muscles reproduce your symptoms, screens the arm for nerve involvement, and looks at how you sit, drive, sleep and use screens. Hands-on release of the suboccipitals, levator and upper trapezius frequently returns some rotation in the first visit, because a good deal of the restriction is protective muscle tension.</p><p>Correction addresses the positions that keep it irritated, which are usually the hours spent with the head forward. Strengthening builds the deep neck flexors and the muscles that hold the shoulder blades back, so the neck is supported rather than braced. Short daily routines come through the free MD Fit app, and they matter more than anything done in the clinic.</p><p>Where your physician is managing nerve symptoms or considering imaging or injections, this work sits alongside.</p>"
+    },
+    {
+      "h2": "A note for Sarasota",
+      "html": "<p>Golf and tennis both demand neck rotation, and losing it changes a swing or a serve before it ever becomes painful enough to mention. Driving long distances on I-75, long flights for people travelling seasonally, and hours on a tablet all hold the head forward for extended periods. Restoring rotation is usually the goal people care about most, and it is frequently the one that responds fastest.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": "Rotation and daily comfort frequently improve over the first few weeks. The underlying changes seen on imaging do not reverse, so the work is about how well the neck is supported and moved, and it is maintained with short regular routines.",
+  "redFlags": [
+    "Clumsiness in the hands, trouble with buttons or handwriting, dropping objects, or a change in how you walk: these can indicate spinal cord involvement and need prompt medical assessment.",
+    "Progressive weakness or numbness in an arm or leg, or symptoms in both arms.",
+    "Any change in bladder or bowel control alongside neck symptoms: go to the emergency room.",
+    "Neck pain after a significant fall or collision, or severe pain with inability to move the neck.",
+    "Neck pain with fever, unexplained weight loss, or a history of cancer, which needs a physician promptly.",
+    "A sudden severe headache unlike any before, or neck stiffness with fever and sensitivity to light: call 911."
+  ],
+  "faq": [
+    {
+      "q": "Does arthritis on my neck X-ray mean this is permanent?",
+      "a": "The imaging findings do not reverse, but they are very common in people without pain and they do not determine how your neck feels. Muscle tension, movement habits and strength all respond, and that is usually where the symptoms come from."
+    },
+    {
+      "q": "Is the grinding sound in my neck a problem?",
+      "a": "Usually not on its own. Crunching and grinding with movement are common and are generally not a measure of damage. Pain, weakness or loss of function are what matter."
+    },
+    {
+      "q": "Should I use a special pillow?",
+      "a": "Pillow choice matters less than most people expect, and the right one is largely the one that keeps your neck roughly neutral in your usual sleeping position. It is worth adjusting but it is rarely the whole answer."
+    },
+    {
+      "q": "Will I need surgery?",
+      "a": "Rarely for neck pain alone. Surgical opinions are usually sought for nerve symptoms that are not settling, or for signs of spinal cord involvement, which is why the red flags above matter."
+    }
+  ],
+  "muscles": [
+    "suboccipitals",
+    "upper-trap",
+    "levator",
+    "splenius",
+    "scm",
+    "scalenes"
+  ],
+  "pain": [
+    "back-of-neck",
+    "base-of-skull",
+    "side-of-neck",
+    "top-of-shoulder"
+  ],
+  "guides": [
+    "posterior-neck",
+    "scalenes"
+  ],
+  "related": [
+    "/conditions/neck-pain",
+    "/conditions/cervicogenic-headache",
+    "/conditions/herniated-disc",
+    "/conditions/desk-neck-pain",
+    "/conditions/tension-headache",
+    "/conditions/facet-joint-pain",
+    "/treatments/medical-massage"
+  ],
+  "reviewStatus": "approved"
+}

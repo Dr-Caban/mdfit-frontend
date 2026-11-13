@@ -1,0 +1,92 @@
+{
+  "slug": "post-surgical-rehab",
+  "title": "Post-Surgical Rehab in Sarasota, FL | MD Fit",
+  "h1": "Post-Surgical Rehabilitation in Sarasota, FL",
+  "description": "Post-surgical rehab in Sarasota. Dr. Jared Caban works within your surgeon's protocol to rebuild range, strength and confidence after surgery.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Postoperative rehabilitation"
+  },
+  "lead": "Surgery fixes a structure. It does not restore the strength, range and confidence that were lost before the operation and during the recovery after it, and that gap is what rehabilitation exists to close.",
+  "sections": [
+    {
+      "h2": "The surgeon's protocol comes first",
+      "html": "<p>Every operation comes with precautions and a timeline: what can bear weight and when, what range is permitted, what movements are off-limits while tissue heals or a repair takes. Those rules exist because a repair can be compromised, and they are not negotiable.</p><p>So the first thing Dr. Jared asks for is your operative note and your surgeon's instructions. Within those limits there is almost always more that can be done than people are doing, and that is where the work happens. Where something is unclear, he contacts the surgeon's office rather than guessing.</p>"
+    },
+    {
+      "h2": "What recovery is actually rebuilding",
+      "html": "<ul><li><b>Range of motion,</b> which is easiest to regain early and increasingly difficult later. This is why early movement within precautions matters so much.</li><li><b>Muscle activation.</b> After knee surgery in particular, the quadriceps often switches off, and it does not switch back on simply because time passes.</li><li><b>Strength,</b> which was usually declining for months before surgery while the problem limited activity.</li><li><b>Load tolerance,</b> rebuilt gradually in the tissue that was operated on.</li><li><b>Confidence.</b> Harder to measure, and often the thing that keeps people limiting themselves long after the structure has healed.</li></ul>"
+    },
+    {
+      "h2": "Scar tissue and swelling",
+      "html": "<p>Scar tissue forms as part of healing and remodels along the lines of the forces applied to it. Left alone it can bind layers that should glide, restricting movement well beyond the incision. Once a wound is fully closed and cleared, hands-on work on the scar and surrounding tissue often restores range that stretching alone will not.</p><p>Swelling matters more than people expect, because a swollen joint actively inhibits the muscles around it. Managing swelling is not cosmetic; it is part of why the quadriceps will not fire.</p>"
+    },
+    {
+      "h2": "How MD Fit fits alongside your care",
+      "html": "<p>Many people come here after a course of insurance-covered therapy has ended, at the point where they are functional but not strong, and the visit limit ran out. That is a common and frustrating place to be, because the remaining gap is usually strength and capacity, which take longer than the allowance covers.</p><p>Sessions are a full length rather than shared across several patients, and the plan continues as long as it is useful rather than until a cap is reached. Daily work comes through the free MD Fit app. See <a href=\"/conditions/knee-replacement-rehab\">knee replacement</a>, <a href=\"/conditions/hip-replacement-rehab\">hip replacement</a>, <a href=\"/conditions/rotator-cuff-repair-rehab\">rotator cuff repair</a> and <a href=\"/conditions/acl-reconstruction-recovery\">ACL reconstruction</a> for procedure-specific detail.</p>"
+    },
+    {
+      "h2": "Before surgery, if you have the chance",
+      "html": "<p>If your operation is still ahead of you, the weeks beforehand are valuable. Going in with more strength and better range reliably makes the recovery afterward shorter and more predictable, and it is far easier to build capacity before an operation than immediately after one.</p><p>That applies particularly to joint replacement, where the leg has often been getting weaker for a year or more while the joint hurt.</p>"
+    },
+    {
+      "h2": "What to bring and expect",
+      "html": "<ol><li>Your operative note and your surgeon's written precautions.</li><li>Any restrictions on weight-bearing, range or driving.</li><li>Comfortable clothing that gives access to the operated area.</li><li>A realistic account of what you want to get back to, because the plan is built backward from that.</li></ol><p>Progress is rarely linear. Good weeks and flat weeks both happen, and the trend over a month matters more than any single session.</p>"
+    }
+  ],
+  "timeline": null,
+  "redFlags": [
+    "Fever, spreading redness, increasing warmth, or drainage from the incision, which may indicate infection and needs same-day contact with your surgeon.",
+    "Calf swelling, redness, warmth or pain, which can indicate a blood clot and needs urgent medical assessment.",
+    "Sudden shortness of breath or chest pain after surgery: call 911.",
+    "A sudden pop or give-way with loss of function, which may mean a repair has failed.",
+    "Pain that is escalating rather than gradually improving, or new numbness below the surgical site.",
+    "A wound that opens or will not close."
+  ],
+  "faq": [
+    {
+      "q": "Do you follow my surgeon's protocol?",
+      "a": "Yes. The operative note and precautions come first, and where anything is unclear Dr. Jared contacts the surgeon's office rather than assuming."
+    },
+    {
+      "q": "My insurance therapy ran out. Can I still make progress?",
+      "a": "Usually a great deal. Most people finish covered therapy functional but not strong, and strength is exactly what the remaining work rebuilds."
+    },
+    {
+      "q": "When should I start?",
+      "a": "As soon as your surgeon allows. Early range is far easier to gain than range recovered months later."
+    },
+    {
+      "q": "Is it worth doing anything before my surgery?",
+      "a": "Yes. Going into an operation stronger consistently makes the recovery afterward shorter and more predictable."
+    }
+  ],
+  "muscles": [
+    "vmo",
+    "rectus-femoris",
+    "glute-max",
+    "glute-med",
+    "supraspinatus",
+    "gastroc"
+  ],
+  "pain": [
+    "below-kneecap",
+    "front-of-thigh",
+    "outside-of-shoulder",
+    "groin"
+  ],
+  "guides": [
+    "quads"
+  ],
+  "related": [
+    "/conditions/knee-replacement-rehab",
+    "/conditions/hip-replacement-rehab",
+    "/conditions/rotator-cuff-repair-rehab",
+    "/conditions/acl-reconstruction-recovery",
+    "/treatments/post-op-rehab-timelines",
+    "/post-op-knee-rehab-sarasota"
+  ],
+  "group": "conditions",
+  "steps": null,
+  "reviewStatus": "approved"
+}

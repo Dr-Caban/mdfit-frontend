@@ -1,0 +1,98 @@
+{
+  "group": "activities",
+  "slug": "build-and-deadlift-setup",
+  "title": "Your Build and Your Deadlift Setup | MD Fit",
+  "h1": "Your Build and Your Deadlift Setup",
+  "description": "Arm length, torso length and hip shape decide whether conventional, sumo or trap bar suits you. How to pick a start position that fits your proportions.",
+  "about": {
+    "type": "Thing",
+    "name": "Deadlift setup and body proportions"
+  },
+  "lead": "The deadlift is the lift where proportion pays off rather than punishing you. The bar height is fixed, so whoever has to move it the shortest distance in the strongest position has an advantage, and which stance gives you that depends entirely on how you are put together.",
+  "sections": [
+    {
+      "h2": "The bar does not move, so you do",
+      "html": "<p>A loaded barbell sits at a fixed height off the floor. Unlike a squat, where you choose the depth, the deadlift starts where the bar starts. That makes your proportions unusually decisive.</p><p><b>Long arms</b> are the single biggest advantage. They let you reach the bar with your hips higher and your back more upright, which shortens the distance the bar travels and puts you in a stronger starting position. This is why long-armed lifters who struggle on the bench often excel here.</p><p><b>A long torso with short arms</b> is the harder combination. You have to get much lower to reach the bar, which means more knee bend, a more horizontal back, and a longer pull.</p><p><b>Femur length</b> matters too. Long femurs push the hips back and up, which tends to suit a conventional pull, while shorter femurs leave more room to get the hips in close.</p>"
+    },
+    {
+      "h2": "Conventional, sumo or trap bar",
+      "html": "<p>These are three different lifts, not a hierarchy.</p><ul><li><b>Conventional</b> suits long arms and lifters comfortable with a hip-dominant pull. The back works hard through a longer range, and it tends to be the most demanding on the spinal erectors.</li><li><b>Sumo</b> shortens the pull by widening the stance and turning the feet out, which raises the hips relative to the bar and brings the torso more upright. It asks more of the hips and adductors and less of the low back. Lifters with short arms, long torsos or hips that open well to the side often find it dramatically better.</li><li><b>Trap bar</b> puts the load in line with the body rather than in front of it, which keeps the torso most upright of the three and shares the work between hips and knees. For anyone with a history of low back trouble it is frequently the most comfortable way to pull heavy.</li></ul><p>Try all three over a few weeks before deciding. The one that feels strongest and leaves you least sore in the wrong places is usually the one that suits your build.</p>"
+    },
+    {
+      "h2": "Finding your start position",
+      "html": "<ol><li><b>Bar over midfoot.</b> Not against your shins, not out over your toes. This is fixed and everything else arranges around it.</li><li><b>Shoulder blades roughly over the bar.</b> Looking from the side, this puts the arms close to vertical and keeps the bar travelling in a straight line.</li><li><b>Hips as high as your build allows.</b> Many lifters sit their hips too low because squatting down to a bar feels intuitive. The hips should be wherever the previous two points put them, which for long-armed lifters is high.</li><li><b>Take the slack out.</b> Pull up on the bar until it makes contact with the plates and your back is tight, then drive. The dead stop from a slack bar is where many back complaints begin.</li></ol>"
+    },
+    {
+      "h2": "Why back rounding advice needs context",
+      "html": "<p>\"Never round your back\" is one of the most repeated cues in lifting, and like most absolute rules it covers something more nuanced.</p><p>What matters in practice is whether your back <b>changes shape under load</b>. A back that is set in a given position at the start and holds that position throughout is working as intended. A back that starts neutral and then rounds progressively as the bar leaves the floor is losing its brace, and that is the pattern associated with trouble.</p><p>The other thing worth saying is that a more horizontal back is not the same as a rounded one. A short-armed lifter pulling conventional will have a flatter back angle than a long-armed one, and both can be perfectly braced. The angle is proportion; the shape change is the fault.</p><p>If your back rounds, the usual causes are the hips starting too low and rising before the bar, a load above what you can currently brace, or <a href=\"/activities/ankle-mobility-and-squat\">restricted range</a> forcing you into a position you cannot hold. Those are three different fixes.</p>"
+    },
+    {
+      "h2": "Where it shows up as pain",
+      "html": "<p>The low back is the obvious one, usually the spinal erectors and <a href=\"/muscles/quadratus-lumborum\">quadratus lumborum</a>, which refer into the flank and the <a href=\"/pain/si-joint\">SI joint</a> area. <a href=\"/muscles/multifidus\">Multifidus</a> gives the pinpoint pain right beside the spine that lifters describe as a knot.</p><p>Hamstrings are the next most common, particularly at the sitting bone where the tendon attaches, which is the pattern of <a href=\"/conditions/proximal-hamstring-tendinopathy\">proximal hamstring tendinopathy</a>. Sumo pullers more often feel the adductors and the front of the hip, since the wide stance asks a lot of both.</p><p>Soreness that settles in two or three days is adaptation. A back that tightens up during a session, pain travelling into a leg, or a specific rep that produced a sharp catch is worth assessing before you pull again.</p>"
+    },
+    {
+      "h2": "How MD Fit works with deadlifts",
+      "html": "<p>Dr. Jared wants to see the pull from the side, because the start position tells him most of what he needs. The assessment then checks hip range on the table, how well you can hinge without the spine moving, and how the hamstrings and hip flexors are tolerating what you are asking.</p><p>That separates the three things that look alike: a hip that cannot get into position, a back that is not bracing, and a stance that does not suit your proportions. The work from there is hands-on release of whatever is guarding, corrective hinge work, daily homework through the free MD Fit app video library, and a stance chosen to fit your build rather than the one your gym favours.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Sharp low back pain during a pull, especially with pain, numbness or tingling travelling down a leg.",
+    "Numbness in the groin or inner thighs, or any loss of bowel or bladder control, which needs emergency care.",
+    "A pop or tearing sensation in the hamstring, back or biceps, followed by weakness or bruising.",
+    "Progressive weakness in a leg or foot, including difficulty lifting the front of the foot.",
+    "Back pain that is worse at night or unrelated to movement."
+  ],
+  "faq": [
+    {
+      "q": "Is sumo easier than conventional?",
+      "a": "It is shorter, not easier. It shifts work from the back to the hips and adductors, and lifters built for it pull more that way. Lifters who are not often find it considerably harder."
+    },
+    {
+      "q": "Should I deadlift at all with a history of low back pain?",
+      "a": "For most people a well-coached hinge is one of the better things for a back. The question an assessment answers is whether you can brace and hinge without the spine changing shape, and a trap bar is often the place to start."
+    },
+    {
+      "q": "My hips shoot up before the bar moves. What is that?",
+      "a": "Usually the hips starting lower than your proportions want. It can also be a leg-drive problem. Filming from the side and raising the start position slightly fixes it more often than not."
+    },
+    {
+      "q": "Does a rounded upper back mean I am doing it wrong?",
+      "a": "A small amount of fixed upper-back rounding is common in experienced pullers and is different from a back that changes shape mid-rep. The progressive change under load is the pattern worth addressing."
+    }
+  ],
+  "muscles": [
+    "glute-max",
+    "biceps-femoris",
+    "ql",
+    "multifidus",
+    "longissimus",
+    "adductor-magnus"
+  ],
+  "pain": [
+    "beside-the-spine",
+    "si-joint",
+    "buttock-crease",
+    "back-of-thigh"
+  ],
+  "guides": [
+    "iliopsoas"
+  ],
+  "related": [
+    "/activities/train-for-your-build",
+    "/activities/femur-length-and-squat",
+    "/activities/weightlifting-crossfit",
+    "/conditions/low-back-pain",
+    "/conditions/herniated-disc",
+    "/conditions/hamstring-strain",
+    "/conditions/si-joint-pain",
+    "/treatments/strength-and-performance"
+  ],
+  "programs": [
+    "low-back-6",
+    "posterior-chain-6",
+    "hip-6"
+  ],
+  "reviewStatus": "approved"
+}

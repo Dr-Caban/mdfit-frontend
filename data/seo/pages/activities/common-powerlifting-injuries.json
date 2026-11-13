@@ -1,0 +1,94 @@
+{
+  "slug": "common-powerlifting-injuries",
+  "title": "Common Powerlifting Injuries | MD Fit",
+  "h1": "Common Powerlifting Injuries and What They Mean",
+  "description": "The injuries that actually show up in powerlifters, which lift tends to produce which, and how to tell ordinary soreness from something worth assessing.",
+  "about": {
+    "type": "Thing",
+    "name": "Common powerlifting injuries"
+  },
+  "lead": "Powerlifting injuries are less dramatic and more repetitive than the internet suggests. Catastrophic failures exist but are rare. The usual story is a tissue that was being overloaded slightly for months, in a position that was slightly wrong, until it stopped tolerating it.",
+  "sections": [
+    {
+      "h2": "The low back, and why it leads the list",
+      "html": "<p>Low back complaints are the most common thing in this sport, mostly because all three lifts load the trunk and most lifters train all three. The usual presentation is soreness <a href=\"/pain/beside-the-spine\">beside the spine</a> or across <a href=\"/pain/si-joint\">the SI joint</a> that builds across a training block.</p><p>Most of it is muscular and responds well to load management and addressing whichever position is breaking down. What needs separating out is pain that travels below the knee, or that comes with numbness, tingling or weakness, which points to the nerve rather than the muscle. See <a href=\"/conditions/low-back-pain\">low back pain</a>, <a href=\"/conditions/herniated-disc\">herniated disc</a> and <a href=\"/conditions/sciatica\">sciatica</a>, and read <a href=\"/activities/lifting-with-back-pain\">lifting with back pain</a>.</p>"
+    },
+    {
+      "h2": "Shoulders, and the bench press",
+      "html": "<p>The front of the shoulder is the second most common complaint, and benching is usually involved. The typical pattern is an ache at the <a href=\"/pain/front-of-shoulder\">front of the shoulder</a> that appears during or after pressing, often in someone who presses far more than they pull.</p><p>The structures that get blamed are the rotator cuff and the long head of the biceps, and they are often genuinely irritated, but the cause is usually upstream: shoulder blades that do not stay set, a shortened <a href=\"/muscles/pectoralis-minor\">pectoralis minor</a>, and grip width or touch point that puts the shoulder at the edge of its range every rep. See <a href=\"/conditions/shoulder-impingement\">shoulder impingement</a> and <a href=\"/conditions/biceps-tendinopathy\">biceps tendinopathy</a>.</p>"
+    },
+    {
+      "h2": "Hips, knees and the squat",
+      "html": "<p>Front-of-hip pinching at the bottom of a squat is common and is frequently a range issue rather than an injury, though repeatedly forcing past it is what turns it into one. Knee pain tends to appear <a href=\"/pain/below-kneecap\">below the kneecap</a> and more often follows a jump in volume than a flaw in technique. See <a href=\"/conditions/patellar-tendinopathy\">patellar tendinopathy</a> and <a href=\"/conditions/hip-pain\">hip pain</a>.</p><p>Adductor and groin complaints belong mostly to sumo pullers and wide-stance squatters, and hamstring complaints near the sitting bone mostly to conventional deadlifters. Both tend to build gradually, which is why they are ignored until they are not.</p>"
+    },
+    {
+      "h2": "The dramatic ones, and how rare they are",
+      "html": "<p>Pec tears during heavy benching and biceps tears during mixed-grip deadlifting are the injuries everyone has seen a video of. They do happen, they are serious, and they share a signature: a sudden tearing sensation at a specific moment, immediate loss of strength, and bruising over the following days.</p><p>If that happens, it is not something to train around or wait out. It needs assessing promptly, because the timing of what is done next can matter. Nothing else on this page is in the same category.</p>"
+    },
+    {
+      "h2": "Telling soreness from a problem",
+      "html": "<p>Ordinary soreness is spread across a muscle, appears a day or two after training, eases as you warm up, and settles within a few days. A problem worth attention is specific, located at a joint or tendon, present during the lift rather than after, and gets worse with repeated exposure.</p><p>Dr. Jared Caban, a physician-trained clinical exercise physiologist and licensed massage therapist, assesses both the irritated tissue and the training that produced it, because treating one without the other is how the same injury returns the following block. Members get the exercise library and workout generator in the MD Fit app. Self-pay, no referral needed.</p>"
+    }
+  ],
+  "redFlags": [
+    "A sudden tearing sensation during a lift with immediate loss of strength, often followed by bruising: get this assessed promptly.",
+    "Pain travelling below the knee or down an arm, or numbness, tingling or weakness.",
+    "Any loss of bladder or bowel control, or numbness around the groin: this is an emergency, call 911.",
+    "A joint that locks, gives way or swells rapidly after a session.",
+    "Pain present at rest or at night, or that is worsening week by week despite reduced load."
+  ],
+  "faq": [
+    {
+      "q": "Is powerlifting dangerous?",
+      "a": "Injury rates in powerlifting are generally comparable with other recreational sports rather than exceptional. Most problems are gradual overload rather than dramatic failures, which also means most are avoidable."
+    },
+    {
+      "q": "What is the most common powerlifting injury?",
+      "a": "Low back complaints, largely because all three lifts load the trunk. Shoulder complaints related to benching are the next most common."
+    },
+    {
+      "q": "How do I know if it is just soreness?",
+      "a": "Soreness is diffuse, appears a day or two later, eases with warming up and settles within days. Pain that is sharp, specific to a joint or tendon, present during the lift, or worsening with repetition is different."
+    },
+    {
+      "q": "Can I keep lifting with an injury?",
+      "a": "Often yes, in a modified form, but that is a judgement made after assessment rather than from a page. Sudden tearing injuries and anything with nerve symptoms are exceptions that need looking at first."
+    }
+  ],
+  "muscles": [
+    "ql",
+    "multifidus",
+    "pec-major-stern",
+    "supraspinatus",
+    "medial-hamstrings",
+    "adductor-longus"
+  ],
+  "pain": [
+    "beside-the-spine",
+    "front-of-shoulder",
+    "below-kneecap",
+    "groin"
+  ],
+  "guides": [
+    "rotator-cuff"
+  ],
+  "related": [
+    "/activities/lifting-with-back-pain",
+    "/activities/training-around-an-injury",
+    "/conditions/low-back-pain",
+    "/conditions/shoulder-impingement",
+    "/conditions/patellar-tendinopathy",
+    "/conditions/sports-injury-rehab",
+    "/activities/weightlifting-crossfit",
+    "/treatments/strength-and-performance"
+  ],
+  "programs": [
+    "low-back-6",
+    "shoulder-6",
+    "knee-6"
+  ],
+  "group": "activities",
+  "steps": null,
+  "timeline": null,
+  "reviewStatus": "approved"
+}

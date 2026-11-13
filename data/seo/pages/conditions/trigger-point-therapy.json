@@ -1,0 +1,89 @@
+{
+  "group": "conditions",
+  "slug": "trigger-point-therapy",
+  "title": "Trigger Point Therapy in Sarasota, FL | MD Fit",
+  "h1": "Trigger Point Therapy in Sarasota, FL",
+  "description": "Why the spot that hurts is often not the spot causing it, how referral patterns are used to find the source, and what a trigger point session involves.",
+  "about": {
+    "type": "MedicalTherapy",
+    "name": "Trigger point therapy"
+  },
+  "lead": "A trigger point is a tender spot in a taut band of muscle that, when pressed, reproduces a pain you recognise, often somewhere else entirely. That last part is what makes the technique useful: it gives a way to work backwards from where it hurts to what is producing it.",
+  "sections": [
+    {
+      "h2": "Referred pain is the whole point",
+      "html": "<p>Most people arrive pointing at the painful place and expect the work to happen there. Frequently it does not, because muscles refer pain in patterns that have been mapped and taught for decades. A few that come up constantly in clinic:</p><ul><li>The <a href=\"/muscles/upper-trapezius\">upper trapezius</a> refers up the side of the neck and into the temple, which is why so many \"tension headaches\" are reproduced by pressing a shoulder.</li><li>The <a href=\"/muscles/gluteus-minimus\">gluteus minimus</a> refers down the outside of the leg in a band that can look convincingly like sciatica.</li><li>The <a href=\"/muscles/infraspinatus\">infraspinatus</a>, flat on the shoulder blade, refers deep into the front of the shoulder joint and down the arm.</li><li>The <a href=\"/muscles/scalenes\">scalenes</a> in the side of the neck refer into the chest, the upper back and down the arm to the thumb.</li><li>The <a href=\"/muscles/soleus\">soleus</a> in the lower calf refers to the heel, which catches people who are certain the problem is in the foot.</li></ul><p>MD Fit keeps a page for each of the muscles in this library with its own referral map, because knowing that a familiar pain can be produced from a distant muscle is the single most useful idea in this kind of work.</p>"
+    },
+    {
+      "h2": "What happens in a session",
+      "html": "<p>The hour starts with finding the point rather than treating it. Pressure is applied to the likely candidates until one reproduces your symptom, and that reproduction is the confirmation that the right tissue has been found. From there the pressure is held, usually for a stretch of seconds rather than a quick rub, while you breathe and sometimes move the limb through a range.</p><p>Expect the sensation to be strong but recognisable. The useful feeling is \"that is my pain\", not a sharp new pain you have never had. The referral often fades under sustained pressure, which is a practical sign to move on. Afterwards the muscle is usually taken through its range once or twice so your nervous system registers what is now available.</p>"
+    },
+    {
+      "h2": "What is well established, and what is argued about",
+      "html": "<p>This page would be less useful if it oversold the science, so here is the honest position. What is not seriously disputed is that pressing specific locations in muscle reliably reproduces recognisable patterns of pain for many people, that these locations tend to sit in palpably taut bands, and that treating them often changes symptoms in the short term.</p><p>What remains genuinely debated in the research literature is the underlying mechanism, and even how reliably different clinicians can find the same point on the same person. Explanations involving stuck contraction knots, local energy crises and metabolic by-products are models rather than settled fact. Honest practice treats referral maps as an excellent clinical tool for locating a source, not as proof of what is physically happening inside the tissue.</p><p>The practical consequence matters to you: a technique that reliably changes symptoms but whose mechanism is debated is worth using, and worth stopping if it is not working for you after a fair trial.</p>"
+    },
+    {
+      "h2": "What it will not do on its own",
+      "html": "<p>A trigger point that keeps coming back to the same muscle is telling you about load, not about needing more pressure. The common culprits are a position held for hours, a muscle doing a job that a stronger neighbour should be doing, or a training jump the tissue was not ready for.</p><ul><li>The <a href=\"/muscles/upper-trapezius\">upper trapezius</a> keeps flaring when the <a href=\"/muscles/serratus-anterior\">serratus anterior</a> and lower trapezius are not holding the shoulder blade.</li><li>The <a href=\"/muscles/quadratus-lumborum\">quadratus lumborum</a> keeps flaring when the hips are not sharing the work of standing and lifting.</li><li>Calf points keep flaring when mileage climbs faster than the tissue adapts.</li></ul><p>That is why sessions end with homework in the app and why a repeatedly returning point is treated as a reason to look at strength and habits rather than to book another hour.</p>"
+    },
+    {
+      "h2": "Who tends to get the most from it",
+      "html": "<p>Trigger point work suits a complaint you can point to: a specific, repeatable pain with a familiar character, especially one that travels in a consistent pattern. It is often the fastest route to progress for headaches that start in the neck, shoulder pain that is worse overhead, and buttock or leg pain that imaging has not explained.</p><p>It is a poorer fit for pain that is diffuse, constantly moving, or accompanied by numbness and weakness. Those pictures deserve an evaluation first. If you are not sure which you have, the free phone consult is a reasonable place to start.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": "A point that reproduces your symptom often settles within the session, and many people get a noticeable change in range the same day. Whether it stays settled depends on whether the load that created it has changed, which is usually a matter of weeks of homework rather than hours on the table.",
+  "redFlags": [
+    "Numbness, weakness or loss of coordination in a limb, rather than pain alone.",
+    "New swelling, redness or warmth in one calf, which needs a physician before any pressure is applied.",
+    "Pain with fever, night sweats or unexplained weight loss.",
+    "Pain that is steadily spreading or waking you every night, rather than responding to position and rest.",
+    "A tender area over a recent fracture, surgical site or undiagnosed lump."
+  ],
+  "faq": [
+    {
+      "q": "Why is the therapist pressing somewhere that doesn't hurt?",
+      "a": "Because muscles refer pain away from themselves in consistent patterns. Reproducing your familiar symptom from a distant muscle is how the source gets identified, and it is usually the most informative moment of the session."
+    },
+    {
+      "q": "Is trigger point therapy the same as dry needling?",
+      "a": "They target the same idea from different directions: one uses sustained manual pressure, the other a fine needle. The work described on this page is manual."
+    },
+    {
+      "q": "How strong should the pressure be?",
+      "a": "Strong enough that you recognise the referred pain, not so strong that you tense against it. Bracing makes the muscle harder to change, so the pressure is adjusted to what the tissue responds to."
+    },
+    {
+      "q": "Why does the same spot keep coming back?",
+      "a": "Usually because the load that produced it has not changed. A repeatedly returning point is a reason to look at strength, positioning and training volume rather than to book more sessions."
+    }
+  ],
+  "muscles": [
+    "upper-trap",
+    "glute-min",
+    "infraspinatus",
+    "scalenes",
+    "soleus",
+    "ql"
+  ],
+  "pain": [
+    "temple",
+    "outside-of-thigh",
+    "deep-shoulder-joint",
+    "top-of-shoulder"
+  ],
+  "guides": [
+    "posterior-neck",
+    "rotator-cuff"
+  ],
+  "related": [
+    "/treatments/medical-massage",
+    "/conditions/medical-massage-vs-spa-massage",
+    "/conditions/myofascial-release",
+    "/conditions/massage-for-headaches",
+    "/conditions/tension-headache",
+    "/conditions/piriformis-syndrome",
+    "/muscles/"
+  ],
+  "reviewStatus": "approved"
+}

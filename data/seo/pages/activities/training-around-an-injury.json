@@ -1,0 +1,91 @@
+{
+  "slug": "training-around-an-injury",
+  "title": "Training Around an Injury | MD Fit",
+  "h1": "Training Around an Injury Instead of Stopping",
+  "description": "How to keep training when something hurts: what to modify, what to leave alone, and the difference between working around an injury and ignoring it.",
+  "about": {
+    "type": "Thing",
+    "name": "Training around an injury"
+  },
+  "lead": "Complete rest is rarely the right prescription for a lifter, and it is rarely what actually happens anyway. The more useful approach is to find what you can load without provoking symptoms, train that properly, and work on the problem in parallel rather than waiting for it to resolve on its own.",
+  "sections": [
+    {
+      "h2": "Why stopping entirely usually backfires",
+      "html": "<p>Detraining starts quickly. Strength, muscle and tolerance to load all decline during a layoff, so a lifter who stops for six weeks returns weaker, and the return itself becomes the next risk. Meanwhile the original problem has often not improved, because most tissue problems respond better to controlled loading than to avoidance.</p><p>There are genuine exceptions. A fresh tear, a suspected fracture, anything with neurological symptoms, or anything a physician has told you to rest, is not something to train around. The judgement of which category you are in is the part worth getting help with.</p>"
+    },
+    {
+      "h2": "The modifications that usually work",
+      "html": "<p>Four levers cover most situations, and they are worth trying in this order:</p><ol><li><b>Reduce the range.</b> Pin squats, board presses, rack pulls. Often the painful part of a lift is a specific portion of the range, not all of it.</li><li><b>Change the implement.</b> Dumbbells, a trap bar, a safety squat bar, a landmine. Each changes the joint angles enough to be a different experience.</li><li><b>Change the load and the tempo.</b> Lighter weight moved deliberately often loads the tissue usefully without provoking symptoms.</li><li><b>Train the other side and the rest of the body.</b> Training one limb produces some benefit in the untrained one, and the rest of your body does not need to detrain because a shoulder is sore.</li></ol>"
+    },
+    {
+      "h2": "The rule for deciding what is allowed",
+      "html": "<p>A widely used approach is to allow mild discomfort that stays mild during the set, does not build across the session, and has settled by the next day. Pain that climbs rep by rep, lingers for days, or changes how you move is a signal to back off further.</p><p>Write it down. People are poor at remembering whether last Tuesday was better or worse, and a one-line record of load and symptoms turns a vague impression into something you can act on. It also makes the first clinical appointment far more productive.</p>"
+    },
+    {
+      "h2": "Working around it is not treating it",
+      "html": "<p>This is the part lifters get wrong. Successfully modifying your training means you can keep going, which removes the urgency, which is why people arrive at a clinic having worked around something for eighteen months. The modification buys time to address the cause; it is not itself the fix.</p><p>In parallel with the modified training, something should be changing: the restricted tissue being released, the position being rebuilt, the weak link being strengthened. If nothing is changing, you are not training around an injury, you are accommodating it indefinitely.</p>"
+    },
+    {
+      "h2": "How MD Fit handles it",
+      "html": "<p>Dr. Jared Caban assesses what you can currently load without symptoms, which becomes the training you keep doing, then treats the restriction that caused the problem with hands-on work and corrective exercise. Being both a physician-trained clinical exercise physiologist and a licensed massage therapist means the programme and the treatment are built together rather than by two people who never speak.</p><p>Members get the exercise library and workout generator in the MD Fit app, so the modified programme and the corrective work arrive in the same place. Self-pay, no insurance paperwork, no referral needed.</p>"
+    }
+  ],
+  "redFlags": [
+    "Pain that travels down an arm or leg, or any numbness, tingling or weakness.",
+    "A joint that locks, gives way, or swells rapidly.",
+    "A sudden tearing sensation during a lift, particularly with bruising afterwards.",
+    "Pain that is present at rest, at night, or that is getting worse week by week despite reducing load.",
+    "Fever, unexplained weight loss, or pain that is unrelated to activity: see a physician rather than adjusting your programme."
+  ],
+  "faq": [
+    {
+      "q": "Should I train through pain?",
+      "a": "Mild discomfort that stays mild, does not build during the session and has settled by the next day is usually acceptable. Pain that climbs, lingers for days or changes how you move means backing off further."
+    },
+    {
+      "q": "How long before I can go back to normal training?",
+      "a": "That depends entirely on what the problem is, which is why an assessment is worth more than a timeline from a page. Returning when symptoms allow, rather than on a fixed date, is the general principle."
+    },
+    {
+      "q": "Is it bad to only train one side?",
+      "a": "No. Training one limb produces some carryover to the untrained side and preserves far more than stopping altogether. It is a standard approach while one side is unavailable."
+    },
+    {
+      "q": "Can I keep training if I have been told to rest?",
+      "a": "Follow the advice you have been given by the clinician who examined you. This page is about the common situation where nobody has examined you yet, not about overriding someone who has."
+    }
+  ],
+  "muscles": [
+    "glute-max",
+    "ql",
+    "supraspinatus",
+    "vastus-lateralis",
+    "lats",
+    "multifidus"
+  ],
+  "pain": [
+    "beside-the-spine",
+    "front-of-shoulder",
+    "below-kneecap",
+    "outside-of-hip"
+  ],
+  "guides": [],
+  "related": [
+    "/activities/lifting-with-back-pain",
+    "/activities/common-powerlifting-injuries",
+    "/activities/deload-weeks",
+    "/conditions/sports-injury-rehab",
+    "/activities/powerlifting-after-40",
+    "/conditions/low-back-pain",
+    "/treatments/strength-and-performance"
+  ],
+  "programs": [
+    "low-back-6",
+    "shoulder-6",
+    "knee-6"
+  ],
+  "group": "activities",
+  "steps": null,
+  "timeline": null,
+  "reviewStatus": "approved"
+}

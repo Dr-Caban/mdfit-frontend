@@ -1,0 +1,91 @@
+{
+  "slug": "powerlifting-after-40",
+  "title": "Powerlifting After 40 in Sarasota | MD Fit",
+  "h1": "Powerlifting After 40",
+  "description": "What genuinely changes about strength training after 40, what does not, and how to keep adding weight when recovery no longer looks after itself.",
+  "about": {
+    "type": "Thing",
+    "name": "Powerlifting after 40"
+  },
+  "lead": "Most of what is said about lifting after forty is either hand-wringing or denial. The useful version sits in between: the capacity to get strong is still there, recovery takes longer and needs managing deliberately, and the things you could previously skip now have consequences.",
+  "sections": [
+    {
+      "h2": "What actually changes",
+      "html": "<p>Three things change in ways that matter. Recovery between hard sessions takes longer, so the same programme that worked at twenty-five accumulates fatigue faster. Tendons and other connective tissue adapt more slowly, so load needs to rise more gradually. And existing wear in joints means some positions that were once free now cost something.</p><p>What does not change is the basic response to training. Muscle still grows, strength still improves, and bone still responds to loading. The ability to build strength is not lost with age, which matters because losing muscle with age is itself a serious health problem. See <a href=\"/conditions/sarcopenia-and-muscle-loss\">sarcopenia and muscle loss</a>.</p>"
+    },
+    {
+      "h2": "Recovery stops being automatic",
+      "html": "<p>In your twenties, recovery largely happens whether you attend to it or not. Later it becomes a variable you manage. In practice that means fewer genuinely hard sessions per week, more time between maximum efforts, and paying attention to sleep because the training stress lands on top of whatever else is happening.</p><p>A common and workable adjustment is to reduce the number of near-maximal sessions while keeping total volume similar, spreading the work across more sets of moderate weight. Many lifters in their forties and fifties find they progress better on this than on the three-hard-days-a-week template they used earlier.</p>"
+    },
+    {
+      "h2": "Warming up is no longer optional",
+      "html": "<p>The joke about needing a longer warm-up has a real basis. Tissues are less compliant and take longer to reach a state where heavy loading is comfortable. A warm-up that was adequate at twenty-five is often the reason the first working set feels wrong at forty-five.</p><p>What works is not complicated: general movement to raise temperature, then specific ramping in the lift itself with enough intermediate sets that the first working weight does not come as a surprise. <a href=\"/activities/warming-up-for-lifting\">Warming up for lifting</a> covers the detail.</p>"
+    },
+    {
+      "h2": "Training around what you already have",
+      "html": "<p>Most lifters over forty have something: an old shoulder, a knee that complains, a back that has had episodes. The goal is rarely to wait until everything is perfect, because that day does not arrive. It is to find the version of each lift you can currently load without provoking symptoms, train that properly, and work on the restriction in parallel.</p><p>That often means a <a href=\"/activities/front-squat\">front squat</a> instead of a low bar squat for a while, a <a href=\"/activities/romanian-deadlift\">Romanian deadlift</a> instead of pulls from the floor, or a narrower grip on the bench. These are not downgrades. See <a href=\"/activities/training-around-an-injury\">training around an injury</a>.</p>"
+    },
+    {
+      "h2": "Why Sarasota lifters end up here",
+      "html": "<p>This practice sees a lot of people in exactly this position: experienced, still competitive with themselves, and dealing with a body that has started asking for more management. Dr. Jared Caban is a physician-trained clinical exercise physiologist and licensed massage therapist, which is a useful combination for it, because the problem is usually part restricted tissue and part a programme that has not been updated.</p><p>Hands-on work releases what has shortened, corrective work restores the position, and the strength work is adjusted to what you can currently load well. Members get the exercise library and workout generator in the MD Fit app. Self-pay, no insurance paperwork, no referral needed.</p>"
+    }
+  ],
+  "redFlags": [
+    "Chest pain, pressure, unusual shortness of breath or light-headedness during exertion: stop and call 911.",
+    "Joint pain that is present at rest or wakes you at night rather than only during training.",
+    "A joint that swells, locks or gives way after a session.",
+    "New numbness, tingling or weakness in an arm or leg.",
+    "Any new symptom you would normally ignore but that has not settled in two weeks."
+  ],
+  "faq": [
+    {
+      "q": "Am I too old to start lifting?",
+      "a": "The response to strength training is preserved well into later life, and maintaining muscle and bone becomes more important with age rather than less. Starting sensibly matters more than starting young."
+    },
+    {
+      "q": "Should I stop maxing out after 40?",
+      "a": "Not necessarily, but maximum attempts are a significant stressor and most people do better testing less often and spending more time at submaximal weights."
+    },
+    {
+      "q": "Why does everything take longer to recover now?",
+      "a": "Recovery between sessions slows and connective tissue adapts more gradually. The usual adjustment is fewer genuinely hard sessions per week rather than less training overall."
+    },
+    {
+      "q": "Do I need a check-up before I start?",
+      "a": "If you have any history of heart or lung problems, high blood pressure, or have been inactive for a long time, speak to your physician before starting heavy strength training. This page is general education and not a substitute for that."
+    }
+  ],
+  "muscles": [
+    "glute-max",
+    "vastus-lateralis",
+    "ql",
+    "supraspinatus",
+    "pec-major-stern",
+    "medial-hamstrings"
+  ],
+  "pain": [
+    "beside-the-spine",
+    "top-of-shoulder",
+    "below-kneecap",
+    "front-of-hip"
+  ],
+  "guides": [],
+  "related": [
+    "/activities/training-around-an-injury",
+    "/activities/warming-up-for-lifting",
+    "/activities/deload-weeks",
+    "/conditions/sarcopenia-and-muscle-loss",
+    "/activities/seniors-strength-balance",
+    "/conditions/osteoporosis-and-exercise",
+    "/treatments/clinical-exercise-physiology",
+    "/treatments/strength-and-performance"
+  ],
+  "programs": [
+    "mobility-12",
+    "low-back-6"
+  ],
+  "group": "activities",
+  "steps": null,
+  "timeline": null,
+  "reviewStatus": "approved"
+}

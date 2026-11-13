@@ -1,0 +1,89 @@
+{
+  "group": "conditions",
+  "slug": "hypermobility-and-joint-pain",
+  "title": "Hypermobility and Joint Pain, Sarasota | MD Fit",
+  "h1": "Hypermobility and Joint Pain in Sarasota, FL",
+  "description": "Being bendy is not the same as being stable. Why hypermobile joints ache, why stretching usually makes it worse, and what strength and control work changes.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Joint hypermobility"
+  },
+  "lead": "People who move further than everyone else are usually told they are lucky, flexible, or natural at yoga. Many of them also ache constantly, sprain easily and feel unstable, and the advice they get most often, to stretch more, is the one thing most likely to make it worse.",
+  "sections": [
+    {
+      "h2": "Flexible is not the same as stable",
+      "html": "<p>Joints are held by two things: passive restraints, meaning ligaments and capsule, and active control, meaning muscle working at the right time. In hypermobility the passive restraints allow more movement than usual, so joints travel beyond where control is established.</p><p>The practical consequence is that the body relies far more on muscle to do a job ligaments normally share. That muscle is then working long hours at end range, and muscle doing that aches. A great deal of what gets called hypermobility pain is this fatigue, not damage.</p><p>It also explains why these joints hurt most after sustained positions rather than after effort. Standing in a queue, sitting through a flight, holding a phone: all positions where someone hypermobile tends to hang on their end range and let the tissue take the load.</p>"
+    },
+    {
+      "h2": "What it looks like day to day",
+      "html": "<p>The common thread is a body that feels loose and unreliable rather than one that feels injured.</p><ul><li>Joints that click, clunk or feel like they slip, often without pain in the moment.</li><li>Repeated ankle sprains, shoulders that feel like they might go, knees that hyperextend when standing.</li><li>Aching that is worse after staying still than after moving.</li><li>Standing with knees locked back and weight hanging on the joints, often without noticing.</li><li>Excellent at stretching, poor at holding a position under load.</li><li>Fatigue out of proportion to activity, because stability is costing muscular effort all day.</li><li>A history of being flexible as a child and being pushed towards gymnastics, dance or yoga because of it.</li></ul><p>Generalised hypermobility exists on a spectrum and overlaps with several recognised conditions, some of which have implications beyond joints. Where that is a question, it belongs with a physician.</p>"
+    },
+    {
+      "h2": "Why stretching usually makes it worse",
+      "html": "<p>This is the part that is worth saying plainly, because the advice is nearly universal and nearly always wrong for this group.</p><p>Muscles around hypermobile joints frequently feel tight. That feeling is real. What it usually represents is muscle working hard to limit movement that ligaments are not limiting, which is protective rather than restrictive. Stretching it relieves the sensation briefly and removes some of the only stability the joint had, so the ache returns and often worsens.</p><p>A simple test of which you are dealing with: genuine shortness limits movement consistently and improves steadily with stretching. Protective tension eases for an hour and comes back, sometimes worse, and no amount of stretching makes lasting progress. If you have stretched the same muscle for years without it changing, that is the answer.</p><p>Strength through range, control at end range and awareness of where your joints actually are address the cause. Stretching addresses the sensation.</p>"
+    },
+    {
+      "h2": "What the work involves",
+      "html": "<p>The aim is not to reduce range. It is to own the range you have.</p><ol><li><b>Position sense.</b> Hypermobile joints give poor feedback about where they are, which is why people lock out without realising. Learning to find and hold a neutral position is the foundation, and it is harder than it sounds.</li><li><b>Strength in the inner and middle range.</b> Most training loads the easy part of the range. Here the work belongs where control is worst, often near end range, with modest load and strict position.</li><li><b>Control before load.</b> Adding weight to a joint that cannot hold its position reinforces the problem. Position first, load afterwards.</li><li><b>Avoiding hanging on the joints.</b> Standing, sitting and carrying with muscle doing the work rather than ligament.</li><li><b>Steady, unexciting consistency.</b> Control is a slow adaptation and it fades without maintenance.</li></ol><p>Home work is short video routines in the free MD Fit app, which matters here because the quality of position is the whole exercise and a written instruction is easy to misread.</p>"
+    },
+    {
+      "h2": "Where hands-on work fits",
+      "html": "<p>Carefully, and less than people expect. Muscles like <a href=\"/muscles/upper-trapezius\">upper trapezius</a>, <a href=\"/muscles/quadratus-lumborum\">quadratus lumborum</a> and <a href=\"/muscles/tensor-fasciae-latae\">tensor fasciae latae</a> genuinely do become overworked when they are substituting for absent passive stability, and they can develop real trigger points that refer pain elsewhere.</p><p>Treating those can relieve a lot. But soft-tissue work on a hypermobile person is a short-term measure that creates room for the strengthening to happen, not a treatment in itself, and aggressive work that further reduces tension without replacing it with control tends to backfire. Pressure is kept moderate for that reason.</p><p>Dr. Jared Caban is both a licensed massage therapist and a clinical exercise physiologist, which on this condition means the hands-on work and the strengthening are planned as one thing rather than two.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "A joint that actually dislocates or subluxes rather than feeling loose, which needs medical assessment.",
+    "Hypermobility together with marked skin fragility, poor wound healing, or unusual scarring, which should be discussed with a physician.",
+    "Palpitations, fainting, or dizziness on standing, which can accompany some hypermobility conditions and needs medical assessment.",
+    "A family history of aortic aneurysm, sudden cardiac death, or a connective tissue condition, which is worth raising with a physician.",
+    "New numbness, weakness, or pain that follows a clear nerve distribution.",
+    "Severe pain after a specific incident, which may be an injury rather than the usual pattern."
+  ],
+  "faq": [
+    {
+      "q": "I have been told I am just flexible. Why does it hurt?",
+      "a": "Because flexibility and stability are different things. Where ligaments allow more movement, muscle has to supply the control instead, and muscle working all day at end range aches. The pain is from the effort, not usually from damage."
+    },
+    {
+      "q": "Should I stop stretching completely?",
+      "a": "Not necessarily, but it should stop being the main thing. If a muscle has felt tight for years and never changed despite stretching, it is almost certainly working protectively, and strengthening is the intervention that addresses it."
+    },
+    {
+      "q": "Can I still do yoga or Pilates?",
+      "a": "Often yes, with a change of emphasis. The risk is that both reward going further, which is already your strength. Working within range with control, rather than chasing depth, is the version that helps."
+    },
+    {
+      "q": "Will strengthening make me stiff?",
+      "a": "It does not reduce your available range. It makes the range you have usable under load, which usually means feeling more secure rather than more restricted."
+    }
+  ],
+  "muscles": [
+    "upper-trap",
+    "ql",
+    "tfl",
+    "glute-med",
+    "vmo",
+    "multifidus"
+  ],
+  "pain": [
+    "outside-of-hip",
+    "beside-the-spine",
+    "where-neck-meets-shoulder",
+    "inside-of-knee"
+  ],
+  "guides": [
+    "lateral-hip"
+  ],
+  "related": [
+    "/conditions/chronic-pain",
+    "/conditions/si-joint-pain",
+    "/conditions/patellofemoral-pain",
+    "/conditions/chronic-ankle-instability",
+    "/conditions/shoulder-pain",
+    "/treatments/clinical-exercise-physiology",
+    "/conditions/fibromyalgia"
+  ],
+  "reviewStatus": "approved"
+}

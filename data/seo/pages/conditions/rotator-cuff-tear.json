@@ -1,0 +1,91 @@
+{
+  "slug": "rotator-cuff-tear",
+  "title": "Rotator Cuff Tear Treatment in Sarasota, FL | MD Fit",
+  "h1": "Rotator Cuff Tears and Tendon Pain in Sarasota, FL",
+  "description": "Rotator cuff tears and tendon pain in Sarasota. Dr. Jared Caban builds the loading programme that lets many cuffs work well without surgery.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Rotator cuff tear"
+  },
+  "lead": "A torn rotator cuff sounds like something that must be repaired. In practice a great many tears are managed successfully without surgery, because the shoulder has four cuff muscles and considerable capacity to redistribute work.",
+  "sections": [
+    {
+      "h2": "Tears are more common than symptoms",
+      "html": "<p>Cuff tendons change with age the way hair greys. Imaging studies of people with no shoulder pain at all find tears with some regularity, and the proportion rises steadily through the decades. Many people have a tear and full function.</p><p>So the question at your evaluation is not only whether there is a tear, but whether the tear explains your symptoms, and what the shoulder can do despite it. A shoulder that still raises the arm, holds it against resistance and works through the day is a shoulder with options.</p>"
+    },
+    {
+      "h2": "Which tendon, and what it changes",
+      "html": "<ul><li><b><a href=\"/muscles/supraspinatus\">Supraspinatus</a>.</b> The most commonly involved. Pain reaching out and up, weakness lifting the arm to the side, trouble lying on it at night.</li><li><b><a href=\"/muscles/infraspinatus\">Infraspinatus</a> and <a href=\"/muscles/teres-minor\">teres minor</a>.</b> Weakness turning the arm outward, pain <a href=\"/pain/back-of-shoulder\">behind the shoulder</a>.</li><li><b><a href=\"/muscles/subscapularis\">Subscapularis</a>.</b> Weakness tucking the hand behind the back, pain at the <a href=\"/pain/front-of-shoulder\">front of the shoulder</a>.</li></ul><p>A full-thickness tear with genuine loss of function behaves differently from a partial tear that is irritable but strong, and the plans diverge accordingly.</p>"
+    },
+    {
+      "h2": "Why loading rather than resting",
+      "html": "<p>Tendons adapt to load. Rest reduces pain temporarily and reduces tendon capacity at the same time, so the pain returns the moment normal life resumes. The useful approach is graded loading: enough to drive adaptation, not so much that the tendon is irritated into a flare.</p><p>Alongside that, the shoulder blade has to rotate properly or the remaining healthy tendon gets compressed on every repetition. That means building <a href=\"/muscles/serratus-anterior\">serratus anterior</a> and <a href=\"/muscles/lower-trapezius\">lower trapezius</a> deliberately rather than hoping they come along for the ride.</p>"
+    },
+    {
+      "h2": "How MD Fit treats it",
+      "html": "<p>Dr. Jared tests each cuff tendon individually to see which are involved and how much function remains, and watches the shoulder blade through raising and lowering. Hands-on work releases the cuff, <a href=\"/muscles/pectoralis-minor\">pec minor</a> and the neck muscles that have been compensating.</p><p>Loading then starts where the shoulder is comfortable, often isometrics first, and progresses through range as tolerance builds. You keep training the rest of your body throughout. Daily work comes through the free MD Fit app.</p><p>After surgical repair, rehab follows your surgeon's protocol and timeline precisely. See <a href=\"/conditions/rotator-cuff-repair-rehab\">rotator cuff repair rehab</a>.</p>"
+    },
+    {
+      "h2": "What to do while it settles",
+      "html": "<ol><li>Stop sleeping on that shoulder, and support the arm on a pillow if you sleep on your back.</li><li>Keep the arm moving within comfort every day. A guarded shoulder stiffens fast and stiffness is harder to fix than weakness.</li><li>Lower overhead work rather than abandoning training entirely.</li><li>Carry bags on the other side while the tendon is irritable.</li></ol>"
+    },
+    {
+      "h2": "When surgery is the better path",
+      "html": "<p>Surgery tends to be considered for an acute traumatic tear in a younger or very active person, for a tear with genuine and persistent loss of function, or when a solid course of loading has not changed things. Those are surgeon decisions, and Dr. Jared will tell you when it is time to ask rather than continue. Going into a repair with as much surrounding strength as possible makes the recovery afterward shorter.</p>"
+    }
+  ],
+  "timeline": null,
+  "redFlags": [
+    "Shoulder or arm pain with chest pressure, shortness of breath, sweating or nausea: call 911.",
+    "Sudden inability to lift the arm at all after a fall or a lifting injury, which needs prompt assessment.",
+    "Visible deformity, or a bulge in the upper arm after a sudden pop.",
+    "A hot, red, swollen shoulder with fever, which needs urgent medical assessment.",
+    "Numbness or progressive weakness in the hand rather than shoulder pain alone."
+  ],
+  "faq": [
+    {
+      "q": "Do all rotator cuff tears need surgery?",
+      "a": "No. Many partial and even full-thickness tears do well with the right loading plan. Your evaluation and your surgeon's advice together decide the path."
+    },
+    {
+      "q": "Can I still lift weights?",
+      "a": "Yes, with a plan. You keep training around the shoulder, then progress loads back as strength returns."
+    },
+    {
+      "q": "Why does it hurt so much at night?",
+      "a": "Lying down removes the support gravity gives the joint during the day, and side-lying compresses the tendon directly. Night pain is one of the most common complaints with cuff problems."
+    },
+    {
+      "q": "Does a tear get bigger if I use the arm?",
+      "a": "Sensible, graded loading is not what enlarges tears, and avoiding all use weakens the shoulder further. Your plan sets what is appropriate for your specific tear."
+    }
+  ],
+  "muscles": [
+    "supraspinatus",
+    "infraspinatus",
+    "subscapularis",
+    "teres-minor",
+    "serratus",
+    "lower-trap"
+  ],
+  "pain": [
+    "outside-of-shoulder",
+    "back-of-shoulder",
+    "front-of-shoulder",
+    "deep-shoulder-joint"
+  ],
+  "guides": [
+    "rotator-cuff"
+  ],
+  "related": [
+    "/conditions/shoulder-pain",
+    "/conditions/shoulder-impingement",
+    "/conditions/rotator-cuff-repair-rehab",
+    "/conditions/frozen-shoulder",
+    "/conditions/biceps-tendinopathy",
+    "/muscles/supraspinatus"
+  ],
+  "group": "conditions",
+  "steps": null,
+  "reviewStatus": "approved"
+}

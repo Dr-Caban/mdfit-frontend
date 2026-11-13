@@ -1,0 +1,92 @@
+{
+  "slug": "bench-press",
+  "title": "Bench Press: Form, Shoulders and Pain | MD Fit",
+  "h1": "The Bench Press: Form, Shoulders and Pain",
+  "description": "Setup, bar path and grip width in the bench press, why the front of the shoulder is the usual casualty, and what to change before you stop pressing.",
+  "about": {
+    "type": "Thing",
+    "name": "Bench press"
+  },
+  "lead": "The bench press is the lift most likely to make a shoulder sore, and most of the time the shoulder is not the problem. It is the position the shoulder is being asked to work in, repeated for years, usually with a grip that was chosen by copying somebody else.",
+  "sections": [
+    {
+      "h2": "The setup people skip",
+      "html": "<p>Before the bar moves, three things are worth establishing. The shoulder blades should be set back and down into the bench and stay there for the whole set, which gives the shoulder a stable base to press from. The feet should be planted with real contact, because leg drive stabilises the trunk even if you are not arching. And the eyes should be roughly under the bar, so the unrack is short.</p><p>Letting the shoulder blades roll forward as you press is the single most common cause of a sore bench shoulder. When they move, the ball of the shoulder travels forward in the socket at the bottom of every rep, and the structures at the <a href=\"/pain/front-of-shoulder\">front of the shoulder</a> are the ones that complain.</p>"
+    },
+    {
+      "h2": "Grip width is not one size",
+      "html": "<p>A wider grip shortens the range of motion and recruits the <a href=\"/muscles/pectoralis-major-lower\">pectoralis major</a> more; a narrower grip lengthens the range and asks more of the <a href=\"/muscles/triceps-long-head\">triceps</a> and the <a href=\"/muscles/anterior-deltoid\">anterior deltoid</a>. Very wide grips increase the stretch across the front of the shoulder, which is tolerable for some people and not for others.</p><p>Arm length changes all of this. A long-armed lifter moves the bar a considerably greater distance for the same lift, which is why the same programme feels different on different bodies. <a href=\"/activities/arm-length-and-bench-press\">Arm length and the bench press</a> covers that properly. If your shoulders ache after every bench session, narrowing the grip slightly is usually the first experiment worth running.</p>"
+    },
+    {
+      "h2": "Bar path and touch point",
+      "html": "<p>The bar does not travel in a straight vertical line in a competent bench press. It comes down to somewhere around the lower chest and travels back towards the shoulders as it is pressed, making a shallow arc. Touching too high, up near the collarbones, puts the shoulder in a much more vulnerable position and makes the lift harder at the same time.</p><p>The arch is often argued about. A moderate arch, created by setting the upper back and keeping the feet planted, reduces the range and keeps the shoulders in a safer position. An extreme arch is a competition technique with its own demands on the low back. Neither is required for general training.</p>"
+    },
+    {
+      "h2": "Why the front of the shoulder hurts",
+      "html": "<p>The usual pattern is a shoulder that aches at the front during or after pressing, sometimes catching on the way down. Several things commonly contribute: shoulder blades that do not stay set, a <a href=\"/muscles/pectoralis-minor\">pectoralis minor</a> that has shortened from years of pressing and sitting, weak or inhibited <a href=\"/muscles/lower-trapezius\">lower trapezius</a> and <a href=\"/muscles/serratus-anterior\">serratus anterior</a>, and far more pressing volume than pulling volume.</p><p>That last one is worth taking seriously. If you bench three times a week and row once, the imbalance shows up eventually. See <a href=\"/conditions/shoulder-impingement\">shoulder impingement</a> and <a href=\"/conditions/biceps-tendinopathy\">biceps tendinopathy</a> for what these patterns can turn into.</p>"
+    },
+    {
+      "h2": "What to change before you stop benching",
+      "html": "<p>Stopping entirely is rarely necessary and rarely the best option. The usual sequence is to reduce the range temporarily with a board or a pin, narrow the grip, drop the load enough to hold the shoulder blade position for every rep, and add pulling volume until it at least matches the pressing. Many irritable bench shoulders settle with those four changes alone.</p><p>If it does not settle within a few weeks, something is being missed. Dr. Jared Caban is a physician-trained clinical exercise physiologist and licensed massage therapist, so an assessment covers both the restricted tissue at the front of the chest and the control at the shoulder blade, rather than treating one and ignoring the other. Members get the matching exercise videos in the MD Fit app.</p>"
+    }
+  ],
+  "redFlags": [
+    "Shoulder pain that continues at rest or wakes you at night, rather than only during pressing.",
+    "A sudden tearing sensation in the chest or front of the shoulder during a rep, particularly at the bottom.",
+    "Visible change in the shape of the chest or upper arm, or bruising after a session.",
+    "Numbness or tingling travelling down the arm or into the hand.",
+    "Any chest pain, pressure, shortness of breath or light-headedness during lifting: stop and call 911, since this is not assumed to be muscular."
+  ],
+  "faq": [
+    {
+      "q": "Why does my shoulder hurt when I bench?",
+      "a": "Most often the shoulder blades are not staying set, so the shoulder travels forward at the bottom of each rep. Grip width, touch point and an imbalance between pressing and pulling volume are the other usual contributors."
+    },
+    {
+      "q": "Should I arch my back?",
+      "a": "A moderate arch from setting the upper back is normal and keeps the shoulders in a better position. The extreme arch used in competition is a specific technique with its own demands and is not necessary for general training."
+    },
+    {
+      "q": "Is it bad to touch the bar high on my chest?",
+      "a": "Touching up near the collarbones puts the shoulder in a less favourable position and makes the press mechanically harder. Most people do better touching around the lower chest with the elbows at a moderate angle."
+    },
+    {
+      "q": "How much should I row compared to bench?",
+      "a": "There is no fixed ratio, but pressing far more than you pull is a common pattern in people with sore bench shoulders. Matching the volume is a reasonable starting adjustment."
+    }
+  ],
+  "muscles": [
+    "pec-major-stern",
+    "pec-minor",
+    "ant-delt",
+    "triceps-long",
+    "serratus",
+    "lower-trap"
+  ],
+  "pain": [
+    "front-of-shoulder",
+    "top-of-shoulder",
+    "front-of-chest",
+    "deep-shoulder-joint"
+  ],
+  "guides": [
+    "rotator-cuff"
+  ],
+  "related": [
+    "/activities/arm-length-and-bench-press",
+    "/activities/overhead-press",
+    "/activities/barbell-row",
+    "/activities/chest-training",
+    "/conditions/shoulder-impingement",
+    "/conditions/biceps-tendinopathy",
+    "/conditions/rotator-cuff-tear",
+    "/treatments/strength-and-performance"
+  ],
+  "programs": [
+    "shoulder-6"
+  ],
+  "group": "activities",
+  "steps": null,
+  "timeline": null,
+  "reviewStatus": "approved"
+}

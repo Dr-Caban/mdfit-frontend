@@ -1,0 +1,88 @@
+{
+  "group": "activities",
+  "slug": "rowing-for-fitness",
+  "title": "Rowing for Fitness: Setup and Technique | MD Fit",
+  "h1": "Rowing for Fitness",
+  "description": "Why the rower suits people with cranky knees and hips, the sequence that makes it work, and the setup errors that turn it into back pain.",
+  "about": {
+    "type": "Thing",
+    "name": "Indoor rowing for fitness"
+  },
+  "lead": "The rowing machine is one of the most useful pieces of cardio equipment for anyone whose knees, hips or feet object to impact — and one of the easiest to do badly enough that it hurts your back instead.",
+  "sections": [
+    {
+      "h2": "Why rowing is worth considering",
+      "html": "<p>Rowing is non-impact, uses a large amount of muscle at once, and scales from very easy to extremely hard without changing the movement. For someone with knee osteoarthritis, a sore achilles or a foot that dislikes the treadmill, it keeps serious aerobic work available.</p><p>It also loads the back of the body — the <a href=\"/muscles/latissimus-dorsi\">lats</a>, the <a href=\"/muscles/rhomboid-major\">rhomboids</a>, the <a href=\"/muscles/gluteus-maximus\">glutes</a> — which is a useful counterweight for people who spend their days at a desk and whose training is front-heavy.</p>"
+    },
+    {
+      "h2": "The sequence, and why order matters",
+      "html": "<p>A rowing stroke is legs, then back, then arms on the drive, and the exact reverse coming back: arms, then back, then legs. Almost every problem comes from blurring that order.</p><ol><li><b>Catch.</b> Shins vertical, arms straight, shoulders in front of hips, back firm rather than rounded.</li><li><b>Drive.</b> Push the floor away with the legs first. The handle moves because the seat moves, not because the arms pull.</li><li><b>Finish.</b> Legs flat, a slight lean back, handle drawn to the lower ribs.</li><li><b>Recovery.</b> Hands away first, then hinge forward from the hips, then let the knees bend.</li></ol><p>The most common fault is opening the back early — leaning back while the legs are still bending — which loads the lumbar spine at the worst moment and is the main reason people finish a row with a sore back.</p>"
+    },
+    {
+      "h2": "Damper setting is not resistance",
+      "html": "<p>The lever on the flywheel changes how the air feels, not how hard the machine is. A high damper feels like heavy, slow rowing; a low one feels light and fast. Neither is harder in itself — how hard you pull determines that.</p><p>Most people are better served somewhere in the middle. Setting it at maximum because it feels more serious tends to produce a slow, grinding stroke that loads the low back and the <a href=\"/muscles/latissimus-dorsi\">lats</a> heavily and teaches poor sequencing.</p>"
+    },
+    {
+      "h2": "Programming it",
+      "html": "<p>Rowing suits both ends of the spectrum. Twenty to forty minutes at a conversational effort is excellent steady work; short hard intervals on a rower are brutal and effective.</p><p>A caution for beginners: because rowing is non-impact, people often do far more of it than their back and grip are conditioned for. Start with ten to fifteen minutes and build. Technique degrades with fatigue, and a long first session usually ends with the last ten minutes rowed badly.</p>"
+    },
+    {
+      "h2": "Who should be careful",
+      "html": "<p>Rowing involves repeated spinal flexion under load. If you have a diagnosed disc problem, significant low back pain, or reduced bone density, that is worth a conversation before making the rower your main tool. It is not automatically off-limits, but technique and dose matter more than usual.</p><p>See <a href=\"/conditions/herniated-disc\">herniated disc</a>, <a href=\"/conditions/low-back-pain\">low back pain</a> and <a href=\"/conditions/osteoporosis-and-exercise\">osteoporosis and exercise</a>. If the hip hinge itself is the problem rather than the machine, that is usually a fixable thing rather than a reason to stop.</p>"
+    },
+    {
+      "h2": "Where rowers get sore",
+      "html": "<p>Low back is the common complaint, and it usually means sequencing rather than the machine. Forearms and grip fatigue early for most beginners and improve quickly. Some people feel the <a href=\"/muscles/rhomboid-major\">rhomboids</a> and between the shoulder blades, particularly if they pull high to the chest instead of to the lower ribs.</p><p>Knee discomfort at the catch is often a depth issue — being pulled into more knee bend than is comfortable — and adjusting foot plate height usually fixes it.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Low back pain that appears during rowing and persists after you stop, especially with leg pain, numbness or weakness.",
+    "Chest pressure or pain, or pain spreading to the jaw, neck or arm: stop and seek emergency care.",
+    "Sudden sharp pain in the back or hamstring at the catch, which suggests a strain rather than fatigue.",
+    "Numbness or tingling in the hands that does not settle within minutes of finishing."
+  ],
+  "faq": [
+    {
+      "q": "What damper setting should I use?",
+      "a": "Somewhere in the middle for most people. It changes the feel of the stroke, not the difficulty; how hard you pull sets that."
+    },
+    {
+      "q": "Is rowing bad for your back?",
+      "a": "Rowing with poor sequencing can be. Rowing with the legs driving first and the back staying firm is well tolerated by most people, including many with a history of back pain."
+    },
+    {
+      "q": "How long should a rowing session be?",
+      "a": "Ten to fifteen minutes to start, building toward twenty to forty for steady work. Stop when technique degrades rather than when the clock says so."
+    },
+    {
+      "q": "Is rowing a good substitute for running?",
+      "a": "For cardiovascular purposes it is an excellent substitute and far kinder to joints. It does not provide the impact loading that benefits bone, so pair it with resistance training."
+    }
+  ],
+  "muscles": [
+    "lats",
+    "rhomboid-major",
+    "glute-max",
+    "biceps-femoris",
+    "ql"
+  ],
+  "pain": [
+    "beside-the-spine",
+    "between-shoulder-blades",
+    "forearm"
+  ],
+  "guides": [
+    "posterior-neck"
+  ],
+  "related": [
+    "/activities/machines-vs-free-weights",
+    "/activities/zone-2-cardio",
+    "/activities/hiit-explained",
+    "/conditions/low-back-pain",
+    "/activities/cardio-for-beginners"
+  ],
+  "programs": [],
+  "reviewStatus": "approved"
+}

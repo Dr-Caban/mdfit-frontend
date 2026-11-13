@@ -1,0 +1,93 @@
+{
+  "slug": "warming-up-for-lifting",
+  "title": "Warming Up for Lifting | MD Fit",
+  "h1": "Warming Up for Lifting: What Is Worth Doing",
+  "description": "What a warm-up actually achieves, why static stretching before heavy lifts is the wrong tool, and how to ramp into a working weight properly.",
+  "about": {
+    "type": "Thing",
+    "name": "Warming up for lifting"
+  },
+  "lead": "Warm-ups get skipped because most of them are vague. A useful warm-up has specific jobs: raise tissue temperature, take joints through the range the session will use, and rehearse the movement at increasing loads so the first working set is not a surprise.",
+  "sections": [
+    {
+      "h2": "What warming up actually does",
+      "html": "<p>Raising muscle temperature changes how tissue behaves: it becomes more compliant and tolerates stretch better. Moving joints through range before loading them prepares the tissue for what is coming. And rehearsing the movement pattern at light loads lets the nervous system get the sequencing right before the weight makes errors expensive.</p><p>That last part is why a general warm-up alone is not enough. Five minutes on a bike raises temperature but does nothing to prepare the specific pattern you are about to load. Both halves matter, and the specific half matters more.</p>"
+    },
+    {
+      "h2": "Ramping into the working weight",
+      "html": "<p>The most important part of a lifting warm-up is the ramp. Start with the empty bar or something close to it, then increase in steps towards your working weight, reducing repetitions as the load rises.</p><p>How many steps depends on how heavy the working set is and how old the body doing it is. A moderate set needs two or three; a heavy single may need six or seven. The judgement is simple: the jump from your last warm-up set to your first working set should not feel like a jump. If it does, you needed another step.</p>"
+    },
+    {
+      "h2": "Static stretching is the wrong tool here",
+      "html": "<p>Holding long static stretches immediately before heavy lifting is not useful preparation, and prolonged holds can temporarily reduce force production. It does not make you more likely to be injured, but it does not help, and it uses time better spent elsewhere.</p><p>Movement through range is the better option before lifting: controlled movements that take the joint through the positions the session will use, rather than holding an end position. Keep the long static work for after training or a separate session, where it has a clearer purpose.</p>"
+    },
+    {
+      "h2": "Making it specific to your problem areas",
+      "html": "<p>A general template is worth less than a warm-up built around what your body actually needs. Someone whose ankles limit their squat benefits from specific ankle work before squatting. Someone whose shoulder complains on the bench benefits from upper back and rotator cuff work that nobody else in the gym needs.</p><p>Two or three targeted movements for your own restrictions are worth more than fifteen minutes of generic circuits. The <a href=\"/guides/rotator-cuff\">rotator cuff guide</a>, <a href=\"/guides/iliopsoas\">iliopsoas guide</a> and <a href=\"/guides/calf\">calf guide</a> cover some of the usual culprits.</p>"
+    },
+    {
+      "h2": "When warming up stops being enough",
+      "html": "<p>A warm-up that has to be long and elaborate before a joint feels acceptable is information. If you need twenty minutes of preparation before your shoulder tolerates pressing, the warm-up is managing a problem rather than preparing you for training.</p><p>That is worth assessing. Dr. Jared Caban is a physician-trained clinical exercise physiologist and licensed massage therapist, so the assessment covers what is restricted and what is weak, rather than adding more preparation to a session that is already compensating. Members get the exercise library and workout generator in the MD Fit app. Self-pay, no insurance paperwork, no referral needed.</p>"
+    }
+  ],
+  "redFlags": [
+    "A joint that needs increasingly long preparation each week before it tolerates loading.",
+    "Pain during warm-up sets with light weights, not only at working loads.",
+    "Joint stiffness in the morning lasting more than an hour, which is worth mentioning to a physician.",
+    "Numbness, tingling or weakness during warm-up movements.",
+    "Chest pain, pressure, shortness of breath or light-headedness while warming up: stop and call 911."
+  ],
+  "faq": [
+    {
+      "q": "Should I stretch before lifting?",
+      "a": "Long static holds immediately before heavy lifting can temporarily reduce force production and do not prepare you well. Moving through range is more useful; keep long stretches for after training."
+    },
+    {
+      "q": "How many warm-up sets do I need?",
+      "a": "Enough that the step up to your first working set does not feel like a jump. A moderate set might need two or three, a heavy single considerably more."
+    },
+    {
+      "q": "Is a general warm-up enough?",
+      "a": "It raises temperature but does nothing to prepare the specific pattern you are about to load. Ramping in the actual lift is the part that matters most."
+    },
+    {
+      "q": "Do I need longer warm-ups as I get older?",
+      "a": "Most people find they do. Tissues take longer to reach a state where heavy loading is comfortable, and an inadequate warm-up is a common reason the first working set feels wrong."
+    }
+  ],
+  "muscles": [
+    "supraspinatus",
+    "glute-med",
+    "psoas",
+    "soleus",
+    "upper-trap",
+    "tfl"
+  ],
+  "pain": [
+    "front-of-shoulder",
+    "front-of-hip",
+    "below-kneecap",
+    "beside-the-spine"
+  ],
+  "guides": [
+    "rotator-cuff",
+    "iliopsoas",
+    "calf"
+  ],
+  "related": [
+    "/activities/powerlifting-after-40",
+    "/activities/barbell-back-squat",
+    "/activities/ankle-mobility-and-squat",
+    "/activities/training-around-an-injury",
+    "/activities/deload-weeks",
+    "/treatments/functional-mobility",
+    "/treatments/strength-and-performance"
+  ],
+  "programs": [
+    "mobility-12"
+  ],
+  "group": "activities",
+  "steps": null,
+  "timeline": null,
+  "reviewStatus": "approved"
+}

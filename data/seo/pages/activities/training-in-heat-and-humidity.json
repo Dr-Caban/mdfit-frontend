@@ -1,0 +1,86 @@
+{
+  "group": "activities",
+  "slug": "training-in-heat-and-humidity",
+  "title": "Training in Florida Heat and Humidity | MD Fit",
+  "h1": "Training in Heat and Humidity",
+  "description": "How Florida heat changes the way you move and train: why your pace drops, how to restructure sessions, and what to stop doing in August.",
+  "about": {
+    "type": "Thing",
+    "name": "Exercising in heat and humidity"
+  },
+  "lead": "From May to October, Sarasota heat changes what every session costs. Your usual pace will feel harder and your heart rate will run higher, and the answer is to change how you train rather than to push through it.",
+  "sections": [
+    {
+      "h2": "What heat does to the way you move",
+      "html": "<p>Working muscle produces heat. In cool air the body sheds it easily. In humidity it cannot, because sweat does not evaporate well when the air is already saturated, and evaporation is the main cooling mechanism.</p><p>Blood is diverted toward the skin to shed heat, leaving less available for working muscle. The heart compensates by beating faster. The practical result is that the same walk, ride or lift demands more of you than it did in February, and movement quality degrades sooner because fatigue arrives earlier.</p><p>That last part matters more than the discomfort. Technique is the first thing to go when you overheat. A squat pattern that was solid in session one looks different in session four, and the sessions where people get hurt in summer are usually the ones they refused to shorten.</p>"
+    },
+    {
+      "h2": "Pace by effort, not by the number",
+      "html": "<p>The single most useful adjustment is to judge sessions by how they feel rather than by the pace or weight you held in winter.</p><p>If a session is meant to be conversational, keep it conversational even if that means walking considerably slower than you are used to. If a lifting session is meant to leave two repetitions in reserve, honour that, which in August usually means less weight on the bar for the same perceived effort.</p><p>Chasing familiar numbers in the heat is how people turn an easy day into a hard one without meaning to, and then wonder why the whole week falls apart.</p>"
+    },
+    {
+      "h2": "Restructuring the session itself",
+      "html": "<ul><li><b>Shorten and repeat.</b> Two thirty-minute sessions often work better than one sixty-minute session in August.</li><li><b>Move the hard work indoors.</b> Intervals and heavy lifting in the heat are a poor combination. Keep outdoor work for easy days.</li><li><b>Front-load the quality.</b> Do the technical or heavy work early in the session while movement is still sharp, and leave the easy volume for the end.</li><li><b>Lengthen the rests.</b> Between hard efforts and between heavy sets, take longer than you would in winter. Recovery between efforts is genuinely slower when you are hot.</li><li><b>Go early.</b> Early morning is markedly better than evening, because the ground has cooled overnight.</li></ul><p>Acclimatisation is real — a week or two of regular exposure improves how well you cope — but it has limits and it does not make extreme conditions safe.</p>"
+    },
+    {
+      "h2": "Knowing the difference between hot and in trouble",
+      "html": "<p>Feeling hot, sweaty and tired is normal. The signs that something more serious is developing are different in kind, and most of them show up as changes in how someone moves and behaves.</p><ul><li>Stumbling, poor coordination, or a training partner who suddenly looks clumsy.</li><li>Confusion, slurred speech or odd behaviour, often noticed by someone else first.</li><li>Skin that stops sweating and goes dry while you are still working hard.</li><li>Nausea and vomiting, a severe headache, or chills and goosebumps in the heat.</li></ul><p>Heat stroke is a medical emergency. Stop, get into shade or air conditioning, cool actively with water and airflow, and call for help. Do not push through it and do not drive yourself anywhere.</p>"
+    },
+    {
+      "h2": "Who needs more caution",
+      "html": "<p>Older adults regulate temperature less efficiently, which is a meaningful consideration for a lot of people here. Several common medications affect how the body handles heat and fluid balance.</p><p>If you have a cardiac history or high blood pressure, or take medication that affects fluid balance, summer training deserves a conversation with your physician about what to adjust. See <a href=\"/conditions/exercise-and-high-blood-pressure\">exercise and high blood pressure</a>.</p>"
+    },
+    {
+      "h2": "The summer alternatives worth having",
+      "html": "<p>Swimming and pool walking are the obvious ones and work well here — see <a href=\"/activities/swimming\">swimming</a>. Air-conditioned strength work keeps the most valuable training going regardless of weather, and it is the training that holds up best over decades anyway.</p><p>Indoor cardio on a bike, rower or treadmill removes the variable entirely and lets you keep the structure of a session intact. Snowbirds arriving in autumn face the reverse problem and often underestimate how much the first few weeks take out of them — see <a href=\"/activities/snowbirds\">snowbirds</a>.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Confusion, slurred speech, stumbling or unusual behaviour during exercise in heat: this is a medical emergency, call 911.",
+    "Skin that stops sweating and becomes hot and dry while you are still exerting.",
+    "Severe headache, vomiting, or chills and goosebumps while overheated.",
+    "Chest pressure or pain, or pain spreading to the jaw, neck or arm: stop and seek emergency care.",
+    "Fainting or near-fainting in the heat, even if you feel better afterwards."
+  ],
+  "faq": [
+    {
+      "q": "Why is my heart rate so much higher in summer?",
+      "a": "Blood is diverted to the skin to shed heat, leaving less for working muscle, so the heart beats faster at the same workload. It is expected and not a sign of lost fitness."
+    },
+    {
+      "q": "Should I just lift lighter in the heat?",
+      "a": "Often yes. Holding the same perceived effort usually means less weight on the bar in August, and that is a sensible adjustment rather than a loss of progress."
+    },
+    {
+      "q": "How long does it take to acclimatise?",
+      "a": "Most of the adaptation happens over one to two weeks of regular exposure, and it fades within a couple of weeks away from the heat."
+    },
+    {
+      "q": "Should I train indoors all summer?",
+      "a": "Many people here do, at least for the harder sessions, and that is a reasonable choice. Keeping some outdoor exposure maintains acclimatisation if you want to stay used to it."
+    }
+  ],
+  "muscles": [
+    "gastroc",
+    "soleus",
+    "rectus-femoris",
+    "glute-max"
+  ],
+  "pain": [
+    "lower-calf",
+    "sole-of-foot"
+  ],
+  "guides": [],
+  "related": [
+    "/activities/walking-for-fitness",
+    "/activities/zone-2-cardio",
+    "/activities/swimming",
+    "/activities/snowbirds",
+    "/activities/rest-days-and-overtraining",
+    "/treatments/clinical-exercise-physiology"
+  ],
+  "programs": [],
+  "reviewStatus": "approved"
+}

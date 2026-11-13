@@ -1,0 +1,87 @@
+{
+  "group": "conditions",
+  "slug": "prehab-before-surgery",
+  "title": "Prehab Before Surgery in Sarasota, FL | MD Fit",
+  "h1": "Prehab: Conditioning Before Surgery in Sarasota, FL",
+  "description": "The weeks before a planned joint replacement or repair are usable. Prehab with a Clinical Exercise Physiologist in Sarasota, alongside your surgeon's plan.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Preoperative rehabilitation"
+  },
+  "lead": "You have a surgery date. There are six weeks between now and then, and most people spend them waiting, moving less because it hurts, and arriving at the operation weaker than when it was booked. Those weeks are usable, and what you do with them affects the recovery on the other side.",
+  "sections": [
+    {
+      "h2": "Why the weeks before matter",
+      "html": "<p>Recovery after an operation starts from wherever you are on the day. Everything that follows — the first time you stand, how long you need help, how quickly you get off the walker — is built on the strength, mobility and confidence you brought in with you.</p><p>The problem is that the waiting period usually works against you. The joint hurts, so you walk less. You stop the activities that were keeping the rest of you strong. The surgery date approaches and you are quietly deconditioning the whole time.</p><p>Prehab reverses that direction. It is not about fixing the joint — the joint is being operated on for a reason, and nothing here changes that. It is about everything around it: the muscles that will have to do the work afterwards, the other leg that is about to carry you, the arms that will use a walker, and the general fitness that recovery draws on.</p>"
+    },
+    {
+      "h2": "What gets worked on, and why",
+      "html": "<p>The target depends on the operation, but the logic is consistent: train what the recovery will demand.</p><ul><li><b>Before a knee replacement:</b> <a href=\"/muscles/vastus-medialis\">vastus medialis</a> and the rest of the <a href=\"/muscles/vastus-lateralis\">quadriceps</a>, which are usually already wasted on that side and which determine how soon you can straight-leg raise and climb stairs. Plus the opposite leg, which is about to do double duty.</li><li><b>Before a hip replacement:</b> <a href=\"/muscles/gluteus-maximus\">gluteus maximus</a> and <a href=\"/muscles/gluteus-medius\">gluteus medius</a>, hip range within comfort, and the trunk control that stops a limp becoming permanent.</li><li><b>Before shoulder surgery:</b> the scapular muscles and the opposite arm, plus learning one-handed strategies in advance rather than discovering them in a sling.</li><li><b>Before any of them:</b> upper body strength for crutches or a walker, getting on and off a bed and a toilet, and general aerobic fitness.</li></ul><p>We also practise the things you will be asked to do afterwards, before you are sore and medicated. Learning a movement once is easier than learning it on day two post-op.</p>"
+    },
+    {
+      "h2": "Working inside your surgeon's plan",
+      "html": "<p>The boundary here is simple and absolute: <b>your surgeon's instructions govern.</b> I do not advise on whether to have surgery, when to have it, which procedure, or which surgeon. I do not override a restriction they have given you.</p><p>What I need at the evaluation is the operation you are having, the date, and anything your surgeon has already told you to do or avoid. Many surgeons give a pre-op exercise sheet; bring it, and we build around it rather than alongside it.</p><p>With your permission, your surgeon receives a short summary of what we are doing. Most are glad to know, and the post-operative therapist usually finds it useful as well.</p>"
+    },
+    {
+      "h2": "How much time do you need?",
+      "html": "<p>More is better, but useful work happens even in a short window. Someone with three months can make real strength changes. Someone with two weeks can still learn the movements, get the upper body ready for a walker, and arrive knowing what to expect — which matters more than people assume.</p><p>Sessions are usually weekly, with the plan in the free MD Fit app between visits so you can keep the frequency up at home. Loading is kept within what the painful joint tolerates; we work around it rather than through it, because provoking the joint before an operation helps nobody.</p><p>If surgery gets postponed — which happens — the work is not wasted. You simply continue, and arrive even better prepared.</p>"
+    },
+    {
+      "h2": "Afterwards",
+      "html": "<p>Prehab connects naturally to what follows. MD Fit already works with people through <a href=\"/conditions/knee-replacement-rehab\">knee replacement recovery</a>, <a href=\"/conditions/hip-replacement-rehab\">hip replacement recovery</a>, <a href=\"/conditions/rotator-cuff-repair-rehab\">rotator cuff repair</a> and <a href=\"/conditions/acl-reconstruction-recovery\">ACL reconstruction</a>, and the <a href=\"/treatments/post-op-rehab-timelines\">post-op timelines page</a> sets out how those stages usually run.</p><p>Knowing you before the operation makes the work afterwards faster, because the baseline is a measurement rather than a guess. If you are also managing <a href=\"/conditions/exercise-for-type-2-diabetes\">diabetes</a> or <a href=\"/conditions/exercise-and-high-blood-pressure\">high blood pressure</a>, those are relevant to surgical recovery and they are in scope here too.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Any instruction from your surgeon takes priority over anything in a prehab plan: if the two conflict, follow your surgeon and tell me.",
+    "A sudden increase in joint pain, swelling, warmth or redness before surgery should be reported to your surgical team rather than worked through.",
+    "Fever, chills, or any sign of infection before a planned operation: contact your surgical team promptly, as it may affect the date.",
+    "New chest pain, breathlessness or calf pain and swelling: seek medical care, as these need assessment before any operation.",
+    "If a joint gives way or locks completely, stop loading it and contact your surgical team."
+  ],
+  "faq": [
+    {
+      "q": "Is it too late if my surgery is in two weeks?",
+      "a": "No. A short window will not produce large strength changes, but learning the post-operative movements in advance, preparing the upper body for a walker and knowing what to expect are all worth doing."
+    },
+    {
+      "q": "Will exercising first make my joint worse?",
+      "a": "The work is kept within what the joint tolerates and avoids provoking it. We train around the painful joint rather than through it, because aggravating it before surgery helps nobody."
+    },
+    {
+      "q": "Do I need my surgeon's permission?",
+      "a": "Bring any instructions or restrictions they have given you, and they become the frame for the plan. Many surgeons issue a pre-op exercise sheet, and we build around that rather than compete with it."
+    },
+    {
+      "q": "Does this replace physical therapy after the operation?",
+      "a": "No. Prehab is before; formal rehabilitation afterwards is its own thing and your surgeon will direct it. The two connect well, and knowing your baseline beforehand makes the later work more precise."
+    }
+  ],
+  "muscles": [
+    "vmo",
+    "vastus-lateralis",
+    "glute-max",
+    "glute-med",
+    "lats",
+    "rectus-femoris"
+  ],
+  "pain": [
+    "front-of-thigh",
+    "outside-of-hip",
+    "inside-of-knee"
+  ],
+  "guides": [
+    "quads"
+  ],
+  "related": [
+    "/treatments/post-op-rehab-timelines",
+    "/conditions/knee-replacement-rehab",
+    "/conditions/hip-replacement-rehab",
+    "/conditions/rotator-cuff-repair-rehab",
+    "/conditions/acl-reconstruction-recovery",
+    "/treatments/clinical-exercise-physiology",
+    "/conditions/knee-osteoarthritis"
+  ],
+  "reviewStatus": "approved"
+}

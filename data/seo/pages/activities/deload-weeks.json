@@ -1,0 +1,89 @@
+{
+  "slug": "deload-weeks",
+  "title": "Deload Weeks: When and How | MD Fit",
+  "h1": "Deload Weeks: When You Need One and How to Do It",
+  "description": "What a deload is for, the signs you have left it too late, and why cutting volume usually works better than cutting weight.",
+  "about": {
+    "type": "Thing",
+    "name": "Deload weeks"
+  },
+  "lead": "A deload is a planned reduction in training stress that lets accumulated fatigue clear while keeping the adaptations you have built. Most lifters either never take one, or take one only after something has already gone wrong.",
+  "sections": [
+    {
+      "h2": "Why fatigue has to be shed",
+      "html": "<p>Training produces a lasting improvement in capacity and a temporary accumulation of fatigue that masks it. Across a hard block the fatigue builds faster than it clears, which is why performance in week six of a demanding programme often looks worse than week two even though you are genuinely stronger.</p><p>A deload stops adding fatigue for long enough that it dissipates, revealing the capacity underneath. It is not lost time and it is not a sign of weakness. It is the part of the process where the training you already did becomes visible.</p>"
+    },
+    {
+      "h2": "The signs you left it too late",
+      "html": "<ul><li>Performance declining for two or three consecutive weeks despite consistent effort.</li><li>Warm-up weights that used to feel easy now feeling heavy.</li><li>Joints aching between sessions rather than just muscles.</li><li>Sleep worsening, or waking unrefreshed.</li><li>Motivation dropping and sessions becoming something to get through.</li><li>Small nagging injuries appearing in several places at once.</li></ul><p>Several of these together is the clearest signal. They also overlap with simply under-eating or having a stressful month, and the response is similar in either case.</p>"
+    },
+    {
+      "h2": "Cut volume, usually not intensity",
+      "html": "<p>The most common and most effective approach is to keep the weights roughly where they were but cut the number of hard sets substantially, often by half. Keeping some heavy work maintains the skill of lifting heavy and stops the return feeling like starting over; removing the volume is what allows recovery.</p><p>The alternative, keeping volume and dropping the weight, is less effective for most people because the total work stays high. A third option, taking the week off entirely, is sometimes right after a competition or a long block, but a full stop can leave people feeling rusty on return.</p>"
+    },
+    {
+      "h2": "How often",
+      "html": "<p>There is no universal schedule. Some people run a planned deload every fourth to sixth week; others take one when the signs appear. Both work, and the choice depends on how reliably you notice the signs.</p><p>Training age, total volume, age, sleep and life stress all shift the frequency. A lifter in their fifties training hard four days a week around a demanding job will need them more often than a twenty-five-year-old training three days with nothing else going on. If you are repeatedly reaching the signs listed above, the interval is too long.</p>"
+    },
+    {
+      "h2": "Deloading when something hurts",
+      "html": "<p>A deload is often the first and most useful intervention for a joint that has started complaining, and frequently resolves it without anything else. If reducing volume for a week settles it, the problem was accumulated load rather than an injury.</p><p>If it does not settle, that is useful information too, and it is the point to have it assessed rather than continuing to deload indefinitely. Dr. Jared Caban is a physician-trained clinical exercise physiologist and licensed massage therapist, so the conversation covers both the irritated tissue and the training that produced it. Members get the workout generator and exercise library in the MD Fit app.</p>"
+    }
+  ],
+  "redFlags": [
+    "Performance declining for several consecutive weeks despite reduced training.",
+    "Joint pain that persists through a deload week rather than settling.",
+    "Resting heart rate rising, sleep worsening or persistent fatigue alongside heavy training.",
+    "Unexplained weight loss, night sweats or fever: see a physician rather than adjusting training.",
+    "Pain that is present at rest or wakes you at night."
+  ],
+  "faq": [
+    {
+      "q": "How often should I deload?",
+      "a": "There is no universal schedule. Some people plan one every four to six weeks, others take one when the warning signs appear. If you keep reaching those signs, the interval is too long."
+    },
+    {
+      "q": "Should I reduce weight or sets?",
+      "a": "For most people, cutting the number of hard sets while keeping the weights roughly similar works better. It allows recovery without losing the skill of lifting heavy."
+    },
+    {
+      "q": "Will I lose strength during a deload?",
+      "a": "No. A week of reduced volume does not undo adaptations, and most people return stronger because the fatigue that was masking their capacity has cleared."
+    },
+    {
+      "q": "Can a deload fix a sore joint?",
+      "a": "Often, if the problem was accumulated load. If a week of reduced volume does not settle it, that is useful information and the point to have it assessed."
+    }
+  ],
+  "muscles": [
+    "glute-max",
+    "ql",
+    "supraspinatus",
+    "vastus-lateralis",
+    "pec-major-stern",
+    "multifidus"
+  ],
+  "pain": [
+    "beside-the-spine",
+    "front-of-shoulder",
+    "below-kneecap",
+    "point-of-elbow"
+  ],
+  "guides": [],
+  "related": [
+    "/activities/training-volume-and-frequency",
+    "/activities/rpe-and-rir",
+    "/activities/progressive-overload",
+    "/activities/peaking-for-a-meet",
+    "/activities/training-around-an-injury",
+    "/activities/powerlifting-after-40",
+    "/treatments/strength-and-performance"
+  ],
+  "programs": [
+    "mobility-12"
+  ],
+  "group": "activities",
+  "steps": null,
+  "timeline": null,
+  "reviewStatus": "approved"
+}

@@ -1,0 +1,91 @@
+{
+  "group": "conditions",
+  "slug": "occipital-neuralgia",
+  "title": "Occipital Neuralgia Care in Sarasota, FL | MD Fit",
+  "h1": "Occipital Neuralgia Care in Sarasota, FL",
+  "description": "Sharp, electric pain shooting from the base of the skull up the back of the head, with a tender scalp. How it differs from other headaches. MD Fit, Sarasota.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Occipital neuralgia"
+  },
+  "lead": "Occipital neuralgia is irritation of the nerves that run from the top of the neck up the back of the scalp. It produces a sharp, shooting, electric pain rather than the dull pressure of most headaches, and the scalp itself often becomes sore to touch. It is a physician's diagnosis; this page is about recognising it and the muscular side of care.",
+  "sections": [
+    {
+      "h2": "Emergency signs come first",
+      "html": "<p>Before anything else on this page: a headache that arrives suddenly and severely, the worst you have had, or a headache with fever and a stiff neck, confusion, weakness, slurred speech, vision loss or a facial droop is an emergency. <b>Call 911.</b> A new headache with jaw pain and vision change in an older adult also needs same-day medical assessment. Nothing on this page applies until those have been excluded.</p>"
+    },
+    {
+      "h2": "What makes it different from other headaches",
+      "html": "<p>Three conditions produce pain at the back of the head and get used interchangeably. They are not the same, and the quality of the pain is usually the clearest separator.</p><ul><li><b>Occipital neuralgia</b> is <b>sharp, shooting or electric</b>. It stabs for seconds at a time, often on a background ache, and travels in a line from the <a href=\"/pain/base-of-skull\">base of the skull</a> up the <a href=\"/pain/back-of-head\">back of the head</a> toward the <a href=\"/pain/top-of-head\">crown</a>. The scalp is frequently tender, so brushing hair, wearing a hat or resting on a pillow hurts. Pressing over the nerve at the base of the skull often reproduces the shooting pain.</li><li><b><a href=\"/conditions/cervicogenic-headache\">Cervicogenic headache</a></b> is a <b>steady, one-sided ache</b> that starts in the neck and spreads forward toward the temple or behind the eye. It is provoked by neck movement and sustained posture, and the neck usually does not turn as far on the painful side. It does not stab.</li><li><b><a href=\"/conditions/tension-headache\">Tension headache</a></b> is a <b>dull band of pressure</b>, usually on both sides, building through the day. There is no electric quality, no nerve line, and no scalp sensitivity.</li></ul><p>In short: stabbing with a sore scalp points to the nerve; steady ache spreading forward from the neck points to the joints; a pressing band on both sides points to muscle tension. People can have more than one at once, which is why the assessment matters.</p>"
+    },
+    {
+      "h2": "Why the nerves get irritated",
+      "html": "<p>The nerves pass through dense muscle at the top of the neck and then through the tissue of the scalp. Several things can compress or tether them:</p><ul><li>Tight <a href=\"/muscles/suboccipitals\">suboccipital muscles</a>, the small deep muscles between the skull and the top two vertebrae, which the nerve passes directly through.</li><li>Shortened <a href=\"/muscles/splenius-capitis-cervicis\">splenius</a> and <a href=\"/muscles/upper-trapezius\">upper trapezius</a>, which attach along the base of the skull.</li><li>Sustained forward-head posture at screens, which keeps those muscles working all day.</li><li>Old whiplash or a blow to the back of the head, which can leave the area sensitised.</li><li>Arthritic change at the top two neck joints, which is a medical finding rather than something hands-on work alters.</li><li>Sleeping position, especially a pillow that pushes the head forward or a night on a sofa arm.</li></ul>"
+    },
+    {
+      "h2": "What MD Fit does, and does not do",
+      "html": "<p>I check where the pain actually travels, whether it stabs or aches, whether the scalp is sensitive, and whether pressure at the base of the skull reproduces it. I assess how far the upper neck moves, how the suboccipitals and splenius feel, and what your head position looks like at rest and at a screen.</p><p>Hands-on work releases the suboccipitals and the muscles along the base of the skull, and restores movement at the upper neck joints where it is restricted. Correction is mostly screen and pillow height, and getting the head back over the shoulders. You take home a short daily routine in the free MD Fit app. Strengthening builds the deep neck flexors and the lower trapezius so the head is supported without the small muscles clamping all day.</p><p>What I do not do is diagnose the condition or treat the nerve itself. Nerve blocks and medication are physician decisions, and for some people they are the thing that breaks the cycle. Releasing the muscle that the nerve passes through can reduce the provocation, and that is the part I can genuinely help with.</p>"
+    },
+    {
+      "h2": "Gentle starting points",
+      "html": "<ol><li>Bring the screen up to eye level so the chin is not poking forward for hours.</li><li>Check pillow height. Side sleepers usually need more support than back sleepers, and too high pushes the head forward all night.</li><li>Warmth at the base of the skull before gentle movement often settles the area better than stretching cold.</li><li>Avoid strong self-massage directly on the sore spot. Pressing hard on an irritated nerve usually increases the shooting pain.</li></ol>"
+    },
+    {
+      "h2": "Sarasota note",
+      "html": "<p>Long drives, hours on a laptop and heat-related dehydration all turn up in the history here. So does reading in bed propped on pillows, which holds the upper neck bent for a long stretch. Small changes to those habits often matter more than anything done in a single session.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "A sudden, severe headache, the worst of your life, or a headache with fever, stiff neck, confusion, weakness, slurred speech or vision loss: call 911.",
+    "A new headache with jaw pain while chewing and vision changes in an adult over fifty: see a physician the same day.",
+    "Headache that started after a head injury, or that is steadily worsening day on day.",
+    "Weakness, numbness in the arms, or clumsiness of the hands alongside the head pain.",
+    "A first severe headache after the age of fifty, or any headache pattern that has clearly changed."
+  ],
+  "faq": [
+    {
+      "q": "How is this different from a cervicogenic headache?",
+      "a": "Occipital neuralgia is sharp and electric, shoots along a line from the base of the skull upward, and often comes with a tender scalp. A cervicogenic headache is a steady ache that starts in the neck and spreads forward toward the eye, and it does not stab."
+    },
+    {
+      "q": "Why does my scalp hurt when nothing is touching it?",
+      "a": "When a nerve is irritated, the skin it supplies can become oversensitive, so light touch that is normally unnoticed feels painful. That is why hair brushing, hats and pillows become uncomfortable."
+    },
+    {
+      "q": "Can massage make it worse?",
+      "a": "Strong pressure directly over an irritated nerve often increases the shooting pain. Work should be gentle, aimed at the muscles the nerve passes through, and anything that sharpens symptoms is a sign to stop."
+    },
+    {
+      "q": "Do I need a nerve block?",
+      "a": "That is a physician's decision. For some people it settles symptoms enough that the muscular work becomes effective. MD Fit works alongside that care rather than instead of it."
+    }
+  ],
+  "muscles": [
+    "suboccipitals",
+    "splenius",
+    "upper-trap",
+    "occipitalis",
+    "levator",
+    "scm"
+  ],
+  "pain": [
+    "base-of-skull",
+    "back-of-head",
+    "top-of-head"
+  ],
+  "guides": [
+    "posterior-neck"
+  ],
+  "related": [
+    "/conditions/cervicogenic-headache",
+    "/conditions/tension-headache",
+    "/conditions/neck-pain",
+    "/conditions/whiplash",
+    "/conditions/desk-neck-pain",
+    "/muscles/suboccipitals",
+    "/treatments/medical-massage"
+  ],
+  "reviewStatus": "approved"
+}

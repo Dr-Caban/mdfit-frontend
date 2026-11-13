@@ -61,17 +61,27 @@ const exByName = new Map(data.exercises.map((e) => [e.name.toLowerCase(), e]));
 const findExercise = (name) => name ? exByName.get(String(name).toLowerCase()) || null : null;
 const thumb = (id, w = 320) => `https://drive.google.com/thumbnail?id=${encodeURIComponent(id)}&sz=w${w}`;
 
-// The clinic node and Dr. Jared node, copied from the live homepage schema so every page shares the same @ids
-const homeGraph = JSON.parse(read("index.html").match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1])["@graph"];
+// The clinic node and Dr. Jared node, copied from the live homepage schema so every page shares the same @ids.
+// The homepage carries MORE THAN ONE ld+json block and Dr. Jared is not in the first, so read them all: reading only
+// the first left his node undefined and put a null in the @graph of every generated page.
+const homeGraph = [...read("index.html").matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+  .flatMap((m) => { try { const j = JSON.parse(m[1]); return j["@graph"] || [j]; } catch { return []; } });
 const CLINIC = homeGraph.find((n) => n["@id"] === `${SITE}/#clinic`);
 const DR = homeGraph.find((n) => n["@id"] === `${SITE}/#dr-jared`);
+if (!CLINIC || !DR) throw new Error("index.html no longer defines #clinic and #dr-jared in its ld+json; fix that before building.");
 
 const crumbs = (items) => `<p class="cd-crumbs">${items.map((c, i) => c.href && i < items.length - 1 ? `<a href="${attr(c.href)}">${esc(c.name)}</a>` : esc(c.name)).join(" › ")}</p>`;
 const breadcrumbLd = (items) => ({ "@type": "BreadcrumbList", itemListElement: items.map((c, i) => ({ "@type": "ListItem", position: i + 1, name: c.name, ...(c.href ? { item: SITE + c.href } : {}) })) });
 const faqLd = (faq) => faq && faq.length ? { "@type": "FAQPage", mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) } : null;
 const faqHtml = (faq) => faq && faq.length ? `<h2>Frequently asked questions</h2>\n${faq.map((f) => `    <details class="cd-faq"><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join("\n")}` : "";
+// A page can name a related page that has not been written yet; it is left out until it exists, then appears by itself.
+const pageExists = (u) => { const rel = String(u).split(/[?#]/)[0].replace(/^\/+/, ""); if (!rel) return true;
+  const f = rel.endsWith("/") ? rel + "index.html" : rel + ".html";
+  if (fs.existsSync(path.join(root, f))) return true;
+  const m = rel.match(/^(conditions|activities|blog)\/([a-z0-9-]+)$/) || (/^[a-z0-9-]+$/.test(rel) ? [0, "landing", rel] : null);
+  return !!m && fs.existsSync(path.join(root, "data/seo/pages", m[1], m[2] + ".json")); };
 const linkList = (urls, title) => {
-  const items = urls.filter((u) => data.titles[u] || /^\/(muscles|pain|activities|conditions|blog)\//.test(u)).map((u) => `<li><a href="${attr(u)}">${esc(data.titles[u] || u)}</a></li>`);
+  const items = urls.filter((u) => (data.titles[u] || /^\/(muscles|pain|activities|conditions|blog)\//.test(u)) && pageExists(u)).map((u) => `<li><a href="${attr(u)}">${esc(data.titles[u] || u)}</a></li>`);
   return items.length ? `<h2>${esc(title)}</h2>\n    <ul class="cd-links">${items.join("")}</ul>` : "";
 };
 // MD Fit does not bill insurance. Said the same way everywhere (FAQ + CTA line) so no page implies otherwise.
@@ -90,7 +100,8 @@ const ABOUT_DR = `<h2>About Dr. Jared Caban</h2>
 // Whole page. `graph` is the page-specific JSON-LD nodes (MedicalWebPage etc.); the clinic node is added first.
 function page({ url, title, description, body, graph, section, robots }) {
   if (title.length > 60) throw new Error(`title over 60 chars: ${title}`);
-  const ld = { "@context": "https://schema.org", "@graph": [CLINIC, DR, ...graph] };
+  // filter(Boolean): a node that could not be built is left out rather than written as null
+  const ld = { "@context": "https://schema.org", "@graph": [CLINIC, DR, ...graph].filter(Boolean) };
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -106,9 +117,12 @@ function page({ url, title, description, body, graph, section, robots }) {
   <meta property="og:image" content="${SITE}/assets/logo.webp">
   <meta name="theme-color" content="#0A1A2E">
   <link rel="icon" href="/assets/icon-64.png" type="image/png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>/* Self-hosted: loading these from Google cost two cross-origin hops and swapped the font in half a second
+    later, reflowing every heading. Inline so there is no extra stylesheet to fetch before the faces are known.
+    Both families are OFL-licensed. Montserrat is one variable file covering 400-800; Baskerville's roman covers
+    400 and 700. Latin subset. Filenames carry a content hash, so they are cached for good (see vercel.json). */
+@font-face{font-family:"Montserrat";font-style:normal;font-weight:400 800;font-display:swap;src:url("/assets/fonts/montserrat-var.a5ec5492.woff2") format("woff2")}
+@font-face{font-family:"Libre Baskerville";font-style:normal;font-weight:400 700;font-display:swap;src:url("/assets/fonts/libre-baskerville.b1bcbff3.woff2") format("woff2")}</style>
   <link rel="stylesheet" href="/guides.css">
   <link rel="stylesheet" href="/conditions.css">
   <script type="application/ld+json">${JSON.stringify(ld).replace(/</g, "\\u003c")}</script>
@@ -132,12 +146,16 @@ ${body}
 `;
 }
 
-const webPage = ({ url, title, description, about, lastReviewed }) => ({
-  "@type": "MedicalWebPage", url: SITE + url, name: title, description, lastReviewed: lastReviewed || TODAY,
-  reviewedBy: { "@id": `${SITE}/#dr-jared` }, provider: { "@id": `${SITE}/#clinic` }, ...(about ? { about } : {})
+// "lastReviewed" and "reviewedBy" say a named clinician checked this page. They go in ONLY when Dr. Jared has
+// actually signed the page off (`reviewed: true`, from the page's own reviewStatus or data/seo/approved.json).
+// A draft page is still a real page; it just does not carry his name. Never default this to true.
+const webPage = ({ url, title, description, about, lastReviewed, reviewed = false }) => ({
+  "@type": "MedicalWebPage", url: SITE + url, name: title, description,
+  ...(reviewed ? { lastReviewed: lastReviewed || TODAY, reviewedBy: { "@id": `${SITE}/#dr-jared` } } : {}),
+  provider: { "@id": `${SITE}/#clinic` }, ...(about ? { about } : {})
 });
 
 const words = (html) => (String(html).replace(/<[^>]+>/g, " ").match(/[A-Za-z0-9][A-Za-z0-9'’-]*/g) || []).length;
 
-module.exports = { INSURANCE_FAQ, withInsuranceFaq, root, SITE, MAPS_URL, TODAY, esc, attr, read, readJson, write, data, muscleUrl, painUrl, findExercise, thumb, quote, REVIEW, RATING, RATING_LINE,
+module.exports = { pageExists, INSURANCE_FAQ, withInsuranceFaq, root, SITE, MAPS_URL, TODAY, esc, attr, read, readJson, write, data, muscleUrl, painUrl, findExercise, thumb, quote, REVIEW, RATING, RATING_LINE,
   crumbs, breadcrumbLd, faqLd, faqHtml, linkList, CTA, BOOK_ROW, RATING_P, stepsHtml, ABOUT_DR, page, webPage, words };

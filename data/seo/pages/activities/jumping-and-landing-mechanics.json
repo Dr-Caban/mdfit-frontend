@@ -1,0 +1,93 @@
+{
+  "group": "activities",
+  "slug": "jumping-and-landing-mechanics",
+  "title": "Jumping and Landing Mechanics | MD Fit",
+  "h1": "Jumping and Landing Mechanics",
+  "description": "Landing is where knees and achilles get hurt, not take-off. How to land well, why it matters in pickleball and tennis, and how to build it safely.",
+  "about": {
+    "type": "Thing",
+    "name": "Jumping and landing mechanics"
+  },
+  "lead": "Jumping rarely hurts anyone. Landing does. The forces coming down are far higher than going up, and they arrive in a fraction of a second — which is why landing mechanics deserve attention and almost never get it.",
+  "sections": [
+    {
+      "h2": "What a landing has to do",
+      "html": "<p>Coming down, your body has to absorb several times your bodyweight in a very short window. That absorption happens at the ankle, knee and hip, and how the work is shared between them determines what takes the strain.</p><p>A good landing is quiet and spread across all three joints: ankle bends, knee bends, hips sit back. A poor landing is loud, stiff-legged, and taken mostly at the knee with the hips barely moving.</p><p>Noise is a useful cue. If landings are audible across the room, the force is going into tissue rather than being absorbed by movement.</p>"
+    },
+    {
+      "h2": "Where it goes wrong",
+      "html": "<ul><li><b>Knee collapsing inward.</b> The most recognisable fault, usually a hip control problem rather than a knee one.</li><li><b>Landing stiff-legged.</b> Little knee or hip bend, so the joint structures take what the muscles should.</li><li><b>Landing on one leg unintentionally.</b> Common when reaching for a ball; one leg takes everything.</li><li><b>Landing flat-footed or heel-first.</b> The foot and calf should contribute to absorption; skipping that stage passes more upstream.</li></ul><p>The inward knee collapse is the one worth most attention. It is associated with knee injury risk, it is visible without equipment, and it responds well to hip strength work — see <a href=\"/activities/q-angle-and-knee-tracking\">Q angle and knee tracking</a> and <a href=\"/activities/single-leg-strength-and-balance\">single-leg strength and balance</a>.</p>"
+    },
+    {
+      "h2": "Why this matters off the court too",
+      "html": "<p>Pickleball and tennis involve repeated small jumps, lunges and sudden stops, often on hard courts, frequently by people in their fifties and sixties who did not jump much in the preceding decade.</p><p>The tissue that complains is predictable: the <a href=\"/muscles/gastrocnemius\">calf</a> and achilles, the front of the knee, and the hip. An achilles that has not been loaded in this way for twenty years does not enjoy a sudden season of pickleball — see <a href=\"/conditions/achilles-tendon-pain\">achilles tendon pain</a> and <a href=\"/conditions/patellar-tendinopathy\">patellar tendinopathy</a>.</p><p>Stepping off a kerb awkwardly or down a stair two at a time is the same mechanical problem in daily life.</p>"
+    },
+    {
+      "h2": "Building it in order",
+      "html": "<ol><li><b>Landing practice without the jump.</b> Step off a low box and land softly on two feet. Hold the landing for two seconds. Quiet, knees tracking over feet.</li><li><b>Small two-footed jumps, focusing on the landing.</b> Height is irrelevant; the landing is the point.</li><li><b>Single-leg landings from a low step.</b> Significantly harder, and closer to what sport demands.</li><li><b>Add direction.</b> Landing from a sideways or diagonal jump, which is what actually happens in a game.</li><li><b>Add speed and volume gradually.</b></li></ol><p>Low volume. Ten to twenty quality landings is a session; this is nervous-system work, not conditioning, and fatigue ruins the quality you are trying to build.</p>"
+    },
+    {
+      "h2": "Who should build in slowly",
+      "html": "<p>Anyone returning to sport after a long gap, anyone over fifty who has not jumped regularly, anyone with a history of achilles or knee problems, and anyone with reduced bone density — impact loading is beneficial for bone but the progression needs to be sensible. See <a href=\"/conditions/osteoporosis-and-exercise\">osteoporosis and exercise</a>.</p><p>If you have had a knee reconstruction, landing mechanics are usually a formal part of return-to-sport criteria and worth doing under guidance rather than alone — see <a href=\"/conditions/acl-reconstruction-recovery\">ACL reconstruction recovery</a>.</p>"
+    },
+    {
+      "h2": "The strength that underpins it",
+      "html": "<p>Technique only holds if the tissue can support it. Calf strength determines how much the ankle can absorb; hip strength determines whether the knee holds its line.</p><p>Heavy calf raises, split squats and single-leg hip work build the capacity that landing drills then organise. Drills alone, on legs that are not strong enough, change little — which is why the plyometric work people do in isolation often disappoints.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "A knee that gives way, catches or locks during or after jumping.",
+    "A sudden sharp pain in the calf or back of the heel, sometimes with a popping sensation, which needs prompt assessment.",
+    "Swelling of a joint after landing, or an inability to bear weight.",
+    "Pain over bone in the shin or foot that worsens with each session and is sore at rest.",
+    "Pain at the front of the knee that persists beyond the session and builds week to week."
+  ],
+  "faq": [
+    {
+      "q": "Should people over 60 be jumping?",
+      "a": "Many can and benefit from it, particularly for bone, but the build-up needs to be gradual and there are conditions where it is not appropriate. Worth getting assessed if you are unsure."
+    },
+    {
+      "q": "Why are my landings so loud?",
+      "a": "Usually not enough ankle, knee and hip bend, so force goes into tissue rather than movement. Deliberately practising quiet landings is an effective cue."
+    },
+    {
+      "q": "How many jumps should I do in a session?",
+      "a": "For quality landing work, ten to twenty good repetitions. It is nervous-system training, and fatigue removes the thing you are training."
+    },
+    {
+      "q": "My knees cave in when I land. How do I fix it?",
+      "a": "It is usually hip control rather than a knee problem. Hip strength work alongside deliberate landing practice addresses it, and filming yourself from the front is the fastest way to see progress."
+    }
+  ],
+  "muscles": [
+    "glute-med",
+    "glute-max",
+    "gastroc",
+    "soleus",
+    "vmo",
+    "rectus-femoris"
+  ],
+  "pain": [
+    "below-kneecap",
+    "lower-calf",
+    "outside-of-knee"
+  ],
+  "guides": [
+    "calf",
+    "quads"
+  ],
+  "related": [
+    "/activities/single-leg-strength-and-balance",
+    "/activities/q-angle-and-knee-tracking",
+    "/conditions/achilles-tendon-pain",
+    "/conditions/patellar-tendinopathy",
+    "/activities/tennis"
+  ],
+  "programs": [
+    "knee-6"
+  ],
+  "reviewStatus": "approved"
+}

@@ -1,0 +1,88 @@
+{
+  "group": "conditions",
+  "slug": "radial-tunnel-syndrome",
+  "title": "Radial Tunnel Syndrome in Sarasota, FL | MD Fit",
+  "h1": "Radial Tunnel Syndrome in Sarasota, FL",
+  "description": "Tennis elbow that will not settle, with the sore spot further down the forearm and an ache at night. How the two differ. MD Fit, Sarasota.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Radial tunnel syndrome"
+  },
+  "lead": "Radial tunnel syndrome is irritation of the radial nerve as it passes through the muscles of the upper forearm, just below the outside of the elbow. Most people arrive having been treated for tennis elbow without improvement, because the two sit within a few finger-widths of each other and feel similar. Diagnosis belongs to a physician; this page explains the difference and what conservative care involves.",
+  "sections": [
+    {
+      "h2": "How it differs from tennis elbow",
+      "html": "<p>This is the distinction that matters, and it comes down to where the tenderness sits and what the pain feels like.</p><ul><li><b><a href=\"/conditions/tennis-elbow\">Tennis elbow</a></b> is tender right <b>on the bony bump</b> at the outside of the elbow. The pain is sharp with gripping, lifting a kettle or a backhand, and it is usually worst during activity. Pressing that bony point reproduces it precisely.</li><li><b>Radial tunnel</b> is tender <b>three or four finger-widths further down the forearm</b>, in the muscle belly below the elbow rather than on the bone. The pain is a deep, dull ache rather than a sharp catch, it often troubles people at night and at rest, and it tends to follow sustained forearm rotation, such as using a screwdriver or wringing out a cloth.</li></ul><p>A useful marker: resisting the middle finger straightening, with the elbow out straight, often provokes radial tunnel pain while leaving true tennis elbow unchanged. Resisted turning of the palm upward against resistance does the same. These are assessment findings, not self-tests to push hard at home.</p><p>The practical consequence is that treatment aimed at the tendon on the bone does nothing for a nerve being squeezed an inch further down, which is why the elbow that <b>will not settle</b> is the classic presentation.</p>"
+    },
+    {
+      "h2": "What people describe",
+      "html": "<ul><li>A deep ache in the upper <a href=\"/pain/forearm\">forearm</a>, below the outside of the elbow, that is hard to point to precisely.</li><li>Night ache that disturbs sleep, which is unusual for a straightforward tendon problem.</li><li>Pain with twisting actions rather than with pure gripping: jar lids, door handles, screwdrivers, a tennis serve.</li><li>A sense of weakness or fatigue in the forearm, usually from pain rather than true nerve weakness.</li><li>Months of treatment aimed at the <a href=\"/pain/point-of-elbow\">elbow</a> with little change.</li></ul><p>True weakness lifting the wrist or straightening the fingers is a different and more serious finding, and it belongs with a physician rather than on a treatment table.</p>"
+    },
+    {
+      "h2": "Where the nerve gets caught",
+      "html": "<p>The radial nerve passes between and through muscles of the upper forearm, including a fibrous arch at the top of the <a href=\"/muscles/supinator\">supinator</a>, the muscle that turns your palm upward. Several things narrow that path:</p><ul><li>Repetitive forearm rotation at work or in sport, which thickens and shortens the supinator.</li><li>Heavy or sustained gripping, which loads the <a href=\"/muscles/wrist-extensors\">wrist extensors</a> sitting over the nerve.</li><li>Tightness in the <a href=\"/muscles/brachioradialis\">brachioradialis</a> and <a href=\"/muscles/finger-extensors\">finger extensors</a> on the same side.</li><li>A <a href=\"/muscles/triceps-lateral-head\">lateral triceps</a> that is tight, which can tether the nerve higher in the arm.</li><li>Restriction further up at the shoulder or neck, which reduces how much the nerve can glide along its whole length.</li></ul>"
+    },
+    {
+      "h2": "How MD Fit assesses and treats it",
+      "html": "<p>I map the exact point of maximum tenderness, which is usually the single most informative thing, and compare how the elbow responds to gripping against how it responds to resisted rotation. I check nerve glide along the whole arm, forearm and shoulder mobility, and whether the neck is contributing.</p><p>Treatment releases the supinator and the extensor group, restores forearm rotation, and uses gentle nerve gliding rather than aggressive stretching, which irritates nerve tissue. Correction means looking at grip, tool choice and technique, because this is usually a load problem rather than an injury. You take home a daily routine in the free MD Fit app, and strengthening comes once symptoms are settling, built around grip and forearm endurance.</p><p>If there is genuine weakness straightening the fingers or lifting the wrist, that suggests the nerve is being compressed enough to affect the muscles it supplies, and that needs medical assessment and probably nerve testing first.</p>"
+    },
+    {
+      "h2": "What usually helps early on",
+      "html": "<ol><li>Change the grip before changing the exercise. A thicker handle, a lighter tool and less sustained squeezing often reduce symptoms quickly.</li><li>Reduce repeated forearm twisting for a few weeks, including screwdrivers, wringing and heavy jar opening.</li><li>Avoid elbow straps placed over the sore area. A strap designed for tennis elbow can press directly on the irritated nerve.</li><li>Do not stretch into tingling or increased ache. Nerve tissue does not respond to force the way muscle does.</li></ol>"
+    },
+    {
+      "h2": "Sarasota note",
+      "html": "<p>Tennis, pickleball and golf all involve repeated forearm rotation, and so does boat work and gardening. If an elbow has been treated as tennis elbow for months without change, it is worth having the sore point re-mapped, because an inch makes the difference between two completely different problems.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Weakness straightening the fingers or lifting the wrist, or a wrist that drops: see a physician promptly.",
+    "Numbness on the back of the hand that is constant rather than intermittent.",
+    "Visible wasting of the forearm muscles compared with the other side.",
+    "Elbow pain after a fall or direct blow that has not been assessed, particularly with swelling or an inability to straighten the arm.",
+    "Night pain that is severe and worsening, with fever, unexplained weight loss or a history of cancer: see a physician."
+  ],
+  "faq": [
+    {
+      "q": "How do I know if it is this or tennis elbow?",
+      "a": "The simplest marker is where it is tender. Tennis elbow is sore right on the bony bump at the outside of the elbow. Radial tunnel is sore three or four finger-widths further down the forearm, and often aches at night. A physician confirms the distinction."
+    },
+    {
+      "q": "Can I have both at once?",
+      "a": "Yes, and that combination is part of why some elbows do not respond to treatment aimed at only one of them. Mapping the tender point carefully is what separates them."
+    },
+    {
+      "q": "Why did my elbow strap make it worse?",
+      "a": "Straps are designed to offload the tendon near the bone. Positioned over the radial tunnel, the pressure sits directly on the irritated nerve, which commonly increases symptoms."
+    },
+    {
+      "q": "Should I rest completely?",
+      "a": "Usually not. Reducing the specific provoking loads, particularly repeated forearm twisting and hard gripping, tends to work better than stopping all activity."
+    }
+  ],
+  "muscles": [
+    "supinator",
+    "wrist-ext",
+    "finger-ext",
+    "brachioradialis",
+    "triceps-lateral"
+  ],
+  "pain": [
+    "forearm",
+    "point-of-elbow",
+    "back-of-wrist"
+  ],
+  "guides": [],
+  "related": [
+    "/conditions/tennis-elbow",
+    "/conditions/golfers-elbow",
+    "/conditions/cubital-tunnel-syndrome",
+    "/conditions/carpal-tunnel-wrist-pain",
+    "/conditions/cervical-radiculopathy",
+    "/muscles/supinator",
+    "/treatments/functional-mobility"
+  ],
+  "reviewStatus": "approved"
+}

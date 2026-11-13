@@ -4,7 +4,10 @@
   "title": "Groin Strain Treatment in Sarasota, FL | MD Fit",
   "h1": "Groin Strain Treatment in Sarasota, FL",
   "description": "Groin strain or adductor pain in Sarasota: what pulled, which inner-thigh and hip flexor muscles are involved, and how Dr. Jared Caban rebuilds it.",
-  "about": { "type": "MedicalCondition", "name": "Groin strain (adductor strain)" },
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Groin strain (adductor strain)"
+  },
   "lead": "Groin strains happen when the leg is pushed outward or forced to change direction faster than the inner-thigh muscles can control. The injury is usually clear; what is less obvious is that the hip flexors and core are often part of the story.",
   "sections": [
     {
@@ -42,14 +45,46 @@
     "Numbness on the inner thigh with weakness."
   ],
   "faq": [
-    { "q": "How do I know if it is a groin strain or a hernia?", "a": "A strain hurts when you squeeze the legs together or stretch the inner thigh; a hernia often produces a bulge that increases with coughing. Dr. Jared screens for hernia and hip joint problems before treating it as a muscle issue." },
-    { "q": "Is heat or ice better for a groin pull?", "a": "In the first day or two many people prefer ice for comfort; after that, warmth before gentle movement is often more useful. Neither replaces progressive loading." },
-    { "q": "Why does my groin strain keep coming back?", "a": "Usually because the adductors were never strengthened through full range and the hip flexors and glutes were not addressed. Returning to lateral sport before that work is done invites a repeat." },
-    { "q": "Can I play pickleball with a mild groin strain?", "a": "Playing through it typically prolongs recovery. Short, controlled drills without lunging are a better bridge until squeezing and lateral steps are pain-free." }
+    {
+      "q": "How do I know if it is a groin strain or a hernia?",
+      "a": "A strain hurts when you squeeze the legs together or stretch the inner thigh; a hernia often produces a bulge that increases with coughing. Dr. Jared screens for hernia and hip joint problems before treating it as a muscle issue."
+    },
+    {
+      "q": "Is heat or ice better for a groin pull?",
+      "a": "In the first day or two many people prefer ice for comfort; after that, warmth before gentle movement is often more useful. Neither replaces progressive loading."
+    },
+    {
+      "q": "Why does my groin strain keep coming back?",
+      "a": "Usually because the adductors were never strengthened through full range and the hip flexors and glutes were not addressed. Returning to lateral sport before that work is done invites a repeat."
+    },
+    {
+      "q": "Can I play pickleball with a mild groin strain?",
+      "a": "Playing through it typically prolongs recovery. Short, controlled drills without lunging are a better bridge until squeezing and lateral steps are pain-free."
+    }
   ],
-  "muscles": ["adductor-longus", "adductor-magnus", "iliacus", "psoas", "rectus-femoris"],
-  "pain": ["groin", "inner-thigh"],
-  "guides": ["iliopsoas"],
-  "related": ["/conditions/hip-labral-tear", "/conditions/hamstring-strain", "/conditions/hip-pain", "/conditions/sports-injury-rehab", "/conditions/pelvic-floor-rehab", "/treatments/strength-and-performance", "/pain/groin", "/muscles/adductor-longus-brevis"],
-  "reviewStatus": "draft"
+  "muscles": [
+    "adductor-longus",
+    "adductor-magnus",
+    "iliacus",
+    "psoas",
+    "rectus-femoris"
+  ],
+  "pain": [
+    "groin",
+    "inner-thigh"
+  ],
+  "guides": [
+    "iliopsoas"
+  ],
+  "related": [
+    "/conditions/hip-labral-tear",
+    "/conditions/hamstring-strain",
+    "/conditions/hip-pain",
+    "/conditions/sports-injury-rehab",
+    "/conditions/pelvic-floor-rehab",
+    "/treatments/strength-and-performance",
+    "/pain/groin",
+    "/muscles/adductor-longus-brevis"
+  ],
+  "reviewStatus": "approved"
 }

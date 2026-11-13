@@ -1,0 +1,94 @@
+{
+  "slug": "lifting-with-back-pain",
+  "title": "Lifting With Back Pain | MD Fit",
+  "h1": "Lifting With Back Pain: What to Change First",
+  "description": "Why most lifters should keep training through a sore back, which symptoms change that answer, and what to modify before you abandon squats and deadlifts.",
+  "about": {
+    "type": "Thing",
+    "name": "Lifting with back pain"
+  },
+  "lead": "A sore back sends more lifters out of the gym than anything else, and for most of them leaving was not necessary. Backs generally respond better to adjusted loading than to rest. The exceptions matter, which is why telling them apart comes first.",
+  "sections": [
+    {
+      "h2": "Separate the symptoms first",
+      "html": "<p>Before changing your programme, work out which of these you have. Muscular back pain is usually felt across the low back or to one side, is sore to press, eases with gentle movement, and does not travel below the knee. It is the most common presentation in lifters and it generally tolerates modified training well.</p><p>Nerve-related pain travels: down the buttock, the back of the thigh, past the knee and sometimes into the foot, often with numbness, tingling or weakness. That pattern needs assessing rather than programming around, and it is what <a href=\"/conditions/sciatica\">sciatica</a> and <a href=\"/conditions/herniated-disc\">herniated disc</a> cover. Any loss of bladder or bowel control, or numbness around the groin, is an emergency.</p>"
+    },
+    {
+      "h2": "Why rest usually disappoints",
+      "html": "<p>Prolonged rest for ordinary back pain tends to leave people stiffer, weaker and more fearful of loading, which makes the return harder than the original problem. Current practice generally favours staying active and resuming normal loading progressively, which for a lifter means a modified programme rather than a layoff.</p><p>That is not an argument for ignoring pain. It is an argument for reducing load to a level the back tolerates, keeping movement happening, and rebuilding from there rather than waiting for the pain to disappear before doing anything.</p>"
+    },
+    {
+      "h2": "What to modify, in order",
+      "html": "<ol><li><b>Drop the load substantially.</b> Further than feels necessary. The aim is to find a weight that produces no symptoms at all, which becomes your new starting point.</li><li><b>Reduce the range.</b> Rack pulls instead of floor pulls, box squats to a height you tolerate.</li><li><b>Change the implement.</b> A trap bar removes much of the forward lean. A <a href=\"/activities/front-squat\">front squat</a> is often tolerated when a low bar squat is not.</li><li><b>Remove the isometric trunk work temporarily.</b> Swap barbell rows for chest-supported rows, which is often the single most useful change.</li><li><b>Keep the rest of your training.</b> Pressing, arms, and most upper body work can usually continue unchanged.</li></ol>"
+    },
+    {
+      "h2": "What to keep doing",
+      "html": "<p>Walking, generally. Gentle hip hinging without load. The upper body work that does not provoke symptoms. Whatever movement keeps you from stiffening up. Lifters who maintain some version of their routine through a back episode tend to come back faster than those who stop completely.</p><p>What is worth avoiding is the cycle of resting until it feels better, returning at the old weights, provoking it again, and resting longer. That pattern is what turns a two-week episode into a recurring problem across years.</p>"
+    },
+    {
+      "h2": "When to get it assessed",
+      "html": "<p>Sooner than most lifters do. An episode that is settling week by week with modified training is often fine to manage yourself. One that is not changing after two or three weeks, that keeps recurring, or that has any nerve symptoms, is worth a proper look.</p><p>Dr. Jared Caban is a physician-trained clinical exercise physiologist and licensed massage therapist. For a lifter that combination is useful, because the assessment covers what is irritated, which position is breaking down under load, and what the programme should look like in the meantime. Soft-tissue work releases what has tightened, corrective work rebuilds the position, and the loading is progressed deliberately. Members get the exercise library and workout generator in the MD Fit app. Self-pay, no insurance paperwork, no referral needed.</p>"
+    }
+  ],
+  "redFlags": [
+    "Any loss of bladder or bowel control, or numbness around the groin or inner thighs: this is an emergency, call 911 or go to an emergency department immediately.",
+    "Pain travelling below the knee, or numbness, tingling or weakness in the leg or foot.",
+    "Back pain following a significant fall or accident.",
+    "Back pain with fever, unexplained weight loss, or a history of cancer.",
+    "Pain that is worse at night or present at rest rather than related to activity.",
+    "Back pain that is getting steadily worse over weeks despite reducing load."
+  ],
+  "faq": [
+    {
+      "q": "Should I stop lifting if my back hurts?",
+      "a": "Usually not entirely. Most ordinary back pain responds better to reduced and modified loading than to rest, though pain travelling down the leg or any nerve symptoms change that answer."
+    },
+    {
+      "q": "Can I still deadlift with back pain?",
+      "a": "Often a modified version, such as a rack pull or a trap bar at a much lighter weight, is tolerated when a floor pull is not. Finding a version that produces no symptoms and building from there is the usual approach."
+    },
+    {
+      "q": "How long should back pain take to settle?",
+      "a": "Many episodes improve noticeably within a few weeks. An episode that is not changing after two or three weeks of sensible modification is worth having assessed rather than waiting out."
+    },
+    {
+      "q": "Will a belt protect my back?",
+      "a": "A belt gives your trunk something to brace against and can help you produce more force. It is not protective equipment and it does not compensate for a position you cannot hold."
+    }
+  ],
+  "muscles": [
+    "ql",
+    "multifidus",
+    "longissimus",
+    "iliocostalis",
+    "psoas",
+    "glute-max"
+  ],
+  "pain": [
+    "beside-the-spine",
+    "si-joint",
+    "buttock-crease",
+    "back-of-thigh"
+  ],
+  "guides": [
+    "iliopsoas"
+  ],
+  "related": [
+    "/conditions/low-back-pain",
+    "/conditions/herniated-disc",
+    "/conditions/sciatica",
+    "/activities/training-around-an-injury",
+    "/activities/conventional-deadlift",
+    "/activities/bracing-and-breathing",
+    "/activities/common-powerlifting-injuries",
+    "/treatments/strength-and-performance"
+  ],
+  "programs": [
+    "low-back-6",
+    "posterior-chain-6"
+  ],
+  "group": "activities",
+  "steps": null,
+  "timeline": null,
+  "reviewStatus": "approved"
+}

@@ -1,0 +1,81 @@
+{
+  "group": "conditions",
+  "slug": "exercise-and-high-blood-pressure",
+  "title": "Exercise and High Blood Pressure | MD Fit",
+  "h1": "Exercise and High Blood Pressure in Sarasota, FL",
+  "description": "Told to exercise for your blood pressure but not told how? A Clinical Exercise Physiologist in Sarasota builds the plan, alongside your own physician.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Hypertension"
+  },
+  "lead": "“Get some exercise” is one of the most common pieces of advice given at a blood pressure appointment, and one of the least specific. A Clinical Exercise Physiologist turns it into a weekly plan with an actual dose, built around whatever else is going on with your joints, your heart and your schedule.",
+  "sections": [
+    {
+      "h2": "Why the advice usually stops short",
+      "html": "<p>A physician visit has limited minutes, and most of them go to the medication, the readings and the lab work. The exercise conversation gets the last ninety seconds. You leave knowing you should move more, without knowing:</p><ul><li>How many days a week, and for how long.</li><li>How hard — and how you would even tell.</li><li>Whether lifting weights is allowed, or whether that is the dangerous one.</li><li>What to do about the knee or shoulder that made you quit last time.</li><li>What is normal for your blood pressure during and after exercise, and what is not.</li></ul><p>Those are answerable questions. They just need someone whose whole job is the exercise side.</p>"
+    },
+    {
+      "h2": "What exercise generally does, and what it does not",
+      "html": "<p>Regular exercise is part of standard medical advice for blood pressure, and the effect for many people is meaningful over months rather than days. I am deliberately not going to put a number on it here, because the honest answer is that the response varies a great deal between individuals, and your own readings are the only figure that matters.</p><p>What is reasonably consistent:</p><ul><li>Steady aerobic work — walking, cycling, swimming — is the form most often prescribed, and the one most people tolerate.</li><li>Resistance training is no longer considered off-limits, and is now part of most general recommendations. How it is loaded matters more than whether it is included.</li><li>The effect depends on doing it regularly. A hard week followed by three quiet ones does very little.</li><li>Exercise does not replace medication. People who stop their tablets because they have started walking are the ones who end up in trouble.</li></ul>"
+    },
+    {
+      "h2": "Breath-holding, straining and why lifting gets a bad name",
+      "html": "<p>The specific caution with blood pressure and resistance work is not the weight itself. It is the Valsalva manoeuvre: holding your breath and bearing down while you push. That sharply and briefly raises pressure, and it is what people are really warning about when they say “don't lift.”</p><p>In practice that means:</p><ul><li>Breathing out on the effort, every repetition, as a trained habit rather than an afterthought.</li><li>Loads you can control for the full set, stopping short of the grinding last rep where form and breathing both break down.</li><li>Avoiding maximal attempts, and avoiding long holds at full effort.</li><li>Using machines, bands and supported positions where they make the breathing easier to keep honest.</li></ul><p>Taught this way, strength work usually belongs in the plan. The large muscle groups do most of the useful work: <a href=\"/muscles/gluteus-maximus\">gluteus maximus</a>, the quadriceps including <a href=\"/muscles/vastus-lateralis\">vastus lateralis</a>, <a href=\"/muscles/latissimus-dorsi\">latissimus dorsi</a> and the <a href=\"/muscles/pectoralis-major-upper\">chest</a>.</p>"
+    },
+    {
+      "h2": "Monitoring, and the boundary with your physician",
+      "html": "<p>Resting heart rate and blood pressure are taken at your evaluation and at follow-ups, and I will show you how to take a reading properly at home, because most people have been doing it in a way that inflates the number — wrong cuff position, talking, legs crossed, straight after coffee or a rush to the appointment.</p><p>The boundary is the same one that applies across this practice. <b>I do not prescribe, adjust or stop blood pressure medication.</b> That is your physician's decision, and it should be. If your readings move — in either direction — that is information for them, and with your permission I send it along with a short note on what you have been doing.</p><p>Some blood pressure medications change how your heart rate responds to exercise, which matters when we set intensity. Knowing what you take lets me use the right method rather than a heart rate target that will not mean anything for you.</p>"
+    },
+    {
+      "h2": "How the programme actually runs",
+      "html": "<p>The evaluation is about 90 minutes: history, medication list, resting vitals, a movement screen, and a first conservative dose of exercise so I can watch your response in the room. You leave with a written plan and notes your physician can read.</p><p>Follow-ups are usually weekly at first, then spaced out. Each one adjusts the dose based on how the previous week went. Between visits the plan is in the free MD Fit app with video for every exercise.</p><p>Progress is intentionally gradual. The first few weeks are about finding a load your body repeats comfortably, not about proving anything. Most people who fail at this fail by starting too hard in week one and quitting in week three.</p><p>If you also have <a href=\"/conditions/knee-osteoarthritis\">knee arthritis</a>, <a href=\"/conditions/low-back-pain\">low back pain</a> or shoulder trouble, those are addressed in the same plan. They are usually the real reason the last attempt stopped.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Chest pain or pressure, pain spreading to the jaw or arm, unusual shortness of breath, or fainting during exercise: stop and call 911.",
+    "A severe headache, vision change, confusion or weakness on one side: seek emergency care immediately.",
+    "Readings that are far above your usual range, especially with symptoms: contact your physician before your next session rather than exercising through it.",
+    "Dizziness or light-headedness on standing after exercise, which can mean your pressure is dropping too far and is worth telling your prescriber about.",
+    "New or worsening ankle swelling, or shortness of breath when lying flat."
+  ],
+  "faq": [
+    {
+      "q": "Is lifting weights safe with high blood pressure?",
+      "a": "For most people, taught properly, yes. The caution is breath-holding and straining rather than resistance training itself, so the technique and the load selection are what we spend time on."
+    },
+    {
+      "q": "Will exercise let me come off my medication?",
+      "a": "That is entirely your prescriber's decision, based on your readings over time. Nobody here will advise you to reduce or stop a medication, and you should not do it on your own."
+    },
+    {
+      "q": "Do I need clearance from my doctor before starting?",
+      "a": "Sometimes. If your history or your vitals at the evaluation suggest you should be cleared or tested first, Dr. Jared will tell you that day and help you get there."
+    },
+    {
+      "q": "I take a beta blocker. Does that change anything?",
+      "a": "It can change how your heart rate responds to effort, which means a heart rate target may not be a useful way to set intensity for you. Knowing what you take lets us use a method that works."
+    }
+  ],
+  "muscles": [
+    "glute-max",
+    "vastus-lateralis",
+    "lats",
+    "pec-major-clav",
+    "gastroc"
+  ],
+  "pain": [
+    "front-of-thigh",
+    "upper-calf"
+  ],
+  "guides": [],
+  "related": [
+    "/treatments/clinical-exercise-physiology",
+    "/conditions/exercise-for-type-2-diabetes",
+    "/conditions/cardiac-rehab-next-steps",
+    "/conditions/returning-to-exercise-after-a-long-break",
+    "/treatments/strength-and-performance"
+  ],
+  "reviewStatus": "approved"
+}

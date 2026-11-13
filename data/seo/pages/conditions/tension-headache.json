@@ -4,7 +4,10 @@
   "title": "Tension Headache Relief in Sarasota, FL | MD Fit",
   "h1": "Tension Headache Relief in Sarasota, FL",
   "description": "A tight band around the head, sore temples and a stiff neck often trace back to a few muscles. Learn how MD Fit in Sarasota releases and retrains them.",
-  "about": { "type": "MedicalCondition", "name": "Tension-type headache" },
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Tension-type headache"
+  },
   "lead": "The dull, pressing headache that builds through a workday is one of the most common things people bring to my clinic. More often than not, the pain is being produced by muscles in the neck, shoulders and jaw rather than by the head itself.",
   "sections": [
     {
@@ -42,14 +45,48 @@
     "Headache that wakes you from sleep or worsens steadily over days or weeks."
   ],
   "faq": [
-    { "q": "How do I know if my headache is from muscles?", "a": "A strong clue is that pressing on a tender spot in the neck, shoulder or jaw reproduces the exact headache. Headaches that build with desk time or stress and ease with heat and movement also point to muscle." },
-    { "q": "Can massage help a tension headache?", "a": "Hands-on release of the upper trapezius, suboccipitals and SCM often eases the headache quickly. Lasting change comes from correcting posture, breathing and strength so the muscles stop re-tightening." },
-    { "q": "Do I need to stop taking my headache medication?", "a": "No. Keep following your physician's plan. Our work addresses the muscular drivers alongside whatever medical care you already have." },
-    { "q": "Is the free app enough on its own?", "a": "The app gives you the daily stretches and posture resets Dr. Jared prescribes. Many people do well with it alone; others need a few hands-on sessions to release muscles that will not let go with stretching." }
+    {
+      "q": "How do I know if my headache is from muscles?",
+      "a": "A strong clue is that pressing on a tender spot in the neck, shoulder or jaw reproduces the exact headache. Headaches that build with desk time or stress and ease with heat and movement also point to muscle."
+    },
+    {
+      "q": "Can massage help a tension headache?",
+      "a": "Hands-on release of the upper trapezius, suboccipitals and SCM often eases the headache quickly. Lasting change comes from correcting posture, breathing and strength so the muscles stop re-tightening."
+    },
+    {
+      "q": "Do I need to stop taking my headache medication?",
+      "a": "No. Keep following your physician's plan. Our work addresses the muscular drivers alongside whatever medical care you already have."
+    },
+    {
+      "q": "Is the free app enough on its own?",
+      "a": "The app gives you the daily stretches and posture resets Dr. Jared prescribes. Many people do well with it alone; others need a few hands-on sessions to release muscles that will not let go with stretching."
+    }
   ],
-  "muscles": ["upper-trap", "suboccipitals", "scm", "temporalis", "splenius", "occipitalis"],
-  "pain": ["temple", "forehead", "base-of-skull", "behind-the-eye"],
-  "guides": ["posterior-neck"],
-  "related": ["/conditions/cervicogenic-headache", "/conditions/jaw-tmj-pain", "/conditions/neck-pain", "/conditions/desk-neck-pain", "/treatments/medical-massage", "/pain/temple", "/muscles/upper-trapezius"],
-  "reviewStatus": "draft"
+  "muscles": [
+    "upper-trap",
+    "suboccipitals",
+    "scm",
+    "temporalis",
+    "splenius",
+    "occipitalis"
+  ],
+  "pain": [
+    "temple",
+    "forehead",
+    "base-of-skull",
+    "behind-the-eye"
+  ],
+  "guides": [
+    "posterior-neck"
+  ],
+  "related": [
+    "/conditions/cervicogenic-headache",
+    "/conditions/jaw-tmj-pain",
+    "/conditions/neck-pain",
+    "/conditions/desk-neck-pain",
+    "/treatments/medical-massage",
+    "/pain/temple",
+    "/muscles/upper-trapezius"
+  ],
+  "reviewStatus": "approved"
 }

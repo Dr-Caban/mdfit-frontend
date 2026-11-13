@@ -1,0 +1,90 @@
+{
+  "group": "conditions",
+  "slug": "osteitis-pubis",
+  "title": "Osteitis Pubis Care in Sarasota, FL | MD Fit",
+  "h1": "Osteitis Pubis in Sarasota, FL",
+  "description": "Deep central groin pain with kicking, cutting or sitting up? Learn how osteitis pubis differs from an adductor strain and how rehab-first care works.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Osteitis pubis"
+  },
+  "lead": "Osteitis pubis is irritation at the pubic symphysis, the joint at the front of the pelvis where the two halves meet. It is a load problem at a junction that takes pull from the abdominals above and the adductors below, and it is slow to settle when the balance between them is not addressed.",
+  "sections": [
+    {
+      "h2": "What it feels like",
+      "html": "<p>The pain is central and deep, right at the front of the pelvis at the pubic bone, rather than off to one side. People often press on the spot with one finger when describing it.</p><ul><li>Pain with kicking, sprinting, cutting, and changing direction.</li><li>Pain sitting up from lying down, or with a strong cough or sneeze.</li><li>Soreness spreading into the <a href=\"/pain/inner-thigh\">inner thigh</a>, the lower abdomen, or occasionally the <a href=\"/pain/groin\">groin</a> on both sides.</li><li>Stiffness and ache after activity that is worse the following morning.</li><li>Sometimes an audible or felt clunk at the front of the pelvis when turning in bed.</li></ul><p>It frequently builds over weeks rather than arriving in one moment, and it is common in sports with repeated kicking, pivoting or sudden acceleration, as well as after pregnancy.</p>"
+    },
+    {
+      "h2": "Why it is hard to pin down",
+      "html": "<p>The front of the pelvis is crowded. Several problems produce pain in the same small area and routinely coexist, which is why this one often gets a few different labels before it gets the right one.</p><ul><li><b>Adductor-related groin pain</b> is tender at the adductor origin, just to the side of the pubic bone, and is provoked by squeezing the legs together. See <a href=\"/conditions/groin-strain\">groin strain</a>.</li><li><b>A <a href=\"/conditions/hip-labral-tear\">hip labral tear</a></b> produces a deeper pinch in the hip socket, often with a cupping hand gesture around the hip rather than a finger on the pubic bone.</li><li><b>Inguinal or sports hernia</b> sits slightly higher and to the side, and is a surgical question for your physician.</li><li><b>A bone stress injury of the pubic ramus</b> can mimic this closely and matters because the management differs. See <a href=\"/conditions/bone-stress-injury\">bone stress injury</a>.</li></ul><p>Your physician makes this distinction, frequently with imaging. It is worth making, because the rehabilitation differs meaningfully between them.</p>"
+    },
+    {
+      "h2": "The tug-of-war at the pubic bone",
+      "html": "<p>The pubic symphysis is pulled upward by the abdominal wall and downward by the adductors, and symptoms tend to appear when that balance is lost, usually with the abdominals under-contributing and the adductors overworking.</p><ul><li><a href=\"/muscles/adductor-longus-brevis\">Adductor longus and brevis</a> are typically tight, tender and dominant, pulling steadily on the lower side of the joint.</li><li><a href=\"/muscles/adductor-magnus\">Adductor magnus</a> adds to that pull and refers ache up the inner thigh toward the groin.</li><li><a href=\"/muscles/external-oblique\">External oblique</a> and the abdominal wall attach above the joint; when they are not holding their end, the adductors win the tug-of-war.</li><li><a href=\"/muscles/psoas\">Psoas</a> and <a href=\"/muscles/iliacus\">iliacus</a> tighten with repeated hip flexion and tip the pelvis, changing how the joint is loaded with every stride.</li><li><a href=\"/muscles/gluteus-medius\">Gluteus medius</a> steadies the pelvis in single-leg stance; when it is weak, the pelvis drops and shears the joint.</li></ul>"
+    },
+    {
+      "h2": "How MD Fit approaches it",
+      "html": "<p>The assessment looks at adductor tone and tenderness, abdominal wall contribution, hip rotation, pelvic control on one leg, and how you accelerate and change direction. Hands-on release of the adductors and hip flexors usually reduces the constant downward pull and gives some early ease.</p><p>Correction then rebuilds the balance. Abdominal and oblique work is trained to hold the pelvis from above, adductor strength is restored progressively rather than simply stretched, and single-leg control is built so the pelvis stays level. Stretching the adductors hard is a common instinct here and frequently makes the irritation worse; loading them in a controlled range tends to work better.</p><p>Short daily routines come through the free MD Fit app, and return to sprinting and cutting is staged rather than sudden, because this is a condition that relapses when the return is rushed.</p>"
+    },
+    {
+      "h2": "What you can do right now",
+      "html": "<ol><li>Pause sprinting, kicking and hard cutting until the area is assessed.</li><li>Avoid aggressive adductor stretching, which often aggravates rather than settles it.</li><li>Keep moving with low-irritation activity such as flat walking, cycling within comfort, or pool work.</li><li>Note which single movement reproduces the pain most clearly; it guides the assessment.</li></ol>"
+    },
+    {
+      "h2": "A note for Sarasota",
+      "html": "<p>Pickleball and tennis both involve sudden lateral pushes and rapid direction changes, which load the front of the pelvis repeatedly. Soccer and running do the same through kicking and stride length. Returning to those sports is usually realistic, but it is worth returning through a staged progression rather than straight back into a full match, which is where most recurrences come from.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": "This is usually a slow one. Early ease often comes within a few visits as the adductors release, but rebuilding the balance between the abdominal wall and the adductors commonly takes a couple of months or more, and returning to sport too early is the usual reason it drags on.",
+  "redFlags": [
+    "Groin or front-of-hip pain with weight-bearing in a runner, which needs prompt assessment for a bone stress injury.",
+    "Fever, night sweats or feeling generally unwell with groin pain, which needs a physician promptly.",
+    "A visible or palpable lump in the groin, particularly one that appears with coughing.",
+    "Pain with urination, testicular pain, or abdominal pain, all of which need medical evaluation rather than rehabilitation.",
+    "Severe pain after a single traumatic event, or inability to bear weight."
+  ],
+  "faq": [
+    {
+      "q": "Is osteitis pubis the same as a groin strain?",
+      "a": "No. A groin strain involves the adductor muscle or tendon to the side of the pubic bone. Osteitis pubis is irritation at the joint in the middle at the front of the pelvis, and the two often occur together."
+    },
+    {
+      "q": "Should I stretch my groin?",
+      "a": "Aggressive adductor stretching frequently makes this more irritable. Controlled strengthening through a comfortable range usually works better, which is part of why the assessment matters."
+    },
+    {
+      "q": "How long until I can play again?",
+      "a": "That depends on the severity and how long it has been going on. The staged return matters more than the calendar, because returning to cutting and sprinting too early is the most common cause of recurrence."
+    },
+    {
+      "q": "Do I need a scan?",
+      "a": "Your physician decides. Imaging is often useful here because a pubic bone stress injury and a sports hernia can look similar from the outside and are managed differently."
+    }
+  ],
+  "muscles": [
+    "adductor-longus",
+    "adductor-magnus",
+    "ext-oblique",
+    "psoas",
+    "iliacus",
+    "glute-med"
+  ],
+  "pain": [
+    "groin",
+    "inner-thigh",
+    "front-of-hip"
+  ],
+  "guides": [
+    "iliopsoas"
+  ],
+  "related": [
+    "/conditions/groin-strain",
+    "/conditions/hip-labral-tear",
+    "/conditions/bone-stress-injury",
+    "/conditions/hip-osteoarthritis",
+    "/treatments/medical-massage",
+    "/activities/tennis"
+  ],
+  "reviewStatus": "approved"
+}

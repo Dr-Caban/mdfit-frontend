@@ -1,0 +1,88 @@
+{
+  "slug": "tennis-elbow",
+  "title": "Tennis Elbow Treatment in Sarasota, FL | MD Fit",
+  "h1": "Tennis Elbow (Lateral Epicondylitis) in Sarasota, FL",
+  "description": "Tennis elbow in Sarasota. Dr. Jared Caban treats the tendon and the grip, shoulder and wrist mechanics loading it, so it stops coming back.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Lateral epicondylitis"
+  },
+  "lead": "Tennis elbow is a tendon problem at the outside of the elbow, where the muscles that extend the wrist all share one attachment. Most people who get it have never played tennis.",
+  "sections": [
+    {
+      "h2": "What it is, and what it is not",
+      "html": "<p>Despite the name ending in -itis, long-standing tennis elbow is generally not an inflammatory condition. The tendon shows disorganised collagen and failed healing rather than active inflammation, which is why anti-inflammatories often disappoint beyond the first week or two, and why loading rather than rest is what changes it.</p><p>The pain sits on the bony point at the <a href=\"/pain/point-of-elbow\">outside of the elbow</a>, is reproduced by gripping, and is often worst first thing in the morning and when picking up a kettle or a coffee cup.</p>"
+    },
+    {
+      "h2": "Why it is rarely only the elbow",
+      "html": "<p>Grip strength is generated at the forearm but stabilised at the shoulder. When the shoulder blade muscles are weak, the forearm works harder on every grip, and the tendon at the elbow absorbs it. Shoulder weakness is a common finding in people with stubborn tennis elbow.</p><p>Above that, the neck matters. <a href=\"/muscles/scalenes\">Scalenes</a> and <a href=\"/muscles/supinator\">supinator</a> both refer toward the outer elbow, and radial nerve irritation can mimic the condition convincingly. An elbow that is tender nowhere but hurts constantly deserves a look further up.</p><ul><li><a href=\"/muscles/wrist-extensors\">Wrist extensors</a> and <a href=\"/muscles/brachioradialis\">brachioradialis</a>: the direct source.</li><li><a href=\"/muscles/supinator\">Supinator</a>: refers to the same spot and can compress the radial nerve.</li><li><a href=\"/muscles/triceps-lateral-head\">Triceps</a> and shoulder blade muscles: the stability behind the grip.</li></ul>"
+    },
+    {
+      "h2": "How MD Fit treats it",
+      "html": "<p>Dr. Jared confirms the tendon is the source by loading it directly, then checks the wrist, shoulder and neck for what is feeding it. Hands-on release of the extensor mass and supinator usually eases the grip pain immediately.</p><p>The core of treatment is graded loading of the tendon, starting with holds the elbow tolerates and progressing to heavier and slower work as capacity builds. Alongside that, grip mechanics, shoulder strength and any equipment factors get addressed. Daily routines come through the free MD Fit app.</p>"
+    },
+    {
+      "h2": "How the loading programme actually works",
+      "html": "<p>The tendon needs load that is heavy enough to stimulate adaptation and slow enough that the elbow is not provoked. In practice that usually starts with isometric holds, where the muscle works without the joint moving. These often reduce pain for a period afterward, which makes them a useful way to begin when gripping anything hurts.</p><p>From there the work becomes slow and controlled through range, with the lowering phase emphasised, and the load increases as the elbow tolerates it. The rule of thumb is that some discomfort during the work is acceptable; pain that is worse the next morning means the dose was too high.</p><p>This takes consistency over weeks rather than intensity over days, and it is the part people most often abandon early because the first fortnight feels unremarkable. Tendons are slow tissue. The change is real but it is not fast.</p>"
+    },
+    {
+      "h2": "What you can change this week",
+      "html": "<ol><li>Carry things with the palm up rather than palm down. It takes the extensor tendon out of the job.</li><li>Check your grip sizes: a handle that is too small makes you grip harder for the same control.</li><li>A counterforce strap below the elbow can calm symptoms during activity; it is a helper, not a fix.</li><li>Keep using the arm. Complete rest reduces tendon capacity and the pain returns when you resume.</li></ol>"
+    },
+    {
+      "h2": "Tennis elbow in a pickleball town",
+      "html": "<p>In Sarasota this arrives far more often from pickleball than from tennis, and from gardening, tools and a computer mouse at least as often as from sport. Paddle grip size, whether you are hitting with a stiff wrist, and how much you have increased play in a short window are all worth discussing at the evaluation. See <a href=\"/activities/tennis\">tennis and racquet sports</a>.</p><p>Most people continue playing with adjustments rather than stopping, which matters when the sport is also the social life.</p>"
+    }
+  ],
+  "timeline": null,
+  "redFlags": [
+    "Elbow pain after a fall with swelling, bruising or inability to straighten the arm, which may be a fracture.",
+    "A hot, red, swollen elbow with fever, which needs urgent medical assessment.",
+    "Numbness or tingling in the hand, or weakness gripping, rather than pain alone.",
+    "Pain that is unrelated to use and wakes you every night.",
+    "A sudden pop with immediate loss of strength, which may be a tendon rupture."
+  ],
+  "faq": [
+    {
+      "q": "Do I need to stop playing?",
+      "a": "Usually not completely. Many people train through it with technique and loading changes while the tendon rebuilds."
+    },
+    {
+      "q": "Will a brace help?",
+      "a": "A counterforce strap can calm symptoms during activity. It is not the fix on its own, but it helps while the tendon strengthens."
+    },
+    {
+      "q": "Why has rest not fixed it?",
+      "a": "Tendons adapt to load, and rest reduces their capacity. Pain settles while resting and returns on resuming, which is the usual story with this condition."
+    },
+    {
+      "q": "Is this different from golfer's elbow?",
+      "a": "Same idea, different side. Tennis elbow is the outside of the elbow; golfer's elbow is the inside. The principles of treatment are similar."
+    }
+  ],
+  "muscles": [
+    "wrist-ext",
+    "supinator",
+    "brachioradialis",
+    "finger-ext",
+    "triceps-lateral",
+    "scalenes"
+  ],
+  "pain": [
+    "point-of-elbow",
+    "forearm",
+    "back-of-wrist"
+  ],
+  "guides": [],
+  "related": [
+    "/conditions/golfers-elbow",
+    "/conditions/de-quervains",
+    "/conditions/carpal-tunnel-wrist-pain",
+    "/conditions/shoulder-pain",
+    "/activities/tennis",
+    "/muscles/wrist-extensors"
+  ],
+  "group": "conditions",
+  "steps": null,
+  "reviewStatus": "approved"
+}

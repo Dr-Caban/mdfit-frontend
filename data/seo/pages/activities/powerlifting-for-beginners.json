@@ -1,0 +1,91 @@
+{
+  "slug": "powerlifting-for-beginners",
+  "title": "Powerlifting for Beginners | MD Fit",
+  "h1": "Powerlifting for Beginners: Starting Without Breaking",
+  "description": "What the three lifts demand, how to add weight without outrunning your tissues, and the mistakes that send new powerlifters to a clinic in year one.",
+  "about": {
+    "type": "Thing",
+    "name": "Powerlifting for beginners"
+  },
+  "lead": "Powerlifting is three lifts and a simple idea: add weight over time. The difficulty is that strength improves faster than tendons, joints and connective tissue adapt, so the first year is where most avoidable injuries happen. Starting well is mostly about restraint.",
+  "sections": [
+    {
+      "h2": "What the three lifts ask of you",
+      "html": "<p>The squat, the bench press and the deadlift each demand a position before they demand strength. The squat needs hips and ankles that let you get down without the spine folding. The bench needs shoulders that tolerate the bottom position. The deadlift needs a start position your back can hold.</p><p>If any of those positions is unavailable, the honest answer is to train a version you can hold while the range is worked on, rather than to force the standard version with willpower. Start with <a href=\"/activities/barbell-back-squat\">the back squat</a>, <a href=\"/activities/bench-press\">the bench press</a> and <a href=\"/activities/conventional-deadlift\">the conventional deadlift</a> pages for what each one actually requires.</p>"
+    },
+    {
+      "h2": "Strength outruns tissue",
+      "html": "<p>This is the single most useful thing a new lifter can understand. Your nervous system gets better at producing force within weeks. Tendons, ligaments and the structures around joints change far more slowly. For a few months you will be able to lift more than your connective tissue has adapted to carry, and this is the window in which things go wrong.</p><p>The practical consequence is that progress should be slower than it feels possible. Adding a small amount regularly and holding weights for longer than you want to is not timidity, it is the thing that lets you still be lifting in five years.</p>"
+    },
+    {
+      "h2": "The mistakes that fill clinic appointments",
+      "html": "<ul><li><b>Testing a maximum too often.</b> Maximum attempts are a skill and a stressor. Doing them monthly in the first year adds risk without adding much.</li><li><b>Adding weight every single session regardless.</b> Linear progression works until it does not, and continuing past that point is where positions break down.</li><li><b>No pulling volume.</b> A programme of squat, bench and deadlift with nothing else builds a pressing imbalance quickly. See <a href=\"/activities/barbell-row\">the barbell row</a>.</li><li><b>Training through sharp pain.</b> Soreness and pain are different. Sharp pain during a rep is information, not weakness.</li><li><b>Copying a cue from a lifter built differently.</b> Much coaching advice is specific to the body it was developed on, which is what <a href=\"/activities/train-for-your-build\">training for your build</a> covers.</li></ul>"
+    },
+    {
+      "h2": "Soreness, pain, and telling them apart",
+      "html": "<p>Ordinary training soreness is diffuse, appears a day or two later, affects the muscle belly, eases as you warm up and settles within a few days. It is a normal part of training.</p><p>Pain worth paying attention to is sharp, specific, present during the lift rather than after it, located at a joint or tendon rather than in the middle of a muscle, and gets worse with repeated exposure rather than better. Pain that is there at rest or wakes you at night belongs in a different category again, and nothing on this page should be read as a reason to delay getting that looked at.</p>"
+    },
+    {
+      "h2": "Where a clinic fits for a new lifter",
+      "html": "<p>Most new lifters only see a clinician once something hurts. It is more useful to be assessed before that, because the restrictions that cause trouble at heavy weights are visible long beforehand at light ones.</p><p>Dr. Jared Caban is a physician-trained clinical exercise physiologist and licensed massage therapist, which means the assessment covers both what your joints can currently do and what your training is asking them to do. The gap between the two is where injuries come from. Members get the exercise library and workout generator in the MD Fit app for the corrective work between sessions. The practice is self-pay, with no insurance paperwork and no referral needed.</p>"
+    }
+  ],
+  "redFlags": [
+    "Sharp pain during a lift that stops you mid-rep, as distinct from soreness afterwards.",
+    "Pain that is present at rest or wakes you at night.",
+    "Numbness, tingling or weakness anywhere in an arm or leg after training.",
+    "A joint that swells, locks or gives way within a day of a session.",
+    "Chest pain, pressure, shortness of breath or light-headedness during lifting: stop and call 911."
+  ],
+  "faq": [
+    {
+      "q": "How often should I test a one-rep max?",
+      "a": "Rarely in the first year. Maximum attempts are a skill of their own and a significant stressor, and most progress comes from consistent work at submaximal weights."
+    },
+    {
+      "q": "Do I need a coach to start powerlifting?",
+      "a": "Not strictly, but having someone watch your lifts early saves a lot of time. Video of your own sets from the side is the next best thing and shows most of the common faults."
+    },
+    {
+      "q": "Should I wear a belt as a beginner?",
+      "a": "A belt gives your trunk something to brace against. Learning to brace without one first means the belt adds to a skill you have rather than replacing one you do not."
+    },
+    {
+      "q": "How fast should I add weight?",
+      "a": "Slower than feels possible. Strength improves faster than tendons and joints adapt, so the first year is where adding too quickly causes most of the avoidable problems."
+    }
+  ],
+  "muscles": [
+    "glute-max",
+    "ql",
+    "multifidus",
+    "pec-major-stern",
+    "lats",
+    "vastus-lateralis"
+  ],
+  "pain": [
+    "beside-the-spine",
+    "front-of-shoulder",
+    "below-kneecap",
+    "si-joint"
+  ],
+  "guides": [],
+  "related": [
+    "/activities/barbell-back-squat",
+    "/activities/bench-press",
+    "/activities/conventional-deadlift",
+    "/activities/progressive-overload",
+    "/activities/common-powerlifting-injuries",
+    "/activities/train-for-your-build",
+    "/activities/weightlifting-crossfit",
+    "/treatments/strength-and-performance"
+  ],
+  "programs": [
+    "low-back-6",
+    "shoulder-6"
+  ],
+  "group": "activities",
+  "steps": null,
+  "timeline": null,
+  "reviewStatus": "approved"
+}

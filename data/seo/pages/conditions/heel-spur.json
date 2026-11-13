@@ -1,0 +1,93 @@
+{
+  "group": "conditions",
+  "slug": "heel-spur",
+  "title": "Heel Spur Pain Care in Sarasota, FL | MD Fit",
+  "h1": "Heel Spurs in Sarasota, FL",
+  "description": "Told you have a heel spur? The spur is usually not what hurts. Learn what actually causes heel pain and the calf and foot work that settles it.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Heel spur"
+  },
+  "lead": "A heel spur is a small growth of bone where tissue pulls on the heel, visible on an X-ray. It is one of the most misunderstood findings in foot care, because the spur is usually not the reason the heel hurts.",
+  "sections": [
+    {
+      "h2": "The thing most people are not told",
+      "html": "<p>Heel spurs are frequently found on X-rays of feet that do not hurt at all, and they are frequently absent in feet that hurt a great deal. Where a spur and heel pain occur together, the spur is generally a sign that tissue has been pulling on the bone for a long time, rather than the thing doing the damage.</p><p>This matters because it changes the goal. Chasing the spur leads people toward wanting it removed. Treating what is pulling on it leads toward the calf, the arch and the way load travels through the foot, which is where most heel pain actually responds.</p><p>Two different spurs get the same name. One sits underneath the heel where the plantar fascia attaches. The other sits at the back where the Achilles tendon attaches, often alongside a bony prominence. They produce different pain and need different work.</p>"
+    },
+    {
+      "h2": "Pain underneath the heel",
+      "html": "<p>This is the more common presentation and it usually behaves like <a href=\"/conditions/plantar-fasciitis\">plantar fasciitis</a>:</p><ul><li>Sharp pain with the first few steps in the morning, or after sitting for a while.</li><li>Easing after a few minutes of walking, then returning later in the day.</li><li>Tenderness on a small spot at the inside front of the heel pad.</li><li>Worse barefoot on hard floors, better in supportive shoes.</li></ul><p>The <a href=\"/pain/sole-of-foot\">sole of the foot</a> is the area involved, and the tissue under strain is the plantar fascia and the small muscles beneath it.</p>"
+    },
+    {
+      "h2": "Pain at the back of the heel",
+      "html": "<p>This one behaves like an insertional Achilles problem. It hurts at the back of the heel where the tendon attaches, is often worse going uphill or on stairs, and is frequently irritated by the heel counter of a shoe pressing on it. A firm bump may be felt or seen. It overlaps with <a href=\"/conditions/achilles-tendon-pain\">Achilles tendon pain</a>, and notably, the stretches that help midportion Achilles problems often aggravate this one, because they compress the insertion.</p>"
+    },
+    {
+      "h2": "What is actually pulling on the heel",
+      "html": "<p>Both versions come back to the same chain. The calf controls how the heel lifts and lands; the foot muscles control the arch; when either is not doing its job, the attachment at the heel takes the strain.</p><ul><li><a href=\"/muscles/gastrocnemius\">Gastrocnemius</a> is commonly tight and limits ankle dorsiflexion, so the foot compensates by rolling inward and stretching the fascia further on every step.</li><li><a href=\"/muscles/soleus\">Soleus</a> is the deeper, slower calf muscle and the main brake when walking; it refers pain directly to the heel and is frequently the most tender muscle in a painful heel.</li><li><a href=\"/muscles/foot-intrinsic-muscles\">Foot intrinsic muscles</a> support the arch from beneath and are usually weak in someone who has spent years in cushioned, supportive shoes.</li><li><a href=\"/muscles/tibialis-posterior\">Tibialis posterior</a> holds the arch from above; when it tires, the arch drops and the fascia is loaded more.</li></ul><p>Hip strength matters too, because a hip that does not control the leg's rotation changes where the foot lands.</p>"
+    },
+    {
+      "h2": "How MD Fit approaches heel pain",
+      "html": "<p>The assessment establishes which of the two patterns you have, how much ankle dorsiflexion you actually have, the state of the calf and foot muscles, and how you walk. Hands-on release of the calf and the sole of the foot usually eases the morning sharpness within the first visits, because the constant tug on the attachment reduces.</p><p>Correction addresses footwear, standing habits and how the foot is loaded. Strengthening follows for the calf complex and the foot intrinsics, which is the part that holds the result, and is dosed differently depending on which heel pattern you have. Short daily routines come through the free MD Fit app.</p><p>If your physician has prescribed orthotics, a night splint or injections, this work sits alongside them rather than replacing them.</p>"
+    },
+    {
+      "h2": "What you can do right now",
+      "html": "<ol><li>Wear supportive shoes indoors rather than going barefoot on tile, which is a common Florida habit and a common aggravator.</li><li>For underneath-heel pain, roll the sole of the foot gently over a ball for a minute or two before standing up in the morning.</li><li>For back-of-heel pain, avoid stretching into the painful position and avoid shoes with a hard heel counter pressing on the sore spot.</li><li>Reduce, rather than stop, walking volume. Complete rest tends to stiffen things and the pain returns on resuming.</li></ol>"
+    },
+    {
+      "h2": "A note for Sarasota",
+      "html": "<p>Barefoot on tile floors, flip-flops, hard courts and long beach walks on uneven sand all load the heel in ways that cushioned trainers do not. None of them need to be given up permanently, but during a painful stretch, swapping in supportive footwear for a few weeks often does more than any single exercise.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": "Morning sharpness frequently eases within the first few visits once the calf and foot release. Building the calf and foot strength that keeps it away commonly takes a couple of months, and heel pain that has been present for a long time usually takes longer than one that is recent.",
+  "redFlags": [
+    "Heel pain after a fall or a sudden snap, or inability to push off or rise onto the toes, which may be a tendon rupture or fracture.",
+    "A hot, red, swollen heel, particularly with fever, which needs a physician the same day.",
+    "Numbness or burning in the sole of the foot, which points toward a nerve problem rather than the fascia.",
+    "Heel pain in both feet in a younger adult, or with joint pain elsewhere, which your physician should evaluate.",
+    "Pinpoint bone tenderness that worsens as you continue walking, which may be a bone stress injury."
+  ],
+  "faq": [
+    {
+      "q": "Does the spur need to be removed?",
+      "a": "Usually not. The spur is generally a consequence of long-standing tissue pull rather than the source of pain, and most heel pain responds to addressing the calf, foot and loading. Surgery is a conversation for your physician if conservative care fails."
+    },
+    {
+      "q": "Why does it hurt most first thing in the morning?",
+      "a": "The tissue shortens overnight and is loaded suddenly when you stand. That pattern is characteristic of plantar fascia-related heel pain and is one of the ways it is distinguished from other causes."
+    },
+    {
+      "q": "Should I stretch my Achilles?",
+      "a": "It depends which heel pattern you have. Calf stretching often helps pain underneath the heel, but can aggravate pain at the back of the heel because it compresses the tendon insertion. That is why the two are separated in the assessment."
+    },
+    {
+      "q": "Are orthotics necessary?",
+      "a": "Some people do well with them and your physician may recommend them. They work best alongside calf and foot strengthening rather than instead of it, because support alone does not make the tissue more tolerant."
+    }
+  ],
+  "muscles": [
+    "gastroc",
+    "soleus",
+    "foot-intrinsics",
+    "tib-post",
+    "peroneals"
+  ],
+  "pain": [
+    "sole-of-foot",
+    "lower-calf",
+    "inner-ankle-and-arch"
+  ],
+  "guides": [
+    "calf"
+  ],
+  "related": [
+    "/conditions/plantar-fasciitis",
+    "/conditions/achilles-tendon-pain",
+    "/conditions/bone-stress-injury",
+    "/conditions/ankle-sprain",
+    "/treatments/medical-massage",
+    "/activities/snowbirds"
+  ],
+  "reviewStatus": "approved"
+}

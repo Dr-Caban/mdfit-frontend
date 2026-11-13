@@ -1,0 +1,91 @@
+{
+  "slug": "jaw-tmj-pain",
+  "title": "Jaw Pain and TMJ Treatment in Sarasota, FL | MD Fit",
+  "h1": "Jaw Pain and TMJ Dysfunction in Sarasota, FL",
+  "description": "Jaw pain and TMJ in Sarasota. Dr. Jared Caban treats the chewing and neck muscles behind most jaw pain, working alongside your dentist.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Temporomandibular joint dysfunction"
+  },
+  "lead": "Most jaw pain is muscular. The joint itself takes the blame, but the muscles that clench, chew and hold your head up are usually what is producing the ache, the headaches and the restricted opening.",
+  "sections": [
+    {
+      "h2": "What it feels like",
+      "html": "<ul><li>Aching at the jaw, in front of the ear, or across the cheek, often worse in the morning after a night of clenching.</li><li>Headaches at the <a href=\"/pain/temple\">temple</a>, which is where the temporalis muscle refers.</li><li>Difficulty opening wide, or opening that deviates to one side.</li><li>Clicking or popping, with or without pain.</li><li>Ear fullness, ringing or pain with nothing wrong on examination of the ear.</li></ul><p>Tooth pain with no dental cause is a common presentation too, because the chewing muscles refer convincingly into the teeth.</p>"
+    },
+    {
+      "h2": "The muscles behind it",
+      "html": "<p><a href=\"/muscles/masseter\">Masseter</a> is the powerful muscle at the angle of the jaw, and the one most people can feel knotted when they clench. It refers into the cheek, the jaw and the teeth, and sometimes deep into the ear.</p><p><a href=\"/muscles/temporalis\">Temporalis</a> fans across the side of the head and refers into the temple and the upper teeth, producing headaches that are often managed as something else for years.</p><p>Underneath those sit the pterygoids, deeper muscles that control side-to-side movement and are frequently involved in clicking and deviation. And behind all of it, the neck: <a href=\"/muscles/sternocleidomastoid\">sternocleidomastoid</a> and <a href=\"/muscles/suboccipitals\">suboccipitals</a> refer into the jaw and ear, and a forward-head posture changes resting jaw position directly.</p>"
+    },
+    {
+      "h2": "Clicking, and when it matters",
+      "html": "<p>A jaw that clicks without pain and opens fully usually needs no treatment. The click reflects the disc inside the joint moving, and plenty of people click happily for decades.</p><p>What does matter is pain, a jaw that locks closed or open, opening that has become noticeably restricted, or a change in how your teeth meet. Those warrant assessment rather than reassurance.</p>"
+    },
+    {
+      "h2": "How MD Fit treats it",
+      "html": "<p>Dr. Jared measures how far you open, watches the path the jaw takes, and palpates masseter, temporalis and the neck muscles to find which reproduce your pain. Treatment is hands-on release of the chewing muscles, including intraoral work where appropriate, plus the neck, because treating the jaw without the neck tends not to hold.</p><p>Correction addresses head position, tongue resting posture and the daytime clenching habit most people do not know they have. Strengthening and control work for the deep neck flexors supports the whole thing. Daily routines come through the free MD Fit app.</p>"
+    },
+    {
+      "h2": "What you can change this week",
+      "html": "<ol><li>Rest the tongue lightly on the roof of the mouth with teeth apart and lips together. Teeth should only touch when you swallow or chew.</li><li>Put a note on your screen as a clenching reminder. Daytime clenching is largely unconscious.</li><li>Soft foods for a fortnight while it settles, and cut food rather than biting into it.</li><li>Raise your screen to eye level. Head position and jaw position are linked more directly than most people expect.</li></ol>"
+    },
+    {
+      "h2": "Working with your dentist",
+      "html": "<p>Dental and movement care complement each other here. If you have a nightguard or splint, bring it. A guard protects the teeth from grinding but does not stop the clenching itself, which is why people often have both a guard and ongoing pain. The muscular work addresses the other half.</p><p>Stress, poor sleep and shallow breathing all drive clenching, and they get discussed because ignoring them means treating the muscle repeatedly while the cause continues.</p>"
+    }
+  ],
+  "timeline": null,
+  "redFlags": [
+    "Jaw pain with chest pressure, shortness of breath, sweating or nausea: call 911. Heart problems can present as jaw pain, particularly in women and older adults.",
+    "A jaw that locks closed or open and will not release, which needs prompt assessment.",
+    "Jaw pain with fever and swelling, or with a dental abscess, which needs urgent dental or medical care.",
+    "New jaw pain with scalp tenderness or vision change in an older adult, which needs same-day medical assessment.",
+    "Numbness in the face, or a sudden change in how your teeth meet."
+  ],
+  "faq": [
+    {
+      "q": "Do you work with my dentist?",
+      "a": "Yes. If you have a nightguard or splint, bring it in. Dental and physical rehab care complement each other."
+    },
+    {
+      "q": "Will treatment stop the clicking?",
+      "a": "Clicking without pain often needs no treatment. If it is painful or locking, the work focuses on the muscles that control the jaw."
+    },
+    {
+      "q": "Can stress really make it worse?",
+      "a": "Yes. Clenching, poor sleep and shallow breathing all drive jaw tension, so the plan includes breathing and sleep basics."
+    },
+    {
+      "q": "Why does my jaw problem give me headaches?",
+      "a": "Temporalis, the fan-shaped muscle at the side of the head, refers directly into the temple. Jaw-driven headaches are common and often mistaken for something else."
+    }
+  ],
+  "muscles": [
+    "masseter",
+    "temporalis",
+    "scm",
+    "suboccipitals",
+    "upper-trap",
+    "levator"
+  ],
+  "pain": [
+    "around-the-ear",
+    "temple",
+    "front-of-neck",
+    "side-of-neck"
+  ],
+  "guides": [
+    "posterior-neck"
+  ],
+  "related": [
+    "/conditions/tension-headache",
+    "/conditions/cervicogenic-headache",
+    "/conditions/neck-pain",
+    "/conditions/desk-neck-pain",
+    "/muscles/masseter",
+    "/muscles/temporalis"
+  ],
+  "group": "conditions",
+  "steps": null,
+  "reviewStatus": "approved"
+}

@@ -1,0 +1,90 @@
+{
+  "slug": "barbell-row",
+  "title": "Barbell Row: Form, Back and Low Back | MD Fit",
+  "h1": "The Barbell Row: Form, Back and Low Back",
+  "description": "How to row without your low back taking the session, the torso angle question, and why rowing volume matters more than most lifters think.",
+  "about": {
+    "type": "Thing",
+    "name": "Barbell row"
+  },
+  "lead": "The barbell row is the lift most often done badly in the service of ego. Done well it builds the upper back and balances years of pressing. Done badly it becomes a partial-range hip extension that leaves the low back sore and the upper back untrained.",
+  "sections": [
+    {
+      "h2": "Torso angle sets the lift",
+      "html": "<p>The angle you hold your torso at decides which muscles do the work. Closer to horizontal emphasises the <a href=\"/muscles/latissimus-dorsi\">latissimus dorsi</a>, the <a href=\"/muscles/rhomboid-major\">rhomboids</a> and the <a href=\"/muscles/middle-trapezius\">middle trapezius</a>, and demands far more from the muscles holding your trunk in place. More upright reduces that demand and turns the lift into something closer to a high pull.</p><p>Neither is wrong, but the angle must stay fixed for the whole set. The characteristic fault is starting at forty-five degrees and finishing nearly upright, which means the weight is being lifted by standing up rather than by rowing. That is where most of the low back soreness comes from.</p>"
+    },
+    {
+      "h2": "The isometric nobody accounts for",
+      "html": "<p>In a barbell row, the back muscles holding your trunk at an angle are working the entire set, without moving. For a set of ten that is a substantial amount of isometric work for <a href=\"/muscles/longissimus\">longissimus</a>, <a href=\"/muscles/iliocostalis\">iliocostalis</a> and <a href=\"/muscles/quadratus-lumborum\">quadratus lumborum</a>, on top of whatever the rest of the session asked of them.</p><p>This is why rows sometimes leave people sore <a href=\"/pain/beside-the-spine\">beside the spine</a> rather than in the upper back they were training. If that happens consistently, the fix is usually a supported variation rather than more willpower: a chest-supported row, a single-arm dumbbell row with a hand braced, or a seated cable row all remove the trunk component and let the upper back be the limiting factor.</p>"
+    },
+    {
+      "h2": "Where the bar should touch, and why",
+      "html": "<p>Rowing to the lower chest or upper abdomen with the elbows at a moderate angle recruits the lats strongly. Rowing higher, towards the collarbones with the elbows flared wide, shifts the work towards the rear deltoid and upper back and asks more of the shoulder.</p><p>Both have a place. The flared, high-row version is useful for the <a href=\"/muscles/posterior-deltoid\">posterior deltoid</a> and upper back but is less comfortable for an irritable shoulder. If your shoulder complains at the <a href=\"/pain/front-of-shoulder\">front</a> during rows, pulling lower and keeping the elbows closer to the body usually helps.</p>"
+    },
+    {
+      "h2": "Rowing volume and the pressing imbalance",
+      "html": "<p>Most recreational lifters press considerably more than they pull. Over years that contributes to shoulders that sit forward, a chest that has shortened and an upper back that has never been strong. It shows up as a bench shoulder that aches, or a neck that is always tight.</p><p>There is no official ratio, but matching your pulling sets to your pressing sets is a reasonable target, and many people who do so find longstanding shoulder niggles settle without any specific treatment. If you only change one thing after reading this page, make it that.</p>"
+    },
+    {
+      "h2": "How MD Fit uses rowing",
+      "html": "<p>Rowing variations are among the most useful tools for rebuilding an upper back, which is why they appear throughout the work Dr. Jared prescribes. The assessment decides which version suits you now: someone with an irritable low back usually starts supported, someone whose shoulder blades do not control well starts lighter and slower with a deliberate pause.</p><p>Dr. Jared Caban is a physician-trained clinical exercise physiologist and licensed massage therapist, so the hands-on work on a shortened chest and the strengthening of a weak upper back happen together rather than separately. Members get the matching videos and workout generator in the MD Fit app.</p>"
+    }
+  ],
+  "redFlags": [
+    "Low back pain that travels down a leg, or numbness, tingling or weakness in the foot.",
+    "A sudden sharp pain in the back or shoulder during a rep with immediate loss of strength.",
+    "Shoulder pain that continues at rest or disturbs sleep.",
+    "Numbness or tingling in the hands that does not settle after you put the bar down.",
+    "Back pain that keeps worsening week to week despite reducing the weight."
+  ],
+  "faq": [
+    {
+      "q": "Why does my low back hurt after rows?",
+      "a": "Holding your trunk at an angle for a whole set is a lot of static work for the low back muscles. If that is the limiting factor, a chest-supported or seated row removes it and lets the upper back be trained properly."
+    },
+    {
+      "q": "Should I row to my chest or my stomach?",
+      "a": "Rowing lower with the elbows closer to the body emphasises the lats and is usually kinder to the shoulder. Rowing higher with the elbows flared works the rear deltoid and upper back more."
+    },
+    {
+      "q": "Is it cheating to use some body English?",
+      "a": "A small amount of movement on the last reps of a heavy set is common. If the torso angle changes substantially on every rep, the lift has become a hip extension and the upper back is no longer the target."
+    },
+    {
+      "q": "How much rowing should I be doing?",
+      "a": "Most people who press more than they pull benefit from matching the two. There is no official ratio, but the imbalance is a common background to shoulders that ache under the bar."
+    }
+  ],
+  "muscles": [
+    "lats",
+    "rhomboid-major",
+    "middle-trap",
+    "post-delt",
+    "longissimus",
+    "ql"
+  ],
+  "pain": [
+    "beside-the-spine",
+    "between-shoulder-blades",
+    "inner-edge-of-shoulder-blade",
+    "front-of-shoulder"
+  ],
+  "guides": [],
+  "related": [
+    "/activities/bench-press",
+    "/activities/back-training",
+    "/activities/overhead-press",
+    "/conditions/upper-back-rhomboid-pain",
+    "/conditions/shoulder-impingement",
+    "/conditions/low-back-pain",
+    "/treatments/strength-and-performance"
+  ],
+  "programs": [
+    "shoulder-6",
+    "low-back-6"
+  ],
+  "group": "activities",
+  "steps": null,
+  "timeline": null,
+  "reviewStatus": "approved"
+}

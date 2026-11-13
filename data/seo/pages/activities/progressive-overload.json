@@ -1,0 +1,89 @@
+{
+  "slug": "progressive-overload",
+  "title": "Progressive Overload Explained | MD Fit",
+  "h1": "Progressive Overload: How to Keep Making Progress",
+  "description": "What progressive overload actually means, the several ways to apply it, and why adding weight every session stops working sooner than people expect.",
+  "about": {
+    "type": "Thing",
+    "name": "Progressive overload"
+  },
+  "lead": "Progressive overload is the one principle that genuinely has to be present for training to keep working. It is also the one most often reduced to adding weight to the bar, which is only one of several ways to do it and the one that runs out first.",
+  "sections": [
+    {
+      "h2": "The principle, stated plainly",
+      "html": "<p>Your body adapts to what you ask of it. Once it has adapted, the same demand no longer provokes change. To keep improving, the demand has to increase over time. That is the whole idea, and everything else is a method for applying it.</p><p>The important corollary is that adaptation takes time, and it happens in tissues that adapt at different rates. Muscle and nervous system respond relatively quickly; tendons, ligaments and bone take considerably longer. Progression that outruns the slower tissues is how people get strong and injured at the same time.</p>"
+    },
+    {
+      "h2": "Several ways to progress, not one",
+      "html": "<ul><li><b>More weight</b> for the same repetitions. The most obvious, and the one that stalls first.</li><li><b>More repetitions</b> at the same weight, then adding weight once the top of the range is reached.</li><li><b>More sets</b>, increasing total work rather than per-set difficulty.</li><li><b>Better execution</b>: fuller range, more control, less assistance from other muscles. This is genuine progression even when the number on the bar is unchanged.</li><li><b>Less rest</b> between sets for the same work, which increases density.</li><li><b>Closer to failure</b>: the same weight and reps taken with less in reserve.</li></ul><p>On any given lift, at least one of these is usually available even when adding weight is not.</p>"
+    },
+    {
+      "h2": "Why linear progression ends",
+      "html": "<p>Adding weight every session works for a while, particularly for newer lifters, because early gains come largely from the nervous system learning the movement. That source runs out. When it does, continuing to force weight onto the bar produces two things: technique that degrades to accommodate the load, and tissues loaded faster than they have adapted.</p><p>The signs are recognisable. Sessions start feeling disproportionately hard, the last reps look different from the first, warm-ups stop feeling easy, and small joint complaints appear. That is the point to change the method of progression, not to push harder.</p>"
+    },
+    {
+      "h2": "Progressing without adding weight",
+      "html": "<p>Double progression is the most practical approach for most people. Choose a rep range, say six to ten. Add reps each session until you reach the top of the range for all sets. Then add the smallest available weight increase and start again at the bottom of the range. Progress is continuous, the jumps are small, and the method does not run out.</p><p>For movements where small weight increments are not available, adding a rep or improving the range is the progression. A split squat performed with better control and a fuller range at the same weight is genuinely harder than it was, whatever the logbook says.</p>"
+    },
+    {
+      "h2": "Progression after an injury or a layoff",
+      "html": "<p>Returning from time off or from an injury is where progression most often goes wrong, because the strength returns faster than the tissue tolerance. People reach their old weights quickly, feel fine, and re-injure the same tissue.</p><p>The useful approach is deliberately slower than it feels necessary, with the load increasing on a schedule rather than on how it feels on the day. Dr. Jared Caban is a physician-trained clinical exercise physiologist and licensed massage therapist, and this is one of the most common conversations here: not whether you can lift the weight today, but whether the tissue has adapted to carry it repeatedly. Members get the exercise library and workout generator in the MD Fit app.</p>"
+    }
+  ],
+  "redFlags": [
+    "Joint pain that appears as the weights increase and persists between sessions.",
+    "Technique that changes noticeably as load increases, particularly a spine position you cannot hold.",
+    "A sudden sharp pain during a rep with loss of strength.",
+    "Numbness, tingling or weakness in an arm or leg.",
+    "Pain that keeps worsening week to week despite reducing the load."
+  ],
+  "faq": [
+    {
+      "q": "How much weight should I add each week?",
+      "a": "As little as the equipment allows, as rarely as progress requires. Smaller, slower increases let the slower-adapting tissues keep up with the strength."
+    },
+    {
+      "q": "What if I cannot add weight any more?",
+      "a": "Add repetitions, sets, range of motion or control instead. Double progression, where you add reps until the top of a range then add weight and start again, works for most people indefinitely."
+    },
+    {
+      "q": "Is it progress if I lift the same weight with better form?",
+      "a": "Yes. A fuller range, more control and less assistance from other muscles all make the same weight genuinely harder, and that is a real increase in demand."
+    },
+    {
+      "q": "How fast should I return to my old weights after time off?",
+      "a": "Slower than feels necessary. Strength comes back faster than tendons and connective tissue re-adapt, and that gap is where re-injury usually happens."
+    }
+  ],
+  "muscles": [
+    "glute-max",
+    "vastus-lateralis",
+    "pec-major-stern",
+    "lats",
+    "ql",
+    "medial-hamstrings"
+  ],
+  "pain": [
+    "beside-the-spine",
+    "front-of-shoulder",
+    "below-kneecap",
+    "front-of-elbow"
+  ],
+  "guides": [],
+  "related": [
+    "/activities/hypertrophy-training-basics",
+    "/activities/training-volume-and-frequency",
+    "/activities/rep-ranges-explained",
+    "/activities/deload-weeks",
+    "/activities/training-around-an-injury",
+    "/activities/powerlifting-for-beginners",
+    "/treatments/strength-and-performance"
+  ],
+  "programs": [
+    "mobility-12"
+  ],
+  "group": "activities",
+  "steps": null,
+  "timeline": null,
+  "reviewStatus": "approved"
+}

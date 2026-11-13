@@ -33,8 +33,19 @@ export default async function middleware(request) {
   const country = request.headers.get("x-vercel-ip-country") || "";
   const ua = request.headers.get("user-agent") || "";
 
+  // robots.txt and sitemap.xml are the two files a search engine must be able to read from anywhere. They list only
+  // public page addresses and carry no personal or clinical data. Google fetches them from outside the United States,
+  // and the country lock below answered those fetches with this HTML notice instead, so Search Console reported
+  // "Sitemap could not be read" and none of the 237 pages were queued.
+  // The same goes for the search engines themselves on any public page: Googlebot, Bingbot and Applebot crawl from
+  // outside the United States, and answering them by country stopped the site being crawled at all. The owner's aim
+  // here is to keep AI training crawlers out, and that is step 2's job, by name, from every country. A search engine
+  // never reaches a private page: step 2 closes those to it wherever it comes from.
+  const OPEN_TO_ALL = url.pathname === "/sitemap.xml" || url.pathname === "/robots.txt"
+    || (SEARCH.test(ua) && !PRIVATE.test(url.pathname));
+
   // 1. Country lock (header is always set on Vercel; only missing in local development)
-  if (country && !ALLOWED.has(country)) return page(403, "Not available in your region", "MD Fit's website and app are only available in the United States.");
+  if (!OPEN_TO_ALL && country && !ALLOWED.has(country)) return page(403, "Not available in your region", "MD Fit's website and app are only available in the United States.");
 
   // 2. Bots and scrapers. Search engines may read the public homepage only.
   if (!ua || BAD_UA.test(ua)) return page(403, "Automated access isn't allowed", "This site can only be used in a web browser or the MD Fit app.");

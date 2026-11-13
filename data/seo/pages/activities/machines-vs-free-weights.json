@@ -1,0 +1,82 @@
+{
+  "group": "activities",
+  "slug": "machines-vs-free-weights",
+  "title": "Machines vs Free Weights: An Honest Comparison | MD Fit",
+  "h1": "Machines vs Free Weights",
+  "description": "Where machines genuinely win, where free weights do, and why the usual arguments against machines do not hold up well.",
+  "about": {
+    "type": "Thing",
+    "name": "Machines and free weights compared"
+  },
+  "lead": "Free weights are usually presented as serious training and machines as a lesser substitute. The evidence for that hierarchy is weaker than the confidence with which it is asserted, and machines solve real problems.",
+  "sections": [
+    {
+      "h2": "What machines actually do",
+      "html": "<p>A machine fixes the path of the movement. That removes the need to balance and stabilise the load, which means more of your effort goes into the muscle being trained.</p><p>For building muscle, that is often an advantage rather than a compromise. If the aim is to load the <a href=\"/muscles/rectus-femoris\">quadriceps</a> hard, a leg press lets you do so without balance, grip or trunk fatigue limiting you first.</p><p>The common criticism — that machines do not train stabilisers — is true and often irrelevant. If you also squat, carry and do single-leg work, stabilisation is covered, and a machine can do its specific job without needing to do everything.</p>"
+    },
+    {
+      "h2": "Where machines genuinely win",
+      "html": "<ul><li><b>Training alone at or near failure.</b> You can push a leg press hard without a spotter.</li><li><b>Working around an injury.</b> A machine often lets you load one area while avoiding another entirely. A chest press is possible when a wrist cannot tolerate a bar.</li><li><b>Early rehabilitation.</b> Controlled path, controlled range, easy to adjust.</li><li><b>Fatigue and complexity.</b> At the end of a session, when coordination is degraded, a machine is a safer way to add volume.</li><li><b>Beginners who find free weights intimidating.</b> Getting people training consistently matters more than equipment purity.</li></ul>"
+    },
+    {
+      "h2": "Where free weights win",
+      "html": "<p>Transfer. Life does not come on a fixed path, and the ability to stabilise a load through space is a real capacity that machines do not train. Carrying shopping, lifting a case, catching yourself on a stumble — these are free-weight skills.</p><p>They also accommodate individual proportions. A machine is built for an average body and the adjustment range is finite; if your limb proportions sit outside it, the path the machine imposes may not suit you. That is a real issue for taller and shorter people — see <a href=\"/activities/train-for-your-build\">train for your build</a>.</p><p>And free weights are more efficient per movement: a squat trains far more than a leg extension does.</p>"
+    },
+    {
+      "h2": "A sensible combination",
+      "html": "<p>Free weights for the main compound work, where transfer and efficiency matter most. Machines for additional volume, for isolating something specific, for training hard alone, and for working around a limitation.</p><p>That pattern suits most people and avoids the two common errors: dismissing machines as not real training, and using nothing else because free weights feel daunting.</p>"
+    },
+    {
+      "h2": "Setting a machine up",
+      "html": "<p>Most machine discomfort comes from poor adjustment rather than the machine itself.</p><ul><li>Align the joint you are training with the machine's pivot point. This is the adjustment people skip.</li><li>Set the seat so the movement happens in a comfortable range, not forced to an extreme.</li><li>Reduce the range if an end position pinches — particularly at the shoulder.</li><li>Write down your settings. Remaking them each session is friction you do not need.</li></ul><p>If a machine pinches or produces sharp joint pain regardless of adjustment, it may simply not suit your proportions. That is a reason to use something else rather than to persist.</p><p>The leg extension and the pec deck attract the most complaints, and both are usually fixable. On the leg extension, starting the movement from less knee bend often settles front-of-knee discomfort. On the pec deck, reducing how far the arms travel back takes the strain off the front of the shoulder. Neither machine is inherently a problem; the default settings simply suit some bodies and not others.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Sharp joint pain during a machine exercise, which often means the alignment or range is wrong for you.",
+    "Pinching at the front of the shoulder during pressing or fly movements.",
+    "Knee pain during leg extension or leg press that persists beyond the session.",
+    "Back pain during a seated machine movement, which may mean the seat position is forcing a poor position."
+  ],
+  "faq": [
+    {
+      "q": "Are machines less effective than free weights?",
+      "a": "For building muscle, not meaningfully so. For transferable strength and coordination, free weights have the advantage. Both are legitimate training."
+    },
+    {
+      "q": "Should beginners use machines?",
+      "a": "They can be a reasonable starting point, particularly for people who find a gym intimidating. Adding free weight movements over time is worth doing."
+    },
+    {
+      "q": "Is the leg press bad for the knees?",
+      "a": "Not inherently. Problems usually come from excessive depth under load or poor seat position rather than the machine itself."
+    },
+    {
+      "q": "Can I train entirely on machines?",
+      "a": "You can build muscle that way. You would miss the balance, coordination and carry-over that free weights provide, so adding some free weight or single-leg work is worthwhile."
+    }
+  ],
+  "muscles": [
+    "rectus-femoris",
+    "pec-major-stern",
+    "lats",
+    "glute-max",
+    "vastus-lateralis"
+  ],
+  "pain": [
+    "below-kneecap",
+    "front-of-shoulder",
+    "beside-the-spine"
+  ],
+  "guides": [],
+  "related": [
+    "/activities/dumbbells-vs-barbells",
+    "/activities/home-gym-essentials",
+    "/activities/train-for-your-build",
+    "/activities/resistance-band-training",
+    "/activities/hypertrophy-training-basics"
+  ],
+  "programs": [],
+  "reviewStatus": "approved"
+}

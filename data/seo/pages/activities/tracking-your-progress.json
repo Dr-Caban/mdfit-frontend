@@ -1,0 +1,84 @@
+{
+  "group": "activities",
+  "slug": "tracking-your-progress",
+  "title": "Tracking Your Progress in Training | MD Fit",
+  "h1": "Tracking Your Progress",
+  "description": "What to measure, what to ignore, and why the scale and the mirror are the two worst ways to tell whether training is working.",
+  "about": {
+    "type": "Thing",
+    "name": "Tracking training progress"
+  },
+  "lead": "Most people track the two things that respond slowest and most erratically — weight and appearance — and ignore the things that improve within weeks. That is a reliable way to conclude training is not working while it is working.",
+  "sections": [
+    {
+      "h2": "What improves first",
+      "html": "<p>Strength improves within two to three weeks, initially through better coordination rather than new muscle. You get better at producing force before you have more muscle to produce it with.</p><p>Endurance improves early too: a given walk feels easier within a few weeks. Sleep, mood and energy often shift before anything visible does.</p><p>Visible change is slow, non-linear, and influenced by a great deal besides training. Judging a programme on it after six weeks will mislead you almost every time.</p>"
+    },
+    {
+      "h2": "What to actually track",
+      "html": "<ul><li><b>The weight and repetitions for your main movements.</b> The single most useful record. Write it down each session.</li><li><b>A performance marker.</b> How long you can hold a single-leg stand, how many sit-to-stands in thirty seconds, how far you walk in a set time.</li><li><b>How daily life feels.</b> Stairs, shopping, getting off the floor, how your back feels at the end of the day.</li><li><b>Consistency.</b> Sessions completed per month. Over a year this predicts your results better than anything else.</li></ul><p>A notebook or a phone note is sufficient. The act of recording is most of the value, because it turns a vague sense of progress into something you can check.</p>"
+    },
+    {
+      "h2": "The scale, and why it misleads",
+      "html": "<p>Bodyweight moves with fluid, food, salt, time of day and hormonal cycles. Day-to-day changes of a couple of pounds are usually not tissue.</p><p>It also cannot tell you what changed. Gaining muscle while losing fat can leave the number identical, which looks like failure and is not. See <a href=\"/conditions/body-composition-and-strength\">body composition and strength</a>.</p><p>If you weigh yourself, do it consistently and look at the trend over weeks rather than reacting to single readings.</p>"
+    },
+    {
+      "h2": "Photographs and measurements",
+      "html": "<p>Photographs taken monthly in the same light and position are more informative than the scale and far more informative than daily mirror checks, which track mood and lighting more than anything else.</p><p>Tape measurements at the waist and hips are useful and more stable than weight. Monthly is frequent enough.</p>"
+    },
+    {
+      "h2": "Two markers worth testing every few months",
+      "html": "<p>Strength on the main lifts tells you about training. Two simple tests tell you about function, which is what training is for.</p><ul><li><b>Sit-to-stands in thirty seconds.</b> From a standard chair, arms crossed over the chest, no hands. Count how many. It reflects leg strength and power together, and it improves noticeably with training.</li><li><b>Single-leg stand.</b> Timed, eyes open, then eyes closed. Balance responds to practice and declines without it, so this one moves in both directions depending on what you have been doing.</li></ul><p>Both take two minutes, need no equipment, and are far more informative about how the next decade will go than your bodyweight. Record them, repeat them every few months, and watch the direction of travel.</p>"
+    },
+    {
+      "h2": "When the numbers stall",
+      "html": "<p>Plateaus are normal and not automatically a problem. Early progress is fast because improvements in coordination come quickly; later progress is slower because it requires actual tissue change.</p><p>If a lift has not moved in several weeks, the usual causes in order: not enough recovery, not enough food, not actually progressing the load, or needing a lighter week. See <a href=\"/activities/progressive-overload\">progressive overload</a> and <a href=\"/activities/deload-weeks\">deload weeks</a>.</p><p>Stalling across every lift at once, alongside poor sleep and flat mood, usually means too much rather than too little — see <a href=\"/activities/rest-days-and-overtraining\">rest days and overtraining</a>.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Unintentional weight loss that was not the goal, which should be assessed medically.",
+    "Strength that is declining rather than plateauing, particularly if it is one-sided.",
+    "Preoccupation with weight, measurements or appearance that is affecting daily life: this deserves support.",
+    "Persistent fatigue alongside stalled progress that does not improve with a lighter week."
+  ],
+  "faq": [
+    {
+      "q": "How often should I weigh myself?",
+      "a": "If at all, consistently and no more than weekly, looking at trends over a month. Daily weighing mostly measures fluid and food."
+    },
+    {
+      "q": "Why has my weight gone up since I started training?",
+      "a": "Early increases are usually fluid related to new training, and muscle gained alongside fat lost can mask changes entirely. Strength and how clothes fit tell you more."
+    },
+    {
+      "q": "How long before I should expect progress?",
+      "a": "Strength within two to three weeks, endurance within a few weeks, visible change over months. Judging a programme at six weeks on appearance alone is premature."
+    },
+    {
+      "q": "Do I really need to write it down?",
+      "a": "It helps considerably. Without a record it is very hard to tell whether you are actually progressing the load, which is the main driver of results."
+    }
+  ],
+  "muscles": [
+    "glute-max",
+    "rectus-femoris",
+    "lats",
+    "pec-major-stern"
+  ],
+  "pain": [
+    "beside-the-spine",
+    "front-of-thigh"
+  ],
+  "guides": [],
+  "related": [
+    "/activities/progressive-overload",
+    "/activities/staying-consistent",
+    "/activities/rest-days-and-overtraining",
+    "/activities/deload-weeks",
+    "/activities/how-many-days-a-week"
+  ],
+  "programs": [],
+  "reviewStatus": "approved"
+}

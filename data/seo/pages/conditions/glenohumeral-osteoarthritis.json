@@ -1,0 +1,86 @@
+{
+  "group": "conditions",
+  "slug": "glenohumeral-osteoarthritis",
+  "title": "Shoulder Osteoarthritis Care, Sarasota | MD Fit",
+  "h1": "Shoulder Osteoarthritis in Sarasota, FL",
+  "description": "Deep shoulder ache with grinding and lost reach? Learn how shoulder joint arthritis differs from rotator cuff and frozen shoulder, and what helps.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Glenohumeral osteoarthritis"
+  },
+  "lead": "Osteoarthritis of the shoulder joint itself, the ball and socket, is less common than arthritis at the hip or knee, and it is frequently mistaken for a rotator cuff problem. The distinction is worth making, because what helps differs.",
+  "sections": [
+    {
+      "h2": "What it typically feels like",
+      "html": "<p>The pain is deep, inside the joint rather than on the surface, and people usually point into the <a href=\"/pain/deep-shoulder-joint\">deep shoulder joint</a> rather than to a spot they can press.</p><ul><li>A deep ache that is worse with use through the day and often disturbs sleep.</li><li>Grinding, grating or clicking felt through the joint during movement.</li><li>Loss of rotation, particularly reaching behind the back or out to the side, that has crept in over months or years.</li><li>Stiffness in the morning that eases over a while rather than minutes.</li><li>Weather sensitivity, which many people report and few clinicians can explain.</li></ul><p>It is more common after a previous dislocation, fracture or long-standing rotator cuff problem, and in people who have loaded the shoulder heavily for decades.</p>"
+    },
+    {
+      "h2": "How it differs from the other two",
+      "html": "<p>Three shoulder conditions produce a stiff, painful shoulder, and they are routinely confused.</p><ul><li><a href=\"/conditions/frozen-shoulder\">Frozen shoulder</a> also loses rotation, but it arrives over weeks to months, is often intensely painful in its early phase, and follows a recognisable pattern of freezing, frozen and thawing. It happens in a joint whose surfaces are normal.</li><li><a href=\"/conditions/rotator-cuff-tear\">Rotator cuff problems</a> hurt on the outer shoulder, are worse reaching overhead or lifting away from the body, and typically preserve the passive range when someone else moves your arm.</li><li><b>Shoulder osteoarthritis</b> restricts the range whether you move it or someone else does, and the grinding is felt deep in the joint.</li></ul><p>A physician confirms it, usually with an X-ray. These conditions also coexist frequently, which is why the assessment looks at all three rather than picking one.</p>"
+    },
+    {
+      "h2": "What the muscles contribute",
+      "html": "<p>Exercise does not restore a joint surface. What it does change is how well the ball stays centred in the socket during movement, how much work the joint has to do, and how much of the stiffness is muscular rather than bony.</p><ul><li><a href=\"/muscles/subscapularis\">Subscapularis</a> is commonly the tightest and most tender muscle in an arthritic shoulder, and it blocks the outward rotation that is usually most restricted.</li><li><a href=\"/muscles/infraspinatus\">Infraspinatus</a> and <a href=\"/muscles/teres-minor\">teres minor</a> rotate the arm outward and hold the ball down in the socket; they tire and refer ache into the <a href=\"/pain/back-of-shoulder\">back of the shoulder</a>.</li><li><a href=\"/muscles/supraspinatus\">Supraspinatus</a> helps the arm lift and gets overworked as the joint stiffens.</li><li><a href=\"/muscles/pectoralis-minor\">Pectoralis minor</a> tips the shoulder blade forward and reduces the space the arm has to move into.</li><li><a href=\"/muscles/serratus-anterior\">Serratus anterior</a> and <a href=\"/muscles/lower-trapezius\">lower trapezius</a> position the shoulder blade; when they are weak, the arm has to come from the joint alone.</li></ul><p>Much of the reach people lose is shoulder blade movement rather than joint movement, and that part responds well.</p>"
+    },
+    {
+      "h2": "How MD Fit approaches it",
+      "html": "<p>The assessment separates the stiffness that comes from the joint from the stiffness that comes from muscle and the shoulder blade, which is the practical question. Hands-on release of the rotator cuff and chest frequently gives back some rotation in the same visit, because a good deal of the restriction is soft tissue guarding rather than bone.</p><p>Correction trains the shoulder blade to contribute, so that reaching, dressing and lifting take less from the joint. Strengthening is built in the ranges that stay comfortable, which usually means below shoulder height at first, progressing as tolerance improves. Short daily routines come through the free MD Fit app.</p><p>Where a physician is managing injections, or a shoulder replacement is being considered, this work runs alongside. People often find they function better than their X-ray suggests, and improving the surrounding mechanics is also good preparation if surgery does eventually happen.</p>"
+    },
+    {
+      "h2": "A note for Sarasota",
+      "html": "<p>Golf, tennis, pickleball and swimming all ask for shoulder rotation, and this is the condition that quietly takes it away over years. The usual aim here is not a pain-free joint on an X-ray but enough comfortable rotation to keep playing. Adjusting a swing, a serve or a stroke to need less end-range rotation is frequently part of that, and is worth doing before the activity is given up.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": "Rotation and comfort frequently improve over the first few weeks as the cuff and chest release and the shoulder blade starts contributing. The joint surface itself does not change, so the work is maintained rather than completed.",
+  "redFlags": [
+    "Shoulder pain after a fall with inability to lift the arm, which may be a fracture or a significant tear.",
+    "A hot, red, swollen shoulder with fever, which needs a physician the same day.",
+    "Night pain that is severe and unrelenting, or pain with unexplained weight loss.",
+    "New numbness, tingling or weakness running down the arm.",
+    "Left shoulder or arm pain with chest pressure, shortness of breath, sweating or nausea: call 911."
+  ],
+  "faq": [
+    {
+      "q": "Can exercise reverse shoulder arthritis?",
+      "a": "It does not change the joint surface. It frequently does improve rotation, strength and comfort, because a large share of the restriction comes from muscle and shoulder blade movement rather than bone."
+    },
+    {
+      "q": "Is this the same as frozen shoulder?",
+      "a": "No. Frozen shoulder develops over weeks to months in a joint with normal surfaces and usually follows a recognisable course. Shoulder arthritis develops over years and involves the joint surface itself."
+    },
+    {
+      "q": "Should I keep playing golf or tennis?",
+      "a": "Usually yes, within comfort, and often with adjustments that reduce how much end-range rotation the shoulder has to supply. Stopping entirely tends to cost strength and range."
+    },
+    {
+      "q": "Will I need a shoulder replacement?",
+      "a": "That is a decision for you and an orthopaedic surgeon. Many people manage well for a long time with conservative care, and improving the surrounding muscles is useful preparation either way."
+    }
+  ],
+  "muscles": [
+    "subscapularis",
+    "infraspinatus",
+    "teres-minor",
+    "supraspinatus",
+    "pec-minor",
+    "serratus"
+  ],
+  "pain": [
+    "deep-shoulder-joint",
+    "back-of-shoulder",
+    "outside-of-shoulder"
+  ],
+  "guides": [
+    "rotator-cuff"
+  ],
+  "related": [
+    "/conditions/frozen-shoulder",
+    "/conditions/rotator-cuff-tear",
+    "/conditions/shoulder-impingement",
+    "/conditions/shoulder-pain",
+    "/conditions/ac-joint-pain",
+    "/treatments/functional-mobility"
+  ],
+  "reviewStatus": "approved"
+}

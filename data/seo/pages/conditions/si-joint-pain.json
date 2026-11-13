@@ -4,7 +4,10 @@
   "title": "SI Joint Pain Treatment in Sarasota, FL | MD Fit",
   "h1": "SI Joint Pain Treatment in Sarasota, FL",
   "description": "Pain at the dimple of the low back that catches when you roll in bed or stand up? Dr. Jared Caban in Sarasota treats the muscles that overload the SI joint.",
-  "about": { "type": "MedicalCondition", "name": "Sacroiliac joint pain" },
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Sacroiliac joint pain"
+  },
   "lead": "The sacroiliac joints connect the base of the spine to the pelvis. They move very little, but when the muscles around them pull unevenly, the joint becomes irritated and pain settles into one side of the low back and upper buttock.",
   "sections": [
     {
@@ -38,14 +41,47 @@
     "Morning stiffness lasting over an hour with pain that improves with activity, which may suggest an inflammatory cause."
   ],
   "faq": [
-    { "q": "Is my SI joint out of place?", "a": "Almost never. The joint is held by some of the strongest ligaments in the body. What changes is muscle tension and control around it, which is what treatment addresses." },
-    { "q": "Should I wear an SI belt?", "a": "A belt can reduce pain short term, especially during pregnancy or an acute flare. It does not replace restoring glute and core control, which is what keeps the joint comfortable long term." },
-    { "q": "Can golf or pickleball cause SI pain?", "a": "Rotational sports load one side of the pelvis repeatedly, and a stiff hip or weak glute medius shifts that load to the SI joint. Addressing the hip usually lets people keep playing." },
-    { "q": "How is this different from sciatica?", "a": "Sciatica follows the nerve down the leg, often past the knee, with tingling or weakness. SI pain stays local to the back of the pelvis and upper buttock, though they can occur together." }
+    {
+      "q": "Is my SI joint out of place?",
+      "a": "Almost never. The joint is held by some of the strongest ligaments in the body. What changes is muscle tension and control around it, which is what treatment addresses."
+    },
+    {
+      "q": "Should I wear an SI belt?",
+      "a": "A belt can reduce pain short term, especially during pregnancy or an acute flare. It does not replace restoring glute and core control, which is what keeps the joint comfortable long term."
+    },
+    {
+      "q": "Can golf or pickleball cause SI pain?",
+      "a": "Rotational sports load one side of the pelvis repeatedly, and a stiff hip or weak glute medius shifts that load to the SI joint. Addressing the hip usually lets people keep playing."
+    },
+    {
+      "q": "How is this different from sciatica?",
+      "a": "Sciatica follows the nerve down the leg, often past the knee, with tingling or weakness. SI pain stays local to the back of the pelvis and upper buttock, though they can occur together."
+    }
   ],
-  "muscles": ["glute-med", "ql", "longissimus", "multifidus", "piriformis", "glute-max"],
-  "pain": ["si-joint", "upper-buttock", "beside-the-spine"],
-  "guides": ["lateral-hip"],
-  "related": ["/conditions/low-back-pain", "/conditions/piriformis-syndrome", "/conditions/sciatica", "/conditions/hip-pain", "/conditions/pelvic-floor-rehab", "/treatments/functional-mobility", "/muscles/gluteus-medius"],
-  "reviewStatus": "draft"
+  "muscles": [
+    "glute-med",
+    "ql",
+    "longissimus",
+    "multifidus",
+    "piriformis",
+    "glute-max"
+  ],
+  "pain": [
+    "si-joint",
+    "upper-buttock",
+    "beside-the-spine"
+  ],
+  "guides": [
+    "lateral-hip"
+  ],
+  "related": [
+    "/conditions/low-back-pain",
+    "/conditions/piriformis-syndrome",
+    "/conditions/sciatica",
+    "/conditions/hip-pain",
+    "/conditions/pelvic-floor-rehab",
+    "/treatments/functional-mobility",
+    "/muscles/gluteus-medius"
+  ],
+  "reviewStatus": "approved"
 }
