@@ -51,7 +51,7 @@
       const res = await fetch(API + path, { method, headers: { "Content-Type": "application/json", ...(token ? { Authorization: "Bearer " + token } : {}) }, body: body === undefined ? undefined : JSON.stringify(body) });
       if (res.status === 401 && path !== "/api/admin/login") { signOut(); throw new Error("Session expired. Sign in again."); }
       const data = res.headers.get("content-type")?.includes("json") ? await res.json() : null;
-      if (!res.ok) throw new Error((data && data.error) || "Request failed.");
+      if (!res.ok) { const err = new Error((data && data.error) || "Request failed."); if (data && data.need) err.need = data.need; throw err; }
       return data;
     } finally { pending = Math.max(0, pending - 1); if (seen) netBar(-1); if (write) { forget(); rewarm(method, path); } }
   }
@@ -99,7 +99,8 @@
     for (const k of Object.keys(cache)) cache[k] = (k === "unread" || k === "waiting") ? 0 : null; // every cached list, the open chart included
     mem.clear(); forget(); freshAsk = null; shown = ""; shownHtml = ""; visited.length = 0; clearTimeout(warmT); clearTimeout(repaintT); warmRun++;
     qaClose(); state.guideAiErr = ""; state.chartClient = null; state.thread = null; state.clientQ = ""; state.formsQ = ""; state.formsShow = ""; state.scribeText = ""; tele.transcript = ""; noteReset(null);
-    $("#view").innerHTML = ""; $("#nav").innerHTML = ""; $("#whoami").textContent = ""; $("#globalSearch").value = ""; closeModal();
+    mustChange = false; $("#qa").hidden = false; $("#globalSearch").disabled = false;
+    $("#view").innerHTML = ""; $("#nav").innerHTML = ""; $("#nav").dataset.sig = ""; $("#whoami").textContent = ""; $("#globalSearch").value = ""; closeModal();
     $("#app").hidden = true; $("#signin").hidden = false; clearTimeout(idleTimer);
     // /admin shares this tab: signing out here signs out there as well
     try { sessionStorage.removeItem("mdfit_token"); sessionStorage.removeItem(ACTIVE_KEY); } catch {}
@@ -190,6 +191,25 @@
     booking: '<path d="M3 9h18M7 3v4M17 3v4"/><rect x="3" y="5" width="18" height="16" rx="2"/><path d="m9 15 2 2 4-4"/>',
     guide: '<path d="M7 18.500a4.500 4.500 0 0 1-.700-8.950A6 6 0 0 1 17.900 10.600 4 4 0 0 1 17.500 18.500z"/><path d="M9 14.500h.01M12 14.500h.01M15 14.500h.01"/>'
   };
+  // The one permission this file knows by name: patient records, marked out wherever it appears.
+  const PHI = "charts";
+  // ---- What the signed-in person may do. The server decides; this only keeps the page from offering what it
+  // would refuse. Until /me has answered, nothing is hidden (the server is still the boundary).
+  const myPerms = () => new Set(((cache.me && cache.me.permissions) || []));
+  const iAmOwner = () => !!(cache.me && cache.me.isOwner);
+  const can = (key) => !key || !cache.me || iAmOwner() || myPerms().has(key);
+  // Which permission each screen in the menu belongs to. Empty means everyone who can sign in sees it.
+  // Where a screen could belong to more than one, the stricter one is used: a screen that puts a patient's record
+  // on the glass (the chart, notes, intake forms, a video visit) sits behind patient-record access.
+  const NAV_PERM = {
+    dashboard: "", calendar: "scheduling", clients: "clients", chart: PHI, leads: "clients", messages: "messages",
+    telehealth: PHI, notes: PHI, forms: PHI, programs: "content", nutrition: "content", fitness: "content",
+    payments: "billing", newsletter: "content", team: "staff", feedback: "reviews", security: "security",
+    settings: "settings", insights: "insights", economics: "insights", guide: "insights", portal: "", booking: "scheduling"
+  };
+  const navOk = (id) => can(NAV_PERM[id]);
+  const navSig = () => (cache.me ? `${iAmOwner()}|${[...myPerms()].sort().join(",")}` : "unknown");
+  const navLabel = (id) => { for (const g of NAV) for (const [k, l] of g.items) if (k === id) return l; return id; };
   const NAV = [
     { g: "Practice", items: [["dashboard", "Dashboard"], ["calendar", "Calendar"], ["clients", "Clients"], ["chart", "Client chart"], ["leads", "Leads"], ["messages", "Messages"], ["telehealth", "Telehealth"]] },
     { g: "Clinical", items: [["notes", "Notes & AI scribe"], ["forms", "Forms & intake"], ["programs", "Programs"], ["nutrition", "Nutrition"], ["fitness", "Fitness"]] },
@@ -199,10 +219,12 @@
   ];
   function renderNav(active) {
     const nav = $("#nav"), count = (id) => (id === "messages" ? cache.unread : id === "clients" ? cache.waiting : 0) || 0;
-    if (!nav.querySelector(".brand")) {
+    // The menu is built once, and again if who is signed in (or what they may do) has changed.
+    if (!nav.querySelector(".brand") || nav.dataset.sig !== navSig()) {
+      nav.dataset.sig = navSig();
       nav.innerHTML = `<div class="brand"><div class="logo"><img src="assets/logo.webp" alt="" width="160" height="160"></div><div><b>MD Fit</b><div class="muted" style="font-size:12px">Physical Rehab &amp; Fitness</div></div></div>` +
-        NAV.map((g) => `<div class="nav-group"><span>${g.g}</span>${g.items.map(([id, label]) => `<a href="#${id}" data-nav="${id}"><svg viewBox="0 0 24 24">${ICON[id]}</svg>${label}</a>`).join("")}</div>`).join("") +
-        `<div class="nav-group"><a href="/admin-classic" class="muted" style="font-size:12.5px">Earlier admin screens</a></div>`;
+        NAV.map((g) => { const items = g.items.filter(([id]) => navOk(id)); return items.length ? `<div class="nav-group"><span>${g.g}</span>${items.map(([id, label]) => `<a href="#${id}" data-nav="${id}"><svg viewBox="0 0 24 24">${ICON[id]}</svg>${label}</a>`).join("")}</div>` : ""; }).join("") +
+        (can("settings") ? `<div class="nav-group"><a href="/admin-classic" class="muted" style="font-size:12.5px">Earlier admin screens</a></div>` : "");
     }
     for (const a of nav.querySelectorAll("a[data-nav]")) {
       const id = a.dataset.nav, n = count(id); let b = a.querySelector(".badge");
@@ -1080,12 +1102,131 @@
         ${state.guideAiErr ? `<p style="margin:0;color:var(--bad)" id="guideAiErr" role="alert">Not changed: ${esc(state.guideAiErr)}</p>` : ""}</div>` : ""}
     </div>`;
   };
+  // ---------------------------------------------------------------- Team & roles
+  // Who can sign in, what each person may do, and the first-sign-in password change.
+  // Everything about roles and permissions comes from the server: the role names, what each role turns on, and
+  // every permission's own label and description. Nothing of that is written down in here, so a role added on the
+  // server appears here by itself. The one thing this file knows is which permission holds patient records, because
+  // that one is marked out on screen wherever it appears.
+  // Permissions are grouped only so the list reads well; a key the server sends that is not in a group below still
+  // appears, under "Other".
+  const PERM_GROUPS = [
+    { title: "Patient records", note: "Protected health information. Give this only to the people who treat patients.", keys: [PHI] },
+    { title: "Day to day", keys: ["clients", "scheduling", "messages", "billing"] },
+    { title: "Website and content", keys: ["content", "reviews"] },
+    { title: "Practice administration", keys: ["insights", "settings", "security", "staff"] }
+  ];
+  const permGroups = (list) => {
+    const left = new Map((list || []).map((p) => [p.key, p])), out = [];
+    for (const g of PERM_GROUPS) {
+      const items = g.keys.map((k) => left.get(k)).filter(Boolean);
+      g.keys.forEach((k) => left.delete(k));
+      if (items.length) out.push({ ...g, items });
+    }
+    if (left.size) out.push({ title: "Other", items: [...left.values()] });
+    return out;
+  };
+  const permLabel = (data, k) => (((data && data.permissions) || []).find((p) => p.key === k) || {}).label || k;
+  const roleLabel = (data, r) => (((data && data.roles) || {})[r] || {}).label || r || "—";
+  // Patient-record access never looks like the others, in any list on this screen
+  const permPill = (k, data) => k === PHI
+    ? `<span class="pill phi">${ui("lock", 12)}${esc(permLabel(data, k))} · patient records</span>`
+    : `<span class="pill">${esc(permLabel(data, k))}</span>`;
+  const permPills = (keys, data, all) => all
+    ? `<span class="pill accent">Everything, including patient records</span>`
+    : ((keys || []).length ? [...keys].sort((a, b) => (a === PHI ? -1 : b === PHI ? 1 : 0)).map((k) => permPill(k, data)).join("") : `<span class="muted" style="font-size:12.5px">Nothing yet</span>`);
+  const isMe = (s) => !!(cache.me && s && s.email && String(s.email).toLowerCase() === String(cache.me.email).toLowerCase());
+  const formMsg = (f, text) => { const m = f.querySelector("[data-msg]"); if (m) m.textContent = text; };
+  const errText = (err) => err.message + (err.need ? ` (it needs the ${err.need} permission)` : "");
+  const picks = (f) => [...f.querySelectorAll("input[name=perm]:checked")].map((x) => x.value);
+
+  // The tick list. A permission the signed-in person does not hold themselves cannot be ticked here: the server
+  // refuses to pass on what you do not have, so the box is shown but switched off, with the reason next to it.
+  function permEditor(data, role, chosen, lock) {
+    const mine = myPerms(), owner = iAmOwner(), on = new Set((((data.roles || {})[role]) || {}).permissions || []), picked = new Set(chosen || []);
+    return `<div class="perm-groups" data-perms>
+      <p class="muted" data-rolesum style="margin:0;font-size:12.5px"></p>
+      ${permGroups(data.permissions).map((g) => `<div class="perm-g"><h3>${esc(g.title)}</h3>${g.note ? `<p class="muted" style="margin:0 0 6px;font-size:12px">${esc(g.note)}</p>` : ""}
+        <div class="perm-list">${g.items.map((p) => {
+          const phi = p.key === PHI, mayGive = owner || mine.has(p.key), dis = lock || !mayGive;
+          return `<label class="perm${phi ? " phi" : ""}${on.has(p.key) ? " in-role" : ""}${dis ? " off" : ""}" data-perm="${esc(p.key)}">
+            <input type="checkbox" name="perm" value="${esc(p.key)}"${picked.has(p.key) ? " checked" : ""}${dis ? " disabled" : ""}>
+            <span class="perm-t">${phi ? ui("lock", 14) : ""}${esc(p.label || p.key)}${phi ? `<span class="pill phi">Patient records (PHI)</span>` : ""}</span>
+            <span class="perm-d muted">${esc(p.description || "")}</span>
+            <span class="perm-role" data-rolein${on.has(p.key) ? "" : " hidden"}>Part of this role</span>
+            ${!mayGive && !lock ? `<span class="perm-d muted" data-cant>You do not have this yourself, so you cannot give it to anyone.</span>` : ""}
+          </label>`;
+        }).join("")}</div></div>`).join("")}
+    </div>`;
+  }
+  // Picking a role shows what that role means before anything is saved, and ticks its permissions.
+  function permRoleSync(f, data, tick) {
+    if (!f || !f.isConnected) return;
+    const sel = f.elements.role, role = sel && !sel.disabled ? sel.value : (f.dataset.role || ""), r = ((data.roles || {})[role]) || {}, on = new Set(r.permissions || []);
+    for (const el of f.querySelectorAll(".perm")) {
+      const k = el.dataset.perm, box = el.querySelector("input[name=perm]");
+      el.classList.toggle("in-role", on.has(k));
+      const tag = el.querySelector("[data-rolein]"); if (tag) tag.hidden = !on.has(k);
+      if (tick && box && !box.disabled) box.checked = on.has(k);
+    }
+    const sum = f.querySelector("[data-rolesum]");
+    if (sum) sum.textContent = on.size
+      ? `${roleLabel(data, role)} turns on: ${[...on].map((k) => permLabel(data, k)).join(", ")}. Tick or untick below to change it for this person only.`
+      : `${roleLabel(data, role)} turns nothing on by itself. Tick what this person needs.`;
+  }
+
+  function staffRow(s, data) {
+    const owner = s.role === "owner", self = isMe(s), off = s.active === false;
+    const why = owner ? "The owner's sign-in is set in the host's variables, so it is not changed from here and cannot be switched off."
+      : self ? "This is you. Your own role, permissions and access are locked, so nobody can lock themselves out or give themselves more." : "";
+    const no = (stop, reason) => stop ? ` disabled aria-disabled="true" title="${esc(reason)}"` : "";
+    const nm = esc(s.name || s.email || "");
+    return `<li class="staff-row${off ? " off" : ""}" data-staff="${esc(s.id)}">
+      <div class="staff-who">${avatar(s.name || s.email, 36)}<span style="min-width:0"><b>${nm}</b><span class="muted" style="display:block;font-size:12.5px;overflow-wrap:anywhere">${esc(s.email || "")}</span></span></div>
+      <div class="staff-meta">
+        <span class="pill accent">${esc(roleLabel(data, s.role))}</span>
+        <span class="pill ${off ? "warn" : "ok"}">${off ? "Deactivated" : "Can sign in"}</span>
+        ${self ? `<span class="pill">You</span>` : ""}
+        <span class="muted" style="font-size:12.5px">${off ? `Deactivated ${when(s.deactivatedAt)}` : `Last sign-in ${when(s.lastLoginAt)}`}</span>
+      </div>
+      <div class="staff-perms" data-perms-of="${esc(s.id)}">${permPills(s.permissions, data, owner)}</div>
+      ${why ? `<p class="staff-why muted">${ui("lock", 14)}<span>${esc(why)}</span></p>` : ""}
+      <div class="staff-acts">
+        <button type="button" class="btn" data-act="staffEdit" data-id="${esc(s.id)}"${no(owner, "The owner is not edited here.")}>Edit</button>
+        <button type="button" class="btn" data-act="staffPw" data-id="${esc(s.id)}" data-name="${nm}"${no(owner, "The owner's password is changed in the host's variables.")}>Reset password</button>
+        ${off
+          ? `<button type="button" class="btn primary" data-act="staffOn" data-id="${esc(s.id)}" data-name="${nm}"${no(owner || self, owner ? "The owner is always able to sign in." : "You cannot switch your own access on or off.")}>Let them sign in again</button>`
+          : `<button type="button" class="btn danger" data-act="staffOff" data-id="${esc(s.id)}" data-name="${nm}"${no(owner || self, owner ? "The owner cannot be switched off." : "You cannot switch off your own access.")}>Deactivate</button>`}
+      </div></li>`;
+  }
+
   V.team = async () => {
-    const [me, mfa] = await Promise.all([load("/me"), load("/mfa")]);
-    return `<div class="view-head"><div><h1>Team & roles</h1><p class="muted">This system has one sign-in: the practice owner</p></div></div>
-    <div class="card" style="padding:0;margin-bottom:16px"><div class="table-wrap"><table><thead><tr><th>Member</th><th>Role</th><th>Two-step sign-in</th><th>Email alerts</th></tr></thead><tbody>
-    <tr><td><b>${esc(me.email)}</b></td><td>Owner</td><td><span class="pill ${mfa.enabled ? "ok" : "warn"}">${mfa.enabled ? "On" : "Off"}</span></td><td><span class="pill ${me.emailNotifications ? "ok" : ""}">${me.emailNotifications ? "On" : "Off"}</span></td></tr></tbody></table></div></div>
-    <div class="card"><div class="card-head"><h2>More staff and roles</h2><span class="pill">Not connected</span></div>${none("Separate sign-ins for clinicians and front desk, with their own permissions, are not built yet.")}</div>`;
+    const me = await load("/me"); cache.me = me;
+    const mfa = await load("/mfa").catch(() => null);
+    const mayManage = can("staff");
+    const head = `<div class="view-head"><div><h1>Team &amp; roles</h1><p class="muted">Who can sign in to this workspace, and what each of them may do</p></div>
+      ${mayManage ? `<button type="button" class="btn primary" data-act="staffAdd">${ui("plus", 14)} Add a person</button>` : ""}</div>`;
+    const you = `<div class="card stack" id="teamYou" style="margin-bottom:16px">
+      <div class="card-head"><h2>Your account</h2><span class="pill accent">${esc(me.isOwner ? "Owner" : roleLabel(null, me.role))}</span></div>
+      <p style="margin:0"><b>${esc(me.name || me.email)}</b><span class="muted" style="display:block;font-size:12.5px;overflow-wrap:anywhere">${esc(me.email)}</span></p>
+      <div class="staff-perms">${permPills(me.permissions, null, me.isOwner)}</div>
+      ${mfa ? `<p class="muted" style="margin:0;font-size:12.5px">Two-step sign-in: ${mfa.enabled ? "on" : "off"} · <a href="#security">Sign-in security</a></p>` : ""}
+      <div class="row"><button type="button" class="btn" data-act="mePw">Change my password</button></div></div>`;
+    if (!mayManage) return `${head}${you}
+      <div class="card" id="teamNoAccess"><div class="card-head"><h2>Managing the team</h2></div>
+      <p style="margin:0">You do not have the Team &amp; roles permission, so adding people, changing what they may do and switching access on or off are not yours to do. Everything else you can reach is in the menu. If you need this, ask the practice owner or anyone else who holds it.</p></div>`;
+    const data = await load("/staff");
+    const list = data.staff || [], live = list.filter((s) => s.active !== false);
+    return `${head}${you}
+    <div class="card" id="teamList" style="margin-bottom:16px"><div class="card-head"><h2>Who can sign in</h2>
+      <span class="muted" style="font-size:12px">${plural(live.length, "person")} of ${list.length} ${list.length === 1 ? "is" : "are"} active</span></div>
+      <ul class="staff-list">${list.map((s) => staffRow(s, data)).join("") || `<li>${none("Nobody has been added yet.")}</li>`}</ul>
+      <p class="muted" style="margin:12px 0 0;font-size:12.5px">Deactivating is reversible and deletes nothing: the person's record, and everything they did, stays. It only stops them signing in, until you let them again.</p></div>
+    <div class="card" id="teamRoles"><div class="card-head"><h2>What the roles mean</h2></div>
+      <ul class="staff-list">${Object.entries(data.roles || {}).map(([k, r]) => `<li class="staff-row" data-role="${esc(k)}">
+        <div class="staff-who"><span><b>${esc(r.label || k)}</b><span class="muted" style="display:block;font-size:12.5px">${k === "owner" ? "Everything. Set in the host's variables, not here." : plural((r.permissions || []).length, "permission")}</span></span></div>
+        <div class="staff-perms">${permPills(r.permissions, data, k === "owner")}</div></li>`).join("")}</ul>
+      <p class="muted" style="margin:12px 0 0;font-size:12.5px">A role is a starting point. When you add or edit someone you can tick anything on or off for them alone.</p></div>`;
   };
 
   V.feedback = async () => {
@@ -1333,6 +1474,69 @@
     review: async (el) => { await api("PATCH", `/api/admin/feedback/${el.dataset.id}`, { status: el.dataset.st }); toast("Updated."); render(); },
     report: async (el) => { await api("PATCH", `/api/admin/feedback-reports/${el.dataset.id}`, { status: el.dataset.st }); toast("Updated."); render(); },
     auditVerify: async () => { const r = await get("/audit/verify"); $("#auditResult").innerHTML = r.ok ? `<span class="pill ok">Intact</span><p class="muted" style="margin:8px 0 0">${plural(r.entries, "entry")} checked. Every one links to the one before and carries a valid signature.</p>` : `<span class="pill bad">Problem found</span><p style="margin:8px 0 0">${esc(r.error || "The ledger did not verify.")}</p>`; },
+    // ---- Team & roles. Nothing here ever puts a password on the screen or into a message: a typed password is
+    // read from its box, sent, and the box is emptied.
+    staffAdd: async () => {
+      const data = await load("/staff");
+      const roles = Object.entries(data.roles || {}).filter(([k]) => k !== "owner");
+      if (!roles.length) return toast("The server offers no role to give anyone.");
+      const first = roles[0][0];
+      modal(`<div class="card-head"><h2>Add a person</h2>${xBtn}</div>
+        <form class="stack" data-form="staffNew" autocomplete="off">
+          ${fld("sfName", "name", "Full name", "", { max: 80, attrs: 'required autocomplete="off"' })}
+          ${fld("sfEmail", "email", "Email they sign in with", "", { type: "email", max: 120, attrs: 'required autocomplete="off"' })}
+          <div class="field"><label for="sfRole">Role</label><select id="sfRole" name="role" class="input" data-change="staffRole" required>${roles.map(([k, r]) => `<option value="${esc(k)}">${esc(r.label || k)}</option>`).join("")}</select></div>
+          ${fld("sfPass", "password", "First password", "", { type: "password", max: 72, attrs: 'required minlength="10" autocomplete="new-password"' })}
+          <p class="muted" style="margin:0;font-size:12.5px">At least 10 characters. Say it to them in person or by phone, not in an email; they are asked to change it the first time they sign in.</p>
+          <h3 style="margin:4px 0 0">What they may do</h3>
+          ${permEditor(data, first, (((data.roles || {})[first]) || {}).permissions || [], false)}
+          <p role="alert" data-msg style="margin:0;color:var(--bad);min-height:1.2em"></p>
+          <div class="row" style="justify-content:flex-end"><button type="button" class="btn" data-act="closeModal">Cancel</button><button class="btn primary">Add this person</button></div>
+        </form>`);
+      permRoleSync($('[data-form="staffNew"]'), data, false);
+    },
+    staffEdit: async (el) => {
+      const data = await load("/staff"), s = (data.staff || []).find((x) => x.id === el.dataset.id);
+      if (!s) return toast("That person is no longer there.");
+      if (s.role === "owner") return toast("The owner's sign-in is set in the host's variables and is not changed from here.");
+      const self = isMe(s), roles = Object.entries(data.roles || {}).filter(([k]) => k !== "owner");
+      modal(`<div class="card-head"><h2>${esc(s.name || s.email)}</h2>${xBtn}</div>
+        <form class="stack" data-form="staffSave" data-id="${esc(s.id)}" data-self="${self ? "1" : ""}" data-role="${esc(s.role)}" autocomplete="off">
+          <p class="muted" style="margin:0;overflow-wrap:anywhere">${esc(s.email)}</p>
+          ${fld("seName", "name", "Full name", s.name, { max: 80, attrs: "required" })}
+          <div class="field"><label for="seRole">Role</label><select id="seRole" name="role" class="input" data-change="staffRole"${self ? ' disabled aria-disabled="true"' : ""}>${roles.map(([k, r]) => `<option value="${esc(k)}"${k === s.role ? " selected" : ""}>${esc(r.label || k)}</option>`).join("")}</select></div>
+          ${self ? `<p class="muted" id="seSelf" style="margin:0;font-size:12.5px;display:flex;gap:6px;align-items:flex-start">${ui("lock", 14)}<span>This is you. Your own role, permissions and access are locked here, so nobody can lock themselves out or give themselves more. Ask the owner, or anyone else with the Team &amp; roles permission, to change them.</span></p>` : ""}
+          <label class="perm" data-perm="active"><input type="checkbox" name="active" id="seActive"${s.active === false ? "" : " checked"}${self ? " disabled" : ""}>
+            <span class="perm-t">Can sign in</span>
+            <span class="perm-d muted">Turning this off is reversible and deletes nothing: it only stops them signing in until you turn it back on.</span></label>
+          <h3 style="margin:4px 0 0">What they may do</h3>
+          ${permEditor(data, s.role, s.permissions || [], self)}
+          <p role="alert" data-msg style="margin:0;color:var(--bad);min-height:1.2em"></p>
+          <div class="row" style="justify-content:flex-end"><button type="button" class="btn" data-act="closeModal">Cancel</button><button class="btn primary">Save changes</button></div>
+        </form>`);
+      permRoleSync($('[data-form="staffSave"]'), data, false);
+    },
+    staffPw: (el) => modal(`<div class="card-head"><h2>Reset a password</h2>${xBtn}</div>
+      <form class="stack" data-form="staffPass" data-id="${esc(el.dataset.id)}" data-name="${esc(el.dataset.name || "")}" autocomplete="off">
+        <p style="margin:0">A new password for <b>${esc(el.dataset.name || "this person")}</b>. Say it to them in person or by phone, not in an email.</p>
+        ${fld("spPass", "password", "New password", "", { type: "password", max: 72, attrs: 'required minlength="10" autocomplete="new-password"' })}
+        <p class="muted" style="margin:0;font-size:12.5px">At least 10 characters. They are asked to change it the next time they sign in.</p>
+        <p role="alert" data-msg style="margin:0;color:var(--bad);min-height:1.2em"></p>
+        <div class="row" style="justify-content:flex-end"><button type="button" class="btn" data-act="closeModal">Cancel</button><button class="btn primary">Set this password</button></div></form>`),
+    staffOff: async (el) => {
+      const nm = el.dataset.name || "this person";
+      if (!confirm(`Deactivate ${nm}? They will not be able to sign in. Nothing is deleted and you can let them sign in again here at any time.`)) return;
+      await api("DELETE", `/api/admin/staff/${el.dataset.id}`);
+      toast(`${nm} can no longer sign in. You can turn this back on whenever you like.`); await render();
+    },
+    staffOn: async (el) => {
+      const nm = el.dataset.name || "this person";
+      await api("PUT", `/api/admin/staff/${el.dataset.id}`, { active: true });
+      toast(`${nm} can sign in again.`); await render();
+    },
+    mePw: () => modal(`<div class="card-head"><h2>Change your password</h2>${xBtn}</div><form class="stack" data-form="mePassword" autocomplete="off">${pwFields()}
+      <p role="alert" data-msg style="margin:0;color:var(--bad);min-height:1.2em"></p>
+      <div class="row" style="justify-content:flex-end"><button type="button" class="btn" data-act="closeModal">Cancel</button><button class="btn primary">Change it</button></div></form>`),
     copyBook: async () => { const i = $("#bookUrl"); try { await navigator.clipboard.writeText(i.value); toast("Link copied."); } catch { i.select(); toast("Press Ctrl+C to copy."); } }
   };
   const FORMS = {
@@ -1381,6 +1585,44 @@
       try { await api("POST", `/api/admin/messages/${state.thread}`, { body }); }
       catch (err) { const p = $("[data-pending]"); if (p) p.remove(); const box = $(".composer input[name=body]"); if (box && !box.value) box.value = body; throw err; }
       await refreshMessages(true);
+    },
+    staffNew: async (f) => {
+      const name = f.elements.name.value.trim(), email = f.elements.email.value.trim();
+      if (!name || !email) return formMsg(f, "A name and an email are both needed.");
+      if (f.elements.password.value.length < 10) return formMsg(f, "The first password needs at least 10 characters.");
+      formMsg(f, "");
+      try {
+        await api("POST", "/api/admin/staff", { name, email, role: f.elements.role.value, permissions: picks(f), password: f.elements.password.value });
+        f.elements.password.value = ""; closeModal(); toast(`${name} can sign in now.`); await render();
+      } catch (err) { f.elements.password.value = ""; formMsg(f, errText(err)); toast(errText(err)); }
+    },
+    staffSave: async (f) => {
+      const self = f.dataset.self === "1", body = { name: f.elements.name.value.trim() };
+      if (!body.name) return formMsg(f, "A name is needed.");
+      // Your own role, permissions and access are never sent: the server refuses them, and the form has them locked.
+      if (!self) { body.role = f.elements.role.value; body.permissions = picks(f); body.active = !!(f.elements.active && f.elements.active.checked); }
+      formMsg(f, "");
+      try { await api("PUT", `/api/admin/staff/${f.dataset.id}`, body); closeModal(); toast("Saved."); await render(); }
+      catch (err) { formMsg(f, errText(err)); toast(errText(err)); }
+    },
+    staffPass: async (f) => {
+      const pw = f.elements.password.value;
+      if (pw.length < 10) return formMsg(f, "A password needs at least 10 characters.");
+      formMsg(f, "");
+      try { await api("POST", `/api/admin/staff/${f.dataset.id}/password`, { password: pw }); f.elements.password.value = ""; closeModal(); toast(`New password set for ${f.dataset.name || "them"}.`); }
+      catch (err) { f.elements.password.value = ""; formMsg(f, errText(err)); toast(errText(err)); }
+    },
+    mePassword: async (f) => {
+      const current = f.elements.current.value, pw = f.elements.password.value, again = f.elements.confirm.value;
+      if (pw.length < 10) return formMsg(f, "Your new password needs at least 10 characters.");
+      if (pw !== again) return formMsg(f, "The two new passwords are not the same.");
+      formMsg(f, "");
+      try { await api("POST", "/api/admin/me/password", { current, password: pw }); }
+      catch (err) { f.elements.current.value = f.elements.password.value = f.elements.confirm.value = ""; formMsg(f, errText(err)); return; }
+      f.elements.current.value = f.elements.password.value = f.elements.confirm.value = "";
+      try { cache.me = await get("/me"); } catch {}
+      mustChange = !!(cache.me && cache.me.mustChangePassword);
+      if (!mustChange) { $("#qa").hidden = false; $("#globalSearch").disabled = false; closeModal(); toast("Password changed."); await render(); }
     },
     apptSave: async (f) => { await api("PATCH", `/api/admin/appointments/${f.dataset.id}`, { status: f.status.value, adminNotes: f.adminNotes.value }); cache.appts = null; closeModal(); toast("Appointment updated."); render(); }
   };
@@ -1823,7 +2065,7 @@
     if (!token || !e.target.closest) return;
     const a = e.target.closest('a[href^="#"]'), r = a ? a.getAttribute("href").slice(1) : "";
     clearTimeout(hoverT);
-    if (r && r !== shown && (WARM.includes(r) || AHEAD[r])) hoverT = setTimeout(() => { if (token) early(r).catch(() => {}); }, wait);
+    if (r && r !== shown && navOk(r) && (WARM.includes(r) || AHEAD[r])) hoverT = setTimeout(() => { if (token) early(r).catch(() => {}); }, wait);
   };
   document.addEventListener("pointerover", (e) => { if (e.pointerType === "mouse") ahead(e, 90); });
   // The menu answers the press itself: the highlight moves at once, and the screen follows from memory.
@@ -1834,6 +2076,7 @@
     if (el && (el.dataset.act === "chart" || el.dataset.act === "searchOpen") && el.dataset.id && el.dataset.id !== state.chartClient) for (const p of [`/emr/${el.dataset.id}`, `/clients/${el.dataset.id}`, `/notes?clientId=${el.dataset.id}`]) load(p).catch(() => {});
   }, true);
   document.addEventListener("change", (e) => {
+    if (e.target.matches("[data-change=staffRole]")) { const f = e.target.closest("form"); load("/staff").then((d) => permRoleSync(f, d, true)).catch(() => {}); }
     if (e.target.matches("[data-change=leadStatus]")) guard(ACT.leadSave)(e.target);
     if (e.target.matches("[data-change=chartFile]")) guard(chartUpload)(e.target);
     if (e.target.matches("[data-change=pickOne], [data-change=pickAll]")) {
@@ -1901,6 +2144,25 @@
   });
 
   // ---------------------------------------------------------------- router and start
+  // ---- First sign-in. A password someone else chose is not the person's own, so until they have chosen one the
+  // workspace shows nothing else: no menu, no screens, no quick actions.
+  let mustChange = false;
+  const pwFields = () => `${fld("pwNow", "current", "The password you signed in with", "", { type: "password", max: 72, attrs: 'required autocomplete="current-password"' })}
+    ${fld("pwNew", "password", "New password", "", { type: "password", max: 72, attrs: 'required minlength="10" autocomplete="new-password"' })}
+    ${fld("pwAgain", "confirm", "New password again", "", { type: "password", max: 72, attrs: 'required minlength="10" autocomplete="new-password"' })}
+    <p class="muted" style="margin:0;font-size:12.5px">At least 10 characters. What you type here is sent and nothing is kept on this device.</p>`;
+  function renderGate() {
+    const nav = $("#nav"); nav.innerHTML = ""; nav.dataset.sig = ""; nav.classList.remove("open");
+    $("#qa").hidden = true; $("#globalSearch").disabled = true; closeModal();
+    shown = ""; shownHtml = "";
+    $("#view").innerHTML = `<div class="card stack" id="pwGate" style="max-width:480px;margin:0 auto">
+      <div class="card-head"><h2>Choose your own password</h2>${ui("lock", 16)}</div>
+      <p style="margin:0">This sign-in still uses a password someone else set for you. Choose your own now: nothing else in the workspace opens until you have.</p>
+      <form class="stack" data-form="mePassword" autocomplete="off">${pwFields()}
+        <p role="alert" data-msg style="margin:0;color:var(--bad);min-height:1.2em"></p>
+        <div class="row"><button class="btn primary">Save my new password</button></div></form></div>`;
+    const first = $("#pwGate input"); if (first) first.focus();
+  }
   let seq = 0, done = 0, shown = "", shownHtml = "", late = false, repaintT = 0;
   const routeNow = () => { let r = (location.hash || "#dashboard").slice(1); if (r === "reports") r = "insights"; return V[r] ? r : "dashboard"; };
   function paint(r, html, again) {
@@ -1964,7 +2226,7 @@
     try {
       for (const r of list) {
         if (my !== warmRun || !token || tk !== token) return;
-        if (r === shown || document.hidden) continue;
+        if (r === shown || document.hidden || !navOk(r)) continue; // never load ahead a screen this sign-in may not open
         await quietNow(); // the person's own clicks always go first
         if (my !== warmRun || !token || tk !== token) return;
         try { await early(r); } catch {}
@@ -1983,8 +2245,14 @@
     if (note.dirty && token && $("#nBody")) await noteSave(true);
     if (dict.on && !(dict.box && dict.box.isConnected && route() === dict.route)) stopDictation();
     if (!token) return;
+    if (mustChange) { renderGate(); return; }
     let r = (location.hash || "#dashboard").slice(1); if (r === "reports") r = "insights"; if (!V[r]) r = "dashboard";
     renderNav(r); $("#nav").classList.remove("open");
+    // Team & roles says for itself what someone without it may and may not do, so it is never turned away here.
+    if (r !== "team" && !navOk(r)) {
+      const html = `<div class="view-head"><div><h1>${esc(navLabel(r))}</h1></div></div><div class="card" id="noAccess"><b>This screen is not open to your sign-in.</b><p class="muted" style="margin:6px 0 0">It needs a permission you do not have. Ask the practice owner, or anyone with Team &amp; roles, if you need it.</p></div>`;
+      $("#view").innerHTML = html; shown = r; shownHtml = html; return;
+    }
     const my = ++seq, view = $("#view");
     if (!view.innerHTML) view.innerHTML = `<p class="spin">Loading…</p>`;
     const was = visited.indexOf(r); if (was >= 0) visited.splice(was, 1); visited.unshift(r);
@@ -2388,8 +2656,15 @@
   setInterval(liveDot, 5000);
   async function start() {
     $("#signin").hidden = true; $("#app").hidden = false; idleArm(); goLive();
-    get("/me").then((me) => { cache.me = me; $("#whoami").textContent = me.email; }).catch(() => {});
     const tk = token;
+    // Who is signed in and what they may do is known before the first screen is drawn, so the menu never shows a
+    // screen this person cannot open and a password that is not theirs yet stops everything else.
+    try { cache.me = await get("/me"); } catch { cache.me = null; }
+    if (!token || tk !== token) return;
+    if (cache.me) $("#whoami").textContent = cache.me.email;
+    mustChange = !!(cache.me && cache.me.mustChangePassword);
+    if (mustChange) { renderGate(); return; }
+    $("#qa").hidden = false; $("#globalSearch").disabled = false;
     render().then(() => setTimeout(() => { if (token && tk === token) { warmedAt = Date.now(); warm(["clients", "calendar", "dashboard", "messages", "chart", "telehealth", "notes", "leads", "forms", "payments", ...WARM.filter((r) => !["clients", "calendar", "dashboard", "leads", "forms", "payments"].includes(r)), "economics", "guide"]); } }, 600));
   }
   window.addEventListener("pointerdown", () => { lastTouch = Date.now(); }, true);

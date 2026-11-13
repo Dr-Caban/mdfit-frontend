@@ -359,6 +359,37 @@ body:has(#modalBack.open) .qa{display:none}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;opacity:0;transition:.2s;z-index:60;font-weight:500;pointer-events:none}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
+/* Team & roles: who can sign in, and what each of them may do. Patient-record access (PHI) is never drawn like
+   the other permissions anywhere on this screen. */
+.staff-list{list-style:none;margin:0;padding:0}
+.staff-row{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--line)}
+.staff-row:last-child{border-bottom:0}
+.staff-row.off .staff-who b{text-decoration:line-through;text-decoration-color:var(--muted)}
+.staff-who{flex:1 1 230px;min-width:0;display:flex;gap:10px;align-items:center}
+.staff-who b{overflow-wrap:anywhere}
+.staff-meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.staff-perms{flex:1 1 100%;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.staff-why{flex:1 1 100%;margin:0;font-size:12.5px;display:flex;gap:6px;align-items:flex-start}
+.staff-why svg{flex:none;margin-top:2px}
+.staff-acts{display:flex;flex-wrap:wrap;gap:8px;margin-left:auto}
+.staff-acts .btn{min-height:44px}
+.pill.phi{color:var(--bad);background:color-mix(in srgb,var(--bad) 10%,transparent);border-color:color-mix(in srgb,var(--bad) 45%,var(--line));white-space:normal}
+.pill.phi svg{stroke:currentColor;fill:none}
+.perm-groups{display:grid;gap:14px}
+.perm-g h3{margin:0 0 6px}
+.perm-list{display:grid;gap:8px}
+.perm{display:grid;grid-template-columns:auto minmax(0,1fr);gap:3px 10px;align-items:start;border:1px solid var(--line);border-radius:10px;padding:10px;min-height:44px;cursor:pointer}
+.perm input{width:18px;height:18px;margin:2px 0 0;grid-row:1/span 4;align-self:start}
+.perm-t{font-weight:600;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.perm-d,.perm-role{grid-column:2;font-size:12.5px;margin:0}
+.perm-role{font-weight:600;color:var(--accent-text)}
+.perm.in-role{border-color:var(--accent);background:var(--accent-soft)}
+.perm.phi{border-color:color-mix(in srgb,var(--bad) 50%,var(--line));background:color-mix(in srgb,var(--bad) 6%,transparent)}
+.perm.phi .perm-t{color:var(--bad)}
+.perm.phi svg{stroke:currentColor;fill:none}
+.perm.off{opacity:.62;cursor:not-allowed}
+#pwGate{max-width:480px}
+@media (max-width:480px){.staff-acts{margin-left:0;width:100%}.staff-acts .btn{flex:1 1 auto;justify-content:center}}
 .mobile-nav-btn{display:none}
 @media (max-width:1100px){.g4{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(2,minmax(0,1fr))}.g-side{grid-template-columns:1fr}}
 .form-grid{grid-template-columns:200px minmax(0,1fr) 260px}
@@ -421,6 +452,6 @@ body:has(#modalBack.open) .qa{display:none}
 <script src="config.js?v=aac711e3"></script>
 <script src="realtime.js?v=22ae7ae5"></script>
 <script src="app/exercises.js?v=d121be98"></script>
-<script src="workspace-app.js?v=6fa13d5b"></script>
+<script src="workspace-app.js?v=ec5d405f"></script>
 </body>
 </html>
