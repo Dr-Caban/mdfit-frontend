@@ -197,7 +197,11 @@
   // would refuse. Until /me has answered, nothing is hidden (the server is still the boundary).
   const myPerms = () => new Set(((cache.me && cache.me.permissions) || []));
   const iAmOwner = () => !!(cache.me && cache.me.isOwner);
-  const can = (key) => !key || !cache.me || iAmOwner() || myPerms().has(key);
+  // An older API (or one rolled back) answers /me without `permissions` at all. That is not "no permissions", it is
+  // "this server doesn't do permissions": hide nothing, exactly as before this screen existed. The server is the
+  // boundary either way, so the worst case is a menu entry that answers 403 -- never a workspace with no menu.
+  const knowsPerms = () => Array.isArray(cache.me && cache.me.permissions);
+  const can = (key) => !key || !knowsPerms() || iAmOwner() || myPerms().has(key);
   // Which permission each screen in the menu belongs to. Empty means everyone who can sign in sees it.
   // Where a screen could belong to more than one, the stricter one is used: a screen that puts a patient's record
   // on the glass (the chart, notes, intake forms, a video visit) sits behind patient-record access.
