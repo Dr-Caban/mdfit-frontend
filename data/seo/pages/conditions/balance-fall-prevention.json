@@ -1,0 +1,91 @@
+{
+  "slug": "balance-fall-prevention",
+  "title": "Balance and Fall Prevention in Sarasota, FL | MD Fit",
+  "h1": "Balance and Fall Prevention in Sarasota, FL",
+  "description": "Balance and fall prevention in Sarasota. Dr. Jared Caban, MD, MSc, CEP builds leg strength, ankle mobility and the reactions that catch you.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Balance disorder"
+  },
+  "lead": "Balance is not a single sense you either have or lose. It is three systems reporting in and a set of muscles responding fast enough to matter, and every part of that is trainable.",
+  "sections": [
+    {
+      "h2": "What balance is actually made of",
+      "html": "<p>Three systems tell your brain where you are: your inner ear, your eyes, and the position sense coming from joints and muscles, particularly in the feet and ankles. The brain blends them. When one degrades, the others compensate, which is why people often do fine until a second factor arrives and the margin disappears.</p><p>Then there is the response. Detecting a wobble is useless if the hip and ankle muscles cannot produce force quickly enough to correct it. Power, meaning force produced fast, declines earlier and more steeply than strength does, and it is the quality that actually catches a stumble.</p>"
+    },
+    {
+      "h2": "Where it usually breaks down",
+      "html": "<ul><li><b>Leg and hip weakness,</b> especially <a href=\"/muscles/gluteus-medius\">gluteus medius</a> holding the pelvis level in single-leg stance, which is most of walking.</li><li><b>Stiff ankles.</b> If the ankle cannot move, the ankle strategy for small corrections is unavailable and every wobble becomes a whole-body event.</li><li><b>Reduced foot sensation,</b> which removes the earliest warning that weight has shifted.</li><li><b>Gait changes after injury or surgery,</b> where a protective pattern outlived the injury that caused it.</li><li><b>Fear of falling,</b> which narrows the stride, shortens the step and ironically increases risk.</li><li><b>Inactivity,</b> which erodes all of the above quietly over a few years.</li></ul>"
+    },
+    {
+      "h2": "How MD Fit assesses balance",
+      "html": "<p>Dr. Jared watches you walk, turn, stand from a chair and reach, because turning and sit-to-stand are where real falls happen rather than quiet standing. He tests ankle mobility, hip and leg strength, single-leg stance, and how you respond when your base of support narrows.</p><p>His clinical exercise physiology training is directly relevant here, because exercise prescription for older adults is its own discipline, with intensity and progression that have to be specific rather than generic.</p><p>Medication effects, blood pressure drops on standing, inner-ear symptoms and vision changes all contribute and belong with your physician. Those get flagged rather than worked around.</p>"
+    },
+    {
+      "h2": "What the programme involves",
+      "html": "<p>Hands-on work first where stiffness is limiting you, particularly ankles and hips. Then progressive strength, because strength is the foundation everything else sits on and it responds at any age.</p><p>Balance training itself has to be genuinely challenging to produce change, which means working at the edge of your stability with something solid to hand. Standing on one leg while holding a counter is a starting point, not an endpoint. The programme adds head turns, narrowed stance, uneven surfaces and reaching, because that is what life asks.</p><p>Power work follows: standing up faster, stepping quickly in a chosen direction, catching yourself deliberately. Daily routines come through the free MD Fit app so the practice happens between sessions, which is where most of the gain comes from.</p>"
+    },
+    {
+      "h2": "What you can do at home",
+      "html": "<ol><li>Stand on one leg at the kitchen counter while the kettle boils, a few times a day on each side.</li><li>Practise standing from a chair without using your hands. If that is hard, start from a higher seat.</li><li>Walk daily, and include turns and changes of direction rather than only straight lines.</li><li>Clear the obvious hazards: loose rugs, poor lighting on stairs, clutter on the route to the bathroom at night.</li></ol><p>Have your vision checked annually and review medications with your physician, particularly anything that affects alertness or blood pressure.</p>"
+    },
+    {
+      "h2": "Why this is worth doing before anything happens",
+      "html": "<p>Most people arrive at balance training after a fall or a near miss. Coming earlier is considerably more effective, because you are building capacity rather than recovering it, and because confidence is easier to keep than to rebuild.</p><p>Sarasota's population skews toward the decades where this matters, and plenty of people here are active, travelling and on their feet. The goal is practical: stay steady on uneven ground, carry things up stairs, get through an airport, keep playing. See <a href=\"/activities/seniors-strength-balance\">strength and balance for older adults</a>.</p>"
+    }
+  ],
+  "timeline": null,
+  "redFlags": [
+    "Sudden weakness, facial drooping, slurred speech, or sudden loss of balance or coordination: call 911. These can indicate a stroke.",
+    "Fainting, blacking out, or falls with no memory of what happened, which need medical assessment.",
+    "New dizziness with hearing change, double vision, or severe headache.",
+    "A fall that resulted in a head injury, especially on blood thinners.",
+    "Rapidly worsening unsteadiness, or new numbness and weakness in the legs.",
+    "Balance change soon after starting or changing a medication, which should be reviewed with your physician."
+  ],
+  "faq": [
+    {
+      "q": "Am I too old for this to work?",
+      "a": "No. Strength and balance both respond to training well into later decades. The prescription changes with age; the capacity to adapt does not disappear."
+    },
+    {
+      "q": "I have not fallen. Is this still worth doing?",
+      "a": "Yes, and it is more effective done before a fall than after. Building capacity is easier than rebuilding it alongside lost confidence."
+    },
+    {
+      "q": "Will I be doing exercises that feel unsafe?",
+      "a": "Balance work has to be challenging to change anything, but it is always done with support to hand and progressed at a rate that matches what you can control."
+    },
+    {
+      "q": "Could my dizziness be an inner-ear problem?",
+      "a": "It can be, and that belongs with your physician. Dr. Jared screens for it and refers rather than treating around it."
+    }
+  ],
+  "muscles": [
+    "glute-med",
+    "glute-max",
+    "tib-ant",
+    "soleus",
+    "foot-intrinsics",
+    "vastus-lateralis"
+  ],
+  "pain": [
+    "outside-of-hip",
+    "front-of-ankle",
+    "lower-calf"
+  ],
+  "guides": [
+    "calf"
+  ],
+  "related": [
+    "/activities/seniors-strength-balance",
+    "/conditions/hip-osteoarthritis",
+    "/conditions/knee-osteoarthritis",
+    "/conditions/spinal-stenosis",
+    "/treatments/clinical-exercise-physiology",
+    "/conditions/chronic-ankle-instability"
+  ],
+  "group": "conditions",
+  "steps": null,
+  "reviewStatus": "draft"
+}
