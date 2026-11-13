@@ -421,7 +421,7 @@ function buildContent(p) {
     ${p.guides && p.guides.length ? `<h2>Free guides from Dr. Jared</h2><ul>${p.guides.filter((x) => guides[x]).map((x) => `<li><a href="/guides/${x}">${esc(guides[x])}</a></li>`).join("")}</ul>` : ""}
     ${isBlog ? "" : ABOUT_DR}
     ${faqHtml(isBlog ? p.faq : withInsuranceFaq(p.faq))}
-    ${isBlog ? CTA.replace("Ready to get out of pain?", "Want this handled in person?") : CTA}
+    ${isBlog ? CTA.replace("Ready to get out of pain?", "Want this handled in person?") : L.cta(p.group === "activities" ? "train" : "pain")}
     ${linkList(locs.map(painUrl), "Where it hurts")}
     ${linkList(p.related, isBlog ? "Read next" : "Related")}
     ${p.group === "conditions" ? linkList(allConditionUrls().filter((u) => u !== url), "Other conditions we treat") : ""}
@@ -447,12 +447,32 @@ function buildActivitiesHub(items) {
     ${RATING_P}
     <p class="cd-lead">Every sport and every stage of life loads the body its own way. These pages cover the pains each one brings, the muscles behind them and how Dr. Jared keeps you doing what you love.</p>
     <ul class="cd-grid">${[...legacy.map(([u, b, s]) => ({ u, b, s })), ...items.map(({ url: u, p }) => ({ u, b: p.h1.replace(/ in Sarasota(, FL)?$/, ""), s: p.lead.split(/(?<=\.)\s/)[0].slice(0, 110) }))].map((x) => `<li><a href="${x.u}"><b>${esc(x.b)}</b><span>${esc(x.s)}</span></a></li>`).join("")}</ul>
-    ${CTA}
+    ${L.cta("train")}
     ${linkList(LANDING, "Local pages")}
     ${linkList(AREAS, "Where our clients come from")}`;
   const graph = [{ "@type": "CollectionPage", url: SITE + url, name: title, description }, breadcrumbLd(trail)];
   L.write("activities/index.html", page({ url, title, description, body, graph, section: "activities" }));
   generated.push({ url, title: "Activities", kind: "hub", snippet: description, kw: ["sports", "golf", "pickleball", "tennis", "running"], priority: 0.8, file: "activities/index.html" });
+}
+// The public page about the app (/mdfit-app). Every generated page links here and to sign-up; its words live in
+// data/seo/app-page.json so they can be edited without touching code.
+function buildAppPage() {
+  const d = L.readJson("data/seo/app-page.json", null); if (!d) return;
+  const url = "/mdfit-app", trail = [{ name: "Home", href: "/" }, { name: "The MD Fit app", href: url }];
+  const body = `    ${crumbs(trail)}
+    <h1>${esc(d.h1)}</h1>
+    ${RATING_P}
+    <p class="cd-lead">${esc(d.lead)}</p>
+    <p><a class="cd-btn" href="/login">Open the app</a></p>
+    ${d.sections.map((x) => `<h2>${esc(x.h2)}</h2>\n    ${liveLinks(x.html)}`).join("\n    ")}
+    <h2>See a physician first if</h2>
+    <ul>${d.redFlags.map((f) => `<li>${esc(f)}</li>`).join("")}</ul>
+    ${faqHtml(d.faq)}
+    ${L.cta("pain")}
+    ${linkList(d.related, "Explore")}`;
+  const graph = [{ "@type": "WebPage", url: SITE + url, name: d.title, description: d.description, mainEntity: { "@id": `${SITE}/mdfit-app#app` }, provider: { "@id": `${SITE}/#clinic` } }, faqLd(d.faq), breadcrumbLd(trail)];
+  L.write("mdfit-app.html", page({ url, title: d.title, description: d.description, body, graph, section: "" }));
+  generated.push({ url, title: "The MD Fit app", kind: "landing", snippet: d.lead.slice(0, 150), kw: ["app", "mdfit app", "exercise app", "rehab app", "workout app", "pain app"], priority: 0.9, file: "mdfit-app.html" });
 }
 // Existing hub pages get the new entries appended to their grids (conditions hub, blog hub)
 function appendToHub(file, entries, marker) {
@@ -527,6 +547,7 @@ if (want("content")) {
   content = allContent.map(buildContent);
   const acts = content.filter((c) => c.p.group === "activities");
   buildActivitiesHub(acts);
+  buildAppPage();
   appendToHub("conditions/index.html", content.filter((c) => c.p.group === "conditions").map(({ url, p }) => ({ url, b: p.h1.replace(/ (Treatment |Recovery |Rehab |Relief |Support |Care )?in Sarasota, FL$/, ""), s: p.lead.split(/(?<=\.)\s/)[0].slice(0, 110) })), "conditions");
   appendToHub("blog/index.html", content.filter((c) => c.p.group === "blog").map(({ url, p }) => ({ url, b: p.h1, s: p.description.slice(0, 110) })), "blog");
   addMusclesToConditionPages();
