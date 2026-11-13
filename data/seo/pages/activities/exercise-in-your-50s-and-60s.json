@@ -1,0 +1,83 @@
+{
+  "group": "activities",
+  "slug": "exercise-in-your-50s-and-60s",
+  "title": "Exercise in Your 50s and 60s | MD Fit",
+  "h1": "Exercise in Your 50s and 60s",
+  "description": "What changes about training in midlife, what does not, and why this is the decade where strength work stops being optional.",
+  "about": {
+    "type": "Thing",
+    "name": "Exercise in midlife"
+  },
+  "lead": "This is the decade where the cost of doing nothing starts compounding, and also the decade where most people still have every option available to them. Both things are true, and the second one is easy to forget.",
+  "sections": [
+    {
+      "h2": "What actually changes",
+      "html": "<ul><li><b>Recovery takes longer.</b> The main practical change. Hard sessions need more space between them.</li><li><b>Muscle declines without deliberate loading.</b> It is gradual, it accelerates, and it is largely preventable.</li><li><b>Bone density declines,</b> sharply for women around menopause and more slowly for men.</li><li><b>Tendons become less tolerant of sudden change.</b> Which is why people take up pickleball and develop achilles pain six weeks later.</li><li><b>Old injuries become more opinionated.</b> A knee that was fine for thirty years starts having views.</li></ul><p>What does not change: the capacity to get stronger. People in their fifties and sixties build strength effectively. The adaptations are real and substantial.</p>"
+    },
+    {
+      "h2": "Strength stops being optional",
+      "html": "<p>In your twenties, skipping strength training costs you little immediately. In your fifties it is the difference between the next thirty years being active or not.</p><p>Muscle and bone both respond to load and both decline without it. Walking, swimming and cycling are excellent for the heart and do little for either. That is the single most important thing to understand about training in this decade.</p><p>Two sessions a week of genuine resistance work — challenging loads, progressing over time — is the minimum worth doing. See <a href=\"/conditions/sarcopenia-and-muscle-loss\">sarcopenia</a> and <a href=\"/conditions/osteoporosis-and-exercise\">osteoporosis and exercise</a>.</p>"
+    },
+    {
+      "h2": "Training hard, less often",
+      "html": "<p>The common mistake is reducing intensity while keeping frequency. That produces a lot of mediocre sessions and not much adaptation.</p><p>The better adjustment is the opposite: keep the sessions meaningful and leave more room between them. Two hard sessions with four days of easy movement beats four moderate sessions that never quite stimulate anything.</p><p>Easy training does not maintain muscle. The stimulus has to be real. It just does not have to happen as often.</p>"
+    },
+    {
+      "h2": "The new-activity problem",
+      "html": "<p>Sarasota is full of people who took up pickleball, golf or running in their fifties and developed a problem within two months. The pattern is consistent: cardiovascular fitness and enthusiasm run ahead of what tendons and joints have been conditioned for.</p><p>Tendons adapt more slowly than muscles, and considerably more slowly than motivation. The fix is a slower build than feels necessary and some strength work supporting the new activity — see <a href=\"/activities/jumping-and-landing-mechanics\">jumping and landing mechanics</a> for court sports.</p>"
+    },
+    {
+      "h2": "Working around what hurts",
+      "html": "<p>Most people this age have something. An achy shoulder, a knee that complains on stairs, a back with a history. That is a reason to train differently, not a reason to stop.</p><p>Almost every movement has a version that loads the muscle without provoking the problem: a goblet squat instead of a back squat, a neutral-grip press instead of a barbell bench, a trap bar instead of a straight bar.</p><p>Finding those versions is a large part of what we do here, and it is usually the difference between someone training for the next twenty years and someone giving up at fifty-five.</p><p>The thing to avoid is the all-or-nothing response. People who stop entirely because a shoulder hurts lose far more than the shoulder — they lose the legs, the heart and the bone density too, and regaining all of it later is considerably harder than training around one joint now.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Chest pressure or pain during exertion, or pain spreading to the jaw, neck or arm: stop and seek emergency care.",
+    "New breathlessness on mild exertion, or breathlessness lying flat at night.",
+    "A fracture from a minor fall, which should prompt a conversation about bone density.",
+    "Joint pain that is worsening month on month despite sensible training.",
+    "Unexplained weight loss, night pain, or pain unrelated to activity."
+  ],
+  "faq": [
+    {
+      "q": "Is it too late to start lifting at 60?",
+      "a": "No. People in their sixties, seventies and beyond build strength effectively. Starting later means starting more carefully, not getting less benefit."
+    },
+    {
+      "q": "Should I avoid heavy weights at this age?",
+      "a": "Heavy is relative to you. Challenging loads are what drive the adaptations that matter for bone and muscle; chronically light training does not."
+    },
+    {
+      "q": "How much cardio versus strength?",
+      "a": "If time is limited, protect the strength sessions first. Cardio is easier to accumulate through daily life; resistance training is not."
+    },
+    {
+      "q": "I have arthritis. Can I still train?",
+      "a": "Usually yes, and appropriate loading often helps symptoms. The programme needs to work around the affected joint rather than avoid loading altogether."
+    }
+  ],
+  "muscles": [
+    "glute-max",
+    "rectus-femoris",
+    "glute-med",
+    "lats",
+    "multifidus"
+  ],
+  "pain": [
+    "beside-the-spine",
+    "below-kneecap",
+    "top-of-shoulder"
+  ],
+  "guides": [],
+  "related": [
+    "/conditions/sarcopenia-and-muscle-loss",
+    "/conditions/osteoporosis-and-exercise",
+    "/activities/exercise-in-your-70s-and-beyond",
+    "/activities/seniors-strength-balance",
+    "/treatments/clinical-exercise-physiology"
+  ],
+  "programs": [],
+  "reviewStatus": "approved"
+}
