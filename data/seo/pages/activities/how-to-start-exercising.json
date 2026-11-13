@@ -1,0 +1,87 @@
+{
+  "group": "activities",
+  "slug": "how-to-start-exercising",
+  "title": "How to Start Exercising: A Realistic Plan | MD Fit",
+  "h1": "How to Start Exercising",
+  "description": "A clinician's starting plan for someone who has not trained in years: what to do in week one, how to progress, and why most restarts fail.",
+  "about": {
+    "type": "Thing",
+    "name": "Starting an exercise programme"
+  },
+  "lead": "Most people who restart training are not short of motivation in week one. They are short of it in week five, after an over-ambitious start left them sore, discouraged and slightly injured.",
+  "sections": [
+    {
+      "h2": "Why restarts fail",
+      "html": "<p>The pattern is consistent. An enthusiastic first week, soreness that makes week two unpleasant, a missed session, a missed week, and a quiet conclusion that exercise is not for you.</p><p>Nobody fails because the first week was too easy. The useful question in week one is not how much can I do, but how little can I do and still call it a session — because the thing being built is not fitness yet. It is the habit that fitness attaches to.</p>"
+    },
+    {
+      "h2": "Week one",
+      "html": "<p>Two sessions. Twenty minutes each. That is the whole plan.</p><ol><li><b>Session A:</b> ten minutes of easy walking, then one set each of a sit-to-stand from a chair, a wall push-up, and a standing row with a band or a towel against a door. Eight to ten repetitions each.</li><li><b>Session B:</b> the same, with a second set of each if the first felt manageable.</li></ol><p>If that feels insultingly easy, good. The soreness arrives two days later and will be more than you expect from work that felt trivial. That is normal — see <a href=\"/activities/muscle-soreness-and-doms\">muscle soreness and DOMS</a>.</p>"
+    },
+    {
+      "h2": "Weeks two to six",
+      "html": "<p>Add one thing at a time, roughly one change a week:</p><ul><li>A third session.</li><li>A set to each exercise, up to three.</li><li>Five to ten minutes to the walking.</li><li>Progress each movement: sit-to-stand becomes a bodyweight squat, wall push-up moves to a counter, band row gets heavier.</li></ul><p>Never add volume and difficulty in the same week. It is the fastest route to the shin, knee or shoulder complaint that ends the attempt.</p>"
+    },
+    {
+      "h2": "What to include, and why strength is not optional",
+      "html": "<p>Cardio alone does not maintain muscle or bone, and both decline with age without deliberate loading. If you have three sessions a week, two with strength work and one of cardio serves most people better than three walks.</p><p>Cover the basic patterns: a squat or sit-to-stand, a hinge, a push, a pull, and something single-leg. See <a href=\"/activities/single-leg-strength-and-balance\">single-leg strength and balance</a>, which matters more than most beginners realise.</p><p>For cardio, start easy and conversational — <a href=\"/activities/cardio-for-beginners\">cardio for beginners</a> covers the build-up.</p>"
+    },
+    {
+      "h2": "What normal feels like",
+      "html": "<p>Muscle soreness a day or two after a new session, spread through the muscle, easing as you move, settling in two to four days. Breathlessness that improves noticeably within a few weeks. Days where it feels harder for no obvious reason.</p><p>What is not normal: sharp pain during a movement, pain that is pinpoint over bone, joint swelling, or pain that worsens session on session. Those are reasons to get something looked at rather than to push on.</p>"
+    },
+    {
+      "h2": "If something already hurts",
+      "html": "<p>Plenty of people start exercising precisely because something hurts, and existing pain is not a reason to wait. It is a reason to start differently — around the problem rather than into it, with the painful area loaded in a way it tolerates.</p><p>That is most of what we do here: finding the version of the work that does not provoke the problem, so fitness improves while the cause is addressed. See <a href=\"/treatments/clinical-exercise-physiology\">clinical exercise physiology</a>, and if you are not sure where to start, the <a href=\"/pain/\">pain by location</a> pages are a reasonable place to look first.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Chest pressure or pain during exertion, or pain spreading to the jaw, neck or arm: stop and seek emergency care.",
+    "Fainting, near-fainting, or a racing or irregular heartbeat.",
+    "Breathlessness far out of proportion to the effort, or new breathlessness lying flat at night.",
+    "Sharp joint pain during a movement, or a joint that swells afterwards.",
+    "Pain that is pinpoint over bone and worsens with each session."
+  ],
+  "faq": [
+    {
+      "q": "Do I need to see a doctor before starting?",
+      "a": "For gentle walking and light strength work, most people do not. If you have a heart condition, chest symptoms on exertion, or have been inactive for a very long time, a conversation first is sensible."
+    },
+    {
+      "q": "How long before I see results?",
+      "a": "Strength improves within a few weeks, largely through better coordination at first. Visible changes take longer and depend on a great deal besides training."
+    },
+    {
+      "q": "What if I can only manage ten minutes?",
+      "a": "Then ten minutes is the plan. Consistency at a small dose beats an ambitious plan you abandon, and ten minutes grows naturally once it is established."
+    },
+    {
+      "q": "Should I join a gym?",
+      "a": "Not necessarily. A band, a chair and somewhere to walk covers the first couple of months perfectly well."
+    }
+  ],
+  "muscles": [
+    "glute-max",
+    "rectus-femoris",
+    "lats",
+    "pec-major-stern",
+    "glute-med"
+  ],
+  "pain": [
+    "front-of-thigh",
+    "beside-the-spine",
+    "front-of-shoulder"
+  ],
+  "guides": [],
+  "related": [
+    "/activities/cardio-for-beginners",
+    "/activities/how-many-days-a-week",
+    "/activities/single-leg-strength-and-balance",
+    "/activities/staying-consistent",
+    "/treatments/clinical-exercise-physiology"
+  ],
+  "programs": [],
+  "reviewStatus": "approved"
+}

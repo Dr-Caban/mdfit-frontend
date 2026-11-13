@@ -1,0 +1,90 @@
+{
+  "group": "activities",
+  "slug": "exercise-in-your-70s-and-beyond",
+  "title": "Exercise in Your 70s and Beyond | MD Fit",
+  "h1": "Exercise in Your 70s and Beyond",
+  "description": "What training looks like after 70, why strength and balance matter more than anything else, and how to start from wherever you are.",
+  "about": {
+    "type": "Thing",
+    "name": "Exercise after 70"
+  },
+  "lead": "The goal after seventy is not fitness in the abstract. It is being able to get off the floor, carry your own shopping, and not fall. Everything worth doing in training at this age serves one of those three.",
+  "sections": [
+    {
+      "h2": "Why strength comes first",
+      "html": "<p>The thing that most reliably ends independence is not a disease. It is a fall, or the gradual loss of enough strength to manage stairs, a chair or a bathtub.</p><p>Muscle declines with age without deliberate loading, and the decline accelerates. Walking does not prevent it. Swimming does not prevent it. Resistance training does, and the response to it in people over seventy is well documented and substantial.</p><p>This is the single highest-value use of training time at this age. See <a href=\"/conditions/sarcopenia-and-muscle-loss\">sarcopenia and muscle loss</a>.</p>"
+    },
+    {
+      "h2": "Balance is trainable too",
+      "html": "<p>Balance declines when it is not challenged, and it improves when it is. It is not a fixed attribute that simply erodes.</p><p>Practical balance work means standing on one leg while the kettle boils, walking heel to toe along a line, and single-leg work with a countertop for support. Minutes a day, most days.</p><p>Balance and strength are two halves of the same thing: staying upright requires noticing the stumble and having the leg strength to catch yourself. See <a href=\"/conditions/balance-fall-prevention\">balance and fall prevention</a> and <a href=\"/activities/single-leg-strength-and-balance\">single-leg strength and balance</a>.</p>"
+    },
+    {
+      "h2": "What a sensible week looks like",
+      "html": "<ul><li><b>Two strength sessions.</b> Sit-to-stands, step-ups, a pressing movement, a pulling movement, carries. Loads that are genuinely challenging by the last few repetitions.</li><li><b>Balance work most days.</b> A few minutes, attached to something you already do.</li><li><b>Walking most days.</b> Whatever distance is comfortable.</li><li><b>Getting up and down from the floor,</b> practised deliberately. It is a skill, it is lost through disuse, and it matters enormously.</li></ul><p>That is perhaps ninety minutes a week of deliberate work and it changes the trajectory of a decade.</p>"
+    },
+    {
+      "h2": "Starting from very low capacity",
+      "html": "<p>If standing from a chair unaided is difficult, that is the exercise. Sit-to-stands with hands on knees, or from a higher chair, repeated a few times through the day. That is legitimate training and it progresses.</p><p>There is no floor below which strength training stops being useful. Studies in frail and much older adults consistently show meaningful gains. Starting from very little means starting carefully, not getting less benefit.</p><p>Use support without embarrassment — a countertop, a chair back, a wall. Removing support is a progression like any other.</p>"
+    },
+    {
+      "h2": "What to be careful with",
+      "html": "<p>Movements requiring quick direction changes or jumping, unless built up gradually. Loaded end-range spinal flexion if bone density is reduced — see <a href=\"/conditions/osteoporosis-and-exercise\">osteoporosis and exercise</a>. Breath-holding under load, particularly with blood pressure concerns — see <a href=\"/activities/bracing-and-breathing\">bracing and breathing</a>.</p><p>Several common medications affect balance, blood pressure on standing, and heat tolerance. If you take several, a conversation with your physician about exercise is worthwhile, particularly if you feel light-headed standing up.</p>"
+    },
+    {
+      "h2": "What this buys you",
+      "html": "<p>Not longevity in the abstract. The ability to get out of a chair without using your arms, to climb stairs without planning them, to recover from a trip instead of landing, and to carry a grandchild.</p><p>Those are trainable, at any age, and they are the things people actually miss when they go. Train for them directly rather than for a number on a chart.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Falls, or near-falls, which should always be mentioned to your physician rather than treated as normal ageing.",
+    "Light-headedness or unsteadiness on standing, which may relate to blood pressure or medication.",
+    "Chest pressure or pain during exertion, or pain spreading to the jaw, neck or arm: stop and seek emergency care.",
+    "A fracture from a minor fall, which needs assessment of bone density.",
+    "New confusion, weakness on one side, or difficulty speaking: call 911."
+  ],
+  "faq": [
+    {
+      "q": "Am I too old to start?",
+      "a": "No. Gains in strength and balance are well documented in people in their seventies, eighties and nineties. The benefit per session is arguably greater, not smaller."
+    },
+    {
+      "q": "Should I be lifting weights at my age?",
+      "a": "Yes, if nothing specific prevents it. Resistance training is the most effective way to preserve the strength that independence depends on."
+    },
+    {
+      "q": "What if I can barely stand from a chair?",
+      "a": "Then that is the exercise. Repeated sit-to-stands from a higher seat, with hands assisting, is legitimate training and progresses from there."
+    },
+    {
+      "q": "How heavy should I lift?",
+      "a": "Heavy enough that the last few repetitions are genuinely hard, while keeping good control. That is relative to you, and it is what drives the adaptation."
+    }
+  ],
+  "muscles": [
+    "glute-max",
+    "rectus-femoris",
+    "glute-med",
+    "vastus-lateralis",
+    "soleus"
+  ],
+  "pain": [
+    "front-of-thigh",
+    "below-kneecap",
+    "outside-of-hip"
+  ],
+  "guides": [],
+  "related": [
+    "/conditions/balance-fall-prevention",
+    "/activities/seniors-strength-balance",
+    "/conditions/sarcopenia-and-muscle-loss",
+    "/activities/single-leg-strength-and-balance",
+    "/treatments/clinical-exercise-physiology"
+  ],
+  "programs": [
+    "hip-6",
+    "knee-6"
+  ],
+  "reviewStatus": "approved"
+}

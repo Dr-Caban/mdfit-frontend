@@ -1,0 +1,84 @@
+{
+  "group": "activities",
+  "slug": "staying-consistent",
+  "title": "Staying Consistent With Training | MD Fit",
+  "h1": "Staying Consistent",
+  "description": "Why consistency beats intensity over a year, what actually makes training stick, and how to handle the weeks when it falls apart.",
+  "about": {
+    "type": "Thing",
+    "name": "Training consistency"
+  },
+  "lead": "Across a year, the person who trains twice a week every week beats the person who trains five times a week for two months and then stops. Consistency is not a character trait — it is a design problem, and it is solvable.",
+  "sections": [
+    {
+      "h2": "Design for your worst week, not your best",
+      "html": "<p>People build plans for the week they imagine: no travel, no illness, no work crisis. Then a normal week arrives and the plan does not survive it.</p><p>Build instead for a bad week. If two sessions is what survives a difficult week, make two the plan and treat anything more as a bonus. A plan you complete builds momentum; a plan you fail at erodes it.</p><p>This single change — lowering the bar to something that survives real life — does more for long-term results than any programming detail.</p>"
+    },
+    {
+      "h2": "Reduce the friction",
+      "html": "<ul><li><b>Same days, same times.</b> A decision made once beats a decision made weekly.</li><li><b>Attach it to something existing.</b> After dropping the kids, before the shower, straight after work.</li><li><b>Know the session before you arrive.</b> Deciding what to do while standing in the gym wastes willpower you need for the training.</li><li><b>Keep the kit visible and ready.</b> At home, leave equipment out.</li><li><b>Shorten the commute.</b> A worse gym nearby beats a better one across town.</li></ul>"
+    },
+    {
+      "h2": "Have a minimum version",
+      "html": "<p>Define the smallest session that still counts — perhaps fifteen minutes covering a squat, a push and a pull. On days when the full session is not happening, do that instead of nothing.</p><p>The point is not the training effect of fifteen minutes. It is that the chain stays unbroken, and the next session remains part of an ongoing pattern rather than a restart.</p><p>Restarting repeatedly is what exhausts people. Most of the cost of a missed week is psychological rather than physiological.</p>"
+    },
+    {
+      "h2": "When it falls apart anyway",
+      "html": "<p>It will. Illness, travel, a bad stretch at work. The thing that distinguishes people who stay active is not avoiding gaps — it is how they return.</p><p>Return below where you left off. A week away loses almost nothing; two weeks loses a little. Trying to make up for lost time by doing more is the single most common way people turn a two-week gap into a two-month injury.</p><p>Resume at around two thirds of your previous load and rebuild over a fortnight. You will be back where you were quickly, and in one piece.</p>"
+    },
+    {
+      "h2": "The seasonal problem here",
+      "html": "<p>Sarasota has two predictable consistency hazards. Summer heat makes outdoor training unpleasant from May onwards, and the winter season brings visitors, social calendars and disrupted routines.</p><p>Both are foreseeable, which means both can be planned for. Have an indoor version of your training ready before August rather than improvising when it becomes unbearable — see <a href=\"/activities/training-in-heat-and-humidity\">training in heat and humidity</a>. For seasonal residents, the handover between northern and Florida routines is where months get lost, so decide in advance what travels with you.</p><p>The people who stay consistent here are not more disciplined. They have simply worked out in advance what they will do when the usual plan is unavailable.</p>"
+    },
+    {
+      "h2": "Motivation is not the mechanism",
+      "html": "<p>Motivation is unreliable and mostly arrives after starting rather than before. Waiting to feel like training is waiting for something that follows the act.</p><p>What works better: a schedule you do not renegotiate daily, a session plan you do not have to invent, and a standard low enough to meet on a bad day. Those are structural, and structure is more dependable than enthusiasm.</p><p>It also helps to train for something concrete — managing stairs comfortably, carrying luggage, playing a full round without fading. Outcomes beat abstractions.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Training through pain that is worsening session on session rather than easing.",
+    "Persistent low mood or loss of interest extending beyond training into the rest of life.",
+    "Fatigue that does not improve after a lighter fortnight and adequate sleep.",
+    "Feeling compelled to train when ill or injured, or significant distress when a session is missed."
+  ],
+  "faq": [
+    {
+      "q": "How long does it take for training to become a habit?",
+      "a": "Longer than the figures often quoted, and it varies widely. Reducing friction matters more than waiting for it to feel automatic."
+    },
+    {
+      "q": "I've lost motivation. What now?",
+      "a": "Shrink the session rather than waiting to feel like it. Motivation usually follows starting, and a fifteen-minute session keeps the pattern intact."
+    },
+    {
+      "q": "How much do I lose if I take two weeks off?",
+      "a": "Very little. Strength is largely retained over a fortnight, and most of what feels lost returns within a session or two."
+    },
+    {
+      "q": "Is it better to train briefly every day or properly twice a week?",
+      "a": "Two proper sessions produce more adaptation. Daily brief movement is excellent for other reasons, and the two combine well."
+    }
+  ],
+  "muscles": [
+    "glute-max",
+    "rectus-femoris",
+    "lats",
+    "glute-med"
+  ],
+  "pain": [
+    "beside-the-spine",
+    "front-of-thigh"
+  ],
+  "guides": [],
+  "related": [
+    "/activities/how-many-days-a-week",
+    "/activities/how-to-start-exercising",
+    "/activities/tracking-your-progress",
+    "/activities/rest-days-and-overtraining",
+    "/activities/deload-weeks"
+  ],
+  "programs": [],
+  "reviewStatus": "approved"
+}
