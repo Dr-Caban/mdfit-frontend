@@ -1,0 +1,27 @@
+{
+  "@type": "WebApplication",
+  "@id": "https://www.mymdfit.com/mdfit-app#app",
+  "name": "MD Fit",
+  "url": "https://www.mymdfit.com/mdfit-app",
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "Any web browser (iPhone, Android, computer)",
+  "browserRequirements": "Requires JavaScript",
+  "description": "Dr. Jared Caban's free app: tap where it hurts, then follow the exercise videos and the program built for it.",
+  "provider": {
+    "@id": "https://www.mymdfit.com/#clinic"
+  },
+  "featureList": [
+    "Pain tool: tap where it hurts to see the muscles that usually cause it",
+    "Exercise video library",
+    "Programs designated for each problem"
+  ],
+  "offers": [
+    {
+      "@type": "Offer",
+      "name": "Free",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  ],
+  "isAccessibleForFree": true
+}

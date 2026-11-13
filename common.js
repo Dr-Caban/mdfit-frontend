@@ -116,7 +116,7 @@
     const c = auth.client();
     $$("[data-account-link]").forEach((a) => {
       a.href = c ? "/account" : "/login";
-      a.textContent = c ? "My account" : "Open the app";
+      a.textContent = c ? "My account" : "Open the free app";
     });
   }
   document.addEventListener("DOMContentLoaded", accountLinks);

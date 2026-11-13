@@ -30,7 +30,7 @@ function header(rel) {
       <nav class="sh-menu" id="sh-menu" aria-label="Main">
 ${links}
         <a href="tel:+19413130562" class="sh-phone" data-phone-link>941-313-0562</a>
-        <a href="/login" class="sh-app" data-account-link>Open the app</a>
+        <a href="/login" class="sh-app" data-account-link>Open the free app</a>
         <a href="${home ? "#book" : "/book"}" class="sh-book">Book evaluation</a>
       </nav>
     </div>
@@ -54,6 +54,15 @@ const pages = [];
   }
 })(root);
 
+// Every public page also tells search engines the free app exists, from the same description the generated pages use.
+const APP = JSON.parse(fs.readFileSync(path.join(root, "data/seo/app-schema.json"), "utf8"));
+const APP_LD = `<script type="application/ld+json" data-mdfit-app>${JSON.stringify({ "@context": "https://schema.org", ...APP })}</script>`;
+function withAppSchema(s) {
+  if (/<meta name="robots" content="noindex/.test(s)) return s;
+  if (/<script type="application\/ld\+json" data-mdfit-app>[\s\S]*?<\/script>/.test(s)) return s.replace(/<script type="application\/ld\+json" data-mdfit-app>[\s\S]*?<\/script>/, APP_LD);
+  if (/"WebApplication"/.test(s)) return s; // the page already describes the app in its own schema
+  return s.replace("</head>", `  ${APP_LD}\n</head>`);
+}
 let changed = 0;
 for (const file of pages.sort()) {
   const rel = path.relative(root, file).replace(/\\/g, "/");
@@ -66,6 +75,7 @@ for (const file of pages.sort()) {
   if (!s.includes("<!-- /site-header -->")) { console.error("could not place the header in", rel); process.exitCode = 1; continue; }
   if (!/href="\/site-header\.css/.test(s)) s = s.replace("</head>", `  <link rel="stylesheet" href="/site-header.css">\n</head>`);
   if (!/src="\/site-header\.js/.test(s)) s = s.replace("</head>", `  <script src="/site-header.js" defer></script>\n</head>`);
+  s = withAppSchema(s);
   if (s !== before) { fs.writeFileSync(file, s); changed++; }
 }
 console.log(`site header: ${changed} page(s) updated`);
