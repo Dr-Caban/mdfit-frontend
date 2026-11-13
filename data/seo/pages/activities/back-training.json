@@ -1,0 +1,92 @@
+{
+  "slug": "back-training",
+  "title": "Back Training: Lats, Traps, Rhomboids | MD Fit",
+  "h1": "Back Training: Lats, Traps and Rhomboids",
+  "description": "What each part of the back actually does, why rows and pulldowns are not interchangeable, and how back training fixes shoulders and necks.",
+  "about": {
+    "type": "Thing",
+    "name": "Back training"
+  },
+  "lead": "The back is the most under-trained region in most recreational programmes and the one that quietly fixes the most problems. Training it well means understanding that pulling down and pulling in are different jobs done by different muscles.",
+  "sections": [
+    {
+      "h2": "Four jobs, not one",
+      "html": "<p>The <a href=\"/muscles/latissimus-dorsi\">latissimus dorsi</a> pulls the arm down and back towards the body. It is the muscle behind pull-ups and pulldowns, and it also has a role in stabilising the trunk under load, which is why strong lats help in a deadlift.</p><p>The <a href=\"/muscles/middle-trapezius\">middle trapezius</a> and the <a href=\"/muscles/rhomboid-major\">rhomboids</a> pull the shoulder blades together. The <a href=\"/muscles/lower-trapezius\">lower trapezius</a> pulls them down and rotates them upward, which is what lets the arm travel overhead cleanly. And the <a href=\"/muscles/upper-trapezius\">upper trapezius</a>, which almost nobody needs to train harder, is usually already doing too much.</p>"
+    },
+    {
+      "h2": "Vertical and horizontal pulling are different",
+      "html": "<p>Pulldowns and pull-ups load the lats through a vertical path. Rows load the lats differently and recruit the mid-back far more. Programmes that contain only one leave a gap, and the gap is almost always horizontal pulling, which is also the direction that balances benching.</p><p>If you have to choose, rowing does more for the typical lifter's problems than pulldowns do. See <a href=\"/activities/barbell-row\">the barbell row</a>. Both is better.</p>"
+    },
+    {
+      "h2": "Why your upper traps take over",
+      "html": "<p>A very common pattern is a lifter whose <a href=\"/pain/top-of-shoulder\">top of shoulder</a> and neck are permanently tight, who has strong-looking upper traps and a weak mid and lower back. The upper trapezius is compensating for muscles that are not contributing, and it refers pain up the side of the neck and into the head, which is where some tension headaches come from.</p><p>Training the lower trapezius and rhomboids directly, with light weights and deliberate control rather than heavy shrugging, is usually more effective than stretching the upper traps repeatedly. See <a href=\"/conditions/upper-back-rhomboid-pain\">upper back and rhomboid pain</a> and <a href=\"/conditions/tension-headache\">tension headache</a>.</p>"
+    },
+    {
+      "h2": "Technique points that matter",
+      "html": "<ul><li><b>Lead with the elbow, not the hand.</b> Thinking about driving the elbow back recruits the back rather than the arms.</li><li><b>Let the shoulder blade move.</b> Allowing it to travel at both ends of the movement trains the muscles that control it, which locking it rigid does not.</li><li><b>Control the lowering.</b> The lengthened portion of a pull is where a lot of the stimulus sits, and dropping the weight wastes it.</li><li><b>Do not shrug every row.</b> If your traps are doing the work, lighten it and slow down.</li></ul>"
+    },
+    {
+      "h2": "Back training as treatment",
+      "html": "<p>A surprising amount of what arrives at this clinic as a shoulder problem or a neck problem is a back that has never been strong. Dr. Jared Caban, a physician-trained clinical exercise physiologist and licensed massage therapist, releases the tissue that has shortened, rebuilds the position of the shoulder blade, then loads it, because without the last step the change does not hold.</p><p>Members get the matching exercise videos and the workout generator in the MD Fit app, so the corrective work is specific rather than guessed at. Self-pay, no insurance paperwork, no referral needed.</p>"
+    }
+  ],
+  "redFlags": [
+    "Pain, numbness or tingling travelling down an arm into the hand.",
+    "Neck pain with headache, visual change or dizziness.",
+    "A sudden sharp pain in the back or armpit during a heavy pull with loss of strength.",
+    "Shoulder or neck pain that is present at rest or wakes you at night.",
+    "Back pain that travels down a leg, or weakness in a leg or foot."
+  ],
+  "faq": [
+    {
+      "q": "Are pull-ups enough for back training?",
+      "a": "They train the lats well but do little for the mid-back muscles that pull the shoulder blades together. Most people need horizontal pulling as well, and it is usually the more useful of the two."
+    },
+    {
+      "q": "Why are my upper traps always tight?",
+      "a": "Often because they are compensating for a weak lower trapezius and rhomboids. Strengthening those directly tends to help more than repeatedly stretching the upper traps."
+    },
+    {
+      "q": "Should I train traps with shrugs?",
+      "a": "Most recreational lifters already have overactive upper traps and would benefit more from lower trapezius and rhomboid work than from heavy shrugging."
+    },
+    {
+      "q": "How much back work compared to chest?",
+      "a": "Matching pulling sets to pressing sets is a reasonable target. Lifters who press far more than they pull are the ones who tend to develop shoulder complaints over time."
+    }
+  ],
+  "muscles": [
+    "lats",
+    "middle-trap",
+    "lower-trap",
+    "rhomboid-major",
+    "upper-trap",
+    "teres-major"
+  ],
+  "pain": [
+    "between-shoulder-blades",
+    "inner-edge-of-shoulder-blade",
+    "top-of-shoulder",
+    "where-neck-meets-shoulder"
+  ],
+  "guides": [
+    "posterior-neck"
+  ],
+  "related": [
+    "/activities/barbell-row",
+    "/activities/chest-training",
+    "/conditions/upper-back-rhomboid-pain",
+    "/conditions/tension-headache",
+    "/activities/overhead-press",
+    "/activities/hypertrophy-training-basics",
+    "/treatments/strength-and-performance"
+  ],
+  "programs": [
+    "shoulder-6",
+    "mobility-12"
+  ],
+  "group": "activities",
+  "steps": null,
+  "timeline": null,
+  "reviewStatus": "approved"
+}
