@@ -3,8 +3,19 @@
 //   node scripts/version-assets.js
 const fs = require("fs"), path = require("path"), crypto = require("crypto");
 const root = path.join(__dirname, "..");
-const htmls = [...fs.readdirSync(root).filter((f) => f.endsWith(".html")).map((f) => path.join(root, f)),
-  ...fs.readdirSync(path.join(root, "guides")).filter((f) => f.endsWith(".html")).map((f) => path.join(root, "guides", f))];
+// Every public HTML file, wherever it lives: the hand-written pages at the root and in guides/, and the generated
+// ones under muscles/, pain/, conditions/, blog/, activities/, treatments/ and areas/. They all load the same
+// /guides.css, /site-header.js and so on, so they all need the ?v= stamp before those files can be cached forever.
+// Walking the tree (rather than a fixed list) means a new page group is covered the day it is added.
+const SKIP_DIR = /^[._]|^(node_modules|scripts|assets|data)$/;
+const htmls = [];
+(function walkHtml(d) {
+  for (const f of fs.readdirSync(d, { withFileTypes: true })) {
+    const p = path.join(d, f.name);
+    if (f.isDirectory()) { if (!SKIP_DIR.test(f.name)) walkHtml(p); }
+    else if (f.name.endsWith(".html")) htmls.push(p);
+  }
+})(root);
 const hash = (file) => crypto.createHash("sha1").update(fs.readFileSync(file)).digest("hex").slice(0, 8);
 for (const html of htmls) {
   let s = fs.readFileSync(html, "utf8");
