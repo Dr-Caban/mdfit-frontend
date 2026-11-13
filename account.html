@@ -19,11 +19,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="app/app.css?v=4e21087e">
-  <link rel="stylesheet" href="account.css?v=c28f7e2e">
+  <link rel="stylesheet" href="app/app.css?v=609f2f6e">
+  <link rel="stylesheet" href="account.css?v=d560caac">
   <link rel="stylesheet" href="guides.css?v=704fb203">
-  <link rel="stylesheet" href="app-theme.css?v=aca6303f">
-  <link rel="stylesheet" href="mdfit-guide.css?v=3dc9d38b">
+  <link rel="stylesheet" href="app-theme.css?v=92dd6fc5">
+  <link rel="stylesheet" href="mdfit-guide.css?v=4a8a7ad9">
   <link rel="stylesheet" href="progress-charts.css?v=f0ec9711">
   <script src="app-theme.js?v=3afc6baa"></script>
 </head>
@@ -71,6 +71,7 @@
       <div class="card my-plans" id="my-plans" hidden>
         <div id="mp-assigned"></div>
         <div id="mp-saved"></div>
+        <div id="mp-suggested"></div>
       </div>
       <div class="streak card gold-edge">
         <div class="streak-top">
@@ -281,9 +282,10 @@
           <div class="thread-who"><b>Dr. Jared Caban</b><small id="thread-sub">MD, MSc · usually replies within a day</small></div>
         </header>
         <div class="card msg-gate" id="msg-gate" hidden>
-          <h3>Messaging is part of membership</h3>
-          <p class="muted">Members can message Dr. Jared directly with questions about their pain, programs and progress.</p>
-          <button type="button" class="btn-gold sm" data-goto="premium">See memberships</button>
+          <h3>Talk to Dr. Jared directly</h3>
+          <p class="muted" id="msg-gate-why">Messaging Dr. Jared directly is part of Expert Advice ($50/mo) and the 1-on-1 tiers.</p>
+          <p class="muted small">Get expert advice from Dr. Jared himself about your pain, programs and progress. Your past messages stay here.</p>
+          <button type="button" class="btn-gold sm" data-unlock="expert">See Expert Advice</button>
         </div>
         <div class="chat" id="chat">
           <div class="chat-list" id="chat-list" aria-live="polite"></div>
@@ -760,10 +762,10 @@
   <script src="guides.js?v=8521968d"></script>
   <script src="stripe-checkout.js?v=087989ec"></script>
   <script src="progress-charts.js?v=df3a2256"></script>
-  <script src="account.js?v=b180debe"></script>
+  <script src="account.js?v=33524b68"></script>
   <script src="account-xp.js?v=b9de2933"></script>
   <script src="account-share.js?v=763ef457"></script>
   <script src="account-habits.js?v=60e83046"></script>
-  <script src="mdfit-guide.js?v=731335c2"></script>
+  <script src="mdfit-guide.js?v=171c8d0b"></script>
 </body>
 </html>

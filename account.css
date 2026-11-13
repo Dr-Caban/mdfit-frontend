@@ -260,6 +260,23 @@
 .mp-item img, .mp-item .fp-ic { width: 56px; height: 56px; border-radius: 10px; object-fit: cover; display: block; }
 .mp-body b { display: block; color: var(--navy); }
 .mp-go { font-weight: 700; color: var(--accent-text, #2a6aa8); white-space: nowrap; }
+/* Recommended (Dr. Jared) and Suggested (Sunny): two labels that never look alike */
+.mp-tag { display: inline-block; font-size: 10.5px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; border-radius: 999px; padding: 2px 8px; margin: 0 6px 3px 0; vertical-align: middle; }
+.mp-tag.rec { background: var(--navy); color: #fff; }
+.mp-tag.sug { background: var(--gold-soft, #f6efdf); color: #7a5a14; border: 1px solid var(--gold, #C8A763); }
+.mp-body .lock { margin: 0 6px 3px 0; vertical-align: middle; }
+.mp-sug { position: relative; }
+.mp-sug .mp-item { padding-right: 40px; }
+.mp-x { position: absolute; top: 6px; right: 6px; width: 30px; height: 30px; display: grid; place-items: center; border: 0; border-radius: 50%; background: transparent; color: var(--muted, #6b7280); cursor: pointer; }
+.mp-x:hover, .mp-x:focus-visible { background: var(--line); }
+.mp-x svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; }
+.mp-item .mp-play, .mp-item .mp-tip-ic { display: grid; place-items: center; background: var(--gold-soft, #f6efdf); }
+.mp-play svg, .mp-tip-ic svg { width: 26px; height: 26px; fill: var(--gold, #C8A763); }
+.mp-tip { cursor: default; grid-template-columns: 56px minmax(0, 1fr); }
+.mp-tip-text { display: block; font-size: 14px; line-height: 1.45; color: var(--heading, #1d2b3a); overflow-wrap: anywhere; }
+.mp-locked .mp-go { color: #7a5a14; }
+.mp-sub { margin: 10px 0 0; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; font-size: 11px; }
+.mp-fine { margin: 8px 0 0; }
 .save-plan { margin-top: 10px; width: auto; }
 .save-plan.on { background: #e3f4ea; color: #2e7d32; border-color: #bfe3cc; }
 

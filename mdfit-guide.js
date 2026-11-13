@@ -1,6 +1,6 @@
-// The MD Fit guide: a cloud to tap and talk to, on every screen of the member app.
+// Sunny (MD Fit Intelligence): the gold cloud to tap and talk to, on every screen of the member app.
 //
-// It is a guide to the app, not a doer of clinical things: it reads what the member writes, works out what they are
+// Sunny is a guide to the app, not a doer of clinical things: it reads what the member writes, works out what they are
 // trying to do, and offers the places in the app that fit as selections. Tapping one takes them there. It knows what
 // is waiting for this member (a visit, an invoice, forms, a message) because the app already loaded it, and it offers
 // that first. Two small jobs it does itself: saving a reminder to the calendar, and switching the theme or layout.
@@ -15,15 +15,32 @@
 // that mode: anything that sounds like an emergency, reminders, theme and layout, and every question about the
 // member's own account (visits, invoices, forms, messages, streak). If the assistant is off or does not answer, the
 // device understands the message itself, exactly as in the default mode. The line under the box says which is true.
+//
+// In that mode the server also reads the member's activity in the app (programs, check-ins, workouts) to personalize
+// what it suggests; the member's name and contact details are never sent, and what is typed is not saved.
+//
+// A hello is always answered on the device, by first name (the app holds it; it is never sent), and is never counted.
+// The device also puts the member's own things first: a program Dr. Jared recommended, and the pain relief track for
+// the area they last logged. Both come from what the app already loaded.
+//
+// With the assistant on, an answer can also carry suggestions: programs, exercise videos and a general tip from the
+// app's own library, and Dr. Jared's own written guides. The server keeps them on the member's record and the app shows them on Home under "Suggested for
+// you", labeled Suggested, apart from what Dr. Jared recommends. A members-only program is shown locked and opens the
+// membership page. On the device alone nothing is suggested or saved.
+//
+// Free accounts get a daily allowance the server counts in tokens (unit: "tokens"); members, people with an active
+// treatment plan and inpatients are unlimited (left: null). An older server counts answers instead; both are read.
 (() => {
   "use strict";
   const App = window.MDFitApp, M = window.MDFit;
-  let G = { known: false, plan: "free", limit: null, left: null, reminders: [], ai: false };
+  let G = { known: false, plan: "free", limit: null, left: null, unit: "answers", reminders: [], ai: false };
   const dayRows = (d) => { try { return d >= M.todayInTz() ? G.reminders.filter((r) => r.date === d).map((r) => ({ k: "reminder", t: r.title, s: `${M.fmtTime(r.time)} · reminder` })) : []; } catch { return []; } };
   window.MDFitGuide = { day: dayRows }; // the calendar asks for a day's reminders (account.js dayItems)
   if (!App || !M || typeof App.client !== "function" || !App.client()) return;
 
   const PHONE_TEL = "+19413130562", PHONE_SAY = "941-313-0562", QUIET_ABOVE = 5;
+  // In tokens: an answer from the assistant uses about 3,000, one found on the device 300 (server's count)
+  const PER_ANSWER = 3000;
   const first = () => { const c = App.client() || {}; return String(c.firstName || c.name || "").trim().split(/\s+/)[0] || "there"; };
   const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
   const wait = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -107,22 +124,25 @@
     cal: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2zm12 8v10H5V10z"/></svg>',
     send: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20.5 21 12 3 3.5v6.6l11 1.9-11 1.9z"/></svg>',
     x: '<svg viewBox="0 0 24 24" class="mg-line" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
-    down: '<svg viewBox="0 0 24 24" class="mg-line" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>'
+    down: '<svg viewBox="0 0 24 24" class="mg-line" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>',
+    lock: '<svg viewBox="0 0 24 24" class="mg-lock-ic" aria-hidden="true"><path d="M17 9h-1V7a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2zm-7-2a2 2 0 0 1 4 0v2h-4z"/></svg>'
   };
-  const btn = document.createElement("button"); btn.id = "mg-btn"; btn.type = "button"; btn.setAttribute("aria-label", "Open the MD Fit guide: tap me to talk"); btn.setAttribute("aria-expanded", "false"); btn.setAttribute("aria-controls", "mg"); btn.innerHTML = cloud("") + '<i class="mg-dot" hidden></i>';
+  const btn = document.createElement("button"); btn.id = "mg-btn"; btn.type = "button"; btn.setAttribute("aria-label", "Open Sunny, MD Fit Intelligence: tap me to talk"); btn.setAttribute("aria-expanded", "false"); btn.setAttribute("aria-controls", "mg"); btn.innerHTML = cloud("") + '<i class="mg-dot" hidden></i>';
   const tag = document.createElement("span"); tag.id = "mg-tag"; tag.textContent = "Tap me to talk"; tag.setAttribute("aria-hidden", "true");
   const scrim = document.createElement("div"); scrim.id = "mg-scrim"; scrim.hidden = true;
-  const box = document.createElement("section"); box.id = "mg"; box.hidden = true; box.setAttribute("role", "dialog"); box.setAttribute("aria-label", "MD Fit guide");
-  box.innerHTML = `<header class="mg-head"><div class="mg-grab"></div><div class="mg-in">${cloud("mg-mini")}<div class="mg-who"><b>MD Fit guide</b><span>Here to show you around</span></div>
-      <button type="button" id="mg-x" aria-label="Close the guide">${ICON.x}${ICON.down}</button></div></header>
-    <div id="mg-log" role="log" aria-live="polite" aria-label="Conversation with the guide"></div>
+  const box = document.createElement("section"); box.id = "mg"; box.hidden = true; box.setAttribute("role", "dialog"); box.setAttribute("aria-label", "Sunny, MD Fit Intelligence");
+  box.innerHTML = `<header class="mg-head"><div class="mg-grab"></div><div class="mg-in">${cloud("mg-mini")}<div class="mg-who"><b>Sunny</b><span>MD Fit Intelligence</span></div>
+      <button type="button" id="mg-x" aria-label="Close Sunny">${ICON.x}${ICON.down}</button></div></header>
+    <div id="mg-log" role="log" aria-live="polite" aria-label="Conversation with Sunny"></div>
     <div id="mg-meter" hidden></div>
-    <form id="mg-form"><input id="mg-in" autocomplete="off" maxlength="200" enterkeyhint="send" placeholder="Tell me what you're looking for" aria-label="Tell the guide what you are looking for"><button aria-label="Send">${ICON.send}</button></form>
+    <form id="mg-form"><input id="mg-in" autocomplete="off" maxlength="200" enterkeyhint="send" placeholder="Tell me what you're looking for" aria-label="Tell Sunny what you are looking for"><button aria-label="Send">${ICON.send}</button></form>
     <p class="mg-fine" id="mg-fine"></p>`;
   document.body.append(btn, tag, scrim, box);
   const log = box.querySelector("#mg-log"), input = box.querySelector("#mg-in"), meterEl = box.querySelector("#mg-meter"), dot = btn.querySelector(".mg-dot"), fineEl = box.querySelector("#mg-fine");
   // The line under the box always says what is true for the mode the guide is in
-  const fine = () => { fineEl.textContent = "I show you where things are in the app. I don't give medical advice. " + (G.ai ? "What you type is read by MD Fit's assistant to find the right place and isn't saved." : "What you type stays on this device."); };
+  const fine = () => { fineEl.textContent = G.ai
+    ? "Sunny reads what you type and your activity in the app (programs, check-ins, workouts) to personalize suggestions. Your name and contact details are never sent, and what you type isn't saved. Not medical advice."
+    : "I show you where things are in the app. I don't give medical advice. What you type stays on this device."; };
   fine();
   let greeted = false, busy = false, limited = false, lastSig = "", saidOpen = false;
   const ctx = { area: "", pick: "" };
@@ -136,7 +156,8 @@
     const wrap = document.createElement("div"); wrap.className = "mg-opts";
     for (const o of items) {
       const b = document.createElement(o.tel ? "a" : "button"); if (o.tel) b.href = "tel:" + o.tel; else b.type = "button";
-      b.className = "mg-opt" + (o.gold ? " mg-gold" : ""); b.textContent = o.label; b.dataset.label = o.label;
+      b.className = "mg-opt" + (o.gold ? " mg-gold" : "") + (o.lock ? " mg-lock" : ""); b.textContent = o.label; b.dataset.label = o.label;
+      if (o.lock) b.insertAdjacentHTML("afterbegin", ICON.lock);
       if (o.sub) { const s = document.createElement("small"); s.textContent = o.sub; b.appendChild(s); }
       if (!o.tel) b.addEventListener("click", () => { if (o.more) { say(o.label, true); return o.more(); } travel(o); });
       wrap.appendChild(b);
@@ -150,19 +171,25 @@
     if (o.href) { location.href = o.href; return; }
     try { if (o.run) o.run(); else App.go(o.hash); } catch { return; }
     if (o.then) setTimeout(o.then, 90);
-    if (phone()) { shut(); App.toast(`The guide brought you to ${o.name}`); } else sys(`Opened ${o.name}`);
+    if (phone()) { shut(); App.toast(`Sunny brought you to ${o.name}`); } else sys(`Opened ${o.name}`);
   }
   function thinking() { const d = document.createElement("div"); d.className = "mg-msg mg-think"; d.innerHTML = "<i><b></b><b></b><b></b></i>"; d.appendChild(document.createTextNode("Hmm, let's see what's available")); log.appendChild(d); end(); return d; }
   async function beat(fn) { const d = thinking(); await wait(750); d.remove(); await fn(); end(); }
 
   // ---------- the free plan's daily answers: the server counts, the guide only shows what the server says ----------
-  function apply(r) { if (!r || typeof r !== "object") return; G.known = true; if (r.plan) G.plan = r.plan; if ("limit" in r) G.limit = r.limit; if ("left" in r) G.left = r.left; if ("ai" in r) { G.ai = r.ai === true; fine(); } if (Array.isArray(r.reminders)) setReminders(r.reminders); meter(); }
+  function apply(r) { if (!r || typeof r !== "object") return; G.known = true; if (r.plan) G.plan = r.plan; if (r.unit) G.unit = r.unit; if ("limit" in r) G.limit = r.limit; if ("left" in r) G.left = r.left; if ("ai" in r) { G.ai = r.ai === true; fine(); } if (Array.isArray(r.reminders)) setReminders(r.reminders); meter(); }
+  // Unlimited: a member, an active plan or an inpatient (the server sends left: null); never a counter or an upgrade
+  const unlimited = () => G.known && (G.plan === "member" || G.left === null);
+  // Roughly how many answers are left, in the member's terms (tokens stay a server matter)
+  const answersLeft = () => (typeof G.left !== "number" ? null : G.unit === "tokens" ? Math.floor(G.left / PER_ANSWER) : G.left);
   function meter() {
-    const n = G.left, free = G.known && G.plan !== "member" && typeof n === "number";
+    const n = answersLeft(), free = G.known && !unlimited() && typeof n === "number";
     // Quiet until few are left: with plenty remaining it should feel unlimited. Members never see a counter.
     if (!free || n > QUIET_ABOVE) { meterEl.hidden = true; limited = limited && free; input.placeholder = "Tell me what you're looking for"; return; }
-    meterEl.hidden = false; meterEl.className = n ? "" : "mg-out"; meterEl.textContent = `${n} free answer${n === 1 ? "" : "s"} left today`;
-    input.placeholder = n ? "Tell me what you're looking for" : "Free answers are back tomorrow";
+    const out = G.unit === "tokens" ? G.left <= 0 : n <= 0;
+    meterEl.hidden = false; meterEl.className = out ? "mg-out" : "";
+    meterEl.textContent = out ? "No free Sunny answers left today" : G.unit === "tokens" ? (n ? `About ${n} free answer${n === 1 ? "" : "s"} left today` : "Almost out of free answers today") : `${n} free answer${n === 1 ? "" : "s"} left today`;
+    input.placeholder = out ? "Free answers are back tomorrow" : "Tell me what you're looking for";
   }
   function setReminders(listIn) { const before = JSON.stringify(G.reminders); G.reminders = (listIn || []).filter((r) => r && r.date && r.time && r.title); if (JSON.stringify(G.reminders) !== before) App.redrawCalendar(); }
   const load = () => M.apiAuth("GET", "/api/me/guide").then(apply).catch(() => {});
@@ -177,10 +204,9 @@
   const tell = (type) => { post("/api/me/guide/event", { type }).catch(() => {}); };
   function limit() {
     const again = limited; limited = true;
-    const n = typeof G.limit === "number" && G.limit > 0 ? G.limit : null;
-    say(again ? "You're out of free answers for today. Upgrade for unlimited, or come back tomorrow."
-      : `That's your ${n ? n + " " : ""}free answers for today, ${first()}. Members get unlimited answers. You can upgrade now, or I'll be right here tomorrow.`);
-    offer([{ label: "Upgrade for more", gold: true, run: () => { tell("upgrade"); App.go("premium"); }, name: "Membership" },
+    say(again ? "You're out of free Sunny answers for today. Members get unlimited Sunny for $19.95/mo, or come back tomorrow."
+      : `You've used today's free Sunny answers, ${first()}. Members get unlimited Sunny for $19.95/mo. You can upgrade now, or I'll be right here tomorrow.`);
+    offer([{ label: "Get unlimited Sunny", sub: "$19.95/mo", gold: true, run: () => { tell("upgrade"); if (App.showTier) App.showTier("member"); else App.go("premium"); }, name: "Membership" },
       { label: "Come back tomorrow", more: () => { tell("tomorrow"); say(`See you tomorrow, ${first()}.`); setTimeout(() => { shut(); tag.textContent = "New answers tomorrow"; tag.hidden = false; dot.hidden = true; }, 1500); } }]);
     if (!again) { sys("Always open, limit or not"); offer([opt("pain"), opt("book"), opt("call")]); }
   }
@@ -216,6 +242,29 @@
     else say(`There isn't a program built for the ${area} yet.`);
     if (tracks.length) { say(`And these pain relief tracks cover the ${area}:`); offer(tracks); }
     say("If you'd like a more specific read on what's going on, I can guide you to the pain tool."); offer([opt("pain"), opt("book"), opt("call")]);
+  }
+  // The member's own things, from what the app already holds (never sent): the program Dr. Jared recommended, and the
+  // pain relief track for the area they last logged
+  async function mine() {
+    const out = { rec: null, track: null, title: "" };
+    try {
+      const c = App.client() || {}; let C = null; try { C = await App.content(); } catch {}
+      const progs = (C && C.programs) || [];
+      const a = (c.assignedPrograms || []).map((x) => progs.find((p) => p && p.id === x.id)).find(Boolean);
+      if (a) { out.title = a.title; out.rec = { label: `Pick up ${a.title}`, sub: "Recommended by Dr. Jared", gold: true, hash: `programs/${a.id}`, name: a.title, pick: a.title }; }
+      const last = norm(App.lastPain ? App.lastPain() : ""), key = last.trim() ? Object.keys(AREAS).find((k) => AREAS[k].f.some((w) => has(last, w)) || has(last, k)) : "";
+      if (key) { const t = (await forArea(key)).tracks[0]; if (t) out.track = { ...t, sub: `Pain relief track · your ${key}` }; }
+    } catch {}
+    return out;
+  }
+  const own3 = (m) => [m.rec, m.track].filter(Boolean);
+  // A hello: answered here by first name, never sent, never counted
+  const HELLO = /^\s*(hi+|hey+|heya|hello+|helo|yo+|hiya|howdy|sup|what'?s up|wass?up|greetings|good (morning|afternoon|evening|day)|morning|afternoon|evening|hola|hi there|hey there|hello there|anyone there|you there|are you there)(\s+(sunny|there|doc|dr\.?|guide|md ?fit))?[\s!?.,]*$/i;
+  async function hello() {
+    const m = await mine();
+    say(`Hey ${first()}, I'm Sunny. What are we working on today?`);
+    if (m.rec) say(`Want to pick up ${m.title} that Dr. Jared recommended?`);
+    offer([...own3(m), opt("pain"), opt("programs"), opt("generate")]);
   }
   function hurting(area, extra) {
     if (area) ctx.area = area;
@@ -311,6 +360,7 @@
   }
   function route(u, raw) {
     const t = u.text;
+    if (HELLO.test(String(raw || "")) && !u.pained && !u.area) return { kind: "other", local: true, free: true, run: hello };
     if (/\b(dark|black|night) ?(mode|theme|look)?\b/.test(t) && !u.pained) return { kind: "looks", run: () => look({ theme: "black" }, "Done. Black it is. Anything else you'd like to change about how the app looks?") };
     if (/\b(white|light (mode|theme|look)|make it light)\b/.test(t)) return { kind: "looks", run: () => look({ theme: "white" }, "Done. White it is. Anything else you'd like to change?") };
     if (/\b(compact|tighter|denser)\b/.test(t)) return { kind: "looks", run: () => look({ layout: "compact" }, "Done. More fits on every screen now.") };
@@ -318,11 +368,14 @@
     if (/\b(layout|theme|customi[sz]e|personali[sz]e|make it mine|look and feel)\b/.test(t)) return { kind: "looks", run: () => look(null, "Here's what you can change. Pick one, or just tell me.") };
     if (/\b(remind me|set a reminder|reminder (for|to|at)|save (it|that|this)|put (it|that|this) (in|on)|add (it|that|this) to|(on|in|to) my calendar)\b/.test(t)) return { kind: "reminder", run: () => remind(u, raw) };
     if (/\breminders?\b/.test(t)) return { kind: "reminder", run: myReminders };
-    const mine = own(u); if (mine) return { ...mine, own: true };
+    const acct = own(u); if (acct) return { ...acct, own: true };
     if (u.pained) return { kind: "pain", run: () => hurting(u.area, u.places.filter((p) => !["pain", "book", "call"].includes(p.id)).slice(0, 1).map((p) => opt(p.id))) };
     if (u.area) return { kind: (u.places[0] || {}).kind || "programs", run: () => showArea(u.area) };
     if (u.places.length) return { kind: u.places[0].kind, run: () => { say(u.places.length === 1 ? "Got it. This is the place for that:" : "Got it. These look like what you're after:"); offer([...u.places.slice(0, 4).map((p) => opt(p.id)), ...(u.places.some((p) => p.id === "call") ? [] : [opt("call")])]); } };
-    return { kind: "other", run: () => { say("I'm not sure I caught that. Here are the places people use most, or tell me a little more:"); offer([opt("book"), opt("pain"), opt("programs"), opt("generate"), opt("messages"), opt("call")]); } };
+    return { kind: "other", run: async () => {
+      const m = await mine(), theirs = own3(m);
+      say(theirs.length ? "I'm not sure I caught that. Here's what you have going, and the places people use most. Or tell me a little more:" : "I'm not sure I caught that. Here are the places people use most, or tell me a little more:");
+      offer([...theirs, opt("pain"), opt("programs"), opt("generate"), opt("book"), opt("messages"), opt("call")]); } };
   }
   async function ask(raw) {
     const text = String(raw || "").trim(); if (!text || busy) return false;
@@ -335,7 +388,7 @@
     // With the assistant on, a question the device does not answer itself is read on MD Fit's server; anything else
     // (and any failure there) is understood here and only counted.
     let ai = null; if (G.ai && !plan.local) ai = await askServer(text);
-    const ok = ai ? true : await count(plan.kind);
+    const ok = ai || plan.free ? true : await count(plan.kind); // a hello is never counted
     const rest = 750 - (Date.now() - t0); if (rest > 0) await wait(rest);
     d.remove();
     try { if (ai) aiAnswer(ai); else if (!ok) limit(); else await plan.run(); } catch { say("Something went wrong on my side. You can still get anywhere from the menu, or call the clinic."); offer([opt("call")]); }
@@ -362,13 +415,44 @@
     const ids = [...new Set((Array.isArray(r.places) ? r.places : []).map((x) => FROM_SERVER[x] || x))].filter((id) => id !== "call" && PLACES.some((p) => p.id === id)).slice(0, 5);
     say(String(r.say || "").trim().slice(0, 600) || "Here's where I can take you:");
     offer([...(area ? [{ label: `Programs for your ${area}`, more: () => beat(() => showArea(area)) }] : []), ...ids.map(opt), opt("call")]);
+    suggest(r.suggested);
   }
-  function greet() {
+  // Sunny's suggestions with an answer: programs (a members-only one shows locked and opens the membership page),
+  // exercise videos and a general tip, each tagged Suggested. The server has already put them on the member's Home.
+  function suggest(sg) {
+    if (!sg || typeof sg !== "object") return;
+    const progs = (Array.isArray(sg.programs) ? sg.programs : []).filter((p) => p && typeof p.id === "string" && typeof p.title === "string").slice(0, 3);
+    const vids = (Array.isArray(sg.videos) ? sg.videos : []).filter((v) => v && typeof v.id === "string" && (App.exercise ? App.exercise(v.id) : v.name)).slice(0, 4);
+    const tip = typeof sg.tip === "string" ? sg.tip.trim().slice(0, 300) : "";
+    const guides = (Array.isArray(sg.guides) ? sg.guides : []).filter((g) => g && typeof g.id === "string" && typeof g.title === "string").slice(0, 3);
+    if (!progs.length && !vids.length && !tip && !guides.length) return;
+    if (progs.length) {
+      sys("Suggested programs");
+      offer(progs.map((p) => p.locked
+        ? { label: p.title, sub: "Members · unlock with Membership", lock: true, run: () => { tell("upgrade"); if (App.showTier) App.showTier("member"); else App.go("premium"); }, name: "Membership" }
+        : { label: p.title, sub: "Suggested", hash: `programs/${p.id}`, name: p.title, pick: p.title }));
+    }
+    if (vids.length) {
+      sys("Suggested videos");
+      offer(vids.map((v) => { const ex = App.exercise ? App.exercise(v.id) : null, name = (ex && ex.name) || v.name;
+        return { label: name, sub: [ex && ex.region, "Suggested"].filter(Boolean).join(" · "), more: () => { if (!App.playExercise || !App.playExercise(v.id)) say("That video isn't available just now. It's in the video library."); } }; }));
+    }
+    if (guides.length) {
+      sys("From Dr. Jared's guides");
+      offer(guides.map((g) => ({ label: g.title, sub: "Suggested", hash: `tips/${g.id}`, name: g.title })));
+    }
+    if (tip) { const d = say(tip); const t = document.createElement("span"); t.className = "mg-sug"; t.textContent = "Suggested"; d.prepend(t); }
+    sys("Added to your Home under Suggested for you");
+    if (App.setSuggested) M.apiAuth("GET", "/api/me").then((r) => r && r.client && r.client.suggested && App.setSuggested(r.client.suggested)).catch(() => {});
+  }
+  async function greet() {
     greeted = true;
     const w = waiting(); lastSig = w.sig;
-    say(`Welcome back, ${first()}. What brings you in today?`);
+    say(`Hey ${first()}, I'm Sunny. What are we working on today?`);
     if (w.line) say(w.line);
-    offer([...w.opts,
+    const m = await mine();
+    if (m.rec && !w.line) say(`Want to pick up ${m.title} that Dr. Jared recommended?`);
+    offer([...w.opts, ...own3(m),
       { label: "Something hurts", more: () => beat(() => { say("I'm sorry to hear that. Where is it bothering you?"); offer(["knee", "back", "shoulder", "hip", "neck", "foot"].map((a) => ({ label: cap(a), more: () => beat(() => hurting(a)) }))); }) },
       opt("book"), opt("programs"), opt("generate"),
       ...(theme() ? [{ label: "Make the app mine", more: () => beat(() => look(null, "Here's what you can change. Pick one, or just tell me.")) }] : [])]);
@@ -402,7 +486,7 @@
   if (window.visualViewport) { window.visualViewport.addEventListener("resize", fitKeyboard); window.visualViewport.addEventListener("scroll", fitKeyboard); }
   window.matchMedia("(max-width: 720px)").addEventListener("change", () => { if (!box.hidden) { scrim.hidden = !phone(); fitKeyboard(); } });
 
-  // The label steps aside after a moment for someone who has met the guide before; the cloud keeps breathing
+  // The label steps aside after a moment for someone who has met Sunny before; the cloud keeps breathing
   let met = false; try { met = !!localStorage.getItem("mdfit-guide-met"); } catch {}
   if (met) setTimeout(() => { if (box.hidden && tag.textContent === "Tap me to talk") tag.hidden = true; }, 7000);
   // Out of the way of a full-screen workout, and lifted clear of the app's pop-up notifications
