@@ -398,7 +398,7 @@
     // (the Billing tab's own list is only dropped when the chart is for someone else: this function also runs in the
     // background to check for anything newer, and must not blank what the buttons on that tab work from)
     cache.chart = { d, c, cn: cn.notes || [] }; if (cache.billingFor !== id) cache.billing = null;
-    const tabs = [["overview", "Overview"], ["notes", "Clinical notes"], ["plans", "Plans & protocols"], ["measures", "Measures"], ["meds", "Meds & allergies"], ["files", "Files"], ["billing", "Billing"], ["consent", "Sharing & consent"]];
+    const tabs = [["overview", "Overview"], ["progress", "Progress"], ["notes", "Clinical notes"], ["plans", "Plans & protocols"], ["measures", "Measures"], ["meds", "Meds & allergies"], ["files", "Files"], ["billing", "Billing"], ["consent", "Sharing & consent"]];
     const tier = (c.membership && c.membership.tier) || "";
     return `
     <div class="view-head"><div class="row" style="gap:14px">${avatar(d.name, 52)}<div style="min-width:0"><h1>${esc(d.name)}</h1>
@@ -428,6 +428,8 @@
       <div class="stack"><div class="card"><h2 style="margin-bottom:10px">Contact</h2><dl class="kv"><dt>Email</dt><dd>${esc(d.email)}</dd><dt>Phone</dt><dd>${esc(d.phone || "—")}</dd><dt>Last sign-in</dt><dd>${when(d.lastLoginAt)}</dd><dt>Joined</dt><dd>${when(d.createdAt)}</dd></dl></div>
       <div class="card"><h2 style="margin-bottom:10px">Next visit</h2>${d.nextVisit ? `<b>${fmtDate(d.nextVisit.date)} · ${fmtTime(d.nextVisit.time)}</b><div class="muted">${esc(d.nextVisit.typeName || "")}</div>` : none("Nothing booked.")}<div class="row" style="margin-top:10px"><button class="btn sm" data-act="book">Book</button></div></div>
       <div class="card"><h2 style="margin-bottom:10px">Allergies &amp; alerts</h2>${(d.allergies || []).map((a) => `<div class="list-item"><span class="pill bad">${ui("alert", 12)}</span><span style="flex:1"><b>${esc(a.name)}</b>${a.reaction ? ` <span class="muted">${esc(a.reaction)}</span>` : ""}</span></div>`).join("") || none("None recorded.")}</div></div></div>`;
+    // The same graphs the client sees in the app (Profile → My progress), drawn once the tab is on screen (chartAfter)
+    if (t === "progress") return `<div class="card"><div class="card-head"><h2>Progress</h2><span class="muted" style="font-size:12px">What ${first} sees in the app, from what they log</span></div><div id="wsProgress"></div></div>`;
     if (t === "notes") return `
       <div class="card"><div class="card-head"><h2>Clinical notes</h2><div class="row"><span class="pill">Staff only</span><button class="btn sm primary" data-act="chartNewNote">${ui("plus", 14)} New note</button></div></div>
         ${cn.map((n) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(TEMPLATES[n.template] || "Note")}</b><div class="muted" style="font-size:12px">${n.status === "draft" ? "Last saved " + when(n.updatedAt) : "Signed " + when(n.signedAt) + (n.signedBy ? " by " + esc(n.signedBy) : "")}${n.addenda ? ` · ${n.addenda} addend${n.addenda === 1 ? "um" : "a"}` : ""}</div></span>
@@ -532,6 +534,10 @@
   function chartAfter() {
     if (state.chartTab === "plans") { loadPool(); loadProtocols(); }
     if (state.chartTab === "billing") loadBilling();
+    if (state.chartTab === "progress" && $("#wsProgress") && window.MDFitProgress) {
+      const id = state.chartClient;
+      window.MDFitProgress.mount($("#wsProgress"), { admin: true, load: (days) => api("GET", `/api/admin/clients/${encodeURIComponent(id)}/progress?days=${days}`) });
+    }
   }
   async function loadProtocols() {
     const r = await load("/emr/protocols").catch(() => ({ protocols: [] })), box = $("#prPool"); if (!box) return;
