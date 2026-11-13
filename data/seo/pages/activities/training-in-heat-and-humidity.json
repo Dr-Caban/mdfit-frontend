@@ -1,0 +1,86 @@
+{
+  "group": "activities",
+  "slug": "training-in-heat-and-humidity",
+  "title": "Training in Florida Heat and Humidity | MD Fit",
+  "h1": "Training in Heat and Humidity",
+  "description": "How Florida heat changes your training, why your pace drops in summer, how to hydrate sensibly, and the heat illness warning signs worth knowing.",
+  "about": {
+    "type": "Thing",
+    "name": "Exercising in heat and humidity"
+  },
+  "lead": "From May to October, Sarasota heat changes what every session costs. Your usual pace will feel harder, your heart rate will run higher, and none of that means you have lost fitness.",
+  "sections": [
+    {
+      "h2": "What heat actually does to a session",
+      "html": "<p>Working muscle produces heat. In cool air, the body sheds it easily. In heat, and especially in humidity, it cannot — sweat does not evaporate well when the air is already saturated, and evaporation is the main cooling mechanism.</p><p>So blood is diverted toward the skin to shed heat, which leaves less available for working muscle. The heart compensates by beating faster. The result is a higher heart rate and a higher perceived effort at a pace that felt easy in winter.</p><p>This is normal physiology. The mistake is treating it as a fitness problem and pushing harder to hit familiar numbers.</p>"
+    },
+    {
+      "h2": "Adjusting rather than quitting",
+      "html": "<ul><li><b>Train by effort, not pace.</b> If a session is meant to be conversational, keep it conversational even if that means walking considerably slower than in February.</li><li><b>Move the time.</b> Early morning is markedly better than evening, because the ground has cooled overnight and humidity, though high, comes with lower air temperature.</li><li><b>Move indoors for the hard sessions.</b> Intervals and heavy lifting in the heat are a poor combination. Save outdoor work for easy days.</li><li><b>Shorten and repeat.</b> Two shorter sessions often work better than one long one in August.</li></ul><p>Acclimatisation is real — a week or two of regular exposure improves how well you cope — but it has limits, and it does not make extreme conditions safe.</p>"
+    },
+    {
+      "h2": "Hydration without the nonsense",
+      "html": "<p>Drink when thirsty, and drink more than you would in winter. For sessions under an hour at moderate effort, water is generally fine for most people.</p><p>Longer or harder sessions, especially in heavy sweat, lose salt as well as water, and replacing water alone can leave you feeling worse rather than better. Electrolyte drinks are useful in that situation and largely unnecessary for a thirty-minute walk.</p><p>A practical marker: urine that stays pale through the day suggests you are keeping up. Dark urine, a dry mouth and a headache after a session suggest you were not. Weighing yourself before and after a long session tells you roughly what you lost.</p><p>Over-drinking is also possible and occasionally dangerous. Forcing large volumes of plain water well beyond thirst during prolonged exercise can dilute blood sodium. Thirst is a reasonable guide for most people.</p>"
+    },
+    {
+      "h2": "Knowing the difference between hot and in trouble",
+      "html": "<p>Feeling hot, sweaty and tired is normal. The signs that something more serious is developing are different in kind:</p><ul><li>Skin that stops sweating and goes dry when you are still working hard.</li><li>Confusion, slurred speech, stumbling or odd behaviour — often noticed by someone else first.</li><li>Nausea and vomiting, severe headache, or chills and goosebumps in the heat.</li><li>A feeling of being unable to cool down even after stopping and resting in shade.</li></ul><p>Heat stroke is a medical emergency. Stop, get into shade or air conditioning, cool actively with water and airflow, and call for help. Do not try to push through it or drive yourself somewhere.</p>"
+    },
+    {
+      "h2": "Who is at more risk",
+      "html": "<p>Older adults regulate temperature less efficiently and often feel thirst less reliably, which is a meaningful consideration for a lot of people here. Several common medications — some blood pressure medications, diuretics, and others — affect fluid balance or sweating.</p><p>If you have a cardiac history, high blood pressure, or take medication that affects fluid balance, summer training deserves a conversation with your physician about what to adjust. See <a href=\"/conditions/exercise-and-high-blood-pressure\">exercise and high blood pressure</a>.</p>"
+    },
+    {
+      "h2": "The summer alternatives worth having",
+      "html": "<p>Swimming and pool walking are the obvious ones and work well here — see <a href=\"/activities/swimming\">swimming</a>. Air-conditioned strength work keeps the most valuable training going regardless of weather. Indoor cardio on a bike, rower or treadmill removes the variable entirely.</p><p>Snowbirds arriving in autumn face the reverse problem and often underestimate how much the first few weeks take out of them — see <a href=\"/activities/snowbirds\">snowbirds</a>.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Confusion, slurred speech, stumbling or unusual behaviour during exercise in heat: this is a medical emergency, call 911.",
+    "Skin that stops sweating and becomes hot and dry while you are still exerting.",
+    "Severe headache, vomiting, or chills and goosebumps while overheated.",
+    "Chest pressure or pain, or pain spreading to the jaw, neck or arm: stop and seek emergency care.",
+    "Fainting or near-fainting in the heat, even if you feel better afterwards."
+  ],
+  "faq": [
+    {
+      "q": "Why is my heart rate so much higher in summer?",
+      "a": "Blood is diverted to the skin to shed heat, leaving less for working muscle, so the heart beats faster at the same workload. It is expected and not a sign of lost fitness."
+    },
+    {
+      "q": "Do I need electrolyte drinks?",
+      "a": "For sessions under about an hour at moderate effort, water is usually enough. For long or heavy-sweat sessions, replacing salt as well as water helps."
+    },
+    {
+      "q": "How long does it take to acclimatise?",
+      "a": "Most of the adaptation happens over one to two weeks of regular exposure, and it fades within a couple of weeks away from the heat."
+    },
+    {
+      "q": "Should I just train indoors all summer?",
+      "a": "Many people here do, at least for the harder sessions, and that is a reasonable choice. Keeping some outdoor exposure maintains acclimatisation if you want to stay used to it."
+    }
+  ],
+  "muscles": [
+    "gastroc",
+    "soleus",
+    "rectus-femoris",
+    "glute-max"
+  ],
+  "pain": [
+    "lower-calf",
+    "sole-of-foot"
+  ],
+  "guides": [],
+  "related": [
+    "/activities/walking-for-fitness",
+    "/activities/hydration-and-training",
+    "/activities/zone-2-cardio",
+    "/activities/swimming",
+    "/activities/snowbirds",
+    "/treatments/clinical-exercise-physiology"
+  ],
+  "programs": [],
+  "reviewStatus": "draft"
+}
