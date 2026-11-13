@@ -73,8 +73,9 @@ if (!CLINIC || !DR) throw new Error("index.html no longer defines #clinic and #d
 // that delivers it. It runs in the browser and installs to the home screen; no app-store claim is made here.
 const APP = { "@type": "WebApplication", "@id": `${SITE}/mdfit-app#app`, name: "MD Fit", url: `${SITE}/mdfit-app`,
   applicationCategory: "HealthApplication", operatingSystem: "Any web browser (iPhone, Android, computer)", browserRequirements: "Requires JavaScript",
-  description: "Dr. Jared Caban's free rehab, movement and training app: the pain tool, exercise videos, multi-week programs, a workout generator and progress tracking.",
+  description: "Dr. Jared Caban's free app: tap where it hurts, then follow the exercise videos and the program built for it.",
   provider: { "@id": `${SITE}/#clinic` },
+  featureList: ["Pain tool: tap where it hurts to see the muscles that usually cause it", "Exercise video library", "Programs designated for each problem"],
   offers: [{ "@type": "Offer", name: "Free", price: "0", priceCurrency: "USD" }], isAccessibleForFree: true };
 
 const crumbs = (items) => `<p class="cd-crumbs">${items.map((c, i) => c.href && i < items.length - 1 ? `<a href="${attr(c.href)}">${esc(c.name)}</a>` : esc(c.name)).join(" › ")}</p>`;
@@ -97,7 +98,7 @@ const withInsuranceFaq = (faq) => (faq || []).some((f) => /insurance/i.test(f.q)
 // The app reaches people who cannot come to Clark Road. Every generated page offers both: a visit for local patients,
 // and "Open the app", which goes to the login page like the header button.
 const cta = (kind = "pain") => `<div class="cd-cta"><h2>${kind === "train" ? "Train with MD Fit" : "Ready to get out of pain?"}</h2><p>Serving Sarasota, Bradenton, Lakewood Ranch, Venice, Siesta Key and Osprey. Self-pay practice: no insurance paperwork, no referral needed.</p><a class="cd-btn" href="/book?type=eval">Book an evaluation</a> <a class="cd-btn ghost" href="/book?type=call">Free phone consult</a>
-    <p><b>Not in Sarasota, or not ready to come in?</b> ${kind === "train" ? "Build this into your own plan in the free MD Fit app, with the exercise videos and programs Dr. Jared uses with his clinic patients." : "Start in the free MD Fit app with the same exercise videos and programs Dr. Jared uses with his clinic patients."} Add remote 1-on-1 sessions with him whenever you want more guidance.</p><a class="cd-btn" href="/login">Open the app</a> <a class="cd-btn ghost" href="/mdfit-app">What's in the app</a></div>`;
+    <p><b>Not in Sarasota, or not ready to come in?</b> ${kind === "train" ? "The free MD Fit app has the exercise videos and programs Dr. Jared uses with his clinic patients, so you can train this way from anywhere." : "Use the free MD Fit app: tap where it hurts, then follow the exercise videos and the program built for it, the same ones Dr. Jared uses with his clinic patients."}</p><a class="cd-btn" href="/login">Open the app</a> <a class="cd-btn ghost" href="/mdfit-app">What's in the app</a></div>`;
 const CTA = cta();
 const BOOK_ROW = `<p><a class="cd-btn" href="/book?type=eval">Book an evaluation</a> <a class="cd-btn ghost" href="tel:+19413130562">Call 941-313-0562</a></p>`;
 const RATING_P = `<p class="cd-rating"><a href="${MAPS_URL}" rel="noopener">${RATING_LINE}</a></p>`;

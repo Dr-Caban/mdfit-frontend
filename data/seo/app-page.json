@@ -1,8 +1,8 @@
 {
   "title": "The MD Fit App: Rehab and Training From Anywhere",
   "h1": "The MD Fit App",
-  "description": "Dr. Jared Caban's free rehab and training app: the pain tool, exercise videos, multi-week programs and a workout generator, from anywhere.",
-  "lead": "The MD Fit app puts the same exercise videos, programs and pain tool Dr. Jared uses with his clinic patients on your phone. It is free, and you do not need to live in Sarasota or book a visit to use it.",
+  "description": "Dr. Jared Caban's free app: tap where it hurts, then follow the exercise videos and the program built for it. Free, from anywhere.",
+  "lead": "The MD Fit app is free. Tap where it hurts on the body map, and it gives you the exercise videos and the program built for that problem, the same ones Dr. Jared uses with his clinic patients. You can use it from anywhere.",
   "sections": [
     {
       "h2": "Why it exists",
@@ -14,11 +14,11 @@
     },
     {
       "h2": "Who it is for",
-      "html": "<p><b>Clinic patients between visits.</b> Your homework is in the app, so you are never guessing which exercise came next or how many to do.</p><p><b>People who are not in Sarasota, or not ready to come in.</b> The programs and the pain tool work without a visit. If you want Dr. Jared's direct guidance later, a clinical membership adds remote video sessions with him.</p><p><b>People who train.</b> Lifters, runners, golfers and pickleball players who want their training built around how their own body moves. The <a href=\"/activities/train-for-your-build\">train for your build</a> pages explain the thinking; the app is where you put it into practice.</p><p><b>Older adults rebuilding strength.</b> Progressive, sensible work for bone, muscle and balance, at a pace that respects where you are starting from.</p>"
+      "html": "<p><b>Clinic patients between visits.</b> Your homework is in the app, so you are never guessing which exercise came next or how many to do.</p><p><b>People who are not in Sarasota, or not ready to come in.</b> The programs and the pain tool work without a visit.</p><p><b>People who train.</b> Lifters, runners, golfers and pickleball players who want their training built around how their own body moves. The <a href=\"/activities/train-for-your-build\">train for your build</a> pages explain the thinking; the app is where you put it into practice.</p><p><b>Older adults rebuilding strength.</b> Progressive, sensible work for bone, muscle and balance, at a pace that respects where you are starting from.</p>"
     },
     {
       "h2": "The app is free",
-      "html": "<p>Everything in the app is free: the pain tool, the exercise video library, the programs, the workout generator and progress tracking. There is no app subscription.</p><p>Memberships are a separate thing. They are for clinical access to Dr. Jared, such as messaging him directly and scheduled remote video sessions, not for using the app. You can see the clinical options from your profile in the app, or <a href=\"/book\">book a visit</a> on this site.</p>"
+      "html": "<p>The pain tool, the exercise videos and the programs are free. Tap the spot that hurts, see which muscles usually cause pain there, then follow the videos and the program designated for it. Use it to get out of pain, to move better, or to train harder, wherever you are.</p>"
     },
     {
       "h2": "When to come in instead",
@@ -39,11 +39,11 @@
   "faq": [
     {
       "q": "Is the MD Fit app free?",
-      "a": "Yes. The app is free. Memberships are separate and cover clinical access to Dr. Jared, such as messaging and remote sessions, not the app itself."
+      "a": "Yes. The pain tool, the exercise videos and the programs are free to use, from anywhere."
     },
     {
       "q": "Do I need to live in Sarasota to use it?",
-      "a": "No. The pain tool, the exercise videos and the programs work from anywhere. If you want Dr. Jared's direct guidance, a clinical membership adds remote video sessions, so you do not need to travel."
+      "a": "No. The pain tool, the exercise videos and the programs work from anywhere, on your phone or computer."
     },
     {
       "q": "Does the app replace an evaluation?",
@@ -52,10 +52,6 @@
     {
       "q": "Is it on the App Store or Google Play?",
       "a": "It runs in your web browser and installs to your home screen from there, so you do not need an app store. It works the same on iPhone, Android and a computer."
-    },
-    {
-      "q": "Can I talk to Dr. Jared through the app?",
-      "a": "Messaging Dr. Jared and remote sessions with him are part of clinical membership. Everything else in the app is free to use."
     }
   ],
   "related": [
