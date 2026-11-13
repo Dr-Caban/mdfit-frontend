@@ -1,0 +1,94 @@
+{
+  "slug": "plantar-fasciitis",
+  "title": "Plantar Fasciitis Treatment in Sarasota, FL | MD Fit",
+  "h1": "Plantar Fasciitis and Heel Pain in Sarasota, FL",
+  "description": "Heel pain and plantar fasciitis in Sarasota. Dr. Jared Caban treats the calf, ankle and hip that overload the arch, not just the sore heel.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Plantar fasciitis"
+  },
+  "lead": "That first-step-in-the-morning heel pain is the most recognisable complaint in the foot. The tissue under your arch tightens overnight and gets loaded cold, which is unpleasant but also the clue to what is going on.",
+  "sections": [
+    {
+      "h2": "The signature pattern",
+      "html": "<ul><li>Sharp pain under the <a href=\"/pain/sole-of-foot\">heel</a> on the first steps out of bed, easing after a few minutes of walking.</li><li>It returns after sitting for a while, then eases again once you are moving.</li><li>Worse at the end of a long day on your feet, and worse barefoot on hard floors.</li><li>Tender to press at the inside front edge of the heel bone.</li></ul><p>Pain that is constant, worse as you walk further, or spread across the whole heel rather than that one spot, is worth a closer look. So is heel pain with numbness or burning, which points toward nerve involvement.</p>"
+    },
+    {
+      "h2": "Why the calf is usually the real driver",
+      "html": "<p>The plantar fascia is continuous, in a functional sense, with the Achilles and the calf above it. When the calf is tight and the ankle will not dorsiflex, the foot cannot roll forward over the ankle during walking. It has to get that movement from somewhere, so it collapses through the arch instead, and the fascia takes a stretch it was not designed to repeat thousands of times a day.</p><p>This is why treating only the heel disappoints. The <a href=\"/muscles/gastrocnemius\">gastrocnemius</a>, <a href=\"/muscles/soleus\">soleus</a> and <a href=\"/muscles/tibialis-posterior\">tibialis posterior</a> are where most of the answer sits, along with the small <a href=\"/muscles/foot-intrinsic-muscles\">foot muscles</a> that should be supporting the arch themselves.</p>"
+    },
+    {
+      "h2": "The hip connection",
+      "html": "<p>Further up, weak glutes let the leg rotate inward as you land, which drops the arch further and adds load to the fascia. People with stubborn heel pain often turn out to have the same hip weakness found in <a href=\"/conditions/it-band-syndrome\">IT band syndrome</a> and <a href=\"/conditions/shin-splints\">shin splints</a>, because it is the same chain under a different load.</p>"
+    },
+    {
+      "h2": "How MD Fit treats it",
+      "html": "<p>Dr. Jared measures ankle dorsiflexion specifically, because it is the finding that most reliably predicts this condition, then tests foot and hip strength and palpates the fascia, calf and tibialis posterior.</p><p>Hands-on work on the calf complex and the foot usually changes the first-step pain within a session or two. Correction restores ankle mobility and rebuilds the small foot muscles, which most people have never trained at all. Strengthening of the calf then gives the foot something to push off against. Daily routines come through the free MD Fit app.</p>"
+    },
+    {
+      "h2": "What you can do this week",
+      "html": "<ol><li>Before your first step in the morning, pull your toes back toward you and hold for thirty seconds, a few times. It pre-loads the tissue gently rather than shocking it.</li><li>Stop walking barefoot on tile and hard floors for now. Supportive shoes indoors help considerably.</li><li>Calf stretches twice a day, with the knee straight and again with it bent, because that targets both calf muscles.</li><li>Roll the sole of the foot over a ball or a frozen bottle for a few minutes in the evening.</li></ol>"
+    },
+    {
+      "h2": "About heel spurs",
+      "html": "<p>If your imaging mentioned a heel spur, it is probably not the cause of your pain. Spurs are common in people with no heel pain at all, and plenty of painful heels have none. The spur is a response to long-term traction rather than the thing generating symptoms, and removing it is rarely the answer. Treat the loading and the pain usually settles with the spur still sitting there.</p>"
+    },
+    {
+      "h2": "Why this one takes patience",
+      "html": "<p>Plantar fascia problems respond, but not quickly, and the pattern of recovery is uneven. People commonly have a good week followed by a sore day after a long walk, and read the sore day as failure. The measure that matters is whether your tolerance is rising over the month: more time on your feet, more distance, less of that first-step pain.</p><p>Standing jobs, hard floors and Sarasota's long walkable winters all add load here. If your work keeps you upright all day, that gets built into the plan rather than wished away.</p>"
+    }
+  ],
+  "timeline": null,
+  "redFlags": [
+    "Heel pain after a fall or a sudden landing, with inability to bear weight, which may be a fracture.",
+    "Numbness, burning or tingling in the sole rather than sharp pain, which points toward nerve involvement.",
+    "A hot, red, swollen foot with fever, which needs urgent medical assessment.",
+    "Pain that is constant, present at rest and waking you at night.",
+    "Sudden severe pain with a pop at the back of the heel, which may be an Achilles rupture and needs urgent assessment."
+  ],
+  "faq": [
+    {
+      "q": "How long will it take to feel better?",
+      "a": "Many people notice a difference within a few weeks of consistent calf, foot and hip work. Longer-standing cases take longer, and your evaluation sets expectations for yours."
+    },
+    {
+      "q": "Do I need orthotics or a boot?",
+      "a": "Sometimes short-term support helps. Dr. Jared tells you when it is useful and when it slows recovery, and refers out for custom orthotics or a boot when they are truly needed."
+    },
+    {
+      "q": "Can I keep walking and exercising?",
+      "a": "Usually yes. Your plan swaps high-impact loads for ones that let the foot settle, then adds impact back as symptoms improve."
+    },
+    {
+      "q": "Is my heel spur the problem?",
+      "a": "Usually not. Spurs appear in plenty of people with no heel pain, and heels with no spur hurt just the same. The loading is what matters."
+    }
+  ],
+  "muscles": [
+    "gastroc",
+    "soleus",
+    "tib-post",
+    "foot-intrinsics",
+    "peroneals",
+    "glute-med"
+  ],
+  "pain": [
+    "sole-of-foot",
+    "lower-calf",
+    "inner-ankle-and-arch"
+  ],
+  "guides": [
+    "calf"
+  ],
+  "related": [
+    "/conditions/achilles-tendon-pain",
+    "/conditions/shin-splints",
+    "/conditions/ankle-sprain",
+    "/conditions/it-band-syndrome",
+    "/muscles/soleus",
+    "/muscles/foot-intrinsic-muscles"
+  ],
+  "group": "conditions",
+  "steps": null,
+  "reviewStatus": "draft"
+}

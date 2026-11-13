@@ -1,0 +1,83 @@
+{
+  "group": "conditions",
+  "slug": "exercise-after-cancer-treatment",
+  "title": "Exercise After Cancer Treatment | MD Fit",
+  "h1": "Exercise After Cancer Treatment in Sarasota, FL",
+  "description": "Rebuilding strength and stamina after cancer treatment, with a Clinical Exercise Physiologist in Sarasota, working alongside your oncology team.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Cancer rehabilitation"
+  },
+  "lead": "Treatment ends and everyone congratulates you, and then you discover you cannot climb the stairs the way you used to. Rebuilding after cancer treatment is real work, and it is slower and less linear than people expect. This is the part of it that involves exercise, built by someone who can read your history.",
+  "sections": [
+    {
+      "h2": "Why you feel so deconditioned",
+      "html": "<p>It is rarely one thing. Several usually stack up over months of treatment:</p><ul><li>Long periods of reduced activity, which costs muscle faster than most people realise, particularly after sixty.</li><li>Cancer-related fatigue, which is not the same as ordinary tiredness and does not reliably improve with rest.</li><li>Treatment effects that linger — nausea, appetite changes, anaemia, sleep disruption, altered hormones.</li><li>Surgery, with its own recovery and sometimes long-term restrictions.</li><li>Fear. Many people are genuinely unsure what their body can take now, and hold back from everything as a result.</li></ul><p>The result is that you are not simply “out of shape” — you are deconditioned from a specific set of causes, several of which still apply. The plan has to account for that rather than treat you like someone who skipped the gym for a year.</p>"
+    },
+    {
+      "h2": "Working with your oncology team, not around them",
+      "html": "<p>Stating the boundary plainly, because it matters more here than anywhere else on this site: <b>this is exercise care, not cancer care.</b> I do not treat cancer, advise on treatment decisions, comment on your prognosis, or recommend anything in place of what your oncology team has told you. Nobody at MD Fit will suggest exercise as an alternative to medical treatment.</p><p>What I need before we start is your oncologist's or surgeon's clearance to exercise, and any restrictions they have set — lifting limits, precautions around a port or surgical site, instructions related to bone involvement, blood count thresholds, or anything they have told you to avoid. Those limits are the frame, not a starting point for negotiation.</p><p>With your permission, your team gets a short summary after the evaluation and whenever the plan changes meaningfully. If anything in how you are responding suggests they should know about it sooner, I will tell you and help you get there.</p>"
+    },
+    {
+      "h2": "Fatigue is the thing to get right",
+      "html": "<p>The instinct with fatigue is to rest and wait for energy to return. For cancer-related fatigue, that often makes it worse, because the deconditioning deepens while you wait.</p><p>The approach that tends to work is the opposite of intuitive: small, regular, carefully-dosed activity, held steady rather than pushed. Specifically:</p><ul><li>Short sessions, more often, rather than one long effort on a good day.</li><li>Stopping while you still have something left, deliberately, especially early on.</li><li>Tracking how you feel the <b>next</b> day, not just during. Payback the following day is the signal that the dose was too high.</li><li>Planning around your treatment cycle if you are still in one — energy is rarely the same in week one and week three.</li></ul><p>The classic mistake is the good day: feeling well, doing far too much, and losing the following three days. Part of my job is to hold the reins on that for the first few weeks.</p>"
+    },
+    {
+      "h2": "What the rebuilding actually involves",
+      "html": "<p>Strength work is the centre of it, because muscle is what you lost and what you need back for stairs, shopping, getting off the floor and staying independent. We work the large groups — <a href=\"/muscles/gluteus-maximus\">gluteus maximus</a>, the <a href=\"/muscles/vastus-lateralis\">quadriceps</a>, <a href=\"/muscles/latissimus-dorsi\">latissimus dorsi</a> and the <a href=\"/muscles/gastrocnemius\">calves</a> — starting lighter than you expect and progressing on a schedule your recovery allows.</p><p>Alongside it: gentle aerobic work for stamina, balance work where treatment has affected it, and mobility for whatever has stiffened up. If you have chemotherapy-related neuropathy in the feet, we adapt — balance work becomes more important and more supported, and footwear and <a href=\"/pain/sole-of-foot\">foot comfort</a> get checked.</p><p>Everything lives in the free MD Fit app between visits, with video for every exercise, so on a low-energy day you are not trying to remember what I said.</p>"
+    },
+    {
+      "h2": "What progress looks like",
+      "html": "<p>Not a straight line. Most people have good weeks and flat weeks, and the flat ones are not failures. What tends to improve first is everyday capacity — the stairs, the walk to the car, standing long enough to cook a meal — rather than anything you would measure in a gym.</p><p>Follow-ups are usually weekly at first, adjusting the dose to the week you actually had. I would rather under-dose for a month and keep you going than push for a fortnight and lose you. People who finish this well are the ones who were still doing something six months later.</p><p>If you also have <a href=\"/conditions/balance-fall-prevention\">balance concerns</a>, <a href=\"/conditions/osteoporosis-and-exercise\">bone density concerns</a>, or joint problems, they belong in the same plan.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Chest pain, pressure, severe shortness of breath or fainting during exercise: stop and seek emergency care.",
+    "New or unexplained bone pain, or pain that wakes you at night: stop loading that area and contact your oncology team promptly.",
+    "A new lump, unusual bruising or bleeding, fever, or any symptom your oncology team asked you to report: contact them rather than working through it.",
+    "New or rapidly worsening numbness, tingling or weakness, particularly in the hands or feet.",
+    "Sudden swelling in an arm or leg, which should be assessed before you continue exercising that limb."
+  ],
+  "faq": [
+    {
+      "q": "Can I start while I am still in treatment?",
+      "a": "Often yes, with your oncology team's clearance and at a dose that respects your treatment cycle. Many people do better staying somewhat active through treatment than stopping entirely, but that decision starts with your team."
+    },
+    {
+      "q": "Is exercise safe if I have bone involvement?",
+      "a": "It depends entirely on what your team has said. Specific restrictions around loading are common in that situation and they take priority over any exercise plan. Bring those instructions to the evaluation."
+    },
+    {
+      "q": "I have neuropathy in my feet from chemotherapy. What changes?",
+      "a": "Balance work becomes more important and more supported, footwear gets checked, and we usually bias toward cycling, seated and supported options rather than long walking at first."
+    },
+    {
+      "q": "How soon will I feel like myself again?",
+      "a": "That varies too much between people and treatments for me to give you a number honestly. What I can tell you is what tends to improve first, which is usually everyday capacity rather than anything measurable in a gym."
+    }
+  ],
+  "muscles": [
+    "glute-max",
+    "vastus-lateralis",
+    "lats",
+    "gastroc",
+    "glute-med"
+  ],
+  "pain": [
+    "front-of-thigh",
+    "sole-of-foot"
+  ],
+  "guides": [],
+  "related": [
+    "/treatments/clinical-exercise-physiology",
+    "/conditions/sarcopenia-and-muscle-loss",
+    "/conditions/returning-to-exercise-after-a-long-break",
+    "/conditions/balance-fall-prevention",
+    "/conditions/osteoporosis-and-exercise",
+    "/activities/seniors-strength-balance",
+    "/conditions/exercise-and-sleep-and-stress"
+  ],
+  "reviewStatus": "draft"
+}

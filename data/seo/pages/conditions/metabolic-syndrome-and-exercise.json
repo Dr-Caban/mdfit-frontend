@@ -1,0 +1,83 @@
+{
+  "group": "conditions",
+  "slug": "metabolic-syndrome-and-exercise",
+  "title": "Metabolic Syndrome and Exercise | MD Fit",
+  "h1": "Metabolic Syndrome and Exercise in Sarasota, FL",
+  "description": "Metabolic syndrome is several findings at once, and exercise is the lever that touches all of them. Built by a Clinical Exercise Physiologist in Sarasota.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Metabolic syndrome"
+  },
+  "lead": "Metabolic syndrome is not one problem but a cluster of findings that tend to travel together: waist circumference, blood pressure, blood sugar, triglycerides and HDL cholesterol. The reason it gets its own name is that the combination matters more than any single item on the list.",
+  "sections": [
+    {
+      "h2": "What it means to have been given this label",
+      "html": "<p>Most people receive this diagnosis at a routine appointment, as a comment attached to a set of lab results. It usually lands as vague bad news without a clear instruction attached.</p><p>What it actually describes is several measurements sitting outside their usual ranges at the same time — typically some combination of waist size, blood pressure, fasting glucose, triglycerides and HDL. Your physician manages the medical side of each of those, and may be treating some of them individually.</p><p>The reason exercise comes up so consistently in this conversation is that it is one of the few interventions that touches every item on the list at once, rather than one at a time. That is also why “exercise more” is such frustratingly common advice here: it is correct and almost never specific.</p>"
+    },
+    {
+      "h2": "Why exercise is the common lever",
+      "html": "<p>Several of the findings in the cluster share underlying mechanisms, and physical activity influences those mechanisms in the same direction. In practical terms:</p><ul><li>Muscle is the largest site for glucose disposal in the body. More of it, used regularly, changes how glucose is handled.</li><li>Regular aerobic activity is standard advice for blood pressure, and the effect accumulates over months.</li><li>Activity influences the lipid picture, generally more on triglycerides and HDL than on LDL.</li><li>Where waist circumference is part of the picture, resistance training preserves muscle during any weight change — which matters, because losing weight without loading usually means losing muscle alongside the fat.</li></ul><p>I am deliberately not quoting figures for any of this. The size of the response varies substantially between people, and your own readings and labs are the only numbers that mean anything about you.</p>"
+    },
+    {
+      "h2": "What the programme looks like",
+      "html": "<p>Roughly, two strands held together over months.</p><p><b>Aerobic work</b>, chosen for something you will actually keep doing — walking, cycling, swimming, the pool in summer when Sarasota makes outdoor work unpleasant. Built up gradually in duration before intensity.</p><p><b>Resistance training</b>, two or three times a week, targeting the large muscle groups: <a href=\"/muscles/gluteus-maximus\">gluteus maximus</a>, the <a href=\"/muscles/vastus-lateralis\">quadriceps</a>, <a href=\"/muscles/latissimus-dorsi\">latissimus dorsi</a> and the <a href=\"/muscles/pectoralis-major-upper\">chest and shoulders</a>. This is the strand most people skip and the one that changes body composition rather than just body weight.</p><p>If blood pressure is part of your cluster, breathing technique during lifting gets specific attention — breath-holding and straining are the real caution, not resistance work itself. If glucose is part of it, we talk about how different sessions tend to affect readings, and about timing.</p><p>Between visits everything is in the free MD Fit app with video, and follow-ups adjust the dose weekly at first based on how the previous week went.</p>"
+    },
+    {
+      "h2": "Where my role ends",
+      "html": "<p>Plainly: <b>I do not manage the medical side of metabolic syndrome.</b> I do not prescribe or adjust medication for blood pressure, blood sugar or cholesterol, I do not order or interpret your labs as a treatment decision, and I do not tell anyone that exercise means they can stop a tablet. Those belong to your physician and they should.</p><p>What I contribute is the exercise prescription: specific, progressive, adjusted to your joints, your history and your week, and supervised by someone who can read the rest of your chart. Because Dr. Jared is a physician as well as a CEP, your history and your exercise plan are read by the same person, which is not true at a gym.</p><p>With your permission, your physician receives a short summary after the evaluation and when the plan changes, so the two halves of your care stay connected.</p>"
+    },
+    {
+      "h2": "Starting when the last few attempts did not stick",
+      "html": "<p>Nearly everyone who arrives with this diagnosis has tried before. The attempts usually failed for recognisable reasons: starting far too hard, joint pain nobody addressed, a plan that needed ninety minutes a day, or no idea whether what they were doing was working.</p><p>So the first few weeks are deliberately modest, the joint problems get assessed as part of the plan rather than ignored, and simple measures get recorded so progress is visible. If <a href=\"/conditions/knee-osteoarthritis\">knee arthritis</a> or <a href=\"/conditions/low-back-pain\">back pain</a> is what stopped you last time, that is not a side issue here — it is the first thing to fix.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Chest pain or pressure, pain spreading to the jaw or arm, or unusual shortness of breath during exertion: stop and seek emergency care.",
+    "Shakiness, sweating, confusion or sudden hunger during exercise if you take glucose-lowering medication: treat it as your physician has instructed and tell them it happened.",
+    "Blood pressure readings far above your usual range, particularly with headache or vision change.",
+    "Fainting, near-fainting or an irregular heartbeat during or after exercise.",
+    "Rapid unintended weight loss or persistent excessive thirst and urination, which should be assessed by your physician promptly."
+  ],
+  "faq": [
+    {
+      "q": "Do I need to lose weight for this to be worth doing?",
+      "a": "Improvements in fitness and strength happen whether or not the scale moves, and body composition often changes before weight does. Weight is one part of the picture rather than the whole of it."
+    },
+    {
+      "q": "Which matters more, cardio or weights?",
+      "a": "Both, for different reasons, which is why the plan has two strands. Resistance training is the one most people skip and the one that preserves muscle during any weight change."
+    },
+    {
+      "q": "Can exercise replace my medication?",
+      "a": "No, and nobody here will advise you to reduce or stop anything. Medication decisions belong to your prescriber, based on your readings and labs over time."
+    },
+    {
+      "q": "I have joint pain that stops me exercising. Is this still for me?",
+      "a": "Yes, and that is often the first thing addressed. Joint problems are a common reason previous attempts failed, and they are in scope here rather than being someone else's problem."
+    }
+  ],
+  "muscles": [
+    "glute-max",
+    "vastus-lateralis",
+    "lats",
+    "pec-major-clav",
+    "gastroc"
+  ],
+  "pain": [
+    "front-of-thigh",
+    "upper-calf"
+  ],
+  "guides": [],
+  "related": [
+    "/treatments/clinical-exercise-physiology",
+    "/conditions/exercise-for-type-2-diabetes",
+    "/conditions/exercise-and-high-blood-pressure",
+    "/conditions/exercise-and-cholesterol",
+    "/conditions/body-composition-and-strength",
+    "/conditions/returning-to-exercise-after-a-long-break",
+    "/conditions/knee-osteoarthritis"
+  ],
+  "reviewStatus": "draft"
+}

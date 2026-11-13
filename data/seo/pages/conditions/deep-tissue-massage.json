@@ -1,0 +1,87 @@
+{
+  "group": "conditions",
+  "slug": "deep-tissue-massage",
+  "title": "Deep Tissue Massage in Sarasota, FL | MD Fit",
+  "h1": "Deep Tissue Massage in Sarasota, FL",
+  "description": "What deep tissue work actually targets, why harder is not automatically better, and when heavy pressure is the wrong choice for the problem you have.",
+  "about": {
+    "type": "MedicalTherapy",
+    "name": "Deep tissue massage"
+  },
+  "lead": "Deep tissue massage means working the layers beneath the surface muscles with slower strokes and firmer, more specific pressure. It is a tool for particular problems, not a measure of how good a massage is.",
+  "sections": [
+    {
+      "h2": "What is actually being reached",
+      "html": "<p>Plenty of muscle sits underneath other muscle, and surface work never meaningfully reaches it. The <a href=\"/muscles/subscapularis\">subscapularis</a> lies on the underside of the shoulder blade. The <a href=\"/muscles/psoas\">psoas</a> runs deep through the abdomen to the spine. The <a href=\"/muscles/soleus\">soleus</a> sits beneath the calf bulk. The <a href=\"/muscles/quadratus-lumborum\">quadratus lumborum</a> is tucked between the last rib and the pelvis, under the spinal muscles.</p><p>Reaching those layers requires slower, more deliberate pressure and a direction of approach that gets past what is on top. That is what the term should mean. It does not mean the same strokes performed harder.</p>"
+    },
+    {
+      "h2": "Why harder is not better",
+      "html": "<p>This is the part most worth saying plainly. Pressure that outruns what you can relax into makes you brace, and a braced muscle is mechanically harder to change than a relaxed one. The practitioner then has to push through a wall the pressure itself created.</p><p>Three practical consequences:</p><ul><li>Pain you have to breathe through is usually counterproductive. Sensation you recognise as \"that is my spot\" is useful; sharp pain you are gritting your teeth against is not.</li><li>Bruising is not an achievement. It signals tissue damage, not thorough work, and it does not speed anything up.</li><li>Soreness for several days is a sign the dose was too high. A day of mild next-day tenderness is normal; limping for three is not.</li></ul><p>You can and should adjust the pressure at any point in a session. Doing so is not a failure of toughness; it is how the hour stays productive.</p>"
+    },
+    {
+      "h2": "When deep work is the wrong choice",
+      "html": "<p>There are problems where heavy pressure actively works against you:</p><ul><li><b>A highly irritable, recently flared area.</b> Tissue that is already sensitised usually responds better to lighter, broader work first.</li><li><b>Persistent pain with a strong nervous-system component.</b> Where the system is already turned up, aggressive input can increase symptoms for days. See the <a href=\"/conditions/chronic-pain\">chronic pain</a> approach.</li><li><b>Pain that has not been explained yet.</b> If nothing reproduces the symptom on testing, more pressure is not the answer; an evaluation is.</li><li><b>Anyone on blood thinners, or with fragile skin or bone.</b> This is a conversation to have before the session starts, not during it.</li></ul>"
+    },
+    {
+      "h2": "Who it suits",
+      "html": "<p>Deep work earns its place with dense, chronically loaded tissue in people who tolerate pressure well: lifters and manual workers with stubborn <a href=\"/muscles/gluteus-maximus\">gluteal</a> and hip restriction, runners whose <a href=\"/muscles/soleus\">soleus</a> and <a href=\"/muscles/tibialis-posterior\">tibialis posterior</a> stay tight through a training block, desk workers with a long-standing deep ache under the shoulder blade, and anyone with a specific deep structure identified during testing.</p><p>It also suits people for whom lighter work has genuinely been tried and has not changed anything, which is a better reason than simply preferring the idea of intensity.</p>"
+    },
+    {
+      "h2": "Getting the dose right",
+      "html": "<p>A useful session leaves you looser and moving more freely, with at most mild tenderness the next day that fades within a day or two. If you are wiped out for half a week, the dose was wrong and the next session should be lighter, not heavier.</p><p>Pressure is also not the active ingredient on its own. The deep tissue that was freed up needs to be used, which is why homework videos are added to your free MD Fit app and why the same area returning repeatedly is treated as a question about load rather than a reason to push harder. Session formats and pricing are on the <a href=\"/treatments/medical-massage\">medical massage page</a>.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": "Expect improved range the same day and mild next-day tenderness similar to a new workout. Soreness that lasts beyond two days, or that is sharp rather than dull, means the pressure was too high for your tissue that day.",
+  "redFlags": [
+    "New swelling, redness or warmth in one calf or arm: stop and see a physician before any deep pressure.",
+    "Taking blood thinners, or having a condition affecting bone density or skin integrity, which must be discussed before the session.",
+    "Sharp pain during the work that is new rather than familiar.",
+    "Numbness, tingling or weakness appearing during or after a session.",
+    "Bruising after a session, which should be reported and means the pressure was excessive."
+  ],
+  "faq": [
+    {
+      "q": "Should a deep tissue massage hurt?",
+      "a": "It should feel strong and recognisable, not painful enough that you brace. Tensing against pressure makes the muscle harder to change, so pain is a sign to ease off rather than to push on."
+    },
+    {
+      "q": "Is bruising normal afterwards?",
+      "a": "No. Bruising means small vessels were damaged and the pressure was too high. It does not indicate more effective work and should be mentioned before the next session."
+    },
+    {
+      "q": "Is deep tissue the same as myofascial release?",
+      "a": "No. Myofascial work is broader, slower and often at moderate pressure, held for much longer. Deep tissue is more specific and aimed at structures beneath the surface layer."
+    },
+    {
+      "q": "How sore should I expect to be?",
+      "a": "Mild tenderness the next day, much like after an unfamiliar workout, usually settling within a day or two. More than that means the dose should be reduced next time."
+    }
+  ],
+  "muscles": [
+    "subscapularis",
+    "psoas",
+    "soleus",
+    "ql",
+    "glute-max",
+    "tib-post"
+  ],
+  "pain": [
+    "deep-shoulder-joint",
+    "beside-the-spine",
+    "lower-calf"
+  ],
+  "guides": [
+    "calf",
+    "iliopsoas"
+  ],
+  "related": [
+    "/treatments/medical-massage",
+    "/conditions/myofascial-release",
+    "/conditions/trigger-point-therapy",
+    "/conditions/chronic-pain",
+    "/conditions/medical-massage-vs-spa-massage",
+    "/treatments/strength-and-performance"
+  ],
+  "reviewStatus": "draft"
+}

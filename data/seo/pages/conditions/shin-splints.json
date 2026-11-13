@@ -1,0 +1,91 @@
+{
+  "slug": "shin-splints",
+  "title": "Shin Splints Treatment in Sarasota, FL | MD Fit",
+  "h1": "Shin Splints and Lower-Leg Pain in Sarasota, FL",
+  "description": "Shin splints in Sarasota. Dr. Jared Caban separates muscle and bone causes of shin pain, then rebuilds the calf, foot and hip that load it.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Medial tibial stress syndrome"
+  },
+  "lead": "Shin splints is a catch-all for pain along the shin bone in people who have increased their walking or running. The important first job is separating the muscular version from a bone stress injury, because one you can train around and the other you cannot.",
+  "sections": [
+    {
+      "h2": "Muscle or bone: the distinction that matters",
+      "html": "<p>The usual muscular form produces a diffuse ache along the inner edge of the shin, spread over several inches, sore at the start of a run and often easing as you warm up. It is tender along a line rather than at a point.</p><p>A bone stress injury is different and more serious. It is tender at one precise spot on the bone, hurts when you hop on that leg, gets progressively worse through a run rather than better, and can ache at rest or at night.</p><p>That second picture needs imaging and relative rest, not a strengthening programme. Getting this wrong and training through a bone stress injury risks it progressing to a stress fracture, which is a far longer problem.</p>"
+    },
+    {
+      "h2": "What drives the muscular version",
+      "html": "<p>The muscles along the inner shin, particularly <a href=\"/muscles/tibialis-posterior\">tibialis posterior</a>, control how the foot rolls inward as you land. When they are overloaded, the attachment along the bone becomes painful.</p><ul><li>A rapid increase in mileage, pace or hill work, which is the single most common cause.</li><li>Tight <a href=\"/muscles/gastrocnemius\">calves</a> and limited ankle dorsiflexion, forcing the arch to absorb more.</li><li>Weak <a href=\"/muscles/foot-intrinsic-muscles\">foot muscles</a> and <a href=\"/muscles/gluteus-medius\">gluteus medius</a>, so the leg rotates in on landing.</li><li>Worn shoes, hard surfaces, and running the same camber repeatedly.</li></ul><p>Pain on the outer shin with a tight, bursting feeling that comes on at a predictable distance and eases fast on stopping is a different problem again, and worth mentioning.</p>"
+    },
+    {
+      "h2": "How MD Fit treats it",
+      "html": "<p>Dr. Jared palpates the shin carefully to map whether the tenderness is diffuse or pinpoint, tests hopping where appropriate, and checks ankle mobility, foot strength and hip control. Anything suggesting bone stress goes for imaging first.</p><p>For the muscular form, hands-on work on tibialis posterior, the calf complex and the foot usually eases symptoms quickly. Correction restores ankle dorsiflexion and builds the foot and hip. Then loading is rebuilt gradually, which is the part that actually prevents recurrence. Daily routines come through the free MD Fit app.</p>"
+    },
+    {
+      "h2": "Managing training while it settles",
+      "html": "<ol><li>Cut volume rather than stopping altogether, unless a bone stress injury is suspected.</li><li>Move some running to cycling, pool running or an elliptical to keep fitness while the shin recovers.</li><li>Run on softer, flatter surfaces and avoid the same road camber every time.</li><li>Replace shoes that have done a lot of miles, and increase mileage gradually when you return.</li></ol>"
+    },
+    {
+      "h2": "Why rolling the shins is not the answer",
+      "html": "<p>Rolling the inner shin can feel productive and may ease symptoms briefly, but it does nothing about why the tissue is overloaded. The lasting change comes from the calf and foot being strong enough for the mileage you are asking of them, and from building that mileage at a rate the bone and muscle can keep up with.</p>"
+    },
+    {
+      "h2": "Coming back to running",
+      "html": "<p>Return is gradual and measured by symptoms the following day rather than during the run. A useful rule is that pain should not exceed mild during activity and should be gone by the next morning. If it is worse the next day, the previous session was too much.</p><p>Build one variable at a time: distance or pace or hills, never two at once. Most recurrences happen because someone felt good and restored all three in the same week.</p>"
+    }
+  ],
+  "timeline": null,
+  "redFlags": [
+    "Pinpoint tenderness on the bone, pain when hopping on that leg, or pain at rest and at night, which suggests a bone stress injury and needs imaging before further loading.",
+    "A tight, bursting or numb feeling in the lower leg that builds with exercise and eases quickly on stopping, which needs medical assessment.",
+    "Calf swelling, redness, warmth or tenderness, which can indicate a blood clot and needs same-day medical assessment.",
+    "Sudden severe calf pain with a pop and difficulty pushing off, which may be a muscle or tendon tear.",
+    "Shin pain after a significant fall or direct blow, with swelling or inability to bear weight."
+  ],
+  "faq": [
+    {
+      "q": "Is it a stress fracture?",
+      "a": "Point tenderness on the bone, pain at rest, or pain that wakes you up are red flags. If any are present, the plan starts with imaging rather than exercise."
+    },
+    {
+      "q": "Do I have to stop running?",
+      "a": "Not always. Many people switch to pain-free loading such as cycling, pool work or shorter runs while the shin recovers."
+    },
+    {
+      "q": "What about rolling my shins?",
+      "a": "It can feel good but does not fix the loading problem. Strengthening and a sensible build-up are where the lasting improvement comes from."
+    },
+    {
+      "q": "How do I avoid it coming back?",
+      "a": "Increase one training variable at a time and keep the calf, foot and hip strong. Most recurrences follow a week where distance, pace and hills all went up together."
+    }
+  ],
+  "muscles": [
+    "tib-post",
+    "tib-ant",
+    "soleus",
+    "gastroc",
+    "foot-intrinsics",
+    "glute-med"
+  ],
+  "pain": [
+    "lower-calf",
+    "upper-calf",
+    "inner-ankle-and-arch",
+    "front-of-ankle"
+  ],
+  "guides": [
+    "calf"
+  ],
+  "related": [
+    "/conditions/plantar-fasciitis",
+    "/conditions/achilles-tendon-pain",
+    "/conditions/it-band-syndrome",
+    "/conditions/ankle-sprain",
+    "/running-injury-sarasota",
+    "/muscles/tibialis-posterior"
+  ],
+  "group": "conditions",
+  "steps": null,
+  "reviewStatus": "draft"
+}

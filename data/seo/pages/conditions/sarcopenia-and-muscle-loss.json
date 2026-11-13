@@ -1,0 +1,86 @@
+{
+  "group": "conditions",
+  "slug": "sarcopenia-and-muscle-loss",
+  "title": "Sarcopenia and Muscle Loss with Age | MD Fit",
+  "h1": "Sarcopenia and Age-Related Muscle Loss in Sarasota, FL",
+  "description": "Muscle loss with age is common but not inevitable. A Clinical Exercise Physiologist in Sarasota builds the loading programme that slows and reverses it.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Sarcopenia"
+  },
+  "lead": "Sarcopenia is the loss of muscle mass and strength that comes with age. It is extremely common, it is the reason a lot of people stop doing things they used to enjoy, and — unlike many things about getting older — it responds well to the right kind of work.",
+  "sections": [
+    {
+      "h2": "What it actually looks like",
+      "html": "<p>Almost nobody arrives saying “I think I have sarcopenia.” They arrive describing its effects:</p><ul><li>Getting out of a low chair or the car takes a push off the armrests now.</li><li>The stairs need a handrail, or a pause at the top.</li><li>Carrying shopping in from the car has become a two-trip job.</li><li>Balance feels less certain, especially turning or on uneven ground.</li><li>The scale has not moved much, but clothes fit differently — muscle has gone and fat has replaced it.</li><li>A minor illness or a week in hospital knocked them back much further than it would have ten years ago.</li></ul><p>That last one is important. Muscle is reserve. It is what you draw on when something goes wrong, and it is a large part of why two people the same age recover from the same event so differently.</p>"
+    },
+    {
+      "h2": "Why it happens, and why it is not inevitable",
+      "html": "<p>From roughly the fourth decade onward, muscle is lost gradually unless something is done to hold on to it, and the rate tends to accelerate later. Several things drive it: less daily physical demand, hormonal changes, reduced appetite and protein intake, periods of illness or immobility, and the simple fact that nothing in modern life requires you to lift anything heavy.</p><p>The last point is the useful one. A large part of the decline is disuse, and disuse is addressable. Muscle remains responsive to loading into the eighties and beyond — the response is slower than at thirty, but it is there. People who start in their seventies still gain strength.</p><p>What does <b>not</b> work on its own: walking. Walking is excellent for many things and I prescribe it constantly, but it does not provide enough mechanical load to build or hold muscle. A lot of people in Sarasota walk daily, assume they have the exercise question covered, and are still losing strength steadily.</p>"
+    },
+    {
+      "h2": "Loading and protein, together",
+      "html": "<p>These two work as a pair and neither does much alone. Protein without a stimulus to use it, or loading without the raw material to rebuild with, both underperform.</p><p>On the loading side, the requirements are specific:</p><ul><li>Resistance that is genuinely challenging for the last few repetitions — not the light pink dumbbells held for a set of thirty.</li><li>Progression. The same weight for a year maintains at best.</li><li>The large muscle groups first: <a href=\"/muscles/gluteus-maximus\">gluteus maximus</a>, <a href=\"/muscles/gluteus-medius\">gluteus medius</a>, the <a href=\"/muscles/vastus-lateralis\">quadriceps</a>, <a href=\"/muscles/latissimus-dorsi\">latissimus dorsi</a> and the <a href=\"/muscles/gastrocnemius\">calves</a>.</li><li>Two or three sessions a week, consistently, rather than a burst and a gap.</li></ul><p>On the nutrition side, protein needs tend to rise rather than fall with age, and appetite often does the opposite. I will talk with you about protein intake as part of the plan, and if your situation needs a dietitian — kidney disease, diabetes with complex needs, significant unintended weight loss — that is a referral, not something I improvise.</p>"
+    },
+    {
+      "h2": "How we measure it, so progress is real",
+      "html": "<p>Vague encouragement is not much use. At the evaluation I take simple, repeatable measures so that progress is visible and so that a plateau is obvious rather than argued about:</p><ul><li>Grip strength, which tracks whole-body strength surprisingly well.</li><li>A timed sit-to-stand, which is the single most relatable test most people do — nearly everyone recognises the difficulty immediately.</li><li>Walking speed over a short distance.</li><li>Balance tests appropriate to your level.</li><li>What you can actually lift, recorded, so the progression has somewhere to go.</li></ul><p>These get repeated. When somebody tells me three months in that they are not sure anything has changed, the numbers usually disagree with them, and that is worth having.</p>"
+    },
+    {
+      "h2": "Starting safely when other things are going on",
+      "html": "<p>Most people in this situation have something else as well — <a href=\"/conditions/knee-osteoarthritis\">knee arthritis</a>, <a href=\"/conditions/hip-osteoarthritis\">hip arthritis</a>, <a href=\"/conditions/low-back-pain\">a bad back</a>, <a href=\"/conditions/osteoporosis-and-exercise\">thin bones</a>, high blood pressure, a cardiac history. That is normal and it is exactly why a Clinical Exercise Physiologist is the right person rather than a general trainer.</p><p>The arthritic knee is worked around and then worked on. The osteoporosis changes which movements are used. The blood pressure changes how the breathing is coached. All of it goes into one plan rather than three.</p><p>Between visits the plan is in the free MD Fit app with video for every exercise, so the version you practised in clinic is the version you do at home.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Unintended weight loss, particularly if it is ongoing, should be assessed by your physician rather than assumed to be age-related muscle loss.",
+    "A fall, or several near-falls, is worth a proper medical review including a medication check and a look at your vision and blood pressure.",
+    "New weakness on one side of the body, or weakness that came on suddenly: seek emergency care.",
+    "Chest pain or pressure, unusual breathlessness or dizziness during exertion: stop and seek medical care.",
+    "Muscle pain that is severe, or dark-coloured urine after unusually hard exercise: contact a physician promptly."
+  ],
+  "faq": [
+    {
+      "q": "Am I too old to build muscle?",
+      "a": "No. The response is slower than it would have been at thirty, but muscle remains responsive to loading well into the eighties and beyond. People who start in their seventies still gain strength."
+    },
+    {
+      "q": "Isn't walking enough?",
+      "a": "Walking is valuable for many reasons and it is usually part of the plan, but it does not provide enough mechanical load to build or hold muscle. That takes resistance work with real progression."
+    },
+    {
+      "q": "I have arthritis. Can I still do resistance training?",
+      "a": "Usually yes, and often it helps. The exercise selection and loading are adjusted around the joint rather than the training being abandoned, which is one of the main things an assessment is for."
+    },
+    {
+      "q": "How will I know it is working?",
+      "a": "Simple repeatable measures taken at the evaluation and again later: grip strength, a timed sit-to-stand, walking speed, and what you can actually lift. The numbers tend to show change before it feels obvious."
+    }
+  ],
+  "muscles": [
+    "glute-max",
+    "glute-med",
+    "vastus-lateralis",
+    "lats",
+    "gastroc",
+    "rectus-femoris"
+  ],
+  "pain": [
+    "front-of-thigh",
+    "outside-of-hip"
+  ],
+  "guides": [
+    "quads"
+  ],
+  "related": [
+    "/treatments/clinical-exercise-physiology",
+    "/conditions/osteoporosis-and-exercise",
+    "/conditions/balance-fall-prevention",
+    "/activities/seniors-strength-balance",
+    "/conditions/body-composition-and-strength",
+    "/conditions/returning-to-exercise-after-a-long-break",
+    "/treatments/strength-and-performance"
+  ],
+  "reviewStatus": "draft"
+}
