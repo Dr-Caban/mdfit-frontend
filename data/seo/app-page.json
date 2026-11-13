@@ -1,8 +1,8 @@
 {
   "title": "The MD Fit App: Rehab and Training From Anywhere",
   "h1": "The MD Fit App",
-  "description": "Dr. Jared Caban's rehab and training app: the pain tool, exercise videos, multi-week programs and a workout generator. Free to start, from anywhere.",
-  "lead": "The MD Fit app puts the same exercise videos, programs and pain tool Dr. Jared uses with his clinic patients on your phone. You do not need to live in Sarasota or book a visit to start, and it is free to sign up.",
+  "description": "Dr. Jared Caban's free rehab and training app: the pain tool, exercise videos, multi-week programs and a workout generator, from anywhere.",
+  "lead": "The MD Fit app puts the same exercise videos, programs and pain tool Dr. Jared uses with his clinic patients on your phone. It is free, and you do not need to live in Sarasota or book a visit to use it.",
   "sections": [
     {
       "h2": "Why it exists",
@@ -14,11 +14,11 @@
     },
     {
       "h2": "Who it is for",
-      "html": "<p><b>Clinic patients between visits.</b> Your homework is in the app, so you are never guessing which exercise came next or how many to do.</p><p><b>People who are not in Sarasota, or not ready to come in.</b> The programs and the pain tool work without a visit. If you want more guidance later, the 1-on-1 tiers add scheduled remote video sessions with Dr. Jared.</p><p><b>People who train.</b> Lifters, runners, golfers and pickleball players who want their training built around how their own body moves. The <a href=\"/activities/train-for-your-build\">train for your build</a> pages explain the thinking; the app is where you put it into practice.</p><p><b>Older adults rebuilding strength.</b> Progressive, sensible work for bone, muscle and balance, at a pace that respects where you are starting from.</p>"
+      "html": "<p><b>Clinic patients between visits.</b> Your homework is in the app, so you are never guessing which exercise came next or how many to do.</p><p><b>People who are not in Sarasota, or not ready to come in.</b> The programs and the pain tool work without a visit. If you want Dr. Jared's direct guidance later, a clinical membership adds remote video sessions with him.</p><p><b>People who train.</b> Lifters, runners, golfers and pickleball players who want their training built around how their own body moves. The <a href=\"/activities/train-for-your-build\">train for your build</a> pages explain the thinking; the app is where you put it into practice.</p><p><b>Older adults rebuilding strength.</b> Progressive, sensible work for bone, muscle and balance, at a pace that respects where you are starting from.</p>"
     },
     {
-      "h2": "Free, membership and 1-on-1",
-      "html": "<p>Creating an account is free. Membership is $19.95 a month and adds your own workout builder and challenges, every premade program, the full lecture library, the monthly live Q&amp;A and detailed progress comparisons.</p><p>The Accountability Membership is $29.95 a month and takes $1 off for every day you log a workout or a pain check-in. Log 20 active days and that month costs $10. It rewards exactly the consistency that makes the work pay off.</p><p>The 1-on-1 tiers add scheduled remote video sessions with Dr. Jared each month, the option to message him directly, and a program built for you. You can see every option and manage your membership from your profile in the app.</p>"
+      "h2": "The app is free",
+      "html": "<p>Everything in the app is free: the pain tool, the exercise video library, the programs, the workout generator and progress tracking. There is no app subscription.</p><p>Memberships are a separate thing. They are for clinical access to Dr. Jared, such as messaging him directly and scheduled remote video sessions, not for using the app. You can see the clinical options from your profile in the app, or <a href=\"/book\">book a visit</a> on this site.</p>"
     },
     {
       "h2": "When to come in instead",
@@ -39,11 +39,11 @@
   "faq": [
     {
       "q": "Is the MD Fit app free?",
-      "a": "Creating an account is free. Membership is $19.95 a month and unlocks the full set of programs, your own workout builder, the lecture library and the monthly live Q&A."
+      "a": "Yes. The app is free. Memberships are separate and cover clinical access to Dr. Jared, such as messaging and remote sessions, not the app itself."
     },
     {
       "q": "Do I need to live in Sarasota to use it?",
-      "a": "No. The pain tool, the exercise videos and the programs work from anywhere. The 1-on-1 tiers add remote video sessions with Dr. Jared, so you can get personal guidance without traveling."
+      "a": "No. The pain tool, the exercise videos and the programs work from anywhere. If you want Dr. Jared's direct guidance, a clinical membership adds remote video sessions, so you do not need to travel."
     },
     {
       "q": "Does the app replace an evaluation?",
@@ -55,7 +55,7 @@
     },
     {
       "q": "Can I talk to Dr. Jared through the app?",
-      "a": "Members can send him messages in the app, and the 1-on-1 tiers add scheduled remote video sessions and direct messaging."
+      "a": "Messaging Dr. Jared and remote sessions with him are part of clinical membership. Everything else in the app is free to use."
     }
   ],
   "related": [

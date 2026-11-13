@@ -73,10 +73,9 @@ if (!CLINIC || !DR) throw new Error("index.html no longer defines #clinic and #d
 // that delivers it. It runs in the browser and installs to the home screen; no app-store claim is made here.
 const APP = { "@type": "WebApplication", "@id": `${SITE}/mdfit-app#app`, name: "MD Fit", url: `${SITE}/mdfit-app`,
   applicationCategory: "HealthApplication", operatingSystem: "Any web browser (iPhone, Android, computer)", browserRequirements: "Requires JavaScript",
-  description: "Dr. Jared Caban's rehab, movement and training app: the pain tool, exercise videos, multi-week programs, a workout generator and progress tracking.",
+  description: "Dr. Jared Caban's free rehab, movement and training app: the pain tool, exercise videos, multi-week programs, a workout generator and progress tracking.",
   provider: { "@id": `${SITE}/#clinic` },
-  offers: [{ "@type": "Offer", name: "Free account", price: "0", priceCurrency: "USD" },
-    { "@type": "Offer", name: "Membership", price: "19.95", priceCurrency: "USD", category: "subscription" }] };
+  offers: [{ "@type": "Offer", name: "Free", price: "0", priceCurrency: "USD" }], isAccessibleForFree: true };
 
 const crumbs = (items) => `<p class="cd-crumbs">${items.map((c, i) => c.href && i < items.length - 1 ? `<a href="${attr(c.href)}">${esc(c.name)}</a>` : esc(c.name)).join(" › ")}</p>`;
 const breadcrumbLd = (items) => ({ "@type": "BreadcrumbList", itemListElement: items.map((c, i) => ({ "@type": "ListItem", position: i + 1, name: c.name, ...(c.href ? { item: SITE + c.href } : {}) })) });
