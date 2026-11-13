@@ -7,6 +7,7 @@
 "use strict";
 const fs = require("fs"), path = require("path"), { execFileSync } = require("child_process");
 const L = require("./lib");
+const APPROVED = L.readJson("data/seo/approved.json", {}); // which generated groups Dr. Jared has signed off
 const { esc, attr, data, muscleUrl, painUrl, findExercise, thumb, quote, REVIEW, RATING, RATING_P, BOOK_ROW, CTA, withInsuranceFaq, crumbs, breadcrumbLd, faqLd, faqHtml, linkList, stepsHtml, ABOUT_DR, page, webPage, SITE, TODAY } = L;
 
 const { M, AGGRAVATORS, SPOTS, rank, reports, tracks, patterns, slugs, pain, guides } = data;
@@ -95,7 +96,7 @@ function buildMuscle(id) {
     ${CTA}
     ${linkList(siblings.map(muscleUrl), "Nearby muscles")}
     ${linkList([...locs.slice(0, 6).map((p) => painUrl(p.slug)), ...folded], "Where this muscle hurts")}`;
-  const graph = [webPage({ url, title, description, about: { "@type": "Muscle", name, ...(r.action ? { muscleAction: r.action } : {}), ...(r.origin ? { origin: r.origin } : {}), ...(r.insertion ? { insertion: r.insertion } : {}), ...(r.nerve ? { nerve: r.nerve } : {}) } }), faqLd(faq), breadcrumbLd(trail)];
+  const graph = [webPage({ url, title, description, reviewed: APPROVED.muscles === true, about: { "@type": "Muscle", name, ...(r.action ? { muscleAction: r.action } : {}), ...(r.origin ? { origin: r.origin } : {}), ...(r.insertion ? { insertion: r.insertion } : {}), ...(r.nerve ? { nerve: r.nerve } : {}) } }), faqLd(faq), breadcrumbLd(trail)];
   L.write(`muscles/${slug}.html`, page({ url, title, description, body, graph, section: "muscles" }));
   generated.push({ url, title: `${short} pain`, kind: "muscle", snippet: m.refers.slice(0, 150), kw: [name, ...locs.map((p) => p.name), ...r.mimics.slice(0, 3)], priority: 0.7, file: `muscles/${slug}.html`, region: regionOf(id), short });
 }
@@ -239,7 +240,7 @@ function buildPain(p) {
     ${CTA}
     ${linkList(nearby, `Other places it hurts: ${p.region}`)}
     ${linkList(related, "Related conditions")}`;
-  const graph = [webPage({ url, title: t2, description, about: { "@type": "MedicalSymptom", name: `Pain ${at}` } }), faqLd(faq), breadcrumbLd(trail)];
+  const graph = [webPage({ url, title: t2, description, reviewed: APPROVED.pain === true, about: { "@type": "MedicalSymptom", name: `Pain ${at}` } }), faqLd(faq), breadcrumbLd(trail)];
   L.write(`pain/${p.slug}.html`, page({ url, title: t2, description, body, graph, section: "pain" }));
   generated.push({ url, title: `Pain ${at}`, kind: "pain", snippet: `Muscles that refer pain ${at}: ${ranked.slice(0, 3).map((m) => shortName(m.name)).join(", ")}`, kw: [p.name, p.region, ...ranked.slice(0, 4).map((m) => m.name)], priority: 0.7, file: `pain/${p.slug}.html` });
 }
@@ -314,7 +315,7 @@ function buildContent(p) {
   const graph = isBlog
     ? [{ "@type": "BlogPosting", "@id": SITE + url, url: SITE + url, headline: p.h1, description: p.description, datePublished: p.datePublished, dateModified: p.dateModified || p.datePublished,
       author: { "@id": `${SITE}/#dr-jared` }, publisher: { "@id": `${SITE}/#clinic` }, mainEntityOfPage: SITE + url, image: `${SITE}/assets/logo.webp` }, faqLd(p.faq), breadcrumbLd(trail)]
-    : [webPage({ url, title: p.title, description: p.description, about }), faqLd(withInsuranceFaq(p.faq)), breadcrumbLd(trail)];
+    : [webPage({ url, title: p.title, description: p.description, about, reviewed: p.reviewStatus === "approved" }), faqLd(withInsuranceFaq(p.faq)), breadcrumbLd(trail)];
   const file = `${g.dir ? g.dir + "/" : ""}${p.slug}.html`;
   L.write(file, page({ url, title: p.title, description: p.description, body, graph, section: g.section }));
   generated.push({ url, title: p.h1.replace(/ in Sarasota, FL$/, ""), kind: p.group === "conditions" ? "condition" : p.group === "activities" ? "activity" : p.group, snippet: p.lead.slice(0, 150), kw: [...(p.sections || []).slice(0, 4).map((s) => s.h2), ...(p.about ? [p.about.name] : [])], priority: p.group === "blog" ? 0.6 : 0.8, file, date: p.datePublished });
