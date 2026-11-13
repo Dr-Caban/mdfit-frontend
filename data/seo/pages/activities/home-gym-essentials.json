@@ -1,0 +1,85 @@
+{
+  "group": "activities",
+  "slug": "home-gym-essentials",
+  "title": "Home Gym Essentials: What You Actually Need | MD Fit",
+  "h1": "Home Gym Essentials",
+  "description": "What to buy first for a home gym, what to skip, and how to cover every movement pattern in a corner of a spare room.",
+  "about": {
+    "type": "Thing",
+    "name": "Home gym equipment"
+  },
+  "lead": "You can train every movement pattern that matters in a corner of a room with very little equipment. Most home gyms fail not because they are under-equipped but because they were assembled in the wrong order.",
+  "sections": [
+    {
+      "h2": "Cover the patterns, not the muscles",
+      "html": "<p>Equipment decisions get easier once you stop thinking in body parts. There are six patterns worth being able to train:</p><ul><li><b>Squat</b> — knee-dominant, loading the <a href=\"/muscles/rectus-femoris\">quadriceps</a> and glutes.</li><li><b>Hinge</b> — hip-dominant, loading the <a href=\"/muscles/glute-max\">gluteus maximus</a> and hamstrings.</li><li><b>Push</b> — horizontal and overhead.</li><li><b>Pull</b> — horizontal and vertical.</li><li><b>Carry</b> — walking under load.</li><li><b>Single-leg</b> — split squats, step-ups, single-leg hinges.</li></ul><p>Anything that lets you load those six and progress them over time is sufficient. Anything that does not is an accessory.</p>"
+    },
+    {
+      "h2": "What to buy, in order",
+      "html": "<ol><li><b>Adjustable dumbbells.</b> The highest-value single purchase. They cover all six patterns, scale from light to reasonably heavy, and take up almost no space.</li><li><b>A bench, ideally adjustable.</b> Opens up pressing, rowing and split squats properly.</li><li><b>Resistance bands and a doorway anchor.</b> Cheap, excellent for pulling and rotational work, and the easiest way to load a movement lightly.</li><li><b>A pull-up bar</b> if you have a suitable doorway. Vertical pulling is otherwise awkward at home.</li><li><b>One kettlebell</b> for swings, carries and single-leg work.</li><li><b>A mat.</b> Floor work, mobility, core.</li></ol><p>That covers almost everyone, costs far less than a rack setup, and fits under a bed and in a cupboard.</p>"
+    },
+    {
+      "h2": "When a barbell makes sense",
+      "html": "<p>A barbell, rack and plates is the right answer if your goal is to get genuinely strong and you intend to squat, press and deadlift seriously. There is no substitute for a loaded bar once dumbbells become a limitation.</p><p>It is the wrong first purchase for most people. It needs space, a floor that can take it, a meaningful budget, and — importantly — safety arrangements, because squatting heavy alone at home without safety bars is a genuinely bad idea.</p><p>If that is where you are heading, see <a href=\"/activities/barbell-back-squat\">barbell back squat</a> and <a href=\"/activities/conventional-deadlift\">conventional deadlift</a>.</p>"
+    },
+    {
+      "h2": "What to skip",
+      "html": "<p>Vibration plates, ab machines, most things advertised during daytime television, and anything that promises results without effort. Also, usually, a treadmill — they are expensive, large, and in Florida you can walk outdoors for much of the year.</p><p>Fixed-path machines generally do not suit home gyms. They occupy a lot of space to train one movement, and the versatility you need at home is the opposite of what they offer. See <a href=\"/activities/machines-vs-free-weights\">machines vs free weights</a>.</p>"
+    },
+    {
+      "h2": "How much weight to buy",
+      "html": "<p>The most common mistake is buying too light. People choose a set they can lift comfortably today, outgrow it within two months, and then stop progressing because buying more feels like admitting the first purchase was wrong.</p><p>Adjustable dumbbells solve this, which is the main argument for them over a fixed set. A pair adjusting up to fifty pounds each covers most people for years of pressing, rowing and single-leg work.</p><p>For the hinge pattern, you will reach a ceiling sooner — hips are strong, and dumbbells become awkward before they become heavy enough. Single-leg hinges, higher repetitions and slower tempos extend the useful range considerably. See <a href=\"/activities/progressive-overload\">progressive overload</a> for the ways to keep making a fixed weight harder.</p>"
+    },
+    {
+      "h2": "Making it work",
+      "html": "<p>Equipment is rarely the obstacle. Set-up friction is. A home gym that requires moving furniture gets used for three weeks; one that is ready to go gets used for years.</p><p>Leave it out if you can. Keep a programme written down so you are not deciding what to do while standing there. The free videos in the MD Fit app cover the movements if you want something to follow rather than improvise — see <a href=\"/activities/how-to-start-exercising\">how to start exercising</a>.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Chest pressure or pain during exercise, or pain spreading to the jaw, neck or arm: stop and seek emergency care.",
+    "Training heavy alone at home without safety bars or a spotter, which is an avoidable risk.",
+    "Sharp joint pain during a lift, as opposed to muscular effort.",
+    "Dizziness or light-headedness when standing after a set."
+  ],
+  "faq": [
+    {
+      "q": "What is the single best piece of equipment?",
+      "a": "Adjustable dumbbells. They cover every movement pattern, scale with you, and take up almost no space."
+    },
+    {
+      "q": "Can I get strong with only dumbbells?",
+      "a": "For a long time, yes. Most people never reach the point where dumbbells become the limiting factor, and those who do have usually been training for years."
+    },
+    {
+      "q": "Do I need a squat rack?",
+      "a": "Only if you intend to squat and press with a barbell at meaningful loads. Split squats and goblet squats with dumbbells serve most people well."
+    },
+    {
+      "q": "Are resistance bands worth it?",
+      "a": "Yes, particularly for pulling patterns and for loading a movement lightly. They are cheap, portable, and complement dumbbells well."
+    }
+  ],
+  "muscles": [
+    "glute-max",
+    "rectus-femoris",
+    "lats",
+    "pec-major-stern",
+    "post-delt"
+  ],
+  "pain": [
+    "beside-the-spine",
+    "front-of-shoulder"
+  ],
+  "guides": [],
+  "related": [
+    "/activities/dumbbells-vs-barbells",
+    "/activities/machines-vs-free-weights",
+    "/activities/kettlebell-training",
+    "/activities/resistance-band-training",
+    "/activities/how-to-start-exercising"
+  ],
+  "programs": [],
+  "reviewStatus": "approved"
+}
