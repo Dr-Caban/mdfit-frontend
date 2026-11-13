@@ -194,7 +194,7 @@
     { g: "Practice", items: [["dashboard", "Dashboard"], ["calendar", "Calendar"], ["clients", "Clients"], ["chart", "Client chart"], ["leads", "Leads"], ["messages", "Messages"], ["telehealth", "Telehealth"]] },
     { g: "Clinical", items: [["notes", "Notes & AI scribe"], ["forms", "Forms & intake"], ["programs", "Programs"], ["nutrition", "Nutrition"], ["fitness", "Fitness"]] },
     { g: "Business", items: [["payments", "Payments"], ["newsletter", "Newsletter"]] },
-    { g: "Admin", items: [["team", "Team & roles"], ["feedback", "Reviews & feedback"], ["security", "Security & audit"], ["settings", "Modules & settings"], ["insights", "Insights"], ["economics", "System economics"], ["guide", "MD Fit guide"]] },
+    { g: "Admin", items: [["team", "Team & roles"], ["feedback", "Reviews & feedback"], ["security", "Security & audit"], ["settings", "Modules & settings"], ["insights", "Insights"], ["economics", "System economics"], ["guide", "MD Fit Intelligence"]] },
     { g: "Client-facing", items: [["portal", "Client app"], ["booking", "Booking page"]] }
   ];
   function renderNav(active) {
@@ -825,7 +825,8 @@
     <div class="card stack"><div class="card-head"><h2>Membership types</h2><span class="muted" style="font-size:12px">What members can sign up for</span></div>
       <form class="stack" data-form="setTiers">${(c.tiers || []).map((t, i) => `<div class="stack" style="border-bottom:1px solid var(--line);padding-bottom:12px"><div class="grid g2">${fld("tn" + i, "name" + i, "Name", t.name, { max: 60 })}${fld("tp" + i, "price" + i, "Price per month ($)", t.price, { type: "number", attrs: 'min="0" step="0.01"' })}</div>
         <div class="grid g2">${fld("tm" + i, "meetings" + i, "1-on-1 calls per month", t.meetings || 0, { type: "number", attrs: 'min="0" max="31"' })}${fld("tl" + i, "minutes" + i, "Minutes per call", t.meetingMinutes || 0, { type: "number", attrs: 'min="0" max="180"' })}</div>
-        ${fld("tk" + i, "perks" + i, "What it includes (one per line)", (t.perks || []).join("\n"), { area: true, rows: 3, max: 1300 })}</div>`).join("")}
+        ${fld("tk" + i, "perks" + i, "What it includes (one per line)", (t.perks || []).join("\n"), { area: true, rows: 3, max: 1300 })}
+        <label class="row" for="td${i}" style="gap:8px;flex-wrap:nowrap"><input type="checkbox" id="td${i}" name="direct${i}"${t.directMessages ? " checked" : ""}><span>Can message Dr. Jared directly</span></label></div>`).join("")}
       <div class="row"><button class="btn primary">Save membership types</button></div><p class="muted" style="margin:0;font-size:12.5px">A price change applies to people who join from now on. Current members keep what their card is already charged.</p></form></div></div>
     <div class="card" style="margin-top:16px"><div class="card-head"><h2>Clients with payments</h2></div>${(p.clients || []).map((x) => `<div class="list-item"><span style="flex:1"><b>${esc(x.name || x.email || "")}</b></span><button class="btn sm" data-act="chartBilling" data-id="${esc(x.id)}">Billing</button></div>`).join("") || none("No payments recorded.")}</div>`;
   };
@@ -996,8 +997,8 @@
       ${S.truncated ? `<p class="muted" style="margin:8px 0 0;font-size:12.5px">Stripe holds more entries than were read for this month.</p>` : ""}</div>`;
   }
 
-  // ---- The MD Fit guide in numbers: who opened it, how many answers it gave, who reached the daily free limit and
-  // who upgraded after that. Counts only: nothing anyone typed to the guide is kept or shown here.
+  // ---- MD Fit Intelligence (the guide) in numbers: who opened it, how many answers it gave, who used up the free
+  // plan's daily tokens and who upgraded after that. Counts only: nothing anyone typed to it is kept or shown here.
   const GUIDE_DAYS = [7, 30, 90];
   const dayName = (d, long) => new Date(d + "T12:00:00Z").toLocaleDateString("en-US", { timeZone: "UTC", month: "short", day: "numeric", ...(long ? { weekday: "short" } : {}) });
   // One row a day up to a month, one a week beyond that, so a column is never too thin to read. A day the server
@@ -1045,19 +1046,19 @@
     const days = GUIDE_DAYS.includes(state.guideDays) ? state.guideDays : 30; let g = null, why = "";
     try { g = await guideStats(days); } catch (err) { why = err.message; }
     cache.guide = g;
-    const head = `<div class="view-head"><div><h1>MD Fit guide</h1><p class="muted">How members use the guide in the app, and who upgrades after reaching the daily free limit · counts only, nothing anyone typed is kept</p></div>
+    const head = `<div class="view-head"><div><h1>MD Fit Intelligence</h1><p class="muted">How members use MD Fit Intelligence in the app, and who upgrades after using up the free daily tokens · counts only, nothing anyone typed is kept</p></div>
       <div class="seg" role="group" aria-label="Days shown">${GUIDE_DAYS.map((d) => `<button type="button" data-act="guideDays" data-d="${d}" aria-pressed="${d === days}">${d} days</button>`).join("")}</div></div>`;
-    if (!g) return `${head}<div class="card" id="guideErr"><b>The guide's numbers could not be loaded.</b><p class="muted" style="margin:6px 0 0">${esc(why)}</p></div>`;
+    if (!g) return `${head}<div class="card" id="guideErr"><b>MD Fit Intelligence's numbers could not be loaded.</b><p class="muted" style="margin:6px 0 0">${esc(why)}</p></div>`;
     const T = g.totals || {}, n = (k) => Number(T[k]) || 0, S = g.settings || {};
     const any = ["opens", "people", "answers", "limitHits", "limitPeople", "upgradeTaps", "upgraded"].some((k) => n(k) > 0);
     const reached = n("limitPeople"), up = n("upgraded"), byWeek = days > 31, rows = guideRows(g.byDay, days), table = state.guideView === "table";
     const right = 'style="text-align:right"';
-    const numbers = !any ? `<div class="card" id="guideNone" style="margin-bottom:16px"><b>No guide activity yet</b><p class="muted" style="margin:6px 0 0">Nobody opened the guide in the last ${days} days. The numbers appear here as members use it in the app.</p></div>` : `
+    const numbers = !any ? `<div class="card" id="guideNone" style="margin-bottom:16px"><b>No MD Fit Intelligence activity yet</b><p class="muted" style="margin:6px 0 0">Nobody opened MD Fit Intelligence in the last ${days} days. The numbers appear here as members use it in the app.</p></div>` : `
     <div class="grid" id="guideTiles" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr));margin-bottom:16px">
       ${kpi("People who opened it", n("people"), `${plural(n("opens"), "open")} in ${days} days`)}
       ${kpi("Answers given", n("answers"), n("people") ? `${(n("answers") / n("people")).toFixed(1)} per person` : "")}
       ${kpi("People who reached the limit", reached, `${plural(n("limitHits"), "time")} in all`)}
-      ${kpi("Upgrade taps", n("upgradeTaps"), "taps on Upgrade in the guide")}
+      ${kpi("Upgrade taps", n("upgradeTaps"), "taps on Upgrade in MD Fit Intelligence")}
       ${kpi("Upgraded after the limit", up, "started a membership after reaching it")}
     </div>
     <div class="card" id="guideRate" style="margin-bottom:16px"><div class="card-head"><h2>Conversion</h2><span class="muted" style="font-size:12px">last ${days} days</span></div>
@@ -1070,12 +1071,12 @@
     const ai = !!S.ai, canAi = !!S.aiReady, hasAi = "ai" in S || "aiReady" in S;
     return `${head}${numbers}
     <div class="grid g2">
-      <div class="card stack"><div class="card-head"><h2>Free answers a day</h2><span class="muted" style="font-size:12px">members have no limit</span></div>
-        <form class="row" data-form="guideLimit" style="align-items:flex-end"><div class="field" style="margin:0;width:230px;max-width:100%"><label for="guideFree">Answers a day on the free plan</label><input id="guideFree" name="freePerDay" class="input num" type="number" min="1" max="500" step="1" required value="${esc(S.freePerDay ?? "")}"></div><button class="btn primary">Save</button></form>
-        <p class="muted" style="margin:0;font-size:12.5px">Most people should never reach it on a normal day; the ones who do are your likeliest upgrades.</p>
-        <p class="muted" style="margin:0;font-size:12.5px">Any whole number from 1 to 500. Opening the pain tool, booking and calling the clinic are never counted.</p></div>
+      <div class="card stack"><div class="card-head"><h2>Free tokens a day</h2><span class="muted" style="font-size:12px">members are unlimited</span></div>
+        <form class="row" data-form="guideLimit" style="align-items:flex-end"><div class="field" style="margin:0;width:230px;max-width:100%"><label for="guideFree">Tokens a day on the free plan</label><input id="guideFree" name="freeTokensPerDay" class="input num" type="number" min="1000" max="1000000" step="1000" required value="${esc(S.freeTokensPerDay ?? 50000)}"></div><button class="btn primary">Save</button></form>
+        <p class="muted" style="margin:0;font-size:12.5px">One AI answer uses about 3,000 tokens; an answer found on the device uses 300. The default, 50,000, is about 15 AI answers a day.</p>
+        <p class="muted" style="margin:0;font-size:12.5px">Any whole number from 1,000 to 1,000,000. Opening the pain tool, booking and calling the clinic never use tokens.</p></div>
       ${hasAi ? `<div class="card stack" id="guideAiCard"><div class="card-head"><h2>AI answers</h2><button type="button" class="switch" id="guideAi" role="switch" aria-checked="${ai}" aria-label="AI answers" data-act="guideAi"${!ai && !canAi ? " disabled" : ""}></button></div>
-        <p style="margin:0" id="guideAiState">${ai ? `<b>On:</b> members' messages are read by ${esc(S.aiModel || "the AI model")} at ${esc(S.aiHost || "the AI service")} to find the right place. Nothing typed is saved.` : `<b>Off:</b> the guide understands messages on the member's own device and nothing they type leaves it.`}</p>
+        <p style="margin:0" id="guideAiState">${ai ? `<b>On:</b> members' messages are read by ${esc(S.aiModel || "the AI model")} at ${esc(S.aiHost || "the AI service")} to find the right place and suggest programs, videos and general tips, which are added to the member's Home. Nothing typed is saved.` : `<b>Off:</b> MD Fit Intelligence understands messages on the member's own device, nothing they type leaves it, and it suggests nothing.`}</p>
         ${!canAi ? `<p class="muted" style="margin:0;font-size:12.5px" id="guideAiWhy">${ai ? "The AI service is not ready" : "It cannot be turned on"}: ${esc(S.aiWhy || "no AI service is connected on the server.")}</p>` : ""}
         ${state.guideAiErr ? `<p style="margin:0;color:var(--bad)" id="guideAiErr" role="alert">Not changed: ${esc(state.guideAiErr)}</p>` : ""}</div>` : ""}
     </div>`;
@@ -1484,7 +1485,7 @@
           ${fld("rfAmt", "amount", "Amount to refund ($)", (left / 100).toFixed(2), { type: "number", attrs: `required min="0.01" max="${(left / 100).toFixed(2)}" step="0.01"` })}
           <div class="field"><label for="rfPass">Owner password</label><input id="rfPass" name="password" class="input" type="password" required autocomplete="current-password"><p class="muted" style="margin:4px 0 0;font-size:12.5px">Asked for every refund, even though you are signed in.</p></div>
           <div class="row"><button class="btn primary">Refund to the card</button><span class="muted" id="rfMsg" role="status" style="font-size:12.5px"></span></div></form>`); },
-    // ---- MD Fit guide (Insights): the range, chart or table, and the AI switch
+    // ---- MD Fit Intelligence (Insights): the range, chart or table, and the AI switch
     guideDays: (el) => { state.guideDays = Number(el.dataset.d) || 30; return render(); },
     guideView: (el) => { state.guideView = el.dataset.v === "table" ? "table" : "chart"; return render(); },
     // Off is one click. On asks first, in the page: members type health details, so the service must have signed.
@@ -1663,10 +1664,10 @@
       toast(`${usd(r.amount)} refunded to the card.${r.left ? ` ${usd(r.left)} of the payment remains.` : ""}`);
     },
     guideLimit: async (f) => {
-      const n = Number(f.freePerDay.value);
-      if (!Number.isInteger(n) || n < 1 || n > 500) { toast("Enter a whole number from 1 to 500."); f.freePerDay.focus(); return; }
-      await api("PUT", "/api/admin/guide/settings", { freePerDay: n }); await render();
-      toast(`Saved. People on the free plan get ${plural(n, "guide answer")} a day.`);
+      const n = Number(f.freeTokensPerDay.value);
+      if (!Number.isInteger(n) || n < 1000 || n > 1000000) { toast("Enter a whole number from 1,000 to 1,000,000."); f.freeTokensPerDay.focus(); return; }
+      await api("PUT", "/api/admin/guide/settings", { freeTokensPerDay: n }); await render();
+      toast(`Saved. People on the free plan get ${n.toLocaleString("en-US")} MD Fit Intelligence tokens a day.`);
     },
     guideAiOn: async (f) => {
       if (!f.signed.checked) return;
@@ -1782,7 +1783,7 @@
     setPlans: (f) => putSettings({ plans: Object.fromEntries(["gold", "silver", "silverPayments", "reviewDiscountPct", "ext12", "ext24"].map((k) => [k, Number(f[k].value)])) }, "Pricing saved."),
     setVideo: (f) => putSettings({ booking: { telehealthUrl: f.telehealthUrl.value.trim() } }, "Video link saved."),
     setIcs: async (f) => { const v = f.icsUrl.value.trim(); if (!v && !confirm("Disconnect the SimplePractice calendar? Its busy times will stop blocking bookings.")) return; await api("PUT", "/api/admin/calsync", { icsUrl: v }); await render(); toast(v ? "Calendar link saved." : "SimplePractice calendar disconnected."); },
-    setTiers: (f) => putContent({ tiers: (cache.content.tiers || []).map((t, i) => ({ ...t, name: f["name" + i].value.trim(), price: Number(f["price" + i].value), meetings: Number(f["meetings" + i].value), meetingMinutes: Number(f["minutes" + i].value), perks: f["perks" + i].value.split("\n").map((x) => x.trim()).filter(Boolean) })) }, "Membership types saved."),
+    setTiers: (f) => putContent({ tiers: (cache.content.tiers || []).map((t, i) => ({ ...t, name: f["name" + i].value.trim(), price: Number(f["price" + i].value), meetings: Number(f["meetings" + i].value), meetingMinutes: Number(f["minutes" + i].value), directMessages: !!f["direct" + i].checked, perks: f["perks" + i].value.split("\n").map((x) => x.trim()).filter(Boolean) })) }, "Membership types saved."),
     progSave: (f) => {
       const all = cache.content.programs || [], src = all.find((x) => x.id === f.dataset.id) || {}, isNew = !!f.dataset.new;
       const days = rowsOf(f, ["name", "goal", "length"]).filter((r) => r.name).map((r) => ({ ...((src.days || [])[r.i] || {}), name: r.name, goal: r.goal, length: Number(r.length) }));
