@@ -1,0 +1,89 @@
+{
+  "group": "activities",
+  "slug": "core-stability-for-real-life",
+  "title": "Core Stability for Real Life | MD Fit",
+  "h1": "Core Stability for Real Life",
+  "description": "What core stability actually means, why endless crunches miss the point, and the kind of core work that changes how your back feels.",
+  "about": {
+    "type": "Thing",
+    "name": "Core stability training"
+  },
+  "lead": "The core's main job is not to bend you forward. It is to stop you from moving when something tries to move you — which is why sit-ups are a poor test of it and an even poorer training method.",
+  "sections": [
+    {
+      "h2": "Resisting movement, not creating it",
+      "html": "<p>Walk with a heavy bag in one hand and something has to stop you tipping toward it. Carry a toddler on one hip, open a stiff door, step off a kerb awkwardly — in each case the trunk's job is to hold position while the limbs do the work.</p><p>That is what stability means: the ability to resist being bent, twisted or tipped. The muscles involved are the <a href=\"/muscles/multifidus\">multifidus</a> and the deeper spinal muscles, the <a href=\"/muscles/external-oblique\">obliques</a>, the deep abdominal wall and the <a href=\"/muscles/quadratus-lumborum\">quadratus lumborum</a>, working together rather than individually.</p><p>Crunches train the trunk to bend repeatedly under no meaningful load. That is close to the opposite of the demand, and it loads the spine into flexion over and over, which is not ideal for everyone.</p>"
+    },
+    {
+      "h2": "The four jobs worth training",
+      "html": "<ul><li><b>Anti-extension</b> — stopping the back from arching. Plank, dead bug, overhead carries.</li><li><b>Anti-lateral-flexion</b> — stopping sideways tipping. Suitcase carries, side plank.</li><li><b>Anti-rotation</b> — stopping twisting. Pallof press, bird dog.</li><li><b>Transferring force</b> — hips and shoulders working through a stable trunk.</li></ul><p>A core programme that covers those four does far more for how a back feels day to day than any volume of crunches.</p>"
+    },
+    {
+      "h2": "Five movements that cover it",
+      "html": "<ol><li><b>Dead bug, 8 each side.</b> Lying on your back, opposite arm and leg extending while the low back stays flat to the floor. The moment the back arches, the set is over.</li><li><b>Side plank, 20 to 40 seconds each side.</b> On the knees if needed. Directly trains the lateral system.</li><li><b>Bird dog, 8 each side.</b> Hands and knees, opposite arm and leg extending without the hips rotating. Balance a glass of water on your low back, metaphorically.</li><li><b>Suitcase carry, 30 metres each side.</b> One heavy weight, walking tall, not leaning. One of the most transferable things in the gym.</li><li><b>Pallof press, 8 each side.</b> Band or cable at chest height, pressing straight out while resisting the pull to rotate.</li></ol><p>No repetition of any of these should be performed with a held breath and a clenched jaw. If that is happening, it is too hard.</p>"
+    },
+    {
+      "h2": "Why this matters for backs",
+      "html": "<p>People with recurring low back pain often move as though the trunk is a single rigid block or, at the other extreme, as though it has no control at all. Both make ordinary loading harder on the spine than it needs to be.</p><p>Training the trunk to hold position while the hips and shoulders move takes load off the lumbar spine during everyday tasks. It does not resolve back pain on its own — see <a href=\"/conditions/low-back-pain\">low back pain</a> — but it is one of the more useful things to build alongside addressing the cause.</p><p>It is also worth saying plainly that a strong core does not prevent all back pain, and weak abdominals are not the single cause people often assume.</p>"
+    },
+    {
+      "h2": "Bracing is not sucking in",
+      "html": "<p>Two different instructions get confused. Drawing the navel inward activates deep abdominal muscle gently. Bracing means stiffening the whole trunk as though preparing to take a punch.</p><p>For holding a position under meaningful load, bracing is the useful one. For gentle movement, neither is necessary — walking around permanently braced is tiring and unhelpful.</p><p>See <a href=\"/activities/bracing-and-breathing\">bracing and breathing</a> for how this applies under a barbell, including when breath-holding matters.</p>"
+    },
+    {
+      "h2": "Where people go wrong",
+      "html": "<p>Doing core work as an afterthought at the end of a session, fatigued, with poor position. Choosing duration over quality — a three-minute plank with a sagging back trains sagging. Loading before control, particularly with weighted twisting movements.</p><p>Short, deliberate and frequent beats long and occasional. Five to eight minutes, three times a week, done with attention, is plenty for most people.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Back pain that travels down a leg, or numbness, tingling or weakness in a leg.",
+    "Loss of bladder or bowel control, or numbness around the groin and inner thighs: seek emergency care.",
+    "Back pain that is constant, worse at night, or came on without any clear reason.",
+    "A doming or ridge appearing along the midline of the abdomen during core work, which should be assessed.",
+    "Pain in the back that sharpens with each session rather than easing as control improves."
+  ],
+  "faq": [
+    {
+      "q": "Are planks still worth doing?",
+      "a": "Yes, as one tool among several. Long holds have limited value; shorter, well-positioned holds with added challenge do more."
+    },
+    {
+      "q": "Will core work fix my back pain?",
+      "a": "It helps many people, but it does not resolve the problem on its own, and weak abdominals are rarely the sole cause. It works best alongside addressing what is actually driving the pain."
+    },
+    {
+      "q": "Should I avoid sit-ups?",
+      "a": "Not necessarily, though they train a demand your trunk rarely faces and involve repeated loaded spinal flexion. Most people get more from anti-movement work."
+    },
+    {
+      "q": "How often should I train my core?",
+      "a": "Three short sessions a week is plenty. Quality of position matters considerably more than volume here."
+    }
+  ],
+  "muscles": [
+    "multifidus",
+    "ext-oblique",
+    "ql",
+    "psoas",
+    "glute-max"
+  ],
+  "pain": [
+    "beside-the-spine",
+    "flank",
+    "si-joint"
+  ],
+  "guides": [],
+  "related": [
+    "/conditions/low-back-pain",
+    "/activities/bracing-and-breathing",
+    "/activities/single-leg-strength-and-balance",
+    "/activities/carrying-and-lifting-safely-in-daily-life",
+    "/treatments/functional-mobility"
+  ],
+  "programs": [
+    "low-back-6"
+  ],
+  "reviewStatus": "approved"
+}

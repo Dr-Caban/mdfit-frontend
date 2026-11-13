@@ -1,0 +1,87 @@
+{
+  "group": "activities",
+  "slug": "resistance-band-training",
+  "title": "Resistance Band Training: Uses and Limits | MD Fit",
+  "h1": "Resistance Band Training",
+  "description": "What bands do well in rehab and training, where their resistance curve helps and where it misleads, and how to progress with them.",
+  "about": {
+    "type": "Thing",
+    "name": "Resistance band training"
+  },
+  "lead": "Bands are cheap, portable and genuinely useful — and they behave differently from weights in a way that matters. Understanding that difference tells you when to reach for them and when not to.",
+  "sections": [
+    {
+      "h2": "Bands get harder as you stretch them",
+      "html": "<p>A dumbbell weighs the same at every point of a movement. A band gets progressively harder the further you stretch it, which has consequences.</p><p>It means bands are easiest where muscle is usually weakest — the fully stretched position — and hardest where muscle is usually strongest. For some movements that is a poor match; for others it is exactly right. A band pull-apart gets hardest as the shoulder blades come together, which is precisely where you want the work.</p><p>It also makes load hard to quantify. You cannot track band work the way you track weights, which is a real limitation for progressive overload — see <a href=\"/activities/progressive-overload\">progressive overload</a>.</p>"
+    },
+    {
+      "h2": "Where bands are the better tool",
+      "html": "<ul><li><b>Pulling and rotational work.</b> A doorway anchor gives you rows, pull-aparts and anti-rotation presses that are otherwise awkward without a cable machine.</li><li><b>Shoulder and rotator cuff work.</b> The loads needed are small and the band's curve suits them. See <a href=\"/conditions/rotator-cuff-tear\">rotator cuff</a> and the <a href=\"/muscles/infraspinatus\">infraspinatus</a> and <a href=\"/muscles/subscapularis\">subscapularis</a> pages.</li><li><b>Hip work.</b> Band walks and clamshells for the <a href=\"/muscles/gluteus-medius\">gluteus medius</a>, where small loads and high repetitions are appropriate.</li><li><b>Travel.</b> They weigh nothing and go in a bag.</li><li><b>Early rehabilitation.</b> Very light loading, easy to control, easy to adjust by moving closer or further from the anchor.</li></ul>"
+    },
+    {
+      "h2": "Where they fall short",
+      "html": "<p>For building substantial lower-body strength, bands are poor. The resistance at the bottom of a squat — where you need it most — is minimal, and the band is hardest at lockout where it matters least.</p><p>Progression is also awkward. Moving to a thicker band is a large jump, and standing further from the anchor changes the curve rather than simply adding load. Compared with adding five pounds to a dumbbell, it is imprecise.</p><p>Bands are a complement to weights, not a replacement, for anyone whose goal is getting stronger.</p>"
+    },
+    {
+      "h2": "Using them well",
+      "html": "<ol><li>Anchor securely. A door anchor in a closed door hinged away from you, or a solid fixed point.</li><li>Start with tension already in the band rather than slack, so the movement is loaded from the start.</li><li>Control the return. Letting the band snap you back wastes the most useful part of the repetition.</li><li>Progress by moving further from the anchor, adding repetitions, slowing the tempo, then changing band.</li></ol><p>Inspect bands regularly for nicks and thinning, particularly around the anchor point. A band failing under tension can injure you, and eye injuries from snapping bands are a real if uncommon problem. Never stretch one toward your face.</p>"
+    },
+    {
+      "h2": "Bands in rehabilitation",
+      "html": "<p>Much of the early work after an injury needs loads too light for most weights to provide usefully. Bands fill that gap well, and the ability to adjust resistance by changing position makes small progressions easy.</p><p>The error is staying there. Bands are a starting point, and tissue needs progressively greater load to rebuild properly. A shoulder that has done band work for six months without progressing to weight has usually stopped improving — see <a href=\"/treatments/functional-mobility\">functional mobility</a> for how we structure that progression.</p><p>A reasonable rule: once you can complete three sets of fifteen controlled repetitions with the heaviest band you have, and the movement looks the same on the last repetition as the first, it is time to move to a weight you can measure. Bands got you back to moving; weights are what rebuild capacity.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "A band that is nicked, thinning or cracking: replace it, as failure under tension can cause injury.",
+    "Sharp joint pain during band work, as opposed to muscular effort.",
+    "Shoulder pain that persists after rotator cuff work rather than easing over weeks.",
+    "Numbness or tingling in the hands when gripping a band under tension."
+  ],
+  "faq": [
+    {
+      "q": "Can I build muscle with bands alone?",
+      "a": "To a point, particularly for upper body and smaller muscle groups. For substantial lower-body strength, weights are considerably more effective."
+    },
+    {
+      "q": "How do I know what resistance I am using?",
+      "a": "You largely cannot, which is their main drawback. Track repetitions, tempo and distance from the anchor instead, and accept it is less precise than weights."
+    },
+    {
+      "q": "Are loop bands or tube bands better?",
+      "a": "Loop bands suit hip work and assistance; tube bands with handles suit pressing and pulling. Having one of each covers most uses."
+    },
+    {
+      "q": "Why do bands hurt my shoulders?",
+      "a": "Often because tension is highest at the end of range where the shoulder is least comfortable. Reducing range or moving closer to the anchor usually helps; persistent pain should be assessed."
+    }
+  ],
+  "muscles": [
+    "infraspinatus",
+    "subscapularis",
+    "glute-med",
+    "rhomboid-major",
+    "post-delt"
+  ],
+  "pain": [
+    "front-of-shoulder",
+    "outside-of-hip",
+    "between-shoulder-blades"
+  ],
+  "guides": [
+    "rotator-cuff",
+    "lateral-hip"
+  ],
+  "related": [
+    "/activities/home-gym-essentials",
+    "/activities/machines-vs-free-weights",
+    "/conditions/rotator-cuff-tear",
+    "/activities/progressive-overload",
+    "/treatments/functional-mobility"
+  ],
+  "programs": [
+    "shoulder-6"
+  ],
+  "reviewStatus": "approved"
+}

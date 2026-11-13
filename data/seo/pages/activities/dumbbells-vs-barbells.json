@@ -1,0 +1,88 @@
+{
+  "group": "activities",
+  "slug": "dumbbells-vs-barbells",
+  "title": "Dumbbells vs Barbells: Which and When | MD Fit",
+  "h1": "Dumbbells vs Barbells",
+  "description": "What each one does better, why dumbbells suit cranky shoulders and asymmetries, and when a barbell is genuinely the right tool.",
+  "about": {
+    "type": "Thing",
+    "name": "Dumbbells and barbells compared"
+  },
+  "lead": "A barbell loads more weight and progresses more precisely. A dumbbell moves more freely and tells the truth about side-to-side differences. Neither is better; they answer different questions.",
+  "sections": [
+    {
+      "h2": "What a barbell does better",
+      "html": "<p>Load. A barbell lets you lift substantially more than you can hold in two hands, which matters once you are strong. It also progresses in small, precise increments, which makes long-term planning straightforward.</p><p>The fixed path is an advantage for heavy work: both hands are locked to one implement, so there is less to coordinate and more attention available for the effort. That is why the squat, deadlift and bench press are barbell lifts.</p><p>It also makes the big lifts measurable, which matters more than people expect for motivation and for tracking — see <a href=\"/activities/tracking-your-progress\">tracking your progress</a>.</p>"
+    },
+    {
+      "h2": "What dumbbells do better",
+      "html": "<ul><li><b>They expose asymmetry.</b> With a bar the stronger side compensates silently. With dumbbells it cannot, and a side-to-side difference becomes obvious.</li><li><b>They let each arm find its own path.</b> This is the main reason dumbbells suit shoulders that dislike barbell pressing — the shoulder can rotate to a position that suits it instead of being fixed. See <a href=\"/conditions/shoulder-impingement\">shoulder impingement</a>.</li><li><b>They are safer alone.</b> A failed dumbbell press is dropped sideways. A failed barbell bench press without safety bars is a genuine danger.</li><li><b>They demand more stabiliser work,</b> which is useful though it also limits total load.</li><li><b>They take up almost no space,</b> which decides it for most home gyms.</li></ul>"
+    },
+    {
+      "h2": "Choosing by situation",
+      "html": "<p><b>Barbell</b> when the goal is maximal strength, when you are training the squat, deadlift or bench specifically, and when you have a rack with safety bars.</p><p><b>Dumbbells</b> when training alone, when a shoulder or wrist dislikes a fixed grip, when correcting a side-to-side difference, when space is limited, and for most single-leg work, where a bar is awkward.</p><p>Most people benefit from both. A common and sensible structure is barbell work for the main lift of a session and dumbbells for everything after it.</p>"
+    },
+    {
+      "h2": "The grip and wrist question",
+      "html": "<p>A barbell fixes your hands in pronation for pressing and in a set width for squatting. If you have wrist or elbow issues, that fixed position can be the thing that aggravates them — see <a href=\"/conditions/tennis-elbow\">tennis elbow</a> and <a href=\"/conditions/carpal-tunnel-wrist-pain\">carpal tunnel and wrist pain</a>.</p><p>Dumbbells let the forearm rotate to a neutral position, which many people find considerably more comfortable. A neutral-grip dumbbell press is often tolerated by shoulders and wrists that object to a barbell bench press.</p>"
+    },
+    {
+      "h2": "What the research roughly says",
+      "html": "<p>For building muscle, studies comparing free weights with machines, and dumbbells with barbells, tend to find broadly similar results when effort and volume are matched. The differences people argue about are smaller than the arguments suggest.</p><p>Where differences do appear is in what transfers. Training with free weights tends to carry over better to free weight tasks, and the balance and coordination demands are genuinely different. That is an argument for using both rather than for declaring one superior.</p><p>In practice the deciding factors are usually what your joints tolerate, what equipment you have, and whether you are training alone. Those matter considerably more than any theoretical advantage.</p>"
+    },
+    {
+      "h2": "Progressing with dumbbells",
+      "html": "<p>The main practical drawback is jump size. Dumbbells typically increase in five-pound steps, which is a large relative jump on a light lift — going from fifteen to twenty pounds is a third more load.</p><p>Work around it by adding repetitions before weight, slowing the tempo, or adding a set. Progress the same movement over several weeks rather than jumping each session. See <a href=\"/activities/progressive-overload\">progressive overload</a>.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Benching with a barbell alone without safety bars or a spotter, which is a genuine risk.",
+    "Sharp shoulder, elbow or wrist pain during pressing, rather than muscular effort.",
+    "A loss of strength on one side compared with the other that appears suddenly.",
+    "Numbness or tingling in the hands during or after gripping heavy weights."
+  ],
+  "faq": [
+    {
+      "q": "Should beginners start with dumbbells or a barbell?",
+      "a": "Either works. Dumbbells are more forgiving, safer alone and need less equipment; a barbell is better if you have access to a rack and want to learn the main lifts properly."
+    },
+    {
+      "q": "Why can I lift more with a barbell?",
+      "a": "Both hands work together on one implement with less to stabilise, so more of your effort goes into the lift itself. That is expected, not a sign of weakness with dumbbells."
+    },
+    {
+      "q": "Are dumbbells safer?",
+      "a": "Generally yes when training alone, because a failed repetition can be dropped to the sides rather than landing on you."
+    },
+    {
+      "q": "One arm is weaker. What do I do?",
+      "a": "Use dumbbells, start each set with the weaker side, and match the stronger side to what the weaker one can do. The gap usually closes over a few months."
+    }
+  ],
+  "muscles": [
+    "pec-major-stern",
+    "ant-delt",
+    "lats",
+    "triceps-long",
+    "glute-max"
+  ],
+  "pain": [
+    "front-of-shoulder",
+    "point-of-elbow",
+    "palm-side-of-wrist"
+  ],
+  "guides": [
+    "rotator-cuff"
+  ],
+  "related": [
+    "/activities/home-gym-essentials",
+    "/activities/machines-vs-free-weights",
+    "/activities/bench-press",
+    "/activities/progressive-overload",
+    "/conditions/shoulder-impingement"
+  ],
+  "programs": [],
+  "reviewStatus": "approved"
+}

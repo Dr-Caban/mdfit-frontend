@@ -1,0 +1,93 @@
+{
+  "group": "activities",
+  "slug": "single-leg-strength-and-balance",
+  "title": "Single-Leg Strength and Balance Training | MD Fit",
+  "h1": "Single-Leg Strength and Balance",
+  "description": "Why one-legged work exposes what two-legged work hides, how to train it in order, and what a weak single leg actually causes elsewhere.",
+  "about": {
+    "type": "Thing",
+    "name": "Single-leg strength and balance training"
+  },
+  "lead": "Almost everything you do on your feet happens on one leg at a time. Walking, stairs, getting out of a car, stepping off a kerb — all single-leg tasks. Yet most training happens on two, which is where a lot of hidden weakness survives.",
+  "sections": [
+    {
+      "h2": "What two legs hide",
+      "html": "<p>Squat with both legs and the stronger side quietly takes more. The bar stays level, the lift looks fine, and a meaningful side-to-side difference can persist for years without showing up.</p><p>Stand on one leg and there is nowhere for it to go. The hip either controls the pelvis or it does not. The foot either holds the arch or it collapses. The knee either tracks or it drifts inward.</p><p>This is why single-leg work is as much an assessment as a training method. Thirty seconds standing on each leg tells you more about how someone moves than a fair amount of equipment does.</p>"
+    },
+    {
+      "h2": "What the hip is supposed to do",
+      "html": "<p>When you stand on one leg, the pelvis on the opposite side wants to drop. The <a href=\"/muscles/gluteus-medius\">gluteus medius</a> and <a href=\"/muscles/gluteus-minimus\">gluteus minimus</a> on the standing side are what stop it.</p><p>When they are not up to the job, the pelvis drops, the trunk leans toward the standing side to compensate, and the knee drifts inward. That pattern — repeated over thousands of steps a day — is a common thread running through outer hip pain, kneecap pain and IT band trouble.</p><p>See <a href=\"/conditions/it-band-syndrome\">IT band syndrome</a> and <a href=\"/conditions/patellofemoral-pain\">patellofemoral pain</a>, both of which frequently trace back here rather than to the place that hurts.</p>"
+    },
+    {
+      "h2": "Building it in order",
+      "html": "<p>Progress by stability demand first, then by load. Adding weight to a position you cannot control is how people reinforce the fault they are trying to fix.</p><ol><li><b>Static single-leg stand.</b> Thirty seconds each side, shoes off, pelvis level. Then with eyes closed, which removes vision and exposes considerably more.</li><li><b>Split squat.</b> Both feet on the floor, so balance is manageable while the working leg takes most of the load.</li><li><b>Rear-foot-elevated split squat.</b> More load on the front leg, still some rear-foot support.</li><li><b>Step-ups and step-downs.</b> Step-downs are the harder and more useful of the two, because lowering under control is what stairs and kerbs actually demand.</li><li><b>Single-leg deadlift.</b> Hip hinge on one leg, which adds rotational control to the mix.</li><li><b>Loaded versions of all of the above.</b></li></ol>"
+    },
+    {
+      "h2": "What to watch for",
+      "html": "<p>Film yourself from the front, or use a mirror. Three things tell you whether the work is doing its job:</p><ul><li><b>Is the pelvis level?</b> A dropping hip on the free side means the standing hip is not controlling it.</li><li><b>Where is the knee?</b> It should track roughly over the middle of the foot, not drift inward.</li><li><b>What is the foot doing?</b> A collapsing arch or a foot rolling inward changes everything above it.</li></ul><p>A side-to-side difference of a repetition or two is normal. A large difference — one side comfortably managing what the other cannot attempt — is worth addressing deliberately before loading both.</p>"
+    },
+    {
+      "h2": "Balance is trainable, and it matters more with age",
+      "html": "<p>Balance is not a fixed attribute. It responds to practice like anything else, and it declines when it is not challenged.</p><p>The reason to care is not elegance. Falls are the thing that most reliably ends independence in older adults, and the ability to recover from a stumble depends on both balance and the leg strength to catch yourself. Strength and balance are not separate projects — a leg strong enough to arrest a fall is the other half of staying upright.</p><p>See <a href=\"/conditions/balance-fall-prevention\">balance and fall prevention</a> and <a href=\"/activities/seniors-strength-balance\">strength and balance for seniors</a>.</p>"
+    },
+    {
+      "h2": "Fitting it in",
+      "html": "<p>Single-leg work does not need its own session. Two or three sets of one single-leg movement, twice a week, does a great deal — and it is easy to attach to the end of whatever you already do.</p><p>If balance is poor to begin with, hold a wall or a countertop. Using support is not failure; it lets you train the hip without the session becoming a balance ordeal, and you remove it as control improves.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "A knee that gives way, locks or catches during single-leg work.",
+    "Sharp groin or front-of-hip pain, or clicking and catching in the hip.",
+    "Falls, or near-falls, happening in daily life rather than only in training.",
+    "Sudden unexplained loss of balance, dizziness, or new numbness and weakness in a leg."
+  ],
+  "faq": [
+    {
+      "q": "How long should I be able to stand on one leg?",
+      "a": "Thirty seconds with eyes open is a reasonable everyday benchmark for most adults. Eyes closed is considerably harder and a useful way to track progress."
+    },
+    {
+      "q": "One side is much weaker. Should I train it more?",
+      "a": "Doing an extra set or two on the weaker side is reasonable while the gap closes. Starting each exercise with the weaker side and matching the stronger side to it also works well."
+    },
+    {
+      "q": "Is single-leg work better than squats?",
+      "a": "Neither is better; they do different jobs. Two-legged work builds more total load capacity, single-leg work exposes and trains control. Most people benefit from both."
+    },
+    {
+      "q": "I can't balance at all. Where do I start?",
+      "a": "Hold a countertop and work on standing with the pelvis level rather than on staying up unsupported. Reduce the support gradually as control improves."
+    }
+  ],
+  "muscles": [
+    "glute-med",
+    "glute-min",
+    "glute-max",
+    "vmo",
+    "tib-post",
+    "foot-intrinsics"
+  ],
+  "pain": [
+    "outside-of-hip",
+    "outside-of-knee",
+    "below-kneecap"
+  ],
+  "guides": [
+    "lateral-hip",
+    "quads"
+  ],
+  "related": [
+    "/conditions/balance-fall-prevention",
+    "/activities/seniors-strength-balance",
+    "/conditions/it-band-syndrome",
+    "/activities/core-stability-for-real-life",
+    "/treatments/functional-mobility"
+  ],
+  "programs": [
+    "hip-6",
+    "knee-6"
+  ],
+  "reviewStatus": "approved"
+}

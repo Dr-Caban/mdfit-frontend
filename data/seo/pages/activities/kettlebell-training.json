@@ -1,0 +1,85 @@
+{
+  "group": "activities",
+  "slug": "kettlebell-training",
+  "title": "Kettlebell Training: Where It Fits | MD Fit",
+  "h1": "Kettlebell Training",
+  "description": "What kettlebells do well, what they do not, how to learn the swing without hurting your back, and who should be careful with them.",
+  "about": {
+    "type": "Thing",
+    "name": "Kettlebell training"
+  },
+  "lead": "A kettlebell is a weight with the mass offset from the handle, which makes it awkward in useful ways. It is excellent for a few things, unremarkable for most others, and the swing is the one movement worth learning properly.",
+  "sections": [
+    {
+      "h2": "What the offset weight actually changes",
+      "html": "<p>With a dumbbell, the weight sits in your hand. With a kettlebell, it hangs below and beyond it, which means it pulls and swings rather than sitting still.</p><p>That makes kettlebells good for ballistic movements — swings, cleans, snatches — where the load is meant to move fast and be caught. It also makes them awkward for slow, heavy pressing and pulling, where a dumbbell or barbell is simply better.</p><p>Use them for what the shape gives you rather than as a replacement for everything.</p>"
+    },
+    {
+      "h2": "The swing, which is a hinge not a squat",
+      "html": "<p>Nearly every back complaint from kettlebell training comes from swinging like a squat — bending the knees and lifting with the arms — instead of hinging at the hips and letting the glutes do the work.</p><ol><li>Feet about hip to shoulder width, bell a foot or so in front of you.</li><li>Hinge back at the hips with a firm back, shins close to vertical, and hike the bell back between your legs like a rugby pass.</li><li>Drive the hips forward hard. The bell floats up because of that, not because you lift it.</li><li>At the top, stand tall with glutes squeezed. The bell reaches chest height at most, arms relaxed.</li><li>Let it fall, hinge again as it returns. The movement is back and forward, not up and down.</li></ol><p>If your arms are tired after a set of swings, you are lifting with them. If your <a href=\"/muscles/glute-max\">glutes</a> are, you are doing it right.</p>"
+    },
+    {
+      "h2": "Where kettlebells earn their place",
+      "html": "<ul><li><b>Swings</b> — hip power and conditioning in one movement, with low joint impact.</li><li><b>Goblet squats</b> — the shape sits comfortably at the chest, and the front load helps many people squat better than they do with a bar.</li><li><b>Carries</b> — easy to hold, excellent for trunk stability. See <a href=\"/activities/core-stability-for-real-life\">core stability</a>.</li><li><b>Turkish get-up</b> — a whole sequence in one movement, useful for shoulder stability, though it takes time to learn.</li><li><b>Single-leg work</b> — comfortable to hold in one hand for split squats and single-leg deadlifts.</li></ul>"
+    },
+    {
+      "h2": "Who should be careful",
+      "html": "<p>The swing is a fast, loaded hip hinge, which asks a lot of the low back if technique is poor or if the back is already irritable. If you have ongoing back pain, learn it under supervision or start with hip hinges without load — see <a href=\"/conditions/low-back-pain\">low back pain</a>.</p><p>Reduced bone density is another reason for caution with ballistic loaded movements; see <a href=\"/conditions/osteoporosis-and-exercise\">osteoporosis and exercise</a>. Shoulder problems make overhead kettlebell work less appropriate than a controlled press.</p><p>None of these rules kettlebells out. They are reasons to learn the movement before adding speed and weight.</p>"
+    },
+    {
+      "h2": "Choosing a weight",
+      "html": "<p>People consistently buy kettlebells that are too light for swings and too heavy for presses, because the swing is driven by the hips while pressing is not.</p><p>If you buy one, pick something you can swing with effort for ten to fifteen repetitions. You will need a lighter one for overhead work and get-ups, so two of different sizes serves better than one compromise weight.</p><p>A swing weight that feels almost too heavy to lift with the arms is usually about right, because you are not meant to be lifting it with the arms. That is the clearest signal that the hips are doing the work.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Back pain during or after swings, especially if it travels into a leg.",
+    "A sudden sharp pain in the back or shoulder during a ballistic movement.",
+    "Shoulder pain during overhead kettlebell work, which should be assessed before continuing.",
+    "Dizziness during high-repetition swings, which are more demanding on the heart than they look.",
+    "Numbness or tingling in the hands that does not settle quickly after a set."
+  ],
+  "faq": [
+    {
+      "q": "How high should a kettlebell swing go?",
+      "a": "Chest height is plenty for the standard version. Height is a by-product of hip drive, not the goal, and forcing it overhead changes the movement considerably."
+    },
+    {
+      "q": "Are kettlebell swings bad for the back?",
+      "a": "Not when hinged properly. They become a problem when performed as a squat with an arm lift, which loads the back instead of the hips."
+    },
+    {
+      "q": "Can kettlebells replace weights entirely?",
+      "a": "For conditioning and hip power, they do a great deal. For progressive heavy strength work, dumbbells or a barbell are more practical."
+    },
+    {
+      "q": "How many kettlebells do I need?",
+      "a": "Two of different weights covers most people — a heavier one for swings and a lighter one for pressing and get-ups."
+    }
+  ],
+  "muscles": [
+    "glute-max",
+    "biceps-femoris",
+    "ql",
+    "lats",
+    "post-delt"
+  ],
+  "pain": [
+    "beside-the-spine",
+    "back-of-thigh",
+    "top-of-shoulder"
+  ],
+  "guides": [],
+  "related": [
+    "/activities/home-gym-essentials",
+    "/activities/dumbbells-vs-barbells",
+    "/activities/core-stability-for-real-life",
+    "/conditions/low-back-pain",
+    "/activities/build-and-deadlift-setup"
+  ],
+  "programs": [
+    "low-back-6"
+  ],
+  "reviewStatus": "approved"
+}
