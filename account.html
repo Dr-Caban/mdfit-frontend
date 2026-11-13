@@ -489,6 +489,16 @@
         <div class="hb-norm p-goal" id="p-goal" role="radiogroup" aria-label="My daily XP goal"></div>
         <p class="muted small" id="p-goal-now"></p>
       </div>
+      <div class="card" id="p-nudges">
+        <div class="card-head"><span class="label">Reminders from Sunny</span></div>
+        <p class="muted small">At most one a day, at the time you usually train, and never on a day you've already heard from us. Nothing about your health ever shows on your lock screen.</p>
+        <div class="hb-norm" id="p-nudge-pick" role="radiogroup" aria-label="Reminders from Sunny">
+          <button type="button" role="radio" data-nudges="all" aria-checked="true">All <small>Sunny's daily nudge</small></button>
+          <button type="button" role="radio" data-nudges="streaks" aria-checked="false">Streaks only <small>evening save</small></button>
+          <button type="button" role="radio" data-nudges="off" aria-checked="false">Off <small>none</small></button>
+        </div>
+        <p class="muted small" id="p-nudge-now"></p>
+      </div>
 
       <div class="card" id="p-membership">
         <div class="card-head"><span class="label">Membership</span><button type="button" class="btn-gold sm" id="p-mem-go" data-goto="premium">Upgrade membership</button></div>
@@ -762,7 +772,7 @@
   <script src="guides.js?v=8521968d"></script>
   <script src="stripe-checkout.js?v=087989ec"></script>
   <script src="progress-charts.js?v=df3a2256"></script>
-  <script src="account.js?v=397eda28"></script>
+  <script src="account.js?v=b929bdd6"></script>
   <script src="account-xp.js?v=b9de2933"></script>
   <script src="account-share.js?v=763ef457"></script>
   <script src="account-habits.js?v=60e83046"></script>
