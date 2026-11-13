@@ -149,7 +149,7 @@
     if (tabDots.delete(tab)) renderDots();
     if (tab === "videos") renderVideos();
     if (tab === "profile") renderProfileMembership().catch(() => {}); // plan + review offer can change while the app is open
-    if (tab === "profile") renderProgress();
+    if (tab === "profile") { renderProgress(); loadNudgePref(); }
     if (tab === "pain" && !show.painMap) { show.painMap = true; if (window.MDFitPainMap) window.MDFitPainMap.init($("[data-painmap='app']")); }
     if (tab === "progress") renderCalendar();
     if (tab === "leaders" && typeof loadBoard === "function") loadBoard();
@@ -3191,6 +3191,25 @@
   // ================= My progress on Profile: graphs built from what the member logs (progress-charts.js). Loaded the
   // first time Profile opens and refreshed on every later visit, since a workout or check-in may have been logged since.
   let progressView = null;
+  // ================= Reminders from Sunny on Profile: all / the evening streak one only / off (PUT /api/me/prefs)
+  const NUDGE_SAY = { all: "Sunny can send one friendly nudge a day.", streaks: "Sunny only reminds you in the evening when a streak is about to break.", off: "Sunny won't send reminders. Class reminders still come." };
+  let nudgePref = null;
+  function paintNudges(v) {
+    nudgePref = ["all", "streaks", "off"].includes(v) ? v : "all";
+    document.querySelectorAll("#p-nudge-pick [data-nudges]").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.nudges === nudgePref)));
+    const now = $("#p-nudge-now"); if (now) now.textContent = NUDGE_SAY[nudgePref];
+  }
+  function loadNudgePref() {
+    if (nudgePref || !$("#p-nudge-pick")) return;
+    apiAuth("GET", "/api/me/guide").then((g) => paintNudges(g && g.prefs && g.prefs.nudges)).catch(() => {});
+  }
+  document.addEventListener("click", async (e) => {
+    const b = e.target.closest("#p-nudge-pick [data-nudges]"); if (!b || b.dataset.nudges === nudgePref) return;
+    const was = nudgePref; paintNudges(b.dataset.nudges);
+    try { const r = await apiAuth("PUT", "/api/me/prefs", { nudges: b.dataset.nudges }); paintNudges(r && r.prefs && r.prefs.nudges); toast("Saved."); }
+    catch (err) { paintNudges(was); toast(err.message); }
+  });
+
   function renderProgress() {
     const box = $("#p-progress-body"); if (!box || !window.MDFitProgress) return;
     if (progressView) return progressView.reload();

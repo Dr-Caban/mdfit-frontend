@@ -1056,6 +1056,8 @@
     const head = `<div class="view-head"><div><h1>Sunny</h1><p class="muted">How members use Sunny in the app, and who upgrades after using up the free daily tokens · counts only, nothing anyone typed is kept</p></div>
       <div class="seg" role="group" aria-label="Days shown">${GUIDE_DAYS.map((d) => `<button type="button" data-act="guideDays" data-d="${d}" aria-pressed="${d === days}">${d} days</button>`).join("")}</div></div>`;
     if (!g) return `${head}<div class="card" id="guideErr"><b>Sunny's numbers could not be loaded.</b><p class="muted" style="margin:6px 0 0">${esc(why)}</p></div>`;
+    // Sunny's daily nudges (server: lib/nudges.js): counts only, no names
+    let nd = null; try { nd = await load(`/guide/nudges?days=${days}`); } catch {}
     const T = g.totals || {}, n = (k) => Number(T[k]) || 0, S = g.settings || {};
     const any = ["opens", "people", "answers", "limitHits", "limitPeople", "upgradeTaps", "upgraded"].some((k) => n(k) > 0);
     const reached = n("limitPeople"), up = n("upgraded"), byWeek = days > 31, rows = guideRows(g.byDay, days), table = state.guideView === "table";
@@ -1086,8 +1088,22 @@
         <p style="margin:0" id="guideAiState">${ai ? `<b>On:</b> members' messages are read by ${esc(S.aiModel || "the AI model")} at ${esc(S.aiHost || "the AI service")} to find the right place and suggest programs, videos, your guides and general tips, which are added to the member's Home. Their activity in the app (programs, check-ins, workouts) is read to personalize it; their name and contact details are never sent, and nothing typed is saved.` : `<b>Off:</b> Sunny understands messages on the member's own device, nothing they type leaves it, and she suggests nothing.`}</p>
         ${!canAi ? `<p class="muted" style="margin:0;font-size:12.5px" id="guideAiWhy">${ai ? "The AI service is not ready" : "It cannot be turned on"}: ${esc(S.aiWhy || "no AI service is connected on the server.")}</p>` : ""}
         ${state.guideAiErr ? `<p style="margin:0;color:var(--bad)" id="guideAiErr" role="alert">Not changed: ${esc(state.guideAiErr)}</p>` : ""}</div>` : ""}
-    </div>`;
+    </div>
+    ${nudgeCard(nd, days)}`;
   };
+  const NUDGE_KINDS = { streak: ["Streak saver", "the evening one, when a streak is about to break"], comeback: ["Comeback", "2, 7, 14 and 30 days after someone was last active"],
+    picks: ["New picks", "Sunny suggested something since they last opened the app"], morning: ["Morning", "the Sarasota-sunlight line on a clear morning, otherwise a friendly one"] };
+  function nudgeCard(nd, days) {
+    const rows = (nd && Array.isArray(nd.kinds) ? nd.kinds : []).filter((k) => NUDGE_KINDS[k.kind]);
+    const pct = (a, b) => (b ? `${Math.round((a / b) * 100)}%` : "–"), right = 'style="text-align:right"';
+    const sent = rows.reduce((t, k) => t + (Number(k.sent) || 0), 0);
+    return `<div class="card" id="guideNudges" style="margin-top:16px"><div class="card-head"><h2>Daily nudges</h2><span class="muted" style="font-size:12px">last ${days} days · at most one a day per member</span></div>
+      ${!nd ? `<p class="muted" style="margin:0">The nudge numbers could not be loaded.</p>`
+        : !sent ? `<p class="muted" style="margin:0">No nudges sent in the last ${days} days. They go to members who have the app on their phone with notifications on.</p>`
+        : `<div class="table-wrap"><table><thead><tr><th>Nudge</th><th ${right}>Sent</th><th ${right}>Opened within 6 hours</th><th ${right}>Came back within 2 days</th></tr></thead><tbody>
+          ${rows.map((k) => `<tr><td><b>${esc(NUDGE_KINDS[k.kind][0])}</b><div class="muted" style="font-size:12px">${esc(NUDGE_KINDS[k.kind][1])}</div></td><td class="num" ${right}>${Number(k.sent) || 0}</td><td class="num" ${right}>${Number(k.opened) || 0} <span class="muted">(${pct(Number(k.opened) || 0, Number(k.sent) || 0)})</span></td><td class="num" ${right}>${k.kind === "comeback" ? `${Number(k.comebacks) || 0} <span class="muted">(${pct(Number(k.comebacks) || 0, Number(k.sent) || 0)})</span>` : "–"}</td></tr>`).join("")}</tbody></table></div>`}
+      <p class="muted" style="margin:8px 0 0;font-size:12.5px">Members choose All, Streaks only or Off in their Profile. Nothing about anyone's health is ever shown on a lock screen: only their first name.</p></div>`;
+  }
   V.team = async () => {
     const [me, mfa] = await Promise.all([load("/me"), load("/mfa")]);
     return `<div class="view-head"><div><h1>Team & roles</h1><p class="muted">This system has one sign-in: the practice owner</p></div></div>
