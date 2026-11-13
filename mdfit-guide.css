@@ -1,4 +1,4 @@
-/* Sunny, MD Fit Intelligence (mdfit-guide.js): the cloud, its label, and the chat it opens. Colours come from the app's own
+/* Sunny (mdfit-guide.js): the cloud, its label, and the chat it opens. Colours come from the app's own
    variables (app/app.css), so the white and black themes both carry through. Everything is prefixed mg-. */
 :root { --mg-gold: var(--gold, #C8A763); --mg-gold-hi: #FFE7A8; --mg-deep: #0A1A2E; --mg-lift: 0px; }
 
