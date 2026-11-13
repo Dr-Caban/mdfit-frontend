@@ -1,0 +1,93 @@
+{
+  "group": "conditions",
+  "slug": "fibromyalgia",
+  "title": "Fibromyalgia Support in Sarasota, FL | MD Fit",
+  "h1": "Fibromyalgia Support in Sarasota, FL",
+  "description": "Movement and hands-on care for fibromyalgia in Sarasota, built at a dose that does not set off a flare. Alongside your physician, not instead of.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Fibromyalgia"
+  },
+  "lead": "Fibromyalgia is widespread pain with fatigue, broken sleep and mental fog, and the pain is real. Most people arrive here having been told to exercise more by someone who never explained at what dose, and having paid for that advice with a week in bed.",
+  "sections": [
+    {
+      "h2": "What it actually feels like",
+      "html": "<p>The textbook description is widespread pain lasting months. What people describe in the room is more specific than that, and recognising your own experience in it matters, because being believed is often the first thing that has been missing.</p><ul><li>Pain that moves. The shoulders one week, the hips the next, both at three in the morning.</li><li>Waking unrefreshed however long you slept, which is different from not sleeping.</li><li>Fog. Losing the word, the thread, the reason you walked into the room.</li><li>Sensitivity beyond pain: light, noise, temperature, a waistband, a hand resting on your arm.</li><li>A delay between doing something and paying for it, often a day or two, which makes it very hard to work out what caused what.</li><li>Good spells that end without obvious reason, which other people read as inconsistency.</li></ul><p>That delayed cost is the part most programmes ignore, and it is the reason the usual advice fails.</p>"
+    },
+    {
+      "h2": "Why doing more backfires, and what that is not",
+      "html": "<p>In a body that is not sensitised, effort produces soreness that settles in a day or two and the system adapts. In fibromyalgia the alarm is already turned up, so a normal amount of effort can register as a threat and the response can be out of proportion to it and arrive late.</p><p>This is not weakness, and it is not a lack of effort. People with fibromyalgia are frequently the ones who push hardest, which is precisely how the boom-and-bust pattern establishes itself: a good day, too much done, days lost, then a cautious restart from a lower base than before. Over months the baseline falls, and the falling baseline then gets blamed on the person.</p><p>The practical consequence is that <b>dose is the whole intervention</b>. Exercise genuinely helps here. Exercise at the wrong dose genuinely harms. The difference between those two sentences is where this practice spends its time, and it is why <a href=\"/conditions/exercise-pacing-and-flares\">pacing</a> matters more than programme design.</p>"
+    },
+    {
+      "h2": "What still responds to hands-on work",
+      "html": "<p>Sensitisation does not mean there is nothing mechanical left to find. People with fibromyalgia also get the ordinary problems everyone else gets, and those are often missed because every symptom gets folded into the diagnosis once it exists.</p><p>Commonly overlooked alongside it:</p><ul><li>Genuine trigger points with predictable referral, in muscles like <a href=\"/muscles/upper-trapezius\">upper trapezius</a>, <a href=\"/muscles/quadratus-lumborum\">quadratus lumborum</a> or <a href=\"/muscles/gluteus-medius\">gluteus medius</a>, which reproduce a specific pain when pressed.</li><li>Guarding. Years of bracing against pain leaves muscle holding permanently, and holding muscle hurts in its own right.</li><li>Deconditioning from activity that dropped away, so less provokes more.</li></ul><p>Sorting the local from the widespread is a real clinical question, not a semantic one, and it changes the treatment entirely. It has its own page: <a href=\"/conditions/myofascial-pain-vs-fibromyalgia\">myofascial pain or fibromyalgia</a>.</p><p>Hands-on work here is deliberately lighter than the deep tissue work that suits an ordinary muscular problem. Aggressive pressure on a sensitised system commonly provokes rather than relieves, and that has to be led by your response rather than by a protocol.</p>"
+    },
+    {
+      "h2": "How movement is built here",
+      "html": "<p>Dr. Jared Caban is a clinical exercise physiologist, which is the specific training for prescribing exercise to people whose systems do not tolerate a standard programme. The approach is the opposite of what most people have been handed.</p><ol><li><b>Find the real baseline.</b> Not what you can do on a good day. What you can do on an average day and repeat the next day without a cost. That number is often uncomfortably small at first, and starting there is the point.</li><li><b>Work to time or count, not to feel.</b> Stopping when it feels fine is how good days become lost weeks. The session ends when the plan says so.</li><li><b>Increase slowly, and only from stability.</b> Progress follows a run of settled days, not a single good one.</li><li><b>Keep a reduced version for bad days.</b> A flare changes the dose; it does not cancel the plan. Stopping entirely is what resets the baseline downward.</li></ol><p>Home work is short video routines in the free MD Fit app, so what you do between visits is specific rather than guessed at.</p>"
+    },
+    {
+      "h2": "Working alongside your physician",
+      "html": "<p>Fibromyalgia is a physician's call, and so is its medical management. This practice does not make that call, does not alter medication, and does not replace rheumatology care.</p><p>Dr. Jared's medical training matters here for a narrower reason: a fibromyalgia label can become a container that everything else gets dropped into. Thyroid problems, inflammatory arthritis, sleep apnoea, vitamin D deficiency and <a href=\"/conditions/polymyalgia-rheumatica\">polymyalgia rheumatica</a> all overlap with the picture and all need a physician, not a movement programme. New symptoms that do not fit your usual pattern deserve assessment rather than assumption.</p>"
+    },
+    {
+      "h2": "On being told it is in your head",
+      "html": "<p>Most people with fibromyalgia have heard some version of this, often from someone who should have known better. The current understanding is that the pain-processing system itself is working differently. That is a physical finding, not a character assessment, and it does not become imaginary because a scan is clear.</p><p>It also does not mean nothing can change. Sensitised systems do settle, often slowly and rarely in a straight line. What is realistic is better days more often and more capacity than you have now. What is not realistic is a quick fix, and anybody promising one should be treated with suspicion.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "New pain that is different in character from your usual pattern, which deserves assessment rather than being folded into the existing diagnosis.",
+    "Unexplained weight loss, fever, night sweats, or swollen joints that are visibly red and hot.",
+    "Progressive weakness, numbness, or loss of bladder or bowel control, which needs urgent medical assessment.",
+    "New morning stiffness in the shoulders and hips lasting more than an hour in someone over fifty, which can point to an inflammatory condition that is treated medically.",
+    "Severe headache with scalp tenderness or any change in vision: this is an emergency and needs immediate medical care.",
+    "Thoughts of self-harm. Persistent pain and low mood travel together often, and that needs support rather than endurance."
+  ],
+  "faq": [
+    {
+      "q": "I was told to exercise and it made me much worse. Why would this be different?",
+      "a": "Almost certainly because the starting dose was set by what a typical body tolerates rather than by what yours does. Starting below what you think you can manage, and holding there until it is genuinely easy, is a different intervention from the same exercises done sooner and harder."
+    },
+    {
+      "q": "Can massage help, or will it flare me?",
+      "a": "Both are possible, and the pressure is the variable. Lighter, shorter work guided by your response is usually tolerated where deep tissue work is not. It is reasonable to ask for a short first session to see how your system answers."
+    },
+    {
+      "q": "Do I need a referral or a confirmed diagnosis to be seen?",
+      "a": "No referral is needed and this is a self-pay practice, so there is no insurance paperwork. If you have not been assessed by a physician for widespread pain, that should happen alongside this rather than after it."
+    },
+    {
+      "q": "Will I ever get back to what I used to do?",
+      "a": "That depends on the person and nobody honest can promise it. What is reasonable to aim for is more capacity than you have now and fewer days lost to flares, built slowly enough that the gains hold."
+    }
+  ],
+  "muscles": [
+    "upper-trap",
+    "ql",
+    "glute-med",
+    "scalenes",
+    "multifidus",
+    "psoas"
+  ],
+  "pain": [
+    "where-neck-meets-shoulder",
+    "beside-the-spine",
+    "upper-buttock",
+    "outside-of-hip"
+  ],
+  "guides": [
+    "posterior-neck"
+  ],
+  "related": [
+    "/conditions/chronic-pain",
+    "/conditions/myofascial-pain-vs-fibromyalgia",
+    "/conditions/central-sensitisation",
+    "/conditions/exercise-pacing-and-flares",
+    "/conditions/polymyalgia-rheumatica",
+    "/treatments/chronic-pain-program",
+    "/treatments/clinical-exercise-physiology"
+  ],
+  "reviewStatus": "approved"
+}
