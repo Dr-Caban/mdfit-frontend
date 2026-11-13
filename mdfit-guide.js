@@ -16,8 +16,15 @@
 // member's own account (visits, invoices, forms, messages, streak). If the assistant is off or does not answer, the
 // device understands the message itself, exactly as in the default mode. The line under the box says which is true.
 //
+// In that mode the server also reads the member's activity in the app (programs, check-ins, workouts) to personalize
+// what it suggests; the member's name and contact details are never sent, and what is typed is not saved.
+//
+// A hello is always answered on the device, by first name (the app holds it; it is never sent), and is never counted.
+// The device also puts the member's own things first: a program Dr. Jared recommended, and the pain relief track for
+// the area they last logged. Both come from what the app already loaded.
+//
 // With the assistant on, an answer can also carry suggestions: programs, exercise videos and a general tip from the
-// app's own library. The server keeps them on the member's record and the app shows them on Home under "Suggested for
+// app's own library, and Dr. Jared's own written guides. The server keeps them on the member's record and the app shows them on Home under "Suggested for
 // you", labeled Suggested, apart from what Dr. Jared recommends. A members-only program is shown locked and opens the
 // membership page. On the device alone nothing is suggested or saved.
 //
@@ -134,7 +141,7 @@
   const log = box.querySelector("#mg-log"), input = box.querySelector("#mg-in"), meterEl = box.querySelector("#mg-meter"), dot = btn.querySelector(".mg-dot"), fineEl = box.querySelector("#mg-fine");
   // The line under the box always says what is true for the mode the guide is in
   const fine = () => { fineEl.textContent = G.ai
-    ? "I suggest programs, videos and general tips from the app, not medical advice. What you type is read by MD Fit Intelligence and isn't saved; my suggestions are added to your Home."
+    ? "Sunny reads what you type and your activity in the app (programs, check-ins, workouts) to personalize suggestions. Your name and contact details are never sent, and what you type isn't saved. Not medical advice."
     : "I show you where things are in the app. I don't give medical advice. What you type stays on this device."; };
   fine();
   let greeted = false, busy = false, limited = false, lastSig = "", saidOpen = false;
@@ -236,6 +243,29 @@
     if (tracks.length) { say(`And these pain relief tracks cover the ${area}:`); offer(tracks); }
     say("If you'd like a more specific read on what's going on, I can guide you to the pain tool."); offer([opt("pain"), opt("book"), opt("call")]);
   }
+  // The member's own things, from what the app already holds (never sent): the program Dr. Jared recommended, and the
+  // pain relief track for the area they last logged
+  async function mine() {
+    const out = { rec: null, track: null, title: "" };
+    try {
+      const c = App.client() || {}; let C = null; try { C = await App.content(); } catch {}
+      const progs = (C && C.programs) || [];
+      const a = (c.assignedPrograms || []).map((x) => progs.find((p) => p && p.id === x.id)).find(Boolean);
+      if (a) { out.title = a.title; out.rec = { label: `Pick up ${a.title}`, sub: "Recommended by Dr. Jared", gold: true, hash: `programs/${a.id}`, name: a.title, pick: a.title }; }
+      const last = norm(App.lastPain ? App.lastPain() : ""), key = last.trim() ? Object.keys(AREAS).find((k) => AREAS[k].f.some((w) => has(last, w)) || has(last, k)) : "";
+      if (key) { const t = (await forArea(key)).tracks[0]; if (t) out.track = { ...t, sub: `Pain relief track · your ${key}` }; }
+    } catch {}
+    return out;
+  }
+  const own3 = (m) => [m.rec, m.track].filter(Boolean);
+  // A hello: answered here by first name, never sent, never counted
+  const HELLO = /^\s*(hi+|hey+|heya|hello+|helo|yo+|hiya|howdy|sup|what'?s up|wass?up|greetings|good (morning|afternoon|evening|day)|morning|afternoon|evening|hola|hi there|hey there|hello there|anyone there|you there|are you there)(\s+(sunny|there|doc|dr\.?|guide|md ?fit))?[\s!?.,]*$/i;
+  async function hello() {
+    const m = await mine();
+    say(`Hey ${first()}, I'm Sunny. What are we working on today?`);
+    if (m.rec) say(`Want to pick up ${m.title} that Dr. Jared recommended?`);
+    offer([...own3(m), opt("pain"), opt("programs"), opt("generate")]);
+  }
   function hurting(area, extra) {
     if (area) ctx.area = area;
     say(`Okay, I understand how frustrating that can be${area ? `, especially with your ${area}` : ""}. Here's what I can take you to:`);
@@ -330,6 +360,7 @@
   }
   function route(u, raw) {
     const t = u.text;
+    if (HELLO.test(String(raw || "")) && !u.pained && !u.area) return { kind: "other", local: true, free: true, run: hello };
     if (/\b(dark|black|night) ?(mode|theme|look)?\b/.test(t) && !u.pained) return { kind: "looks", run: () => look({ theme: "black" }, "Done. Black it is. Anything else you'd like to change about how the app looks?") };
     if (/\b(white|light (mode|theme|look)|make it light)\b/.test(t)) return { kind: "looks", run: () => look({ theme: "white" }, "Done. White it is. Anything else you'd like to change?") };
     if (/\b(compact|tighter|denser)\b/.test(t)) return { kind: "looks", run: () => look({ layout: "compact" }, "Done. More fits on every screen now.") };
@@ -341,7 +372,10 @@
     if (u.pained) return { kind: "pain", run: () => hurting(u.area, u.places.filter((p) => !["pain", "book", "call"].includes(p.id)).slice(0, 1).map((p) => opt(p.id))) };
     if (u.area) return { kind: (u.places[0] || {}).kind || "programs", run: () => showArea(u.area) };
     if (u.places.length) return { kind: u.places[0].kind, run: () => { say(u.places.length === 1 ? "Got it. This is the place for that:" : "Got it. These look like what you're after:"); offer([...u.places.slice(0, 4).map((p) => opt(p.id)), ...(u.places.some((p) => p.id === "call") ? [] : [opt("call")])]); } };
-    return { kind: "other", run: () => { say("I'm not sure I caught that. Here are the places people use most, or tell me a little more:"); offer([opt("book"), opt("pain"), opt("programs"), opt("generate"), opt("messages"), opt("call")]); } };
+    return { kind: "other", run: async () => {
+      const m = await mine(), own = own3(m);
+      say(own.length ? "I'm not sure I caught that. Here's what you have going, and the places people use most. Or tell me a little more:" : "I'm not sure I caught that. Here are the places people use most, or tell me a little more:");
+      offer([...own, opt("pain"), opt("programs"), opt("generate"), opt("book"), opt("messages"), opt("call")]); } };
   }
   async function ask(raw) {
     const text = String(raw || "").trim(); if (!text || busy) return false;
@@ -354,7 +388,7 @@
     // With the assistant on, a question the device does not answer itself is read on MD Fit's server; anything else
     // (and any failure there) is understood here and only counted.
     let ai = null; if (G.ai && !plan.local) ai = await askServer(text);
-    const ok = ai ? true : await count(plan.kind);
+    const ok = ai || plan.free ? true : await count(plan.kind); // a hello is never counted
     const rest = 750 - (Date.now() - t0); if (rest > 0) await wait(rest);
     d.remove();
     try { if (ai) aiAnswer(ai); else if (!ok) limit(); else await plan.run(); } catch { say("Something went wrong on my side. You can still get anywhere from the menu, or call the clinic."); offer([opt("call")]); }
@@ -390,7 +424,8 @@
     const progs = (Array.isArray(sg.programs) ? sg.programs : []).filter((p) => p && typeof p.id === "string" && typeof p.title === "string").slice(0, 3);
     const vids = (Array.isArray(sg.videos) ? sg.videos : []).filter((v) => v && typeof v.id === "string" && (App.exercise ? App.exercise(v.id) : v.name)).slice(0, 4);
     const tip = typeof sg.tip === "string" ? sg.tip.trim().slice(0, 300) : "";
-    if (!progs.length && !vids.length && !tip) return;
+    const guides = (Array.isArray(sg.guides) ? sg.guides : []).filter((g) => g && typeof g.id === "string" && typeof g.title === "string").slice(0, 3);
+    if (!progs.length && !vids.length && !tip && !guides.length) return;
     if (progs.length) {
       sys("Suggested programs");
       offer(progs.map((p) => p.locked
@@ -402,16 +437,22 @@
       offer(vids.map((v) => { const ex = App.exercise ? App.exercise(v.id) : null, name = (ex && ex.name) || v.name;
         return { label: name, sub: [ex && ex.region, "Suggested"].filter(Boolean).join(" · "), more: () => { if (!App.playExercise || !App.playExercise(v.id)) say("That video isn't available just now. It's in the video library."); } }; }));
     }
+    if (guides.length) {
+      sys("From Dr. Jared's guides");
+      offer(guides.map((g) => ({ label: g.title, sub: "Suggested", hash: `tips/${g.id}`, name: g.title })));
+    }
     if (tip) { const d = say(tip); const t = document.createElement("span"); t.className = "mg-sug"; t.textContent = "Suggested"; d.prepend(t); }
     sys("Added to your Home under Suggested for you");
     if (App.setSuggested) M.apiAuth("GET", "/api/me").then((r) => r && r.client && r.client.suggested && App.setSuggested(r.client.suggested)).catch(() => {});
   }
-  function greet() {
+  async function greet() {
     greeted = true;
     const w = waiting(); lastSig = w.sig;
-    say(`Hi ${first()}, I'm Sunny. What brings you in today?`);
+    say(`Hey ${first()}, I'm Sunny. What are we working on today?`);
     if (w.line) say(w.line);
-    offer([...w.opts,
+    const m = await mine();
+    if (m.rec && !w.line) say(`Want to pick up ${m.title} that Dr. Jared recommended?`);
+    offer([...w.opts, ...own3(m),
       { label: "Something hurts", more: () => beat(() => { say("I'm sorry to hear that. Where is it bothering you?"); offer(["knee", "back", "shoulder", "hip", "neck", "foot"].map((a) => ({ label: cap(a), more: () => beat(() => hurting(a)) }))); }) },
       opt("book"), opt("programs"), opt("generate"),
       ...(theme() ? [{ label: "Make the app mine", more: () => beat(() => look(null, "Here's what you can change. Pick one, or just tell me.")) }] : [])]);

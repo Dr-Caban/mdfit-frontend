@@ -3211,6 +3211,13 @@
     const sp = (sg.programs || []).filter((x) => x && pById.has(x.id) && !assigned.some((a) => a.id === x.id)).slice(0, 6);
     const sv = (sg.videos || []).filter((x) => x && byId.get(x.id)).slice(0, 8);
     const st = (sg.tips || []).filter((x) => x && x.id && x.text).slice(0, 3);
+    const gById = new Map((C.recommendations || []).map((r) => [r.id, r]));
+    const sgd = (sg.guides || []).filter((x) => x && gById.has(x.id)).slice(0, 4);
+    const guideRow = (x) => { const r = gById.get(x.id);
+      return `<li class="mp-sug"><button type="button" class="mp-item mp-vid" data-goto="tips/${esc(r.id)}">
+        <span class="fp-ic mp-tip-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm8 1.5V8h4.5zM8 12v1.6h8V12zm0 3.6v1.6h6v-1.6z"/></svg></span>
+        <span class="mp-body">${TAG_SUG}<b>${esc(r.title)}</b><span class="muted small">${esc(r.area || "Guide")} · Dr. Jared's guide</span></span>
+        <span class="mp-go">Read ›</span></button>${DISMISS("guides", x.id, r.title)}</li>`; };
     const sugRow = (x) => { const p = pById.get(x.id), lk = lockedFor(p);
       return `<li class="mp-sug"><button type="button" class="mp-item${lk ? " mp-locked" : ""}" ${lk ? `data-unlock="member"` : `data-fp="${esc(p.id)}"`}>
         ${p.image ? progImg(p.image, "", "56px", { sizes: "56px" }) : `<span class="fp-ic pp-blank"></span>`}
@@ -3223,11 +3230,12 @@
         <span class="mp-go">Play ›</span></button>${DISMISS("videos", x.id, e.name)}</li>`; };
     const tipRow = (x) => `<li class="mp-sug"><div class="mp-item mp-tip"><span class="fp-ic mp-tip-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21h6v-1H9zm3-19a7 7 0 0 0-4 12.7V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.3A7 7 0 0 0 12 2z"/></svg></span>
         <span class="mp-body">${TAG_SUG}<span class="mp-tip-text">${esc(x.text)}</span></span></div>${DISMISS("tips", x.id, "this tip")}</li>`;
-    const anySug = sp.length || sv.length || st.length;
+    const anySug = sp.length || sv.length || st.length || sgd.length;
     const sugBox = $("#mp-suggested");
     if (sugBox) sugBox.innerHTML = anySug ? `<span class="label">Suggested for you <span class="muted small">by Sunny</span></span>
       ${sp.length ? `<ul class="mp-list">${sp.map(sugRow).join("")}</ul>` : ""}
       ${sv.length ? `<p class="mp-sub muted small">Videos</p><ul class="mp-list">${sv.map(vidRow).join("")}</ul>` : ""}
+      ${sgd.length ? `<p class="mp-sub muted small">From Dr. Jared's guides</p><ul class="mp-list">${sgd.map(guideRow).join("")}</ul>` : ""}
       ${st.length ? `<p class="mp-sub muted small">Tips</p><ul class="mp-list">${st.map(tipRow).join("")}</ul>` : ""}
       <p class="muted small mp-fine">Suggestions from Sunny, not medical advice. What Dr. Jared recommends is marked Recommended.</p>` : "";
     box.hidden = !assigned.length && !saved.length && !anySug;
@@ -3235,7 +3243,7 @@
   // Sunny's suggestions arrive with an answer (mdfit-guide.js) or with GET /api/me; both land here
   function setSuggested(s) {
     if (!client || !s || typeof s !== "object") return;
-    client.suggested = { programs: Array.isArray(s.programs) ? s.programs : [], videos: Array.isArray(s.videos) ? s.videos : [], tips: Array.isArray(s.tips) ? s.tips : [] };
+    client.suggested = { programs: Array.isArray(s.programs) ? s.programs : [], videos: Array.isArray(s.videos) ? s.videos : [], tips: Array.isArray(s.tips) ? s.tips : [], guides: Array.isArray(s.guides) ? s.guides : [] };
     auth.set({ ...auth.get(), client }); renderMyPlans();
   }
   document.addEventListener("click", async (e) => {
@@ -3286,7 +3294,9 @@
     // For the guide (mdfit-guide.js) and the theme switch (app-theme.js): who is signed in, what the app holds, and two places to open
     client: () => client, content: async () => { if (!C) await (contentLoading || loadContent()).catch(() => {}); return C; },
     openBook: () => { go("profile"); setTimeout(() => $("#p-book-open") && $("#p-book-open").click(), 60); },
-    // For Sunny: her suggestions on Home, a suggested video, and the membership page with a tier picked out
+    // For Sunny: the area of the last pain check-in (kept on the device), her suggestions on Home, a suggested video,
+    // and the membership page with a tier picked out
+    lastPain: () => { const p = (painLog || [])[(painLog || []).length - 1]; return p ? String(p.area || "") : ""; },
     setSuggested, showTier, lockedFor,
     playExercise: (id) => { const ex = byId.get(id); if (ex) playVideo(ex.id, ex.name, exMeta(ex)); return !!ex; },
     exercise: (id) => byId.get(id) || null,
