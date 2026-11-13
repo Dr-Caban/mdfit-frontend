@@ -368,14 +368,14 @@
     if (/\b(layout|theme|customi[sz]e|personali[sz]e|make it mine|look and feel)\b/.test(t)) return { kind: "looks", run: () => look(null, "Here's what you can change. Pick one, or just tell me.") };
     if (/\b(remind me|set a reminder|reminder (for|to|at)|save (it|that|this)|put (it|that|this) (in|on)|add (it|that|this) to|(on|in|to) my calendar)\b/.test(t)) return { kind: "reminder", run: () => remind(u, raw) };
     if (/\breminders?\b/.test(t)) return { kind: "reminder", run: myReminders };
-    const mine = own(u); if (mine) return { ...mine, own: true };
+    const acct = own(u); if (acct) return { ...acct, own: true };
     if (u.pained) return { kind: "pain", run: () => hurting(u.area, u.places.filter((p) => !["pain", "book", "call"].includes(p.id)).slice(0, 1).map((p) => opt(p.id))) };
     if (u.area) return { kind: (u.places[0] || {}).kind || "programs", run: () => showArea(u.area) };
     if (u.places.length) return { kind: u.places[0].kind, run: () => { say(u.places.length === 1 ? "Got it. This is the place for that:" : "Got it. These look like what you're after:"); offer([...u.places.slice(0, 4).map((p) => opt(p.id)), ...(u.places.some((p) => p.id === "call") ? [] : [opt("call")])]); } };
     return { kind: "other", run: async () => {
-      const m = await mine(), own = own3(m);
-      say(own.length ? "I'm not sure I caught that. Here's what you have going, and the places people use most. Or tell me a little more:" : "I'm not sure I caught that. Here are the places people use most, or tell me a little more:");
-      offer([...own, opt("pain"), opt("programs"), opt("generate"), opt("book"), opt("messages"), opt("call")]); } };
+      const m = await mine(), theirs = own3(m);
+      say(theirs.length ? "I'm not sure I caught that. Here's what you have going, and the places people use most. Or tell me a little more:" : "I'm not sure I caught that. Here are the places people use most, or tell me a little more:");
+      offer([...theirs, opt("pain"), opt("programs"), opt("generate"), opt("book"), opt("messages"), opt("call")]); } };
   }
   async function ask(raw) {
     const text = String(raw || "").trim(); if (!text || busy) return false;
