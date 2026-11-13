@@ -61,10 +61,14 @@ const exByName = new Map(data.exercises.map((e) => [e.name.toLowerCase(), e]));
 const findExercise = (name) => name ? exByName.get(String(name).toLowerCase()) || null : null;
 const thumb = (id, w = 320) => `https://drive.google.com/thumbnail?id=${encodeURIComponent(id)}&sz=w${w}`;
 
-// The clinic node and Dr. Jared node, copied from the live homepage schema so every page shares the same @ids
-const homeGraph = JSON.parse(read("index.html").match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1])["@graph"];
+// The clinic node and Dr. Jared node, copied from the live homepage schema so every page shares the same @ids.
+// The homepage carries MORE THAN ONE ld+json block and Dr. Jared is not in the first, so read them all: reading only
+// the first left his node undefined and put a null in the @graph of every generated page.
+const homeGraph = [...read("index.html").matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+  .flatMap((m) => { try { const j = JSON.parse(m[1]); return j["@graph"] || [j]; } catch { return []; } });
 const CLINIC = homeGraph.find((n) => n["@id"] === `${SITE}/#clinic`);
 const DR = homeGraph.find((n) => n["@id"] === `${SITE}/#dr-jared`);
+if (!CLINIC || !DR) throw new Error("index.html no longer defines #clinic and #dr-jared in its ld+json; fix that before building.");
 
 const crumbs = (items) => `<p class="cd-crumbs">${items.map((c, i) => c.href && i < items.length - 1 ? `<a href="${attr(c.href)}">${esc(c.name)}</a>` : esc(c.name)).join(" › ")}</p>`;
 const breadcrumbLd = (items) => ({ "@type": "BreadcrumbList", itemListElement: items.map((c, i) => ({ "@type": "ListItem", position: i + 1, name: c.name, ...(c.href ? { item: SITE + c.href } : {}) })) });
@@ -90,7 +94,8 @@ const ABOUT_DR = `<h2>About Dr. Jared Caban</h2>
 // Whole page. `graph` is the page-specific JSON-LD nodes (MedicalWebPage etc.); the clinic node is added first.
 function page({ url, title, description, body, graph, section, robots }) {
   if (title.length > 60) throw new Error(`title over 60 chars: ${title}`);
-  const ld = { "@context": "https://schema.org", "@graph": [CLINIC, DR, ...graph] };
+  // filter(Boolean): a node that could not be built is left out rather than written as null
+  const ld = { "@context": "https://schema.org", "@graph": [CLINIC, DR, ...graph].filter(Boolean) };
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -132,9 +137,13 @@ ${body}
 `;
 }
 
-const webPage = ({ url, title, description, about, lastReviewed }) => ({
-  "@type": "MedicalWebPage", url: SITE + url, name: title, description, lastReviewed: lastReviewed || TODAY,
-  reviewedBy: { "@id": `${SITE}/#dr-jared` }, provider: { "@id": `${SITE}/#clinic` }, ...(about ? { about } : {})
+// "lastReviewed" and "reviewedBy" say a named clinician checked this page. They go in ONLY when Dr. Jared has
+// actually signed the page off (`reviewed: true`, from the page's own reviewStatus or data/seo/approved.json).
+// A draft page is still a real page; it just does not carry his name. Never default this to true.
+const webPage = ({ url, title, description, about, lastReviewed, reviewed = false }) => ({
+  "@type": "MedicalWebPage", url: SITE + url, name: title, description,
+  ...(reviewed ? { lastReviewed: lastReviewed || TODAY, reviewedBy: { "@id": `${SITE}/#dr-jared` } } : {}),
+  provider: { "@id": `${SITE}/#clinic` }, ...(about ? { about } : {})
 });
 
 const words = (html) => (String(html).replace(/<[^>]+>/g, " ").match(/[A-Za-z0-9][A-Za-z0-9'’-]*/g) || []).length;

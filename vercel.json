@@ -185,6 +185,36 @@
   ],
   "redirects": [
     {
+      "source": "/our-services",
+      "destination": "/treatments",
+      "permanent": true
+    },
+    {
+      "source": "/rehabilitation",
+      "destination": "/treatments",
+      "permanent": true
+    },
+    {
+      "source": "/functional-mobility",
+      "destination": "/treatments/functional-mobility",
+      "permanent": true
+    },
+    {
+      "source": "/dr-jared",
+      "destination": "/#dr",
+      "permanent": true
+    },
+    {
+      "source": "/testimonials",
+      "destination": "/#reviews",
+      "permanent": true
+    },
+    {
+      "source": "/contact",
+      "destination": "/book",
+      "permanent": true
+    },
+    {
       "source": "/sciatica-treatment-sarasota",
       "destination": "/conditions/sciatica",
       "permanent": true
