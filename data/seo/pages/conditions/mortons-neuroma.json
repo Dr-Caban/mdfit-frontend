@@ -1,0 +1,88 @@
+{
+  "group": "conditions",
+  "slug": "mortons-neuroma",
+  "title": "Morton's Neuroma Care in Sarasota, FL | MD Fit",
+  "h1": "Morton's Neuroma Care in Sarasota, FL",
+  "description": "Burning between the toes, a pebble-in-the-shoe feeling, numb toes that ease when you take the shoe off. What helps and what to rule out. MD Fit, Sarasota.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Morton's neuroma"
+  },
+  "lead": "A Morton's neuroma is a thickening of the tissue around one of the nerves running between the long bones of the forefoot, most often between the third and fourth toes. It is not a tumour, despite the name. Diagnosis belongs to a physician; this page is about the pattern people describe and the mechanical side that conservative care addresses.",
+  "sections": [
+    {
+      "h2": "What it feels like",
+      "html": "<p>The description is unusually consistent, which is part of why the pattern is recognisable:</p><ul><li>A feeling of standing on a pebble, a fold in the sock, or a bunched-up insole that is not there.</li><li>Burning or electric pain in the ball of the foot that shoots into two adjacent toes.</li><li>Numbness or tingling in the facing sides of those two toes.</li><li>Relief within moments of taking the shoe off and rubbing the forefoot, which people often do without thinking.</li><li>Worse in narrow or heeled shoes, and worse with walking, standing and push-off.</li></ul><p>Pain in the <a href=\"/pain/sole-of-foot\">sole of the foot</a> that lives in the ball rather than the heel or arch, and that involves two toes rather than the whole foot, is the shape of this problem.</p>"
+    },
+    {
+      "h2": "Why the nerve gets irritated there",
+      "html": "<p>The nerve runs between the long bones of the forefoot and under a ligament that holds them together. Anything that squeezes those bones together or increases pressure through the ball of the foot presses the nerve against that ligament.</p><ul><li>Narrow toe boxes and anything with a raised heel, which pushes load forward onto the ball.</li><li>A long stiff big toe joint, which makes the foot roll off the smaller toes instead.</li><li>A collapsed or unstable forefoot that spreads under load.</li><li>Tight <a href=\"/muscles/gastrocnemius\">calf</a> and <a href=\"/muscles/soleus\">soleus</a>, which force earlier and harder loading of the forefoot during push-off.</li><li>Weak <a href=\"/muscles/foot-intrinsic-muscles\">foot intrinsic muscles</a>, which normally keep the long bones organised.</li></ul>"
+    },
+    {
+      "h2": "Other things that cause forefoot pain",
+      "html": "<p>Several problems live in the same square inch, and they are managed differently.</p><ul><li><b>Metatarsalgia</b> is a general overload ache under the ball of the foot, usually without the electric or numb quality.</li><li><b>A stress injury to one of the long bones</b> is tender when you press that bone itself, often with swelling, and is worse with impact rather than with shoe width.</li><li><b>Bursitis between the bones</b> can feel similar and is often difficult to separate without imaging.</li><li><b><a href=\"/conditions/tarsal-tunnel-syndrome\">Tarsal tunnel syndrome</a></b> can refer burning into the sole, but it usually starts behind the inner ankle and covers a wider area than two toes.</li></ul><p>A foot that hurts with impact and is tender on a specific bone needs imaging before any hands-on work.</p>"
+    },
+    {
+      "h2": "What MD Fit can and cannot change",
+      "html": "<p>I cannot shrink the thickened tissue around the nerve. What I can change is how much pressure goes through it. That means assessing how your foot loads, how far your ankle bends, how the big toe moves, and how the calf behaves, then addressing what is pushing load into the forefoot.</p><p>Hands-on work frees the calf and the tissue of the forefoot and restores spread between the long bones. The correction phase is footwear and load: wider shoes, a metatarsal pad placed just behind the sore spot rather than on it, and changes to how far and on what surface you walk. The free MD Fit app carries the daily foot and calf routine. Strengthening builds the intrinsic muscles so the forefoot holds its own shape.</p><p>When symptoms persist despite that, injection or surgery are reasonable next steps, and that is a conversation with a podiatrist or orthopaedic specialist rather than a failure of conservative care.</p>"
+    },
+    {
+      "h2": "Footwear changes that usually help",
+      "html": "<ol><li>Measure the widest part of your foot and buy to that, not to your usual size. Most people are in a toe box too narrow.</li><li>Drop the heel height. Even a small heel pushes load into the ball of the foot.</li><li>Try a metatarsal pad positioned just behind the painful spot, so it lifts and spreads the bones rather than pressing on the nerve.</li><li>Avoid long barefoot walks on hard tile and on sand until symptoms settle.</li></ol>"
+    },
+    {
+      "h2": "Sarasota note",
+      "html": "<p>Barefoot beach walking and flat sandals are part of life here, and both leave the forefoot unsupported for hours. Pickleball adds repeated push-off in court shoes that are often narrow. If your symptoms follow either, the shoe is usually a faster fix than anything else.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Pain with impact that is tender over one specific bone in the forefoot, with or without swelling: a stress injury must be excluded by imaging.",
+    "Redness, heat and swelling in the forefoot, particularly with fever or a sudden onset overnight.",
+    "Numbness spreading across the whole foot or into both feet rather than staying in two toes.",
+    "Weakness, a foot that drags, or a change in how you walk that you cannot correct.",
+    "An open sore, a wound that is slow to heal, or any forefoot symptom in someone with diabetes: see a physician promptly."
+  ],
+  "faq": [
+    {
+      "q": "Is a neuroma a tumour?",
+      "a": "No. The name is misleading. It is a thickening of the tissue surrounding a nerve in the forefoot, not a growth that spreads."
+    },
+    {
+      "q": "Why does taking my shoe off help so quickly?",
+      "a": "Most of the pressure on the nerve comes from the sides of the shoe squeezing the long bones together. Removing that pressure relieves the nerve almost immediately, which is one of the more recognisable features."
+    },
+    {
+      "q": "Can exercises make it go away?",
+      "a": "Exercise does not reverse the thickening, but reducing the load through the forefoot often reduces symptoms enough that the foot is comfortable again. Footwear usually matters more than any single exercise."
+    },
+    {
+      "q": "When should I see a specialist?",
+      "a": "If symptoms persist after a genuine trial of wider shoes, padding and load changes, or if numbness is increasing, a podiatrist or orthopaedic specialist can discuss imaging, injection or surgery."
+    }
+  ],
+  "muscles": [
+    "foot-intrinsics",
+    "gastroc",
+    "soleus",
+    "peroneals",
+    "tib-post"
+  ],
+  "pain": [
+    "sole-of-foot",
+    "front-of-ankle"
+  ],
+  "guides": [
+    "calf"
+  ],
+  "related": [
+    "/conditions/plantar-fasciitis",
+    "/conditions/tarsal-tunnel-syndrome",
+    "/conditions/achilles-tendon-pain",
+    "/conditions/ankle-sprain",
+    "/pain/sole-of-foot",
+    "/treatments/functional-mobility"
+  ],
+  "reviewStatus": "draft"
+}

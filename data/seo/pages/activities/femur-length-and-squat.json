@@ -1,0 +1,98 @@
+{
+  "group": "activities",
+  "slug": "femur-length-and-squat",
+  "title": "Femur Length and the Squat: Why Yours Differs | MD Fit",
+  "h1": "Femur Length and the Squat",
+  "description": "Your femur length decides what a good squat looks like on you. How the lever works, how to tell if yours are long or short, and what each build should change.",
+  "about": {
+    "type": "Thing",
+    "name": "Femur length and squat mechanics"
+  },
+  "lead": "Two people can squat equally well and look nothing alike doing it. The usual reason is the femur, the long bone between hip and knee. Its length relative to your shin and torso sets how far your hips travel, how much you lean, and which cues will help you or hold you back.",
+  "sections": [
+    {
+      "h2": "The one rule a squat cannot break",
+      "html": "<p>Whatever your build, a loaded squat has to keep the bar over roughly the middle of your foot. That is balance, not style. If the bar drifts forward you get pulled over it; if it drifts back you sit down. Every other feature of your technique is your skeleton solving that balance problem.</p><p>Your femur is the lever that makes the problem harder or easier. Bending the knees sends the hips backwards, and the longer the femur, the further back they go for the same knee bend. Something has to come forward to rebalance, and that something is your torso. Shorter femurs send the hips back less, so less forward lean is needed and the torso stays more upright.</p><p>This is why the same coaching cue produces opposite results on two lifters. It is also why arguing about whether the squat should be upright or angled misses the point. The answer is set by proportion.</p>"
+    },
+    {
+      "h2": "It is a ratio, not a measurement",
+      "html": "<p>Long femurs are not about being tall. A tall lifter with a long torso and long shins can be perfectly average in proportion, while a shorter lifter with long thighs and a short trunk will squat like the textbook long-femur case. What matters is three relationships:</p><ul><li><b>Femur to shin.</b> A femur that is long relative to the tibia pushes the hips back further and demands more forward lean.</li><li><b>Femur to torso.</b> A long femur paired with a short torso is the most pronounced version, because the short torso is a short counterweight.</li><li><b>Hip structure.</b> Socket depth and the angle of the femoral neck decide how much hip flexion is available before the joint runs out of room, which is a separate question from length. <a href=\"/activities/why-squat-depth-differs\">Why squat depth differs</a> covers that.</li></ul><p>Most people sit somewhere on a spectrum rather than at either end. The useful question is not which category you are in but which direction your build pushes you.</p>"
+    },
+    {
+      "h2": "How to work out which you are",
+      "html": "<p>Three ways, in order of effort:</p><ol><li><b>The chair test.</b> Sit on an ordinary dining chair with your feet flat. If your knees sit noticeably higher than your hips, your femurs are long relative to your shins. Level or lower suggests the opposite.</li><li><b>Film your squat from the side.</b> Set a phone at hip height and squat with a light bar or a broomstick. Compare your torso angle at the bottom with a training partner's. The difference is usually obvious.</li><li><b>Measure.</b> A tape measure and two minutes gives you the ratios properly. Our guide to <a href=\"/activities/how-to-measure-femur-length\">measuring femur length at home</a> walks through it.</li></ol>"
+    },
+    {
+      "h2": "What changes for each build",
+      "html": "<p><b>If your femurs are long</b>, expect more forward lean and expect it to be correct. Your useful levers are a wider stance with toes out, a lower bar position, heel elevation, and bar choices such as a safety squat bar or front squat that force the torso up. Your sticking point is usually the hips rising first out of the bottom, and your sore spot is usually the low back. The full treatment is in <a href=\"/activities/long-femurs-squat\">long femurs and the squat</a>.</p><p><b>If your femurs are short</b>, depth and an upright torso come easily, and the load concentrates at the knee. Narrow stances and high bar usually feel better, heel elevation is often unnecessary, and the thing that limits you is typically knee-extensor strength and knee tissue tolerance rather than position. The full treatment is in <a href=\"/activities/short-femurs-squat\">short femurs and the squat</a>.</p>"
+    },
+    {
+      "h2": "What this does not mean",
+      "html": "<p>Proportion explains why your squat looks the way it does. It does not excuse everything, and it is not a reason to stop looking at technique.</p><ul><li>A back that changes shape under load is worth addressing whatever your femur length.</li><li>A bar that travels forward of the midfoot is a balance fault, not a proportion.</li><li>Ankle and hip restrictions are still worth improving, and will still change your bottom position. Bone length will not change; range often will. See <a href=\"/activities/ankle-mobility-and-squat\">ankle mobility and the squat</a>.</li><li>Pain is a signal to assess rather than a cost of your build. Long femurs do not mean your back has to hurt.</li></ul>"
+    },
+    {
+      "h2": "How MD Fit uses this",
+      "html": "<p>Dr. Jared Caban is a clinical exercise physiologist as well as a licensed massage therapist, which means the assessment covers both sides of this: what your joints will actually give you, and what your training is asking of them. An assessment looks at hip range on the table, your squat from the side with and without heel elevation, and how stance width changes what you can reach. That separates a joint that lacks range from a muscle guarding against it from a setup asking for the wrong thing.</p><p>What follows is hands-on release of whatever is limiting you, corrective work to own the range you have, daily homework in the free MD Fit app video library, and a squat built around your proportions. The app's workout generator then builds your sessions around the variations that suit your build, so the change holds outside the clinic.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Sharp low back pain during a rep, especially with pain or numbness travelling down a leg.",
+    "Numbness in the groin or inner thighs, or any loss of bowel or bladder control, which needs emergency care.",
+    "A knee or hip that locks, catches or gives way under load.",
+    "A pop or tearing sensation followed by weakness, swelling or bruising.",
+    "Joint pain that worsens week on week despite reducing load and changing setup."
+  ],
+  "faq": [
+    {
+      "q": "Can I change my femur length?",
+      "a": "No. Bone length is fixed. What is adjustable is stance, bar position, footwear, bar type and the range you work in, and those are usually enough to make the lift suit you."
+    },
+    {
+      "q": "Does femur length limit how strong I can get?",
+      "a": "It changes which variations suit you and where your sticking point sits, not your ceiling. Plenty of strong lifters have long femurs and squat with a pronounced forward angle."
+    },
+    {
+      "q": "Is one build better for squatting?",
+      "a": "Short femurs make the standard barbell squat easier to perform and to coach. Longer femurs often do better on deadlifts and hinge patterns. Each build has lifts it suits."
+    },
+    {
+      "q": "My coach says my form is wrong. Are they?",
+      "a": "Possibly not. Some faults are genuine, such as the bar drifting forward or the back changing shape. A forward torso angle on a long-femur lifter is usually neither of those."
+    }
+  ],
+  "muscles": [
+    "glute-max",
+    "vastus-lateralis",
+    "psoas",
+    "soleus",
+    "ql",
+    "adductor-magnus"
+  ],
+  "pain": [
+    "beside-the-spine",
+    "front-of-hip",
+    "below-kneecap"
+  ],
+  "guides": [
+    "quads",
+    "iliopsoas"
+  ],
+  "related": [
+    "/activities/long-femurs-squat",
+    "/activities/short-femurs-squat",
+    "/activities/how-to-measure-femur-length",
+    "/activities/why-squat-depth-differs",
+    "/activities/ankle-mobility-and-squat",
+    "/activities/train-for-your-build",
+    "/activities/weightlifting-crossfit",
+    "/treatments/clinical-exercise-physiology"
+  ],
+  "programs": [
+    "hip-6",
+    "knee-6",
+    "mobility-12"
+  ],
+  "reviewStatus": "draft"
+}

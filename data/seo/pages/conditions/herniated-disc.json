@@ -1,0 +1,92 @@
+{
+  "slug": "herniated-disc",
+  "title": "Herniated Disc Care in Sarasota, FL | MD Fit",
+  "h1": "Herniated Disc and Disc-Related Back Pain in Sarasota, FL",
+  "description": "Disc-related back and leg pain in Sarasota. Dr. Jared Caban, MD, MSc, CEP builds movement-based care around what your symptoms actually respond to.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Herniated disc"
+  },
+  "lead": "A disc herniation is a bulge of the soft centre of a spinal disc past its outer ring, sometimes pressing on a nerve root. It sounds structural and permanent. In practice most of them settle, and many shrink on their own over months.",
+  "sections": [
+    {
+      "h2": "What a disc problem actually feels like",
+      "html": "<p>The pattern is usually more telling than the scan. Typical features:</p><ul><li>Pain worse with sitting, bending forward, and getting out of a car, better standing or walking.</li><li>Leg pain that travels below the knee, often with pins and needles or numbness in a defined strip.</li><li>Worse with coughing, sneezing or straining, which raises pressure inside the disc.</li><li>Morning stiffness that is worse than the rest of the day, because discs take on fluid overnight.</li></ul><p>Pain only in the back, that moves around, and that eases when you change position is far more likely to be muscular. See <a href=\"/conditions/low-back-pain\">low back pain</a>.</p>"
+    },
+    {
+      "h2": "Why scans mislead",
+      "html": "<p>Disc bulges, protrusions and degenerative changes appear routinely on imaging of people with no back pain whatsoever, and the proportion rises steadily with age. A scan tells you what your spine looks like. It does not tell you what hurts.</p><p>This matters practically. People shown an alarming report often stop moving, which is the one thing reliably associated with a worse outcome. The exam decides whether the disc is the relevant finding, by checking whether your symptoms behave the way nerve compression behaves.</p>"
+    },
+    {
+      "h2": "How directional preference guides treatment",
+      "html": "<p>Most people with disc-related pain have a direction that eases symptoms and a direction that worsens them. For many it is extension that helps and flexion that aggravates. Finding that direction is the single most useful thing the first visit produces, because it tells you how to sit, how to sleep, how to lift and what to do several times a day between visits.</p><p>Equally important is the idea of centralisation: leg pain that retreats up toward the back is improving, even if the back pain temporarily feels no better. Pain spreading further down the leg is the opposite signal.</p>"
+    },
+    {
+      "h2": "How MD Fit treats it",
+      "html": "<p>The muscles around an irritated disc guard hard, and that guarding is itself painful. Hands-on release of <a href=\"/muscles/quadratus-lumborum\">quadratus lumborum</a>, <a href=\"/muscles/psoas\">psoas</a> and the spinal muscles reduces that layer. Correction teaches the hip hinge so the back stops taking bending load, restores hip extension, and sets your working positions.</p><p>Strengthening rebuilds <a href=\"/muscles/multifidus\">multifidus</a>, the glutes and the deep core, which is what lets you return to lifting and sport. Daily routines come through the free MD Fit app. Dr. Jared coordinates with your physician where injections or a surgical opinion are part of the picture.</p>"
+    },
+    {
+      "h2": "What to do and avoid early on",
+      "html": "<ol><li>Keep walking. Short, frequent walks beat rest, which stiffens everything and slows recovery.</li><li>Avoid prolonged sitting, and avoid bending and twisting under load.</li><li>Get out of bed by rolling to your side and pushing up, rather than sitting straight up.</li><li>Use your preferred direction several times a day rather than once hard.</li></ol><p>Avoid deep forward stretches early. They feel productive and usually aggravate a disc.</p>"
+    },
+    {
+      "h2": "When surgery enters the conversation",
+      "html": "<p>Most disc herniations do not need surgery. The usual reasons it is considered are progressive weakness, pain that is not settling over a reasonable period despite good conservative care, or any sign of pressure on the nerves that control the bladder and bowel, which is urgent. That decision belongs with a spine surgeon, and Dr. Jared will tell you plainly when it is time to have that conversation.</p>"
+    }
+  ],
+  "timeline": null,
+  "redFlags": [
+    "Numbness in the groin, inner thighs or saddle area, or new loss of bladder or bowel control: call 911 or go to an emergency room now.",
+    "Leg weakness that is getting worse, or a foot that drops or catches when you walk.",
+    "Severe pain down both legs at the same time.",
+    "Back pain with fever, chills or unexplained weight loss.",
+    "A significant fall or accident, especially with osteoporosis or a history of cancer."
+  ],
+  "faq": [
+    {
+      "q": "Do I need an MRI?",
+      "a": "Not for most cases. If there are red flags such as progressive weakness, bowel or bladder symptoms or saddle numbness, you are sent for urgent care right away."
+    },
+    {
+      "q": "Should I avoid bending?",
+      "a": "Not forever. Early on you find the positions that feel better and avoid the ones that flare you, then earn back full movement with strength."
+    },
+    {
+      "q": "Will the disc heal?",
+      "a": "Many disc herniations shrink or get reabsorbed over months, and most people become comfortable again with good rehab."
+    },
+    {
+      "q": "Why does my leg hurt more than my back?",
+      "a": "When a disc irritates a nerve root, the leg symptoms are often louder than the back itself. Leg pain retreating toward the back is a sign things are moving the right way."
+    }
+  ],
+  "muscles": [
+    "multifidus",
+    "psoas",
+    "ql",
+    "glute-max",
+    "iliacus",
+    "longissimus"
+  ],
+  "pain": [
+    "beside-the-spine",
+    "back-of-thigh",
+    "upper-buttock",
+    "lower-calf"
+  ],
+  "guides": [
+    "iliopsoas"
+  ],
+  "related": [
+    "/conditions/sciatica",
+    "/conditions/low-back-pain",
+    "/conditions/spinal-stenosis",
+    "/conditions/si-joint-pain",
+    "/treatments/chronic-pain-program",
+    "/muscles/multifidus",
+    "/muscles/psoas"
+  ],
+  "group": "conditions",
+  "steps": null,
+  "reviewStatus": "draft"
+}

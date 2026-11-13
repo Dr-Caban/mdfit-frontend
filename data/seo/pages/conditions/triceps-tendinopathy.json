@@ -1,0 +1,90 @@
+{
+  "group": "conditions",
+  "slug": "triceps-tendinopathy",
+  "title": "Triceps Tendon Pain at the Elbow | MD Fit",
+  "h1": "Triceps Tendinopathy in Sarasota, FL",
+  "description": "Aching at the back of the elbow when you press, push or lock out a lift? Dr. Jared Caban explains triceps tendon pain and how MD Fit loads it back up.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Triceps tendinopathy"
+  },
+  "lead": "The triceps tendon attaches to the bony tip of the elbow and takes the strain every time you push, press or straighten the arm under load. It is a less common tendinopathy than the ones on the inside and outside of the elbow, and partly for that reason it is often missed.",
+  "sections": [
+    {
+      "h2": "Pain at the point of the elbow",
+      "html": "<p>The ache sits at the back, right at or just above the <a href=\"/pain/point-of-elbow\">point of the elbow</a>, and it is provoked by straightening the arm against resistance rather than by gripping.</p><ul><li>Pain on the lockout of a press, a push-up, a dip or an overhead extension.</li><li>Soreness pushing up out of a chair with the arms, or pushing a heavy door.</li><li>An ache at the back of the elbow after a session, sometimes running up into the <a href=\"/pain/back-of-upper-arm\">back of the upper arm</a>.</li><li>Tenderness when you press just above the bony tip, with the elbow bent.</li><li>Stiffness straightening the elbow fully first thing in the morning.</li></ul><p>It turns up in people who press and dip regularly, in throwers, in racquet players with a hard overhead serve, and in anyone who has recently increased pushing volume. It also appears in manual work involving repeated pushing.</p>"
+    },
+    {
+      "h2": "Telling it apart from olecranon bursitis",
+      "html": "<p>The other common problem at the back of the elbow is bursitis, and the two feel quite different once you know what to look for.</p><ul><li><b>Swelling.</b> Olecranon bursitis produces an obvious soft, squashy lump directly over the point of the elbow, sometimes the size of a golf ball. Tendinopathy may thicken the tendon slightly but does not produce that distinct fluid-filled bump.</li><li><b>What provokes it.</b> Bursitis hurts when you lean on the elbow or rest it on a desk or armrest. Tendinopathy hurts when you push or straighten the arm against load, and leaning on it may be comfortable.</li><li><b>Where exactly.</b> Bursitis is right on the tip. Tendon pain is usually a little above it, where the tendon runs into bone.</li><li><b>Warning sign.</b> A bursa that is hot, red and rapidly swollen, particularly with fever or after a scrape, can be infected and needs a physician the same day.</li></ul><p>Pain on the inner bony point is <a href=\"/conditions/golfers-elbow\">golfer's elbow</a> and on the outer point is <a href=\"/conditions/tennis-elbow\">tennis elbow</a>; both are gripping problems rather than pushing ones.</p>"
+    },
+    {
+      "h2": "The muscles involved",
+      "html": "<ul><li><a href=\"/muscles/triceps-long-head\">Triceps long head</a> is the only part that crosses the shoulder as well as the elbow, so shoulder position changes the load on the tendon. It refers pain down the back of the arm toward the elbow.</li><li><a href=\"/muscles/triceps-lateral-head\">Lateral head</a> and <a href=\"/muscles/triceps-medial-head\">medial head</a> feed into the same attachment; the medial head sits deep and is often the tender one.</li><li><a href=\"/muscles/posterior-deltoid\">Posterior deltoid</a> and <a href=\"/muscles/latissimus-dorsi\">latissimus dorsi</a> influence how the shoulder is positioned during pressing, which determines how much the triceps must contribute.</li></ul><p>Where the shoulder blade does not move well, the arm presses from a disadvantaged position and the triceps takes a disproportionate share of the work. Dr. Jared assesses the shoulder blade on most of these.</p>"
+    },
+    {
+      "h2": "How MD Fit treats it",
+      "html": "<p><b>Assess.</b> Resisted elbow straightening at several angles, palpation above the bony tip, a check for a bursal swelling, and assessment of shoulder blade movement and overhead position. <b>Release.</b> Hands-on work through the triceps heads, particularly the long head where it crosses the shoulder, and through the surrounding shoulder muscles. <b>Correct.</b> Pressing mechanics are adjusted so the elbow is not finishing every repetition in a hard, locked-out position, and volume is temporarily redistributed. <b>Homework.</b> Isometric holds and controlled partial-range extension from the free MD Fit app. <b>Strengthen.</b> Progressive loading through the full range, then back to dips, overhead work and serving as the tendon allows.</p>"
+    },
+    {
+      "h2": "What you can do this week",
+      "html": "<ol><li>Stop locking out hard at the top of presses and push-ups. Finishing a few degrees short keeps the load on the muscle rather than slamming it into the tendon.</li><li>Pause dips and skull crushers, which load this tendon in its most compressed position.</li><li>Avoid resting your elbow on a hard armrest or desk edge, which irritates the area either way.</li><li>Try an isometric: press the palm into a wall with the elbow slightly bent and hold a steady moderate effort for thirty seconds. Relief afterwards suggests the tendon.</li></ol>"
+    },
+    {
+      "h2": "When back-of-elbow pain is something else",
+      "html": "<p>A sudden pop while pushing, with weakness straightening the arm, raises the possibility of a tendon rupture and needs a physician promptly. A hot, red, swollen bursa may be infected. Pain with numbness or tingling into the ring and little finger points toward the ulnar nerve at the elbow rather than the tendon. Pain referred from the neck can be felt down the back of the arm without local tenderness, and in that case pressing the elbow does not reproduce it. Bone pain that persists at rest or at night belongs with a physician.</p>"
+    },
+    {
+      "h2": "Sarasota notes",
+      "html": "<p>Pickleball and tennis serves, golf practice volume, and strength training taken up later in life are the common backgrounds here. Triceps tendons respond well to patient, progressive loading, and most people keep pressing throughout, with the range and the volume adjusted rather than the activity abandoned.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": "Pain commonly begins to settle within a few weeks once hard lockouts and dips are paused and isometric loading starts. Returning to full pressing volume, dips and overhead serving usually takes longer, and Dr. Jared progresses it on how the elbow feels the day after loading.",
+  "redFlags": [
+    "A pop at the back of the elbow while pushing, followed by weakness straightening the arm: possible tendon rupture, see a physician urgently.",
+    "A hot, red, rapidly swollen lump over the point of the elbow, particularly with fever or after a scrape: possible infection, seek care the same day.",
+    "Numbness or tingling into the ring and little finger, or weakness gripping.",
+    "Elbow pain after a fall with deformity or inability to move the joint.",
+    "Pain that continues at rest or wakes you at night and does not change with position."
+  ],
+  "faq": [
+    {
+      "q": "Is the lump on my elbow part of this?",
+      "a": "A distinct soft, squashy lump directly on the point of the elbow is usually bursitis rather than tendon pain. If it is hot, red or rapidly growing, see a physician the same day, as it may be infected."
+    },
+    {
+      "q": "Why does my shoulder affect my elbow?",
+      "a": "The long head of the triceps crosses the shoulder as well as the elbow, and a shoulder blade that moves poorly makes the triceps work harder on every press. Treating the shoulder is often what settles the elbow."
+    },
+    {
+      "q": "Should I stop pressing altogether?",
+      "a": "Rarely. Tendons lose capacity with complete rest. Reducing lockout, pausing dips and keeping a controlled pressing load usually works better than stopping."
+    },
+    {
+      "q": "How long before I can serve again?",
+      "a": "That depends on how the tendon responds to loading rather than on a set period. Dr. Jared progresses overhead work once controlled extension is comfortable and strength has rebuilt."
+    }
+  ],
+  "muscles": [
+    "triceps-long",
+    "triceps-lateral",
+    "triceps-medial",
+    "post-delt",
+    "lats"
+  ],
+  "pain": [
+    "point-of-elbow",
+    "back-of-upper-arm"
+  ],
+  "guides": [],
+  "related": [
+    "/conditions/tennis-elbow",
+    "/conditions/golfers-elbow",
+    "/conditions/shoulder-impingement",
+    "/muscles/triceps-long-head",
+    "/pain/point-of-elbow",
+    "/treatments/strength-and-performance"
+  ],
+  "reviewStatus": "draft"
+}

@@ -1,0 +1,91 @@
+{
+  "slug": "frozen-shoulder",
+  "title": "Frozen Shoulder Treatment in Sarasota, FL | MD Fit",
+  "h1": "Frozen Shoulder (Adhesive Capsulitis) in Sarasota, FL",
+  "description": "Frozen shoulder care in Sarasota. Dr. Jared Caban works inside the shoulder's tolerance through each stage and keeps the rest of you strong meanwhile.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Adhesive capsulitis"
+  },
+  "lead": "Frozen shoulder is the capsule around the joint thickening and contracting. It is one of the few shoulder problems where the limit is the capsule itself, not the muscles, and that changes what helps and what makes it angrier.",
+  "sections": [
+    {
+      "h2": "How to tell it apart from a cuff problem",
+      "html": "<p>The distinguishing test is passive range. With a rotator cuff problem, someone else can move your arm further than you can move it yourself, because the limit is strength and pain. With a frozen shoulder, nobody can move it further, because the limit is the capsule.</p><p>External rotation is usually the first and worst restriction. If you cannot turn your forearm outward with your elbow at your side, even with help, that points strongly toward the capsule.</p>"
+    },
+    {
+      "h2": "The three stages, and why they matter",
+      "html": "<p>The condition moves through phases, and the right treatment differs in each:</p><ul><li><b>Freezing.</b> Pain dominates, range is shrinking, night pain is often severe. Aggressive stretching here reliably makes things worse.</li><li><b>Frozen.</b> Pain settles somewhat, stiffness is the main problem. This is where mobility work earns the most.</li><li><b>Thawing.</b> Range returns gradually. Strengthening matters most here, because months of guarding leave real weakness behind.</li></ul><p>Knowing which stage you are in is the main thing the first visit establishes, because treating a freezing shoulder like a frozen one is how people end up worse after treatment.</p>"
+    },
+    {
+      "h2": "What MD Fit does at each stage",
+      "html": "<p>In the painful stage the work is gentle: pain-free range, soft-tissue work on the muscles that are overworking to compensate, and protecting your sleep. The <a href=\"/muscles/upper-trapezius\">upper trapezius</a>, <a href=\"/muscles/levator-scapulae\">levator scapulae</a> and <a href=\"/muscles/pectoralis-minor\">pectoralis minor</a> all take up slack and become painful in their own right.</p><p>As stiffness takes over, mobility work increases and is held at the end of available range rather than forced past it. Strengthening then rebuilds the cuff and the shoulder blade muscles. Throughout, the rest of you keeps training, because a frozen shoulder is not a reason to lose a year of fitness.</p>"
+    },
+    {
+      "h2": "Living with it while it runs its course",
+      "html": "<ol><li>Sleep with the arm supported on a pillow; side-lying on the affected shoulder usually fails.</li><li>Use the arm for everything it can comfortably do. Disuse adds stiffness on top of the capsule.</li><li>Warmth before mobility work generally helps.</li><li>Do little and often rather than one hard session.</li></ol><p>Progress is measured in range regained over weeks, not days, and a flare after overdoing it is common and not a setback in the longer arc.</p>"
+    },
+    {
+      "h2": "Who tends to get it",
+      "html": "<p>It appears most often in middle age, somewhat more in women, and is notably more common in people with diabetes or thyroid conditions. It also follows periods of immobilisation after an injury or surgery, including surgery elsewhere on the body. If you have diabetes, mention it: the course can be more stubborn and the plan accounts for that.</p><p>It can also appear in the second shoulder, sometimes years later, which is worth knowing so the early stiffness is recognised rather than dismissed. Catching it in the first weeks does not prevent the process, but it does mean the painful stage is managed sensibly instead of being stretched into a worse flare.</p>"
+    },
+    {
+      "h2": "Where other care fits",
+      "html": "<p>A corticosteroid injection in the painful stage helps some people enough to make mobility work tolerable, and that is a conversation with your physician. Hydrodilatation and, rarely, surgical release exist for shoulders that do not progress. Dr. Jared will say plainly when it is worth asking about those rather than continuing as you are.</p>"
+    }
+  ],
+  "timeline": null,
+  "redFlags": [
+    "Shoulder or arm pain with chest pressure, shortness of breath, sweating or nausea: call 911.",
+    "A shoulder that became stiff immediately after a fall or injury, which may be a fracture or dislocation rather than a capsule problem.",
+    "A hot, red, swollen shoulder with fever, which needs urgent medical assessment.",
+    "Progressive numbness or weakness in the hand rather than stiffness and pain.",
+    "Unexplained weight loss or a history of cancer alongside new shoulder pain."
+  ],
+  "faq": [
+    {
+      "q": "How long does frozen shoulder last?",
+      "a": "Each stage runs several months and the full course is often well over a year. Good rehab preserves strength and range through the process and makes the journey more comfortable."
+    },
+    {
+      "q": "Will stretching make it worse?",
+      "a": "Aggressive stretching in the freezing stage flares the shoulder. Dr. Jared keeps the work inside the shoulder's tolerance and increases it as the capsule allows."
+    },
+    {
+      "q": "Do I need injections or surgery?",
+      "a": "Sometimes a corticosteroid injection helps in the painful stage. Surgery is rarely needed. Both are decisions made with your physician."
+    },
+    {
+      "q": "Why does my neck hurt too?",
+      "a": "When the shoulder will not move, the neck and shoulder blade muscles take over to get the arm where you need it, and they become painful in their own right."
+    }
+  ],
+  "muscles": [
+    "subscapularis",
+    "infraspinatus",
+    "upper-trap",
+    "levator",
+    "pec-minor",
+    "teres-minor"
+  ],
+  "pain": [
+    "deep-shoulder-joint",
+    "outside-of-shoulder",
+    "front-of-shoulder",
+    "top-of-shoulder"
+  ],
+  "guides": [
+    "rotator-cuff"
+  ],
+  "related": [
+    "/conditions/shoulder-pain",
+    "/conditions/shoulder-impingement",
+    "/conditions/rotator-cuff-tear",
+    "/conditions/neck-pain",
+    "/muscles/subscapularis",
+    "/treatments/medical-massage"
+  ],
+  "group": "conditions",
+  "steps": null,
+  "reviewStatus": "draft"
+}

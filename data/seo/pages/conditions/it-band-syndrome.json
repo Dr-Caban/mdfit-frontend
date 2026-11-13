@@ -1,0 +1,90 @@
+{
+  "slug": "it-band-syndrome",
+  "title": "IT Band Syndrome Treatment in Sarasota, FL | MD Fit",
+  "h1": "IT Band Syndrome in Sarasota, FL",
+  "description": "IT band syndrome in Sarasota. Outer knee pain in runners and walkers. Dr. Jared Caban treats the hip that causes it, not the band that hurts.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Iliotibial band syndrome"
+  },
+  "lead": "IT band syndrome is pain on the outside of the knee that shows up at a predictable point in a run or walk. The band is where it hurts. The hip is almost always why.",
+  "sections": [
+    {
+      "h2": "The pattern that identifies it",
+      "html": "<p>It is one of the more recognisable presentations in running injuries:</p><ul><li>Pain on the <a href=\"/pain/outside-of-knee\">outside of the knee</a>, sharp or burning, in a spot you can cover with a fingertip.</li><li>It appears after a fairly consistent distance or time, then forces you to stop.</li><li>Downhill running and walking down stairs are worse than uphill.</li><li>It settles quickly with rest, then returns at about the same point next time.</li></ul><p>That reproducibility is the giveaway. Pain that is there from the first step, or that moves around the knee, is usually something else.</p>"
+    },
+    {
+      "h2": "Why the band is not the problem",
+      "html": "<p>The iliotibial band is dense connective tissue anchored along the thigh bone. It is not meaningfully stretchable, and foam rolling does not lengthen it. What happens in this condition is compression of the sensitive fat and tissue beneath the band against the bony prominence on the outside of the knee, at the point in the stride where the knee is slightly bent.</p><p>What controls that compression is the hip. The <a href=\"/muscles/gluteus-medius\">gluteus medius</a> holds the pelvis level and stops the thigh falling inward. When it fatigues, the knee drifts in, the band is pulled tighter across the bone, and the tissue underneath gets squeezed with every stride. That is why the pain appears at a consistent distance: it appears when the hip gets tired.</p>"
+    },
+    {
+      "h2": "The contributors worth checking",
+      "html": "<ul><li><a href=\"/muscles/gluteus-medius\">Gluteus medius</a> weakness, especially in single-leg stance.</li><li><a href=\"/muscles/tensor-fasciae-latae\">Tensor fasciae latae</a> doing the glute's job and pulling the band tight.</li><li>Tight <a href=\"/muscles/vastus-lateralis\">vastus lateralis</a> adding tension to the same structure.</li><li>Running on cambered roads, which effectively shortens one leg.</li><li>A rapid increase in mileage, or new hill work.</li></ul>"
+    },
+    {
+      "h2": "How MD Fit treats it",
+      "html": "<p>Dr. Jared confirms the source by compressing the spot with the knee at the angle that provokes it, then tests hip strength in the positions that matter: single-leg stance, step-down, and how the pelvis behaves when you load one leg.</p><p>Hands-on work releases TFL, vastus lateralis and the glutes, which reduces tension through the band immediately. Correction trains the hip to hold the pelvis level, and running form gets a look: cadence, stride width and how much the knee crosses the midline.</p><p>Strengthening is the lasting part, and it has to be loaded single-leg work rather than band exercises on the floor, because that is what running demands. Daily routines come through the free MD Fit app.</p>"
+    },
+    {
+      "h2": "What to do while it settles",
+      "html": "<ol><li>Stop running downhill and off cambered roads for now; flat ground is far kinder.</li><li>Shorten your stride slightly and increase cadence, which reduces the knee angle where compression peaks.</li><li>Swap some running for cycling or pool work rather than stopping entirely.</li><li>Do not roll directly on the painful spot. You are compressing the tissue that is already compressed.</li></ol>"
+    },
+    {
+      "h2": "Getting back to running",
+      "html": "<p>Return is built on the pattern you already know: you had a distance where it appeared, so you start comfortably below it and build. Flat ground first, hills last. Most people find the distance climbs steadily once the hip is doing its job.</p><p>If it returns at exactly the same distance after a return to full mileage, the hip work was stopped too early. The strength has to outlast the symptoms by some margin, which is usually longer than people expect.</p>"
+    }
+  ],
+  "timeline": null,
+  "redFlags": [
+    "A knee that locks, catches or gives way, which suggests something inside the joint rather than the band.",
+    "Swelling inside the knee joint, rather than tenderness on the outside of it.",
+    "Pain that is present from the first step and at rest, including at night.",
+    "Point tenderness directly on bone with pain on hopping, which can indicate a bone stress injury and needs imaging.",
+    "A hot, red, swollen knee with fever, which needs urgent medical assessment."
+  ],
+  "faq": [
+    {
+      "q": "Should I foam-roll the IT band?",
+      "a": "Rolling can feel better in the moment but does not lengthen the band, and rolling the painful spot compresses tissue that is already compressed. The lasting fix is strength at the hip."
+    },
+    {
+      "q": "Can I keep running?",
+      "a": "Many runners keep training at pain-free distances and paces while the hip rebuilds. Your plan sets the limits week by week."
+    },
+    {
+      "q": "Why does it always start at the same distance?",
+      "a": "Because that is when the hip muscles fatigue. Once they stop holding the pelvis level, the compression at the knee begins."
+    },
+    {
+      "q": "Do I need new shoes?",
+      "a": "Sometimes shoes are part of it, but they are rarely the whole story. Hip strength and training load usually matter more."
+    }
+  ],
+  "muscles": [
+    "glute-med",
+    "tfl",
+    "vastus-lateralis",
+    "glute-max",
+    "rectus-femoris",
+    "biceps-femoris"
+  ],
+  "pain": [
+    "outside-of-knee",
+    "outside-of-thigh",
+    "outside-of-hip"
+  ],
+  "guides": [
+    "lateral-hip"
+  ],
+  "related": [
+    "/conditions/knee-pain",
+    "/conditions/patellofemoral-pain",
+    "/conditions/hip-bursitis",
+    "/conditions/shin-splints",
+    "/running-injury-sarasota",
+    "/muscles/gluteus-medius"
+  ],
+  "group": "conditions",
+  "steps": null,
+  "reviewStatus": "draft"
+}

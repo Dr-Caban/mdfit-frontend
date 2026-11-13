@@ -1,0 +1,94 @@
+{
+  "group": "conditions",
+  "slug": "insertional-achilles-tendinopathy",
+  "title": "Insertional Achilles Heel Pain | MD Fit",
+  "h1": "Insertional Achilles Tendinopathy in Sarasota, FL",
+  "description": "Pain at the back of the heel bone rather than up the tendon? Dr. Jared Caban explains why insertional Achilles pain needs different exercises to settle.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Insertional Achilles tendinopathy"
+  },
+  "lead": "Achilles pain comes in two forms, and they are not treated the same way. When the pain sits right at the back of the heel bone rather than a few centimetres up the tendon, the standard Achilles exercise most people are given will usually make it worse.",
+  "sections": [
+    {
+      "h2": "Where exactly does it hurt",
+      "html": "<p>Run a finger up the back of your heel from the sole. Insertional pain is right at the bottom, where the tendon meets the heel bone, often with a bony or thickened bump. Midportion pain is higher, roughly two to six centimetres up the tendon, in the soft cord itself. MD Fit's general page on <a href=\"/conditions/achilles-tendon-pain\">Achilles tendon pain</a> covers the midportion picture; this page is about the insertion.</p><ul><li>Pain and tenderness at the very back of the heel, sometimes with a hard lump you can feel.</li><li>Shoes rubbing. The heel counter of a stiff shoe presses directly on the sore spot, and many people find backless shoes more comfortable.</li><li>Worse walking uphill, on a treadmill incline, or up stairs.</li><li>Stiff and painful on the first steps in the morning, easing a little as you move.</li><li>Pain when the ankle bends far forward, as in a deep squat or a calf stretch on a step.</li></ul>"
+    },
+    {
+      "h2": "Why the usual Achilles exercise backfires here",
+      "html": "<p>The standard prescription for Achilles tendinopathy is an eccentric heel drop: stand on a step and lower the heel below the level of the toes. For midportion problems that works well. For insertional problems it frequently makes things worse, and that is the single most useful thing to know about this condition.</p><p>The reason is mechanical. When the ankle bends forward past neutral, the tendon is pressed against the back of the heel bone. That compression, not the pulling load, is what irritates an insertional tendinopathy. Dropping the heel below the step maximises exactly that compression, and repeating it daily keeps the problem alive.</p><p>The alternative is simple: do the same strengthening work on flat ground, stopping at neutral rather than letting the heel drop. The tendon still gets loaded, which it needs, without being squashed against bone.</p>"
+    },
+    {
+      "h2": "Muscles that feed the tendon",
+      "html": "<ul><li><a href=\"/muscles/gastrocnemius\">Gastrocnemius</a> crosses the knee as well as the ankle, so it is loaded most with the knee straight. It refers pain down the back of the <a href=\"/pain/lower-calf\">lower calf</a> toward the heel.</li><li><a href=\"/muscles/soleus\">Soleus</a> sits deeper and is loaded with the knee bent. It is the larger contributor to the forces through the tendon during walking and running, and it is commonly the weaker of the two.</li><li><a href=\"/muscles/tibialis-posterior\">Tibialis posterior</a> and <a href=\"/muscles/peroneals-fibularis\">peroneals</a> run either side of the ankle and influence how the heel is positioned under load.</li><li><a href=\"/muscles/foot-intrinsic-muscles\">Foot muscles</a> matter because a foot that collapses or a big toe that does not extend well changes how the heel loads at push-off.</li></ul><p>Calf stiffness is near-universal in this condition, but the treatment is not aggressive stretching, for the compression reason above.</p>"
+    },
+    {
+      "h2": "How MD Fit treats it",
+      "html": "<p><b>Assess.</b> Dr. Jared locates the pain precisely to separate insertional from midportion, measures ankle dorsiflexion with the knee straight and bent, tests single and double heel raises, checks for a bony prominence at the heel, and looks at footwear. <b>Release.</b> Hands-on work through the calf complex and deep posterior compartment, kept off the irritated insertion itself. <b>Correct.</b> Footwear comes first: a small heel lift and a softer heel counter take the compression off immediately, and stretching on a step stops. <b>Homework.</b> Isometric calf holds and flat-ground heel raises from the free MD Fit app, stopping at neutral. <b>Strengthen.</b> Progressive calf loading with the knee straight and bent, then adding range gradually only as symptoms allow, and finally returning to hills, stairs and running.</p>"
+    },
+    {
+      "h2": "What you can do this week",
+      "html": "<ol><li>Put a heel lift in both shoes. Even a small one reduces how far the ankle bends and takes compression off the insertion straight away.</li><li>Stop dropping your heel off a step, and stop calf stretches that push the ankle past neutral.</li><li>Change shoes if the heel counter presses on the sore spot. A softer back, or a different pair, often helps within days.</li><li>Do heel raises on flat ground instead: rise up slowly, lower slowly, stop when the heels touch the floor. Both knees straight for one set, slightly bent for another.</li><li>Avoid treadmill inclines and steep hills until it settles.</li></ol>"
+    },
+    {
+      "h2": "When heel pain is something else",
+      "html": "<p>Pain underneath the heel on the sole, sharpest on the first steps of the day, is <a href=\"/conditions/plantar-fasciitis\">plantar fasciitis</a> rather than Achilles. A sudden pop at the back of the ankle with a feeling of being kicked, and difficulty pushing off, suggests a tendon rupture and is an emergency. Pain with burning or tingling into the <a href=\"/pain/sole-of-foot\">sole</a> may be nerve related. In children and adolescents, heel pain is often a growth plate irritation and needs medical assessment. Bone pain that continues at rest, or a hot swollen area with fever, belongs with a physician.</p>"
+    },
+    {
+      "h2": "Sarasota notes",
+      "html": "<p>Flip-flops and backless sandals are, unusually, often helpful here, because nothing presses on the back of the heel. The trade-off is that they offer no support elsewhere, so Dr. Jared usually settles on a supportive shoe with a soft heel counter and a small lift rather than either extreme. Walkers who have increased distance on the Legacy Trail and anyone adding incline work on a treadmill are the common presentations.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": "Insertional problems are generally slower to settle than midportion ones because the compression has to be removed before loading can progress. Many people notice improvement within a few weeks of changing footwear and stopping heel drops, with full return to hills and running typically taking some months.",
+  "redFlags": [
+    "A sudden pop or the feeling of being kicked at the back of the ankle, with difficulty pushing off or walking: possible Achilles rupture, seek emergency care.",
+    "A hot, red, swollen heel or ankle with fever or feeling unwell.",
+    "Heel pain in a child or adolescent, which may involve a growth plate and needs medical assessment.",
+    "Pain that continues at rest or wakes you at night and does not change with position.",
+    "New numbness, tingling or weakness in the foot, or a cold, pale foot."
+  ],
+  "faq": [
+    {
+      "q": "Why has my Achilles got worse since I started heel drops?",
+      "a": "If your pain is at the insertion rather than midway up the tendon, dropping the heel below the step compresses the tendon against the heel bone. Doing the same strengthening on flat ground, stopping at neutral, usually changes that."
+    },
+    {
+      "q": "What is the hard lump on the back of my heel?",
+      "a": "It is often a bony prominence where the tendon attaches, sometimes with thickening of the tendon itself. It is not usually dangerous, but it does mean shoe choice matters more, and a physician can image it if there is any doubt."
+    },
+    {
+      "q": "Should I stretch my calf?",
+      "a": "Gentle calf work has a place, but stretching that pushes the ankle past neutral compresses the sore attachment. Dr. Jared shows you the positions that lengthen the calf without doing that."
+    },
+    {
+      "q": "Will a heel lift make my calf weaker?",
+      "a": "It is a temporary measure to reduce compression while the tendon settles, used alongside strengthening rather than instead of it, and it is reduced as symptoms allow."
+    }
+  ],
+  "muscles": [
+    "gastroc",
+    "soleus",
+    "tib-post",
+    "peroneals",
+    "foot-intrinsics"
+  ],
+  "pain": [
+    "lower-calf",
+    "sole-of-foot",
+    "inner-ankle-and-arch"
+  ],
+  "guides": [
+    "calf"
+  ],
+  "related": [
+    "/conditions/achilles-tendon-pain",
+    "/conditions/plantar-fasciitis",
+    "/conditions/ankle-sprain",
+    "/conditions/shin-splints",
+    "/muscles/soleus",
+    "/pain/lower-calf",
+    "/treatments/functional-mobility"
+  ],
+  "reviewStatus": "draft"
+}

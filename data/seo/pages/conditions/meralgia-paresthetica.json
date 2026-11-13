@@ -1,0 +1,91 @@
+{
+  "group": "conditions",
+  "slug": "meralgia-paresthetica",
+  "title": "Meralgia Paresthetica in Sarasota, FL | MD Fit",
+  "h1": "Meralgia Paresthetica in Sarasota, FL",
+  "description": "Numb, burning skin on the outside of the thigh with no weakness, often from a waistband, belt or weight change. What helps. MD Fit, Sarasota.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Meralgia paresthetica"
+  },
+  "lead": "Meralgia paresthetica is irritation of a purely sensory nerve that passes near the front of the hip bone on its way to the skin of the outer thigh. It burns and numbs but never weakens the leg, and that single fact separates it from most other causes of thigh symptoms. Diagnosis belongs to a physician; this page covers the pattern and the mechanical contributors.",
+  "sections": [
+    {
+      "h2": "The pattern people describe",
+      "html": "<p>The nerve supplies skin only, so the complaints are all sensation and never strength:</p><ul><li>Burning, tingling or numb skin over the <a href=\"/pain/outside-of-thigh\">outside of the thigh</a>, usually one side, in a patch roughly the size of a hand.</li><li>Sensitivity to light touch, so trousers, a seatbelt or bedsheets become irritating.</li><li>Worse with standing and walking, often better sitting down, which is the reverse of many back problems.</li><li>Symptoms that stop above the knee and never involve the foot.</li><li>No weakness, no loss of balance, no change in reflexes.</li></ul><p>If the leg is also weak or the symptoms reach past the knee, this is not the explanation and the search moves to the back.</p>"
+    },
+    {
+      "h2": "What puts pressure on the nerve",
+      "html": "<p>The nerve passes through a narrow gap near the bony point at the front of the hip, which makes it vulnerable to anything that compresses that area:</p><ul><li>Tight waistbands, belts, shapewear, tool belts and heavy low-slung pockets.</li><li>Weight gain or weight loss, and pregnancy, all of which change the tension at that gap.</li><li>Long periods standing, or hip positions that keep the front of the hip closed down.</li><li>Tightness in the <a href=\"/muscles/psoas\">psoas</a> and <a href=\"/muscles/iliacus\">iliacus</a>, which sit immediately behind that region and change how the front of the hip sits.</li><li>Scar tissue after hip or abdominal surgery, or a prior injury to the front of the pelvis.</li><li>A <a href=\"/muscles/tensor-fasciae-latae\">tensor fasciae latae</a> working overtime, which adds tension through the same area.</li></ul>"
+    },
+    {
+      "h2": "What it is not",
+      "html": "<p>Outer thigh symptoms have several possible sources, and the differences are clear enough to be useful.</p><ul><li><b><a href=\"/conditions/sciatica\">Sciatica</a> or a lumbar nerve root</b> usually travels past the knee, can weaken the leg, and often changes with spine position rather than with clothing.</li><li><b><a href=\"/conditions/it-band-syndrome\">IT band syndrome</a></b> is a deep ache along the outer thigh that is sore to press and worse running or on stairs, without numbness.</li><li><b><a href=\"/conditions/hip-osteoarthritis\">Hip osteoarthritis</a></b> tends to ache in the groin and stiffen the joint, rather than numb the skin.</li><li><b>Trochanteric and gluteal tendon pain</b> hurts to lie on that side and is tender over the bony point of the hip, again without numbness.</li></ul><p>Numbness of the skin with normal strength is the fingerprint of this particular nerve.</p>"
+    },
+    {
+      "h2": "How MD Fit approaches it",
+      "html": "<p>I map the numb patch, confirm that strength and reflexes are normal, and check whether pressure near the front of the hip bone reproduces your symptoms. Then I look at what is loading that region: hip flexor tension, how you stand, what you wear at the waist, and whether the pelvis sits tipped forward.</p><p>Hands-on work releases the hip flexors and the tissue around the front of the hip, and restores extension so the hip is not living in a closed position. The correction phase is often embarrassingly simple and highly effective: changing the waistband. You take home hip mobility and gentle nerve gliding in the free MD Fit app, and strengthening follows for the glutes and trunk so the pelvis is better supported in standing.</p><p>Symptoms that persist, spread, or come with any weakness need a physician, because the nerve can also be irritated by things inside the abdomen or pelvis that no amount of hands-on work will change.</p>"
+    },
+    {
+      "h2": "Changes that often settle it",
+      "html": "<ol><li>Loosen or change the waistband. Belts, shapewear and tight jeans sit exactly where the nerve passes.</li><li>Empty the front pockets. A phone or wallet pressing at the front of the hip is a common and easily missed cause.</li><li>Break up long standing. Shifting weight and taking short walks reduces sustained tension at the hip.</li><li>Open the front of the hip daily with gentle hip flexor mobility, rather than stretching into the numbness.</li></ol>"
+    },
+    {
+      "h2": "Sarasota note",
+      "html": "<p>Golf trousers with a firm belt, long rounds on foot, and standing work in the heat all feature here. So does a change in weight after a move or a new routine. If the numbness arrived around the same time as a wardrobe or weight change, that is usually the thread worth pulling first.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Weakness in the leg, a knee that buckles, or difficulty lifting the foot: this is not a skin-only nerve and needs a physician.",
+    "Numbness or pain that travels below the knee or into the foot.",
+    "Loss of bladder or bowel control, or numbness in the saddle area: seek emergency care immediately.",
+    "Symptoms in both thighs, or spreading to other parts of the body.",
+    "New outer thigh numbness with unexplained weight loss, fever, or abdominal or pelvic pain: see a physician promptly."
+  ],
+  "faq": [
+    {
+      "q": "Why does it burn but my leg still feels strong?",
+      "a": "The nerve involved carries sensation from the skin only and does not supply any muscle. Normal strength alongside numb or burning skin is the characteristic combination."
+    },
+    {
+      "q": "Could my belt really be causing this?",
+      "a": "Often, yes. The nerve passes through a narrow gap near the front of the hip bone, and sustained pressure from a waistband, belt or heavy pocket at that spot is one of the most common contributors."
+    },
+    {
+      "q": "Is it related to my back?",
+      "a": "Usually not, although a lumbar nerve root can produce thigh symptoms. Pain that reaches past the knee or any weakness points to the back instead, and that changes the assessment."
+    },
+    {
+      "q": "How long does it take to settle?",
+      "a": "That depends on what is irritating the nerve and how long it has been going on. Removing the pressure is the key step, and Dr. Jared will give you an honest read at the assessment rather than a fixed timeline."
+    }
+  ],
+  "muscles": [
+    "psoas",
+    "iliacus",
+    "tfl",
+    "rectus-femoris",
+    "ext-oblique"
+  ],
+  "pain": [
+    "outside-of-thigh",
+    "front-of-hip",
+    "front-of-thigh"
+  ],
+  "guides": [
+    "iliopsoas",
+    "lateral-hip"
+  ],
+  "related": [
+    "/conditions/sciatica",
+    "/conditions/it-band-syndrome",
+    "/conditions/hip-osteoarthritis",
+    "/conditions/hip-pain",
+    "/conditions/low-back-pain",
+    "/muscles/psoas",
+    "/treatments/functional-mobility"
+  ],
+  "reviewStatus": "draft"
+}

@@ -1,0 +1,90 @@
+{
+  "group": "conditions",
+  "slug": "tarsal-tunnel-syndrome",
+  "title": "Tarsal Tunnel Syndrome in Sarasota, FL | MD Fit",
+  "h1": "Tarsal Tunnel Syndrome in Sarasota, FL",
+  "description": "Burning in the sole of the foot, worse at night and with standing, not first thing in the morning. How it differs from plantar fasciitis. MD Fit Sarasota.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Tarsal tunnel syndrome"
+  },
+  "lead": "Tarsal tunnel syndrome is irritation of the tibial nerve where it passes behind the inner ankle bone, under a band of tissue, on its way into the sole of the foot. It is the foot's version of carpal tunnel, and it is routinely mistaken for plantar fasciitis. Tarsal tunnel syndrome is a physician's diagnosis; this page is about recognising the pattern and what conservative care involves.",
+  "sections": [
+    {
+      "h2": "The pattern that sets it apart",
+      "html": "<p>People usually arrive having been treated for plantar fasciitis without much change. The description is different in a few specific ways:</p><ul><li>Burning, tingling or electric pain in the <a href=\"/pain/sole-of-foot\">sole of the foot</a>, rather than a sharp mechanical stab.</li><li>Symptoms worst at night or after a long day on the feet, and often relieved by getting the shoe off and moving the ankle.</li><li>Pain or tingling around the <a href=\"/pain/inner-ankle-and-arch\">inner ankle and arch</a>, sometimes radiating up the inside of the <a href=\"/pain/lower-calf\">lower calf</a>.</li><li>Numbness in part of the sole, which a purely tendon problem does not cause.</li><li>Tapping behind the inner ankle bone sends a tingle into the foot.</li></ul>"
+    },
+    {
+      "h2": "Why this gets confused with plantar fasciitis",
+      "html": "<p>The two overlap in location and often in the same person, so the distinction is worth stating plainly.</p><ul><li><b><a href=\"/conditions/plantar-fasciitis\">Plantar fasciitis</a></b> is classically worst with the first few steps in the morning or after sitting, eases as you walk, and is tender at one precise point on the heel bone. It does not numb the foot.</li><li><b>Tarsal tunnel</b> tends to build through the day rather than easing, burns or tingles rather than stabbing, can be worse lying in bed, and may include numbness. Tenderness is behind the inner ankle, not under the heel.</li></ul><p>Morning-worst and mechanical points toward the fascia. Night-worst and burning points toward the nerve. When someone has both, the fascia usually came first and the nerve followed.</p>"
+    },
+    {
+      "h2": "What narrows the tunnel",
+      "html": "<p>The tunnel is a fixed space with tendons, an artery and the nerve all passing through it, so anything that takes up room or increases tension matters:</p><ul><li>A foot that rolls inward and flattens, which stretches the nerve around the inner ankle with every step.</li><li>Swelling in the ankle after a sprain, a long flight or a period of standing.</li><li>Thickening or irritation of the <a href=\"/muscles/tibialis-posterior\">tibialis posterior</a> tendon, which shares the tunnel.</li><li>Tight <a href=\"/muscles/gastrocnemius\">calf</a> and <a href=\"/muscles/soleus\">soleus</a> muscles, which change how the foot loads and how long it spends rolled in.</li><li>Varicose veins, a ganglion or an old fracture altering the space, which are findings for a physician.</li></ul><p>Weak <a href=\"/muscles/foot-intrinsic-muscles\">foot intrinsic muscles</a> often sit underneath the whole picture, because they are what holds the arch when the big muscles tire.</p>"
+    },
+    {
+      "h2": "How MD Fit approaches it",
+      "html": "<p>I check where the symptoms actually sit, whether tapping or sustained pressure behind the inner ankle reproduces them, how the foot behaves under load, and how far the ankle bends with the knee straight and bent. The calf, the tibialis posterior and the arch all get examined, because the nerve rarely gets irritated without a mechanical reason above it.</p><p>Treatment releases the calf and the tissue around the tunnel, restores ankle mobility so the foot stops compensating, and uses gentle nerve gliding rather than aggressive stretching. Footwear and arch support usually change more than anything I do by hand. You take home a daily routine in the free MD Fit app, and strengthening builds the foot intrinsics and the tibialis posterior so the arch holds on its own.</p><p>If numbness is dense, spreading, or the foot is weakening, that needs a physician and likely nerve testing before anything else.</p>"
+    },
+    {
+      "h2": "Things worth trying this week",
+      "html": "<ol><li>Change footwear before anything else. A shoe with a firm heel counter and some arch support reduces the stretch on the nerve all day.</li><li>Elevate the foot in the evening if there is any swelling, particularly after long days standing.</li><li>Calf mobility twice a day, done gently, with the knee both straight and bent.</li><li>Stop barefoot time on hard tile for now. Many Florida homes are tile throughout, which gives the foot no help at all.</li></ol>"
+    },
+    {
+      "h2": "Sarasota note",
+      "html": "<p>Beach walking on soft, sloped sand loads the inner ankle hard, and so does a long day on tile floors. Both come up constantly here. If your symptoms track with either, that is useful information, because changing the surface is often easier than changing the foot.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Numbness in the foot that is dense, spreading, or affecting both feet: see a physician, as this points away from a single trapped nerve.",
+    "Weakness curling the toes, or a foot that feels unsteady and keeps giving way.",
+    "Rapid swelling, redness and heat in the ankle or foot, especially with fever.",
+    "Calf pain and swelling with warmth or breathlessness: seek urgent care, as a blood clot must be excluded.",
+    "Symptoms that began after an ankle fracture or significant sprain that has not been assessed."
+  ],
+  "faq": [
+    {
+      "q": "How do I know if it is this or plantar fasciitis?",
+      "a": "Plantar fasciitis is usually worst with the first steps in the morning and is tender at one point on the heel. Tarsal tunnel usually burns or tingles, builds through the day or at night, and can involve numbness. A physician confirms which it is."
+    },
+    {
+      "q": "Does it ever go away on its own?",
+      "a": "Symptoms often settle when the cause is addressed, such as footwear, swelling or calf tightness. Persistent numbness or weakness needs medical assessment rather than time."
+    },
+    {
+      "q": "Should I stretch my foot hard?",
+      "a": "No. Nerve tissue reacts badly to aggressive stretching, and more burning afterwards is a sign to stop. Gentle mobility and nerve gliding are better tolerated."
+    },
+    {
+      "q": "Can orthotics help?",
+      "a": "Often, when the foot rolls inward. Supporting the arch reduces the tension on the nerve through the day, which is frequently the main driver."
+    }
+  ],
+  "muscles": [
+    "tib-post",
+    "soleus",
+    "gastroc",
+    "foot-intrinsics",
+    "peroneals"
+  ],
+  "pain": [
+    "inner-ankle-and-arch",
+    "sole-of-foot",
+    "lower-calf"
+  ],
+  "guides": [
+    "calf"
+  ],
+  "related": [
+    "/conditions/plantar-fasciitis",
+    "/conditions/ankle-sprain",
+    "/conditions/chronic-ankle-instability",
+    "/conditions/achilles-tendon-pain",
+    "/muscles/tibialis-posterior",
+    "/pain/sole-of-foot",
+    "/treatments/functional-mobility"
+  ],
+  "reviewStatus": "draft"
+}

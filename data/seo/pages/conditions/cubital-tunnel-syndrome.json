@@ -1,0 +1,88 @@
+{
+  "group": "conditions",
+  "slug": "cubital-tunnel-syndrome",
+  "title": "Cubital Tunnel Syndrome in Sarasota | MD Fit",
+  "h1": "Cubital Tunnel Syndrome in Sarasota, FL",
+  "description": "Numb ring and little fingers, worse with a bent elbow: the ulnar nerve can be squeezed behind the elbow. What it feels like and what helps. MD Fit, Sarasota.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Cubital tunnel syndrome"
+  },
+  "lead": "Cubital tunnel syndrome is irritation of the ulnar nerve where it passes behind the bony bump on the inside of the elbow. It is the second most familiar nerve compression in the arm after carpal tunnel, and the one people most often mistake for a circulation problem. Cubital tunnel syndrome is a physician's diagnosis; this page is about how it presents and what the soft-tissue side of care looks like.",
+  "sections": [
+    {
+      "h2": "What people describe",
+      "html": "<p>The ulnar nerve supplies sensation to the little finger and half the ring finger, and it powers most of the small muscles inside the hand. When it is irritated behind the elbow, the complaints follow that territory:</p><ul><li>Numbness or tingling in the <a href=\"/pain/ring-and-little-finger\">ring and little fingers</a>, often waking you at night.</li><li>Symptoms that appear when the elbow stays bent, such as holding a phone, driving, or sleeping with the arm curled up.</li><li>An electric jolt down the forearm when the inside of the elbow is knocked, beyond the ordinary funny-bone feeling.</li><li>Aching along the inside of the <a href=\"/pain/forearm\">forearm</a> or around the <a href=\"/pain/point-of-elbow\">point of the elbow</a>.</li><li>Clumsiness with keys, buttons or a guitar pick, or dropping small objects.</li></ul><p>The giveaway is position. Bending the elbow stretches and narrows the tunnel, so symptoms that come on with a bent elbow and ease when you straighten it point toward this nerve rather than the neck or the wrist.</p>"
+    },
+    {
+      "h2": "Why it happens behind the elbow",
+      "html": "<p>The ulnar nerve has very little padding where it crosses the elbow. It sits in a shallow groove behind the medial epicondyle and passes under a band of tissue between the two heads of the wrist flexor group. Bending the elbow narrows that space and lengthens the nerve at the same time.</p><p>Habits and anatomy that load it:</p><ul><li>Sleeping with the elbows fully bent, which is the commonest reason for night symptoms.</li><li>Resting the elbow on a car door, armrest or desk edge for long stretches.</li><li>Repeated gripping and forearm work, which thickens the <a href=\"/muscles/wrist-flexors\">wrist flexor</a> group the nerve passes beneath.</li><li>A nerve that slides out of its groove when the elbow bends, which some people simply have.</li><li>Old elbow fractures or arthritis that change the shape of the groove.</li></ul><p>Tightness in <a href=\"/muscles/triceps-medial-head\">the medial head of triceps</a>, the <a href=\"/muscles/finger-flexors\">finger flexors</a> and the <a href=\"/muscles/pectoralis-minor\">pectoralis minor</a> can add tension along the nerve's path from the chest to the hand, which is why I assess the whole limb rather than only the elbow.</p>"
+    },
+    {
+      "h2": "How it differs from the neck and from thoracic outlet",
+      "html": "<p>Three different problems can numb the same fingers, and telling them apart changes everything about treatment.</p><ul><li><b>Cubital tunnel</b> affects the little finger and the ring finger only, usually sparing the forearm, and it is reproduced by holding the elbow fully bent for a minute. Tapping over the nerve behind the elbow often sends a jolt into those fingers.</li><li><b><a href=\"/conditions/cervical-radiculopathy\">Cervical radiculopathy</a></b> from a C8 or T1 nerve root tends to involve the inner forearm as well as the hand, changes with neck position, and may come with neck pain or shoulder blade ache.</li><li><b><a href=\"/conditions/thoracic-outlet-symptoms\">Thoracic outlet symptoms</a></b> usually involve the whole arm, feel heavy rather than purely numb, and flare with the arm overhead.</li></ul><p>All three can coexist, which is called a double crush pattern. That is one reason symptoms sometimes persist after a single site is treated.</p>"
+    },
+    {
+      "h2": "What MD Fit assesses and treats",
+      "html": "<p>I start by reproducing your symptoms with position and by mapping exactly which fingers are involved, because the sensory border between the ulnar and median territory is precise. I check whether the nerve glides freely at the elbow, how the elbow and shoulder move, and whether the wrist flexors, triceps and chest muscles are holding tension along the nerve's route.</p><p>Hands-on work releases the wrist flexor group and the tissue over the tunnel, and frees the nerve's path through the chest and shoulder where it is restricted. The correction phase is mostly about position: sleep, desk and driving habits that stop folding the elbow shut for hours. You take home gentle nerve gliding and forearm mobility in the free MD Fit app. Strengthening comes last, aimed at grip and the small hand muscles once symptoms are settling.</p><p>If testing shows significant nerve conduction loss or the hand muscles are visibly wasting, that is a surgical conversation, and I say so and help you get there.</p>"
+    },
+    {
+      "h2": "Simple changes worth trying first",
+      "html": "<ol><li>Stop sleeping with the elbow bent. A loose towel wrapped around the elbow at night, or a soft brace, keeps it straighter without force.</li><li>Take the elbow off hard edges. Pad the car door and the desk, and avoid leaning on it while reading.</li><li>Break up long phone calls, or use a headset so the elbow is not held shut.</li><li>Do not stretch aggressively into tingling. Nerve tissue responds badly to being pulled hard, and more symptoms after stretching is a sign to back off.</li></ol>"
+    },
+    {
+      "h2": "Sarasota note",
+      "html": "<p>Cycling and pickleball both keep the elbow bent and loaded for long stretches, and a tight grip on handlebars or paddle adds forearm tension on top. Golfers often notice it on the lead arm. If your symptoms track with a particular sport or a long drive, say so, because the pattern usually points straight at the position that is provoking it.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Visible wasting or hollowing of the muscles between the thumb and index finger, or on the back of the hand: see a physician promptly.",
+    "Weakness that is getting worse, such as a grip that keeps failing or fingers that will not straighten fully.",
+    "Numbness that is constant and no longer changes with elbow position.",
+    "Symptoms that began after a fall, a direct blow or an elbow fracture that has not been assessed.",
+    "Numbness spreading beyond the ring and little fingers, or into both hands, which points away from the elbow."
+  ],
+  "faq": [
+    {
+      "q": "Is this the same as carpal tunnel?",
+      "a": "No. Carpal tunnel involves the median nerve at the wrist and affects the thumb, index and middle fingers. Cubital tunnel involves the ulnar nerve at the elbow and affects the ring and little fingers. Some people have both."
+    },
+    {
+      "q": "Why is it worse at night?",
+      "a": "Most people sleep with their elbows bent, which narrows the tunnel and stretches the nerve for hours at a time. Keeping the elbow straighter overnight is often the single most useful change."
+    },
+    {
+      "q": "Will I need surgery?",
+      "a": "Many people improve with position changes, soft-tissue work and nerve mobility. Surgery is usually considered when testing shows significant nerve loss, when hand muscles are wasting, or when conservative care has had a fair trial without change."
+    },
+    {
+      "q": "Can MD Fit diagnose it?",
+      "a": "No. That is a physician's job, often with nerve conduction testing. Once serious causes are excluded, MD Fit treats the muscular and positional contributors alongside that care."
+    }
+  ],
+  "muscles": [
+    "wrist-flex",
+    "finger-flex",
+    "triceps-medial",
+    "pec-minor",
+    "scalenes"
+  ],
+  "pain": [
+    "ring-and-little-finger",
+    "forearm",
+    "point-of-elbow"
+  ],
+  "guides": [],
+  "related": [
+    "/conditions/carpal-tunnel-wrist-pain",
+    "/conditions/thoracic-outlet-symptoms",
+    "/conditions/cervical-radiculopathy",
+    "/conditions/tennis-elbow",
+    "/conditions/neck-pain",
+    "/muscles/wrist-flexors",
+    "/treatments/functional-mobility"
+  ],
+  "reviewStatus": "draft"
+}

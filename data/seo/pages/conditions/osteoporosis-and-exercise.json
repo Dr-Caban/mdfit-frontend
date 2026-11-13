@@ -1,0 +1,89 @@
+{
+  "group": "conditions",
+  "slug": "osteoporosis-and-exercise",
+  "title": "Osteoporosis Exercise Care in Sarasota | MD Fit",
+  "h1": "Osteoporosis and Exercise in Sarasota, FL",
+  "description": "Told you have osteopenia or osteoporosis? Dr. Jared Caban, a clinical exercise physiologist in Sarasota, builds safe loading, posture and balance work.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Osteoporosis"
+  },
+  "lead": "Osteoporosis and osteopenia are medical diagnoses, made by your physician from a DXA scan and your history. The medication, the vitamin D and calcium, and the rescanning all belong to that doctor. What belongs here is the other half of the plan: the loading, posture and balance work that bone responds to, prescribed by someone trained to dose it.",
+  "sections": [
+    {
+      "h2": "Why exercise is part of bone care at all",
+      "html": "<p>Bone is living tissue. It adapts to the forces placed on it, which is why the bones of a tennis player's racquet arm are commonly denser than the other side, and why extended bed rest costs bone quickly. Loading is the signal, and the signal has to be meaningful: a gentle stroll does not ask much of the hip or spine, so it does not prompt much adaptation.</p><p>That is the practical problem. The advice most people are given after a DXA result is some version of \"stay active and be careful,\" which pulls in two directions at once. Being careful tends to mean doing less, and doing less is exactly what bone does not want. The useful version of this advice is specific: which loads, how heavy, how often, and which positions to leave alone for now.</p><p>Two things are being worked on at the same time. The first is the bone itself, through progressive resistance and weight-bearing. The second, and in the short term the more important, is not falling over. A hip or wrist generally breaks because someone hits the floor, so balance, reaction time and leg strength protect you long before any change shows on a scan.</p>"
+    },
+    {
+      "h2": "What a clinical exercise physiologist brings to this",
+      "html": "<p>Dr. Jared Caban holds the CEP and CCEP credentials, which is training in prescribing exercise for people with medical diagnoses rather than for healthy gym-goers. For bone, that matters in a specific way: the dose has to be heavy enough to be a stimulus and controlled enough to be safe, and those two requirements pull against each other. Getting that balance right is the entire job.</p><p>It starts by reading your actual report rather than working from the word \"osteoporosis\" alone. A T-score at the hip, a T-score at the spine, a history of a previous fracture, and any restriction your physician has written all change what the programme should look like. Someone with mild osteopenia and no fracture history has a wide runway. Someone with a previous vertebral fracture has a narrow one, and the plan reflects that honestly.</p>"
+    },
+    {
+      "h2": "The movements usually cautioned against",
+      "html": "<p>Some positions load the front of the vertebral bodies in a way that is generally avoided when bone density is low. These are the ones that come up most often:</p><ul><li><b>End-range spinal flexion.</b> Rounding the back hard, particularly under load or at speed. Sit-ups and crunches, toe-touch stretches, and loaded forward bends are the usual examples.</li><li><b>Twisting under load.</b> Rotating the trunk while holding weight, or the combination of bending and twisting together, as in lifting a bag out of a car boot and swinging it across the body.</li><li><b>High-impact landing</b>, where bone is already fragile or a fracture has already happened. This is a judgement call, not a blanket rule, and it depends on your report.</li><li><b>Yoga and Pilates positions</b> that push into deep spinal flexion. Both disciplines have a great deal to offer here, but several familiar shapes are worth modifying.</li></ul><p>None of this means the spine should be treated as breakable. It means the stimulus should come from upright loading and hip hinging rather than from repeatedly rounding the back.</p>"
+    },
+    {
+      "h2": "The muscles that hold you upright",
+      "html": "<p>Posture is not vanity in this context. A spine that is already drifting forward puts more compressive load through the front of the vertebrae with every hour of the day, and the muscles that should resist that drift are frequently long, weak and tired.</p><ul><li><a href=\"/muscles/multifidus\">Multifidus</a> and the deep spinal stabilizers hold segment-by-segment position and commonly switch off after a painful episode.</li><li><a href=\"/muscles/iliocostalis\">Iliocostalis</a> and <a href=\"/muscles/longissimus\">longissimus</a>, the long back extensors, do the work of keeping the chest up; when they fatigue, the upper back rounds and the ache <a href=\"/pain/between-shoulder-blades\">between the shoulder blades</a> starts.</li><li><a href=\"/muscles/gluteus-maximus\">Gluteus maximus</a> drives hip extension. When it is weak, standing and walking are powered by the low back instead.</li><li><a href=\"/muscles/gluteus-medius\">Gluteus medius</a> steadies the pelvis on one leg, which is the single most relevant piece of strength for staying upright on uneven ground.</li><li><a href=\"/muscles/quadratus-lumborum\">Quadratus lumborum</a> shortens on one side when posture is asymmetrical and adds <a href=\"/pain/flank\">flank</a> ache.</li></ul>"
+    },
+    {
+      "h2": "How the work is built at MD Fit",
+      "html": "<p>The first visit assesses how you stand, how you move from sitting to standing, hip and thoracic mobility, single-leg balance, and grip strength. Hands-on release goes to whatever is restricting upright posture, often the chest and hip flexors. Correction teaches hinging from the hips so loads are lifted without rounding the spine, which is a skill you will use dozens of times a day.</p><p>Homework lives in the free MD Fit app as short daily routines. Strengthening is then progressive and genuinely loaded, because that is the part that matters for bone, built around upright patterns: carries, hip hinges within your tolerance, step-ups, pushing and pulling. Balance and reaction work runs alongside from the first week.</p><p>This runs with your physician's plan, not instead of it. Medication, supplementation and repeat scanning stay with them, and coordinating is welcome.</p>"
+    },
+    {
+      "h2": "A note for Sarasota",
+      "html": "<p>A large share of our neighbours are in the decades where bone density is monitored, and many are active in ways that are genuinely protective: tennis, pickleball, golf, walking, swimming. Swimming and cycling are superb for the heart and nearly silent for bone, because the load is taken by the water or the frame, so they are usually paired with something weight-bearing rather than relied on alone.</p><p><a href=\"/conditions/balance-fall-prevention\">Balance and fall prevention</a> is built into every plan here, because the fracture that changes someone's life is almost always the one that followed a fall.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": "Strength and balance usually improve within weeks, and those are what protect you from a fall in the meantime. Bone itself adapts slowly, and changes on a DXA scan are measured over a year or more by your physician, not by anything visible here.",
+  "redFlags": [
+    "Sudden, severe back pain after a minor strain, a cough, or lifting something light: that pattern can indicate a vertebral fracture and needs a physician promptly.",
+    "Any new pain after a fall, however minor the fall seemed.",
+    "Losing height, or clothes fitting differently through the trunk.",
+    "Back pain that is worse lying flat at night, or comes with fever or unexplained weight loss.",
+    "New numbness, weakness in the legs, or any change in bladder or bowel control: go to the emergency room."
+  ],
+  "faq": [
+    {
+      "q": "Can exercise reverse osteoporosis?",
+      "a": "Exercise is one input among several and it works slowly. Resistance and weight-bearing work support bone, and strength and balance reduce the chance of the fall that causes a fracture. Your physician manages the medical side and tracks what the scans show."
+    },
+    {
+      "q": "Is it safe to lift weights with osteoporosis?",
+      "a": "For most people, appropriately dosed resistance training is encouraged rather than avoided, because bone needs meaningful load to adapt. What needs care is the position and the progression, which is what the assessment is for."
+    },
+    {
+      "q": "What should I bring to the first visit?",
+      "a": "Your DXA report if you have it, any fracture history, and any restrictions your physician has given. Those shape the programme from the start."
+    },
+    {
+      "q": "Is walking enough?",
+      "a": "Walking is good for your heart, your weight and your mood, and it is worth doing. On its own it asks relatively little of the hip and spine, so it is usually paired with resistance work and balance training."
+    }
+  ],
+  "muscles": [
+    "multifidus",
+    "iliocostalis",
+    "longissimus",
+    "glute-max",
+    "glute-med",
+    "ql"
+  ],
+  "pain": [
+    "beside-the-spine",
+    "between-shoulder-blades",
+    "flank"
+  ],
+  "guides": [],
+  "related": [
+    "/conditions/postural-kyphosis",
+    "/conditions/balance-fall-prevention",
+    "/treatments/clinical-exercise-physiology",
+    "/activities/seniors-strength-balance",
+    "/conditions/vertebral-compression-fracture",
+    "/treatments/strength-and-performance",
+    "/conditions/low-back-pain"
+  ],
+  "reviewStatus": "draft"
+}

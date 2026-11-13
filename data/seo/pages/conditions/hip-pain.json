@@ -1,0 +1,92 @@
+{
+  "slug": "hip-pain",
+  "title": "Hip Pain Treatment in Sarasota, FL | MD Fit",
+  "h1": "Hip Pain Treatment in Sarasota, FL",
+  "description": "Hip pain in Sarasota: outer hip, groin or deep buttock. Dr. Jared Caban finds which structure is driving it and builds the strength that holds.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Hip pain"
+  },
+  "lead": "Hip pain means three quite different things depending on where you point. Outer hip, groin and deep buttock each come from different structures and need different treatment, so the first job is working out which one you have.",
+  "sections": [
+    {
+      "h2": "Point to it, and the field narrows",
+      "html": "<ul><li><b><a href=\"/pain/outside-of-hip\">Outer hip</a>, painful to lie on.</b> Usually the gluteal tendons where they attach to the bony point, with <a href=\"/muscles/gluteus-medius\">gluteus medius</a> and <a href=\"/muscles/gluteus-minimus\">gluteus minimus</a> involved. Often called bursitis; more often tendon. See <a href=\"/conditions/hip-bursitis\">outer hip pain</a>.</li><li><b><a href=\"/pain/groin\">Groin</a>, deep and catching.</b> Points to the joint itself: arthritis, a labral problem, or hip flexor involvement. See <a href=\"/conditions/hip-osteoarthritis\">hip osteoarthritis</a> and <a href=\"/conditions/hip-labral-tear\">labral tear</a>.</li><li><b><a href=\"/pain/middle-of-buttock\">Deep buttock</a>.</b> <a href=\"/muscles/piriformis\">Piriformis</a> and the deep rotators, or referral from the low back.</li><li><b><a href=\"/pain/buttock-crease\">Sitting bone</a>.</b> Hamstring tendon at its origin, painful with prolonged sitting and driving.</li></ul>"
+    },
+    {
+      "h2": "The pattern behind most of it",
+      "html": "<p>The gluteus medius is the muscle that keeps your pelvis level when you stand on one leg, which you do every step you take. When it is weak, the pelvis drops, the tendon on the outside gets compressed against the bone, and the band down the side of the thigh tightens to compensate.</p><p>Meanwhile <a href=\"/muscles/psoas\">psoas</a> and <a href=\"/muscles/iliacus\">iliacus</a> shorten from sitting and limit hip extension, so the pelvis tips forward and the <a href=\"/muscles/tensor-fasciae-latae\">tensor fasciae latae</a> takes over work the glutes should do. The result is a hip that aches on the outside, feels tight in front, and does not improve with stretching alone.</p>"
+    },
+    {
+      "h2": "What happens at your evaluation",
+      "html": "<p>Dr. Jared tests hip range in all directions, screens the joint itself, and checks gluteal strength in the positions where it actually matters: single-leg stance, step-down, getting out of a chair. He palpates the gluteal tendons, piriformis and hip flexors to find what reproduces your pain, and screens the low back, which refers into the hip often enough to matter.</p>"
+    },
+    {
+      "h2": "How MD Fit treats it",
+      "html": "<p>Release of the hip flexors, TFL and the deep rotators usually improves range in the first visit. Correction restores hip extension and rotation so the pelvis stops tipping. Then strengthening, which for the glutes means loaded single-leg work rather than clamshells with a band.</p><p>If the outer hip tendons are the issue, compression is the thing to avoid early: no crossing the legs, no sleeping with the top knee dropped across, no deep stretching of the band across the painful side. Those positions squeeze exactly the tissue that is already irritated.</p><p>After hip replacement, rehab follows your surgeon's precautions. See <a href=\"/conditions/hip-replacement-rehab\">hip replacement rehab</a>.</p>"
+    },
+    {
+      "h2": "What you can do this week",
+      "html": "<ol><li>Stop crossing your legs and put a pillow between your knees at night if you side-sleep.</li><li>Stand evenly rather than hanging on one hip when you are waiting in line.</li><li>Practise standing on one leg while brushing your teeth, keeping the pelvis level.</li><li>Break up long sitting, which is what shortens the hip flexors in the first place.</li></ol>"
+    },
+    {
+      "h2": "Outer hip pain is common and commonly mislabelled",
+      "html": "<p>Pain on the point of the hip that hurts to lie on is frequently called bursitis, but the tendon is more often the structure involved. The distinction matters because the treatment differs: a bursa calms with rest, a tendon needs graded loading. Getting this right is one of the more satisfying corrections in this practice.</p>"
+    }
+  ],
+  "timeline": null,
+  "redFlags": [
+    "Inability to bear weight after a fall, especially with osteoporosis, which may indicate a fracture and needs urgent assessment.",
+    "A hot, red, swollen hip with fever, which needs urgent medical assessment.",
+    "Groin pain with night pain that is unrelenting, or with unexplained weight loss.",
+    "Hip pain with numbness in the groin or saddle area, or loss of bladder or bowel control: this is an emergency.",
+    "A hip that gives way suddenly or locks, which should be assessed before loading it."
+  ],
+  "faq": [
+    {
+      "q": "Is outer hip pain bursitis?",
+      "a": "Often it is the gluteal tendon rather than the bursa. The two are treated differently, which is why the evaluation is worth doing before settling on a label."
+    },
+    {
+      "q": "Why does it hurt more at night?",
+      "a": "Side-lying compresses the tendon on the outside of the hip directly against the bone. A pillow between the knees and avoiding the painful side usually helps while the tendon settles."
+    },
+    {
+      "q": "Do you help after hip replacement?",
+      "a": "Yes. Rehab follows your surgeon's precautions and rebuilds the gluteal strength that walking and stairs depend on."
+    },
+    {
+      "q": "Could my hip pain be coming from my back?",
+      "a": "It can. The low back refers into the buttock and outer hip frequently, which is why the back is screened at the first visit even when the hip is what hurts."
+    }
+  ],
+  "muscles": [
+    "glute-med",
+    "glute-min",
+    "tfl",
+    "psoas",
+    "iliacus",
+    "piriformis"
+  ],
+  "pain": [
+    "outside-of-hip",
+    "groin",
+    "middle-of-buttock",
+    "buttock-crease"
+  ],
+  "guides": [
+    "lateral-hip"
+  ],
+  "related": [
+    "/conditions/hip-bursitis",
+    "/conditions/hip-osteoarthritis",
+    "/conditions/hip-labral-tear",
+    "/conditions/hip-replacement-rehab",
+    "/conditions/it-band-syndrome",
+    "/conditions/low-back-pain",
+    "/muscles/gluteus-medius"
+  ],
+  "group": "conditions",
+  "steps": null,
+  "reviewStatus": "draft"
+}

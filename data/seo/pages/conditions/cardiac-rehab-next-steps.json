@@ -1,0 +1,83 @@
+{
+  "group": "conditions",
+  "slug": "cardiac-rehab-next-steps",
+  "title": "After Cardiac Rehab in Sarasota | MD Fit",
+  "h1": "After Cardiac Rehab in Sarasota, FL: What Comes Next",
+  "description": "Finished cardiac rehab and not sure what comes next? A Clinical Exercise Physiologist in Sarasota continues the work, after your cardiologist's clearance.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Cardiac rehabilitation"
+  },
+  "lead": "Hospital cardiac rehab ends on a scheduled date, not when you are finished improving. A lot of people walk out of that last session fitter and more confident than they have been in years, and then have nowhere to take it. This page is about that gap.",
+  "sections": [
+    {
+      "h2": "The problem with the last session",
+      "html": "<p>Formal cardiac rehab is a good programme. It is also a finite one. When it ends, people usually land in one of three places:</p><ul><li>They join a regular gym, find nobody there understands their history, and quietly stop going.</li><li>They keep doing exactly what they did in rehab, at the same intensity, for years — safe, but no longer progressing.</li><li>They do nothing, lose what they gained over the following months, and feel it.</li></ul><p>None of those is the intended outcome. The intent is that you keep going, with the dose continuing to move. That requires someone who can read your history and adjust it, which is what a Clinical Exercise Physiologist is trained for.</p><p>There is also a group who were never offered formal rehab at all — because of where they were treated, insurance, timing, or because their event was managed in a way that did not trigger a referral. The same applies to them.</p>"
+    },
+    {
+      "h2": "This starts with your cardiologist, not with me",
+      "html": "<p>Being explicit, because this is the part that matters most: <b>this service is for people who are medically stable and have been cleared by their cardiologist to exercise.</b> It is not a substitute for cardiac rehab, not a substitute for cardiology care, and not somewhere to come instead of being properly assessed after a cardiac event.</p><p>What I need from you at the evaluation is your diagnosis, your medication list, your discharge summary or rehab summary if you have one, and any limits your cardiologist has set — a heart rate ceiling, a weight restriction, sternal precautions after surgery, anything they told you to avoid. Those limits are the frame the plan is built inside, not suggestions to work around.</p><p>With your permission I write to your cardiologist after the evaluation and whenever the plan changes meaningfully. I do not manage your medication, your devices or your cardiac care. I manage the exercise.</p>"
+    },
+    {
+      "h2": "What continuing looks like in practice",
+      "html": "<p>Rehab usually leaves people with a walking or cycling habit and modest strength work. The next phase is about carefully extending both, in ways your history allows.</p><ul><li><b>Aerobic progression</b> that moves beyond the fixed rehab dose — longer, or slightly harder, but changing one variable at a time so a reaction is traceable.</li><li><b>Resistance training</b> built around controlled breathing. The caution after a cardiac event is straining and breath-holding, not weights as such, and getting the breathing automatic is most of the work early on.</li><li><b>Sternal precautions</b> respected in full if you had open surgery, with the upper body progressed only on the timeline your surgeon set.</li><li><b>Everyday capacity</b> — stairs, carrying shopping, getting off the floor, walking the course. Most people care far more about these than about any number.</li></ul><p>The large muscle groups do the useful work here: <a href=\"/muscles/gluteus-maximus\">gluteus maximus</a>, the <a href=\"/muscles/vastus-lateralis\">quadriceps</a>, <a href=\"/muscles/latissimus-dorsi\">latissimus dorsi</a> and <a href=\"/muscles/gastrocnemius\">calves</a>.</p>"
+    },
+    {
+      "h2": "Intensity, symptoms and knowing when to stop",
+      "html": "<p>Much of the confidence people lose after a cardiac event is about not knowing which sensations are normal. Part of the job is handing that judgement back to you.</p><p>We go through how to set intensity in a way that works for your medication — several cardiac drugs blunt the heart rate response, so a heart rate target alone can be misleading. We go through what effort is meant to feel like, what breathlessness is expected versus concerning, and the specific symptoms that mean stop today and call someone.</p><p>You also get a written plan that your cardiologist can read, so everyone is working from the same document rather than from your recollection of what I said.</p>"
+    },
+    {
+      "h2": "Why a CEP rather than a personal trainer",
+      "html": "<p>No disrespect intended to trainers — but the credential matters here. A Clinical Exercise Physiologist is specifically trained to prescribe exercise for people with cardiovascular, metabolic and pulmonary conditions: the dosing, the contraindications, what to watch for. Dr. Jared holds the CEP and CCEP credentials and is also a physician, so your discharge summary and your exercise plan are read by the same person.</p><p>MD Fit is self-pay, with no insurance billing and no referral required, though your cardiologist's clearance is. If you also have <a href=\"/conditions/exercise-and-high-blood-pressure\">high blood pressure</a>, <a href=\"/conditions/exercise-for-type-2-diabetes\">type 2 diabetes</a>, or joint problems such as <a href=\"/conditions/knee-osteoarthritis\">knee arthritis</a>, those belong in the same plan rather than in three separate ones.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Chest pain, pressure, tightness or discomfort spreading to the jaw, neck, back or arm: stop and call 911.",
+    "Severe or unusual shortness of breath, fainting, or a feeling that you are about to pass out: stop and seek emergency care.",
+    "A racing, pounding or irregular heartbeat that is new for you, or that does not settle with rest.",
+    "New or worsening swelling in the ankles or legs, or breathlessness when lying flat.",
+    "Any symptom your cardiologist specifically told you to watch for: their instruction takes priority over anything in your exercise plan."
+  ],
+  "faq": [
+    {
+      "q": "Do I need my cardiologist's clearance first?",
+      "a": "Yes. This service is for people who are medically stable and cleared to exercise. Bring any limits they have set and they will be built into the plan."
+    },
+    {
+      "q": "Is this the same as cardiac rehab?",
+      "a": "No. Formal cardiac rehab is a monitored medical programme. This is exercise care for afterwards, for people who are stable and cleared, and it is not a replacement for rehab if you have been offered it."
+    },
+    {
+      "q": "I had bypass surgery. When can I start upper body work?",
+      "a": "On the timeline your surgeon set. Sternal precautions are respected in full, and the upper body is progressed only once they have lifted them."
+    },
+    {
+      "q": "My heart rate does not go up much on my medication. How do we set intensity?",
+      "a": "Several cardiac medications blunt the heart rate response, so a heart rate target can be misleading. We use methods that still work for you, and we go through this at the evaluation."
+    }
+  ],
+  "muscles": [
+    "glute-max",
+    "vastus-lateralis",
+    "lats",
+    "gastroc",
+    "pec-major-clav"
+  ],
+  "pain": [
+    "front-of-chest",
+    "front-of-thigh"
+  ],
+  "guides": [],
+  "related": [
+    "/treatments/clinical-exercise-physiology",
+    "/conditions/exercise-and-high-blood-pressure",
+    "/conditions/exercise-and-cholesterol",
+    "/conditions/returning-to-exercise-after-a-long-break",
+    "/conditions/vo2max-and-cardiorespiratory-fitness",
+    "/activities/seniors-strength-balance",
+    "/conditions/metabolic-syndrome-and-exercise"
+  ],
+  "reviewStatus": "draft"
+}

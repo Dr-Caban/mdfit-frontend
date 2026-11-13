@@ -1,0 +1,92 @@
+{
+  "slug": "sciatica",
+  "title": "Sciatica-Type Pain Treatment in Sarasota, FL | MD Fit",
+  "h1": "Sciatica-Type Pain Treatment in Sarasota, FL",
+  "description": "Sciatica-type leg pain in Sarasota. Dr. Jared Caban separates true nerve irritation from muscle-referred pain, then treats what is actually driving it.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Sciatica"
+  },
+  "lead": "Sciatica describes a symptom, not a diagnosis: pain travelling from the back or buttock down the leg. The useful question is what is irritating the nerve, because muscle-referred pain and true nerve compression feel remarkably alike and are treated differently.",
+  "sections": [
+    {
+      "h2": "Two different problems that feel the same",
+      "html": "<p>True sciatic nerve irritation usually travels below the knee, often with numbness, pins and needles or weakness. It frequently has a clear line, follows the back of the thigh into the calf or foot, and is worse with coughing, sneezing or sitting.</p><p>Muscle-referred pain can cover the same ground. The <a href=\"/muscles/gluteus-minimus\">gluteus minimus</a> in particular refers a deep ache down the outside of the leg that people and clinicians alike call sciatica for years. It stops above the ankle, has no true numbness, and is reproduced by pressing the muscle.</p><p>The distinction matters. Nerve pain needs the pressure taken off; muscle-referred pain needs the muscle treated. Treating one as the other is why some people cycle through care without progress.</p>"
+    },
+    {
+      "h2": "The usual sources",
+      "html": "<ul><li><b>Disc-related nerve irritation.</b> Worse sitting, better standing or walking, often with a clear dermatomal line. See <a href=\"/conditions/herniated-disc\">disc-related back pain</a>.</li><li><b><a href=\"/muscles/piriformis\">Piriformis</a> and the deep rotators.</b> Deep <a href=\"/pain/middle-of-buttock\">buttock pain</a>, worse with prolonged sitting, sometimes with the nerve running through or under the muscle.</li><li><b><a href=\"/muscles/gluteus-minimus\">Gluteus minimus</a>.</b> The great impersonator. Refers down the <a href=\"/pain/outside-of-thigh\">outside of the thigh</a> toward the ankle.</li><li><b><a href=\"/muscles/gluteus-medius\">Gluteus medius</a> and <a href=\"/muscles/quadratus-lumborum\">quadratus lumborum</a>.</b> Refer into the <a href=\"/pain/upper-buttock\">upper buttock</a> and hip.</li><li><b>Narrowing in the canal.</b> Leg symptoms with walking that ease on sitting or leaning forward. See <a href=\"/conditions/spinal-stenosis\">spinal stenosis</a>.</li></ul>"
+    },
+    {
+      "h2": "How the evaluation separates them",
+      "html": "<p>Dr. Jared tests nerve tension, reflexes, strength and sensation, then palpates the hip and buttock muscles to see whether pressing them reproduces your exact leg pain. Position testing matters too: what sitting does, what standing does, what bending forward or back does.</p><p>If the findings point to genuine nerve compression with progressive weakness, that goes to a physician. If the findings point to the muscles, which is common, treatment starts the same day.</p>"
+    },
+    {
+      "h2": "What treatment involves",
+      "html": "<p>For the muscular picture: release of the deep rotators and glutes, mobility work for the hips and spine, and strengthening so the pattern holds. Many people feel a change in the first visit because a muscle that has been guarding for months lets go.</p><p>For nerve-related pain: find the positions that take pressure off, keep moving within them, and build the hip and core strength that reduces the load. Daily routines come through the free MD Fit app.</p><p>Either way, prolonged rest is not the answer. Nerves respond badly to immobility, and so do the muscles around them.</p>"
+    },
+    {
+      "h2": "What you can do right now",
+      "html": "<ol><li>Find the position that eases it and use it often. That is useful information, not avoidance.</li><li>If sitting makes it worse, stand and walk in short intervals rather than pushing through a long sit.</li><li>Avoid deep stretching of the painful leg early on. Stretching an irritated nerve usually flares it.</li><li>Keep walking at whatever distance stays comfortable.</li></ol>"
+    },
+    {
+      "h2": "When it is not sciatica at all",
+      "html": "<p>Leg pain with walking that stops when you stand still can be circulation rather than nerve, and belongs with a physician. <a href=\"/conditions/hip-osteoarthritis\">Hip arthritis</a> gives groin pain and limping. <a href=\"/conditions/si-joint-pain\">SI joint pain</a> sits over the dimple and rarely goes below the knee. Numb feet on both sides regardless of position suggests peripheral neuropathy. These distinctions belong in the first visit, not the sixth.</p>"
+    }
+  ],
+  "timeline": null,
+  "redFlags": [
+    "Numbness in the groin, inner thighs or saddle area, or new loss of bladder or bowel control: call 911 or go to an emergency room now.",
+    "Leg weakness that is getting worse, or a foot that catches or drops when you walk.",
+    "Severe pain in both legs at once, which is less typical and needs medical assessment.",
+    "Fever, unexplained weight loss, or a history of cancer alongside new leg pain.",
+    "Leg pain brought on by walking that stops when you simply stand still, which can indicate a circulation problem."
+  ],
+  "faq": [
+    {
+      "q": "Is all leg pain sciatica?",
+      "a": "No. True nerve irritation and muscle-referred pain can feel alike. The evaluation separates them, and anything that needs a medical referral is flagged at the first visit."
+    },
+    {
+      "q": "When should I see a doctor urgently?",
+      "a": "Numbness in the groin or saddle area, loss of bladder or bowel control, or rapidly worsening leg weakness need emergency care right away. Call 911."
+    },
+    {
+      "q": "What does treatment involve?",
+      "a": "Release of the muscles that reproduce your pain, mobility work for the hips and spine, and progressive strengthening so the pain does not return."
+    },
+    {
+      "q": "Should I stretch my hamstring if it feels tight?",
+      "a": "Often that tightness is nerve tension rather than a short muscle, and stretching it hard makes it worse. Dr. Jared will show you how to tell the difference."
+    }
+  ],
+  "muscles": [
+    "piriformis",
+    "glute-min",
+    "glute-med",
+    "ql",
+    "psoas",
+    "glute-max"
+  ],
+  "pain": [
+    "middle-of-buttock",
+    "outside-of-thigh",
+    "back-of-thigh",
+    "upper-buttock"
+  ],
+  "guides": [
+    "lateral-hip"
+  ],
+  "related": [
+    "/conditions/herniated-disc",
+    "/conditions/piriformis-syndrome",
+    "/conditions/low-back-pain",
+    "/conditions/spinal-stenosis",
+    "/conditions/si-joint-pain",
+    "/muscles/piriformis",
+    "/muscles/gluteus-minimus"
+  ],
+  "group": "conditions",
+  "steps": null,
+  "reviewStatus": "draft"
+}

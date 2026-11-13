@@ -1,0 +1,92 @@
+{
+  "group": "conditions",
+  "slug": "suprascapular-nerve-entrapment",
+  "title": "Suprascapular Nerve Entrapment, Sarasota | MD Fit",
+  "h1": "Suprascapular Nerve Entrapment in Sarasota, FL",
+  "description": "A deep, hard-to-point-to shoulder ache with weakness turning the arm outward. How it differs from a rotator cuff tear. MD Fit, Sarasota.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Suprascapular nerve entrapment"
+  },
+  "lead": "The suprascapular nerve runs across the top of the shoulder blade through two narrow notches, supplying the two rotator cuff muscles that sit on its upper back surface. When it is compressed, the shoulder aches deeply and those two muscles weaken, which looks very much like a cuff tear. Diagnosis belongs to a physician; this page explains how the two differ and what care involves.",
+  "sections": [
+    {
+      "h2": "What it feels like",
+      "html": "<ul><li>A deep, dull ache in the back and top of the shoulder that is hard to point to with one finger.</li><li>Pain felt around the <a href=\"/pain/deep-shoulder-joint\">deep shoulder joint</a>, the <a href=\"/pain/back-of-shoulder\">back of the shoulder</a> or <a href=\"/pain/on-shoulder-blade\">on the shoulder blade</a>.</li><li>Weakness turning the arm outward, so opening a door or reaching for a seatbelt feels feeble.</li><li>Symptoms worse with overhead and across-the-body movements.</li><li>In longer-standing cases, a visible hollow above or below the spine of the shoulder blade compared with the other side.</li></ul><p>The ache is often described as being inside the shoulder rather than on it, which is characteristic of nerve rather than tendon pain.</p>"
+    },
+    {
+      "h2": "How it differs from a rotator cuff tear",
+      "html": "<p>Both produce shoulder pain with weakness, and they are regularly confused.</p><ul><li><b><a href=\"/conditions/rotator-cuff-tear\">A rotator cuff tear</a></b> usually has a clear mechanical story, a painful arc of movement, tenderness around the tendon, and weakness that is limited by pain. Night pain lying on that side is typical.</li><li><b>Suprascapular entrapment</b> produces weakness that is out of proportion to the pain, particularly in outward rotation, and the ache is deeper and more diffuse. Muscle wasting above or below the spine of the shoulder blade is a strong clue, and it is a finding a physician should evaluate.</li></ul><p>Imaging shows the tendons; nerve testing shows the nerve. The two can coexist, and a cuff tear that has been treated without improvement is sometimes a nerve problem that was missed.</p>"
+    },
+    {
+      "h2": "Why the nerve gets compressed",
+      "html": "<p>The nerve has to pass through two tight notches on the shoulder blade, and it is tethered at both. Contributors include:</p><ul><li>Repeated overhead activity, particularly throwing, serving and swimming.</li><li>A cyst near the back of the shoulder joint, often associated with a labral tear, which presses on the nerve at the lower notch. This is a medical finding.</li><li>A shoulder blade that does not move well, which increases traction on the nerve with every overhead reach.</li><li>Heavy carrying with a strap across the top of the shoulder.</li><li>A previous shoulder injury or dislocation.</li></ul><p>Tight <a href=\"/muscles/upper-trapezius\">upper trapezius</a> and <a href=\"/muscles/levator-scapulae\">levator scapulae</a> with a weak <a href=\"/muscles/serratus-anterior\">serratus anterior</a> leave the shoulder blade poorly controlled, which is the mechanical pattern I can actually change.</p>"
+    },
+    {
+      "h2": "What MD Fit assesses and treats",
+      "html": "<p>I compare strength in outward rotation against the other side, look carefully for wasting, and watch how your shoulder blade moves as the arm goes up. I check <a href=\"/muscles/infraspinatus\">infraspinatus</a> and <a href=\"/muscles/supraspinatus\">supraspinatus</a> specifically, along with the mobility of the shoulder blade and upper spine.</p><p>Hands-on work releases the muscles around the shoulder blade and restores its glide across the ribcage. Correction is about overhead load and about getting the shoulder blade to rotate properly rather than the arm doing all the work. You take home a daily routine in the free MD Fit app. Strengthening rebuilds the cuff and the muscles that control the shoulder blade, because weakness persists long after the nerve settles.</p><p>If there is clear wasting, or weakness that is not explained by pain, I will send you for assessment before continuing. A cyst compressing the nerve does not resolve with exercise, and finding it early matters.</p>"
+    },
+    {
+      "h2": "Early steps that usually help",
+      "html": "<ol><li>Reduce overhead volume for a few weeks rather than stopping all activity.</li><li>Change bag straps that press across the top of the shoulder.</li><li>Work on shoulder blade movement daily, before adding any strengthening.</li><li>Do not push through weakness with heavy overhead loading, which usually makes the picture harder to read.</li></ol>"
+    },
+    {
+      "h2": "Sarasota note",
+      "html": "<p>Tennis serves, overhead pickleball and lap swimming all feature in the histories I see. A sudden increase in volume, often after a move here or the start of a season, is a common trigger. If weakness is the main complaint rather than pain, that is worth saying clearly at the first visit.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Visible hollowing or wasting of the muscles on the shoulder blade compared with the other side: see a physician promptly.",
+    "Weakness that is clearly out of proportion to the pain, or that is getting worse.",
+    "Shoulder pain following a fall or dislocation that has not been assessed.",
+    "Numbness or weakness spreading down the arm or into the hand.",
+    "Shoulder pain with chest pressure, shortness of breath, sweating or nausea: call 911."
+  ],
+  "faq": [
+    {
+      "q": "How is this different from a rotator cuff tear?",
+      "a": "A cuff tear usually has a mechanical story and weakness limited by pain. Suprascapular entrapment tends to produce weakness out of proportion to pain, a deeper and vaguer ache, and sometimes visible muscle wasting. Imaging and nerve testing tell them apart."
+    },
+    {
+      "q": "What is the hollow in my shoulder blade?",
+      "a": "Loss of muscle bulk in the area a nerve supplies can produce a visible hollow. It is an important finding and should be assessed by a physician rather than treated as a cosmetic change."
+    },
+    {
+      "q": "Can exercise fix it?",
+      "a": "If the nerve is irritated by mechanics and overhead load, improving shoulder blade control often helps a great deal. If a cyst is compressing the nerve, exercise will not resolve it and medical treatment comes first."
+    },
+    {
+      "q": "Why does my shoulder feel weak but not very painful?",
+      "a": "Nerve compression affects the muscles a nerve supplies, so strength can drop while pain stays modest. That combination is one of the clues that separates it from a tendon problem."
+    }
+  ],
+  "muscles": [
+    "infraspinatus",
+    "supraspinatus",
+    "upper-trap",
+    "levator",
+    "serratus",
+    "teres-minor"
+  ],
+  "pain": [
+    "deep-shoulder-joint",
+    "back-of-shoulder",
+    "top-of-shoulder",
+    "on-shoulder-blade"
+  ],
+  "guides": [
+    "rotator-cuff"
+  ],
+  "related": [
+    "/conditions/rotator-cuff-tear",
+    "/conditions/shoulder-impingement",
+    "/conditions/frozen-shoulder",
+    "/conditions/shoulder-pain",
+    "/conditions/thoracic-outlet-symptoms",
+    "/muscles/infraspinatus",
+    "/treatments/functional-mobility"
+  ],
+  "reviewStatus": "draft"
+}

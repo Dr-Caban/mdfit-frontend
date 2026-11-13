@@ -1,0 +1,91 @@
+{
+  "group": "conditions",
+  "slug": "exercise-for-type-2-diabetes",
+  "title": "Exercise for Type 2 Diabetes in Sarasota | MD Fit",
+  "h1": "Exercise for Type 2 Diabetes in Sarasota, FL",
+  "description": "A Clinical Exercise Physiologist builds the weekly exercise plan your doctor asked for. Sarasota, self-pay, alongside the physician who manages your diabetes.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Type 2 diabetes"
+  },
+  "lead": "Your physician manages your type 2 diabetes: the diagnosis, the medication, the lab work. What often goes missing is the part where somebody turns “you need to exercise more” into a specific weekly plan that fits your body, your joints and your schedule. That is what a Clinical Exercise Physiologist does, and it is what Dr. Jared Caban does at MD Fit.",
+  "sections": [
+    {
+      "h2": "Who this is for",
+      "html": "<p>Most people who come to me with type 2 diabetes or prediabetes are not avoiding exercise out of laziness. They are stuck for one of a handful of reasons:</p><ul><li>They were told to exercise but never told how much, how hard, or what kind.</li><li>They tried, their knees or back objected, and they stopped.</li><li>Their blood sugar did something unexpected during or after a workout and it frightened them.</li><li>They have neuropathy and are not sure what is safe on their feet.</li><li>They have a second condition, such as high blood pressure or a heart history, and nobody has looked at the whole picture at once.</li></ul><p>Because I am a physician as well as a CEP, the medical history and the exercise plan are read by the same person. That is the practical difference between this and a gym.</p>"
+    },
+    {
+      "h2": "Different kinds of exercise do different things to blood sugar",
+      "html": "<p>This is the piece most people were never told, and it explains a lot of confusing experiences.</p><ul><li><b>Steady aerobic work</b> — walking, cycling, the elliptical — tends to pull glucose out of the bloodstream while you are doing it and for a while afterwards. For many people this is the most predictable form.</li><li><b>Resistance training</b> builds and preserves muscle, and muscle is where most glucose goes after a meal. The effect here is slower and more structural: you are changing the size of the tank rather than emptying it today.</li><li><b>Hard interval work</b> can briefly push glucose <b>up</b> during the session because of the stress response, then down afterwards. People often read that rise as a failure when it is a normal response.</li><li><b>Timing</b> matters too. A short walk after a meal behaves differently from the same walk first thing in the morning.</li></ul><p>None of this is a reason to avoid any of it. It is a reason to know which one you are doing on a given day and what to expect from it.</p>"
+    },
+    {
+      "h2": "Medication, meals and the line I do not cross",
+      "html": "<p>Exercise can lower blood sugar, and some diabetes medications lower it too. If you take insulin or a sulfonylurea, the two together can take you lower than you expected. That is a real consideration and it belongs to the physician who prescribes those medications.</p><p>So here is the boundary, stated plainly: <b>I do not adjust your medication, change your doses, or tell you to skip one before a session.</b> I am not your endocrinologist or your primary care doctor, and this practice does not replace them. What I do is build the exercise plan, tell you what that plan is likely to do, and make sure your prescriber knows about it. With your permission I send a short summary after your evaluation and whenever the plan changes meaningfully, so the person managing your medication is working with current information rather than guessing.</p><p>If your readings behave in a way that needs a medication conversation, I will tell you that and help you get to the right person.</p>"
+    },
+    {
+      "h2": "Feet, neuropathy and what gets checked",
+      "html": "<p>If you have any loss of sensation in your feet, this part is not optional. Reduced feeling means a blister, a seam, or a stone in your shoe can become a wound you never felt arrive.</p><ul><li>We look at your feet at the evaluation, and I ask you to look at them daily at home.</li><li>Footwear gets checked properly — fit, seams, and whether anything is rubbing.</li><li>Where sensation is reduced, I usually bias the programme toward cycling, seated and supported work, and pool-based options rather than long walking, at least to start.</li><li>Any new wound, redness, or warmth on the foot stops exercise and goes to your physician promptly.</li></ul><p>The calf and foot muscles matter here too. <a href=\"/muscles/gastrocnemius\">Gastrocnemius</a>, <a href=\"/muscles/soleus\">soleus</a>, <a href=\"/muscles/tibialis-anterior\">tibialis anterior</a> and the <a href=\"/muscles/foot-intrinsic-muscles\">foot intrinsics</a> are what keep your gait stable and your <a href=\"/pain/sole-of-foot\">foot comfortable</a> over distance, and they are often weak and stiff by the time someone gets to me.</p>"
+    },
+    {
+      "h2": "What the first visit and the weeks after look like",
+      "html": "<p>The evaluation takes about 90 minutes. It covers your full history, your medication list, resting heart rate and blood pressure, a foot check where relevant, and a movement screen. Then I give you a conservative first dose of exercise in the room so I can watch how you respond rather than guess from a questionnaire. You leave with a written starting plan and notes your other providers can use.</p><p>Follow-ups usually run weekly at first. Each one adjusts the dose based on the week you actually had: how you felt, how your joints handled it, what your readings did if you monitor them. Between visits the plan lives in the free MD Fit app, where the videos show the same version of each exercise you practised in clinic.</p><p>The early weeks are deliberately modest. People often expect to be pushed and are surprised. The goal at the start is a routine your body tolerates well enough to repeat every week, because consistency over months is what actually changes strength, fitness and glucose handling.</p>"
+    },
+    {
+      "h2": "What this is and is not",
+      "html": "<p>This is exercise care that runs alongside your medical care. It is not a treatment for diabetes, not a replacement for your physician, and not a substitute for your medication or your lab monitoring. Nobody here will tell you that exercise alone will resolve your condition.</p><p>What it is: the part of the plan that turns “stay active” into something specific, safe and repeatable — built by someone who can read your chart, and adjusted every week based on how you actually respond. If you also have <a href=\"/conditions/knee-osteoarthritis\">knee arthritis</a>, <a href=\"/conditions/low-back-pain\">back pain</a> or <a href=\"/conditions/balance-fall-prevention\">balance trouble</a>, those get built into the same plan rather than treated as separate problems.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Shakiness, sweating, confusion, racing heart or sudden hunger during or after exercise can be low blood sugar: stop, treat it the way your physician has told you to, and tell them it happened.",
+    "Chest pain or pressure, unusual shortness of breath, dizziness or fainting during exercise: stop immediately and seek medical care.",
+    "Any new wound, blister, redness, warmth or swelling on your foot: stop walking on it and contact your physician promptly.",
+    "New or rapidly worsening numbness, burning or weakness in the feet or legs.",
+    "Blood sugar readings that are consistently much higher or lower than usual once you start exercising, which is a conversation with your prescriber, not something to push through."
+  ],
+  "faq": [
+    {
+      "q": "Do I need a referral to come to MD Fit?",
+      "a": "No. MD Fit is a self-pay practice and no referral is needed. Please do bring your diagnosis, your medication list and any restrictions your physician has given you, so the plan is built around them."
+    },
+    {
+      "q": "Will exercise mean I can reduce my medication?",
+      "a": "That is a decision for the physician who prescribes it, based on your readings and your lab work. My role is to build and supervise the exercise and keep your prescriber informed about what you are doing."
+    },
+    {
+      "q": "I have neuropathy. Is exercise still safe for me?",
+      "a": "Often yes, with the right choices. Reduced sensation usually means biasing toward cycling, seated or supported work and careful footwear rather than long walking, and checking your feet daily. We go through this at the evaluation."
+    },
+    {
+      "q": "What if my knees or back hurt when I try to exercise?",
+      "a": "That is one of the most common reasons people stop, and it is squarely in scope here. The joint problem gets assessed and worked on as part of the same plan rather than being treated as a separate issue."
+    }
+  ],
+  "muscles": [
+    "gastroc",
+    "soleus",
+    "tib-ant",
+    "foot-intrinsics",
+    "glute-max",
+    "vastus-lateralis"
+  ],
+  "pain": [
+    "sole-of-foot",
+    "lower-calf",
+    "front-of-thigh"
+  ],
+  "guides": [
+    "calf"
+  ],
+  "related": [
+    "/treatments/clinical-exercise-physiology",
+    "/conditions/metabolic-syndrome-and-exercise",
+    "/conditions/exercise-and-high-blood-pressure",
+    "/conditions/returning-to-exercise-after-a-long-break",
+    "/conditions/balance-fall-prevention",
+    "/activities/seniors-strength-balance",
+    "/conditions/knee-osteoarthritis"
+  ],
+  "reviewStatus": "draft"
+}

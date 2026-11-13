@@ -1,0 +1,91 @@
+{
+  "group": "conditions",
+  "slug": "bone-stress-injury",
+  "title": "Bone Stress Injury Care in Sarasota, FL | MD Fit",
+  "h1": "Bone Stress Injury and Stress Fracture in Sarasota, FL",
+  "description": "Pinpoint bone pain that starts earlier in every run? Learn how stress reactions and stress fractures differ from shin splints, and when to stop loading.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Bone stress injury"
+  },
+  "lead": "A bone stress injury is what happens when load is applied faster than bone can adapt to it. It sits on a spectrum, from a stress reaction that settles with rest to a true stress fracture, and the most important thing on this page is knowing when to stop and see a physician.",
+  "sections": [
+    {
+      "h2": "How a bone stress injury announces itself",
+      "html": "<p>The story is usually one of progression rather than a single moment. Nobody can name the step it happened on.</p><ul><li>Pain that appears later in a run at first, then earlier in each subsequent run, then during walking.</li><li>A small, pinpoint area of tenderness that you can cover with one fingertip, directly over bone rather than over muscle.</li><li>Aching that continues after activity stops, sometimes into the evening or at night.</li><li>Occasionally swelling or warmth over the spot.</li><li>A recent change: more mileage, a new surface, new shoes, a return after time off, a new sport taken up enthusiastically.</li></ul><p>That last point matters more than any other. Bone stress injuries follow change, and the change is often recent, sudden and well-intentioned.</p>"
+    },
+    {
+      "h2": "Why this page is cautious",
+      "html": "<p>Most of what this practice does involves loading tissue to make it stronger. A suspected bone stress injury is the clear exception, because continuing to load a stressed bone can turn a problem that settles in weeks into one that takes months, or in some locations into a complete fracture.</p><p>Some sites carry more risk than others and are treated with particular care, including the femoral neck at the hip, the front of the shin, the navicular in the midfoot, and the base of the fifth metatarsal. Pain in those areas deserves prompt medical assessment rather than a trial of rest.</p><p>It is also worth knowing that an early X-ray is often normal, which is why a reassuring X-ray does not always settle the question. Your physician decides whether further imaging is warranted.</p>"
+    },
+    {
+      "h2": "What it is often confused with",
+      "html": "<p><a href=\"/conditions/shin-splints\">Shin splints</a>, or medial tibial stress syndrome, is the usual confusion. Shin splints typically produce a diffuse ache along a stretch of the inner shin that you can run your whole hand over, and it commonly warms up and eases during activity. A bone stress injury is pinpoint, and it gets worse as activity continues rather than better.</p><p><a href=\"/conditions/plantar-fasciitis\">Plantar fasciitis</a> hurts most on the first steps in the morning and eases with movement. A calf strain or <a href=\"/conditions/achilles-tendon-pain\">Achilles problem</a> is tender in the muscle or tendon, not on the bone. None of these distinctions replaces a physician's assessment, but they explain why the self-check is a fingertip on the bone.</p>"
+    },
+    {
+      "h2": "The muscular picture underneath",
+      "html": "<p>Once a physician has set the medical course, there is real work to do on why the load landed where it did. The muscles below absorb force before it reaches bone, and when they fatigue or are weak, bone takes more of the impact.</p><ul><li><a href=\"/muscles/soleus\">Soleus</a> is the primary brake during running and is frequently the limiting factor; when it tires, shock transfers to the tibia. It aches in the <a href=\"/pain/lower-calf\">lower calf</a>.</li><li><a href=\"/muscles/tibialis-posterior\">Tibialis posterior</a> supports the arch and controls the foot's roll inward; weakness here loads the inner shin and midfoot, with pain at the <a href=\"/pain/inner-ankle-and-arch\">inner ankle and arch</a>.</li><li><a href=\"/muscles/tibialis-anterior\">Tibialis anterior</a> controls the foot lowering to the ground and gets overworked with sudden mileage increases.</li><li><a href=\"/muscles/gastrocnemius\">Gastrocnemius</a> stiffens, limits ankle dorsiflexion, and changes how the foot strikes.</li><li><a href=\"/muscles/foot-intrinsic-muscles\">Foot intrinsic muscles</a> support the arch from underneath and are frequently underused in cushioned shoes, with aching in the <a href=\"/pain/sole-of-foot\">sole of the foot</a>.</li></ul>"
+    },
+    {
+      "h2": "What MD Fit does, and when",
+      "html": "<p>If a bone stress injury is suspected, the first step is a physician, not a treatment plan here. Once imaging and medical guidance are in hand, the work has two phases.</p><p>During the protected phase, the aim is to keep you fit without loading the bone: cycling, pool running, upper body and core work, and hands-on release of the calf and foot muscles to keep tissue healthy. During the return phase, loading is reintroduced gradually and deliberately, with strength work for the calf complex, foot and hip so the tissue that should absorb impact actually does. Short daily routines come through the free MD Fit app.</p><p>Repeat bone stress injuries, or one in someone who is not an obvious candidate, raise questions about bone density and energy availability that belong with your physician. Those are worth asking rather than training through.</p>"
+    },
+    {
+      "h2": "A note for Sarasota",
+      "html": "<p>Two local patterns come up often. The first is the winter arrival who ramps training sharply in good weather after a quiet few months. The second is the newcomer to pickleball who goes from very little activity to several hours a week in a matter of weeks, on hard courts. Both are the same story: load applied faster than bone adapts. Building up over weeks rather than days prevents most of it.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": "Timelines here belong to your physician and depend on the site and severity. The general shape is a protected period followed by a graded return to loading, and returning too early is the most common reason this takes longer than it should.",
+  "redFlags": [
+    "Pinpoint bone tenderness with pain that continues at rest or at night: stop loading it and see a physician.",
+    "Groin or front-of-hip pain with weight-bearing in a runner, which needs prompt assessment because of the femoral neck.",
+    "Pain over the front of the shin, the midfoot, or the base of the little toe side of the foot that does not settle with a few days off.",
+    "Inability to put weight through the limb, or pain that came on suddenly during activity with a snap or pop.",
+    "Repeated bone stress injuries, missed periods, or a history of low bone density, all of which deserve a medical conversation."
+  ],
+  "faq": [
+    {
+      "q": "How do I tell shin splints from a stress fracture?",
+      "a": "Shin splints are usually a diffuse ache along a stretch of bone that warms up with activity. A bone stress injury tends to be pinpoint, worsens as you continue, and often aches afterwards. Imaging through your physician settles it."
+    },
+    {
+      "q": "Can I keep running if it only hurts a little?",
+      "a": "That is the pattern that turns a small problem into a long one. If a bone stress injury is suspected, loading it should pause until a physician has assessed it."
+    },
+    {
+      "q": "My X-ray was normal, so is it fine?",
+      "a": "Not necessarily. Early bone stress injuries are often not visible on X-ray, which is why your physician may recommend further imaging if the clinical picture fits."
+    },
+    {
+      "q": "What can I do while it heals?",
+      "a": "Usually a great deal. Cycling, pool work, upper body and core training keep fitness up while the bone is protected, within whatever limits your physician sets."
+    }
+  ],
+  "muscles": [
+    "soleus",
+    "tib-post",
+    "tib-ant",
+    "gastroc",
+    "foot-intrinsics",
+    "peroneals"
+  ],
+  "pain": [
+    "lower-calf",
+    "inner-ankle-and-arch",
+    "sole-of-foot",
+    "front-of-ankle"
+  ],
+  "guides": [
+    "calf"
+  ],
+  "related": [
+    "/conditions/shin-splints",
+    "/conditions/plantar-fasciitis",
+    "/conditions/achilles-tendon-pain",
+    "/conditions/osteoporosis-and-exercise",
+    "/treatments/clinical-exercise-physiology",
+    "/activities/snowbirds"
+  ],
+  "reviewStatus": "draft"
+}

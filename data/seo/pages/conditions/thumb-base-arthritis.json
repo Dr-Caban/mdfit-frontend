@@ -1,0 +1,89 @@
+{
+  "group": "conditions",
+  "slug": "thumb-base-arthritis",
+  "title": "Thumb Base Arthritis Care in Sarasota | MD Fit",
+  "h1": "Thumb Base Arthritis in Sarasota, FL",
+  "description": "Pain at the base of the thumb opening jars or turning keys? Dr. Jared Caban explains CMC arthritis, what it is not, and hands-on and strength care.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Thumb carpometacarpal osteoarthritis"
+  },
+  "lead": "Arthritis at the base of the thumb, where the thumb meets the wrist, is one of the most common sites of hand osteoarthritis. It announces itself through ordinary tasks: a jar lid, a key in a stiff lock, a heavy pan lifted one-handed.",
+  "sections": [
+    {
+      "h2": "What thumb base arthritis feels like",
+      "html": "<p>The joint involved is the carpometacarpal, or CMC, joint, sometimes called the basal joint. It is a saddle-shaped joint that lets the thumb swing across the palm, and that mobility comes at the cost of stability. The pattern is usually recognisable:</p><ul><li>An ache at the fleshy base of the thumb, close to the wrist, rather than in the thumb itself.</li><li>Sharp pain with pinching and gripping: jars, keys, pegs, buttons, scissors, a phone held one-handed.</li><li>Stiffness and soreness in the morning that eases with movement, then returns after a day of use.</li><li>Weakness in pinch grip, and dropping things that you used to hold easily.</li><li>Sometimes a visible squaring or bump at the base of the thumb as the joint changes shape.</li></ul><p>It is frequently worse in the dominant hand, and it is common for both hands to be involved to different degrees.</p>"
+    },
+    {
+      "h2": "What it is not",
+      "html": "<p>Three other problems live in the same neighbourhood and are regularly mixed up with this one. Telling them apart changes what helps.</p><ul><li><a href=\"/conditions/de-quervains\">De Quervain's tenosynovitis</a> hurts a little further back, over the bony bump on the thumb side of the wrist, and is provoked by tucking the thumb into the fist and bending the wrist toward the little finger. It is a tendon sheath problem, not a joint one.</li><li><a href=\"/conditions/carpal-tunnel-wrist-pain\">Carpal tunnel syndrome</a> produces numbness and tingling, classically waking you at night and easing when you shake the hand. Thumb base arthritis aches but does not usually go numb.</li><li><a href=\"/conditions/trigger-finger\">Trigger thumb</a> catches or locks as the thumb bends and straightens, with a tender nodule in the palm at the base of the thumb.</li></ul><p>A physician confirms the picture, often with an X-ray and a grind test of the joint. That diagnosis is theirs to make.</p>"
+    },
+    {
+      "h2": "Why the forearm matters for a thumb problem",
+      "html": "<p>The muscles that move the thumb and the muscles that stabilise the wrist sit in the forearm, and when the joint at the base of the thumb is irritable, the whole chain tightens to protect it. That protection becomes part of the problem:</p><ul><li><a href=\"/muscles/wrist-flexors\">Wrist flexors</a> and <a href=\"/muscles/finger-flexors\">finger flexors</a> grip harder than the task requires, compressing the joint, and refer ache into the <a href=\"/pain/palm-side-of-wrist\">palm side of the wrist</a>.</li><li><a href=\"/muscles/wrist-extensors\">Wrist extensors</a> and <a href=\"/muscles/finger-extensors\">finger extensors</a> work overtime to hold the wrist steady and get sore along the <a href=\"/pain/forearm\">forearm</a>.</li><li><a href=\"/muscles/brachioradialis\">Brachioradialis</a> refers pain toward the <a href=\"/pain/thumb-and-index-finger\">web of the thumb</a>, which can feel like the joint is spreading pain outward when the source is partly muscular.</li><li><a href=\"/muscles/supinator\">Supinator</a> stiffens with repeated twisting and limits forearm rotation, so the thumb and wrist absorb more of each turn.</li></ul><p>None of this is the arthritis itself. It is the layer on top, and it is the layer that responds quickly.</p>"
+    },
+    {
+      "h2": "How MD Fit approaches it",
+      "html": "<p>The assessment looks at the joint, the forearm muscles, forearm rotation, and how you actually use the hand through a day. Hands-on release of the forearm and thenar region often eases the resting ache and improves grip comfort in the same visit, because the joint stops being squeezed constantly.</p><p>Correction is largely about leverage. Most of the daily pain comes from a small number of high-force pinch movements, and nearly all of them have a lower-force alternative: a jar opener, a wider key fob, a thicker pen, lifting a pan with two hands under it rather than one hand around the handle. Changing how you hold a dozen everyday objects does more than any single exercise.</p><p>Strengthening follows for the muscles that support the base of the thumb and the first web space, dosed to stay below the point of irritation, with short routines in the free MD Fit app. Many people are also given a joint-supporting splint by their physician or hand therapist; hands-on and strength work sit comfortably alongside that.</p>"
+    },
+    {
+      "h2": "What you can do right now",
+      "html": "<ol><li>Switch to tools that widen the grip: jar openers, thicker pen barrels, loop handles on bags, electric can openers.</li><li>Carry with the forearm or both hands rather than pinching a load between thumb and fingers.</li><li>Keep the hand moving through its range gently several times a day; complete rest tends to stiffen the joint.</li><li>Pay attention to which single task hurts most, and find a way to do that one task differently.</li></ol><p>If grip is weakening noticeably, or the joint is hot and swollen, see your physician before continuing.</p>"
+    },
+    {
+      "h2": "A note for Sarasota",
+      "html": "<p>This is a frequent complaint among people who play a lot of racquet and paddle sports, and also among those who garden, sew, cook or work with their hands. A pickleball paddle held with a tense grip for two hours is a long time under load for a joint that is already irritable. Grip size, paddle weight and how tightly you hold it are all adjustable, and they are usually worth adjusting before giving up the game.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": "Resting ache and grip comfort often improve within the first few visits once the forearm releases and the high-force habits change. Building supporting strength is a slower project, commonly a couple of months of short daily work.",
+  "redFlags": [
+    "A hot, red, swollen joint, particularly with fever, which needs a physician the same day.",
+    "Numbness or tingling in the thumb and fingers, which points toward a nerve problem rather than the joint.",
+    "Rapidly worsening weakness, or the thumb giving way under light loads.",
+    "Pain that began after a fall onto the hand, which may be a fracture rather than arthritis.",
+    "Joint pain in many joints at once, with prolonged morning stiffness, which your physician should evaluate."
+  ],
+  "faq": [
+    {
+      "q": "Does thumb arthritis mean I will need surgery?",
+      "a": "Many people manage well for years without it, using activity changes, splinting, hands-on care and strengthening. Surgery is a conversation for your physician or hand surgeon if conservative care stops being enough."
+    },
+    {
+      "q": "Should I stop using the hand?",
+      "a": "Usually not. Complete rest tends to stiffen the joint and weaken the supporting muscles. The aim is to reduce the few highest-force pinch tasks while keeping general movement going."
+    },
+    {
+      "q": "Is this the same as carpal tunnel?",
+      "a": "No. Carpal tunnel is a nerve being compressed at the wrist and produces numbness and tingling, often at night. Thumb base arthritis is a joint problem and produces aching and pain with pinch and grip."
+    },
+    {
+      "q": "Can massage help an arthritic joint?",
+      "a": "Hands-on work does not change the joint surface, but it does ease the forearm muscles that tighten around it, which often reduces resting ache and makes grip more comfortable."
+    }
+  ],
+  "muscles": [
+    "wrist-flex",
+    "finger-flex",
+    "wrist-ext",
+    "finger-ext",
+    "brachioradialis",
+    "supinator"
+  ],
+  "pain": [
+    "thumb-and-index-finger",
+    "palm-side-of-wrist",
+    "forearm",
+    "back-of-wrist"
+  ],
+  "guides": [],
+  "related": [
+    "/conditions/de-quervains",
+    "/conditions/carpal-tunnel-wrist-pain",
+    "/conditions/trigger-finger",
+    "/conditions/tennis-elbow",
+    "/treatments/medical-massage",
+    "/activities/tennis"
+  ],
+  "reviewStatus": "draft"
+}

@@ -1,0 +1,96 @@
+{
+  "slug": "shoulder-pain",
+  "title": "Shoulder Pain Treatment in Sarasota, FL | MD Fit",
+  "h1": "Shoulder Pain Treatment in Sarasota, FL",
+  "description": "Shoulder pain in Sarasota. Dr. Jared Caban treats the rotator cuff and the shoulder blade control behind it, so the shoulder stops getting pinched.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Shoulder pain"
+  },
+  "lead": "The shoulder trades stability for range. It can reach anywhere, which means almost nothing holds it in place except muscle, and that is usually where shoulder pain begins and ends.",
+  "sections": [
+    {
+      "h2": "The shoulder blade is half the joint",
+      "html": "<p>Raising your arm overhead is not one joint moving. Roughly a third of the motion comes from the shoulder blade rotating up across the ribs, and that depends on the <a href=\"/muscles/serratus-anterior\">serratus anterior</a> and <a href=\"/muscles/lower-trapezius\">lower trapezius</a>. When they are weak, the blade does not rotate, the space under the acromion narrows, and the cuff tendons get compressed every time you reach.</p><p>Meanwhile the <a href=\"/muscles/upper-trapezius\">upper trapezius</a> and <a href=\"/muscles/levator-scapulae\">levator scapulae</a> overwork to lift the arm by shrugging, which produces the neck-and-shoulder ache that so often travels with shoulder pain.</p>"
+    },
+    {
+      "h2": "What the pattern suggests",
+      "html": "<ul><li><b>A painful arc partway up, easing at the top.</b> Classic pinching pattern. See <a href=\"/conditions/shoulder-impingement\">shoulder impingement</a>.</li><li><b><a href=\"/pain/outside-of-shoulder\">Outside of the shoulder</a>, worse reaching out or lying on it.</b> Often <a href=\"/muscles/supraspinatus\">supraspinatus</a> or <a href=\"/muscles/infraspinatus\">infraspinatus</a>.</li><li><b><a href=\"/pain/front-of-shoulder\">Front of the shoulder</a>.</b> Biceps tendon, <a href=\"/muscles/subscapularis\">subscapularis</a> or <a href=\"/muscles/pectoralis-minor\">pectoralis minor</a>.</li><li><b>Stiff in every direction, including passively.</b> Suggests the capsule rather than the cuff. See <a href=\"/conditions/frozen-shoulder\">frozen shoulder</a>.</li><li><b>Pain into the shoulder with neck movement or with pins and needles down the arm.</b> The neck is the likelier source.</li></ul>"
+    },
+    {
+      "h2": "What happens at your evaluation",
+      "html": "<p>Dr. Jared watches the shoulder blade as you raise and lower the arm, because the failure usually shows on the way down. He tests cuff strength directly, checks passive versus active range to separate stiffness from weakness, and screens the neck, since neck referral into the shoulder is common and treated differently.</p><p>Palpation of the cuff, <a href=\"/muscles/pectoralis-minor\">pec minor</a> and <a href=\"/muscles/subscapularis\">subscapularis</a> identifies which structure reproduces your pain.</p>"
+    },
+    {
+      "h2": "How MD Fit treats it",
+      "html": "<p>Release of the cuff, pec minor and the overworking neck muscles usually restores some range immediately. Correction follows: teaching the shoulder blade to rotate, opening the front of the chest, and reducing the shrug pattern that drives the pinch.</p><p>Strengthening is the part that lasts. The cuff is loaded in the ranges you use, serratus and lower trap are built deliberately, and overhead work returns in stages. Daily routines come through the free MD Fit app.</p><p>After cuff repair, rehab follows your surgeon's protocol. See <a href=\"/conditions/rotator-cuff-repair-rehab\">rotator cuff repair rehab</a>.</p>"
+    },
+    {
+      "h2": "Why cuff tendons get irritated in the first place",
+      "html": "<p>The rotator cuff tendons pass through a narrow space between the top of the arm bone and the bony roof above it. That space is not fixed. It opens when the shoulder blade rotates properly and the head of the arm bone stays centred, and it narrows when the blade stays flat and the arm bone drifts upward.</p><p>Tendons tolerate load well and compression poorly. So the problem is rarely that the tendon is weak in isolation. It is that the tendon is being squeezed on every repetition of a movement you do hundreds of times a day, and no amount of rest changes the mechanics that squeeze it.</p><p>This is also why cuff problems tend to recur after a course of treatment that only calmed the tendon down. Calming it is the start; changing what compresses it is what holds.</p>"
+    },
+    {
+      "h2": "What you can do now",
+      "html": "<ol><li>Stop sleeping on the painful side, and put a pillow under that forearm if you sleep on your back.</li><li>Keep moving the shoulder within comfort. Shoulders stiffen quickly when guarded.</li><li>Reach by letting the shoulder blade travel rather than shrugging the arm up.</li><li>Lower the overhead work temporarily rather than stopping all training.</li></ol>"
+    },
+    {
+      "h2": "When the neck is the real source",
+      "html": "<p>A shoulder that hurts but tests strong, moves fully and is not tender anywhere is often a neck problem. <a href=\"/muscles/scalenes\">Scalenes</a>, <a href=\"/muscles/levator-scapulae\">levator scapulae</a> and <a href=\"/muscles/infraspinatus\">infraspinatus</a> all refer convincingly into the shoulder. If your pain changes with neck position, say so at the evaluation.</p>"
+    }
+  ],
+  "timeline": null,
+  "redFlags": [
+    "Shoulder or arm pain with chest pressure, shortness of breath, sweating or nausea: call 911. Heart problems can present as shoulder or arm pain.",
+    "Visible deformity, or an inability to lift the arm at all after a fall, which may be a dislocation or fracture.",
+    "A hot, red, swollen shoulder with fever, which needs urgent medical assessment.",
+    "Progressive weakness or numbness in the arm or hand rather than pain alone.",
+    "Night pain that is severe and unrelenting, with unexplained weight loss or a history of cancer."
+  ],
+  "faq": [
+    {
+      "q": "Do you treat shoulders after surgery?",
+      "a": "Yes. Post-surgical shoulder rehab follows your surgeon's precautions and progresses you back to full strength."
+    },
+    {
+      "q": "Is a frozen shoulder treatable?",
+      "a": "Many stiff, painful shoulders improve with consistent mobility and soft-tissue work. Your evaluation sets realistic expectations for where yours is in the process."
+    },
+    {
+      "q": "Why does my shoulder hurt at night?",
+      "a": "Lying down removes the support that gravity gives the joint during the day, and side-lying compresses the cuff directly. Night pain is common with cuff problems and worth mentioning at your visit."
+    },
+    {
+      "q": "Can I keep lifting weights?",
+      "a": "Usually yes, with changes to range and load. Your plan tells you what to keep, what to modify and what to pause."
+    }
+  ],
+  "muscles": [
+    "supraspinatus",
+    "infraspinatus",
+    "subscapularis",
+    "serratus",
+    "pec-minor",
+    "lower-trap"
+  ],
+  "pain": [
+    "outside-of-shoulder",
+    "front-of-shoulder",
+    "deep-shoulder-joint",
+    "top-of-shoulder"
+  ],
+  "guides": [
+    "rotator-cuff"
+  ],
+  "related": [
+    "/conditions/rotator-cuff-tear",
+    "/conditions/shoulder-impingement",
+    "/conditions/frozen-shoulder",
+    "/conditions/shoulder-bursitis",
+    "/conditions/rotator-cuff-repair-rehab",
+    "/conditions/neck-pain",
+    "/muscles/supraspinatus"
+  ],
+  "group": "conditions",
+  "steps": null,
+  "reviewStatus": "draft"
+}

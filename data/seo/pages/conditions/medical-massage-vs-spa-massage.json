@@ -1,0 +1,86 @@
+{
+  "group": "conditions",
+  "slug": "medical-massage-vs-spa-massage",
+  "title": "Medical Massage vs Spa Massage | MD Fit",
+  "h1": "Medical Massage vs Spa Massage in Sarasota, FL",
+  "description": "What makes a massage clinical rather than relaxing, how a medical massage session actually runs, and how to tell which one you need right now.",
+  "about": {
+    "type": "MedicalTherapy",
+    "name": "Medical massage"
+  },
+  "lead": "Both kinds of massage are worth having. They are built for different jobs. A spa massage is designed around how you feel during and after the hour. A medical massage is designed around a specific problem, and the hour is spent wherever that problem lives.",
+  "sections": [
+    {
+      "h2": "The honest difference",
+      "html": "<p>A relaxation massage is a good thing and this page is not an argument against it. Lower stress, better sleep and an hour where nobody needs anything from you are real benefits, and plenty of people should book exactly that. But if you came in because your neck has hurt for four months, a pleasant full-body hour is unlikely to change it, and the disappointment afterwards is usually blamed on the massage when the mismatch was in the booking.</p><p>Clinical soft-tissue work differs in four concrete ways:</p><ul><li><b>It starts with testing.</b> Before any hands-on work, there is a few minutes of watching you move and pressing on likely tissue to find what actually reproduces your symptom. That finding sets the plan for the hour.</li><li><b>It is not full-body by default.</b> If the problem is your neck and the top of your shoulder, most of the session is spent there. Working every region equally would mean giving the painful one a fraction of the time.</li><li><b>You move during it.</b> You will often be asked to breathe into a position, turn your head, or lift an arm while the pressure is held, so the tissue changes in the position you actually use rather than only while lying still.</li><li><b>It ends with homework.</b> One to three short videos go into your free MD Fit app, because an hour on the table cannot outvote the other hundred and sixty-seven hours of your week.</li></ul>"
+    },
+    {
+      "h2": "What the assessment actually looks for",
+      "html": "<p>The useful question is not \"where does it hurt\" but \"what reproduces it\". Those are frequently different places. A headache that sits behind the eye is often reproduced by pressing the <a href=\"/muscles/upper-trapezius\">upper trapezius</a> or the <a href=\"/muscles/suboccipitals\">suboccipitals</a>. An ache deep in the shoulder may be reproduced from the <a href=\"/muscles/infraspinatus\">infraspinatus</a> on the shoulder blade. Pain down the outside of the leg that feels like a nerve is sometimes reproduced from the <a href=\"/muscles/gluteus-minimus\">gluteus minimus</a>.</p><p>Finding the tissue that recreates your familiar symptom is what makes the rest of the hour targeted instead of general. It also tells us something important when nothing reproduces it: that is a signal the problem may not be muscular, and more massage is not the answer.</p>"
+    },
+    {
+      "h2": "What a clinical session will not do",
+      "html": "<p>Being clear about limits is part of the work:</p><ul><li>It does not replace a medical workup. Tender tissue tells us where the tissue is unhappy, not why the trouble started.</li><li>It does not flush toxins out of your body. That idea is folklore, not physiology, and no honest practitioner should sell it to you.</li><li>It does not permanently lengthen a muscle. What changes in an hour is tone, sensitivity and how much range you are willing to use. Holding that change is the job of the corrective and strengthening work.</li><li>It does not fix the load that caused the problem. The desk setup, the training week, the sleeping position or the weak hip is still there when you stand up.</li></ul><p>That last point is why every session ends with something for you to do, and why the same area coming back repeatedly is treated as a question about load rather than a reason to book more hours.</p>"
+    },
+    {
+      "h2": "How to choose which one to book",
+      "html": "<p>Book a relaxation massage when the goal is to feel good, unwind, or recover generally from a stressful stretch. Nothing is wrong with that and it does not need a clinician.</p><p>Book clinical work when there is a specific complaint you can name: a region that has hurt for weeks, a movement you have lost, tightness that keeps returning to the same place, or muscle guarding after an injury or surgery once your surgeon has cleared soft-tissue work. Book it too if you are already in a rehab plan and want more hands-on time between follow-ups.</p><p>If your symptoms include numbness, weakness, or pain that is spreading rather than settling, an evaluation is the better first appointment. Details of sessions and pricing are on the <a href=\"/treatments/medical-massage\">medical massage page</a>.</p>"
+    },
+    {
+      "h2": "Why the practitioner's background matters here",
+      "html": "<p>Soft-tissue work is safe for most people most of the time, but the exceptions matter and they are mostly about knowing what should not be massaged. New unexplained swelling in one calf, a fever with new pain, an undiagnosed lump, a recent fracture, a sudden neurological change: each of those is a reason to stop and refer rather than to treat.</p><p>At MD Fit the sessions are done by Dr. Jared Caban, who holds MD and MSc degrees and is a Clinical Exercise Physiologist and Licensed Massage Therapist. In practice that means the history you fill in at booking is read with a clinical eye, the screening questions have a purpose, and the referral happens promptly when the picture does not look like a muscle problem.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": "Many people notice a difference in range of motion by the end of the first session, and mild next-day soreness similar to a new workout is common. Whether that change holds depends far more on the homework and the load you return to than on the hour itself.",
+  "redFlags": [
+    "New swelling, redness or warmth in one calf or arm, especially after surgery, a long flight or a period of immobility: see a physician before any massage.",
+    "New pain with fever, chills or unexplained weight loss.",
+    "An undiagnosed lump, or a skin change over the area you want treated.",
+    "Numbness, weakness or pain that is spreading rather than settling, which needs an evaluation rather than more soft-tissue work.",
+    "Pain following a significant fall or accident, before a fracture has been ruled out."
+  ],
+  "faq": [
+    {
+      "q": "Is medical massage better than a spa massage?",
+      "a": "Neither is better; they are built for different goals. A relaxation massage is designed around the experience, and clinical work is designed around a specific problem. Pick the one that matches what you want from the hour."
+    },
+    {
+      "q": "Does it have to hurt to work?",
+      "a": "No. The aim is tissue that releases, not a session you brace through. Guarding against pressure makes a muscle harder to change, so pressure is set to what your tissue actually responds to and you can adjust it at any point."
+    },
+    {
+      "q": "Do I need an evaluation before booking massage?",
+      "a": "No. A short intake form at booking captures the history needed to make the session safe and targeted. An evaluation is the better first visit if you have numbness, weakness or spreading pain."
+    },
+    {
+      "q": "How is this different from physical therapy?",
+      "a": "There is real overlap. The practical difference is that a massage session is mostly hands-on time on the tissue, while a rehab visit spends more of the hour on testing, loading and progressing exercise. Many people use both."
+    }
+  ],
+  "muscles": [
+    "upper-trap",
+    "suboccipitals",
+    "infraspinatus",
+    "glute-min",
+    "ql",
+    "scalenes"
+  ],
+  "pain": [
+    "top-of-shoulder",
+    "base-of-skull",
+    "beside-the-spine"
+  ],
+  "guides": [
+    "posterior-neck"
+  ],
+  "related": [
+    "/treatments/medical-massage",
+    "/conditions/trigger-point-therapy",
+    "/conditions/deep-tissue-massage",
+    "/conditions/how-often-should-you-get-a-massage",
+    "/treatments/functional-mobility",
+    "/conditions/chronic-pain"
+  ],
+  "reviewStatus": "draft"
+}

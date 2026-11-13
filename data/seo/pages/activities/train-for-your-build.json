@@ -1,0 +1,99 @@
+{
+  "group": "activities",
+  "slug": "train-for-your-build",
+  "title": "Train for Your Build, Not the Textbook | MD Fit",
+  "h1": "Train for Your Build, Not the Textbook",
+  "description": "Your proportions decide what a good lift looks like on you. How femur length, arm length, hip shape and ankle range change the squat, bench and deadlift.",
+  "about": {
+    "type": "Thing",
+    "name": "Individualised lifting mechanics"
+  },
+  "lead": "Most lifting advice is written for an average body that very few people have. Femur length, arm length, torso height, hip socket shape and ankle range all change what a good position looks like, and a cue that fixes one lifter can be the thing holding another one back. This is how to work out which cues are yours.",
+  "sections": [
+    {
+      "h2": "Why the same cue helps one lifter and hurts another",
+      "html": "<p>A barbell lift is a balance problem. The bar has to stay over roughly the middle of the foot, and your skeleton solves that with the levers it has. Change the lever lengths and the solution changes with them.</p><p>That is why a lifter is told to keep their chest up for five years without it working, while the person next to them does it effortlessly. It is why one lifter feels squats in their low back and another in their knees, doing what looks like the same lift. And it is why \"knees behind your toes\" is sensible for some people and almost impossible for others.</p><p>None of this means technique does not matter. The bar drifting forward is still a fault. A back changing shape under load is still worth fixing. But the shape of a correct lift is individual, and the first job is working out which shape is yours.</p>"
+    },
+    {
+      "h2": "Start with the squat",
+      "html": "<p>The squat is where proportion shows up most clearly, and the femur is the main culprit.</p><ul><li><a href=\"/activities/femur-length-and-squat\">Femur length and the squat</a>: the explainer. How the lever works, how to tell where you sit, and what each build should change.</li><li><a href=\"/activities/long-femurs-squat\">Long femurs and the squat</a>: why you tip forward, why it is correct, and the stance, bar and heel changes that help.</li><li><a href=\"/activities/short-femurs-squat\">Short femurs and the squat</a>: why depth comes easily, why your knees take the load, and which standard cues work against you.</li><li><a href=\"/activities/how-to-measure-femur-length\">How to measure your femur length at home</a>: a chair, a tape measure and a phone.</li><li><a href=\"/activities/why-squat-depth-differs\">Why squat depth differs</a>: hip socket shape, and why chasing someone else's depth is a bad idea.</li><li><a href=\"/activities/ankle-mobility-and-squat\">Ankle mobility and the squat</a>: what mobility work genuinely changes and what it does not.</li></ul>"
+    },
+    {
+      "h2": "Then the other lifts",
+      "html": "<ul><li><a href=\"/activities/arm-length-and-bench-press\">Arm length and the bench press</a>: why long arms make the same weight a longer lift, and what to do about grip and set-up.</li><li><a href=\"/activities/build-and-deadlift-setup\">Your build and your deadlift setup</a>: torso and limb ratios, conventional against sumo against trap bar, and why back rounding advice needs context.</li><li><a href=\"/activities/shoulder-shape-and-overhead-lifting\">Shoulder shape and overhead lifting</a>: when strict overhead work is the goal and when a landmine or incline is the better lift for you.</li><li><a href=\"/activities/q-angle-and-knee-tracking\">Q angle and knee tracking</a>: what the knees-caving cue is for, and when it is the wrong instruction.</li></ul>"
+    },
+    {
+      "h2": "The principles underneath all of it",
+      "html": "<ol><li><b>Balance is not negotiable, position is.</b> The bar over the midfoot is physics. Stance, bar height, grip and footwear are all adjustable to serve it.</li><li><b>Change one thing at a time.</b> Widen the stance or elevate the heels, not both, then judge over two or three sessions.</li><li><b>Film from the side.</b> You cannot feel your own torso angle accurately. A phone at hip height settles arguments that cues never will.</li><li><b>Bone does not change, range often does.</b> Ankle and hip range respond to work. Femur length does not. Spend your effort accordingly.</li><li><b>Pain is a signal to assess, not a tax on your build.</b> Long femurs do not mean your back has to hurt. Short femurs do not mean your knees have to ache.</li></ol>"
+    },
+    {
+      "h2": "When it stops being a technique question",
+      "html": "<p>Setup changes solve a lot. They do not solve everything, and there is a point where the limit is tissue rather than geometry.</p><p>If the same spot hurts in every session for more than a couple of weeks, if you have quietly dropped a lift or changed your technique to avoid a feeling, if pain travels into a limb or comes with pins and needles, or if a single rep produced a pop, swelling or sudden weakness, that is worth an assessment rather than another setup experiment. The <a href=\"/pain/\">pain by location</a> pages are a reasonable place to start working out what is involved.</p>"
+    },
+    {
+      "h2": "How MD Fit approaches this",
+      "html": "<p>Dr. Jared Caban is a clinical exercise physiologist and a licensed massage therapist, which is an unusual combination and the relevant one here. The assessment covers what your joints will actually give you and what your training is asking of them, rather than treating those as separate questions.</p><p>In practice that means watching the lifts from the side, testing hip, shoulder and ankle range by hand, and separating three things that look identical from the outside: a joint without the range, a muscle guarding and limiting range, and a setup asking for range in the wrong direction. Then hands-on release of what is guarding, corrective work to own the range, daily homework through the free MD Fit app video library, and a lifting setup built around your proportions. The app's workout generator builds sessions around the variations that suit you, so the change carries into your training rather than staying in the clinic.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "A pop or tearing sensation during a lift, followed by weakness, swelling or bruising.",
+    "Pain, numbness or tingling travelling down an arm or leg rather than staying at the joint.",
+    "Numbness in the groin or inner thighs, or any loss of bowel or bladder control, which needs emergency care.",
+    "A joint that locks, catches, gives way or swells within hours of training.",
+    "The same spot hurting in every session for more than two weeks despite reducing load."
+  ],
+  "faq": [
+    {
+      "q": "Is this an excuse for bad technique?",
+      "a": "No. Some faults are real whatever your build, including the bar drifting forward of the midfoot and a back that changes shape under load. Proportion explains the shape of a good lift, not the absence of standards."
+    },
+    {
+      "q": "Where should I start?",
+      "a": "With the squat, because proportion shows up there most clearly. Measure your femur length, film a set from the side, and read the page that matches what you see."
+    },
+    {
+      "q": "Do I need a coach to work this out?",
+      "a": "A phone and a tape measure get most people a long way. An assessment is worth it when something hurts, when progress has stalled for months, or when you want the joint range and the training plan looked at together."
+    },
+    {
+      "q": "Does MD Fit only work with lifters?",
+      "a": "No. The same reasoning applies to golf, pickleball, running and everyday movement. Lifting is simply where the levers are easiest to see."
+    }
+  ],
+  "muscles": [
+    "glute-max",
+    "vastus-lateralis",
+    "lats",
+    "psoas",
+    "soleus",
+    "lower-trap"
+  ],
+  "pain": [
+    "beside-the-spine",
+    "front-of-hip",
+    "below-kneecap",
+    "front-of-shoulder"
+  ],
+  "guides": [
+    "quads",
+    "rotator-cuff"
+  ],
+  "related": [
+    "/activities/femur-length-and-squat",
+    "/activities/long-femurs-squat",
+    "/activities/short-femurs-squat",
+    "/activities/arm-length-and-bench-press",
+    "/activities/build-and-deadlift-setup",
+    "/activities/weightlifting-crossfit",
+    "/treatments/clinical-exercise-physiology",
+    "/treatments/strength-and-performance"
+  ],
+  "programs": [
+    "mobility-12",
+    "posterior-chain-6",
+    "low-back-6"
+  ],
+  "reviewStatus": "draft"
+}

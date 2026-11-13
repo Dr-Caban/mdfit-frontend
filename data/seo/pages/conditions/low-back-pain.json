@@ -1,0 +1,93 @@
+{
+  "slug": "low-back-pain",
+  "title": "Low Back Pain Treatment in Sarasota, FL | MD Fit",
+  "h1": "Low Back Pain Treatment in Sarasota, FL",
+  "description": "Low back pain in Sarasota: hands-on care from Dr. Jared Caban, MD, MSc, CEP. Find the muscle at the source, then build the strength that keeps it gone.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Low back pain"
+  },
+  "lead": "Most low back pain is not a damaged spine. It is a back doing the work of hips that have stopped contributing, and it responds to finding the muscle at the source rather than treating the spot that hurts.",
+  "sections": [
+    {
+      "h2": "Why the back ends up doing the hips' work",
+      "html": "<p>Sitting shortens the hip flexors and switches off the glutes. Over months the pelvis tips forward, the lumbar arch deepens, and the muscles beside the spine hold a contraction they were never meant to hold all day. By the time it hurts, the back is not the cause. It is the part that gave out first.</p><p>This is why so many people get a few good days from a massage and then return to the same ache. The tissue was released; the loading pattern that produced it was not changed.</p><ul><li><a href=\"/muscles/psoas\">Psoas</a> and <a href=\"/muscles/iliacus\">iliacus</a> stay short from hours at a desk or in a car, tipping the pelvis and deepening the arch.</li><li><a href=\"/muscles/gluteus-maximus\">Gluteus maximus</a> stops firing for hip extension, so the back extensors supply it on every step.</li><li><a href=\"/muscles/quadratus-lumborum\">Quadratus lumborum</a> takes up the slack and refers a deep ache into the <a href=\"/pain/flank\">flank</a> and <a href=\"/pain/upper-buttock\">upper buttock</a>.</li><li><a href=\"/muscles/multifidus\">Multifidus</a>, the deep segmental stabiliser, often switches off after an episode and does not come back on its own.</li></ul>"
+    },
+    {
+      "h2": "What your pain pattern is telling you",
+      "html": "<p>Where and when it hurts narrows the field considerably:</p><ul><li><b>Worse sitting, better standing and walking.</b> Often disc-related loading. Sitting raises pressure through the front of the disc.</li><li><b>Worse standing and walking, better sitting or leaning forward.</b> Points toward the joints at the back of the spine or toward narrowing in the canal.</li><li><b>Worse first thing, loosens within an hour.</b> Usually muscular and stiffness-driven.</li><li><b>One-sided, right <a href=\"/pain/beside-the-spine\">beside the spine</a>, reproduced by pressing it.</b> Typically muscular and the most responsive to hands-on work.</li><li><b>Travels below the knee with numbness or tingling.</b> Now a nerve question, and it changes the plan. See <a href=\"/conditions/sciatica\">sciatica</a> and <a href=\"/conditions/herniated-disc\">disc-related pain</a>.</li></ul>"
+    },
+    {
+      "h2": "What happens at your evaluation",
+      "html": "<p>Dr. Jared watches you move before he touches anything: how you bend, how you get out of a chair, whether your hips or your back do the hinging. Then he palpates to find which muscles reproduce your exact pain, and tests hip extension and rotation, because a hip that cannot extend forces the back to extend instead.</p><p>Imaging is usually not needed first. Disc bulges and arthritic changes show up on scans of people with no pain at all, which is why a report rarely explains why today hurts. If something in the history or exam suggests imaging or a specialist, he says so and refers.</p>"
+    },
+    {
+      "h2": "How MD Fit treats it",
+      "html": "<p>Hands-on release of the hip flexors, QL and the spinal muscles usually eases things within the first session. That window is used to correct the pattern: teaching a hip hinge so you stop bending at the back, restoring hip extension, and waking up the glutes and deep core.</p><p>You leave with a short daily routine in the free MD Fit app. Strengthening follows, because strength is what stops it coming back. Most people keep training through this with modifications rather than stopping.</p>"
+    },
+    {
+      "h2": "What you can do this week",
+      "html": "<ol><li>Break up sitting every 30 to 45 minutes, even briefly. Position changes matter more than any one stretch.</li><li>Hinge at the hips when you pick something up. Push your hips back, keep your shins close to vertical, let the back stay long.</li><li>Lie on your back with knees bent and gently press your low back into the floor for a few breaths, several times a day.</li><li>Keep walking. Rest beyond a day or two usually makes back pain worse, not better.</li></ol><p>If one position reliably eases it, use it often. That information is useful at your evaluation.</p>"
+    },
+    {
+      "h2": "Conditions that need ruling out first",
+      "html": "<p>Most low back pain is mechanical, but not all of it. Pain that does not change with position, that wakes you at night, or that comes with fever, unexplained weight loss or a history of cancer belongs with a physician first. Pain with abdominal or flank symptoms can be kidney-related. Dr. Jared's medical training is part of why this triage happens at the first visit rather than after six weeks of treatment.</p>"
+    }
+  ],
+  "timeline": null,
+  "redFlags": [
+    "New loss of bladder or bowel control, or numbness in the groin, inner thighs or saddle area: go to an emergency room now.",
+    "Leg weakness that is getting worse, a foot that drops, or new trouble walking.",
+    "Back pain with fever, chills or unexplained weight loss.",
+    "Back pain after a significant fall or accident, especially with osteoporosis.",
+    "Pain that does not change at all with position and wakes you from sleep every night.",
+    "A history of cancer with new, persistent back pain."
+  ],
+  "faq": [
+    {
+      "q": "Do I need imaging before my first visit?",
+      "a": "Usually not. Dr. Jared starts with a hands-on evaluation of how you move and which muscles reproduce your pain. If anything in the exam suggests imaging or a specialist, he tells you and refers."
+    },
+    {
+      "q": "How many visits does low back pain take?",
+      "a": "It depends on how long it has been going on and what is driving it. Many people feel a difference in the first few sessions, then build strength so it stays gone. You leave every visit with homework videos in the MD Fit app."
+    },
+    {
+      "q": "Can I keep working out?",
+      "a": "In most cases yes, with changes. Your plan tells you what to keep, what to modify and what to pause while the source muscle recovers."
+    },
+    {
+      "q": "Is my disc bulge the reason my back hurts?",
+      "a": "Not necessarily. Disc bulges are common on scans of people with no pain at all. What matters is whether your symptoms match what the exam finds, which is what the evaluation sorts out."
+    }
+  ],
+  "muscles": [
+    "psoas",
+    "iliacus",
+    "ql",
+    "glute-max",
+    "multifidus",
+    "longissimus"
+  ],
+  "pain": [
+    "beside-the-spine",
+    "flank",
+    "upper-buttock",
+    "si-joint"
+  ],
+  "guides": [
+    "iliopsoas"
+  ],
+  "related": [
+    "/conditions/sciatica",
+    "/conditions/herniated-disc",
+    "/conditions/si-joint-pain",
+    "/conditions/spinal-stenosis",
+    "/conditions/hip-pain",
+    "/treatments/chronic-pain-program",
+    "/muscles/psoas"
+  ],
+  "group": "conditions",
+  "steps": null,
+  "reviewStatus": "draft"
+}
