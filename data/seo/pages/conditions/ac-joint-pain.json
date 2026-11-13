@@ -1,0 +1,86 @@
+{
+  "group": "conditions",
+  "slug": "ac-joint-pain",
+  "title": "AC Joint Pain Care in Sarasota, FL | MD Fit",
+  "h1": "AC Joint Pain in Sarasota, FL",
+  "description": "Pinpoint pain on top of the shoulder, worse reaching across your body or lying on it? That pattern usually points to the AC joint, not the rotator cuff.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Acromioclavicular joint pain"
+  },
+  "lead": "The acromioclavicular joint is the small joint on top of the shoulder where the collarbone meets the shoulder blade. It is easy to find, because people with a problem there point directly at it with one finger, and that single gesture separates it from most other shoulder pain.",
+  "sections": [
+    {
+      "h2": "How it behaves",
+      "html": "<ul><li>Pain on the <a href=\"/pain/top-of-shoulder\">top of the shoulder</a>, pinpoint rather than diffuse, often with a tender bump.</li><li>Worse reaching across the body, as in a seatbelt, a cross-body stretch or a tennis follow-through.</li><li>Worse lying on that side at night.</li><li>Worse with pressing movements, particularly bench press and dips, and with carrying a bag on that shoulder.</li><li>Often a visible step or prominence where the collarbone meets the shoulder blade, particularly after an injury.</li></ul><p>There are two common routes to it. A fall directly onto the point of the shoulder sprains or separates the joint, which is frequent in cycling, skiing and contact sport. Alternatively it wears over years of overhead work or heavy lifting and becomes arthritic.</p>"
+    },
+    {
+      "h2": "How it differs from the rotator cuff",
+      "html": "<p>This is the distinction that most changes the plan, and it is usually straightforward.</p><ul><li><b>AC joint pain</b> is on top, pinpoint, and provoked by reaching across the body.</li><li><a href=\"/conditions/rotator-cuff-tear\">Rotator cuff problems</a> are felt on the outer shoulder and upper arm, often with ache running down toward the elbow, and are provoked by lifting the arm away from the body or overhead.</li><li><a href=\"/conditions/shoulder-impingement\">Impingement</a> produces a painful arc partway through lifting the arm and eases at the top.</li><li><a href=\"/conditions/glenohumeral-osteoarthritis\">Shoulder joint arthritis</a> is felt deep inside the joint with grinding and loss of rotation.</li></ul><p>These frequently coexist, particularly in shoulders that have worked hard for decades, which is one reason the assessment looks at all of them rather than settling on one.</p>"
+    },
+    {
+      "h2": "The muscles around the joint",
+      "html": "<p>The AC joint sits where the shoulder blade and collarbone meet, so how the shoulder blade moves determines how much the joint is compressed through the day.</p><ul><li><a href=\"/muscles/upper-trapezius\">Upper trapezius</a> attaches to the collarbone and acromion, is almost always tight here, and refers pain over the top of the shoulder and into the neck.</li><li><a href=\"/muscles/levator-scapulae\">Levator scapulae</a> adds to shoulder blade elevation and neck stiffness.</li><li><a href=\"/muscles/pectoralis-minor\">Pectoralis minor</a> tips the shoulder blade forward, closing the space and loading the joint.</li><li><a href=\"/muscles/anterior-deltoid\">Anterior deltoid</a> attaches nearby and is tender in an irritated joint, with pain at the <a href=\"/pain/front-of-shoulder\">front of the shoulder</a>.</li><li><a href=\"/muscles/serratus-anterior\">Serratus anterior</a> and <a href=\"/muscles/lower-trapezius\">lower trapezius</a> should position the shoulder blade well; when weak, the upper trapezius takes over and compresses the joint continuously.</li></ul>"
+    },
+    {
+      "h2": "How MD Fit approaches it",
+      "html": "<p>The assessment confirms the joint is the source, checks shoulder blade position and control, and looks at which daily movements are keeping it irritated. Hands-on release of the upper trapezius, levator and chest usually reduces the constant compression and eases the night ache.</p><p>Correction is partly about load management: changing how you sleep, which bag you carry and on which side, and temporarily removing the few gym movements that drive it, typically bench press, dips and cross-body stretching. Strengthening then rebuilds the shoulder blade muscles so the joint is not being squeezed all day, with short routines through the free MD Fit app.</p><p>Where there has been a separation, your physician grades it and decides whether it needs more than conservative care. Most lower-grade separations are managed with rehabilitation, and the step in the collarbone frequently remains visible without being a problem.</p>"
+    },
+    {
+      "h2": "A note for Sarasota",
+      "html": "<p>Cyclists come off and land on the point of the shoulder, which is the classic way this joint is injured. Tennis and pickleball players irritate it through repeated cross-body follow-through. Both usually return to full play; what changes is shoulder blade strength and, for a while, which movements are temporarily left out of the gym.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": "Night pain and daily ache frequently settle within a few weeks once the irritating movements are identified and the shoulder blade muscles release. Returning to pressing and overhead loading is staged, and separations follow whatever timeline your physician sets.",
+  "redFlags": [
+    "A visible deformity after a fall, or inability to lift the arm, which needs assessment for fracture or significant separation.",
+    "A hot, red, swollen joint with fever, which needs a physician the same day.",
+    "Severe night pain that is unrelenting, or shoulder pain with unexplained weight loss.",
+    "Numbness, tingling or weakness running down the arm.",
+    "Left shoulder pain with chest pressure, shortness of breath, sweating or nausea: call 911."
+  ],
+  "faq": [
+    {
+      "q": "How do I know it is the AC joint and not the rotator cuff?",
+      "a": "The location and the aggravating movement usually separate them. AC joint pain is pinpoint on top of the shoulder and worse reaching across the body; rotator cuff pain is on the outer shoulder and worse lifting the arm away from the body."
+    },
+    {
+      "q": "I have a bump on my shoulder after a fall. Does it need fixing?",
+      "a": "Many lower-grade separations are managed with rehabilitation and the bump often remains visible without causing problems. The grading and that decision belong to your physician."
+    },
+    {
+      "q": "Why does bench press hurt?",
+      "a": "Pressing compresses the joint, particularly at the bottom of the movement with the elbows wide. It is usually a temporary modification rather than a permanent one."
+    },
+    {
+      "q": "Can I keep playing tennis?",
+      "a": "Usually yes. The cross-body follow-through is the provoking movement, so the work focuses on shoulder blade strength and on how much of that range the shoulder has to supply."
+    }
+  ],
+  "muscles": [
+    "upper-trap",
+    "levator",
+    "pec-minor",
+    "ant-delt",
+    "serratus",
+    "lower-trap"
+  ],
+  "pain": [
+    "top-of-shoulder",
+    "front-of-shoulder",
+    "outside-of-shoulder"
+  ],
+  "guides": [
+    "rotator-cuff"
+  ],
+  "related": [
+    "/conditions/rotator-cuff-tear",
+    "/conditions/shoulder-impingement",
+    "/conditions/shoulder-pain",
+    "/conditions/glenohumeral-osteoarthritis",
+    "/conditions/frozen-shoulder",
+    "/activities/cycling"
+  ],
+  "reviewStatus": "draft"
+}

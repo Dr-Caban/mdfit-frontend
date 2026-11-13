@@ -1,0 +1,90 @@
+{
+  "group": "conditions",
+  "slug": "spondylolisthesis",
+  "title": "Spondylolisthesis Care in Sarasota, FL | MD Fit",
+  "h1": "Spondylolisthesis in Sarasota, FL",
+  "description": "One vertebra slipped forward on another? Learn why core and hip strength matter, which positions provoke it, and when it needs a specialist.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Spondylolisthesis"
+  },
+  "lead": "Spondylolisthesis is when one vertebra has slipped forward relative to the one below it. It is a medical diagnosis made from imaging, and the word sounds far more alarming than most cases turn out to be. Many people have it, function well, and manage it with strength and position awareness.",
+  "sections": [
+    {
+      "h2": "Two different stories behind the same word",
+      "html": "<p>They arrive by different routes and affect different people, which is worth knowing because the management differs.</p><ul><li><b>The younger version</b> follows a stress injury to a small piece of bone at the back of the vertebra, from repeated arching and twisting. It shows up in gymnasts, divers, fast bowlers, footballers, dancers and weightlifters, usually in the teens or twenties.</li><li><b>The degenerative version</b> develops later in life as the discs and facet joints change and the segment loses some of its restraint. It is more common after middle age and frequently sits alongside <a href=\"/conditions/spinal-stenosis\">spinal stenosis</a>.</li></ul><p>Your physician grades the slip from imaging. Most are low grade and are managed without surgery.</p>"
+    },
+    {
+      "h2": "What it typically feels like",
+      "html": "<ul><li>Low back ache <a href=\"/pain/beside-the-spine\">beside the spine</a>, often band-like across the lower back.</li><li>Worse with standing for a long time, arching backward, or walking downhill.</li><li>Better sitting, leaning forward or lying with the knees bent.</li><li>Tight hamstrings that do not seem to loosen with stretching, which is a recognised feature.</li><li>Sometimes aching into the <a href=\"/pain/upper-buttock\">upper buttock</a> or <a href=\"/pain/back-of-thigh\">back of the thigh</a>; pain travelling below the knee raises the question of nerve involvement.</li></ul><p>A fair number of people have no symptoms at all and discover it on a scan taken for another reason.</p>"
+    },
+    {
+      "h2": "Why strength matters more than it might seem",
+      "html": "<p>The slip itself is structural and exercise does not reverse it. What exercise changes is how much that segment is asked to do, and that turns out to matter a great deal in practice.</p><p>A segment with reduced bony restraint relies more on muscular control, and the muscles involved are frequently the weak link:</p><ul><li><a href=\"/muscles/multifidus\">Multifidus</a> provides segmental control exactly where it is needed and commonly switches off after a painful episode.</li><li><a href=\"/muscles/external-oblique\">External oblique</a> and the abdominal wall brace the trunk and resist the forward pull on the spine.</li><li><a href=\"/muscles/gluteus-maximus\">Gluteus maximus</a> supplies hip extension; when it is weak, the lumbar spine extends instead with every stride, which is the position that provokes this.</li><li><a href=\"/muscles/psoas\">Psoas</a> and <a href=\"/muscles/iliacus\">iliacus</a> tighten with sitting and pull the pelvis forward, deepening the arch when standing.</li><li><a href=\"/muscles/quadratus-lumborum\">Quadratus lumborum</a> adds to the compression and tightens asymmetrically.</li></ul>"
+    },
+    {
+      "h2": "How MD Fit approaches it",
+      "html": "<p>The assessment establishes which positions provoke and which relieve, checks hip extension, hip flexor length and abdominal control, and looks at how you stand, walk and lift. Hands-on release of the hip flexors and quadratus lumborum usually improves standing tolerance, because the arch reduces.</p><p>Correction teaches a neutral pelvis in standing and a hip hinge for lifting, both of which take load off the segment dozens of times a day. Strengthening is generally flexion-biased or neutral at first, building deep core control and glute strength, and progresses as tolerance allows. End-range arching and loaded extension are usually the last things reintroduced, and sometimes not at all depending on the sport. Short daily routines come through the free MD Fit app.</p><p>Many people return to demanding activity with this diagnosis. What changes is how the load is distributed, not necessarily whether they participate.</p>"
+    },
+    {
+      "h2": "When it needs a specialist",
+      "html": "<p>Most low-grade cases are managed conservatively. A surgical opinion is usually sought when there is progressive slip on repeat imaging, neurological symptoms that are worsening, or pain that remains disabling despite a genuine course of rehabilitation. In adolescents with the stress-injury version, prompt assessment matters because the bone may still be in a stage where it can be protected. Those are physician decisions, and this work runs alongside them.</p>"
+    },
+    {
+      "h2": "A note for Sarasota",
+      "html": "<p>Golf is the local sport that most consistently loads this pattern, because the follow-through combines extension with rotation through the lower back. Improving hip and mid-back rotation so the swing comes from above and below the lumbar spine is usually the single most useful change, and it is frequently enough to keep playing comfortably.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": "Standing tolerance and daily comfort often improve within the first few weeks as positions change and the hip flexors release. Building the core and glute strength that holds it commonly takes a couple of months of consistent work, and it is maintained rather than finished.",
+  "redFlags": [
+    "New loss of bladder or bowel control, or numbness in the groin or inner thighs: go to the emergency room now.",
+    "Progressive leg weakness, foot drop, or numbness that is spreading.",
+    "Back pain in an adolescent athlete that persists with arching, which deserves prompt medical assessment.",
+    "Back pain with fever, night sweats or unexplained weight loss.",
+    "Pain that is steadily worsening despite rehabilitation, which your physician should re-evaluate."
+  ],
+  "faq": [
+    {
+      "q": "Will the vertebra slip further if I exercise?",
+      "a": "Appropriately chosen exercise is generally considered protective rather than provocative, because muscular control supports a segment with less bony restraint. Progression of the slip is monitored by your physician with imaging."
+    },
+    {
+      "q": "Can exercise put the vertebra back?",
+      "a": "No. The position is structural. What changes is how much that segment has to do, which is frequently enough to change how it feels."
+    },
+    {
+      "q": "Should I avoid arching my back?",
+      "a": "Usually at first, particularly under load, because extension is the position that typically provokes it. Whether it is reintroduced depends on your grade, your symptoms and what you need to do."
+    },
+    {
+      "q": "Do I need surgery?",
+      "a": "Most low-grade cases are managed without it. Surgical opinions are usually sought for progressive slip, worsening neurological symptoms, or pain that stays disabling after genuine rehabilitation."
+    }
+  ],
+  "muscles": [
+    "multifidus",
+    "ext-oblique",
+    "glute-max",
+    "psoas",
+    "iliacus",
+    "ql"
+  ],
+  "pain": [
+    "beside-the-spine",
+    "upper-buttock",
+    "back-of-thigh"
+  ],
+  "guides": [
+    "iliopsoas"
+  ],
+  "related": [
+    "/conditions/low-back-pain",
+    "/conditions/spinal-stenosis",
+    "/conditions/facet-joint-pain",
+    "/conditions/sciatica",
+    "/conditions/herniated-disc",
+    "/treatments/clinical-exercise-physiology"
+  ],
+  "reviewStatus": "draft"
+}

@@ -1,0 +1,88 @@
+{
+  "group": "conditions",
+  "slug": "massage-after-surgery",
+  "title": "Massage After Surgery in Sarasota, FL | MD Fit",
+  "h1": "Massage After Surgery in Sarasota, FL",
+  "description": "When soft-tissue work is safe after an operation, what scar work can and cannot change, and the post-surgical warning signs that mean no massage at all.",
+  "about": {
+    "type": "MedicalTherapy",
+    "name": "Post-surgical massage therapy"
+  },
+  "lead": "Soft-tissue work has a genuine place after surgery, but the timing and the boundaries matter more here than anywhere else. The first rule is simple and not negotiable: your surgeon clears soft-tissue work before it starts, and that clearance covers the operated area specifically.",
+  "sections": [
+    {
+      "h2": "The clearance rule, and why it is strict",
+      "html": "<p>Different operations have different healing requirements, and only the surgeon who performed yours knows what the repair can tolerate and when. A rotator cuff repair has precautions about which directions are safe for weeks. A joint replacement has its own protocol. An abdominal procedure has restrictions that are not obvious from the outside.</p><p>So the sequence is: your surgeon says soft-tissue work is appropriate and from when, we work within whatever precautions they set, and anything that conflicts with their protocol does not happen. If you are not sure what you have been cleared for, the honest answer is to ask them before booking rather than to guess on the table.</p>"
+    },
+    {
+      "h2": "What is usually useful, and when",
+      "html": "<p>Work generally moves in from a distance over time:</p><ul><li><b>Early, away from the site.</b> The most useful early target is often nowhere near the incision. Crutches and guarding load the shoulders, neck and upper back; sleeping in one position for weeks stiffens the whole side. Working the <a href=\"/muscles/upper-trapezius\">upper trapezius</a>, <a href=\"/muscles/levator-scapulae\">levator scapulae</a> and <a href=\"/muscles/quadratus-lumborum\">quadratus lumborum</a> can make the recovery far more comfortable without touching the repair.</li><li><b>Mid-stage, around the site.</b> Once cleared, work on the muscles surrounding the operated joint helps with the guarding and stiffness that builds up when an area has been protected.</li><li><b>Later, on the scar itself.</b> Only once the incision is fully closed and healed, with no scabbing, drainage or opening.</li></ul>"
+    },
+    {
+      "h2": "Scar work: the honest version",
+      "html": "<p>Scar massage is widely recommended and often helpful, but the usual explanation overstates it. Hands do not break down or dissolve mature scar tissue; collagen in a healed scar is strong, and manual pressure is not going to tear it apart.</p><p>What scar work does appear to do is improve how mobile and comfortable the area feels, reduce the hypersensitivity many people get around an incision, and help you tolerate touch and movement over a region you have been protecting. For many people that is the difference between a scar they are wary of and one they ignore.</p><p>The other genuine benefit is desensitisation. Light, graded touch around a numb or oversensitive scar helps the nervous system recalibrate, and it is something you can do yourself daily once shown how.</p>"
+    },
+    {
+      "h2": "Swelling, and the thing to watch for",
+      "html": "<p>Swelling after surgery is normal and tends to fluctuate for longer than people expect. Gentle work above the swollen area, movement, elevation and whatever compression your surgeon advised are the usual approach.</p><p>But swelling is also where the serious risk sits. A blood clot in a leg vein is a recognised complication after surgery and after long periods of reduced movement, and massaging a limb with an undiagnosed clot is dangerous. New swelling in one calf, especially with redness, warmth, or a deep aching tightness, means no massage and a prompt call to your surgeon or physician. If it comes with chest pain or breathlessness, call 911.</p><p>This is not a reason for alarm at every swollen knee. It is a reason the intake form asks about surgery dates and why any new one-sided swelling is checked before hands go anywhere near it.</p>"
+    },
+    {
+      "h2": "How it fits the rehab plan",
+      "html": "<p>Hands-on work is a support, not the plan. What restores a joint after surgery is graded loading and the rehab progression your surgeon and rehab provider set out, covered on the <a href=\"/conditions/post-surgical-rehab\">post-surgical rehab</a> page and in the <a href=\"/treatments/post-op-rehab-timelines\">post-op timelines</a>.</p><p>Massage earns its place by making that progression more tolerable: less guarding, less compensating elsewhere, better sleep, and a scar you are willing to move through. Specific procedures are covered on the <a href=\"/conditions/knee-replacement-rehab\">knee replacement</a>, <a href=\"/conditions/hip-replacement-rehab\">hip replacement</a> and <a href=\"/conditions/rotator-cuff-repair-rehab\">rotator cuff repair</a> pages.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": "Work away from the operated area is often appropriate early once your surgeon agrees. Work around the site and on the scar comes later and only after the incision has fully closed. Your surgeon's protocol sets the dates, not a general rule from a website.",
+  "redFlags": [
+    "New swelling, redness, warmth or deep aching in one calf or arm: no massage, and contact your surgeon or physician promptly.",
+    "Chest pain or breathlessness after surgery: call 911.",
+    "Fever, chills, increasing redness, or any drainage from the incision, which may indicate infection.",
+    "An incision that is not fully closed, is scabbing, or has opened at any point.",
+    "Sudden increased pain, numbness or weakness in the operated limb.",
+    "Any soft-tissue work your surgeon has not cleared, or that conflicts with the precautions they set."
+  ],
+  "faq": [
+    {
+      "q": "How soon after surgery can I have a massage?",
+      "a": "Your surgeon decides, and the answer differs by procedure and by area. Work well away from the operated site is often appropriate earlier than work near it, but the clearance still comes first."
+    },
+    {
+      "q": "Can massage break down my scar tissue?",
+      "a": "Not by force. A healed scar is strong and hand pressure will not dissolve it. What scar work does help with is mobility, comfort and the oversensitivity many people have around an incision."
+    },
+    {
+      "q": "My knee is swollen weeks later. Is that normal?",
+      "a": "Fluctuating swelling after surgery is common and often persists longer than expected. New swelling in one calf with redness or warmth is different and needs to be checked before any massage."
+    },
+    {
+      "q": "Will massage speed up my recovery?",
+      "a": "It is best thought of as making the rehab more tolerable rather than accelerating healing. The graded loading programme is what restores the joint; hands-on work reduces the guarding and compensation around it."
+    }
+  ],
+  "muscles": [
+    "upper-trap",
+    "levator",
+    "ql",
+    "glute-med",
+    "vmo",
+    "gastroc"
+  ],
+  "pain": [
+    "top-of-shoulder",
+    "beside-the-spine",
+    "upper-calf"
+  ],
+  "guides": [
+    "quads",
+    "posterior-neck"
+  ],
+  "related": [
+    "/conditions/post-surgical-rehab",
+    "/treatments/post-op-rehab-timelines",
+    "/conditions/knee-replacement-rehab",
+    "/conditions/hip-replacement-rehab",
+    "/conditions/rotator-cuff-repair-rehab",
+    "/treatments/medical-massage"
+  ],
+  "reviewStatus": "draft"
+}

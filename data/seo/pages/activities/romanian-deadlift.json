@@ -1,0 +1,90 @@
+{
+  "slug": "romanian-deadlift",
+  "title": "Romanian Deadlift: Form and Hamstrings | MD Fit",
+  "h1": "The Romanian Deadlift: Form, Hamstrings and Pain",
+  "description": "How the Romanian deadlift differs from a conventional pull, how far down you should actually go, and why hamstring soreness here is not always ordinary.",
+  "about": {
+    "type": "Thing",
+    "name": "Romanian deadlift"
+  },
+  "lead": "The Romanian deadlift is the clearest hip hinge in the gym and one of the most commonly misunderstood lifts. It is not a stiff-legged deadlift, it does not start from the floor, and the depth is decided by your hamstrings rather than by the plates touching the ground.",
+  "sections": [
+    {
+      "h2": "What the lift is actually asking for",
+      "html": "<p>The Romanian deadlift starts at the top, from a standing position with the bar at the hips. The movement is the hips travelling backwards while the knees stay softly bent and the spine holds its position. The bar stays in contact with, or very close to, the legs the whole way down.</p><p>The stopping point is not a fixed distance. You descend until your hamstrings have run out of length and your lower back is about to start rounding to let you go further. For some people that is mid-shin. For others it is just below the knee. Going past that point is where the lift stops training the hamstrings and starts loading the back in a position it cannot hold.</p>"
+    },
+    {
+      "h2": "Knees soft, not locked, not squatting",
+      "html": "<p>Two errors sit either side of the correct movement. Locking the knees completely turns it into a stiff-legged deadlift, which places more stretch on the hamstrings and the nerve running behind them, and which some people tolerate poorly. Bending the knees progressively on the way down turns it into a squat, and the hamstrings stop being loaded at all.</p><p>The useful instruction is that the knee angle is set early and then does not change. Everything after that is the hips moving backwards. If you watch from the side and your knees travel forward as you descend, you are squatting.</p>"
+    },
+    {
+      "h2": "Hamstring soreness, and when it is not ordinary",
+      "html": "<p>Romanian deadlifts produce genuine hamstring soreness, often more than people expect, and often two days later rather than the next morning. That is a normal response to loaded lengthening, particularly in the <a href=\"/muscles/biceps-femoris\">biceps femoris</a> and the <a href=\"/muscles/inner-hamstrings\">inner hamstrings</a>.</p><p>What is not ordinary is pain concentrated right at the sitting bone that builds across weeks and begins to hurt when you sit for long periods. That pattern points towards the tendon rather than the muscle and does not respond well to simply pushing on. It is worth reading <a href=\"/conditions/hamstring-strain\">hamstring strain</a> and worth an assessment before it becomes the reason you stop training.</p>"
+    },
+    {
+      "h2": "Common faults worth fixing",
+      "html": "<ul><li><b>The bar drifting away from the legs.</b> Every centimetre forward increases the demand on the low back. The bar should brush the thighs.</li><li><b>Rounding at the bottom to chase depth.</b> Usually a sign the lifter is using plate height or a mirror as the target instead of their own hamstring length.</li><li><b>Shrugging through the top.</b> The <a href=\"/muscles/upper-trapezius\">upper trapezius</a> takes over and the set becomes a shrug with a hinge attached.</li><li><b>Hyperextending at the top.</b> Finishing by leaning back loads the low back needlessly. Standing tall is the finish.</li></ul>"
+    },
+    {
+      "h2": "Why it is worth keeping in the programme",
+      "html": "<p>The Romanian deadlift trains the hip hinge under load with a shorter range and lighter weights than a conventional pull, which makes it useful both for building the posterior chain and for people rebuilding tolerance after a back episode. It is frequently one of the first loaded hinges someone returns to.</p><p>Dr. Jared Caban, a physician-trained clinical exercise physiologist and licensed massage therapist, uses it that way: assess how far the hips can hinge before the spine starts to move, release what is limiting it, then load the range that is genuinely available and widen it over time. Members get the matching exercise videos and the workout generator in the MD Fit app. The practice is self-pay, with no referral needed.</p>"
+    }
+  ],
+  "redFlags": [
+    "Pain at the sitting bone that builds over weeks and hurts when sitting, rather than ordinary muscle soreness.",
+    "A sudden sharp pain in the back of the thigh during a rep, sometimes with bruising afterwards.",
+    "Pain, numbness or tingling travelling below the knee into the calf or foot.",
+    "Back pain that persists at rest or wakes you at night.",
+    "Any loss of bladder or bowel control, or numbness around the groin: this is an emergency, call 911."
+  ],
+  "faq": [
+    {
+      "q": "How far down should the bar go?",
+      "a": "Until your hamstrings stop you, which is the point just before your lower back would have to round to let you continue. That varies by person and the plates touching the floor is not the target."
+    },
+    {
+      "q": "What is the difference between a Romanian and a stiff-legged deadlift?",
+      "a": "A Romanian deadlift keeps a soft, fixed knee bend and starts from standing. A stiff-legged deadlift keeps the knees straighter, which increases the stretch on the hamstrings and the nerve behind them."
+    },
+    {
+      "q": "Should I feel this in my low back?",
+      "a": "You should feel your back working to hold its position, but the dominant sensation should be in the hamstrings and glutes. If the low back is doing most of the work, the bar is usually drifting forward or you are going too deep."
+    },
+    {
+      "q": "Can I do these if I have had a hamstring strain?",
+      "a": "Often yes, and loaded lengthening work is commonly part of rebuilding a hamstring. The timing and the starting load matter, so it is worth doing under guidance rather than returning to your old weights."
+    }
+  ],
+  "muscles": [
+    "biceps-femoris",
+    "medial-hamstrings",
+    "glute-max",
+    "ql",
+    "longissimus",
+    "upper-trap"
+  ],
+  "pain": [
+    "back-of-thigh",
+    "buttock-crease",
+    "beside-the-spine",
+    "si-joint"
+  ],
+  "guides": [],
+  "related": [
+    "/activities/conventional-deadlift",
+    "/activities/sumo-deadlift",
+    "/conditions/hamstring-strain",
+    "/activities/leg-training",
+    "/activities/lifting-with-back-pain",
+    "/conditions/low-back-pain",
+    "/treatments/strength-and-performance"
+  ],
+  "programs": [
+    "posterior-chain-6",
+    "low-back-6"
+  ],
+  "group": "activities",
+  "steps": null,
+  "timeline": null,
+  "reviewStatus": "draft"
+}

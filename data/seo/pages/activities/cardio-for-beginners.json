@@ -1,0 +1,90 @@
+{
+  "group": "activities",
+  "slug": "cardio-for-beginners",
+  "title": "Cardio for Beginners: Where to Start | MD Fit",
+  "h1": "Cardio for Beginners",
+  "description": "A clinician's starting point for cardio when you have not exercised in years: what to do first, how much is enough, and the mistakes that end most restarts.",
+  "about": {
+    "type": "Thing",
+    "name": "Cardio training for beginners"
+  },
+  "lead": "The hardest part of starting cardio is not the cardio. It is picking something small enough that you will still be doing it in six weeks, when the initial motivation has worn off and the weather is unhelpful.",
+  "sections": [
+    {
+      "h2": "Start smaller than you want to",
+      "html": "<p>The usual pattern of a restart is familiar: an ambitious first week, a very sore second week, a missed third week, and a quiet decision that it is not for you. Almost nobody fails because the plan was too easy.</p><p>A realistic opening is ten to fifteen minutes of easy walking, three or four times a week, for the first fortnight. That is deliberately modest. The aim is not to get fit in two weeks; it is to establish that this happens, so that the fitness has somewhere to accumulate.</p><p>Add roughly ten percent to your weekly total when the current amount feels comfortable rather than on a fixed schedule. Tendons and bone adapt more slowly than the heart and lungs, which is why people who feel great aerobically can still develop shin, heel or knee pain if they jump the volume.</p>"
+    },
+    {
+      "h2": "Picking the activity",
+      "html": "<p>The best cardio is the one you will repeat. That said, some options are kinder when you are carrying extra weight or an old injury:</p><ul><li><b>Walking</b> — free, low barrier, and adjustable by adding incline rather than speed.</li><li><b>Stationary bike</b> — almost no impact, easy to control effort, forgiving on knees and feet.</li><li><b>Swimming or pool walking</b> — the gentlest on joints, and comfortable in a Sarasota summer when outdoors is unpleasant.</li><li><b>Rower</b> — efficient, though technique matters and a poor setup can irritate a back.</li></ul><p>Running is not a beginner's tool for most people starting from inactive. It is a high-force activity and the usual result of starting there is shin, knee or achilles pain within a month. Walking first, then run-walk intervals, gets to the same place with far fewer interruptions.</p>"
+    },
+    {
+      "h2": "How hard",
+      "html": "<p>Easy. Easier than you think. You should be able to hold a conversation throughout. The temptation to prove something in the first fortnight is strong and it is the reason many restarts end in an injury rather than a plateau.</p><p>A useful marker: you should finish feeling like you could have done more. If you finish sessions wrecked, the next one is less likely to happen.</p>"
+    },
+    {
+      "h2": "What to expect in the first two months",
+      "html": "<p>Breathlessness for a given pace drops noticeably in the first few weeks — that is the fastest-adapting part of the system and it is encouraging. Muscles and tendons lag behind. Some stiffness after the first few sessions is normal and settles as you continue.</p><p>Progress is not linear. Bad days happen for reasons that have nothing to do with fitness: poor sleep, heat, a heavy meal, stress. One disappointing session means nothing. A month of them means something is worth looking at.</p>"
+    },
+    {
+      "h2": "The aches that are normal and the ones that are not",
+      "html": "<p>Widespread muscle soreness a day after a new activity is normal, settles within two or three days, and eases once you move. Our <a href=\"/activities/muscle-soreness-and-doms\">muscle soreness page</a> covers it.</p><p>What is not normal: pain that is pinpoint over bone rather than spread through muscle, pain that worsens session on session, pain that wakes you at night, or a joint that swells. Shin pain is the classic early warning — see <a href=\"/conditions/shin-splints\">shin splints</a> — and pushing through it rarely ends well.</p><p>The usual culprits early on are the <a href=\"/muscles/soleus\">soleus</a>, the <a href=\"/muscles/tibialis-anterior\">tibialis anterior</a> and the tissue under the heel.</p>"
+    },
+    {
+      "h2": "Strength is not optional",
+      "html": "<p>Cardio alone does not maintain muscle or bone, and after fifty both decline without deliberate loading. If you only have three sessions a week to give, two cardio and one strength will serve you better than three cardio.</p><p>Our <a href=\"/activities/how-to-start-exercising\">how to start exercising</a> page covers the strength side for complete beginners, and <a href=\"/activities/how-many-days-a-week\">how many days a week</a> covers putting the two together.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Chest pressure, tightness or pain during exercise, or pain spreading to the jaw, neck or arm: stop and seek emergency care.",
+    "Fainting, near-fainting, or a racing or irregular heartbeat.",
+    "Breathlessness that is far out of proportion to what you are doing, or new breathlessness lying flat at night.",
+    "Shin, heel or foot pain that is pinpoint over bone and worse with each session.",
+    "Swelling, warmth or redness in one calf, which needs same-day medical assessment."
+  ],
+  "faq": [
+    {
+      "q": "How long before I notice a difference?",
+      "a": "Most people notice that a given walk feels easier within two to four weeks. Visible changes and larger fitness gains take longer and depend on a lot besides exercise."
+    },
+    {
+      "q": "Is ten minutes really worth doing?",
+      "a": "Yes, especially at the start. Ten minutes you do four times a week beats forty minutes you do once and then abandon, and it builds the habit that everything else attaches to."
+    },
+    {
+      "q": "Should I do cardio before or after weights?",
+      "a": "If strength is the priority, lift first and keep cardio easy afterwards. If cardio is the priority, do it first. For a beginner the order matters far less than turning up."
+    },
+    {
+      "q": "I get out of breath climbing stairs. Where do I start?",
+      "a": "At whatever is manageable, even if that is a few minutes of slow walking. Breathlessness that is new, worsening, or happens at rest should be checked by your physician before you start a programme."
+    }
+  ],
+  "muscles": [
+    "gastroc",
+    "soleus",
+    "tib-ant",
+    "rectus-femoris",
+    "glute-max"
+  ],
+  "pain": [
+    "lower-calf",
+    "sole-of-foot",
+    "below-kneecap"
+  ],
+  "guides": [
+    "calf"
+  ],
+  "related": [
+    "/activities/how-to-start-exercising",
+    "/activities/walking-for-fitness",
+    "/activities/zone-2-cardio",
+    "/activities/how-many-days-a-week",
+    "/activities/muscle-soreness-and-doms",
+    "/conditions/shin-splints"
+  ],
+  "programs": [],
+  "reviewStatus": "draft"
+}
