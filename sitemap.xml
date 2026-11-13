@@ -205,6 +205,7 @@
   <url><loc>https://www.mymdfit.com/conditions/bone-density-testing-explained</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/conditions/bone-stress-injury</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/conditions/cardiac-rehab-next-steps</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
+  <url><loc>https://www.mymdfit.com/conditions/central-sensitisation</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/conditions/cervical-radiculopathy</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/conditions/cervical-spondylosis</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/conditions/cervicogenic-headache</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
@@ -216,11 +217,10 @@
   <url><loc>https://www.mymdfit.com/conditions/desk-neck-pain</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/conditions/distal-biceps-tendinopathy</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/conditions/exercise-after-cancer-treatment</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
-  <url><loc>https://www.mymdfit.com/conditions/exercise-and-cholesterol</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/conditions/exercise-and-high-blood-pressure</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
-  <url><loc>https://www.mymdfit.com/conditions/exercise-and-sleep-and-stress</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/conditions/exercise-for-osteopenia</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/conditions/exercise-for-type-2-diabetes</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
+  <url><loc>https://www.mymdfit.com/conditions/exercise-pacing-and-flares</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/conditions/facet-joint-pain</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/conditions/fibromyalgia</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/conditions/glenohumeral-osteoarthritis</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
@@ -243,7 +243,6 @@
   <url><loc>https://www.mymdfit.com/conditions/medical-massage-vs-spa-massage</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/conditions/meniscus-tear-recovery</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/conditions/meralgia-paresthetica</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
-  <url><loc>https://www.mymdfit.com/conditions/metabolic-syndrome-and-exercise</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/conditions/mortons-neuroma</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/conditions/myofascial-pain-vs-fibromyalgia</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/conditions/myofascial-release</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
@@ -290,17 +289,23 @@
   <url><loc>https://www.mymdfit.com/activities/bench-press</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/activities/build-and-deadlift-setup</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/activities/cardio-for-beginners</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
+  <url><loc>https://www.mymdfit.com/activities/common-powerlifting-injuries</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/activities/conventional-deadlift</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/activities/cycling</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
+  <url><loc>https://www.mymdfit.com/activities/daily-mobility-routine</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/activities/desk-workers</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/activities/femur-length-and-squat</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
+  <url><loc>https://www.mymdfit.com/activities/foam-rolling-guide</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/activities/front-squat</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/activities/hiit-explained</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
+  <url><loc>https://www.mymdfit.com/activities/hip-mobility-routine</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/activities/how-to-measure-femur-length</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/activities/incline-walking-and-stairs</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
+  <url><loc>https://www.mymdfit.com/activities/lifting-with-back-pain</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/activities/long-femurs-squat</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/activities/mobility-vs-flexibility</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/activities/overhead-press</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
+  <url><loc>https://www.mymdfit.com/activities/peaking-for-a-meet</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/activities/postpartum-return-to-exercise</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/activities/powerlifting-after-40</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/activities/powerlifting-for-beginners</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
@@ -312,6 +317,7 @@
   <url><loc>https://www.mymdfit.com/activities/shoulder-shape-and-overhead-lifting</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/activities/snowbirds</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/activities/steady-state-vs-intervals</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
+  <url><loc>https://www.mymdfit.com/activities/stretching-before-or-after-exercise</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/activities/sumo-deadlift</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/activities/swimming</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.mymdfit.com/activities/tennis</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>

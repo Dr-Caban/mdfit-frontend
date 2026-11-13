@@ -1,0 +1,89 @@
+{
+  "slug": "peaking-for-a-meet",
+  "title": "Peaking for a Powerlifting Meet | MD Fit",
+  "h1": "Peaking for a Powerlifting Meet",
+  "description": "How the last weeks before a meet are usually structured, why fatigue masks fitness, and the injuries that cluster in the final training block.",
+  "about": {
+    "type": "Thing",
+    "name": "Peaking for a powerlifting meet"
+  },
+  "lead": "Peaking is the process of arriving on platform strong and fresh at the same time, which is harder than it sounds because the training that builds strength also builds fatigue. The last weeks are about shedding the fatigue without shedding the strength.",
+  "sections": [
+    {
+      "h2": "Fitness and fatigue move together",
+      "html": "<p>The useful model is that training produces two things at once: a lasting improvement in capacity, and a temporary accumulation of fatigue that hides it. During a hard training block you are getting stronger and feeling worse simultaneously. Peaking is simply the period where you stop adding fatigue and let it dissipate, revealing what was built.</p><p>This is why lifters often feel sluggish in the middle of a block and surprisingly strong a week after it ends. It is also why adding extra work in the final fortnight is almost always counterproductive: the capacity is already there, and more work only adds to what is masking it.</p>"
+    },
+    {
+      "h2": "How the final weeks are usually structured",
+      "html": "<p>Approaches differ, but the common shape is a gradual reduction in total volume while intensity stays high or rises slightly, so the body keeps practising heavy singles without accumulating the work that causes the fatigue. The last heavy session is typically far enough out that you arrive recovered.</p><p>Two things tend to be true across methods. Specificity rises as the meet approaches, so accessory work falls away and the competition lifts in competition conditions take over. And the taper is longer than most lifters are comfortable with, because reducing training before the most important day of the year feels wrong.</p>"
+    },
+    {
+      "h2": "Opener selection is a strategy problem",
+      "html": "<p>The opener is not a statement, it is insurance. A weight you could triple on your worst day gets you on the board and settles the nerves. Missing an opener costs far more than a conservative one does, because it converts the day into a scramble.</p><p>Attempt selection generally moves from certain, to likely, to ambitious. The third attempt is where a personal best belongs. Planning all three in advance, with a fallback, removes the need to make judgements while adrenalised and under time pressure.</p>"
+    },
+    {
+      "h2": "Why injuries cluster in the final block",
+      "html": "<p>The last weeks combine the heaviest weights with accumulated fatigue and often with raised emotional investment, which is a poor combination. Positions that hold at eighty percent sometimes do not at ninety-five, and a lifter who has decided this block matters is more likely to push through a warning sign.</p><p>The pattern we see is predictable: a low back that has been grumbling for weeks becomes the reason an opener is missed, or a shoulder that was manageable in volume work stops tolerating a heavy single. Something that has been nagging for a month rarely resolves itself during a peak. It is worth addressing while there is still time for it to change.</p>"
+    },
+    {
+      "h2": "Getting seen before, not after",
+      "html": "<p>The most useful appointment before a meet is several weeks out, not the week of. At that point a restriction can still be worked on and the programme can still be adjusted. In the final week, the honest options narrow to managing symptoms and deciding what is safe to attempt.</p><p>Dr. Jared Caban is a physician-trained clinical exercise physiologist and licensed massage therapist, which means the conversation can cover both the tissue and the programme in one place. Members get the exercise library and workout generator in the MD Fit app. Self-pay, no insurance paperwork, no referral needed.</p>"
+    }
+  ],
+  "redFlags": [
+    "A nagging pain that has been present for several weeks and is not improving as the meet approaches.",
+    "Sharp pain during a heavy single that stops the lift, rather than it simply being heavy.",
+    "Numbness, tingling or weakness in an arm or leg at any point in the block.",
+    "Chest pain, pressure, shortness of breath or light-headedness under heavy load: stop and call 911.",
+    "A joint that swells or gives way in the final weeks, which changes what is safe to attempt."
+  ],
+  "faq": [
+    {
+      "q": "How long should a taper be?",
+      "a": "It varies with the lifter and the block, but most approaches reduce volume over one to three weeks while keeping intensity high. Shorter tapers tend to leave fatigue in place; much longer ones can start to cost sharpness."
+    },
+    {
+      "q": "Should I max out in training before a meet?",
+      "a": "Heavy singles are usually part of a peak so the lift is practised at competition weights, but a true all-out maximum in training close to the day adds risk without adding information."
+    },
+    {
+      "q": "What should my opener be?",
+      "a": "Something you could manage comfortably for more than one rep on a bad day. The opener exists to get you on the board, and missing it costs far more than opening conservatively."
+    },
+    {
+      "q": "Something has been hurting for weeks. Should I still compete?",
+      "a": "That is a decision to make with someone who has assessed it, and it is worth doing several weeks out rather than in the final days when the options have narrowed."
+    }
+  ],
+  "muscles": [
+    "glute-max",
+    "ql",
+    "multifidus",
+    "pec-major-stern",
+    "vastus-lateralis",
+    "lats"
+  ],
+  "pain": [
+    "beside-the-spine",
+    "front-of-shoulder",
+    "below-kneecap",
+    "si-joint"
+  ],
+  "guides": [],
+  "related": [
+    "/activities/deload-weeks",
+    "/activities/common-powerlifting-injuries",
+    "/activities/training-around-an-injury",
+    "/activities/powerlifting-for-beginners",
+    "/activities/rpe-and-rir",
+    "/treatments/strength-and-performance",
+    "/conditions/sports-injury-rehab"
+  ],
+  "programs": [
+    "low-back-6"
+  ],
+  "group": "activities",
+  "steps": null,
+  "timeline": null,
+  "reviewStatus": "draft"
+}

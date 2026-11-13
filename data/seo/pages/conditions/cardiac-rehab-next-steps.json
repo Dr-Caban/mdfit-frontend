@@ -73,11 +73,9 @@
   "related": [
     "/treatments/clinical-exercise-physiology",
     "/conditions/exercise-and-high-blood-pressure",
-    "/conditions/exercise-and-cholesterol",
     "/conditions/returning-to-exercise-after-a-long-break",
     "/conditions/vo2max-and-cardiorespiratory-fitness",
-    "/activities/seniors-strength-balance",
-    "/conditions/metabolic-syndrome-and-exercise"
+    "/activities/seniors-strength-balance"
   ],
   "reviewStatus": "approved"
 }

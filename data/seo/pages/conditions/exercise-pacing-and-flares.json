@@ -1,0 +1,87 @@
+{
+  "group": "conditions",
+  "slug": "exercise-pacing-and-flares",
+  "title": "Pacing Exercise and Managing Flares | MD Fit",
+  "h1": "Pacing Exercise and Managing Flares",
+  "description": "How to find a baseline you can repeat, why boom and bust keeps people stuck, and what to do on a bad day instead of stopping. Practical, not motivational.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Activity pacing in persistent pain"
+  },
+  "lead": "If every attempt at getting fitter has ended in a week on the sofa, the exercises were probably not the problem. The starting size was. Pacing is the unglamorous skill that decides whether movement helps a sensitised system or sets it back.",
+  "sections": [
+    {
+      "h2": "Boom and bust, and why it is not a discipline problem",
+      "html": "<p>The pattern is nearly universal and it runs like this. A good day arrives. You feel almost normal, so you catch up: the garden, the shopping, the walk you have been missing. Nothing hurts much at the time. A day or two later you are flattened, and it lasts.</p><p>So you rest, because resting is the only thing that helps. Then another good day comes, and because you have lost ground you have more to catch up on, so you do more. The cycle repeats with a slightly lower floor each time.</p><p>Notice what is driving it. People in this cycle are not lazy or inconsistent; they are responding sensibly to a system that gives delayed and unreliable feedback. When the bill arrives two days after the spending, you cannot budget. That is a feedback problem, not a willpower problem, and it needs a method rather than more resolve.</p>"
+    },
+    {
+      "h2": "Finding a baseline you can actually repeat",
+      "html": "<p>A baseline is not what you can do. It is what you can do today and repeat tomorrow and the day after without a cost. For most people starting out it is uncomfortably small, and starting there is the entire point.</p><ol><li><b>Test on an average day, not a good one.</b> Good days overstate your capacity, and a baseline built on them will fail most of the week.</li><li><b>Find the point where it is still easy, then take off a third.</b> If you can walk twelve minutes before it becomes an effort, your starting number is nearer eight.</li><li><b>Repeat it for several days before believing it.</b> One comfortable day proves nothing when the cost arrives late. A week of the same without payback is a real baseline.</li><li><b>Write it down.</b> Memory reconstructs this badly, and the delay makes patterns impossible to see without a record.</li></ol><p>Expect this number to feel insultingly low. That reaction is normal and it is also the reason most people skip this step and end up back in the cycle.</p>"
+    },
+    {
+      "h2": "Work to the clock, not to how it feels",
+      "html": "<p>This is the rule that does most of the work, and the hardest one to follow.</p><p>Stop when the plan says to stop, including on days when you could clearly continue. Especially on those days. Stopping while it still feels fine is how good days stop becoming lost weeks.</p><p>In practice that means a set time or a set count, decided before you start and not revised mid-session. Finishing a session thinking you could have done more is the sign it was the right size, not a sign that it was wasted.</p>"
+    },
+    {
+      "h2": "Increasing without losing the gains",
+      "html": "<p>Progress comes from stability, not from good days.</p><ul><li>Increase only after a run of settled days at the current level, not after one strong one.</li><li>Make the increase small enough to feel faintly pointless. Roughly a tenth is a reasonable rule of thumb.</li><li>Change one thing at a time. More minutes or more load, not both.</li><li>Hold the new level long enough to prove it before moving again.</li></ul><p>This is slower than any programme you will be handed elsewhere, and it is the version that holds. A small amount that continues for a year beats a large amount that collapses in three weeks, every time.</p>"
+    },
+    {
+      "h2": "What to do on a bad day",
+      "html": "<p>The instinct is to stop entirely. That is the move that resets your baseline downward, and it is worth planning around before a flare arrives rather than deciding in the middle of one.</p><p>Decide in advance what your reduced version looks like: perhaps a third of the usual, perhaps the seated variation, perhaps just the mobility part. The purpose is not training effect. It is keeping the habit and the signal of safety intact so that the return is a step rather than a restart.</p><p>Then return to your previous level rather than to where you were heading, and rebuild from there. A flare costs you days. Abandoning the baseline costs you months.</p><p>Some flares have no identifiable trigger. Weather, sleep, stress and coincidence all play a part, and hunting for a cause every time becomes its own burden.</p>"
+    },
+    {
+      "h2": "How this is set up at MD Fit",
+      "html": "<p>Dr. Jared Caban is a clinical exercise physiologist, which is the training specifically concerned with prescribing exercise to people whose systems do not tolerate a standard programme. The first visit establishes where your genuine baseline sits rather than where a programme assumes it should.</p><p>Home work is short video routines in the free MD Fit app, which matters for pacing because the dose is defined rather than left to judgement on a day when judgement is hard. Sessions get reviewed against what actually happened in the days afterwards, not against how they felt at the time.</p><p>This sits alongside your physician's care rather than replacing it, and it works whether your pain is labelled <a href=\"/conditions/fibromyalgia\">fibromyalgia</a>, <a href=\"/conditions/chronic-pain\">long-standing pain</a>, or nothing in particular yet.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "A flare that is different in character from your usual ones, rather than simply worse, which deserves assessment.",
+    "New weakness, numbness, or loss of bladder or bowel control, which needs urgent medical assessment.",
+    "Fever, unexplained weight loss, or night sweats alongside a flare.",
+    "Chest pain, or breathlessness out of proportion to what you were doing: stop and seek medical care.",
+    "A flare that does not settle at all over several weeks despite reducing activity."
+  ],
+  "faq": [
+    {
+      "q": "My baseline is five minutes. Is that even worth doing?",
+      "a": "Yes, and it is worth more than twenty minutes that costs you three days. Five minutes repeated daily is a stable base that can grow. The number matters far less than whether it holds."
+    },
+    {
+      "q": "How long before I notice anything?",
+      "a": "That varies too much between people for an honest figure. What usually changes first is the frequency of flares rather than the pain itself, so fewer bad days is often the earliest sign it is working."
+    },
+    {
+      "q": "What if I genuinely cannot tell what caused a flare?",
+      "a": "That is common, and some flares have no findable trigger. A simple record of activity and how you were the following two days reveals patterns that memory cannot, and some remain unexplained."
+    },
+    {
+      "q": "Should I push through pain during a session?",
+      "a": "No. Working to a set time or count makes this question mostly disappear, because you stop at the planned point whether it feels easy or hard."
+    }
+  ],
+  "muscles": [
+    "glute-med",
+    "ql",
+    "upper-trap",
+    "multifidus",
+    "psoas"
+  ],
+  "pain": [
+    "beside-the-spine",
+    "upper-buttock",
+    "where-neck-meets-shoulder"
+  ],
+  "guides": [],
+  "related": [
+    "/conditions/fibromyalgia",
+    "/conditions/central-sensitisation",
+    "/conditions/chronic-pain",
+    "/treatments/chronic-pain-program",
+    "/treatments/clinical-exercise-physiology",
+    "/conditions/myofascial-pain-vs-fibromyalgia"
+  ],
+  "reviewStatus": "approved"
+}

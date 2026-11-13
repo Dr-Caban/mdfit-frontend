@@ -1,0 +1,89 @@
+{
+  "group": "activities",
+  "slug": "stretching-before-or-after-exercise",
+  "title": "Stretching Before or After Exercise? | MD Fit",
+  "h1": "Stretching Before or After Exercise",
+  "description": "What static stretching before training actually does, what to do instead, and where stretching genuinely belongs in a session.",
+  "about": {
+    "type": "Thing",
+    "name": "Stretching before and after exercise"
+  },
+  "lead": "The short answer: dynamic movement before, static stretching after or separately. The longer answer is that the whole question matters less than people think, with one exception worth knowing.",
+  "sections": [
+    {
+      "h2": "Before training",
+      "html": "<p>Long static stretches immediately before a hard effort can temporarily reduce force production. The effect is real, measurable, and in practice small for most people most of the time — it matters if you are about to attempt a heavy single or sprint, and matters very little before a gentle session.</p><p>The better reason to skip it is that static stretching does not do what a warm-up is supposed to do. A warm-up should raise tissue temperature, get blood moving, rehearse the movement you are about to perform and wake up the muscles that will control it. Holding a hamstring stretch for a minute does none of those.</p><p>What works instead: five to ten minutes of easy general movement, then the movement you are about to do, performed light and building. See <a href=\"/activities/warming-up-for-lifting\">warming up for lifting</a>.</p>"
+    },
+    {
+      "h2": "The exception",
+      "html": "<p>If a specific restriction is physically preventing a position you need — an ankle that will not let you reach a squat depth, a shoulder that will not let you get under a bar comfortably — then a targeted stretch for that area before training is sensible.</p><p>That is a different thing from stretching everything out of habit. One area, with a reason, as part of a warm-up that also includes movement.</p>"
+    },
+    {
+      "h2": "After training",
+      "html": "<p>Static stretching after a session is well tolerated and many people find it pleasant. What it does not reliably do is prevent soreness. The belief that stretching after exercise prevents next-day soreness has not held up well, and expecting it to sets people up for disappointment.</p><p>If it helps you feel better and marks the end of a session, that is a reasonable justification on its own. Just do not count on it as an injury-prevention measure.</p>"
+    },
+    {
+      "h2": "When stretching genuinely helps",
+      "html": "<p>Stretching does best as its own thing: a separate session, or the end of the day, done regularly over weeks for an area that is genuinely restricted. That is where range actually changes.</p><p>It also helps as symptom relief. A tight <a href=\"/muscles/upper-trapezius\">upper trapezius</a> or stiff hip flexor often feels better for a stretch, and feeling better has value even when it does not address the cause. The mistake is stopping there — see <a href=\"/activities/mobility-vs-flexibility\">mobility vs flexibility</a> for why the sensation and the cause are frequently different things.</p>"
+    },
+    {
+      "h2": "Dynamic, static and the words in between",
+      "html": "<p>Three terms get used loosely and it is worth separating them.</p><ul><li><b>Static stretching</b> — holding a position at end range for thirty seconds or more. Best after training or in its own session.</li><li><b>Dynamic stretching</b> — moving repeatedly through range rather than holding, such as leg swings or walking lunges. This belongs in a warm-up.</li><li><b>Ballistic stretching</b> — bouncing into end range with momentum. Little reason to use it for most people, and the most likely of the three to produce a strain on cold tissue.</li></ul><p>The practical distinction is that dynamic work raises temperature and rehearses the pattern while taking the joint through range, which is what a body about to work actually needs. Static holds lower tension and do neither of those things, which is why they fit better at the other end of a session.</p><p>None of this is a reason to be rigid about it. Someone who has always stretched before training and feels better for it is not harming themselves, and the size of these effects in ordinary training is modest.</p>"
+    },
+    {
+      "h2": "What to do before common sessions",
+      "html": "<ul><li><b>Before lifting:</b> five minutes easy cardio, then light sets of the movement, building.</li><li><b>Before cardio:</b> start at an easy effort for the first five minutes. That is the warm-up.</li><li><b>Before sport:</b> general movement, then rehearse the specific patterns — change of direction, swings, serves — at increasing intensity.</li><li><b>After anything:</b> stretch if you enjoy it, or do not. Neither choice is a mistake.</li></ul>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Sharp or shooting pain during a stretch, particularly travelling down an arm or leg.",
+    "Numbness, tingling or weakness during or after stretching.",
+    "A sudden sharp pain in a muscle during warm-up, which usually means a strain rather than tightness.",
+    "A joint that catches or feels unstable at end range."
+  ],
+  "faq": [
+    {
+      "q": "Will stretching before a workout cause injury?",
+      "a": "No. It may slightly reduce force for a short period, which matters mainly for maximal efforts, but it is not dangerous."
+    },
+    {
+      "q": "Does stretching prevent soreness?",
+      "a": "The evidence for that is weak. Soreness after unfamiliar work is normal and settles on its own; stretching may feel good without changing it much."
+    },
+    {
+      "q": "How long should I hold a stretch?",
+      "a": "Thirty to sixty seconds is a reasonable range for a genuine restriction. Frequency across the week matters more than the length of a single hold."
+    },
+    {
+      "q": "Should I stretch if I'm not training that day?",
+      "a": "Yes, and that is often when stretching works best — as its own short session rather than tacked onto something else."
+    }
+  ],
+  "muscles": [
+    "biceps-femoris",
+    "psoas",
+    "upper-trap",
+    "gastroc",
+    "pec-minor"
+  ],
+  "pain": [
+    "back-of-thigh",
+    "front-of-hip",
+    "top-of-shoulder"
+  ],
+  "guides": [
+    "calf",
+    "iliopsoas"
+  ],
+  "related": [
+    "/activities/mobility-vs-flexibility",
+    "/activities/warming-up-for-lifting",
+    "/activities/daily-mobility-routine",
+    "/activities/muscle-soreness-and-doms",
+    "/treatments/functional-mobility"
+  ],
+  "programs": [],
+  "reviewStatus": "draft"
+}
