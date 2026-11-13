@@ -2651,7 +2651,7 @@
     $("#tier-grid").innerHTML = C.tiers.map((t, i) => `<article class="tier${i === 1 ? " featured" : ""}${cur && cur.id === t.id ? " current" : ""}" data-tier-card="${esc(t.id)}">
       ${i === 1 ? `<span class="tag">Most popular</span>` : ""}
       <h3>${esc(t.name)}</h3><p class="tier-price"><b>${money(t.price)}</b>/month</p>
-      <p class="tier-ai">Unlimited Sunny (MD Fit Intelligence)</p>
+      <p class="tier-ai">Unlimited Sunny</p>
       ${t.directMessages ? `<p class="tier-dm"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"/></svg>Message Dr. Jared directly</p>` : ""}
       ${t.meetings ? `<p class="tier-meet">${t.meetings} remote 1-on-1 sessions a month · ${t.meetingMinutes} min each</p>` : t.accountability ? `<p class="tier-meet">$1 off per active day · 20 active days = <b>${money(t.floor || 0)}</b> that month</p>` : ""}
       <ul>${t.perks.filter((x) => !/^unlimited sunny/i.test(x) && !(t.directMessages && /^message dr\. jared directly/i.test(x))).map((x) => `<li>${esc(x)}</li>`).join("")}</ul>
@@ -3198,7 +3198,7 @@
   }
 
   // ================= My plans on Home: programs Dr. Jared assigned ("Recommended by Dr. Jared"), programs the member
-  // saved, and what Sunny (MD Fit Intelligence) suggested ("Suggested for you"). The two labels never mix: Recommended
+  // saved, and what Sunny suggested ("Suggested for you"). The two labels never mix: Recommended
   // comes from Dr. Jared, Suggested from Sunny, and a suggestion never changes what Dr. Jared recommended.
   const ACCESS_RANK = { free: 0, member: 1, premium: 2 };
   // Locked = the program needs more than this person's access (server: C.access, which is "premium" for inpatients)

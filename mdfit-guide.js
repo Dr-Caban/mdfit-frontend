@@ -1,4 +1,4 @@
-// Sunny (MD Fit Intelligence): the gold cloud to tap and talk to, on every screen of the member app.
+// Sunny: the gold cloud to tap and talk to, on every screen of the member app.
 //
 // Sunny is a guide to the app, not a doer of clinical things: it reads what the member writes, works out what they are
 // trying to do, and offers the places in the app that fit as selections. Tapping one takes them there. It knows what
@@ -127,11 +127,11 @@
     down: '<svg viewBox="0 0 24 24" class="mg-line" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>',
     lock: '<svg viewBox="0 0 24 24" class="mg-lock-ic" aria-hidden="true"><path d="M17 9h-1V7a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2zm-7-2a2 2 0 0 1 4 0v2h-4z"/></svg>'
   };
-  const btn = document.createElement("button"); btn.id = "mg-btn"; btn.type = "button"; btn.setAttribute("aria-label", "Open Sunny, MD Fit Intelligence: tap me to talk"); btn.setAttribute("aria-expanded", "false"); btn.setAttribute("aria-controls", "mg"); btn.innerHTML = cloud("") + '<i class="mg-dot" hidden></i>';
+  const btn = document.createElement("button"); btn.id = "mg-btn"; btn.type = "button"; btn.setAttribute("aria-label", "Open Sunny: tap me to talk"); btn.setAttribute("aria-expanded", "false"); btn.setAttribute("aria-controls", "mg"); btn.innerHTML = cloud("") + '<i class="mg-dot" hidden></i>';
   const tag = document.createElement("span"); tag.id = "mg-tag"; tag.textContent = "Tap me to talk"; tag.setAttribute("aria-hidden", "true");
   const scrim = document.createElement("div"); scrim.id = "mg-scrim"; scrim.hidden = true;
-  const box = document.createElement("section"); box.id = "mg"; box.hidden = true; box.setAttribute("role", "dialog"); box.setAttribute("aria-label", "Sunny, MD Fit Intelligence");
-  box.innerHTML = `<header class="mg-head"><div class="mg-grab"></div><div class="mg-in">${cloud("mg-mini")}<div class="mg-who"><b>Sunny</b><span>MD Fit Intelligence</span></div>
+  const box = document.createElement("section"); box.id = "mg"; box.hidden = true; box.setAttribute("role", "dialog"); box.setAttribute("aria-label", "Sunny");
+  box.innerHTML = `<header class="mg-head"><div class="mg-grab"></div><div class="mg-in">${cloud("mg-mini")}<div class="mg-who"><b>Sunny</b><span>Your MD Fit assistant</span></div>
       <button type="button" id="mg-x" aria-label="Close Sunny">${ICON.x}${ICON.down}</button></div></header>
     <div id="mg-log" role="log" aria-live="polite" aria-label="Conversation with Sunny"></div>
     <div id="mg-meter" hidden></div>

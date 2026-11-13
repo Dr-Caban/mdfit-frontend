@@ -194,7 +194,7 @@
     { g: "Practice", items: [["dashboard", "Dashboard"], ["calendar", "Calendar"], ["clients", "Clients"], ["chart", "Client chart"], ["leads", "Leads"], ["messages", "Messages"], ["telehealth", "Telehealth"]] },
     { g: "Clinical", items: [["notes", "Notes & AI scribe"], ["forms", "Forms & intake"], ["programs", "Programs"], ["nutrition", "Nutrition"], ["fitness", "Fitness"]] },
     { g: "Business", items: [["payments", "Payments"], ["newsletter", "Newsletter"]] },
-    { g: "Admin", items: [["team", "Team & roles"], ["feedback", "Reviews & feedback"], ["security", "Security & audit"], ["settings", "Modules & settings"], ["insights", "Insights"], ["economics", "System economics"], ["guide", "Sunny (MD Fit Intelligence)"]] },
+    { g: "Admin", items: [["team", "Team & roles"], ["feedback", "Reviews & feedback"], ["security", "Security & audit"], ["settings", "Modules & settings"], ["insights", "Insights"], ["economics", "System economics"], ["guide", "Sunny"]] },
     { g: "Client-facing", items: [["portal", "Client app"], ["booking", "Booking page"]] }
   ];
   function renderNav(active) {
@@ -1004,7 +1004,7 @@
       ${S.truncated ? `<p class="muted" style="margin:8px 0 0;font-size:12.5px">Stripe holds more entries than were read for this month.</p>` : ""}</div>`;
   }
 
-  // ---- MD Fit Intelligence (the guide) in numbers: who opened it, how many answers it gave, who used up the free
+  // ---- Sunny in numbers: who opened it, how many answers it gave, who used up the free
   // plan's daily tokens and who upgraded after that. Counts only: nothing anyone typed to it is kept or shown here.
   const GUIDE_DAYS = [7, 30, 90];
   const dayName = (d, long) => new Date(d + "T12:00:00Z").toLocaleDateString("en-US", { timeZone: "UTC", month: "short", day: "numeric", ...(long ? { weekday: "short" } : {}) });
@@ -1053,7 +1053,7 @@
     const days = GUIDE_DAYS.includes(state.guideDays) ? state.guideDays : 30; let g = null, why = "";
     try { g = await guideStats(days); } catch (err) { why = err.message; }
     cache.guide = g;
-    const head = `<div class="view-head"><div><h1>Sunny · MD Fit Intelligence</h1><p class="muted">How members use Sunny in the app, and who upgrades after using up the free daily tokens · counts only, nothing anyone typed is kept</p></div>
+    const head = `<div class="view-head"><div><h1>Sunny</h1><p class="muted">How members use Sunny in the app, and who upgrades after using up the free daily tokens · counts only, nothing anyone typed is kept</p></div>
       <div class="seg" role="group" aria-label="Days shown">${GUIDE_DAYS.map((d) => `<button type="button" data-act="guideDays" data-d="${d}" aria-pressed="${d === days}">${d} days</button>`).join("")}</div></div>`;
     if (!g) return `${head}<div class="card" id="guideErr"><b>Sunny's numbers could not be loaded.</b><p class="muted" style="margin:6px 0 0">${esc(why)}</p></div>`;
     const T = g.totals || {}, n = (k) => Number(T[k]) || 0, S = g.settings || {};
@@ -1492,7 +1492,7 @@
           ${fld("rfAmt", "amount", "Amount to refund ($)", (left / 100).toFixed(2), { type: "number", attrs: `required min="0.01" max="${(left / 100).toFixed(2)}" step="0.01"` })}
           <div class="field"><label for="rfPass">Owner password</label><input id="rfPass" name="password" class="input" type="password" required autocomplete="current-password"><p class="muted" style="margin:4px 0 0;font-size:12.5px">Asked for every refund, even though you are signed in.</p></div>
           <div class="row"><button class="btn primary">Refund to the card</button><span class="muted" id="rfMsg" role="status" style="font-size:12.5px"></span></div></form>`); },
-    // ---- MD Fit Intelligence (Insights): the range, chart or table, and the AI switch
+    // ---- Sunny (Insights): the range, chart or table, and the AI switch
     guideDays: (el) => { state.guideDays = Number(el.dataset.d) || 30; return render(); },
     guideView: (el) => { state.guideView = el.dataset.v === "table" ? "table" : "chart"; return render(); },
     // Off is one click. On asks first, in the page: members type health details, so the service must have signed.
