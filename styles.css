@@ -1,3 +1,21 @@
+/* Self-hosted so the brand faces are there at first paint. Loading them from Google cost two cross-origin hops
+   and swapped the font in ~500ms later, reflowing every heading: that swap was the whole of the homepage's CLS
+   (measured 0.163 with the swap, 0.000 with the fonts blocked). Both families are OFL-licensed, so self-hosting is
+   permitted. Montserrat is one variable file covering 400-800; Libre Baskerville's roman covers 400 and 700.
+   Latin subset only, which is what an English-language site needs. The hashed filenames let them be cached forever. */
+@font-face {
+  font-family: "Montserrat"; font-style: normal; font-weight: 400 800; font-display: swap;
+  src: url("/assets/fonts/montserrat-var.a5ec5492.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Libre Baskerville"; font-style: normal; font-weight: 400 700; font-display: swap;
+  src: url("/assets/fonts/libre-baskerville.b1bcbff3.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Libre Baskerville"; font-style: italic; font-weight: 400; font-display: swap;
+  src: url("/assets/fonts/libre-baskerville-italic.f6180342.woff2") format("woff2");
+}
+
 /* MD Fit brand tokens, taken from mdfitsrq.com (Breakdance global settings). */
 :root {
   --ink: #0A1A2E;          /* brand navy */
