@@ -1,0 +1,92 @@
+{
+  "slug": "overhead-press",
+  "title": "Overhead Press: Form and Shoulder Pain | MD Fit",
+  "h1": "The Overhead Press: Form and Shoulder Pain",
+  "description": "Why overhead pressing hurts some shoulders, what overhead range actually requires, and the alternatives worth using while you build it.",
+  "about": {
+    "type": "Thing",
+    "name": "Overhead press"
+  },
+  "lead": "Pressing overhead asks more of the shoulder than any other common lift, because it requires the arm to reach a position many adults have lost. The usual mistake is to force the bar overhead by arching the low back instead, which moves the problem rather than solving it.",
+  "sections": [
+    {
+      "h2": "Overhead range is earned, not assumed",
+      "html": "<p>To press a bar directly overhead, the arm needs to reach near-vertical, and the shoulder blade has to rotate upward to let it. If either is missing, the body finds the range somewhere else, almost always by extending the low back. That is why people finish an overhead press with the ribs flared and the bar still slightly forward.</p><p>A quick check: stand with your back against a wall, feet a little way out, low back flat against the wall. Raise your arms overhead keeping the back flat. If your arms will not reach the wall without your back lifting off it, you do not currently have the range to press straight overhead, and pressing anyway will load the low back every rep.</p>"
+    },
+    {
+      "h2": "Bar path and the face problem",
+      "html": "<p>The bar has to travel around the head, which is the awkward geometry at the heart of this lift. The usual sequence is to move the head back slightly as the bar passes the face, then push the head forward through the window as the bar clears, finishing with the bar over the middle of the foot and the biceps near the ears.</p><p>Common faults: pressing the bar forward in an arc to avoid the face, which keeps the load out in front and loads the shoulders and low back; and failing to push the head through at the top, which leaves the bar in front of the body where it is far harder to hold.</p>"
+    },
+    {
+      "h2": "Why it hurts, and who it hurts",
+      "html": "<p>Overhead pressing commonly irritates the <a href=\"/pain/top-of-shoulder\">top of the shoulder</a> and the <a href=\"/pain/outside-of-shoulder\">outside of the shoulder or upper arm</a>. The tissues involved are often the <a href=\"/muscles/supraspinatus\">supraspinatus</a> and the <a href=\"/muscles/infraspinatus\">infraspinatus</a>, with the <a href=\"/muscles/upper-trapezius\">upper trapezius</a> taking over when the shoulder blade does not rotate well.</p><p>The shape of the shoulder itself varies between people, and so does the room available as the arm travels overhead. That is part of why two lifters doing the same programme have different experiences. <a href=\"/activities/shoulder-shape-and-overhead-lifting\">Shoulder shape and overhead lifting</a> covers it, and <a href=\"/conditions/shoulder-impingement\">shoulder impingement</a> covers what the pattern can become.</p>"
+    },
+    {
+      "h2": "Good alternatives while you build the range",
+      "html": "<p>Abandoning overhead work entirely is usually the wrong call, because overhead strength is worth having and tends to deteriorate without it. Better options while range is being built:</p><ul><li><b>Landmine press.</b> The angled path asks for less overhead range while still loading the pattern.</li><li><b>Incline press.</b> A middle ground, adjustable to whatever angle is currently comfortable.</li><li><b>Half-kneeling single-arm press.</b> Removes the ability to arch the low back, which exposes how much range is genuinely there.</li><li><b>Dumbbells over a barbell.</b> Lets each shoulder find its own path rather than being locked to a fixed bar.</li></ul>"
+    },
+    {
+      "h2": "How MD Fit approaches overhead pressing",
+      "html": "<p>The useful question is whether the restriction is in the tissue, the joint, or the control of the shoulder blade, because the answer changes the plan completely. Dr. Jared Caban assesses all three, releases what is restricted with hands-on work, rebuilds the position with corrective work, then loads it. A shoulder that cannot get overhead cleanly is not made safer by pressing more; it is made safer by pressing something it can currently do while the range is worked on.</p><p>Members get the exercise library and workout generator in the MD Fit app, so the between-session work is specific. Self-pay, no insurance paperwork, no referral needed.</p>"
+    }
+  ],
+  "redFlags": [
+    "Shoulder pain that continues at rest or wakes you at night.",
+    "Weakness lifting the arm to the side, or an arm that cannot be held out against gentle resistance.",
+    "A sudden sharp pain with a loss of strength during a press, rather than gradual soreness.",
+    "Numbness or tingling travelling down the arm or into the hand.",
+    "Any chest pain, pressure, shortness of breath or light-headedness during lifting: stop and call 911."
+  ],
+  "faq": [
+    {
+      "q": "Why does my low back arch when I press overhead?",
+      "a": "Usually because the arms cannot reach vertical, so the body borrows the range from the spine. Testing your overhead range against a wall with the low back flat shows whether that is what is happening."
+    },
+    {
+      "q": "Is the overhead press bad for shoulders?",
+      "a": "Pressing overhead is not inherently harmful, but it requires range that many adults have lost. Pressing into a range you do not have is what tends to cause trouble, not the lift itself."
+    },
+    {
+      "q": "Should I use dumbbells instead of a barbell?",
+      "a": "Dumbbells let each shoulder find its own path, which many people find more comfortable. A barbell is not better or worse, it is simply less forgiving of asymmetry."
+    },
+    {
+      "q": "Can I press overhead with a sore shoulder?",
+      "a": "Often a modified version is fine, such as a landmine or incline press at an angle that does not provoke symptoms. Pushing through overhead pain in the hope it settles is the approach that tends to prolong it."
+    }
+  ],
+  "muscles": [
+    "supraspinatus",
+    "infraspinatus",
+    "ant-delt",
+    "upper-trap",
+    "lower-trap",
+    "serratus"
+  ],
+  "pain": [
+    "top-of-shoulder",
+    "outside-of-shoulder",
+    "deep-shoulder-joint",
+    "beside-the-spine"
+  ],
+  "guides": [
+    "rotator-cuff"
+  ],
+  "related": [
+    "/activities/shoulder-shape-and-overhead-lifting",
+    "/activities/bench-press",
+    "/activities/barbell-row",
+    "/conditions/shoulder-impingement",
+    "/conditions/rotator-cuff-tear",
+    "/conditions/frozen-shoulder",
+    "/treatments/strength-and-performance"
+  ],
+  "programs": [
+    "shoulder-6",
+    "mobility-12"
+  ],
+  "group": "activities",
+  "steps": null,
+  "timeline": null,
+  "reviewStatus": "approved"
+}

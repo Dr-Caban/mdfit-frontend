@@ -1,0 +1,94 @@
+{
+  "group": "activities",
+  "slug": "walking-for-fitness",
+  "title": "Walking for Fitness: Making It Count | MD Fit",
+  "h1": "Walking for Fitness",
+  "description": "How to make walking a real training stimulus rather than just movement: pace, incline, load, and when walking stops being enough on its own.",
+  "about": {
+    "type": "Thing",
+    "name": "Walking for fitness"
+  },
+  "lead": "Walking is the most underrated and most over-claimed exercise there is. It is genuinely valuable, available to almost everyone, and for a lot of people it quietly stops being enough somewhere around month four.",
+  "sections": [
+    {
+      "h2": "What walking does well",
+      "html": "<p>It gets people moving who would not otherwise move, and that is not a small thing. It loads the feet, calves, hips and spine gently and repeatedly, it is aerobic work the heart and lungs respond to, and it is one of the few forms of exercise people reliably keep doing for decades.</p><p>It also has almost no barrier. No equipment, no membership, no learning curve, and it can be split into pieces across a day without losing much. For someone coming back from a long break, injury or illness, walking is usually the right first answer.</p>"
+    },
+    {
+      "h2": "Where it falls short",
+      "html": "<p>The body adapts to what is familiar, and walking on flat ground becomes familiar fast. After a few months the same thirty-minute route that once raised your heart rate meaningfully is barely registering, and progress stalls.</p><p>More importantly, walking does little for muscle and bone. The forces involved are low and repetitive, which is exactly what makes it accessible and exactly why it does not maintain strength or bone density. People who walk daily and do nothing else still lose muscle with age at close to the usual rate.</p><p>That is not an argument against walking. It is an argument against walking being the whole plan.</p>"
+    },
+    {
+      "h2": "Making it count",
+      "html": "<p>Three ways to keep walking a real stimulus, roughly in order of how much they add:</p><ul><li><b>Incline.</b> The single most effective change. A treadmill at five to ten percent, a bridge, a car park ramp. It raises the demand sharply without raising impact.</li><li><b>Load.</b> Carrying weight — a weighted pack, or simply carrying the shopping deliberately — adds demand through the hips, trunk and feet. Build up slowly; the tissue takes time to adapt.</li><li><b>Pace.</b> Useful but limited, because flat walking has a ceiling before it becomes awkward. Intervals of brisk and easy work better than trying to hold a fast pace throughout.</li></ul><p>Our <a href=\"/activities/incline-walking-and-stairs\">incline walking and stairs</a> page goes further into the first of those.</p>"
+    },
+    {
+      "h2": "Dose and progression",
+      "html": "<p>Thirty to sixty minutes most days is a reasonable target for general health, accumulated in whatever chunks suit you. If you are starting from very little, ten to fifteen minutes is the right opening and there is no benefit to rushing it.</p><p>Add volume before intensity, and add roughly ten percent a week. The foot, achilles and shin are the tissues that complain when walking volume jumps, and they complain a week or two after the jump rather than during it, which makes the cause easy to miss.</p>"
+    },
+    {
+      "h2": "When walking starts to hurt",
+      "html": "<p>Walking problems are nearly always load-over-time problems rather than single injuries. The usual suspects:</p><ul><li>Pain under the heel on the first steps in the morning, which often points at <a href=\"/conditions/plantar-fasciitis\">plantar fasciitis</a>.</li><li>Ache in the <a href=\"/muscles/soleus\">soleus</a> or achilles, worse on hills and stairs.</li><li>Outside-of-knee pain that comes on at a predictable distance — see <a href=\"/conditions/it-band-syndrome\">IT band syndrome</a>.</li><li>Shin pain, which should always be taken seriously if it is pinpoint over bone.</li></ul><p>Footwear that has quietly worn out is a common and easily fixed contributor. So is adding incline and distance in the same week.</p>"
+    },
+    {
+      "h2": "Walking in Sarasota",
+      "html": "<p>From May to October, heat and humidity change what a walk costs. The same route at the same pace will push your heart rate higher and leave you more depleted, and that is physiology rather than a loss of fitness.</p><p>Early morning, late evening, covered walkways and air-conditioned options all work. So does accepting a slower pace for a few months. Our <a href=\"/activities/training-in-heat-and-humidity\">training in heat and humidity</a> page covers hydration and the warning signs worth knowing.</p>"
+    },
+    {
+      "h2": "What to pair it with",
+      "html": "<p>Two strength sessions a week alongside regular walking covers most of what walking misses. That combination — easy aerobic volume plus deliberate loading — is close to the core of what we build for people here, and it is the pairing that holds up best over decades.</p><p>See <a href=\"/activities/how-to-start-exercising\">how to start exercising</a> for the strength side, and <a href=\"/activities/zone-2-cardio\">zone 2 cardio</a> for making the aerobic part deliberate.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Chest pressure or pain while walking that eases with rest and returns when you walk again: this needs prompt medical assessment.",
+    "Calf pain that comes on at a predictable distance and eases with rest, which can point to a circulation problem rather than a muscle one.",
+    "Swelling, warmth or redness in one calf, which needs same-day medical assessment.",
+    "Shin, heel or foot pain that is pinpoint over bone, worse with each walk and sore at rest.",
+    "New numbness, weakness or a foot that catches or drags."
+  ],
+  "faq": [
+    {
+      "q": "Is ten thousand steps a real target?",
+      "a": "It is a round number from a marketing campaign rather than a clinical threshold, and benefits appear well below it. More is generally better up to a point, but there is nothing magic about that figure."
+    },
+    {
+      "q": "Is walking enough exercise on its own?",
+      "a": "For general activity, it is a strong foundation. For maintaining muscle and bone as you age, it is not sufficient on its own and needs resistance work alongside it."
+    },
+    {
+      "q": "Should I walk every day?",
+      "a": "Daily walking is fine and often easier to sustain than a few longer sessions. Vary the terrain and intensity so it does not become one identical repeated load."
+    },
+    {
+      "q": "Does walking help back pain?",
+      "a": "For many people with ordinary low back pain, gentle regular walking helps more than rest. If walking consistently makes it sharply worse, or there is leg pain, numbness or weakness, that is worth assessing."
+    }
+  ],
+  "muscles": [
+    "soleus",
+    "gastroc",
+    "glute-med",
+    "tib-post",
+    "foot-intrinsics"
+  ],
+  "pain": [
+    "sole-of-foot",
+    "lower-calf",
+    "outside-of-knee"
+  ],
+  "guides": [
+    "calf"
+  ],
+  "related": [
+    "/activities/incline-walking-and-stairs",
+    "/activities/zone-2-cardio",
+    "/activities/cardio-for-beginners",
+    "/activities/training-in-heat-and-humidity",
+    "/conditions/plantar-fasciitis",
+    "/activities/how-to-start-exercising"
+  ],
+  "programs": [],
+  "reviewStatus": "draft"
+}

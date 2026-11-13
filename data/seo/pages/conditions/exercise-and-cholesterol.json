@@ -1,0 +1,83 @@
+{
+  "group": "conditions",
+  "slug": "exercise-and-cholesterol",
+  "title": "Exercise and Cholesterol | MD Fit",
+  "h1": "Exercise and Cholesterol in Sarasota, FL",
+  "description": "What exercise does and does not do for a lipid panel, and how to build the plan your physician asked for. Clinical Exercise Physiology in Sarasota.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Hyperlipidemia"
+  },
+  "lead": "A lipid panel comes back, a conversation happens, and “more exercise” is part of the advice. This page is about what exercise realistically contributes here — including the parts it does less for — and how the plan gets built alongside whatever your physician is doing.",
+  "sections": [
+    {
+      "h2": "Being honest about what exercise does here",
+      "html": "<p>Of all the conditions on this part of the site, this is the one where I am most careful about claims, because the effect is real but it is not uniform across the panel.</p><p>In general terms, and without putting figures on it:</p><ul><li>Regular aerobic activity tends to have its clearest effect on triglycerides, often fairly responsively.</li><li>HDL — the one usually described as the good one — tends to respond to sustained regular activity over months rather than weeks.</li><li>LDL is the one exercise moves least reliably on its own. For many people, meaningful LDL change comes from medication and diet, with exercise contributing rather than leading.</li><li>Body composition changes can shift the whole picture, which is part of why resistance training belongs in the plan and not just cardio.</li></ul><p>Anybody who tells you a specific number your cholesterol will drop if you exercise is guessing. The response varies substantially between individuals, and your own panel is the only measurement that means anything about you.</p>"
+    },
+    {
+      "h2": "Where this sits relative to your physician",
+      "html": "<p>Clearly: <b>I do not prescribe, adjust or advise stopping any cholesterol medication, and I do not interpret your lipid panel as a treatment decision.</b> Those belong to your physician.</p><p>The specific risk I want to name, because it comes up: people sometimes start exercising and decide they can stop their statin. That decision is not one to make alone, and nobody here will support it. If exercise and diet change your picture enough that medication should be revisited, that is a conversation to have with your prescriber, with labs in front of you both.</p><p>With your permission your physician gets a short summary of what you are doing after the evaluation and when the plan changes, so the exercise side and the medical side are not operating blind to each other.</p>"
+    },
+    {
+      "h2": "Statins and muscle aches, which is worth raising properly",
+      "html": "<p>Muscle aching is a recognised and reasonably common complaint among people taking statins, and it causes two specific problems once someone starts exercising.</p><p>First, it muddies the picture. New training produces soreness anyway, so it becomes genuinely hard to tell ordinary delayed soreness from a medication effect. Second, it is a common reason people quietly stop either the exercise or the medication, usually without telling anyone.</p><p>How I handle it:</p><ul><li>Progression is kept gradual and recorded, so unexpected soreness stands out against what the training should have produced.</li><li>You are asked to report muscle symptoms that are widespread, persistent, or out of proportion to what you did — and to report them to your prescriber, not just to me.</li><li>Severe muscle pain with weakness, or dark-coloured urine, is a prompt medical matter and stops exercise that day.</li></ul><p>Please do not stop a prescribed medication because of aching without speaking to the person who prescribed it.</p>"
+    },
+    {
+      "h2": "What the plan looks like",
+      "html": "<p>Aerobic work is the main driver, so the first priority is finding something you will do most weeks for a long time — walking, cycling, swimming, or the pool through a Sarasota summer. Volume is built before intensity, because total accumulated activity is what tends to matter here.</p><p>Resistance training runs alongside it, two or three times a week on the large muscle groups: <a href=\"/muscles/gluteus-maximus\">gluteus maximus</a>, the <a href=\"/muscles/vastus-lateralis\">quadriceps</a>, <a href=\"/muscles/latissimus-dorsi\">latissimus dorsi</a> and the <a href=\"/muscles/pectoralis-major-upper\">chest</a>. Its contribution is through muscle and body composition rather than directly through the panel.</p><p>If high cholesterol sits alongside <a href=\"/conditions/exercise-and-high-blood-pressure\">raised blood pressure</a>, <a href=\"/conditions/exercise-for-type-2-diabetes\">blood sugar problems</a> or central weight — which is common — then <a href=\"/conditions/metabolic-syndrome-and-exercise\">metabolic syndrome</a> is probably the more useful page, because the plan is built around the cluster rather than one line of the panel.</p>"
+    },
+    {
+      "h2": "Expectations and timeframe",
+      "html": "<p>Lipids are usually rechecked by your physician on their own schedule, often months apart, so you will not get the quick feedback that blood pressure or blood sugar can give. That makes this one of the harder things to stay motivated about.</p><p>Which is why I would rather you had goals you can actually see week to week — what you can lift, how far you walk comfortably, waist measurement, how the stairs feel — with the panel as a slower confirmation in the background. People who hang their motivation on a number they see twice a year tend not to last until the second one.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Severe or widespread muscle pain with weakness, or dark-coloured urine, particularly if you take a statin: stop exercising and contact your physician promptly.",
+    "Chest pain or pressure during exertion, or pain spreading to the jaw or arm: stop and seek emergency care.",
+    "Unusual shortness of breath, fainting or an irregular heartbeat during exercise.",
+    "Calf pain, cramping or aching that reliably comes on with walking and eases with rest, which can indicate a circulation problem and should be assessed.",
+    "Do not stop a prescribed cholesterol medication because of muscle aching without speaking to the person who prescribed it."
+  ],
+  "faq": [
+    {
+      "q": "How much will exercise lower my cholesterol?",
+      "a": "Honestly, nobody can tell you that in advance. The response varies a great deal between individuals, and the effect is generally clearer on triglycerides than on LDL. Your own panel over time is the only meaningful answer."
+    },
+    {
+      "q": "Can I come off my statin if I exercise enough?",
+      "a": "That is entirely your prescriber's decision, made with labs in front of you both. Nobody here will advise you to stop or reduce it, and it is not a decision to make alone."
+    },
+    {
+      "q": "My statin makes my muscles ache. Should I stop exercising?",
+      "a": "Report it to your prescriber rather than stopping anything on your own. On the exercise side, progression is kept gradual and recorded so that unusual soreness stands out from what training alone should have caused."
+    },
+    {
+      "q": "Is cardio or weights better for cholesterol?",
+      "a": "Aerobic work is the main driver for the panel itself. Resistance training contributes through muscle and body composition, and both are usually in the plan."
+    }
+  ],
+  "muscles": [
+    "glute-max",
+    "vastus-lateralis",
+    "lats",
+    "pec-major-clav",
+    "gastroc"
+  ],
+  "pain": [
+    "front-of-thigh",
+    "upper-calf"
+  ],
+  "guides": [],
+  "related": [
+    "/treatments/clinical-exercise-physiology",
+    "/conditions/metabolic-syndrome-and-exercise",
+    "/conditions/exercise-and-high-blood-pressure",
+    "/conditions/exercise-for-type-2-diabetes",
+    "/conditions/body-composition-and-strength",
+    "/conditions/cardiac-rehab-next-steps",
+    "/conditions/returning-to-exercise-after-a-long-break"
+  ],
+  "reviewStatus": "approved"
+}

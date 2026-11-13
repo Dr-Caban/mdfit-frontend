@@ -1,0 +1,87 @@
+{
+  "group": "conditions",
+  "slug": "returning-to-exercise-after-a-long-break",
+  "title": "Returning to Exercise After a Break | MD Fit",
+  "h1": "Returning to Exercise After a Long Break, in Sarasota, FL",
+  "description": "Starting again after years off, an illness or an injury. How to begin without wrecking the first fortnight, with a Clinical Exercise Physiologist in Sarasota.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Deconditioning"
+  },
+  "lead": "Most people who come back to exercise after a long gap do roughly the same thing: start with what they used to do, feel wrecked for four days, try again, tweak something, and stop. The gap is not the problem. The first fortnight is.",
+  "sections": [
+    {
+      "h2": "What actually changed while you were away",
+      "html": "<p>It helps to know what you are working with, because the parts of you recover at different speeds and that mismatch is what causes most of the trouble.</p><ul><li><b>Cardiorespiratory fitness</b> drops relatively quickly and comes back relatively quickly. This is the part that improves first and makes people feel encouraged.</li><li><b>Muscle strength</b> declines more slowly but takes longer to rebuild. If you were strong once, some of it returns faster than it was first built, which is genuine and not imagination.</li><li><b>Tendons and connective tissue</b> are the slow ones. They adapt considerably more slowly than muscle, and this mismatch is the single commonest cause of injury in people coming back. Your muscles can quickly do more than your tendons are ready for.</li><li><b>Bone</b> adapts slowly too, which matters if you are heading back to running or jumping.</li><li><b>Coordination and balance</b> fade with disuse and return with practice.</li></ul><p>That third point explains almost every Achilles, patellar tendon and shoulder problem I see in returners. The engine comes back before the chassis.</p>"
+    },
+    {
+      "h2": "The mistakes, in the order people make them",
+      "html": "<ol><li><b>Starting at the old level.</b> What you could do at thirty-five, or before the surgery, is not the starting point. It is a destination.</li><li><b>Doing too much in week one</b> because it felt fine at the time. Soreness arrives a day or two later and takes the following week with it.</li><li><b>Treating soreness as the measure of a good session.</b> It is not a useful metric, and chasing it reliably produces injury.</li><li><b>Only doing cardio</b>, because it feels more approachable, and losing the chance to rebuild strength.</li><li><b>Going hard three days in a row</b> after a rest day felt like laziness.</li><li><b>Ignoring the old injury</b> that was there before the break, on the theory that it may have resolved itself.</li></ol><p>Almost nobody fails at this because they lack willpower. They fail because the first fortnight was badly dosed.</p>"
+    },
+    {
+      "h2": "How to actually start",
+      "html": "<p>The principle is to begin at a level that feels almost embarrassingly easy and raise it on a schedule rather than by feel. Specifically:</p><ul><li>Two or three sessions in the first week, not five, with a day between them.</li><li>Finish each session feeling you could have done more. That is the target, not a compromise.</li><li>Change one thing at a time — duration or load, not both in the same week.</li><li>Include resistance work from the start, lightly. It protects the tendons rather than threatening them, as long as the progression is sane.</li><li>Judge the dose by how you feel the <b>next day</b>, not during.</li><li>Expect some soreness in the first couple of weeks, and expect it to settle as your body adapts.</li></ul><p>The legs do most of the early work — <a href=\"/muscles/gluteus-maximus\">gluteus maximus</a>, <a href=\"/muscles/gluteus-medius\">gluteus medius</a> and the <a href=\"/muscles/vastus-lateralis\">quadriceps</a> — with the <a href=\"/muscles/gastrocnemius\">calves</a> and <a href=\"/muscles/soleus\">soleus</a> needing particular patience if running is the goal, because they are the classic casualty of coming back too fast.</p>"
+    },
+    {
+      "h2": "Soreness versus something wrong",
+      "html": "<p>This is the question I get asked most by returners, and the rough guide is:</p><p><b>Ordinary delayed soreness</b> is spread across the muscle belly, affects both sides fairly evenly if you trained both, appears a day or two afterwards, eases as you warm up and move, and is largely gone within about three days. It is normal and it reduces as you adapt.</p><p><b>Worth attention</b> is pain that is sharp or localised to one point, swelling, pain that worsens rather than eases as you move, pain that wakes you at night, anything that affects one side only without reason, or a joint that catches, gives way or locks.</p><p>Tendon pain in particular tends to feel better once you are warmed up and worse the following morning, which fools people into thinking they are fine. If that pattern sounds familiar, it is worth having looked at before it becomes months of trouble.</p>"
+    },
+    {
+      "h2": "When the break was for a reason",
+      "html": "<p>If you stopped because of an illness, an operation, a cardiac event or a cancer diagnosis, that history shapes the restart and should be in the room. It is also why coming to a Clinical Exercise Physiologist rather than a gym can make sense here: your history and your plan get read by the same person, and Dr. Jared is a physician as well as a CEP.</p><p>Specific starting points elsewhere on this site: <a href=\"/conditions/cardiac-rehab-next-steps\">after cardiac rehab</a>, <a href=\"/conditions/exercise-after-cancer-treatment\">after cancer treatment</a>, and after a joint replacement via the <a href=\"/treatments/post-op-rehab-timelines\">post-op timelines</a>. If the break was simply life — work, caring for someone, a decade that got away — that is the most common reason of all and needs no explanation.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "Chest pain or pressure, unusual breathlessness, or fainting during exertion: stop and seek medical care before doing anything else.",
+    "Sharp, localised pain, swelling, or a joint that catches, locks or gives way: stop loading it and get it assessed.",
+    "Pain that is worse the morning after than it was during, and that keeps returning, which is the classic tendon pattern and worth addressing early.",
+    "Severe muscle pain with dark-coloured urine after unusually hard exercise: contact a physician promptly.",
+    "If your break was due to a cardiac event, surgery or serious illness, start with your physician's clearance rather than with a workout."
+  ],
+  "faq": [
+    {
+      "q": "How long before I feel normal again?",
+      "a": "Cardiorespiratory fitness tends to respond within weeks, strength takes longer, and tendons adapt slowest of all. That mismatch is why the early progression is kept deliberately conservative."
+    },
+    {
+      "q": "Should I expect to be sore?",
+      "a": "Some soreness in the first couple of weeks is normal and settles as you adapt. Soreness is not a measure of whether a session was any good, and chasing it is a reliable way to get hurt."
+    },
+    {
+      "q": "Can I just pick up where I left off?",
+      "a": "Almost never, and trying is the commonest reason returns fail. Your old level is the destination rather than the starting point, even if the first session feels deceptively easy."
+    },
+    {
+      "q": "I have an old injury from before the break. Does that matter?",
+      "a": "Yes, and it is worth assessing rather than hoping it resolved itself during the time off. Old problems tend to reappear under new load, usually in week three."
+    }
+  ],
+  "muscles": [
+    "glute-max",
+    "glute-med",
+    "vastus-lateralis",
+    "gastroc",
+    "soleus",
+    "lats"
+  ],
+  "pain": [
+    "front-of-thigh",
+    "lower-calf",
+    "outside-of-hip"
+  ],
+  "guides": [
+    "calf"
+  ],
+  "related": [
+    "/treatments/clinical-exercise-physiology",
+    "/conditions/cardiac-rehab-next-steps",
+    "/conditions/exercise-after-cancer-treatment",
+    "/conditions/sarcopenia-and-muscle-loss",
+    "/conditions/vo2max-and-cardiorespiratory-fitness",
+    "/treatments/post-op-rehab-timelines",
+    "/activities/seniors-strength-balance"
+  ],
+  "reviewStatus": "approved"
+}
