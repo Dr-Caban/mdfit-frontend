@@ -71,12 +71,8 @@ const DR = homeGraph.find((n) => n["@id"] === `${SITE}/#dr-jared`);
 if (!CLINIC || !DR) throw new Error("index.html no longer defines #clinic and #dr-jared in its ld+json; fix that before building.");
 // The MD Fit app, described once and referenced from every page so search engines connect each answer to the app
 // that delivers it. It runs in the browser and installs to the home screen; no app-store claim is made here.
-const APP = { "@type": "WebApplication", "@id": `${SITE}/mdfit-app#app`, name: "MD Fit", url: `${SITE}/mdfit-app`,
-  applicationCategory: "HealthApplication", operatingSystem: "Any web browser (iPhone, Android, computer)", browserRequirements: "Requires JavaScript",
-  description: "Dr. Jared Caban's free app: tap where it hurts, then follow the exercise videos and the program built for it.",
-  provider: { "@id": `${SITE}/#clinic` },
-  featureList: ["Pain tool: tap where it hurts to see the muscles that usually cause it", "Exercise video library", "Programs designated for each problem"],
-  offers: [{ "@type": "Offer", name: "Free", price: "0", priceCurrency: "USD" }], isAccessibleForFree: true };
+const APP = readJson("data/seo/app-schema.json", null); // one description of the free app, shared with scripts/site-header.js
+if (!APP) throw new Error("data/seo/app-schema.json is missing");
 
 const crumbs = (items) => `<p class="cd-crumbs">${items.map((c, i) => c.href && i < items.length - 1 ? `<a href="${attr(c.href)}">${esc(c.name)}</a>` : esc(c.name)).join(" › ")}</p>`;
 const breadcrumbLd = (items) => ({ "@type": "BreadcrumbList", itemListElement: items.map((c, i) => ({ "@type": "ListItem", position: i + 1, name: c.name, ...(c.href ? { item: SITE + c.href } : {}) })) });
