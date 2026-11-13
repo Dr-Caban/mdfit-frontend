@@ -13,9 +13,14 @@
   <meta property="og:image" content="https://www.mymdfit.com/assets/logo.webp">
   <meta name="theme-color" content="#0A1A2E">
   <link rel="icon" href="/assets/icon-64.png" type="image/png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="/assets/fonts/montserrat-var.a5ec5492.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="/assets/fonts/libre-baskerville.b1bcbff3.woff2">
+  <style>/* Self-hosted: loading these from Google cost two cross-origin hops and swapped the font in half a second
+    later, reflowing every heading. Inline so there is no extra stylesheet to fetch before the faces are known.
+    Both families are OFL-licensed. Montserrat is one variable file covering 400-800; Baskerville's roman covers
+    400 and 700. Latin subset. Filenames carry a content hash, so they are cached for good (see vercel.json). */
+@font-face{font-family:"Montserrat";font-style:normal;font-weight:400 800;font-display:swap;src:url("/assets/fonts/montserrat-var.a5ec5492.woff2") format("woff2")}
+@font-face{font-family:"Libre Baskerville";font-style:normal;font-weight:400 700;font-display:swap;src:url("/assets/fonts/libre-baskerville.b1bcbff3.woff2") format("woff2")}</style>
   <link rel="stylesheet" href="/guides.css?v=704fb203">
   <link rel="stylesheet" href="/conditions.css?v=1a0b8d80">
   <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":["MedicalClinic","HealthAndBeautyBusiness","ExerciseGym"],"@id":"https://www.mymdfit.com/#clinic","name":"MD Fit","alternateName":"MD Fit SRQ","description":"Physical rehabilitation and pain treatment in Sarasota, FL: low back pain, sciatica, neck, shoulder, knee and hip pain, post-surgical and sports injury rehab, chronic pain, medical massage, and strength & performance training with Dr. Jared Caban, MD, MSc, CEP.","url":"https://www.mymdfit.com/","telephone":"+1-941-313-0562","image":"https://www.mymdfit.com/assets/logo.webp","logo":"https://www.mymdfit.com/assets/logo.webp","priceRange":"$$","address":{"@type":"PostalAddress","streetAddress":"3214 Clark Road","addressLocality":"Sarasota","addressRegion":"FL","postalCode":"34231","addressCountry":"US"},"hasMap":"https://maps.google.com/?cid=18426672193642042879","openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"08:00","closes":"16:00"}],"aggregateRating":{"@type":"AggregateRating","ratingValue":"5.0","reviewCount":89,"bestRating":"5"},"areaServed":[{"@type":"City","name":"Sarasota"},{"@type":"City","name":"Bradenton"},{"@type":"City","name":"Lakewood Ranch"},{"@type":"City","name":"Venice"},{"@type":"City","name":"Osprey"},{"@type":"City","name":"Siesta Key"}],"availableService":[{"@type":"MedicalTherapy","name":"Injury and post-surgical rehabilitation"},{"@type":"MedicalTherapy","name":"Low back pain and sciatica treatment"},{"@type":"MedicalTherapy","name":"Neck and shoulder pain treatment"},{"@type":"MedicalTherapy","name":"Knee and hip pain treatment"},{"@type":"MedicalTherapy","name":"Sports injury rehabilitation"},{"@type":"MedicalTherapy","name":"Chronic pain treatment"},{"@type":"MedicalTherapy","name":"Medical massage"},{"@type":"MedicalTherapy","name":"Functional mobility"},{"@type":"MedicalTherapy","name":"Balance and fall prevention"},{"@type":"MedicalTherapy","name":"Strength and performance training"}],"founder":{"@type":"Person","name":"Jared Caban","honorificPrefix":"Dr.","honorificSuffix":"MD, MSc, CEP, CCEP, LMT","jobTitle":"Clinical Exercise Physiologist"},"potentialAction":{"@type":"ReserveAction","target":"https://www.mymdfit.com/book","name":"Book an evaluation"},"sameAs":["https://www.facebook.com/MDFitSRQ/","https://maps.google.com/?cid=18426672193642042879"]},{"@type":"Physician","@id":"https://www.mymdfit.com/#dr-jared","name":"Dr. Jared Caban","honorificSuffix":"MD, MSc, CEP, CCEP, LMT","jobTitle":"Clinical Exercise Physiologist and Licensed Massage Therapist","worksFor":{"@id":"https://www.mymdfit.com/#clinic"},"medicalSpecialty":["PhysicalMedicine","SportsMedicine","Rehabilitation"],"knowsAbout":["Rehabilitation","Post-surgical rehabilitation","Chronic pain","Medical massage","Clinical exercise physiology","Functional mobility","Strength training","Balance and fall prevention"],"url":"https://www.mymdfit.com/#dr","image":"https://www.mymdfit.com/assets/dr-jared.jpg","telephone":"+1-941-313-0562","address":{"@type":"PostalAddress","streetAddress":"3214 Clark Road","addressLocality":"Sarasota","addressRegion":"FL","postalCode":"34231","addressCountry":"US"}},{"@type":"MedicalWebPage","url":"https://www.mymdfit.com/pain/side-of-ribs","name":"Pain at the Side of the Ribs: Causes & Relief | MD Fit","description":"Most pain at the side of the ribs traces back to serratus anterior and intercostals. Self-checks, a free exercise track and the signs that need urgent care.","provider":{"@id":"https://www.mymdfit.com/#clinic"},"about":{"@type":"MedicalSymptom","name":"Pain at the side of the ribs"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does it hurt at the side of the ribs if nothing is wrong there?","acceptedAnswer":{"@type":"Answer","text":"Muscles refer pain: a tight band in one muscle sends a predictable pattern of pain somewhere else. For pain at the side of the ribs, the usual sources are the serratus anterior, intercostals, latissimus dorsi."}},{"@type":"Question","name":"How long does serratus anterior pain usually take to settle?","acceptedAnswer":{"@type":"Answer","text":"With consistent gentle movement and strengthening, you should notice a significant decrease in pain within 2-3 weeks. Full recovery and return to strenuous activity may take 4-6 weeks."}},{"@type":"Question","name":"What makes it more likely to be the serratus anterior?","acceptedAnswer":{"@type":"Answer","text":"It is worse with deep breaths or coughing, running or sports, and pressing into the muscle reproduces the pain you know. Side of the rib cage and the bottom tip of the shoulder blade; a side \"stitch\" that hurts with deep breaths."}},{"@type":"Question","name":"When should I book instead of working on it myself?","acceptedAnswer":{"@type":"Answer","text":"Book an appointment if the pain is severe, doesn't improve after 1-2 weeks of self-care, or if you have any of the 'Red Flag' symptoms."}},{"@type":"Question","name":"Do you take insurance?","acceptedAnswer":{"@type":"Answer","text":"No. MD Fit is a self-pay practice and does not bill insurance. You pay at the visit and receive an itemized receipt; no referral is needed. An evaluation is $300 (about 90 minutes) and follow-ups are $150. Paying directly is what lets Dr. Jared spend a full session with you, with no visit caps set by an insurer."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.mymdfit.com/"},{"@type":"ListItem","position":2,"name":"Pain locations","item":"https://www.mymdfit.com/pain/"},{"@type":"ListItem","position":3,"name":"Side of the ribs","item":"https://www.mymdfit.com/pain/side-of-ribs"}]}]}</script>
@@ -23,7 +28,25 @@
   <script src="/site-header.js?v=312f6631" defer></script>
 </head>
 <body class="gd-page cd-page">
-  <!-- site-header -->
+  <!-- site-header: generated by scripts/site-header.js, edit it there -->
+  <header class="sh" id="top">
+    <div class="sh-inner">
+      <a href="/" class="sh-brand" aria-label="MD Fit home"><img src="/assets/logo.webp" alt="MD Fit" width="160" height="160"><span class="sh-sub">Physical Rehab &amp; Fitness</span></a>
+      <button class="sh-menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="sh-menu"><span></span><span></span><span></span></button>
+      <nav class="sh-menu" id="sh-menu" aria-label="Main">
+        <a href="/conditions/">Conditions</a>
+        <a href="/treatments/">Treatments</a>
+        <a href="/areas/">Areas</a>
+        <a href="/blog/">Blog</a>
+        <a href="/#dr">Dr. Jared</a>
+        <a href="/#reviews">Reviews</a>
+        <a href="/events">Events</a>
+        <a href="tel:+19413130562" class="sh-phone" data-phone-link>941-313-0562</a>
+        <a href="/login" class="sh-app" data-account-link>Open the app</a>
+        <a href="/book" class="sh-book">Book evaluation</a>
+      </nav>
+    </div>
+  </header>
   <!-- /site-header -->
   <main class="cd-main" data-section="pain">
     <p class="cd-crumbs"><a href="/">Home</a> › <a href="/pain/">Pain locations</a> › Side of the ribs</p>
@@ -41,19 +64,19 @@
     <h2>Match your pattern: Serratus anterior → side ribs &amp; shoulder blade</h2>
     <p>Breathing → mobility → integration. Red marks where the pain is felt, × where the trigger point usually sits.</p>
     <div class="pp pp-2"><svg class="pp-panel" viewBox="90 170 400 500" role="img" aria-label="Serratus anterior → side ribs & shoulder blade referred pain pattern (front view)" preserveAspectRatio="xMidYMid meet">
-      <defs><filter id="pp29" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="7"/></filter>
-      <radialGradient id="pp29g"><stop offset="0" stop-color="#d7191f" stop-opacity=".95"/><stop offset=".65" stop-color="#e2343a" stop-opacity=".75"/><stop offset="1" stop-color="#ef4c4f" stop-opacity="0"/></radialGradient></defs>
+      <defs><filter id="pp108" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="7"/></filter>
+      <radialGradient id="pp108g"><stop offset="0" stop-color="#d7191f" stop-opacity=".95"/><stop offset=".65" stop-color="#e2343a" stop-opacity=".75"/><stop offset="1" stop-color="#ef4c4f" stop-opacity="0"/></radialGradient></defs>
       <rect x="90" y="170" width="400" height="500" fill="#fff"/>
       <image href="/assets/pain/body-figures-gray.webp" x="0" y="0" width="1182" height="1073"/>
-      <g filter="url(#pp29)" style="mix-blend-mode:multiply"><ellipse cx="188" cy="335" rx="37.5" ry="45" transform="rotate(0 188 335)" fill="url(#pp29g)" opacity="1"/><ellipse cx="150" cy="340" rx="12.5" ry="42.5" transform="rotate(10 150 340)" fill="url(#pp29g)" opacity="0.6"/></g>
+      <g filter="url(#pp108)" style="mix-blend-mode:multiply"><ellipse cx="188" cy="335" rx="37.5" ry="45" transform="rotate(0 188 335)" fill="url(#pp108g)" opacity="1"/><ellipse cx="150" cy="340" rx="12.5" ry="42.5" transform="rotate(10 150 340)" fill="url(#pp108g)" opacity="0.6"/></g>
       <g transform="translate(192 330)" stroke-linecap="round"><path d="M-7-7L7 7M7-7L-7 7" stroke="#fff" stroke-width="6.5"/><path d="M-7-7L7 7M7-7L-7 7" stroke="#7a0d10" stroke-width="3.2"/></g>
       <text x="102" y="194" font-family="Montserrat, system-ui, sans-serif" font-size="15" font-weight="700" letter-spacing="1.5" fill="#6b6a6e">FRONT</text>
     </svg><svg class="pp-panel" viewBox="770 0 400 500" role="img" aria-label="Serratus anterior → side ribs & shoulder blade referred pain pattern (back view)" preserveAspectRatio="xMidYMid meet">
-      <defs><filter id="pp30" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="7"/></filter>
-      <radialGradient id="pp30g"><stop offset="0" stop-color="#d7191f" stop-opacity=".95"/><stop offset=".65" stop-color="#e2343a" stop-opacity=".75"/><stop offset="1" stop-color="#ef4c4f" stop-opacity="0"/></radialGradient></defs>
+      <defs><filter id="pp109" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="7"/></filter>
+      <radialGradient id="pp109g"><stop offset="0" stop-color="#d7191f" stop-opacity=".95"/><stop offset=".65" stop-color="#e2343a" stop-opacity=".75"/><stop offset="1" stop-color="#ef4c4f" stop-opacity="0"/></radialGradient></defs>
       <rect x="770" y="0" width="400" height="500" fill="#fff"/>
       <image href="/assets/pain/body-figures-gray.webp" x="0" y="0" width="1182" height="1073"/>
-      <g filter="url(#pp30)" style="mix-blend-mode:multiply"><ellipse cx="983" cy="338" rx="25" ry="25" transform="rotate(0 983 338)" fill="url(#pp30g)" opacity="1"/></g>
+      <g filter="url(#pp109)" style="mix-blend-mode:multiply"><ellipse cx="983" cy="338" rx="25" ry="25" transform="rotate(0 983 338)" fill="url(#pp109g)" opacity="1"/></g>
       
       <text x="782" y="24" font-family="Montserrat, system-ui, sans-serif" font-size="15" font-weight="700" letter-spacing="1.5" fill="#6b6a6e">BACK</text>
     </svg></div>

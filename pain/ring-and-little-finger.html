@@ -13,9 +13,14 @@
   <meta property="og:image" content="https://www.mymdfit.com/assets/logo.webp">
   <meta name="theme-color" content="#0A1A2E">
   <link rel="icon" href="/assets/icon-64.png" type="image/png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="/assets/fonts/montserrat-var.a5ec5492.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="/assets/fonts/libre-baskerville.b1bcbff3.woff2">
+  <style>/* Self-hosted: loading these from Google cost two cross-origin hops and swapped the font in half a second
+    later, reflowing every heading. Inline so there is no extra stylesheet to fetch before the faces are known.
+    Both families are OFL-licensed. Montserrat is one variable file covering 400-800; Baskerville's roman covers
+    400 and 700. Latin subset. Filenames carry a content hash, so they are cached for good (see vercel.json). */
+@font-face{font-family:"Montserrat";font-style:normal;font-weight:400 800;font-display:swap;src:url("/assets/fonts/montserrat-var.a5ec5492.woff2") format("woff2")}
+@font-face{font-family:"Libre Baskerville";font-style:normal;font-weight:400 700;font-display:swap;src:url("/assets/fonts/libre-baskerville.b1bcbff3.woff2") format("woff2")}</style>
   <link rel="stylesheet" href="/guides.css?v=704fb203">
   <link rel="stylesheet" href="/conditions.css?v=1a0b8d80">
   <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":["MedicalClinic","HealthAndBeautyBusiness","ExerciseGym"],"@id":"https://www.mymdfit.com/#clinic","name":"MD Fit","alternateName":"MD Fit SRQ","description":"Physical rehabilitation and pain treatment in Sarasota, FL: low back pain, sciatica, neck, shoulder, knee and hip pain, post-surgical and sports injury rehab, chronic pain, medical massage, and strength & performance training with Dr. Jared Caban, MD, MSc, CEP.","url":"https://www.mymdfit.com/","telephone":"+1-941-313-0562","image":"https://www.mymdfit.com/assets/logo.webp","logo":"https://www.mymdfit.com/assets/logo.webp","priceRange":"$$","address":{"@type":"PostalAddress","streetAddress":"3214 Clark Road","addressLocality":"Sarasota","addressRegion":"FL","postalCode":"34231","addressCountry":"US"},"hasMap":"https://maps.google.com/?cid=18426672193642042879","openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"08:00","closes":"16:00"}],"aggregateRating":{"@type":"AggregateRating","ratingValue":"5.0","reviewCount":89,"bestRating":"5"},"areaServed":[{"@type":"City","name":"Sarasota"},{"@type":"City","name":"Bradenton"},{"@type":"City","name":"Lakewood Ranch"},{"@type":"City","name":"Venice"},{"@type":"City","name":"Osprey"},{"@type":"City","name":"Siesta Key"}],"availableService":[{"@type":"MedicalTherapy","name":"Injury and post-surgical rehabilitation"},{"@type":"MedicalTherapy","name":"Low back pain and sciatica treatment"},{"@type":"MedicalTherapy","name":"Neck and shoulder pain treatment"},{"@type":"MedicalTherapy","name":"Knee and hip pain treatment"},{"@type":"MedicalTherapy","name":"Sports injury rehabilitation"},{"@type":"MedicalTherapy","name":"Chronic pain treatment"},{"@type":"MedicalTherapy","name":"Medical massage"},{"@type":"MedicalTherapy","name":"Functional mobility"},{"@type":"MedicalTherapy","name":"Balance and fall prevention"},{"@type":"MedicalTherapy","name":"Strength and performance training"}],"founder":{"@type":"Person","name":"Jared Caban","honorificPrefix":"Dr.","honorificSuffix":"MD, MSc, CEP, CCEP, LMT","jobTitle":"Clinical Exercise Physiologist"},"potentialAction":{"@type":"ReserveAction","target":"https://www.mymdfit.com/book","name":"Book an evaluation"},"sameAs":["https://www.facebook.com/MDFitSRQ/","https://maps.google.com/?cid=18426672193642042879"]},{"@type":"Physician","@id":"https://www.mymdfit.com/#dr-jared","name":"Dr. Jared Caban","honorificSuffix":"MD, MSc, CEP, CCEP, LMT","jobTitle":"Clinical Exercise Physiologist and Licensed Massage Therapist","worksFor":{"@id":"https://www.mymdfit.com/#clinic"},"medicalSpecialty":["PhysicalMedicine","SportsMedicine","Rehabilitation"],"knowsAbout":["Rehabilitation","Post-surgical rehabilitation","Chronic pain","Medical massage","Clinical exercise physiology","Functional mobility","Strength training","Balance and fall prevention"],"url":"https://www.mymdfit.com/#dr","image":"https://www.mymdfit.com/assets/dr-jared.jpg","telephone":"+1-941-313-0562","address":{"@type":"PostalAddress","streetAddress":"3214 Clark Road","addressLocality":"Sarasota","addressRegion":"FL","postalCode":"34231","addressCountry":"US"}},{"@type":"MedicalWebPage","url":"https://www.mymdfit.com/pain/ring-and-little-finger","name":"Pain at the Ring and Little Finger: Causes & Relief | MD Fit","description":"Pain at the ring and little finger most often comes from pectoralis minor, worse with screens. Self-checks, an exercise track and what to watch for.","provider":{"@id":"https://www.mymdfit.com/#clinic"},"about":{"@type":"MedicalSymptom","name":"Pain at the ring and little finger"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does it hurt at the ring and little finger if nothing is wrong there?","acceptedAnswer":{"@type":"Answer","text":"Muscles refer pain: a tight band in one muscle sends a predictable pattern of pain somewhere else. For pain at the ring and little finger, the usual sources are the pectoralis minor, pectoralis major lower head, latissimus dorsi."}},{"@type":"Question","name":"How long does pectoralis minor pain usually take to settle?","acceptedAnswer":{"@type":"Answer","text":"Relief from nerve-like symptoms can occur within a week of consistent release and stretching. Lasting postural changes and strength balance will likely take 6-8 weeks of dedicated effort."}},{"@type":"Question","name":"What makes it more likely to be the pectoralis minor?","acceptedAnswer":{"@type":"Answer","text":"It is worse with desk, phone or screens, deep breaths or coughing, reaching overhead, and pressing into the muscle reproduces the pain you know. Front of the shoulder and chest, down the inner arm to the last three fingers. Can pinch nerves to the hand."}},{"@type":"Question","name":"When should I book instead of working on it myself?","acceptedAnswer":{"@type":"Answer","text":"Book an evaluation if you have persistent or worsening numbness, tingling, weakness, or color changes in your hand, or if your pain doesn't improve after 3 weeks."}},{"@type":"Question","name":"Do you take insurance?","acceptedAnswer":{"@type":"Answer","text":"No. MD Fit is a self-pay practice and does not bill insurance. You pay at the visit and receive an itemized receipt; no referral is needed. An evaluation is $300 (about 90 minutes) and follow-ups are $150. Paying directly is what lets Dr. Jared spend a full session with you, with no visit caps set by an insurer."}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.mymdfit.com/"},{"@type":"ListItem","position":2,"name":"Pain locations","item":"https://www.mymdfit.com/pain/"},{"@type":"ListItem","position":3,"name":"Ring and little finger","item":"https://www.mymdfit.com/pain/ring-and-little-finger"}]}]}</script>
@@ -23,7 +28,25 @@
   <script src="/site-header.js?v=312f6631" defer></script>
 </head>
 <body class="gd-page cd-page">
-  <!-- site-header -->
+  <!-- site-header: generated by scripts/site-header.js, edit it there -->
+  <header class="sh" id="top">
+    <div class="sh-inner">
+      <a href="/" class="sh-brand" aria-label="MD Fit home"><img src="/assets/logo.webp" alt="MD Fit" width="160" height="160"><span class="sh-sub">Physical Rehab &amp; Fitness</span></a>
+      <button class="sh-menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="sh-menu"><span></span><span></span><span></span></button>
+      <nav class="sh-menu" id="sh-menu" aria-label="Main">
+        <a href="/conditions/">Conditions</a>
+        <a href="/treatments/">Treatments</a>
+        <a href="/areas/">Areas</a>
+        <a href="/blog/">Blog</a>
+        <a href="/#dr">Dr. Jared</a>
+        <a href="/#reviews">Reviews</a>
+        <a href="/events">Events</a>
+        <a href="tel:+19413130562" class="sh-phone" data-phone-link>941-313-0562</a>
+        <a href="/login" class="sh-app" data-account-link>Open the app</a>
+        <a href="/book" class="sh-book">Book evaluation</a>
+      </nav>
+    </div>
+  </header>
   <!-- /site-header -->
   <main class="cd-main" data-section="pain">
     <p class="cd-crumbs"><a href="/">Home</a> › <a href="/pain/">Pain locations</a> › Ring and little finger</p>
@@ -41,11 +64,11 @@
     <h2>Match your pattern: Pec minor / third rib → upper chest &amp; front of shoulder</h2>
     <p>Mobility first, then stability and integration. Red marks where the pain is felt, × where the trigger point usually sits.</p>
     <div class="pp pp-2"><svg class="pp-panel" viewBox="0 110 400 500" role="img" aria-label="Pec minor / third rib → upper chest & front of shoulder referred pain pattern (front view)" preserveAspectRatio="xMidYMid meet">
-      <defs><filter id="pp70" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="7"/></filter>
-      <radialGradient id="pp70g"><stop offset="0" stop-color="#d7191f" stop-opacity=".95"/><stop offset=".65" stop-color="#e2343a" stop-opacity=".75"/><stop offset="1" stop-color="#ef4c4f" stop-opacity="0"/></radialGradient></defs>
+      <defs><filter id="pp149" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="7"/></filter>
+      <radialGradient id="pp149g"><stop offset="0" stop-color="#d7191f" stop-opacity=".95"/><stop offset=".65" stop-color="#e2343a" stop-opacity=".75"/><stop offset="1" stop-color="#ef4c4f" stop-opacity="0"/></radialGradient></defs>
       <rect x="0" y="110" width="400" height="500" fill="#fff"/>
       <image href="/assets/pain/body-figures-gray.webp" x="0" y="0" width="1182" height="1073"/>
-      <g filter="url(#pp70)" style="mix-blend-mode:multiply"><ellipse cx="222" cy="252" rx="52.5" ry="37.5" transform="rotate(0 222 252)" fill="url(#pp70g)" opacity="1"/><ellipse cx="174" cy="236" rx="45" ry="45" transform="rotate(0 174 236)" fill="url(#pp70g)" opacity="1"/><ellipse cx="148" cy="335" rx="16.25" ry="47.5" transform="rotate(14 148 335)" fill="url(#pp70g)" opacity="0.75"/><ellipse cx="106" cy="452" rx="13.75" ry="45" transform="rotate(18 106 452)" fill="url(#pp70g)" opacity="0.7"/><ellipse cx="68" cy="588" rx="13.75" ry="27.5" transform="rotate(15 68 588)" fill="url(#pp70g)" opacity="0.7"/></g>
+      <g filter="url(#pp149)" style="mix-blend-mode:multiply"><ellipse cx="222" cy="252" rx="52.5" ry="37.5" transform="rotate(0 222 252)" fill="url(#pp149g)" opacity="1"/><ellipse cx="174" cy="236" rx="45" ry="45" transform="rotate(0 174 236)" fill="url(#pp149g)" opacity="1"/><ellipse cx="148" cy="335" rx="16.25" ry="47.5" transform="rotate(14 148 335)" fill="url(#pp149g)" opacity="0.75"/><ellipse cx="106" cy="452" rx="13.75" ry="45" transform="rotate(18 106 452)" fill="url(#pp149g)" opacity="0.7"/><ellipse cx="68" cy="588" rx="13.75" ry="27.5" transform="rotate(15 68 588)" fill="url(#pp149g)" opacity="0.7"/></g>
       <g transform="translate(212 268)" stroke-linecap="round"><path d="M-7-7L7 7M7-7L-7 7" stroke="#fff" stroke-width="6.5"/><path d="M-7-7L7 7M7-7L-7 7" stroke="#7a0d10" stroke-width="3.2"/></g>
       <text x="12" y="134" font-family="Montserrat, system-ui, sans-serif" font-size="15" font-weight="700" letter-spacing="1.5" fill="#6b6a6e">FRONT</text>
     </svg></div>

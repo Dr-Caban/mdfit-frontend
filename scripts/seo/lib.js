@@ -111,9 +111,14 @@ function page({ url, title, description, body, graph, section, robots }) {
   <meta property="og:image" content="${SITE}/assets/logo.webp">
   <meta name="theme-color" content="#0A1A2E">
   <link rel="icon" href="/assets/icon-64.png" type="image/png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="/assets/fonts/montserrat-var.a5ec5492.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="/assets/fonts/libre-baskerville.b1bcbff3.woff2">
+  <style>/* Self-hosted: loading these from Google cost two cross-origin hops and swapped the font in half a second
+    later, reflowing every heading. Inline so there is no extra stylesheet to fetch before the faces are known.
+    Both families are OFL-licensed. Montserrat is one variable file covering 400-800; Baskerville's roman covers
+    400 and 700. Latin subset. Filenames carry a content hash, so they are cached for good (see vercel.json). */
+@font-face{font-family:"Montserrat";font-style:normal;font-weight:400 800;font-display:swap;src:url("/assets/fonts/montserrat-var.a5ec5492.woff2") format("woff2")}
+@font-face{font-family:"Libre Baskerville";font-style:normal;font-weight:400 700;font-display:swap;src:url("/assets/fonts/libre-baskerville.b1bcbff3.woff2") format("woff2")}</style>
   <link rel="stylesheet" href="/guides.css">
   <link rel="stylesheet" href="/conditions.css">
   <script type="application/ld+json">${JSON.stringify(ld).replace(/</g, "\\u003c")}</script>
