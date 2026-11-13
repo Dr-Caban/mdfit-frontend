@@ -1,0 +1,91 @@
+{
+  "slug": "carpal-tunnel-wrist-pain",
+  "title": "Carpal Tunnel and Wrist Pain in Sarasota, FL | MD Fit",
+  "h1": "Carpal Tunnel and Wrist Pain in Sarasota, FL",
+  "description": "Carpal tunnel and wrist pain in Sarasota. Dr. Jared Caban checks the whole path of the nerve, from the neck to the hand, not just the wrist.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Carpal tunnel syndrome"
+  },
+  "lead": "Numb hands at night are the classic story. But the median nerve travels from the neck, between the collarbone and first rib, through the forearm and into the hand, and it can be irritated at any point along that route.",
+  "sections": [
+    {
+      "h2": "What genuine carpal tunnel looks like",
+      "html": "<ul><li>Numbness and tingling in the thumb, index, middle and half the ring finger. The little finger is spared, because a different nerve supplies it.</li><li>Worst at night, waking you, and relieved by shaking the hand.</li><li>Worse holding a phone, a steering wheel or a book, with the wrist bent.</li><li>In longer-standing cases, dropping things and losing grip, with visible thinning of the muscle at the base of the thumb.</li></ul><p>If the <a href=\"/pain/ring-and-little-finger\">little finger</a> is involved, that is the ulnar nerve and a different problem. If all five fingers are numb, suspect the neck or a more general cause.</p>"
+    },
+    {
+      "h2": "Checking the whole route",
+      "html": "<p>A nerve already irritated higher up tolerates less compression lower down. So the evaluation follows the whole path:</p><ul><li><b>The neck.</b> Nerve root irritation can produce hand symptoms that look like carpal tunnel.</li><li><b>The <a href=\"/muscles/scalenes\">scalenes</a> and <a href=\"/muscles/pectoralis-minor\">pectoralis minor</a>.</b> The nerve passes beneath both. Tightness here produces numbness that is worse with the arms overhead. See <a href=\"/conditions/thoracic-outlet-symptoms\">thoracic outlet symptoms</a>.</li><li><b>The forearm.</b> The <a href=\"/muscles/wrist-flexors\">wrist flexors</a> and the pronators can compress the nerve before it reaches the wrist.</li><li><b>The tunnel itself.</b> Where swelling, thickened tissue or sustained wrist flexion raise the pressure.</li></ul><p>Addressing only the wrist when the real restriction is at the chest or neck is a common reason people do not improve.</p>"
+    },
+    {
+      "h2": "How MD Fit treats it",
+      "html": "<p>Dr. Jared tests sensation and grip, checks which fingers are involved, screens the neck and shoulder, and uses nerve glide testing to see where the nerve is restricted. His medical training matters here, because thyroid conditions, diabetes and pregnancy all contribute and change the picture.</p><p>Treatment releases the scalenes, pec minor and forearm flexors, restores movement at the wrist and first rib, and uses nerve gliding to restore the nerve's ability to move within its sheath. Strengthening addresses grip and the shoulder blade. Daily routines come through the free MD Fit app.</p>"
+    },
+    {
+      "h2": "What helps right away",
+      "html": "<ol><li>A neutral wrist splint at night keeps the wrist from curling, which is when most people's symptoms peak.</li><li>Raise your keyboard and mouse so the wrist is not extended; a vertical mouse helps many people.</li><li>Take hands off the wheel and off the phone at intervals during long drives and long reading.</li><li>Avoid sleeping with the arm overhead or curled under the pillow.</li></ol>"
+    },
+    {
+      "h2": "When conservative care is not enough",
+      "html": "<p>Mild and moderate cases often respond well to the approach above. Cases where the thumb muscle has visibly wasted, where numbness is constant rather than intermittent, or where symptoms have been present a long time, are more likely to need a surgical opinion, and the nerve is better released before lasting damage sets in.</p><p>Dr. Jared will say plainly when the findings point that way rather than continuing indefinitely. Nerve conduction testing, when it is needed, is arranged through your physician.</p>"
+    },
+    {
+      "h2": "Wrist pain that is not nerve at all",
+      "html": "<p>Plenty of wrist pain has nothing to do with the median nerve. Pain at the thumb side with gripping and lifting points toward the tendons there; see <a href=\"/conditions/de-quervains\">de Quervain's</a>. Pain on the <a href=\"/pain/back-of-wrist\">back of the wrist</a> with weight-bearing, aching at the base of the thumb with pinching, and catching or locking of a finger are all different problems with different answers. The evaluation sorts out which one you have before anything is treated.</p>"
+    }
+  ],
+  "timeline": null,
+  "redFlags": [
+    "Constant numbness rather than intermittent, or visible wasting of the muscle at the base of the thumb, which needs prompt medical assessment.",
+    "Sudden weakness or numbness affecting the whole arm, the face, or one side of the body: call 911.",
+    "Hand symptoms after a fall or wrist injury, with swelling or deformity.",
+    "Numbness in all five fingers, or in both hands, which suggests a cause beyond the wrist.",
+    "A hot, red, swollen wrist with fever, which needs urgent medical assessment."
+  ],
+  "faq": [
+    {
+      "q": "Do I need surgery?",
+      "a": "Many mild to moderate cases improve without it. Severe or long-standing cases may still need it, and that decision is made with your doctor."
+    },
+    {
+      "q": "Should I wear a wrist brace at night?",
+      "a": "A neutral wrist splint at night helps many people while the rest of the plan takes hold."
+    },
+    {
+      "q": "What tests do I need?",
+      "a": "A clinical exam often shows what is happening. Nerve conduction testing is used for severe or atypical cases, arranged through your doctor."
+    },
+    {
+      "q": "Why do my symptoms involve my shoulder too?",
+      "a": "The nerve passes under the collarbone and through the chest muscles on its way to the hand. Tightness there can produce hand symptoms and is worth treating alongside the wrist."
+    }
+  ],
+  "muscles": [
+    "wrist-flex",
+    "finger-flex",
+    "scalenes",
+    "pec-minor",
+    "brachioradialis",
+    "subclavius"
+  ],
+  "pain": [
+    "palm-side-of-wrist",
+    "thumb-and-index-finger",
+    "forearm",
+    "back-of-wrist"
+  ],
+  "guides": [
+    "scalenes"
+  ],
+  "related": [
+    "/conditions/thoracic-outlet-symptoms",
+    "/conditions/de-quervains",
+    "/conditions/trigger-finger",
+    "/conditions/neck-pain",
+    "/activities/desk-workers",
+    "/muscles/scalenes"
+  ],
+  "group": "conditions",
+  "steps": null,
+  "reviewStatus": "draft"
+}

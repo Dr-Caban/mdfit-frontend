@@ -1,0 +1,97 @@
+{
+  "group": "activities",
+  "slug": "q-angle-and-knee-tracking",
+  "title": "Q Angle and Knee Tracking in the Squat | MD Fit",
+  "h1": "Q Angle and Knee Tracking in the Squat",
+  "description": "Hip width changes the angle your thigh meets your knee. What the knees-out cue is really for, when knees drifting in matters, and when it does not.",
+  "about": {
+    "type": "Thing",
+    "name": "Q angle and knee tracking"
+  },
+  "lead": "The Q angle describes the line from your hip to your kneecap and down to your shin. Wider hips relative to knee position make that angle larger, and it is one of the most misunderstood numbers in training: frequently blamed for knee pain, rarely the whole story, and often used to tell perfectly healthy people they are built wrong.",
+  "sections": [
+    {
+      "h2": "What the Q angle actually describes",
+      "html": "<p>Draw a line from the front of your hip bone down to the middle of your kneecap, and a second line from the kneecap down through the shin. The angle where they meet is the Q angle. A wider pelvis relative to the position of the knees produces a larger angle, and femur length and shin alignment affect it too.</p><p>Because the quadriceps pull along the first line and the patellar tendon sits along the second, a larger angle means a slightly greater sideways pull on the kneecap as the quadriceps contract. That is the entire mechanical argument, and it is a real effect.</p><p>What it is not is a prediction. A larger Q angle is a structural feature, not an injury, and plenty of people with large angles train hard for decades with no knee trouble at all. It is one variable among several, and generally not the loudest.</p>"
+    },
+    {
+      "h2": "A caution about how this gets talked about",
+      "html": "<p>Q angle is often brought up as a reason women are at greater risk of knee problems. It is worth being careful with that, for two reasons.</p><p>First, Q angle varies substantially within any group, and plenty of men have larger angles than plenty of women. Treating it as a characteristic of a sex rather than of an individual leads to people being handed restrictions they do not need.</p><p>Second, when knee tracking is a problem, the factors that respond to training, such as hip strength, control under fatigue and loading history, are usually more useful to address than the angle itself, which does not change.</p><p>The practical version: measure the person in front of you, watch how their knee behaves under load, and train what is trainable.</p>"
+    },
+    {
+      "h2": "When knees drifting inwards matters",
+      "html": "<p>Knees travelling inwards during a squat is called valgus, and whether it matters depends on when and how much.</p><ul><li><b>Usually fine:</b> a brief, small inward travel at the very start of a heavy ascent, which the lifter controls and which does not get worse across a set.</li><li><b>Worth addressing:</b> knees collapsing inwards through most of the range, getting markedly worse as the set goes on, one knee behaving differently from the other, or any of it accompanied by knee pain.</li><li><b>Worth assessing promptly:</b> a knee that gives way, a knee that drifts in during a landing or a cut rather than a squat, or any of it after a knee injury.</li></ul><p>The useful distinction is control. A knee passing through a position under control is doing something quite different from a knee being pushed there because the hip cannot hold it.</p>"
+    },
+    {
+      "h2": "When the knees-out cue is the wrong instruction",
+      "html": "<p>\"Push the knees out\" is a good cue for a lifter whose hip abductors are not holding the knee in line. Applied to everyone, it causes its own problems.</p><ul><li><b>If your knees already track fine,</b> forcing them wider rolls the foot onto its outer edge and takes the big toe off the floor, which makes the base less stable rather than more.</li><li><b>If your stance is already wide,</b> pushing wider can crowd the hip joint at depth and produce the front-of-hip pinching discussed in <a href=\"/activities/why-squat-depth-differs\">why squat depth differs</a>.</li><li><b>If the real limit is ankle range,</b> the knees drift in because the foot is collapsing to find depth. The cue treats the symptom. See <a href=\"/activities/ankle-mobility-and-squat\">ankle mobility and the squat</a>.</li></ul><p>A better general instruction for most people is to grip the floor with the whole foot, keeping the big toe, little toe and heel in contact, and let the knee go where that puts it.</p>"
+    },
+    {
+      "h2": "What is actually trainable",
+      "html": "<p>The angle is fixed. These are not.</p><ol><li><b>Hip abductor and external rotator strength.</b> The <a href=\"/muscles/glute-med\">gluteus medius</a> and <a href=\"/muscles/glute-min\">gluteus minimus</a> are the muscles that hold the thigh in line. Side-lying work, banded walks and single-leg work all target them.</li><li><b>Single-leg control.</b> Split squats, step-downs and single-leg deadlifts expose a hip that cannot hold position far more honestly than a two-legged squat.</li><li><b>Foot and arch strength.</b> A foot that collapses takes the knee with it. The <a href=\"/muscles/foot-intrinsics\">foot intrinsic muscles</a> and <a href=\"/muscles/tib-post\">tibialis posterior</a> are worth training directly.</li><li><b>Fatigue management.</b> Tracking that is fine on rep one and poor on rep eight is a conditioning problem, and programming is the fix rather than cueing.</li></ol>"
+    },
+    {
+      "h2": "How MD Fit looks at knee tracking",
+      "html": "<p>Dr. Jared watches the squat and then watches single-leg work, because the second shows far more. Hip strength gets tested by hand, which separates a hip that is weak from a hip that is strong but slow to act under load. The foot and ankle get checked, since a collapsing arch and a drifting knee often travel together.</p><p>Where there is knee pain alongside it, the assessment works out whether the tissue is irritable in its own right, which is frequently the case with <a href=\"/conditions/patellofemoral-pain\">patellofemoral pain</a>, or whether the knee is simply where a hip problem is being felt. The work from there is hands-on release of what is guarding, targeted strengthening for the hip and foot, daily homework through the free MD Fit app video library, and squat setup changes where they help. The app's workout generator builds the single-leg work into your sessions so it actually gets done.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": null,
+  "redFlags": [
+    "A knee that gives way, locks or catches.",
+    "Knee swelling that appears within hours of training.",
+    "A pop or tearing sensation at the knee, particularly during a landing or a change of direction.",
+    "Knee pain that is worsening week on week despite reducing load.",
+    "Pain, numbness or tingling travelling down the leg rather than staying at the knee."
+  ],
+  "faq": [
+    {
+      "q": "Does a large Q angle mean I will get knee pain?",
+      "a": "No. It is a structural feature rather than an injury, and many people with larger angles train for years without knee trouble. Hip strength, control and loading history usually matter more."
+    },
+    {
+      "q": "Should my knees track over my toes?",
+      "a": "Roughly in line with the feet is a reasonable guide, and which direction the feet point depends on your stance and hip shape. Gripping the floor with the whole foot tends to work better than aiming the knees at a target."
+    },
+    {
+      "q": "Is any knee caving acceptable?",
+      "a": "A brief, controlled amount at the start of a heavy ascent is common and generally not a concern. Collapse through the range, worsening across a set, or caving with pain is worth looking at."
+    },
+    {
+      "q": "Will glute exercises fix my knee tracking?",
+      "a": "They help when the hip is the limit, which is often. When the cause is a collapsing foot, restricted ankle range or fatigue, glute work alone tends not to change much, which is why the assessment checks all of them."
+    }
+  ],
+  "muscles": [
+    "glute-med",
+    "glute-min",
+    "vmo",
+    "tfl",
+    "tib-post",
+    "foot-intrinsics"
+  ],
+  "pain": [
+    "inside-of-knee",
+    "outside-of-knee",
+    "below-kneecap",
+    "outside-of-hip"
+  ],
+  "guides": [
+    "lateral-hip",
+    "quads"
+  ],
+  "related": [
+    "/activities/train-for-your-build",
+    "/activities/why-squat-depth-differs",
+    "/activities/ankle-mobility-and-squat",
+    "/conditions/patellofemoral-pain",
+    "/conditions/it-band-syndrome",
+    "/conditions/knee-pain",
+    "/conditions/acl-reconstruction-recovery"
+  ],
+  "programs": [
+    "knee-6",
+    "hip-6"
+  ],
+  "reviewStatus": "draft"
+}

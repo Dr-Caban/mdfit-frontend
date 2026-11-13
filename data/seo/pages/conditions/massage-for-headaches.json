@@ -1,0 +1,86 @@
+{
+  "group": "conditions",
+  "slug": "massage-for-headaches",
+  "title": "Massage for Headaches in Sarasota, FL | MD Fit",
+  "h1": "Massage for Headaches in Sarasota, FL",
+  "description": "Which headaches respond to neck and shoulder soft-tissue work, which do not, and the muscles that reproduce head pain when they are pressed.",
+  "about": {
+    "type": "MedicalTherapy",
+    "name": "Massage therapy for headache"
+  },
+  "lead": "A large share of everyday headaches are produced or amplified by muscles in the neck, jaw and shoulders. When pressing one of those muscles recreates your exact headache, soft-tissue work becomes a sensible thing to try. When nothing reproduces it, that is useful information too.",
+  "sections": [
+    {
+      "h2": "The muscles that refer pain into the head",
+      "html": "<p>These patterns are consistent enough to be clinically useful, and they explain why a headache is so often treated at the shoulder:</p><ul><li>The <a href=\"/muscles/upper-trapezius\">upper trapezius</a> refers up the side of the neck, behind the ear and into the temple. It is the single most common contributor.</li><li>The <a href=\"/muscles/suboccipitals\">suboccipitals</a>, a small group at the base of the skull, produce a deep band of ache that can feel like it is inside the head.</li><li>The <a href=\"/muscles/sternocleidomastoid\">sternocleidomastoid</a> refers into the forehead, around the eye and the ear, and can come with dizziness.</li><li>The <a href=\"/muscles/temporalis\">temporalis</a> and <a href=\"/muscles/masseter\">masseter</a> refer into the temple, the teeth and the jaw, which is why clenching and headaches travel together.</li><li>The <a href=\"/muscles/splenius-capitis-cervicis\">splenius</a> group refers to the top of the head and behind the eye.</li></ul><p>Each of those has its own page with the full referral map, and finding the one that reproduces your headache is the first job of the session.</p>"
+    },
+    {
+      "h2": "Which headaches this helps",
+      "html": "<p>Soft-tissue work is most useful for headaches with a musculoskeletal driver. The pattern to look for is a headache that is worse at the end of a desk day, that follows poor sleep or a long drive, that comes with neck stiffness, and that changes when you change your head position.</p><p>It is a reasonable approach for the kind of headache described on the <a href=\"/conditions/tension-headache\">tension headache</a> page, and for the neck-driven headache described on the <a href=\"/conditions/cervicogenic-headache\">cervicogenic headache</a> page. People who clench or grind often get more from including the jaw, which overlaps with <a href=\"/conditions/jaw-tmj-pain\">jaw and TMJ pain</a>.</p><p>Migraine is a different mechanism and this work does not treat it. Some people with migraine do have neck and shoulder tension that contributes to frequency or to the build-up, and addressing that can be worth doing alongside the care their physician provides, but it should not be presented as migraine treatment.</p>"
+    },
+    {
+      "h2": "What the session involves",
+      "html": "<p>The work is slower and more precise than general neck massage, because the targets are small and specific. Expect sustained pressure at the base of the skull, along the top of the shoulder and down the side of the neck, often with your head supported and turned, and often while you breathe into the pressure.</p><p>The confirmation that we are in the right place is you recognising the headache, not simply feeling tenderness. Jaw work, where relevant, is done carefully and with explanation first.</p><p>Posture and desk setup usually come up before the end, because a headache that arrives every working afternoon is being produced by something that happens every working afternoon. Homework goes into your free MD Fit app so the neck gets attention on the other six days.</p>"
+    },
+    {
+      "h2": "When a headache is not a muscle problem",
+      "html": "<p>This matters more than the technique. Some headaches need medical assessment rather than hands-on work, and a few need it urgently. A sudden, severe headache that peaks within seconds, a headache with weakness, slurred speech, facial droop, vision loss or confusion, or a headache after a head injury are emergencies: call 911 or go to the emergency department rather than booking a massage.</p><p>A new headache pattern in someone over fifty, particularly with scalp tenderness, jaw pain when chewing or vision change, needs prompt medical review. So does a headache with fever and a stiff neck, or one that is steadily worsening week on week.</p><p>If nothing in your neck or jaw reproduces your headache during testing, that is a reason to stop and reconsider rather than to book more sessions.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": "When muscle is a genuine driver, people often notice a difference in the days following the first session. Headaches tied to a daily posture or clenching habit usually need the habit addressed before the frequency changes meaningfully.",
+  "redFlags": [
+    "A sudden severe headache that reaches full intensity within seconds: call 911.",
+    "Headache with weakness, numbness, slurred speech, facial droop, vision loss or confusion: call 911.",
+    "Headache following a blow to the head, especially with drowsiness or vomiting: seek emergency care.",
+    "A new headache with fever and a stiff neck, which needs urgent medical assessment.",
+    "A new or changed headache pattern after age fifty, or with scalp tenderness, jaw pain on chewing or vision change: see a physician promptly.",
+    "Headaches that are steadily worsening week on week, or that consistently wake you from sleep."
+  ],
+  "faq": [
+    {
+      "q": "Can massage help migraines?",
+      "a": "It does not treat migraine, which has a different mechanism. Some people with migraine carry neck and shoulder tension that adds to the picture, and addressing that alongside their physician's care can still be worthwhile."
+    },
+    {
+      "q": "Why work on my shoulder when my head hurts?",
+      "a": "Because several neck and shoulder muscles refer pain into the head in consistent patterns. Reproducing your familiar headache by pressing the upper trapezius or the base of the skull is how the source gets confirmed."
+    },
+    {
+      "q": "How many sessions before I know if it is helping?",
+      "a": "Usually a small number. If pressing the neck and jaw does not reproduce your headache, or nothing has shifted after a fair trial, that is a reason to reassess rather than continue."
+    },
+    {
+      "q": "Should the jaw be included?",
+      "a": "Often yes if you clench or grind, since the temporalis and masseter refer into the temple and teeth. It is always explained and agreed before any jaw work begins."
+    }
+  ],
+  "muscles": [
+    "upper-trap",
+    "suboccipitals",
+    "scm",
+    "temporalis",
+    "masseter",
+    "splenius"
+  ],
+  "pain": [
+    "base-of-skull",
+    "temple",
+    "back-of-head",
+    "behind-the-eye"
+  ],
+  "guides": [
+    "posterior-neck",
+    "scalenes"
+  ],
+  "related": [
+    "/conditions/tension-headache",
+    "/conditions/cervicogenic-headache",
+    "/conditions/jaw-tmj-pain",
+    "/conditions/neck-pain",
+    "/treatments/medical-massage",
+    "/conditions/trigger-point-therapy",
+    "/conditions/desk-neck-pain"
+  ],
+  "reviewStatus": "draft"
+}
