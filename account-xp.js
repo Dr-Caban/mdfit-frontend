@@ -108,6 +108,7 @@
     const rows = mine.map((w) => `<li class="mw-item" data-mw="${esc(w.id)}">
         <div class="mw-txt"><b>${esc(w.name)}</b><span>${plural(w.exercises.length, "exercise")} · about ${minutesOf(w)} min · <em>+35 XP</em></span></div>
         <div class="mw-acts"><button type="button" class="btn-blue sm" data-mw-start>Start</button><button type="button" class="btn-ghost sm" data-mw-send>Send as challenge</button>
+          <button type="button" class="icon-btn sh-btn" data-share-item="${esc(w.id)}" data-share-kind="workout" data-share-title="${esc(w.name)}"></button>
           <button type="button" class="link-sm" data-mw-edit>Edit</button><button type="button" class="link-sm mw-del" data-mw-del>Delete</button></div></li>`).join("");
     const intro = isPaidNow === false
       ? `<p class="muted small mw-intro">Members build their own workouts from Dr. Jared's library (worth <b>35 XP</b>) and send them to anyone as a challenge. You can still receive and do challenges for <b>40 XP</b>. <button type="button" class="link-sm" data-paywall>Unlock with a membership</button></p>`
@@ -117,6 +118,7 @@
       if (!card) continue;
       $(".mw-body", card).innerHTML = (mine.length ? `<ul class="mw-list">${rows}</ul>` : intro) + (sent ? `<p class="label mw-sent-h">Challenges you sent</p><ul class="mw-sent small">${sent}</ul>` : "");
     }
+    if (window.MDFitShare) window.MDFitShare.paint();   // the share button on each saved workout (account-share.js)
   }
   let isPaidNow = null;
   async function loadMine() {

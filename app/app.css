@@ -455,11 +455,15 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
 .xp-chip { display: inline-flex; align-items: center; gap: 8px; border: 0; background: var(--navy); color: #fff; border-radius: 999px; padding: 7px 12px 7px 7px; cursor: pointer; font-size: 13px; font-weight: 700; margin-bottom: 4px; }
 .xp-chip b { background: var(--accent); color: var(--navy); border-radius: 999px; padding: 3px 8px; font-size: 12px; }
 .programs { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
-.program { display: grid; grid-template-columns: 42px 1fr auto auto; gap: 10px; align-items: center; background: var(--card-2); border-radius: 12px; padding: 8px 10px; }
+.program { display: grid; grid-template-columns: 42px 1fr auto; gap: 10px; align-items: center; background: var(--card-2); border-radius: 12px; padding: 8px 10px; }
+.program > div { min-width: 0; }
 .pg-ic { width: 42px; height: 42px; border-radius: 10px; background: var(--navy); color: var(--gold); display: grid; place-items: center; }
 .pg-ic svg { width: 22px; height: 22px; }
-.program b { display: block; color: var(--navy); font-size: 15px; }
+.program b { display: block; color: var(--navy); font-size: 15px; overflow-wrap: anywhere; }
 .program span { color: var(--muted); font-size: 12.5px; }
+/* Start, share and delete, together at the end of a saved-program row; their own line on a narrow phone. */
+.pg-acts { display: flex; align-items: center; gap: 4px; }
+@media (max-width: 420px) { .program { grid-template-columns: 42px 1fr; } .pg-acts { grid-column: 2; } }
 .pg-del { width: 34px; height: 34px; color: var(--muted); }
 .pg-del svg { width: 19px; height: 19px; }
 .pg-del:hover { color: var(--err); }
@@ -1492,3 +1496,13 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
 #p-opts [data-opt="sound"].blocked { border-color: var(--gold); color: var(--gold); animation: p-nudge 1.6s ease-in-out 3; }
 #p-opts [data-opt="sound"].blocked::after { content: " · tap for sound"; font-weight: 600; }
 @keyframes p-nudge { 50% { box-shadow: 0 0 0 4px rgba(200,166,99,.35); } }
+
+/* ---- Sharing a saved program or workout by link (account-share.js). The button is empty and hidden until that
+   file paints it, so an app that never loaded it shows no dead control. */
+.sh-btn { display: none; color: var(--muted); }
+.sh-btn.ready { display: grid; }
+.sh-btn svg { width: 20px; height: 20px; }
+.sh-btn:hover { color: var(--navy); }
+.sh-btn[aria-pressed="true"] { color: var(--accent-text); }
+.sh-btn:disabled { opacity: .45; cursor: not-allowed; }
+.ic-line { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
