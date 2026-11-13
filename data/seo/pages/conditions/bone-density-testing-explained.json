@@ -1,0 +1,86 @@
+{
+  "group": "conditions",
+  "slug": "bone-density-testing-explained",
+  "title": "Bone Density Testing Explained | MD Fit",
+  "h1": "Bone Density Testing: What a DEXA Scan Actually Tells You",
+  "description": "What is a T-score? What does osteopenia mean? A plain explanation of DEXA scans, scores and what the result does and does not tell you about risk.",
+  "about": {
+    "type": "MedicalCondition",
+    "name": "Bone densitometry"
+  },
+  "lead": "Most people leave a bone density scan with a number and very little explanation of it. This page explains what the test measures and what the scores mean, in plain terms. It does not interpret anyone's result, which is your physician's job.",
+  "sections": [
+    {
+      "h2": "What the scan is",
+      "html": "<p>The usual test is a DEXA scan, short for dual-energy X-ray absorptiometry. You lie on a table while a scanning arm passes over you. It takes a few minutes, involves a very small amount of radiation, and requires nothing more than keeping still and avoiding calcium supplements that morning if your clinic asks.</p><p>It typically measures two sites: the lumbar spine and the hip. Sometimes the forearm is used as well, particularly if the spine or hip cannot be measured reliably. The two sites can give different results, and it is entirely normal for a person to have a better score at one than the other.</p>"
+    },
+    {
+      "h2": "T-scores and Z-scores",
+      "html": "<p>The result comes back as scores rather than as a density in any unit you would recognise, which is the main reason it confuses people.</p><ul><li><b>The T-score</b> compares your bone density with that of a healthy young adult at peak bone mass. It is the number used to classify bone density in most adults after menopause and in older men.</li><li><b>The Z-score</b> compares you with other people of your own age, sex and body size. It is the more relevant comparison in younger adults and children, and a notably low Z-score may prompt your physician to look for an underlying cause rather than treating the result as expected ageing.</li></ul><p>Both are expressed as how far above or below the comparison group you sit, in standard deviations, which is why they appear as numbers like -1.4 rather than as a percentage.</p>"
+    },
+    {
+      "h2": "The usual categories",
+      "html": "<p>The standard classification groups T-scores into three bands. These are definitions rather than predictions, and your physician applies them alongside everything else they know about you.</p><ul><li><b>Normal:</b> a T-score at or above -1.0.</li><li><b>Osteopenia,</b> sometimes called low bone mass: a T-score between -1.0 and -2.5. This is the band where there is usually the most to gain from acting, and it is the subject of its own page on <a href=\"/conditions/exercise-for-osteopenia\">exercise for osteopenia</a>.</li><li><b>Osteoporosis:</b> a T-score at or below -2.5.</li></ul><p>A physician may also diagnose osteoporosis regardless of the score if a fracture has occurred after a minor fall or strain, because that event says something the scan does not.</p>"
+    },
+    {
+      "h2": "What the score does not tell you",
+      "html": "<p>This is where the number is most often over-read in both directions.</p><p>A scan measures density at two points on one day. It does not measure bone quality, the internal architecture that also contributes to strength, and it cannot see how likely you are to fall, which is the single most important factor in whether a bone actually breaks. Two people with identical T-scores can have very different real-world risk depending on their strength, balance, medication, vision and home environment.</p><p>This is also why physicians frequently use a separate fracture risk calculator alongside the scan, which folds in age, previous fractures, family history, smoking, steroid use and other factors. The score is an input to that picture rather than the whole of it.</p>"
+    },
+    {
+      "h2": "How often it is repeated",
+      "html": "<p>Bone changes slowly, and scanners have a margin of error, so repeating the test too soon tends to produce a difference that cannot be distinguished from measurement noise. For that reason repeat scans are usually spaced by a year or more, and the interval depends on your result, your treatment and your physician's judgement. Where possible they are done on the same machine, because results are not always directly comparable between different scanners.</p><p>If you are tracking progress in the meantime, strength, balance and function are the things that change on a timescale you can actually observe.</p>"
+    },
+    {
+      "h2": "Why this matters for exercise",
+      "html": "<p>A programme built for someone with mild osteopenia and no fracture history looks different from one built for someone with a T-score well below -2.5 and a previous vertebral fracture. The report is the starting point, and bringing it to an assessment is the difference between generic caution and a plan that fits you.</p><p>Dr. Jared Caban holds the CEP and CCEP credentials, which is specific training in prescribing exercise for people with medical diagnoses. The muscles that matter most for holding you upright and protecting the spine are the back extensors, <a href=\"/muscles/iliocostalis\">iliocostalis</a> and <a href=\"/muscles/longissimus\">longissimus</a>; <a href=\"/muscles/multifidus\">multifidus</a> for segmental control; and <a href=\"/muscles/gluteus-maximus\">gluteus maximus</a> and <a href=\"/muscles/gluteus-medius\">gluteus medius</a> for hip strength and single-leg steadiness.</p>"
+    }
+  ],
+  "steps": null,
+  "timeline": "Repeat scans are generally spaced a year or more apart because bone changes slowly and scanners have a margin of error. Strength and balance, by contrast, change over weeks and are what you will notice first.",
+  "redFlags": [
+    "Sudden severe back pain after a minor strain or cough, particularly with a known low score, which needs a physician promptly.",
+    "A fracture from a fall from standing height or less, which is medically significant regardless of what the scan says.",
+    "Losing height, or a forward curve in the upper back that is increasing.",
+    "A very low Z-score in a younger adult, which your physician may want to investigate for an underlying cause.",
+    "New numbness, leg weakness, or any change in bladder or bowel control: go to the emergency room."
+  ],
+  "faq": [
+    {
+      "q": "What is the difference between a T-score and a Z-score?",
+      "a": "A T-score compares you with a healthy young adult at peak bone mass and is used for classification in most older adults. A Z-score compares you with people of your own age and sex, and is more relevant in younger people."
+    },
+    {
+      "q": "Does osteopenia mean I will get osteoporosis?",
+      "a": "Not necessarily. It describes bone density in a band below normal, and it is the stage where there is usually the most to gain from loading, strength work and the medical factors your physician manages."
+    },
+    {
+      "q": "How often should I be rescanned?",
+      "a": "Usually not more than once a year, and often less, because bone changes slowly and small differences can reflect measurement variation rather than real change. Your physician sets the interval."
+    },
+    {
+      "q": "Can exercise change my T-score?",
+      "a": "Bone responds to loading, but changes are slow and modest, and this page will not put a number on it. The more immediate benefit of exercise is strength and balance, which reduce the chance of the fall that causes a fracture."
+    }
+  ],
+  "muscles": [
+    "iliocostalis",
+    "longissimus",
+    "multifidus",
+    "glute-max",
+    "glute-med"
+  ],
+  "pain": [
+    "beside-the-spine",
+    "between-shoulder-blades"
+  ],
+  "guides": [],
+  "related": [
+    "/conditions/osteoporosis-and-exercise",
+    "/conditions/exercise-for-osteopenia",
+    "/conditions/osteoporosis-exercises-to-avoid",
+    "/conditions/weight-bearing-exercise-for-bones",
+    "/conditions/vertebral-compression-fracture",
+    "/treatments/clinical-exercise-physiology"
+  ],
+  "reviewStatus": "draft"
+}
