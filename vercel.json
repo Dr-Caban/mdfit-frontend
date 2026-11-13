@@ -235,21 +235,6 @@
       "permanent": true
     },
     {
-      "source": "/dr-jared",
-      "destination": "/#dr",
-      "permanent": true
-    },
-    {
-      "source": "/testimonials",
-      "destination": "/#reviews",
-      "permanent": true
-    },
-    {
-      "source": "/contact",
-      "destination": "/book",
-      "permanent": true
-    },
-    {
       "source": "/sciatica-treatment-sarasota",
       "destination": "/conditions/sciatica",
       "permanent": true
