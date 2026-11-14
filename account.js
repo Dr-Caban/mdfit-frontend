@@ -2020,7 +2020,7 @@
     // Who may write to Dr. Jared is the server's call (canSend; older servers said member). History always shows.
     const can = typeof d.canSend === "boolean" ? d.canSend : !!d.member;
     $("#msg-gate").hidden = can;
-    if (!can) $("#msg-gate-why").textContent = d.why || "Messaging Dr. Jared directly is part of Expert Advice ($50/mo) and the 1-on-1 tiers.";
+    if (!can) $("#msg-gate-why").textContent = d.why || "Messaging Dr. Jared directly is part of Expert Advice ($50/mo) and the 1-on-1 tiers. He replies on business days, during clinic hours.";
     $("#chat-form").hidden = !can;
     $("#chat").hidden = !can && !d.messages.length;
     const list = $("#chat-list");
