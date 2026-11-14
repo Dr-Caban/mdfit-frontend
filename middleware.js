@@ -44,8 +44,15 @@ export default async function middleware(request) {
   const OPEN_TO_ALL = url.pathname === "/sitemap.xml" || url.pathname === "/robots.txt"
     || (SEARCH.test(ua) && !PRIVATE.test(url.pathname));
 
+  // The iOS app is used wherever the member happens to be, and App Review tests it from outside the United States:
+  // a country refusal there reads as an app that doesn't start, which is a rejection for something that works.
+  // iOS clients pass the country lock, so the website stays US-only and the app doesn't. An iPhone browser abroad
+  // gets in too, which is the price of the app having no marker of its own; narrow this to the app's User-Agent
+  // once it sets one. Everything private still needs a login, and step 2 still refuses bots from every country.
+  const IOS = /\b(iphone|ipad|ipod)\b/i.test(ua);
+
   // 1. Country lock (header is always set on Vercel; only missing in local development)
-  if (!OPEN_TO_ALL && country && !ALLOWED.has(country)) return page(403, "Not available in your region", "MD Fit's website and app are only available in the United States.");
+  if (!OPEN_TO_ALL && !IOS && country && !ALLOWED.has(country)) return page(403, "Not available in your region", "MD Fit's website is only available in the United States.");
 
   // 2. Bots and scrapers. Search engines may read the public homepage only.
   if (!ua || BAD_UA.test(ua)) return page(403, "Automated access isn't allowed", "This site can only be used in a web browser or the MD Fit app.");
