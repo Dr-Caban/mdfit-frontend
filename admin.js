@@ -1786,7 +1786,7 @@
     const days = ($("#sa-range") || {}).value || 30;
     let d; try { d = await api("GET", `/api/admin/search-analytics?days=${days}`); } catch { return; }
     const s = d.totals || {};
-    $("#sa-stats").innerHTML = `<div class="stat"><b>${s.events || 0}</b><small>Search events</small></div><div class="stat"><b>${s.uniqueQueries || 0}</b><small>Unique queries</small></div>`;
+    $("#sa-stats").innerHTML = `<div class="stat"><b>${s.searches != null ? s.searches : (s.events || 0)}</b><small>Searches</small></div><div class="stat"><b>${s.uniqueQueries || 0}</b><small>Unique queries</small></div>`;
     const row = (r) => `<tr><td>${esc(r.q)}</td><td>${r.impressions}</td><td>${r.clicks}</td><td>${r.ctr}%</td><td>${r.meanPosition != null ? r.meanPosition : "—"}</td></tr>`;
     const head = `<thead><tr><th>Query</th><th>Shown</th><th>Clicks</th><th>CTR</th><th>Avg. pos.</th></tr></thead>`;
     const noData = `<tr><td colspan=5 class='muted'>No data yet</td></tr>`;

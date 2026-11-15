@@ -407,21 +407,26 @@
   // Personalization: favorites and the user's logged pain regions re-rank for them specifically.
   const personal = () => ({ favorites: new Set(lib.favorites || []), painRegions: [...new Set((painLog || []).map((p) => String(p.area || "").toLowerCase()))].slice(0, 6) });
   // Track last query and shown hits so we can log a "noclick" when the user abandons without picking anything.
-  let qsLastQ = "", qsLastHits = [], qsClicked = false;
+  let qsLastQ = "", qsLastHits = [], qsClicked = false, qsLogT = 0;
+  // Count a search once the user has settled on it (1.5 s idle or Enter), never per keystroke.
+  const qsLog = () => { clearTimeout(qsLogT); if (qsLastQ && window.MDFitSearch) window.MDFitSearch.logQuery(qsLastQ, qsLastHits.length); };
+  qsIn && qsIn.addEventListener("keydown", (e) => { if (e.key === "Enter") qsLog(); });
   qsIn && qsIn.addEventListener("input", () => {
     const q = qsIn.value.trim();
     qsClear.hidden = !q;
-    clearTimeout(qsT);
+    clearTimeout(qsT); clearTimeout(qsLogT);
     qsT = setTimeout(async () => {
       if (q.length < 2) { qsOut.hidden = true; return; }
       const r = await (window.MDFitSearch ? window.MDFitSearch.search(q, { limit: 12, personal: personal() }) : Promise.resolve({ hits: [] }));
       qsLastQ = q; qsLastHits = r.hits; qsClicked = false;
       qsRender(r.hits, q);
+      qsLogT = setTimeout(qsLog, 1500);
     }, 80);
   });
   qsClear && qsClear.addEventListener("click", () => { qsIn.value = ""; qsOut.hidden = true; qsClear.hidden = true; qsIn.focus(); });
   qsIn && qsIn.addEventListener("blur", () => setTimeout(() => {
     qsOut.hidden = true;
+    clearTimeout(qsLogT);
     // Log the no-click so the server knows this query didn't satisfy the user (zero-result signal).
     if (qsLastQ && !qsClicked && window.MDFitSearch) window.MDFitSearch.noClick(qsLastQ, qsLastHits.length);
     qsLastQ = "";
@@ -433,6 +438,7 @@
     const [kind, id] = row.dataset.id.split(":");
     // Log the click with position so CTR aggregation can re-rank for future queries.
     const pos = qsLastHits.findIndex((h) => h.id === row.dataset.id);
+    clearTimeout(qsLogT);
     if (qsLastQ && window.MDFitSearch) window.MDFitSearch.click(qsLastQ, row.dataset.id, Math.max(0, pos));
     qsClicked = true;
     qsOut.hidden = true; qsIn.value = "";
