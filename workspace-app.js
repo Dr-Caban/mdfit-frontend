@@ -179,6 +179,7 @@
     nutrition: '<path d="M12 21c-5 0-8-4-8-9 0-4 3-6 6-6 1 0 2 .5 2 .5s1-.5 2-.5c3 0 6 2 6 6 0 5-3 9-8 9z"/><path d="M12 6c0-2 1-3 3-4"/>',
     fitness: '<path d="M6 7v10M18 7v10M3 10v4M21 10v4M6 12h12"/>',
     payments: '<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/>',
+    affiliates: '<circle cx="8" cy="8" r="3"/><circle cx="17" cy="17" r="3"/><path d="M10.5 10.5l4 4M17 3v6M14 6h6"/>',
     newsletter: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
     insights: '<path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/>',
     team: '<circle cx="12" cy="7" r="4"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/>',
@@ -193,7 +194,7 @@
   const NAV = [
     { g: "Practice", items: [["dashboard", "Dashboard"], ["calendar", "Calendar"], ["clients", "Clients"], ["chart", "Client chart"], ["leads", "Leads"], ["messages", "Messages"], ["telehealth", "Telehealth"]] },
     { g: "Clinical", items: [["notes", "Notes & AI scribe"], ["forms", "Forms & intake"], ["programs", "Programs"], ["nutrition", "Nutrition"], ["fitness", "Fitness"]] },
-    { g: "Business", items: [["payments", "Payments"], ["newsletter", "Newsletter"]] },
+    { g: "Business", items: [["payments", "Payments"], ["affiliates", "Affiliates"], ["newsletter", "Newsletter"]] },
     { g: "Admin", items: [["team", "Team & roles"], ["feedback", "Reviews & feedback"], ["security", "Security & audit"], ["settings", "Modules & settings"], ["insights", "Insights"], ["economics", "System economics"], ["guide", "Sunny"]] },
     { g: "Client-facing", items: [["portal", "Client app"], ["booking", "Booking page"]] }
   ];
@@ -1057,6 +1058,50 @@
     }
     try { const g = await load(p); guideBad.delete(days); return g; } catch (err) { guideBad.set(days, { why: err.message, at: Date.now(), epoch }); throw err; }
   }
+  // ---- Affiliates (Business): members earn a share of what friends they refer pay for subscriptions or subscription
+  // add-ons. The owner sets the rate and the rules here; the server keeps clinical tiers out whatever is sent.
+  const affPill = (s) => `<span class="pill ${s === "active" ? "ok" : s === "removed" ? "bad" : "warn"}">${esc({ active: "Active", paused: "Paused", removed: "Removed", left: "Left" }[s] || s)}</span>`;
+  const affStatus = (s) => `<span class="pill ${s === "paid" ? "ok" : s === "reversed" ? "bad" : s === "ready" ? "" : "warn"}">${esc({ pending: "Pending", ready: "Payout ready", paid: "Paid", reversed: "Reversed" }[s] || s)}</span>`;
+  V.affiliates = async () => {
+    const d = await load("/affiliates");
+    if (!d) return `<div class="view-head"><div><h1>Affiliates</h1></div></div>${none("Couldn't load the affiliate programme.")}`;
+    const S = d.settings, T = d.totals || {}, lp = d.lastPayout;
+    const tile = (label, val, sub) => `<div class="card kpi"><span class="muted">${label}</span><b class="num">${val}</b>${sub ? `<small class="muted">${sub}</small>` : ""}</div>`;
+    const tiers = (d.tiers || []).map((t) => t.clinical
+      ? `<label class="row" style="gap:8px;flex-wrap:nowrap;opacity:.6"><input type="checkbox" disabled><span><b>${esc(t.name)}</b> <span class="muted">· access to a clinician, can't earn a commission</span></span></label>`
+      : `<label class="row" style="gap:8px;flex-wrap:nowrap"><input type="checkbox" name="tier" value="${esc(t.id)}"${t.eligible ? " checked" : ""}><span><b>${esc(t.name)}</b>${t.price ? ` <span class="muted">· $${esc(t.price)}/month</span>` : ""}</span></label>`).join("");
+    const affRows = (d.affiliates || []).map((a) => `<tr><td><b>${esc(a.name)}</b><div class="muted" style="font-size:12px">${esc(a.email)}</div></td><td>${affPill(a.status)}</td>
+      <td>${a.stripe.payoutsEnabled ? '<span class="pill ok">Payouts on</span>' : a.stripe.connected ? '<span class="pill warn">Checking</span>' : '<span class="pill">Not set up</span>'}</td>
+      <td class="num">${a.referred}</td><td class="num">${usd(a.pendingCents)}</td><td class="num">${usd(a.readyCents)}</td><td class="num">${usd(a.paidCents)}</td>
+      <td><div class="row" style="gap:6px;flex-wrap:nowrap">${a.status === "active" ? `<button type="button" class="btn sm" data-act="affStatus" data-id="${esc(a.clientId)}" data-s="paused">Pause</button>` : a.status === "paused" ? `<button type="button" class="btn sm" data-act="affStatus" data-id="${esc(a.clientId)}" data-s="active">Resume</button>` : ""}
+        ${a.status !== "removed" ? `<button type="button" class="btn sm" data-act="affStatus" data-id="${esc(a.clientId)}" data-s="removed">Remove</button>` : ""}<button type="button" class="btn sm ghost" data-act="affAdjust" data-id="${esc(a.clientId)}" data-name="${esc(a.name)}">Adjust</button></div></td></tr>`).join("");
+    const recent = (d.recent || []).slice(0, 100).map((r) => `<tr><td>${esc(when(r.ts))}</td><td>${esc(r.kind === "commission" ? "Commission" : r.kind === "clawback" ? "Refund taken back" : "Adjustment")}</td><td>${esc(r.affiliate)}</td>
+      <td>${esc(r.kind === "adjustment" ? r.reason || "" : r.referred)}</td><td>${esc(r.label || "")}</td><td class="num">${usd(r.cents)}</td><td>${affStatus(r.status)}</td></tr>`).join("");
+    return `<div class="view-head"><div><h1>Affiliates</h1><p class="muted">Members earn a share of what friends they refer pay for subscriptions or subscription add-ons. Nothing clinical ever earns a commission.</p></div>
+        <button type="button" class="btn" data-act="affExport">Export CSV</button></div>
+      <div class="card stack" style="margin-bottom:16px"><div class="card-head"><h2>Affiliate programme</h2><button type="button" class="switch" role="switch" aria-checked="${S.enabled}" aria-label="Affiliate programme" data-act="affEnabled"></button></div>
+        <p style="margin:0">${S.enabled ? "<b>Open:</b> members see Refer a friend → Earn on referrals on their Profile and can turn on affiliate commission." : "<b>Closed:</b> members see only their referral code. Have your attorney review the programme and the affiliate terms before opening it."}</p>
+        ${d.stripe ? "" : '<p class="muted" style="margin:0">Stripe isn\'t configured on the API, so payouts can\'t run yet.</p>'}
+        <p class="muted" style="margin:0;font-size:12.5px">Payouts are Stripe transfers to each affiliate's Stripe Express account. Stripe Connect must be on for the account, and a Connect webhook (account.updated) set to the API's /api/stripe/webhook with its signing secret in STRIPE_CONNECT_WEBHOOK_SECRET.</p></div>
+      <div class="grid g4" style="margin-bottom:16px">${tile("Active affiliates", T.affiliates || 0)}${tile("Pending", usd(T.pendingCents), `held ${S.holdDays} days`)}${tile("Payout ready", usd(T.readyCents), `paid on the 1st from ${usd(S.minPayoutCents)}`)}${tile("Paid all time", usd(T.paidCents), lp ? `last run ${esc(when(lp.lastRunAt))}` : "no payouts yet")}</div>
+      <div class="grid g2" style="margin-bottom:16px;align-items:start">
+        <form class="card stack" data-form="affSettings"><div class="card-head"><h2>Commission settings</h2></div>
+          <div class="grid g2"><div class="field"><label for="affRate">Commission rate (%)</label><input id="affRate" name="ratePct" class="input" type="number" min="0" max="50" step="0.01" value="${esc(S.ratePct)}" required></div>
+            <div class="field"><label for="affHold">Hold before payout ready (days)</label><input id="affHold" name="holdDays" class="input" type="number" min="0" max="60" step="1" value="${esc(S.holdDays)}" required></div>
+            <div class="field"><label for="affMin">Payout minimum ($)</label><input id="affMin" name="minPayout" class="input" type="number" min="1" max="1000" step="0.01" value="${esc((S.minPayoutCents / 100).toFixed(2))}" required></div>
+            <div class="field"><label for="affDur">Earning window (months, 0 = as long as they stay)</label><input id="affDur" name="durationMonths" class="input" type="number" min="0" max="120" step="1" value="${esc(S.durationMonths)}" required></div></div>
+          <fieldset class="stack" style="border:0;padding:0;margin:0"><legend style="font-weight:700;margin-bottom:6px">Subscriptions that earn</legend>${tiers}</fieldset>
+          <div class="field"><label for="affAddOns">Subscription add-ons that earn (Stripe price lookup keys or price ids, comma separated)</label><input id="affAddOns" name="addOns" class="input" maxlength="2000" value="${esc((S.eligibleAddOns || []).join(", "))}" placeholder="e.g. sunny_unlimited"></div>
+          <label class="row" style="gap:8px;flex-wrap:nowrap"><input type="checkbox" name="freeMonth"${S.freeMonthReward ? " checked" : ""}><span>Also give the referrer 1 free month of membership for each sign-up</span></label>
+          <p class="muted" style="margin:0;font-size:12.5px">A new rate applies to payments from now on; commissions already recorded keep their rate. Every change is recorded in the audit ledger.</p>
+          <div class="row"><button class="btn primary">Save settings</button></div></form>
+        <div class="card stack"><div class="card-head"><h2>Run now</h2></div>
+          <p style="margin:0">Holds end on their own every hour, and payouts run on the 1st of each month. Run either one now if you need to.</p>
+          <div class="row"><button type="button" class="btn" data-act="affRun" data-job="clear">End due holds</button><button type="button" class="btn primary" data-act="affRun" data-job="payout">Pay out now</button></div>
+          ${lp ? `<p class="muted" style="margin:0;font-size:12.5px">Last payout run ${esc(when(lp.lastRunAt))} (${esc(lp.by)}): ${lp.paid} paid, ${lp.failed} failed.</p>` : ""}</div></div>
+      <div class="card" style="padding:0;margin-bottom:16px"><div class="card-head" style="padding:14px 16px 0"><h2>Affiliates</h2></div><div class="table-wrap"><table><thead><tr><th>Member</th><th>Status</th><th>Stripe</th><th class="num">Referred</th><th class="num">Pending</th><th class="num">Ready</th><th class="num">Paid</th><th></th></tr></thead><tbody>${affRows || noneRow(8, "No one has turned on affiliate commission yet.")}</tbody></table></div></div>
+      <div class="card" style="padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>Recent commissions</h2></div><div class="table-wrap" style="max-height:480px;overflow-y:auto"><table><thead><tr><th>When</th><th>Kind</th><th>Affiliate</th><th>Referred member</th><th>Subscription</th><th class="num">Amount</th><th>Status</th></tr></thead><tbody>${recent || noneRow(7, "No commissions yet.")}</tbody></table></div></div>`;
+  };
   V.guide = async () => {
     const days = GUIDE_DAYS.includes(state.guideDays) ? state.guideDays : 30; let g = null, why = "";
     try { g = await guideStats(days); } catch (err) { why = err.message; }
@@ -2466,6 +2511,53 @@
   $("#globalSearch").addEventListener("focus", (e) => { if (gWords(e.target.value).length && gRes.hidden) e.target.dispatchEvent(new Event("input")); });
   document.addEventListener("click", (e) => { if (!e.target.closest(".search")) gClose(); });
   ACT.searchOpen = (el) => { $("#globalSearch").value = ""; gClose(); openChart(el.dataset.id); };
+  // ---- Affiliates
+  ACT.affEnabled = async (el) => {
+    const on = el.getAttribute("aria-checked") !== "true";
+    if (on && !confirm("Open the affiliate programme? Members will be able to earn commission on referrals. Do this only after your attorney has reviewed the programme and the affiliate terms.")) return;
+    await api("PUT", "/api/admin/affiliates/settings", { enabled: on });
+    await render(); toast(on ? "The affiliate programme is open." : "The affiliate programme is closed. Nothing new is earned; what's owed is still paid.");
+  };
+  ACT.affStatus = async (el) => {
+    const s = el.dataset.s, msg = { paused: "Pause this affiliate? No new commissions and no payouts until you resume.", removed: "Remove this affiliate? No new commissions, and what is payout ready is not paid out.", active: "Resume this affiliate?" }[s];
+    if (!confirm(msg)) return;
+    await api("PUT", `/api/admin/affiliates/${encodeURIComponent(el.dataset.id)}`, { status: s });
+    await render(); toast("Saved.");
+  };
+  ACT.affAdjust = (el) => modal(`<div class="card-head"><h2>Adjust ${esc(el.dataset.name)}</h2>${xBtn}</div>
+    <form class="stack" data-form="affAdjust"><input type="hidden" name="id" value="${esc(el.dataset.id)}">
+      <div class="field"><label for="adjAmt">Amount ($, negative to take off)</label><input id="adjAmt" name="amount" class="input" type="number" step="0.01" min="-1000" max="1000" required></div>
+      <div class="field"><label for="adjWhy">Reason (the affiliate sees this)</label><input id="adjWhy" name="reason" class="input" minlength="3" maxlength="200" required></div>
+      <div class="row"><button class="btn primary">Add adjustment</button><button type="button" class="btn" data-act="closeModal">Cancel</button></div></form>`);
+  ACT.affRun = async (el) => {
+    const job = el.dataset.job;
+    if (job === "payout" && !confirm("Pay out every affiliate whose payout-ready balance is over the minimum, now? This sends Stripe transfers.")) return;
+    const r = await api("POST", "/api/admin/affiliates/run", { job });
+    await render();
+    if (job === "clear") { const n = Object.keys(r.moved || {}).length; toast(n ? `Holds ended for ${plural(n, "affiliate")}.` : "No holds were due."); return; }
+    if (r.error) throw new Error(r.error);
+    const why = [...new Set(r.skipped.map((x) => x.why))].join("; ");
+    toast(`${r.paid.length} paid, ${r.skipped.length} skipped${why ? " (" + why + ")" : ""}, ${r.failed.length} failed${r.failed.length ? ": " + r.failed.map((f) => f.error).join("; ") : ""}.`);
+  };
+  ACT.affExport = async () => {
+    const res = await fetch(`${API}/api/admin/affiliates/export`, { headers: { Authorization: "Bearer " + token } });
+    if (!res.ok) throw new Error("The export could not be made.");
+    const name = ((res.headers.get("content-disposition") || "").match(/filename="?([^";]+)"?/) || [])[1] || "mdfit-affiliate-commissions.csv";
+    const url = URL.createObjectURL(await res.blob()), a = document.createElement("a");
+    a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 30000);
+    toast("Exported. The file is in your downloads.");
+  };
+  FORMS.affSettings = async (f) => {
+    const body = { ratePct: Number(f.ratePct.value), holdDays: Number(f.holdDays.value), minPayoutCents: Math.round(Number(f.minPayout.value) * 100), durationMonths: Number(f.durationMonths.value),
+      eligibleTiers: [...f.querySelectorAll("[name=tier]:checked")].map((x) => x.value), eligibleAddOns: f.addOns.value.split(",").map((x) => x.trim()).filter(Boolean), freeMonthReward: f.freeMonth.checked };
+    await api("PUT", "/api/admin/affiliates/settings", body);
+    await render(); toast("Commission settings saved.");
+  };
+  FORMS.affAdjust = async (f) => {
+    const cents = Math.round(Number(f.amount.value) * 100);
+    await api("POST", "/api/admin/affiliates/adjust", { clientId: f.id.value, cents, reason: f.reason.value.trim() });
+    closeModal(); await render(); toast("Adjustment added.");
+  };
 
   // ---------------------------------------------------------------- "+" quick actions
   // One round button in reach on every screen: pick what to send or open, then who it is for (the open chart's
