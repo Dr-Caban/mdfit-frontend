@@ -1242,6 +1242,7 @@
   caSheet.addEventListener("click", (e) => { if (e.target.closest("[data-close]") || e.target === caSheet) caSheet.close(); });
 
   async function loadReferral() {
+    loadAffiliate(); // the affiliate slides of the same card
     try {
       const r = await apiAuth("GET", "/api/me/referral");
       if (r.code) {
@@ -1282,6 +1283,174 @@
     pressed("share");
     if (navigator.share) navigator.share({ title: "Join MD Fit", text: `Sign up with my referral code ${code} and get 3 months free!`, url }).catch(() => {});
     else navigator.clipboard.writeText(url).then(() => toast("Share link copied!")).catch(() => toast("Couldn't copy the link."));
+  });
+
+  // ---- Affiliate commission: slides 2-5 of Refer a friend. They show once the clinic opens the programme (or while
+  // a member still has commissions on record). Balances move live: the server pushes "referral_update" the moment a
+  // referred friend pays, a hold ends, or a payout goes out.
+  const usd = (c) => (c < 0 ? "−$" : "$") + (Math.abs(Number(c) || 0) / 100).toFixed(2);
+  const pct = (n) => `${Number(n || 0).toLocaleString("en-US", { maximumFractionDigits: 2 })}%`;
+  let aff = null, affSeen = new Set();
+  const affTrack = $("#aff-slides");
+  async function loadAffiliate(flashNew) {
+    try { aff = await apiAuth("GET", "/api/me/affiliate"); } catch { return; }
+    renderAffiliate(flashNew);
+  }
+  function affSlides() { return $$("#aff-slides > .aff-slide").filter((s) => !s.hidden); }
+  function renderAffDots() {
+    const dots = $("#aff-dots"), slides = affSlides();
+    const cur = Math.round(affTrack.scrollLeft / Math.max(1, affTrack.clientWidth));
+    dots.innerHTML = slides.length > 1 ? slides.map((s, i) => `<button type="button" role="tab" aria-label="${esc(s.getAttribute("aria-label"))}" aria-selected="${i === cur}" data-i="${i}"></button>`).join("") : "";
+    dots.hidden = slides.length < 2;
+  }
+  function renderAffiliate(flashNew) {
+    const a = aff; if (!a) return;
+    const on = !!(a.enabled || (a.ledger && a.ledger.length));
+    $$("#referral-card [data-aff]").forEach((el) => { el.hidden = !on; });
+    // Slide 1 pitch follows the clinic's settings: the free month, the commission, or both
+    const fm = a.freeMonth !== false;
+    $("#ref-pitch").innerHTML = a.enabled
+      ? `Share your code.${fm ? " When someone signs up with it, <strong>you get 1 free month</strong> of membership credit." : ""} Turn on affiliate commission to earn <strong>${pct(a.ratePct)}</strong> of what they pay for subscriptions or subscription add-ons.`
+      : `Share your code — when someone signs up with it, <strong>you get 1 free month</strong> of membership credit.`;
+    if (!on) { renderAffDots(); return; }
+    const hold = `${a.holdDays} day${a.holdDays === 1 ? "" : "s"}`;
+    $$(".aff-rate").forEach((el) => (el.textContent = pct(a.ratePct)));
+    $$(".aff-hold").forEach((el) => (el.textContent = hold));
+    $$(".aff-min").forEach((el) => (el.textContent = usd(a.minPayoutCents)));
+    const names = (a.eligible || []).map((t) => t.name);
+    const list = names.length ? `: ${names.length > 1 ? names.slice(0, -1).join(", ") + " and " + names[names.length - 1] : names[0]}${(a.addOns || []).length ? ", plus listed add-ons" : ""}` : "";
+    $("#aff-eligible").textContent = list;
+    $$(".aff-eligible-2").forEach((el) => (el.textContent = list ? ` (${list.slice(2)})` : ""));
+    $("#aff-duration").textContent = a.durationMonths ? `, for ${a.durationMonths} month${a.durationMonths === 1 ? "" : "s"} from their first payment` : ", for as long as they stay";
+
+    // Set-up: two steps until joined; then the box gives way to the LIVE button
+    const st = a.status, joined = st === "active", stripe = a.stripe || {};
+    $("#aff-setup").hidden = joined || st === "paused" || st === "removed" || !a.enabled;
+    $("#aff-join").disabled = !a.enabled;
+    $("#aff-live").hidden = !joined;
+    if (!joined) { $("#aff-live-detail").hidden = true; $("#aff-live").setAttribute("aria-expanded", "false"); }
+    $("#aff-head-live").hidden = !joined;
+    $("#aff-live-sub").textContent = `Earning ${pct(a.ratePct)} of subscriptions and subscription add-ons${client.referralCode ? " · code " + client.referralCode : ""}`;
+    const stripeBtns = $$("[data-aff-stripe]");
+    stripeBtns[0].disabled = true; // the step-2 button inside the set-up box waits for step 1
+    const s2 = stripeBtns[1];
+    s2.hidden = !(joined && !stripe.payoutsEnabled);
+    s2.disabled = !stripe.available;
+    s2.firstChild.textContent = stripe.connected ? "Finish Stripe set-up" : "Set up Stripe account";
+    $("#aff-dash").hidden = !(stripe.connected && stripe.payoutsEnabled);
+    const status = $("#aff-status");
+    status.textContent = st === "removed" ? "This account can't earn referral commission. Contact the clinic with any questions."
+      : st === "paused" ? "Your affiliate account is paused by the clinic. What you've earned is kept."
+      : !a.enabled && st !== "none" ? "The clinic has closed the programme to new commissions. What you've earned is still paid."
+      : joined && !stripe.available ? "Payouts through Stripe open soon. Your commissions are kept until then."
+      : joined && stripe.connected && !stripe.payoutsEnabled ? "Stripe is still checking your details. Payouts start once it's done."
+      : "";
+
+    // Balances
+    const b = a.balances || {};
+    $("#aff-pend").textContent = usd(b.pendingCents); $("#aff-ready").textContent = usd(b.readyCents); $("#aff-paid").textContent = usd(b.paidCents);
+    $("#aff-pend-total").textContent = usd(b.pendingCents); $("#aff-ready-total").textContent = usd(b.readyCents);
+    renderAffChart(a.ledger || []);
+    renderAffFunnel(a.funnel || { opened: 0, joined: a.referred || 0, paying: 0 });
+    // Commission lists: newest first; a row that wasn't there before flashes once
+    const row = (r) => `<li class="${flashNew && !affSeen.has(r.id) ? "new" : ""}"><span>${esc(r.who)}<small>${esc(r.what)}${r.status === "pending" && r.clearsAt ? " · ready " + esc(shortDate(r.clearsAt.slice(0, 10))) : ""}${r.status === "paid" && r.paidAt ? " · paid " + esc(shortDate(r.paidAt.slice(0, 10))) : ""}</small></span><span class="amt">${r.cents < 0 ? "" : "+"}${usd(r.cents)}</span></li>`;
+    const by = (s) => (a.ledger || []).filter((r) => r.status === s);
+    const fill = (id, rows, empty) => { $(id).innerHTML = rows.length ? rows.map(row).join("") : `<li class="empty">${empty}</li>`; };
+    fill("#aff-pend-list", by("pending"), "Nothing pending. When a friend pays, it shows here.");
+    fill("#aff-ready-list", by("ready"), "Nothing ready yet.");
+    fill("#aff-paid-list", by("paid"), "No payouts yet.");
+    affSeen = new Set((a.ledger || []).map((r) => r.id));
+    renderAffDots();
+  }
+  // Weekly stacked bars, last 8 weeks: Earned (payout ready or paid) under Pending. Reversed rows don't count.
+  function renderAffChart(rows) {
+    const svg = $("#aff-chart"), W = 320, H = 150, L = 34, R = 6, T = 14, B = 24, weeks = 8;
+    const monday = (d) => { const x = new Date(d); x.setHours(0, 0, 0, 0); x.setDate(x.getDate() - ((x.getDay() + 6) % 7)); return x; };
+    const start = monday(new Date()); start.setDate(start.getDate() - 7 * (weeks - 1));
+    const wk = Array.from({ length: weeks }, (_, i) => { const d = new Date(start); d.setDate(d.getDate() + 7 * i); return { d, earned: 0, pend: 0 }; });
+    for (const r of rows) {
+      if (!(r.cents > 0) || r.status === "reversed") continue;
+      const i = Math.floor((monday(r.at) - start) / (7 * 864e5));
+      if (i < 0 || i >= weeks) continue;
+      if (r.status === "pending") wk[i].pend += r.cents; else wk[i].earned += r.cents;
+    }
+    const max = Math.max(...wk.map((w) => w.earned + w.pend), 0);
+    const step = [100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000].find((s) => s * 3 >= max) || Math.ceil(max / 300) * 100;
+    const top = step * 3, y = (c) => T + (H - T - B) * (1 - c / top), slot = (W - L - R) / weeks, bw = Math.min(22, slot * 0.56);
+    const lab = (d) => d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+    const seg = (x, y0, y1, round) => { const h = y0 - y1; if (h <= 0) return ""; const r = round ? Math.min(4, h, bw / 2) : 0; return `M${x},${y0}V${y1 + r}${r ? `Q${x},${y1} ${x + r},${y1}H${x + bw - r}Q${x + bw},${y1} ${x + bw},${y1 + r}` : `H${x + bw}`}V${y0}Z`; };
+    let g = "";
+    for (let k = 0; k <= 3; k++) { const v = step * k, yy = y(v); g += `<line class="grid" x1="${L}" x2="${W - R}" y1="${yy}" y2="${yy}"/><text x="${L - 6}" y="${yy + 3}" text-anchor="end">${v ? "$" + (v / 100).toFixed(v % 100 ? 2 : 0) : "$0"}</text>`; }
+    wk.forEach((w, i) => {
+      const x = L + slot * i + (slot - bw) / 2, base = y(0), ye = y(w.earned), yp = y(w.earned + w.pend);
+      const gap = w.earned && w.pend ? 2 : 0;
+      g += `<path class="s-earned" d="${seg(x, base, ye, !w.pend)}"/>`;
+      g += `<path class="s-pend" d="${seg(x, ye - gap, yp, true)}"/>`;
+      if (i % 2 === 1 || weeks <= 4) g += `<text x="${x + bw / 2}" y="${H - 8}" text-anchor="middle">${esc(lab(w.d))}</text>`;
+      g += `<rect class="hit" x="${L + slot * i}" y="${T}" width="${slot}" height="${H - T - B}" data-i="${i}"/>`;
+    });
+    if (!max) g += `<text class="val" x="${(L + W - R) / 2}" y="${(T + H - B) / 2}" text-anchor="middle">No commissions yet</text>`;
+    svg.innerHTML = g;
+    const tip = $("#aff-tip");
+    const show = (i) => { const w = wk[i], x = L + slot * i + slot / 2; tip.textContent = `Week of ${lab(w.d)}: ${usd(w.earned)} earned · ${usd(w.pend)} pending`; tip.style.left = `${(x / W) * 100}%`; tip.style.top = `${(y(w.earned + w.pend) / H) * 100}%`; tip.classList.add("on"); };
+    svg.onpointerover = (e) => { const t = e.target.closest(".hit"); if (t) show(+t.dataset.i); };
+    svg.onclick = svg.onpointerover;
+    svg.onpointerleave = () => tip.classList.remove("on");
+    $("#aff-table").innerHTML = `<thead><tr><th>Week of</th><th>Earned</th><th>Pending</th></tr></thead><tbody>${wk.map((w) => `<tr><td>${esc(lab(w.d))}</td><td>${usd(w.earned)}</td><td>${usd(w.pend)}</td></tr>`).join("")}</tbody>`;
+  }
+  function renderAffFunnel(f) {
+    const rows = [["Opened your link", f.opened], ["Joined", f.joined], ["Paying now", f.paying]];
+    const max = Math.max(1, ...rows.map((r) => r[1]));
+    $("#aff-funnel").innerHTML = rows.map(([k, v]) => `<div class="aff-frow"><span>${k}</span><div class="bar" style="width:${(v / max) * 100}%"></div><b>${v}</b></div>`).join("");
+    $("#aff-conv").textContent = f.joined ? `${Math.round((f.paying / f.joined) * 100)}% of the friends who joined are paying for a subscription now.` : "Share your code or link to get started.";
+  }
+  // Swipe: dots follow the scroll; a dot scrolls to its slide
+  affTrack.addEventListener("scroll", () => {
+    const i = Math.round(affTrack.scrollLeft / Math.max(1, affTrack.clientWidth));
+    $$("#aff-dots button").forEach((b, j) => b.setAttribute("aria-selected", String(i === j)));
+  }, { passive: true });
+  $("#aff-dots").addEventListener("click", (e) => { const b = e.target.closest("button[data-i]"); if (b) affTrack.scrollTo({ left: affTrack.clientWidth * +b.dataset.i, behavior: "smooth" }); });
+  // Step 1: the terms, then join
+  const affSheet = $("#aff-sheet");
+  $("#aff-join").addEventListener("click", () => { $("#aff-agree").checked = false; $("#aff-agree-go").disabled = true; $("#aff-sheet-msg").textContent = ""; affSheet.showModal(); });
+  $("#aff-agree").addEventListener("change", (e) => { $("#aff-agree-go").disabled = !e.target.checked; });
+  affSheet.addEventListener("click", (e) => { if (e.target.closest("[data-close]") || e.target === affSheet) affSheet.close(); });
+  $("#aff-agree-go").addEventListener("click", async () => {
+    const btn = $("#aff-agree-go"), msg = $("#aff-sheet-msg");
+    btn.disabled = true; msg.className = "form-msg"; msg.textContent = "Turning it on…";
+    try { aff = await apiAuth("POST", "/api/me/affiliate/join", { agree: true }); affSheet.close(); renderAffiliate(); toast("Affiliate commission is on. Next: set up Stripe for payouts."); }
+    catch (e) { btn.disabled = false; msg.className = "form-msg err"; msg.textContent = e.message || "Couldn't turn it on. Try again."; }
+  });
+  // Step 2: Stripe's own set-up page; it sends them back to /account?affiliate=stripe-done#profile
+  $$("[data-aff-stripe]").forEach((btn) => btn.addEventListener("click", async () => {
+    btn.disabled = true; $("#aff-status").textContent = "Opening Stripe…";
+    try { const r = await apiAuth("POST", "/api/me/affiliate/stripe/onboard"); location.href = r.url; }
+    catch (e) { btn.disabled = false; $("#aff-status").textContent = e.message || "Stripe couldn't start the set-up. Try again in a minute."; }
+  }));
+  $("#aff-dash").addEventListener("click", async () => {
+    try { const r = await apiAuth("POST", "/api/me/affiliate/stripe/dashboard"); location.href = r.url; }
+    catch (e) { toast(e.message || "Couldn't open your Stripe payouts."); }
+  });
+  $("#aff-live").addEventListener("click", () => { const d = $("#aff-live-detail"); d.hidden = !d.hidden; $("#aff-live").setAttribute("aria-expanded", String(!d.hidden)); });
+  $("#aff-leave").addEventListener("click", async () => {
+    if (!confirm("Stop earning on referrals? What you've already earned is still paid out.")) return;
+    try { aff = await apiAuth("POST", "/api/me/affiliate/leave"); renderAffiliate(); toast("You've stopped earning on new referrals."); } catch (e) { toast(e.message || "Couldn't change that."); }
+  });
+  // Back from Stripe: ask where the account stands, then tidy the address bar
+  (async () => {
+    const q = new URLSearchParams(location.search).get("affiliate");
+    if (!q) return;
+    history.replaceState(null, "", location.pathname + location.hash);
+    try {
+      const s = await apiAuth("GET", "/api/me/affiliate/stripe/status");
+      toast(s.payoutsEnabled ? "Stripe is set up. Payouts go to your bank on the 1st." : q === "stripe-again" ? "The Stripe link expired. Tap Set up Stripe account to carry on." : "Saved. Stripe is still checking your details.");
+    } catch {}
+    loadAffiliate();
+  })();
+  if (window.MDFitRT) MDFitRT.on("referral_update", (d) => {
+    if (d && d.kind === "pending" && d.cents > 0) toast(`${d.from || "A friend"} paid: +${usd(d.cents)} pending`);
+    else if (d && d.kind === "paid") toast(`${usd(d.cents)} is on its way to your bank.`);
+    loadAffiliate(true);
   });
 
   // Group classes the member booked on the events page. Matched by email on the server, so nothing is booked twice.
