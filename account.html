@@ -590,6 +590,12 @@
           <button type="button" class="btn-blue sm" id="share-ref">Share link</button>
         </div>
         <p class="small muted" id="ref-stats"></p>
+        <form id="ref-claim" hidden style="margin-top:12px;display:grid;gap:8px" novalidate>
+          <label class="small">Joined through a friend? Add their referral code <span class="muted">(within 30 days of joining)</span>
+            <input name="code" maxlength="20" placeholder="e.g. MDFIT-1A2B3C" autocomplete="off" autocapitalize="characters" style="display:block;width:100%;margin-top:6px"></label>
+          <button type="submit" class="btn-blue sm" style="justify-self:start">Add code</button>
+          <p class="small muted" id="ref-claim-msg" aria-live="polite"></p>
+        </form>
       </div>
 
       <div class="card install install-card">
@@ -759,7 +765,7 @@
   <script src="config.js?v=aac711e3"></script>
   <script src="analytics.js?v=f3f61f9e" defer></script>
   <script src="realtime.js?v=22ae7ae5"></script>
-  <script src="common.js?v=2a625715"></script>
+  <script src="common.js?v=8727e0ea"></script>
   <script src="search.js?v=f0487273" defer></script>
   <script src="app/exercises.js?v=d121be98"></script>
   <script src="app/library.js?v=4e053a85"></script>
@@ -772,7 +778,7 @@
   <script src="guides.js?v=8521968d"></script>
   <script src="stripe-checkout.js?v=087989ec"></script>
   <script src="progress-charts.js?v=df3a2256"></script>
-  <script src="account.js?v=a8fcd8de"></script>
+  <script src="account.js?v=353d82f7"></script>
   <script src="account-xp.js?v=b9de2933"></script>
   <script src="account-share.js?v=763ef457"></script>
   <script src="account-habits.js?v=60e83046"></script>

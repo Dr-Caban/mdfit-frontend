@@ -1248,11 +1248,30 @@
         $("#ref-code").textContent = r.code;
         $("#ref-stats").textContent = r.referrals ? `${r.referrals} friend${r.referrals === 1 ? "" : "s"} signed up with your code` : "No one has used your code yet — share it!";
       }
+      const form = $("#ref-claim");
+      if (form) form.hidden = !r.canClaim;
+      // Signed up without the code (Google, Apple, the app) but opened a friend's link on this phone: add it for them
+      const kept = window.MDFit.refCode ? window.MDFit.refCode() : "";
+      if (r.canClaim && kept && kept !== String(r.code || "").toUpperCase()) await claimRef(kept, true);
+      else if (!r.canClaim && window.MDFit.forgetRef) window.MDFit.forgetRef();
     } catch {}
   }
+  async function claimRef(code, quiet) {
+    const msg = $("#ref-claim-msg");
+    try {
+      await apiAuth("POST", "/api/me/referral/claim", { code });
+      if (window.MDFit.forgetRef) window.MDFit.forgetRef();
+      $("#ref-claim").hidden = true;
+      toast("Referral code added. Thanks for joining through a friend!");
+    } catch (e) { if (!quiet && msg) { msg.className = "small form-msg err"; msg.textContent = e.message || "Couldn't add that code."; } }
+  }
+  const claimForm = $("#ref-claim");
+  if (claimForm) claimForm.addEventListener("submit", (e) => { e.preventDefault(); const v = (claimForm.elements.code.value || "").trim(); if (v) claimRef(v, false); });
+  const pressed = (type) => apiAuth("POST", "/api/me/referral/event", { type }).catch(() => {});
   $("#copy-ref").addEventListener("click", () => {
     const code = $("#ref-code").textContent;
     if (!code || code === "—") return;
+    pressed("copy");
     navigator.clipboard.writeText(code).then(() => { toast("Referral code copied!"); $("#copy-ref").textContent = "Copied"; setTimeout(() => ($("#copy-ref").textContent = "Copy"), 2000); }).catch(() => toast("Couldn't copy — long-press the code to select it."));
   });
   $("#share-ref").addEventListener("click", () => {
@@ -1260,6 +1279,7 @@
     const code = $("#ref-code").textContent;
     if (!code || code === "—") return;
     const url = `${location.origin}/login?signup&ref=${encodeURIComponent(code)}`;
+    pressed("share");
     if (navigator.share) navigator.share({ title: "Join MD Fit", text: `Sign up with my referral code ${code} and get 3 months free!`, url }).catch(() => {});
     else navigator.clipboard.writeText(url).then(() => toast("Share link copied!")).catch(() => toast("Couldn't copy the link."));
   });

@@ -162,5 +162,20 @@
     refAttr: (id) => (guid(id) ? "" : ' referrerpolicy="no-referrer"')
   };
 
-  window.MDFit = { auth, apiAuth, accountLinks, GOOGLE_G, loadGoogleReviews, applyGoogleRating, API, $, $$, esc, get, api, fmtTime, fmtDate, todayInTz, addDays, zonedToUtc, icsStamp, telHref, formData, wire, AREAS, areaChips, loadSite };
+  // Referral links (/login?signup&ref=CODE, or any page with ?ref=). The code is kept on this device for 30 days, so it
+  // survives browsing around, Google or Apple sign-in, the app's hand-off to the browser and a return visit. The visit
+  // is counted once per code (code and time only), so Insights shows links that were opened but never turned into
+  // an account.
+  const REF_KEY = "mdfit-ref", REF_RE = /^[A-Za-z0-9][A-Za-z0-9-]{3,19}$/;
+  const refCode = () => { try { const r = JSON.parse(localStorage.getItem(REF_KEY) || "null"); return r && REF_RE.test(r.code || "") && Date.now() - r.at < 30 * 864e5 ? r.code : ""; } catch { return ""; } };
+  const forgetRef = () => { try { localStorage.removeItem(REF_KEY); } catch {} };
+  try {
+    const c = (new URLSearchParams(location.search).get("ref") || "").trim().toUpperCase();
+    if (REF_RE.test(c)) {
+      const already = refCode() === c;
+      localStorage.setItem(REF_KEY, JSON.stringify({ code: c, at: Date.now() }));
+      if (!already) fetch(API + "/api/referral/visit", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code: c }), keepalive: true }).catch(() => {});
+    }
+  } catch {}
+  window.MDFit = { refCode, forgetRef, auth, apiAuth, accountLinks, GOOGLE_G, loadGoogleReviews, applyGoogleRating, API, $, $$, esc, get, api, fmtTime, fmtDate, todayInTz, addDays, zonedToUtc, icsStamp, telHref, formData, wire, AREAS, areaChips, loadSite };
 })();
