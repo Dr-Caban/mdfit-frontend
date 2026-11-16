@@ -1280,7 +1280,8 @@
     const code = $("#ref-code").textContent;
     if (!code || code === "—") return;
     const url = `${location.origin}/login?signup&ref=${encodeURIComponent(code)}`;
-    pressed("share");
+    // Recorded apart: the share sheet (phones) and the link copied (computers), so Insights shows which one was used
+    pressed(navigator.share ? "share" : "copy_link");
     if (navigator.share) navigator.share({ title: "Join MD Fit", text: `Sign up with my referral code ${code} and get 3 months free!`, url }).catch(() => {});
     else navigator.clipboard.writeText(url).then(() => toast("Share link copied!")).catch(() => toast("Couldn't copy the link."));
   });
@@ -1422,15 +1423,70 @@
     catch (e) { btn.disabled = false; msg.className = "form-msg err"; msg.textContent = e.message || "Couldn't turn it on. Try again."; }
   });
   // Step 2: Stripe's own set-up page; it sends them back to /account?affiliate=stripe-done#profile
-  $$("[data-aff-stripe]").forEach((btn) => btn.addEventListener("click", async () => {
-    btn.disabled = true; $("#aff-status").textContent = "Opening Stripe…";
+  // In a browser, Stripe's own set-up and payouts screens open inside the app (Connect embedded components, in a
+  // sheet). Stripe doesn't support them inside an app's web view, so the native apps keep Stripe's hosted page.
+  const nativeShell = !!window.MDFitNative || /; wv\)/.test(navigator.userAgent);
+  const embedded = () => !nativeShell && !!(aff && aff.stripe && aff.stripe.embedded && aff.stripe.publishableKey);
+  let connectP = null;
+  const stripeLooks = () => {
+    const css = getComputedStyle(document.documentElement), v = (n, d) => css.getPropertyValue(n).trim() || d;
+    return { overlays: "dialog", variables: { colorPrimary: v("--navy", "#0A1A2E"), colorBackground: v("--bg", "#F6F4EE"), colorText: v("--heading", "#0A1A2E"),
+      colorSecondaryText: v("--muted", "#6b6a6e"), colorBorder: v("--line", "#e4ded1"), borderRadius: "12px", fontFamily: "Montserrat, system-ui, -apple-system, sans-serif" } };
+  };
+  function stripeConnect() {
+    if (!connectP) {
+      // One Connect instance per page; each session secret is fresh and for this member's own account only
+      connectP = import("/vendor/stripe-connect-js-3.5.0.esm.js").then(({ loadConnectAndInitialize }) => loadConnectAndInitialize({
+        publishableKey: aff.stripe.publishableKey,
+        fetchClientSecret: async () => (await apiAuth("POST", "/api/me/affiliate/stripe/session")).clientSecret,
+        appearance: stripeLooks() }));
+      connectP.catch(() => { connectP = null; });
+    }
+    return connectP;
+  }
+  document.addEventListener("mdfit:theme", () => { if (connectP) connectP.then((sc) => sc.update({ appearance: stripeLooks() })).catch(() => {}); });
+  const stripeSheet = $("#aff-stripe-sheet");
+  async function stripeBack() { try { await apiAuth("GET", "/api/me/affiliate/stripe/status"); } catch {} loadAffiliate(); }
+  stripeSheet.addEventListener("click", (e) => { if (e.target.closest("[data-close]") || e.target === stripeSheet) stripeSheet.close(); });
+  stripeSheet.addEventListener("close", () => { $("#aff-stripe-mount").innerHTML = ""; $("#aff-stripe-banner").innerHTML = ""; $("#aff-stripe-more").hidden = true; stripeBack(); });
+  async function openStripe(kind) {
+    const mount = $("#aff-stripe-mount"), banner = $("#aff-stripe-banner");
+    $("#aff-stripe-title").textContent = kind === "onboarding" ? "Set up payouts" : "Payouts";
+    mount.innerHTML = '<p class="small muted">Loading Stripe…</p>'; banner.innerHTML = ""; $("#aff-stripe-more").hidden = true;
+    stripeSheet.showModal();
+    let sc;
+    try { sc = await stripeConnect(); }
+    catch { stripeSheet.close(); toast("Couldn't load Stripe here. Opening Stripe's own page instead."); return hostedStripe(kind); }
+    const failed = () => { if (stripeSheet.open) { stripeSheet.close(); toast("Stripe couldn't load here. Opening Stripe's own page instead."); hostedStripe(kind); } };
+    mount.innerHTML = "";
+    if (kind === "onboarding") {
+      const el = sc.create("account-onboarding");
+      el.setOnExit(() => { stripeSheet.close(); toast("Saved. Stripe will confirm your details shortly."); });
+      el.setOnLoadError(failed);
+      mount.appendChild(el);
+    } else {
+      const nb = sc.create("notification-banner"); banner.appendChild(nb);
+      const po = sc.create("payouts"); po.setOnLoadError(failed); mount.appendChild(po);
+      const more = $("#aff-stripe-more"); more.hidden = false; more.open = false;
+      const box = $("#aff-stripe-account"); box.innerHTML = ""; box.appendChild(sc.create("account-management"));
+    }
+  }
+  // Stripe's hosted pages: the native apps, and the fallback if the embedded screens can't load
+  async function hostedStripe(kind) {
+    if (kind === "payouts") {
+      try { const r = await apiAuth("POST", "/api/me/affiliate/stripe/dashboard"); location.href = r.url; }
+      catch (e) { toast(e.message || "Couldn't open your Stripe payouts."); }
+      return;
+    }
+    $("#aff-status").textContent = "Opening Stripe…";
     try { const r = await apiAuth("POST", "/api/me/affiliate/stripe/onboard"); location.href = r.url; }
-    catch (e) { btn.disabled = false; $("#aff-status").textContent = e.message || "Stripe couldn't start the set-up. Try again in a minute."; }
+    catch (e) { $("#aff-status").textContent = e.message || "Stripe couldn't start the set-up. Try again in a minute."; }
+  }
+  $$("[data-aff-stripe]").forEach((btn) => btn.addEventListener("click", async () => {
+    btn.disabled = true;
+    try { await (embedded() ? openStripe("onboarding") : hostedStripe("onboarding")); } finally { btn.disabled = false; }
   }));
-  $("#aff-dash").addEventListener("click", async () => {
-    try { const r = await apiAuth("POST", "/api/me/affiliate/stripe/dashboard"); location.href = r.url; }
-    catch (e) { toast(e.message || "Couldn't open your Stripe payouts."); }
-  });
+  $("#aff-dash").addEventListener("click", () => (embedded() ? openStripe("payouts") : hostedStripe("payouts")));
   $("#aff-live").addEventListener("click", () => { const d = $("#aff-live-detail"); d.hidden = !d.hidden; $("#aff-live").setAttribute("aria-expanded", String(!d.hidden)); });
   $("#aff-leave").addEventListener("click", async () => {
     if (!confirm("Stop earning on referrals? What you've already earned is still paid out.")) return;

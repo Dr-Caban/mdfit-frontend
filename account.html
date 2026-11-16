@@ -19,10 +19,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="app/app.css?v=4c9506cb">
+  <link rel="stylesheet" href="app/app.css?v=704af208">
   <link rel="stylesheet" href="account.css?v=d560caac">
   <link rel="stylesheet" href="guides.css?v=704fb203">
-  <link rel="stylesheet" href="app-theme.css?v=f987425b">
+  <link rel="stylesheet" href="app-theme.css?v=fad3e70d">
   <link rel="stylesheet" href="mdfit-guide.css?v=f8b23b50">
   <link rel="stylesheet" href="progress-charts.css?v=f0ec9711">
   <script src="app-theme.js?v=3afc6baa"></script>
@@ -620,7 +620,7 @@
               <button type="button" class="link" id="aff-leave">Stop earning on referrals</button>
             </div>
             <button type="button" class="btn-blue aff-stripe2" data-aff-stripe hidden>Set up Stripe account<small>Payouts need a bank account through Stripe</small></button>
-            <button type="button" class="btn-ghost aff-stripe-dash" id="aff-dash" hidden>My Stripe payouts</button>
+            <button type="button" class="btn-ghost aff-stripe-dash" id="aff-dash" hidden>Payouts and cash out</button>
             <p class="small muted aff-status" id="aff-status" aria-live="polite"></p>
           </div>
 
@@ -702,6 +702,14 @@
     <p class="form-msg" id="aff-sheet-msg"></p>
     <button type="button" class="btn-gold" id="aff-agree-go" disabled>Turn on affiliate commission</button>
     <button type="button" class="link" data-close>Not now</button>
+  </dialog>
+
+  <dialog class="sheet aff-stripe-sheet" id="aff-stripe-sheet" aria-labelledby="aff-stripe-title">
+    <div class="sheet-head"><b id="aff-stripe-title">Payouts</b><button type="button" class="icon-btn" data-close aria-label="Close"><svg viewBox="0 0 24 24"><path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/></svg></button></div>
+    <div id="aff-stripe-banner"></div>
+    <div id="aff-stripe-mount" class="aff-stripe-mount"></div>
+    <details id="aff-stripe-more" class="small" hidden><summary>Bank account and details</summary><div id="aff-stripe-account"></div></details>
+    <p class="tiny muted">Payouts are handled by Stripe. MD Fit never sees your bank details.</p>
   </dialog>
 
   <dialog class="sheet" id="close-account-sheet" aria-label="Close my account">
@@ -849,7 +857,7 @@
   <script src="guides.js?v=8521968d"></script>
   <script src="stripe-checkout.js?v=087989ec"></script>
   <script src="progress-charts.js?v=df3a2256"></script>
-  <script src="account.js?v=cef63327"></script>
+  <script src="account.js?v=b4bd7f51"></script>
   <script src="account-xp.js?v=b9de2933"></script>
   <script src="account-share.js?v=763ef457"></script>
   <script src="account-habits.js?v=60e83046"></script>
