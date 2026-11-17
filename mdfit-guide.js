@@ -1,6 +1,6 @@
-// Sunny: the gold cloud to tap and talk to, on every screen of the member app.
+// Solomon: the gold cloud to tap and talk to, on every screen of the member app.
 //
-// Sunny is a guide to the app, not a doer of clinical things: it reads what the member writes, works out what they are
+// Solomon is a guide to the app, not a doer of clinical things: it reads what the member writes, works out what they are
 // trying to do, and offers the places in the app that fit as selections. Tapping one takes them there. It knows what
 // is waiting for this member (a visit, an invoice, forms, a message) because the app already loaded it, and it offers
 // that first. Two small jobs it does itself: saving a reminder to the calendar, and switching the theme or layout.
@@ -127,21 +127,21 @@
     down: '<svg viewBox="0 0 24 24" class="mg-line" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>',
     lock: '<svg viewBox="0 0 24 24" class="mg-lock-ic" aria-hidden="true"><path d="M17 9h-1V7a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2zm-7-2a2 2 0 0 1 4 0v2h-4z"/></svg>'
   };
-  const btn = document.createElement("button"); btn.id = "mg-btn"; btn.type = "button"; btn.setAttribute("aria-label", "Open Sunny: tap me to talk"); btn.setAttribute("aria-expanded", "false"); btn.setAttribute("aria-controls", "mg"); btn.innerHTML = cloud("") + '<i class="mg-dot" hidden></i>';
+  const btn = document.createElement("button"); btn.id = "mg-btn"; btn.type = "button"; btn.setAttribute("aria-label", "Open Solomon: tap me to talk"); btn.setAttribute("aria-expanded", "false"); btn.setAttribute("aria-controls", "mg"); btn.innerHTML = cloud("") + '<i class="mg-dot" hidden></i>';
   const tag = document.createElement("span"); tag.id = "mg-tag"; tag.textContent = "Tap me to talk"; tag.setAttribute("aria-hidden", "true");
   const scrim = document.createElement("div"); scrim.id = "mg-scrim"; scrim.hidden = true;
-  const box = document.createElement("section"); box.id = "mg"; box.hidden = true; box.setAttribute("role", "dialog"); box.setAttribute("aria-label", "Sunny");
-  box.innerHTML = `<header class="mg-head"><div class="mg-grab"></div><div class="mg-in">${cloud("mg-mini")}<div class="mg-who"><b>Sunny</b><span>Your MD Fit assistant</span></div>
-      <button type="button" id="mg-x" aria-label="Close Sunny">${ICON.x}${ICON.down}</button></div></header>
-    <div id="mg-log" role="log" aria-live="polite" aria-label="Conversation with Sunny"></div>
+  const box = document.createElement("section"); box.id = "mg"; box.hidden = true; box.setAttribute("role", "dialog"); box.setAttribute("aria-label", "Solomon");
+  box.innerHTML = `<header class="mg-head"><div class="mg-grab"></div><div class="mg-in">${cloud("mg-mini")}<div class="mg-who"><b>Solomon</b><span>Your MD Fit assistant</span></div>
+      <button type="button" id="mg-x" aria-label="Close Solomon">${ICON.x}${ICON.down}</button></div></header>
+    <div id="mg-log" role="log" aria-live="polite" aria-label="Conversation with Solomon"></div>
     <div id="mg-meter" hidden></div>
-    <form id="mg-form"><input id="mg-in" autocomplete="off" maxlength="200" enterkeyhint="send" placeholder="Tell me what you're looking for" aria-label="Tell Sunny what you are looking for"><button aria-label="Send">${ICON.send}</button></form>
+    <form id="mg-form"><input id="mg-in" autocomplete="off" maxlength="200" enterkeyhint="send" placeholder="Tell me what you're looking for" aria-label="Tell Solomon what you are looking for"><button aria-label="Send">${ICON.send}</button></form>
     <p class="mg-fine" id="mg-fine"></p>`;
   document.body.append(btn, tag, scrim, box);
   const log = box.querySelector("#mg-log"), input = box.querySelector("#mg-in"), meterEl = box.querySelector("#mg-meter"), dot = btn.querySelector(".mg-dot"), fineEl = box.querySelector("#mg-fine");
   // The line under the box always says what is true for the mode the guide is in
   const fine = () => { fineEl.textContent = G.ai
-    ? "Sunny reads what you type and your activity in the app (programs, check-ins, workouts) to personalize suggestions. Your name and contact details are never sent, and what you type isn't saved. Not medical advice."
+    ? "Solomon reads what you type and your activity in the app (programs, check-ins, workouts) to personalize suggestions. Your name and contact details are never sent, and what you type isn't saved. Not medical advice."
     : "I show you where things are in the app. I don't give medical advice. What you type stays on this device."; };
   fine();
   let greeted = false, busy = false, limited = false, lastSig = "", saidOpen = false;
@@ -171,7 +171,7 @@
     if (o.href) { location.href = o.href; return; }
     try { if (o.run) o.run(); else App.go(o.hash); } catch { return; }
     if (o.then) setTimeout(o.then, 90);
-    if (phone()) { shut(); App.toast(`Sunny brought you to ${o.name}`); } else sys(`Opened ${o.name}`);
+    if (phone()) { shut(); App.toast(`Solomon brought you to ${o.name}`); } else sys(`Opened ${o.name}`);
   }
   function thinking() { const d = document.createElement("div"); d.className = "mg-msg mg-think"; d.innerHTML = "<i><b></b><b></b><b></b></i>"; d.appendChild(document.createTextNode("Hmm, let's see what's available")); log.appendChild(d); end(); return d; }
   async function beat(fn) { const d = thinking(); await wait(750); d.remove(); await fn(); end(); }
@@ -188,7 +188,7 @@
     if (!free || n > QUIET_ABOVE) { meterEl.hidden = true; limited = limited && free; input.placeholder = "Tell me what you're looking for"; return; }
     const out = G.unit === "tokens" ? G.left <= 0 : n <= 0;
     meterEl.hidden = false; meterEl.className = out ? "mg-out" : "";
-    meterEl.textContent = out ? "No free Sunny answers left today" : G.unit === "tokens" ? (n ? `About ${n} free answer${n === 1 ? "" : "s"} left today` : "Almost out of free answers today") : `${n} free answer${n === 1 ? "" : "s"} left today`;
+    meterEl.textContent = out ? "No free Solomon answers left today" : G.unit === "tokens" ? (n ? `About ${n} free answer${n === 1 ? "" : "s"} left today` : "Almost out of free answers today") : `${n} free answer${n === 1 ? "" : "s"} left today`;
     input.placeholder = out ? "Free answers are back tomorrow" : "Tell me what you're looking for";
   }
   function setReminders(listIn) { const before = JSON.stringify(G.reminders); G.reminders = (listIn || []).filter((r) => r && r.date && r.time && r.title); if (JSON.stringify(G.reminders) !== before) App.redrawCalendar(); }
@@ -204,9 +204,9 @@
   const tell = (type) => { post("/api/me/guide/event", { type }).catch(() => {}); };
   function limit() {
     const again = limited; limited = true;
-    say(again ? "You're out of free Sunny answers for today. Members get unlimited Sunny for $19.95/mo, or come back tomorrow."
-      : `You've used today's free Sunny answers, ${first()}. Members get unlimited Sunny for $19.95/mo. You can upgrade now, or I'll be right here tomorrow.`);
-    offer([{ label: "Get unlimited Sunny", sub: "$19.95/mo", gold: true, run: () => { tell("upgrade"); if (App.showTier) App.showTier("member"); else App.go("premium"); }, name: "Membership" },
+    say(again ? "You're out of free Solomon answers for today. Members get unlimited Solomon for $19.95/mo, or come back tomorrow."
+      : `You've used today's free Solomon answers, ${first()}. Members get unlimited Solomon for $19.95/mo. You can upgrade now, or I'll be right here tomorrow.`);
+    offer([{ label: "Get unlimited Solomon", sub: "$19.95/mo", gold: true, run: () => { tell("upgrade"); if (App.showTier) App.showTier("member"); else App.go("premium"); }, name: "Membership" },
       { label: "Come back tomorrow", more: () => { tell("tomorrow"); say(`See you tomorrow, ${first()}.`); setTimeout(() => { shut(); tag.textContent = "New answers tomorrow"; tag.hidden = false; dot.hidden = true; }, 1500); } }]);
     if (!again) { sys("Always open, limit or not"); offer([opt("pain"), opt("book"), opt("call")]); }
   }
@@ -262,7 +262,7 @@
   const HELLO = /^\s*(hi+|hey+|heya|hello+|helo|yo+|hiya|howdy|sup|what'?s up|wass?up|greetings|good (morning|afternoon|evening|day)|morning|afternoon|evening|hola|hi there|hey there|hello there|anyone there|you there|are you there)(\s+(sunny|there|doc|dr\.?|guide|md ?fit))?[\s!?.,]*$/i;
   async function hello() {
     const m = await mine();
-    say(`Hey ${first()}, I'm Sunny. What are we working on today?`);
+    say(`Hey ${first()}, I'm Solomon. What are we working on today?`);
     if (m.rec) say(`Want to pick up ${m.title} that Dr. Jared recommended?`);
     offer([...own3(m), opt("pain"), opt("programs"), opt("generate")]);
   }
@@ -338,7 +338,7 @@
     else say(inv.length === 1 ? `You have one unpaid invoice. ${about(inv[0])}` : `You have ${inv.length} unpaid invoices. ${inv.slice(0, 3).map(about).join(" ")}`);
     offer([...inv.slice(0, 4).map((v) => ({ label: `Pay invoice ${v.number}`, sub: money(v.amount), href: v.path, gold: true })), ...(why ? [opt("messages"), opt("call")] : [opt("premium")])]);
   }
-  // ---------- what Sunny can say on the phone, with no AI: real picks from the app's own programs, and plain answers
+  // ---------- what Solomon can say on the phone, with no AI: real picks from the app's own programs, and plain answers
   // to the questions people ask next. Everything here is the practice's own wording; nothing typed is sent anywhere.
   const GOALS = [ // words a member might use -> words to look for in a program's title or category
     { w: ["strength", "stronger", "strong", "muscle", "build", "bulk", "size", "hypertrophy", "lift", "lifting", "barbell", "powerlifting", "bodybuilding"], f: ["hypertrophy", "strength", "growth"] },
@@ -397,12 +397,12 @@
       const w = ((C && C.programs) || []).map((p) => Number(p.weeks)).filter((n) => n > 0), lo = w.length ? Math.min(...w) : 4, hi = w.length ? Math.max(...w) : 12;
       say(`Programs run ${lo} to ${hi} weeks, and each one lists its length and sessions before you start. Most sessions are short enough to fit a normal day. Your Progress screen shows how it's going week by week.`);
       offer([opt("programs"), opt("progress")]); } },
-    { re: /\b(is|are) (it|this|they|the app|sunny|the programs?) free\b|\bhow much (is|does|do|are)\b|\b(cost|costs|price|prices|pricing|pay for|paid|subscription)\b/, run: async () => {
+    { re: /\b(is|are) (it|this|they|the app|sunny|solomon|the programs?) free\b|\bhow much (is|does|do|are)\b|\b(cost|costs|price|prices|pricing|pay for|paid|subscription)\b/, run: async () => {
       const p = await priceOf();
       say(`The app is free: the pain tool, the exercise videos and I are all included. Membership${p ? ` is ${p} a month and` : ""} adds every program, the lecture library, the live Q&A and unlimited time with me.`);
       offer([opt("premium"), opt("programs"), opt("pain")]); } },
     { re: /\b(who are you|what are you|are you (a )?(real|human|person|bot|robot|ai)|what can you do|what do you do|how (do|can) you help)\b|^\s*help( me)?( please)?[\s!?.]*$/, run: async () => {
-      say("I'm Sunny, the assistant in your MD Fit app. I can pick a program for you, find the right video, take you to the pain tool, book a visit, set a reminder, and tell you what's waiting on your account. For a question about your own body, Dr. Jared is the one to ask.");
+      say("I'm Solomon, the assistant in your MD Fit app. I can pick a program for you, find the right video, take you to the pain tool, book a visit, set a reminder, and tell you what's waiting on your account. For a question about your own body, Dr. Jared is the one to ask.");
       offer([{ label: "Pick a program for me", more: () => beat(() => recommend({ text: " ", area: "" })) }, opt("pain"), opt("book")]); } },
     { re: /\b(who is|who'?s|about) (dr\.? ?jared|dr\.? ?caban|the doctor|the doc)\b/, run: async () => {
       say("Dr. Jared Caban leads MD Fit in Sarasota. He's a Certified Clinical Exercise Physiologist and Licensed Massage Therapist with medical training, and he built every program and video in this app.");
@@ -512,7 +512,7 @@
     let C = null; try { C = await App.content(); } catch {}
     suggest(r.suggested, new Map(((C && C.programs) || []).map((p) => [p.id, p])));
   }
-  // Sunny's suggestions with an answer: programs (a members-only one shows locked and opens the membership page),
+  // Solomon's suggestions with an answer: programs (a members-only one shows locked and opens the membership page),
   // exercise videos and a general tip, each tagged Suggested. The server has already put them on the member's Home.
   function suggest(sg, byId = new Map()) {
     if (!sg || typeof sg !== "object") return;
@@ -544,7 +544,7 @@
   async function greet() {
     greeted = true;
     const w = waiting(); lastSig = w.sig;
-    say(`Hey ${first()}, I'm Sunny. What are we working on today?`);
+    say(`Hey ${first()}, I'm Solomon. What are we working on today?`);
     if (w.line) say(w.line);
     const m = await mine();
     if (m.rec && !w.line) say(`Want to pick up ${m.title} that Dr. Jared recommended?`);
@@ -582,7 +582,7 @@
   if (window.visualViewport) { window.visualViewport.addEventListener("resize", fitKeyboard); window.visualViewport.addEventListener("scroll", fitKeyboard); }
   window.matchMedia("(max-width: 720px)").addEventListener("change", () => { if (!box.hidden) { scrim.hidden = !phone(); fitKeyboard(); } });
 
-  // The label steps aside after a moment for someone who has met Sunny before; the cloud keeps breathing
+  // The label steps aside after a moment for someone who has met Solomon before; the cloud keeps breathing
   let met = false; try { met = !!localStorage.getItem("mdfit-guide-met"); } catch {}
   if (met) setTimeout(() => { if (box.hidden && tag.textContent === "Tap me to talk") tag.hidden = true; }, 7000);
   // Out of the way of a full-screen workout, and lifted clear of the app's pop-up notifications

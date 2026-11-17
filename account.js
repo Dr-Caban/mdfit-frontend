@@ -2904,10 +2904,10 @@
     $("#tier-grid").innerHTML = C.tiers.map((t, i) => `<article class="tier${i === 1 ? " featured" : ""}${cur && cur.id === t.id ? " current" : ""}" data-tier-card="${esc(t.id)}">
       ${i === 1 ? `<span class="tag">Most popular</span>` : ""}
       <h3>${esc(t.name)}</h3><p class="tier-price"><b>${money(t.price)}</b>/month</p>
-      <p class="tier-ai">Unlimited Sunny</p>
+      <p class="tier-ai">Unlimited Solomon</p>
       ${t.directMessages ? `<p class="tier-dm"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"/></svg>Message Dr. Jared directly</p>` : ""}
       ${t.meetings ? `<p class="tier-meet">${t.meetings} remote 1-on-1 sessions a month · ${t.meetingMinutes} min each</p>` : t.accountability ? `<p class="tier-meet">$1 off per active day · 20 active days = <b>${money(t.floor || 0)}</b> that month</p>` : ""}
-      <ul>${t.perks.filter((x) => !/^unlimited sunny/i.test(x) && !(t.directMessages && /^message dr\. jared directly/i.test(x))).map((x) => `<li>${esc(x)}</li>`).join("")}</ul>
+      <ul>${t.perks.filter((x) => !/^unlimited (sunny|solomon)/i.test(x) && !(t.directMessages && /^message dr\. jared directly/i.test(x))).map((x) => `<li>${esc(x)}</li>`).join("")}</ul>
       ${cur && cur.id === t.id ? `<span class="tier-cur">Your plan</span>` : `<button type="button" class="${i === 1 ? "btn-gold" : "btn-ghost"} sm" data-tier="${t.id}">${payOn ? "Subscribe" : "Request"} ${keepWhole(t.name)}</button>`}
     </article>`).join("");
     renderPayments();
@@ -3444,8 +3444,8 @@
   // ================= My progress on Profile: graphs built from what the member logs (progress-charts.js). Loaded the
   // first time Profile opens and refreshed on every later visit, since a workout or check-in may have been logged since.
   let progressView = null;
-  // ================= Reminders from Sunny on Profile: all / the evening streak one only / off (PUT /api/me/prefs)
-  const NUDGE_SAY = { all: "Sunny can send one friendly nudge a day.", streaks: "Sunny only reminds you in the evening when a streak is about to break.", off: "Sunny won't send reminders. Class reminders still come." };
+  // ================= Reminders from Solomon on Profile: all / the evening streak one only / off (PUT /api/me/prefs)
+  const NUDGE_SAY = { all: "Solomon can send one friendly nudge a day.", streaks: "Solomon only reminds you in the evening when a streak is about to break.", off: "Solomon won't send reminders. Class reminders still come." };
   let nudgePref = null;
   function paintNudges(v) {
     nudgePref = ["all", "streaks", "off"].includes(v) ? v : "all";
@@ -3470,8 +3470,8 @@
   }
 
   // ================= My plans on Home: programs Dr. Jared assigned ("Recommended by Dr. Jared"), programs the member
-  // saved, and what Sunny suggested ("Suggested for you"). The two labels never mix: Recommended
-  // comes from Dr. Jared, Suggested from Sunny, and a suggestion never changes what Dr. Jared recommended.
+  // saved, and what Solomon suggested ("Suggested for you"). The two labels never mix: Recommended
+  // comes from Dr. Jared, Suggested from Solomon, and a suggestion never changes what Dr. Jared recommended.
   const ACCESS_RANK = { free: 0, member: 1, premium: 2 };
   // Locked = the program needs more than this person's access (server: C.access, which is "premium" for inpatients)
   const lockedFor = (p) => !!p && p.locked === true; // what the Programs screen locks (the server decides), so Home never shows a lock on something they can open
@@ -3514,15 +3514,15 @@
         <span class="mp-body">${TAG_SUG}<span class="mp-tip-text">${esc(x.text)}</span></span></div>${DISMISS("tips", x.id, "this tip")}</li>`;
     const anySug = sp.length || sv.length || st.length || sgd.length;
     const sugBox = $("#mp-suggested");
-    if (sugBox) sugBox.innerHTML = anySug ? `<span class="label">Suggested for you <span class="muted small">by Sunny</span></span>
+    if (sugBox) sugBox.innerHTML = anySug ? `<span class="label">Suggested for you <span class="muted small">by Solomon</span></span>
       ${sp.length ? `<ul class="mp-list">${sp.map(sugRow).join("")}</ul>` : ""}
       ${sv.length ? `<p class="mp-sub muted small">Videos</p><ul class="mp-list">${sv.map(vidRow).join("")}</ul>` : ""}
       ${sgd.length ? `<p class="mp-sub muted small">From Dr. Jared's guides</p><ul class="mp-list">${sgd.map(guideRow).join("")}</ul>` : ""}
       ${st.length ? `<p class="mp-sub muted small">Tips</p><ul class="mp-list">${st.map(tipRow).join("")}</ul>` : ""}
-      <p class="muted small mp-fine">Suggestions from Sunny, not medical advice. What Dr. Jared recommends is marked Recommended.</p>` : "";
+      <p class="muted small mp-fine">Suggestions from Solomon, not medical advice. What Dr. Jared recommends is marked Recommended.</p>` : "";
     box.hidden = !assigned.length && !saved.length && !anySug;
   }
-  // Sunny's suggestions arrive with an answer (mdfit-guide.js) or with GET /api/me; both land here
+  // Solomon's suggestions arrive with an answer (mdfit-guide.js) or with GET /api/me; both land here
   function setSuggested(s) {
     if (!client || !s || typeof s !== "object") return;
     client.suggested = { programs: Array.isArray(s.programs) ? s.programs : [], videos: Array.isArray(s.videos) ? s.videos : [], tips: Array.isArray(s.tips) ? s.tips : [], guides: Array.isArray(s.guides) ? s.guides : [] };
@@ -3541,7 +3541,7 @@
     const un = e.target.closest("[data-unlock]");
     if (un) showTier(un.dataset.unlock);
   });
-  // The membership page with one tier picked out (a locked suggestion, the messaging upgrade, Sunny's limit)
+  // The membership page with one tier picked out (a locked suggestion, the messaging upgrade, Solomon's limit)
   let hlTier = "";
   function showTier(id) {
     hlTier = String(id || "");
@@ -3576,7 +3576,7 @@
     // For the guide (mdfit-guide.js) and the theme switch (app-theme.js): who is signed in, what the app holds, and two places to open
     client: () => client, content: async () => { if (!C) await (contentLoading || loadContent()).catch(() => {}); return C; },
     openBook: () => { go("profile"); setTimeout(() => $("#p-book-open") && $("#p-book-open").click(), 60); },
-    // For Sunny: the area of the last pain check-in (kept on the device), her suggestions on Home, a suggested video,
+    // For Solomon: the area of the last pain check-in (kept on the device), its suggestions on Home, a suggested video,
     // and the membership page with a tier picked out
     lastPain: () => { const p = (painLog || [])[(painLog || []).length - 1]; return p ? String(p.area || "") : ""; },
     setSuggested, showTier, lockedFor,
