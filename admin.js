@@ -633,7 +633,7 @@
     return from ? clientList.filter((c) => c.createdAt && clinicDay(c.createdAt) >= from) : clientList;
   }
   function renderClientTotals() {
-    const chips = [["all", "All clients"], ["today", "Joined today"], ["week", "Last 7 days"], ["month", "This month"], ["inpatient", "Inpatients"], ["plan", "Have a plan"], ["subscribed", "Members (paid)"], ...subTiers.map((t) => [`tier:${t.id}`, t.name])];
+    const chips = [["all", "All clients"], ["today", "Joined today"], ["week", "Last 7 days"], ["month", "This month"], ["inpatient", "Subscription exempt"], ["plan", "Have a plan"], ["subscribed", "Members (paid)"], ...subTiers.map((t) => [`tier:${t.id}`, t.name])];
     $("#client-totals").innerHTML = chips.map(([k, label]) => `<button type="button" class="ct${k === clientPeriod ? " on" : ""}" data-period="${k}" aria-pressed="${k === clientPeriod}"><b>${clientsIn(k).length.toLocaleString()}</b><span>${label}</span></button>`).join("");
   }
   $("#client-totals").addEventListener("click", (e) => {
@@ -649,7 +649,7 @@
     const none = (t) => `<span class="muted none">${t}</span>`;
     const act = (n, mins) => { const v = Number(n) || 0, cls = v >= 20 ? "hi" : v >= 8 ? "mid" : v ? "lo" : ""; return `<span class="act-cell ${cls}"><span class="act-bar"><i style="width:${Math.round((v / 30) * 100)}%"></i></span>${v ? `${v} of 30 days` : none("No activity")}${mins ? `<span class="muted">${fmtMins(mins)} in app</span>` : ""}</span>`; };
     table($("#clients-table"), ["Client", "Type", "Membership", "Activity (30 days)", "Phone", "Next visit", "Last pain log", "Plan", "Docs", "Joined"], rows.map((c) => `
-      <tr data-id="${c.id}" class="click-row"><td data-label="Client" class="c-name"><b>${esc(c.name)}</b><br><span class="muted">${esc(c.email)}</span></td><td data-label="Type"><button type="button" class="badge ctype type-toggle ${c.clientType === "inpatient" ? "in" : "out"}" data-type-toggle="${c.id}" title="Click to switch to ${c.clientType === "inpatient" ? "outpatient" : "inpatient"}" aria-label="${esc(c.name)}: ${c.clientType === "inpatient" ? "Inpatient" : "Outpatient"}. Click to switch.">${c.clientType === "inpatient" ? "Inpatient" : "Outpatient"} <span aria-hidden="true">⇄</span></button></td><td data-label="Membership">${subCell(c)}</td>
+      <tr data-id="${c.id}" class="click-row"><td data-label="Client" class="c-name"><b>${esc(c.name)}</b><br><span class="muted">${esc(c.email)}</span></td><td data-label="Type"><button type="button" class="badge ctype type-toggle ${c.clientType === "inpatient" ? "in" : "out"}" data-type-toggle="${c.id}" title="Click to switch to ${c.clientType === "inpatient" ? "standard" : "subscription exempt"}" aria-label="${esc(c.name)}: ${c.clientType === "inpatient" ? "Subscription exempt" : "Standard"}. Click to switch.">${c.clientType === "inpatient" ? "Subscription exempt" : "Standard"} <span aria-hidden="true">⇄</span></button></td><td data-label="Membership">${subCell(c)}</td>
         <td data-label="Activity (30 days)">${act(c.active30, c.minutes30)}</td>
         <td data-label="Phone">${c.phone ? `<a href="tel:${esc(c.phone)}" data-nolink>${esc(c.phone)}</a>` : none("No phone")}</td>
         <td data-label="Next visit">${c.next ? `${fmtDate(c.next.date)} · ${fmtTime(c.next.time)}` : none("Not booked")}</td>
@@ -688,7 +688,7 @@
   }));
 
   // Client type: inpatients (in-clinic) never pay for video calls or consultations; everyone else is an outpatient
-  const typeBadge = (t) => t === "inpatient" ? `<span class="badge ctype in">Inpatient</span>` : `<span class="badge ctype out">Outpatient</span>`;
+  const typeBadge = (t) => t === "inpatient" ? `<span class="badge ctype in">Subscription exempt</span>` : `<span class="badge ctype out">Standard</span>`;
   // ---- Programs Dr. Jared assigns to a client: grouped by category (sports by sport), each with its level and length,
   // a search box, an optional note per program, and progress on the ones assigned (from the sessions the app logs)
   const LEVEL_NAMES = { beginner: "Beginner", intermediate: "Intermediate", advanced: "Expert", elite: "Pro" };
@@ -739,10 +739,10 @@
     return `<section class="client-care">
       <div class="ctype-row"><span class="label-sm">Client type</span>
         <div class="seg" role="radiogroup" aria-label="Client type">
-          <button type="button" role="radio" data-ctype="outpatient" aria-checked="${c.clientType !== "inpatient"}">Outpatient</button>
-          <button type="button" role="radio" data-ctype="inpatient" aria-checked="${c.clientType === "inpatient"}">Inpatient</button>
+          <button type="button" role="radio" data-ctype="outpatient" aria-checked="${c.clientType !== "inpatient"}">Standard</button>
+          <button type="button" role="radio" data-ctype="inpatient" aria-checked="${c.clientType === "inpatient"}">Subscription exempt</button>
         </div>
-        <span class="muted fine" id="ctype-note">${c.clientType === "inpatient" ? "Inpatient: never pays for video calls or consultations." : "Outpatient: standard booking and payment."}</span></div>
+        <span class="muted fine" id="ctype-note">${c.clientType === "inpatient" ? "Subscription exempt: never pays for video calls or consultations." : "Standard: standard booking and payment."}</span></div>
       <div class="care-actions">
         <details class="care"><summary>Send booking link</summary>
           <form class="form care-form" data-care="link" novalidate>
@@ -945,7 +945,7 @@
     $$("[data-ctype]", box).forEach((b) => b.addEventListener("click", run(async () => {
       const r = await api("PUT", `/api/admin/clients/${id}/type`, { type: b.dataset.ctype });
       $$("[data-ctype]", box).forEach((x) => x.setAttribute("aria-checked", x.dataset.ctype === r.clientType));
-      $("#ctype-note").textContent = r.clientType === "inpatient" ? "Inpatient: never pays for video calls or consultations." : "Outpatient: standard booking and payment.";
+      $("#ctype-note").textContent = r.clientType === "inpatient" ? "Subscription exempt: never pays for video calls or consultations." : "Standard: standard booking and payment.";
       toast(`${c.name.split(" ")[0]} is now an ${r.clientType}.`);
     })));
     $$("form[data-care]", box).forEach((f) => f.addEventListener("submit", run(async (e) => {
@@ -1050,7 +1050,7 @@
   const svcName = { "eval-remote": "Online evaluation", "followup-remote": "Online follow-up" };
   function chartVisits(d) {
     return `${d.paidVisits.length ? `<ul class="chart-paid">${d.paidVisits.map((v) => `<li><b>${esc(v.name || svcName[v.service] || v.service)}</b> <span class="badge pending">Paid, needs a time</span><span class="muted small">paid ${when(v.paidAt)}${v.amount != null ? ` · $${(v.amount / 100).toFixed(2)}` : ""}</span></li>`).join("")}</ul>` : ""}
-      ${d.visits.length ? `<ul class="chart-paid">${d.visits.map((v) => `<li><b>${esc(v.typeName)}</b> ${v.payment === "paid" ? `<span class="badge done">Paid</span>` : v.payment === "exempt" ? `<span class="badge">Inpatient</span>` : ""}<span class="muted small">${fmtDate(v.date)} ${fmtTime(v.time)} · ${v.minutes} min${v.meetingLink ? ` · <a href="${esc(v.meetingLink)}" target="_blank" rel="noopener">video link</a>` : ""}</span></li>`).join("")}</ul>` : `<p class="muted small">No video visit on the calendar.</p>`}`;
+      ${d.visits.length ? `<ul class="chart-paid">${d.visits.map((v) => `<li><b>${esc(v.typeName)}</b> ${v.payment === "paid" ? `<span class="badge done">Paid</span>` : v.payment === "exempt" ? `<span class="badge">Subscription exempt</span>` : ""}<span class="muted small">${fmtDate(v.date)} ${fmtTime(v.time)} · ${v.minutes} min${v.meetingLink ? ` · <a href="${esc(v.meetingLink)}" target="_blank" rel="noopener">video link</a>` : ""}</span></li>`).join("")}</ul>` : `<p class="muted small">No video visit on the calendar.</p>`}`;
   }
   let chartId = null;
   // The record, in order: what each entry looks like in the chart
@@ -1071,7 +1071,7 @@
       <button type="button" class="mini" data-back>← Medical record</button>
       <div class="client-head"><div>
         <h2>${esc(d.name)} ${d.patient ? `<span class="badge done">Active patient</span>` : `<span class="badge pending">Waiting</span>`}</h2>
-        <p class="muted"><a href="mailto:${esc(d.email)}">${esc(d.email)}</a>${d.phone ? ` · <a href="tel:${esc(d.phone)}">${esc(d.phone)}</a>` : ""} · ${d.clientType === "inpatient" ? "inpatient" : "outpatient"} · joined ${when(d.createdAt)}${d.since ? ` · patient since ${when(d.since)}` : ""}</p></div>
+        <p class="muted"><a href="mailto:${esc(d.email)}">${esc(d.email)}</a>${d.phone ? ` · <a href="tel:${esc(d.phone)}">${esc(d.phone)}</a>` : ""} · ${d.clientType === "inpatient" ? "subscription exempt" : "standard"} · joined ${when(d.createdAt)}${d.since ? ` · patient since ${when(d.since)}` : ""}</p></div>
         <div class="client-actions">
           <button type="button" class="btn btn-sm${d.patient ? " ghost" : ""}" data-convert="${d.patient ? "0" : "1"}">${d.patient ? "Mark as not a patient" : "Convert to active patient"}</button>
           <button type="button" class="mini" data-profile>Full profile</button><button type="button" class="mini" data-cmsg>Message</button></div></div>

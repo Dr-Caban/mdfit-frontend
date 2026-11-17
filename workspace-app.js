@@ -363,7 +363,7 @@
     return list.map((c) => `<tr class="click" data-act="chart" data-id="${esc(c.id)}">
       <td data-act="stop"><input type="checkbox" data-change="pickOne" data-id="${esc(c.id)}" aria-label="Select ${esc(c.name)}"${state.picked.has(c.id) ? " checked" : ""}></td>
       <td><div class="row" style="flex-wrap:nowrap">${avatar(c.name)}<div style="min-width:0"><b>${esc(c.name)}</b><div class="muted" style="font-size:12px;overflow-wrap:anywhere">${esc(c.email)}${c.phone ? " · " + esc(c.phone) : ""}</div></div></div></td>
-      <td data-act="stop"><div class="seg" role="group" aria-label="Client type for ${esc(c.name)}" title="Inpatients get the full MD Fit app free."><button type="button" data-act="typeSet" data-type="inpatient" data-id="${esc(c.id)}" data-name="${esc(c.name)}" aria-pressed="${c.clientType === "inpatient"}">In-patient</button><button type="button" data-act="typeSet" data-type="outpatient" data-id="${esc(c.id)}" data-name="${esc(c.name)}" aria-pressed="${c.clientType !== "inpatient"}">Out-patient</button></div>
+      <td data-act="stop"><div class="seg" role="group" aria-label="Client type for ${esc(c.name)}" title="Subscription exempt clients get the full MD Fit app free, and their visits are not charged."><button type="button" data-act="typeSet" data-type="inpatient" data-id="${esc(c.id)}" data-name="${esc(c.name)}" aria-pressed="${c.clientType === "inpatient"}">Exempt</button><button type="button" data-act="typeSet" data-type="outpatient" data-id="${esc(c.id)}" data-name="${esc(c.name)}" aria-pressed="${c.clientType !== "inpatient"}">Standard</button></div>
         <div class="muted" style="font-size:12px;margin-top:4px">${patients.has(c.id) ? "Active patient" : waiting.has(c.id) ? "Documents done, not yet converted" : "Member"}</div></td>
       <td>${c.documents ? (c.documents.complete ? `<span class="pill ok">Complete</span>` : `${c.documents.done} of ${c.documents.total}`) : "—"}</td>
       <td class="num">${c.next ? `${fmtDate(c.next.date)} · ${fmtTime(c.next.time)}` : `<span class="muted">Not booked</span>`}</td>
@@ -408,8 +408,8 @@
       <div class="row"><button class="btn ${d.patient ? "" : "primary"}" data-act="convert" data-on="${d.patient ? "0" : "1"}">${d.patient ? "Mark as not a patient" : "Convert to active patient"}</button>
       <button class="btn" data-act="thread" data-id="${esc(id)}">Message</button><button class="btn" data-act="book">Book</button><button class="btn ${d.patient ? "primary" : ""}" data-act="chartNewNote">${ui("plus", 14)} Note</button><a class="btn" href="#chart" data-act="chartClose">Other client</a></div></div>
     <div class="row chart-types"><label for="chTier">Membership</label><select id="chTier" class="input" data-change="chartTier">${tierOptions(tier)}</select>
-      <label for="chType">Client type</label><select id="chType" class="input" data-change="chartType"><option value="outpatient"${d.clientType !== "inpatient" ? " selected" : ""}>Outpatient</option><option value="inpatient"${d.clientType === "inpatient" ? " selected" : ""}>Inpatient (visits not charged)</option></select>
-      <span class="muted" style="font-size:12px">Inpatients get the full MD Fit app free.</span></div>
+      <label for="chType">Client type</label><select id="chType" class="input" data-change="chartType"><option value="outpatient"${d.clientType !== "inpatient" ? " selected" : ""}>Standard</option><option value="inpatient"${d.clientType === "inpatient" ? " selected" : ""}>Subscription exempt (visits not charged)</option></select>
+      <span class="muted" style="font-size:12px">Subscription exempt clients get the full MD Fit app free.</span></div>
     <div class="tabs" role="tablist">${tabs.map(([t, l]) => `<button class="tab ${state.chartTab === t ? "active" : ""}" role="tab" data-act="chartTab" data-tab="${t}">${l}</button>`).join("")}</div>
     <div id="chartBody">${chartTab()}</div>`;
   };
@@ -511,7 +511,7 @@
           <p class="muted" style="margin:0;font-size:12.5px">Sending emails ${first} the amount and a secure card payment page. You write the subject and message before it goes.</p></form></div>
         <div class="card"><div class="card-head"><h2>Video visits</h2><button class="btn sm" data-act="book">Schedule</button></div>
           ${d.paidVisits.map((v) => `<div class="list-item"><span style="flex:1"><b>${esc(v.name || v.service)}</b><div class="muted" style="font-size:12px">paid ${when(v.paidAt)}${v.amount != null ? ` · ${usd(v.amount)}` : ""}</div></span><span class="pill warn">Needs a time</span></div>`).join("")}
-          ${d.visits.map((v) => `<div class="list-item"><span style="flex:1"><b>${esc(v.typeName)}</b><div class="muted" style="font-size:12px">${fmtDate(v.date)} ${fmtTime(v.time)} · ${v.minutes} min</div></span>${v.payment === "paid" ? `<span class="pill ok">Paid</span>` : v.payment === "exempt" ? `<span class="pill">Inpatient</span>` : ""}</div>`).join("")}
+          ${d.visits.map((v) => `<div class="list-item"><span style="flex:1"><b>${esc(v.typeName)}</b><div class="muted" style="font-size:12px">${fmtDate(v.date)} ${fmtTime(v.time)} · ${v.minutes} min</div></span>${v.payment === "paid" ? `<span class="pill ok">Paid</span>` : v.payment === "exempt" ? `<span class="pill">Subscription exempt</span>` : ""}</div>`).join("")}
           ${d.paidVisits.length || d.visits.length ? "" : none("No video visits.")}</div></div>
       <div class="stack"><div class="card stack"><h2>Payment</h2><div id="billPay">${none("Loading…")}</div>
           <button class="btn" data-act="superbill">Generate superbill</button><button class="btn" data-act="gfe">Good Faith Estimate</button></div>
@@ -1640,7 +1640,7 @@
       pair.forEach((b) => b.setAttribute("aria-pressed", String(b === el)));
       // one person's changes go to the server in the order they were pressed
       const turn = typeTurn[id] = (typeTurn[id] || Promise.resolve()).catch(() => {}).then(() => api("PUT", `/api/admin/clients/${id}/type`, { type }));
-      try { await turn; cache.clients = null; toast(`${String(el.dataset.name).split(" ")[0]} is now ${type === "inpatient" ? "an in-patient: visits are not charged" : "an out-patient"}.`); }
+      try { await turn; cache.clients = null; toast(`${String(el.dataset.name).split(" ")[0]} is now ${type === "inpatient" ? "subscription exempt: visits are not charged" : "standard"}.`); }
       catch (err) { if (typeTurn[id] === turn) pair.forEach((b, i) => b.setAttribute("aria-pressed", before[i])); throw err; }
     },
     // Forms & intake: ask someone to finish and sign their new patient documents (app notice, push and email)
@@ -1922,7 +1922,7 @@
     }
     if (e.target.matches("[data-change=rowTier]")) guard(async (el) => { const was = ((cache.clients || []).find((x) => x.id === el.dataset.id) || {}).membership; const said = await setMembership(el.dataset.id, el.value, was && was.tier === el.value ? was.until : "", el.dataset.name); if (said) { await clients(true); toast(said); } else el.value = (was && was.tier) || ""; el.classList.toggle("on", !!el.value); })(e.target);
     if (e.target.matches("[data-change=chartTier]")) guard(async (el) => { const was = cache.chart.c.membership, said = await setMembership(cid(), el.value, "", firstOf()); if (said) { await render(); toast(said); } else el.value = (was && was.tier) || ""; })(e.target);
-    if (e.target.matches("[data-change=chartType]")) guard(async (el) => { await api("PUT", `/api/admin/clients/${cid()}/type`, { type: el.value }); cache.clients = null; const type = el.value; await render(); toast(`${firstOf()} is now ${type === "inpatient" ? "an inpatient: visits are not charged" : "an outpatient"}.`); })(e.target);
+    if (e.target.matches("[data-change=chartType]")) guard(async (el) => { await api("PUT", `/api/admin/clients/${cid()}/type`, { type: el.value }); cache.clients = null; const type = el.value; await render(); toast(`${firstOf()} is now ${type === "inpatient" ? "subscription exempt: visits are not charged" : "standard"}.`); })(e.target);
     if (e.target.matches("[data-change=teleScribe]")) teleScribe(e.target.checked);
     if (e.target.matches("[data-change=teleGroup]")) {
       const cur = [...tele.peers.values()][0];
