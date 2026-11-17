@@ -81,7 +81,7 @@
     } catch (e) {
       show(false);
       $("#siMsg").className = "msg err";
-      $("#siMsg").textContent = e.status === 403 ? `${e.message} Sign in with the Manager account, or ask the owner to name you in the partner-share settings.` : e.message;
+      $("#siMsg").textContent = e.message;
       if (e.status === 403) session.clear();
     }
   }
