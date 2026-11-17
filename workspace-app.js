@@ -180,6 +180,7 @@
     fitness: '<path d="M6 7v10M18 7v10M3 10v4M21 10v4M6 12h12"/>',
     payments: '<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/>',
     affiliates: '<circle cx="8" cy="8" r="3"/><circle cx="17" cy="17" r="3"/><path d="M10.5 10.5l4 4M17 3v6M14 6h6"/>',
+    revshare: '<path d="M12 3v18"/><path d="M12 12 4.5 7.5M12 12l7.5-4.5"/><circle cx="12" cy="12" r="9"/>',
     newsletter: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
     insights: '<path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/>',
     team: '<circle cx="12" cy="7" r="4"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/>',
@@ -194,7 +195,7 @@
   const NAV = [
     { g: "Practice", items: [["dashboard", "Dashboard"], ["calendar", "Calendar"], ["clients", "Clients"], ["chart", "Client chart"], ["leads", "Leads"], ["messages", "Messages"], ["telehealth", "Telehealth"]] },
     { g: "Clinical", items: [["notes", "Notes & AI scribe"], ["forms", "Forms & intake"], ["programs", "Programs"], ["nutrition", "Nutrition"], ["fitness", "Fitness"]] },
-    { g: "Business", items: [["payments", "Payments"], ["affiliates", "Affiliates"], ["newsletter", "Newsletter"]] },
+    { g: "Business", items: [["payments", "Payments"], ["affiliates", "Affiliates"], ["revshare", "Revenue share"], ["newsletter", "Newsletter"]] },
     { g: "Admin", items: [["team", "Team & roles"], ["feedback", "Reviews & feedback"], ["security", "Security & audit"], ["settings", "Modules & settings"], ["insights", "Insights"], ["economics", "System economics"], ["guide", "Sunny"]] },
     { g: "Client-facing", items: [["portal", "Client app"], ["booking", "Booking page"]] }
   ];
@@ -1086,7 +1087,7 @@
       <div class="grid g4" style="margin-bottom:16px">${tile("Active affiliates", T.affiliates || 0)}${tile("Pending", usd(T.pendingCents), `held ${S.holdDays} days`)}${tile("Payout ready", usd(T.readyCents), `paid on the 1st from ${usd(S.minPayoutCents)}`)}${tile("Paid all time", usd(T.paidCents), lp ? `last run ${esc(when(lp.lastRunAt))}` : "no payouts yet")}</div>
       <div class="grid g2" style="margin-bottom:16px;align-items:start">
         <form class="card stack" data-form="affSettings"><div class="card-head"><h2>Commission settings</h2></div>
-          <div class="grid g2"><div class="field"><label for="affRate">Commission rate (%)</label><input id="affRate" name="ratePct" class="input" type="number" min="0" max="50" step="0.01" value="${esc(S.ratePct)}" required></div>
+          <div class="grid g2"><div class="field"><label for="affRate">Commission rate (%, up to 15: the Partner Allowance)</label><input id="affRate" name="ratePct" class="input" type="number" min="0" max="15" step="0.01" value="${esc(S.ratePct)}" required></div>
             <div class="field"><label for="affHold">Hold before payout ready (days)</label><input id="affHold" name="holdDays" class="input" type="number" min="0" max="60" step="1" value="${esc(S.holdDays)}" required></div>
             <div class="field"><label for="affMin">Payout minimum ($)</label><input id="affMin" name="minPayout" class="input" type="number" min="1" max="1000" step="0.01" value="${esc((S.minPayoutCents / 100).toFixed(2))}" required></div>
             <div class="field"><label for="affDur">Earning window (months, 0 = as long as they stay)</label><input id="affDur" name="durationMonths" class="input" type="number" min="0" max="120" step="1" value="${esc(S.durationMonths)}" required></div></div>
@@ -1101,6 +1102,39 @@
           ${lp ? `<p class="muted" style="margin:0;font-size:12.5px">Last payout run ${esc(when(lp.lastRunAt))} (${esc(lp.by)}): ${lp.paid} paid, ${lp.failed} failed.</p>` : ""}</div></div>
       <div class="card" style="padding:0;margin-bottom:16px"><div class="card-head" style="padding:14px 16px 0"><h2>Affiliates</h2></div><div class="table-wrap"><table><thead><tr><th>Member</th><th>Status</th><th>Stripe</th><th class="num">Referred</th><th class="num">Pending</th><th class="num">Ready</th><th class="num">Paid</th><th></th></tr></thead><tbody>${affRows || noneRow(8, "No one has turned on affiliate commission yet.")}</tbody></table></div></div>
       <div class="card" style="padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>Recent commissions</h2></div><div class="table-wrap" style="max-height:480px;overflow-y:auto"><table><thead><tr><th>When</th><th>Kind</th><th>Affiliate</th><th>Referred member</th><th>Subscription</th><th class="num">Amount</th><th>Status</th></tr></thead><tbody>${recent || noneRow(7, "No commissions yet.")}</tbody></table></div></div>`;
+  };
+  // ---- Revenue share (Business): the manager's share under the partnership agreement, owner only. The manager's own
+  // console is /manager; this is where the owner names the manager, sets the terms, switches automatic payouts on,
+  // classifies payments the code couldn't place, and acknowledges or disputes partner registrations.
+  V.revshare = async () => {
+    const d = await load("/partner-share"), patf = await load("/partner-share/patf").catch(() => null);
+    if (!d) return `<div class="view-head"><div><h1>Revenue share</h1></div></div>${none("Couldn't load the revenue share.")}`;
+    const S = d.settings, v = d.view, st = d.statement, b = v.balances;
+    const tile = (label, val, sub) => `<div class="card kpi"><span class="muted">${label}</span><b class="num">${val}</b>${sub ? `<small class="muted">${sub}</small>` : ""}</div>`;
+    const mgrOpts = `<option value="">Nobody yet</option>${(d.managers || []).filter((m) => m.active).map((m) => `<option value="${esc(m.id)}"${m.id === S.managerStaffId ? " selected" : ""}>${esc(m.name)} (${esc(m.email)})</option>`).join("")}`;
+    const unc = (d.unclassified || []).map((r) => `<tr><td>${esc(when(r.ts))}</td><td>${esc(r.product)}<div class="muted" style="font-size:12px">${esc(r.kind)}</div></td><td class="num">${usd(r.grossCents)}</td>
+      <td><div class="row" style="gap:6px;flex-wrap:nowrap"><button type="button" class="btn sm" data-act="rsClassify" data-id="${esc(r.id)}" data-c="online">MD Fit Online</button><button type="button" class="btn sm" data-act="rsClassify" data-id="${esc(r.id)}" data-c="clinic">In-Clinic</button></div></td></tr>`).join("");
+    const parts = ((patf && patf.partners) || []).map((p) => `<tr><td><b>${esc(p.name)}</b><div class="muted" style="font-size:12px">${esc(p.type)}${p.originatedByManager ? " · originated by the manager" : ""} · <code>${esc(p.code)}</code></div></td><td class="num">${esc(p.ratePct)}%</td>
+      <td class="num">${p.clicks}</td><td class="num">${p.signups}</td><td class="num">${p.payingNow}</td><td class="num">${usd(p.commissionDueCents)}</td>
+      <td><span class="pill ${p.state === "disputed" ? "bad" : p.state === "awaiting acknowledgment" ? "warn" : "ok"}">${esc(p.state)}</span>${p.state === "awaiting acknowledgment" ? `<div class="muted" style="font-size:12px">by ${esc(when(p.ackDueAt))}</div>` : ""}</td>
+      <td>${p.state === "awaiting acknowledgment" ? `<div class="row" style="gap:6px;flex-wrap:nowrap"><button type="button" class="btn sm" data-act="rsAck" data-id="${esc(p.id)}">Acknowledge</button><button type="button" class="btn sm ghost" data-act="rsDispute" data-id="${esc(p.id)}" data-name="${esc(p.name)}">Dispute</button></div>` : ""}</td></tr>`).join("");
+    return `<div class="view-head"><div><h1>Revenue share</h1><p class="muted">The manager's share of MD Fit Online Net Revenue under the Junior Partnership, Platform &amp; EMR Agreement (Revision 2). In-Clinic revenue stays 100% the Clinic's. The manager's own console is <a href="/manager" target="_blank" rel="noopener">/manager</a>.</p></div></div>
+      <div class="grid g4" style="margin-bottom:16px">${tile("Pending", usd(b.pendingCents), "until Stripe clears")}${tile("Payout ready", usd(b.readyCents), S.autoPay ? "paid automatically" : "you pay it")}${tile("Paid", usd(b.paidCents), "to the manager")}${tile("MD Fit Online net this month", usd(st.categories.online.netCents), `${st.categories.online.payments} payments · In-Clinic ${usd(st.categories.clinic.grossCents)}`)}</div>
+      <div class="grid g2" style="margin-bottom:16px;align-items:start">
+        <form class="card stack" data-form="rsSettings"><div class="card-head"><h2>Terms</h2><button type="button" class="switch" role="switch" aria-checked="${S.enabled}" aria-label="Revenue share on" data-act="rsEnabled"></button></div>
+          <div class="field"><label for="rsMgr">Manager (a staff account with the Manager role)</label><select id="rsMgr" name="managerStaffId" class="input">${mgrOpts}</select></div>
+          <div class="grid g2"><div class="field"><label for="rsStatus">Status</label><select id="rsStatus" name="status" class="input"><option value="active"${S.status === "active" ? " selected" : ""}>Active (Section 4.2)</option><option value="continuing"${S.status === "continuing" ? " selected" : ""}>Continuing (Section 9.2)</option></select></div>
+            <div class="field"><label for="rsHold">Extra hold after Stripe clears (days)</label><input id="rsHold" name="holdDays" class="input" type="number" min="0" max="60" step="1" value="${esc(S.holdDays)}"></div>
+            <div class="field"><label for="rsActive">Active share (%)</label><input id="rsActive" name="activePct" class="input" type="number" min="0" max="50" step="0.01" value="${esc(S.activePct)}"></div>
+            <div class="field"><label for="rsCont">Continuing share (%)</label><input id="rsCont" name="continuingPct" class="input" type="number" min="0" max="50" step="0.01" value="${esc(S.continuingPct)}"></div></div>
+          <p class="muted" style="margin:0;font-size:12.5px">A change applies to payments from now on. Every change is recorded in the audit ledger.</p>
+          <div class="row"><button class="btn primary">Save terms</button></div></form>
+        <div class="card stack"><div class="card-head"><h2>Automatic payouts</h2><button type="button" class="switch" role="switch" aria-checked="${S.autoPay}" aria-label="Automatic payouts" data-act="rsAutoPay"></button></div>
+          <p style="margin:0">${S.autoPay ? `<b>On</b> since ${esc(when(S.autoPayOnAt))} (by ${esc(S.autoPayOnBy || "")}): each share is transferred to the manager's Stripe account as soon as its payment clears, with a payment notice.` : "<b>Off:</b> shares become payout ready as payments clear, and you pay them here. The agreement says monthly, within 15 days (Section 4.8); switching this on pays as each payment clears instead, and is recorded as your decision."}</p>
+          <p class="muted" style="margin:0;font-size:12.5px">The manager's Stripe account: ${v.stripe.payoutsEnabled ? "ready for payouts" : v.stripe.connected ? "Stripe is checking their details" : "not set up yet"}.</p>
+          <div class="row"><button type="button" class="btn" data-act="rsRun" data-job="clear">Check what has cleared</button><button type="button" class="btn primary" data-act="rsRun" data-job="payout">Pay what's ready now</button></div></div></div>
+      <div class="card" style="padding:0;margin-bottom:16px"><div class="card-head" style="padding:14px 16px 0"><h2>Payments to classify</h2><span class="muted" style="font-size:12px">Section 4.7: anything the code can't place earns nothing until you classify it</span></div><div class="table-wrap"><table><thead><tr><th>When</th><th>Payment</th><th class="num">Amount</th><th></th></tr></thead><tbody>${unc || noneRow(4, "Nothing to classify.")}</tbody></table></div></div>
+      <div class="card" style="padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>Partners (PATF)</h2><span class="muted" style="font-size:12px">Section 7.2: acknowledge or dispute a registration within five business days</span></div><div class="table-wrap"><table><thead><tr><th>Partner</th><th class="num">Rate</th><th class="num">Clicks</th><th class="num">Sign-ups</th><th class="num">Paying</th><th class="num">Commission due</th><th>Registration</th><th></th></tr></thead><tbody>${parts || noneRow(8, "No partners registered.")}</tbody></table></div></div>`;
   };
   V.guide = async () => {
     const days = GUIDE_DAYS.includes(state.guideDays) ? state.guideDays : 30; let g = null, why = "";
@@ -2511,6 +2545,28 @@
   $("#globalSearch").addEventListener("focus", (e) => { if (gWords(e.target.value).length && gRes.hidden) e.target.dispatchEvent(new Event("input")); });
   document.addEventListener("click", (e) => { if (!e.target.closest(".search")) gClose(); });
   ACT.searchOpen = (el) => { $("#globalSearch").value = ""; gClose(); openChart(el.dataset.id); };
+  // ---- Revenue share (owner)
+  ACT.rsEnabled = async (el) => { const on = el.getAttribute("aria-checked") !== "true"; await api("PUT", "/api/admin/partner-share/settings", { enabled: on }); await render(); toast(on ? "The revenue share is on." : "The revenue share is off. Nothing new is earned."); };
+  ACT.rsAutoPay = async (el) => {
+    const on = el.getAttribute("aria-checked") !== "true";
+    if (on && !confirm("Switch on automatic payouts? Each share is then transferred to the manager's Stripe account as soon as its payment clears, instead of monthly (Section 4.8). This is recorded as your decision.")) return;
+    await api("PUT", "/api/admin/partner-share/settings", { autoPay: on }); await render(); toast(on ? "Automatic payouts are on." : "Automatic payouts are off. You pay shares from here.");
+  };
+  ACT.rsClassify = async (el) => { await api("POST", "/api/admin/partner-share/classify", { revenueId: el.dataset.id, category: el.dataset.c }); await render(); toast("Classified."); };
+  ACT.rsAck = async (el) => { await api("PUT", `/api/admin/partner-share/partners/${encodeURIComponent(el.dataset.id)}`, { acknowledge: true }); await render(); toast("Partner acknowledged."); };
+  ACT.rsDispute = async (el) => { const why = prompt(`Why is the registration of ${el.dataset.name} disputed? (sent in writing, Section 7.2)`); if (!why) return; await api("PUT", `/api/admin/partner-share/partners/${encodeURIComponent(el.dataset.id)}`, { dispute: why }); await render(); toast("Registration disputed."); };
+  ACT.rsRun = async (el) => {
+    const job = el.dataset.job;
+    if (job === "payout" && !confirm("Transfer everything that is payout ready to the manager's Stripe account now?")) return;
+    const r = await api("POST", "/api/admin/partner-share/run", { job });
+    await render();
+    if (job === "clear") { toast(r.cleared ? `${plural(r.cleared, "share")} cleared.` : "Nothing new has cleared in Stripe."); return; }
+    toast(r.paid ? `${usd(r.paid.cents)} sent to the manager. A payment notice went to them.` : r.skipped || "Nothing to pay.");
+  };
+  FORMS.rsSettings = async (f) => {
+    await api("PUT", "/api/admin/partner-share/settings", { managerStaffId: f.managerStaffId.value, status: f.status.value, holdDays: Number(f.holdDays.value), activePct: Number(f.activePct.value), continuingPct: Number(f.continuingPct.value) });
+    await render(); toast("Terms saved.");
+  };
   // ---- Affiliates
   ACT.affEnabled = async (el) => {
     const on = el.getAttribute("aria-checked") !== "true";
