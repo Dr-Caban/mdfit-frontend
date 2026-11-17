@@ -32,10 +32,27 @@
   function signOut() { session.clear(); connectP = null; show(false); }
   $("#signOut").addEventListener("click", signOut);
 
-  // ---- sign in
+  // ---- sign in: password, or Google (the address must be the Manager account's; the emailed code still applies)
+  let gCred = "";
+  async function googleIn(code) {
+    const msg = $("#siMsg"), f = $("#signinForm"); msg.className = "msg"; msg.textContent = "Signing in…";
+    try { const r = await api("POST", "/api/admin/login/google", { credential: gCred, ...(code ? { code } : {}) }); gCred = ""; session.set(r); f.reset(); msg.textContent = ""; await boot(); }
+    catch (err) { if (err.data && err.data.mfaRequired) { $("#siCodeRow").hidden = false; f.code.focus(); } else gCred = ""; msg.className = "msg err"; msg.textContent = err.message; }
+  }
+  fetch(API + "/api/app/config").then((r) => r.json()).then((c) => {
+    if (!c || !c.googleClientId) return;
+    const sc = document.createElement("script"); sc.src = "https://accounts.google.com/gsi/client"; sc.async = true;
+    sc.onload = () => {
+      google.accounts.id.initialize({ client_id: c.googleClientId, callback: (resp) => { gCred = resp.credential; googleIn(""); } });
+      $("#siGoogleWrap").hidden = false;
+      google.accounts.id.renderButton($("#siGoogle"), { theme: "outline", size: "large", width: 320, text: "signin_with" });
+    };
+    document.head.appendChild(sc);
+  }).catch(() => {});
   $("#signinForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     const f = e.target, msg = $("#siMsg"); msg.className = "msg"; msg.textContent = "Signing in…";
+    if (gCred && !f.password.value && f.code.value.trim()) return googleIn(f.code.value.trim());
     try {
       const r = await api("POST", "/api/admin/login", { email: f.email.value.trim(), password: f.password.value, ...(f.code.value.trim() ? { code: f.code.value.trim() } : {}) });
       session.set(r); f.password.value = ""; f.code.value = ""; msg.textContent = "";
