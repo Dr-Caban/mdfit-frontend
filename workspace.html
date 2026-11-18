@@ -45,8 +45,10 @@
 .kv{display:grid;grid-template-columns:fit-content(45%) minmax(0,1fr);gap:6px 14px;margin:0}
 .kv dt{color:var(--muted)}.kv dd{margin:0;overflow-wrap:break-word}
 /* Intake documents: questions are whole sentences, so each answer sits under its question */
-.qa{margin:0;display:grid;gap:12px}
-.qa dt{color:var(--muted);font-size:12.5px;margin:0 0 2px}.qa dd{margin:0;font-weight:500;overflow-wrap:break-word;white-space:pre-line}
+/* The answers on an intake document. Named doc-qa, not qa: .qa is the floating quick-actions button
+   further down this file, and the later rule was winning - which pinned these answers over the chart. */
+.doc-qa{margin:0;display:grid;gap:12px}
+.doc-qa dt{color:var(--muted);font-size:12.5px;margin:0 0 2px}.doc-qa dd{margin:0;font-weight:500;overflow-wrap:break-word;white-space:pre-line}
 .rec{display:grid;grid-template-columns:auto auto minmax(0,1fr);gap:10px;align-items:baseline;padding:8px 0;border-bottom:1px solid var(--line)}
 .rec:last-child{border-bottom:0}
 .note-text{white-space:pre-wrap;overflow-wrap:anywhere;margin:6px 0 0}
@@ -455,6 +457,6 @@ body:has(#modalBack.open) .qa{display:none}
 <script src="realtime.js?v=22ae7ae5"></script>
 <script src="app/exercises.js?v=d121be98"></script>
 <script src="progress-charts.js?v=df3a2256"></script>
-<script src="workspace-app.js?v=135b5d36"></script>
+<script src="workspace-app.js?v=e2670ecc"></script>
 </body>
 </html>
