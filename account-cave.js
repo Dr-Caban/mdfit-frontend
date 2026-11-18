@@ -79,23 +79,24 @@
     const rowH = 112, pts = []; let y = 104;
     // (a long name wraps the Start bubble to three lines; it must stay clear of the label of the stop above)
     const tall = (s) => (short(s.label) + (s.sub ? " · " + s.sub : "")).length > 19;
-    j.stops.forEach((s, i) => { if (s.state === "now") y += i ? (tall(s) ? 82 : 66) : 70; pts.push([X[i % X.length], y]); y += rowH; });
+    const here = (s) => s.state === "now" || s.state === "next"; // today's stop, or tomorrow's once today's is done
+    j.stops.forEach((s, i) => { if (here(s)) y += i ? (tall(s) ? 82 : 66) : 70; pts.push([X[i % X.length], y]); y += rowH; });
     const H = y + 96, end = [50, H - 62], all = [...pts, end];
     // (with the gate photo above it, the road starts out of sight under the gate rather than as a loose stub on the wall)
     const from = [50, ART.road ? -40 : 30], d = pathOf([from, ...all], rowH);
     // The stretch already travelled carries moving lights, from the gate to today's stop (the whole road once it is cleared)
-    const nowAt = j.stops.findIndex((s) => s.state === "now"), lit = pathOf([from, ...(nowAt < 0 ? all : pts.slice(0, nowAt + 1))], rowH);
+    const nowAt = j.stops.findIndex(here), lit = pathOf([from, ...(nowAt < 0 ? all : pts.slice(0, nowAt + 1))], rowH);
     let lamps = ""; for (let k = 0, ly = 150; ly < H - 110; k++, ly += 210) lamps += `<span class="cv-wlamp ${k % 2 ? "r" : "l"}" style="top:${ly}px">${flame}</span>`;
     const lastChamber = j.chamber >= j.chambers, cleared = j.stops.every((s) => s.state === "done" || s.state === "passed");
     const fresh = freshDone(j);
     const stopHtml = j.stops.map((s, i) => {
       const [x, y] = pts[i], color = GEMS[s.n % GEMS.length], left = x < 50;
-      const act = j.intro ? (s.state === "done" ? "disabled" : `data-intro-go="${esc(s.ref)}"`) : s.state === "now" ? (j.grid ? `data-cave-start="${s.n}"` : `data-fp="${esc(j.program.id)}"`) : s.state === "done" ? `data-fp="${esc(j.program.id)}"` : "disabled";
+      const act = j.intro ? (s.state === "done" ? "disabled" : `data-intro-go="${esc(s.ref)}"`) : s.state === "now" ? (j.grid ? `data-cave-start="${s.n}"` : `data-fp="${esc(j.program.id)}"`) : s.state === "done" || s.state === "next" ? `data-fp="${esc(j.program.id)}"` : "disabled";
       return `<div class="cv-stop ${s.state}" style="left:${x}%;top:${y}px;--gem:${color}">
-          ${s.state === "now" ? `<span class="cv-bubble">${j.intro ? "Start here" : j.today.workout ? "Go again" : "Start"}<small>${esc(short(s.label))}${s.sub ? " · " + esc(s.sub) : ""}</small></span>` : ""}
-          <button type="button" class="cv-ore${s.state === "done" && fresh.has(s.n) ? " mining" : ""}" ${s.state === "done" && fresh.has(s.n) ? `style="--el:-${((Date.now() - fresh.get(s.n)) / 1000).toFixed(2)}s"` : ""} ${act} aria-label="${esc(s.label)}${s.sub ? ", " + esc(s.sub) : ""}: ${s.state === "done" ? "mined" : s.state === "now" ? "today, start" : s.state === "open" ? "open, 10 XP" : s.state === "passed" ? "skipped, tap to do it" : "not open yet"}">${s.state === "done" && fresh.has(s.n) ? sequence(color) : s.state === "passed" ? ore("locked", color, true) : ore(s.state === "open" ? "now" : s.state, color)}</button>
+          ${here(s) ? `<span class="cv-bubble">${j.intro ? "Start here" : s.state === "next" ? "Tomorrow" : "Start"}<small>${esc(short(s.label))}${s.sub ? " · " + esc(s.sub) : ""}</small></span>` : ""}
+          <button type="button" class="cv-ore${s.state === "done" && fresh.has(s.n) ? " mining" : ""}" ${s.state === "done" && fresh.has(s.n) ? `style="--el:-${((Date.now() - fresh.get(s.n)) / 1000).toFixed(2)}s"` : ""} ${act} aria-label="${esc(s.label)}${s.sub ? ", " + esc(s.sub) : ""}: ${s.state === "done" ? "mined" : s.state === "now" ? "today, start" : s.state === "next" ? "tomorrow. Today's session is done" : s.state === "open" ? "open, 10 XP" : s.state === "passed" ? "skipped, tap to do it" : "not open yet"}">${s.state === "done" && fresh.has(s.n) ? sequence(color) : s.state === "passed" ? ore("locked", color, true) : ore(s.state === "open" || s.state === "next" ? "now" : s.state, color)}</button>
           ${s.state === "done" ? `<i class="cv-tw t1"></i><i class="cv-tw t2"></i>` : ""}
-          ${s.state === "now" ? "" : `<span class="cv-cap">${esc(short(s.label))}${j.intro && s.state === "passed" ? " · skipped" : j.intro && s.state !== "done" ? " · +10 XP" : ""}</span>`}
+          ${here(s) ? "" : `<span class="cv-cap">${esc(short(s.label))}${j.intro && s.state === "passed" ? " · skipped" : j.intro && s.state !== "done" ? " · +10 XP" : ""}</span>`}
         </div>`;
     }).join("");
     const chip = (lit, label, attrs = "") => `<button type="button" class="cv-chip${lit ? " lit" : ""}" ${attrs}>${crystal(lit)}<span>${label}</span></button>`;

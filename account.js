@@ -3253,7 +3253,8 @@
     if (owed) return { kind: "invoice", count: 1, title: (String(owed.t).match(/\$[\d,.]+/) || ["Invoice"])[0] + " invoice", sub: "Tap to pay", due: true, go: owed.path || "#progress" };
     if (j && j.intro) { const s = j.stops.find((x) => x.state === "now"); return { kind: "intro", ref: s ? s.ref : "", title: s ? s.label : "First descent", sub: "+10 XP · your first descent", go: "mine" }; }
     if (v && v.date <= addDays(t, 1)) return { kind: "visit", title: v.typeName || "Visit", sub: whenOf(v), go: "plus" };
-    if (now && !j.today.workout) return { kind: "session", title: brief(now.label), sub: "Today's session", go: "mine" };
+    // (today's program stop is still open, whatever else they trained today; once it is done the mine holds the next one for tomorrow)
+    if (now) return { kind: "session", title: brief(now.label), sub: "Today's session", go: "mine" };
     if (v) return { kind: "later", title: v.typeName || "Visit", sub: whenOf(v), go: "plus" };
     if (j && j.today.workout) return { kind: "done", title: "Workout done", sub: "Nice work today", go: "#progress", today: j.today };
     return { kind: "ask", title: "Ask Solomon", sub: "for today's workout", go: "solomon" }; // nothing is made ahead of time: Solomon builds it when asked
@@ -3946,12 +3947,15 @@
     const st = progStats(p), grid = !st.isProto && !perWeekTotal(p) && p.days.length > 0, total = st.sessions, per = grid ? p.days.length : Math.min(6, total);
     const isDone = (n) => (grid ? doneCount(p, n % per) > Math.floor(n / per) : n < st.done);
     let cur = 0; while (cur < total && isDone(cur)) cur++;
+    // One stop a day: once a session of this program is logged today, the next stop waits for tomorrow ("next") instead
+    // of asking for a second session the same day. It can still be opened from the program page.
+    const mark = new RegExp("^prog-" + String(p.id).replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "-[dw]\\d"), rested = allWorkouts.some((w) => w.date === t && mark.test(String(w.key || "")));
     const chambers = Math.ceil(total / per), chamber = Math.min(Math.floor(cur / per), chambers - 1), from = chamber * per, stops = [];
     for (let n = from; n < Math.min(total, from + per); n++) {
       const d = grid ? p.days[n % per] : null;
-      stops.push({ n, label: d ? d.name : `${st.isProto ? "Part" : "Session"} ${n + 1}`, sub: d && d.length ? `${d.length} min` : "", state: isDone(n) ? "done" : n === cur ? "now" : "locked" });
+      stops.push({ n, label: d ? d.name : `${st.isProto ? "Part" : "Session"} ${n + 1}`, sub: d && d.length ? `${d.length} min` : "", state: isDone(n) ? "done" : n === cur ? (rested ? "next" : "now") : "locked" });
     }
-    return { ...base, introAlt: introOn, program: { id: p.id, title: p.title }, grid, chamber: chamber + 1, chambers, unit: grid ? "Week" : "Stage", left: Math.max(0, total - Math.min(total, st.done)), stops };
+    return { ...base, rested, introAlt: introOn, program: { id: p.id, title: p.title }, grid, chamber: chamber + 1, chambers, unit: grid ? "Week" : "Stage", left: Math.max(0, total - Math.min(total, st.done)), stops };
   }
   const journeyStart = (n) => { const j = journey(), p = j && j.program && (C.programs || []).find((x) => x.id === j.program.id); if (p && j.grid) startPlayer(progDayWorkout(p, n % p.days.length)); };
   // ---- The first descent: a new member's tutorial as the first road in the mine. Five stops, each a real action in the

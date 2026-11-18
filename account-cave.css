@@ -113,3 +113,9 @@
 .cv-skip-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0 0 10px; font-size: 12.5px; color: #9aa3b2; }
 .cv-skip-row span { flex-basis: 100%; }
 .cv-skip { min-height: 34px; padding: 0 11px; border: 1px dashed #3a4252; border-radius: 999px; background: none; color: #b9c2cf; font: 600 12.5px Montserrat, system-ui, sans-serif; cursor: pointer; }
+
+/* Tomorrow's stop, once today's session is done: lit enough to see what is coming, without the pull of "start" */
+.cv-stop.next .cv-ore { box-shadow: 0 0 0 3px rgba(200, 167, 99, .22); }
+.cv-stop.next .cv-ore-img { filter: saturate(.55) brightness(.7); }
+.cv-stop.next .cv-bubble { background: #1b2230; color: #e8eaed; box-shadow: 0 4px 0 #0e131c; border: 1px solid #333a46; }
+.cv-stop.next .cv-bubble::after { border-top-color: #1b2230; }
