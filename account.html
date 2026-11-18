@@ -97,7 +97,10 @@
         </div>
       </div>
 
-      <div class="card today" id="today-card">
+      <!-- No workout is made for a member ahead of time (owner, Nov 2026): a workout comes from Solomon, from the member's
+           program, or from the generator when they ask for one. The card stays in the page, hidden, for the code that still
+           reads its buttons. -->
+      <div class="card today" id="today-card" hidden>
         <div class="today-head"><span class="label blue">Today's workout</span><span class="ready">Ready</span></div>
         <div class="today-body">
           <div class="today-icon"><svg viewBox="0 0 24 24"><path d="M12 5.5a2 2 0 1 0-2-2 2 2 0 0 0 2 2zM21 9h-2V7h-2v2H7V7H5v2H3v2h2v2h2v-2h3l-2 10h2l2-6 2 6h2l-2-10h3v2h2v-2h2z"/></svg></div>
@@ -886,11 +889,11 @@
   <script src="guides.js?v=8521968d"></script>
   <script src="stripe-checkout.js?v=087989ec"></script>
   <script src="progress-charts.js?v=df3a2256"></script>
-  <script src="account.js?v=db6c748c"></script>
+  <script src="account.js?v=403e53c5"></script>
   <script src="account-xp.js?v=97c923ce"></script>
   <script src="account-share.js?v=763ef457"></script>
   <script src="account-habits.js?v=8bebfbfe"></script>
-  <script src="account-cave.js?v=6c1df84d"></script>
+  <script src="account-cave.js?v=32c4b32b"></script>
   <script src="mdfit-guide.js?v=65755f4d"></script>
 </body>
 </html>

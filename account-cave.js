@@ -81,7 +81,7 @@
     // Nothing changed: leave the card alone, so an animation in flight isn't restarted by a second redraw
     const sig = JSON.stringify(j); if (sig === lastSig && card.firstChild) return; lastSig = sig;
     if (!j.program) {
-      card.innerHTML = `<div class="cv-mouth${ART.mouth ? " art" : ""}"${ART.mouth ? ` style="${shade(ART.mouth, 0, 0.92)}"` : ""}><span class="cv-kicker">The gem mine</span><b class="cv-title">${j.finished ? "You reached the vault" : "Every program is a road of gems"}</b>
+      card.innerHTML = `<div class="cv-mouth${ART.mouth ? " art" : ""}"${ART.mouth ? ` style="${shade(ART.mouth, 0.55, 0.9)}"` : ""}><span class="cv-kicker">The gem mine</span><b class="cv-title">${j.finished ? "You reached the vault" : "Every program is a road of gems"}</b>
         <p class="cv-sub">${j.finished ? "Every stop on your road is mined. Pick the next program to open a new mine." : "Pick a program and each session becomes a stop on the road down. Solomon carries the lamp."}</p>
         <button type="button" class="cv-start" data-goto="programs">Choose a program</button></div>`;
       return;

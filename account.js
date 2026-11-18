@@ -2420,7 +2420,7 @@
   // cards open. Both lists arrive with the content and are kept on the device, so the next launch is laid out at once.
   // The ids match lib/content.js LAYOUTS on the server.
   const LAYOUT = {
-    home: { gem: "#gem-card", care: "#next-card", fromJared: "#plan-card", journey: "#cave-card", today: "#today-card", plans: "#my-plans", quick: "#home-quick",
+    home: { gem: "#gem-card", care: "#next-card", fromJared: "#plan-card", journey: "#cave-card", plans: "#my-plans", quick: "#home-quick",
       programs: "#hero-progs, #featured-progs", habits: "#habits-card", challenges: "#challenges-card",
       myWorkouts: "#home-my-workouts", shared: "#shared-card", myPrograms: "#home-programs", events: "#home-events",
       activity: "#home-activity", install: "#home-install" },
@@ -2429,16 +2429,17 @@
       referral: "#referral-card", account: "#p-account-card", feedback: "#p-feedback-card", install: "#p-install" }
   };
   const LAYOUT_LABEL = {
-    home: { care: "What to do next", fromJared: "From Dr. Jared", journey: "The gem mine", today: "Today's workout", plans: "Your plans", gem: "Your gem and XP",
+    home: { care: "What to do next", fromJared: "From Dr. Jared", journey: "The gem mine", plans: "Your plans", gem: "Your gem and XP",
       programs: "Dr. Jared's Programs", quick: "Quick actions", habits: "Daily activities", challenges: "Challenges", myWorkouts: "My workouts",
       shared: "Shared workouts", myPrograms: "My programs", events: "Upcoming events", activity: "Recent activity", install: "Get the app" },
     profile: { care: "My care plan", membership: "Membership", patient: "Patient documents", progress: "My progress", appointments: "My appointments", classes: "My classes",
       history: "Workout history", goal: "My daily XP goal", nudges: "Reminders from Solomon", looks: "Make it yours", referral: "Refer a friend",
       account: "Profile", feedback: "Help us improve", install: "Get the app" }
   };
-  const LAYOUT_OPEN_BY_DEFAULT = { home: ["gem", "care", "fromJared", "journey", "today", "plans", "quick"], profile: ["care", "membership", "patient"] };
+  const LAYOUT_OPEN_BY_DEFAULT = { home: ["gem", "care", "fromJared", "journey", "plans", "quick"], profile: ["care", "membership", "patient"] };
   const NATIVE_FOLD = new Set(["home:habits"]); // already one line with its own open/close
-  const layoutDefault = (w) => ({ sections: Object.keys(LAYOUT[w]).map((id) => ({ id, state: LAYOUT_OPEN_BY_DEFAULT[w].includes(id) ? "open" : "folded" })), ...(w === "home" ? { suggestions: 3 } : {}) });
+  const LAYOUT_HIDDEN_BY_DEFAULT = { home: ["quick"], profile: [] }; // the "+" button and the Train tab cover the quick actions grid
+  const layoutDefault = (w) => ({ sections: Object.keys(LAYOUT[w]).map((id) => ({ id, state: LAYOUT_HIDDEN_BY_DEFAULT[w].includes(id) ? "hidden" : LAYOUT_OPEN_BY_DEFAULT[w].includes(id) ? "open" : "folded" })), ...(w === "home" ? { suggestions: 3 } : {}) });
   const stateOfRow = (s) => (s.state || (s.show === false ? "hidden" : "open"));
   const LAYOUT_KEY = "mdfit-layouts", OPEN_KEY = "mdfit-folds-open";
   let layouts = (() => {
@@ -3267,8 +3268,8 @@
     else if (v && v.date <= addDays(t, 1)) { set("next", v.typeName || "Visit", whenOf(v)); next.dataset.go = "plus"; }
     else if (now && !j.today.workout) { set("next", brief(now.label), "Today's session"); next.dataset.go = "mine"; }
     else if (v) { set("next", v.typeName || "Visit", whenOf(v)); next.dataset.go = "plus"; }
-    else if (j && !j.program) { set("next", "Pick a program", "Start your road"); next.dataset.go = "#programs"; }
-    else { set("next", "Today's workout", j && j.today.workout ? "Done. Nice work." : "Ready when you are"); next.dataset.go = "today"; }
+    else if (j && j.today.workout) { set("next", "Workout done", "Nice work today"); next.dataset.go = "#progress"; }
+    else { set("next", "Ask Solomon", "for today's workout"); next.dataset.go = "solomon"; } // nothing is made ahead of time: Solomon builds it when asked
     // A newcomer is welcomed, not welcomed back
     const hello = $("#view-home .hello"); if (hello) hello.textContent = !allWorkouts.length && (!r || r.xp <= 10) ? "Welcome" : "Welcome back";
     box.hidden = false;
@@ -3280,7 +3281,7 @@
     if (go2 === "plus") { renderPlus(); $("#plus-sheet").showModal(); }
     else if (go2 === "refer") { go("profile"); setTimeout(() => { const c = $("#referral-card"); if (!c) return; if (c.classList.contains("lay-fold") && !c.classList.contains("open")) layToggle(c); c.scrollIntoView({ block: "start" }); }, 120); }
     else if (go2 === "mine") { const c = $("#cave-card"); if (c) c.scrollIntoView({ behavior: "smooth", block: "start" }); }
-    else if (go2 === "today") { const c = $("#today-card"); if (c) c.scrollIntoView({ behavior: "smooth", block: "center" }); }
+    else if (go2 === "solomon") { if (window.MDFitGuide && window.MDFitGuide.open) window.MDFitGuide.open(); else go("generate"); }
     else if (go2.startsWith("#")) go(go2.slice(1));
     else if (go2) location.href = go2;
   });
