@@ -842,6 +842,8 @@ html[data-theme="black"] {
 @media (max-width: 700px) {
 :where(html[data-theme=black]) #view-profile .card.p-fold > .card-head::after { border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; }
 }
+:where(html[data-theme=black]) .mp-more { border: 1px dashed var(--line); background: none; color: var(--accent); }
+:where(html[data-theme=black]) .mp-more:hover { border-color: var(--accent); }
 :where(html[data-theme=black]) .auth-page { background: var(--ink); }
 :where(html[data-theme=black]) .auth-card { background: var(--paper); }
 :where(html[data-theme=black]) .auth-tabs { border-bottom: 1px solid var(--line); }
@@ -2116,6 +2118,7 @@ html[data-theme="black"] { --aff-earned: #4a94dc; --aff-pend: #b98522; }
 :where(html[data-layout=compact]) #view-profile .card.p-fold > .card-head::after { margin: 0 4px 0 auto; }
 :where(html[data-layout=compact]) #view-profile .card.p-fold > .card-head .label { margin-bottom: 0; }
 }
+:where(html[data-layout=compact]) .mp-more { margin: 6px 0 2px; padding: 8px; font-size: 14px; }
 :where(html[data-layout=compact]) .auth-wrap { margin: 0 auto; padding: 40px 0; gap: 13px; }
 :where(html[data-layout=compact]) .auth-tabs button { padding: 15px; font-size: 15px; }
 :where(html[data-layout=compact]) .auth-form { padding: 18px; }

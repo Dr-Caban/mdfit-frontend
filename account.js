@@ -2433,7 +2433,33 @@
     [/lateral|tennis elbow/i, "assets/programs/tennis-elbow.png", true], [/medial|golfer/i, "assets/programs/golfers-elbow.png", true]]; // true = the poster already carries its title text; draw nothing over it
   const COMPLETE_POSTERS = new Set([...PROG_ART.filter((x) => x[2]).map((x) => x[1]), "assets/programs/mobility-ladder-poster.png"]);
   const withArt = (d) => { (d && d.programs || []).forEach((p) => { if (!p.image) { const m = PROG_ART.find(([re]) => re.test(p.title || "")); if (m) p.image = m[1]; } }); return d; };
-  const loadContent = () => (contentLoading = apiAuth("GET", "/api/me/content").then((d) => (C = withArt(d))).catch(() => api("/api/content").then((d) => (C = withArt({ ...d, access: "free" })))));
+  // ---- Home layout: which cards show and in what order, set by the owner in the workspace (Client app → Home screen).
+  // It arrives with the content and is kept on the device, so the next launch is laid out before the content loads.
+  // The ids match lib/content.js HOME_SECTIONS on the server.
+  // "programs" is the phone card ("Not sure where to start?") and the list beside it on wide screens: one switch for both
+  const HOME_SECTIONS = { care: "#next-card", plans: "#my-plans", gem: "#gem-card", challenges: "#challenges-card", habits: "#habits-card",
+    today: "#today-card", myWorkouts: "#home-my-workouts", shared: "#shared-card", programs: "#hero-progs, #featured-progs",
+    quick: "#home-quick", myPrograms: "#home-programs", fromJared: "#plan-card", events: "#home-events",
+    activity: "#home-activity", install: "#home-install" };
+  const HOME_KEY = "mdfit-home-layout";
+  const homeDefault = () => ({ sections: Object.keys(HOME_SECTIONS).map((id) => ({ id, show: true })), suggestions: 3 });
+  let homeLayout = (() => { try { const h = JSON.parse(localStorage.getItem(HOME_KEY) || "null"); return h && Array.isArray(h.sections) ? h : homeDefault(); } catch { return homeDefault(); } })();
+  let sugOpen = false; // "Show more" on Solomon's suggestions, for this visit
+  function applyHomeLayout() {
+    homeLayout.sections.forEach((s, i) => { if (HOME_SECTIONS[s.id]) document.querySelectorAll(HOME_SECTIONS[s.id]).forEach((el) => { el.style.order = String(i + 1); el.classList.toggle("home-off", !s.show); }); });
+    const pu = $("#patient-urgent"); if (pu) pu.style.order = "0"; // "Before your visit" always leads when it shows
+  }
+  function setHomeLayout(h) {
+    if (!h || !Array.isArray(h.sections)) return;
+    const changed = JSON.stringify(h) !== JSON.stringify(homeLayout);
+    homeLayout = h; try { localStorage.setItem(HOME_KEY, JSON.stringify(h)); } catch {}
+    applyHomeLayout(); if (changed) renderMyPlans();
+  }
+  applyHomeLayout();
+  // Cards other scripts add later (gem, challenges, daily activities, my workouts, shared) take their place as they arrive
+  $$("#view-home .col-main, #view-home .col-side").forEach((col) => new MutationObserver(applyHomeLayout).observe(col, { childList: true }));
+  const loadContent = () => (contentLoading = apiAuth("GET", "/api/me/content").then((d) => (C = withArt(d))).catch(() => api("/api/content").then((d) => (C = withArt({ ...d, access: "free" }))))
+    .then((d) => { if (d && d.home) setHomeLayout(d.home); return d; }));
   const money = (n) => "$" + Number(n).toLocaleString("en-US");
   const lockBadge = `<span class="lock" title="Members"><svg viewBox="0 0 24 24"><path d="M17 9h-1V7a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2zm-7-2a2 2 0 0 1 4 0v2h-4z"/></svg> Members</span>`;
   const unlockBtn = (what) => `<button type="button" class="btn-gold sm" data-goto="premium">Unlock ${what} with a membership</button>`;
@@ -3526,7 +3552,6 @@
   const ACCESS_RANK = { free: 0, member: 1, premium: 2 };
   // Locked = the program needs more than this person's access (server: C.access, which is "premium" for inpatients)
   const lockedFor = (p) => !!p && p.locked === true; // what the Programs screen locks (the server decides), so Home never shows a lock on something they can open
-  const TAG_REC = `<span class="mp-tag rec">Recommended</span>`, TAG_SUG = `<span class="mp-tag sug">Suggested</span>`;
   const DISMISS = (kind, id, what) => `<button type="button" class="mp-x" data-sug-x="${esc(kind)}" data-sug-id="${esc(id)}" aria-label="Remove ${esc(what)} from Suggested for you"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>`;
   function renderMyPlans() {
     const box = $("#my-plans"); if (!box || !C || !client) return;
@@ -3537,42 +3562,54 @@
         ${p.image ? progImg(p.image, "", "56px", { sizes: "56px" }) : `<span class="fp-ic pp-blank"></span>`}
         <span class="mp-body">${tag || ""}<b>${esc(p.title)}</b>${note ? `<span class="mp-note">${esc(note)}</span>` : ""}<span class="muted small">${esc(lvlName(p.level))} · ${st.isProto ? partsLabel(st.nWeeks, p) : `${p.weeks} weeks`}${st.done ? ` · ${st.done} of ${st.sessions} ${st.isProto ? "started" : "done"}` : note !== undefined ? " · not started yet" : ""}</span></span>
         <span class="mp-go">Open ›</span></button></li>`; };
-    $("#mp-assigned").innerHTML = assigned.length ? `<span class="label accent">Recommended by Dr. Jared</span><ul class="mp-list">${assigned.map((x) => row(pById.get(x.id), x.note, TAG_REC)).join("")}</ul>` : "";
+    // The headings say who it's from, so the cards carry no "Recommended" / "Suggested" tag of their own
+    $("#mp-assigned").innerHTML = assigned.length ? `<span class="label accent">Recommended by Dr. Jared</span><ul class="mp-list">${assigned.map((x) => row(pById.get(x.id), x.note)).join("")}</ul>` : "";
     $("#mp-saved").innerHTML = saved.length ? `<span class="label">My saved plans</span><ul class="mp-list">${saved.map((id) => row(pById.get(id))).join("")}</ul>` : "";
     // Suggested for you: only items the app really has; a members-only program shows a lock and opens the membership page
     const sg = (client && client.suggested) || {};
-    const sp = (sg.programs || []).filter((x) => x && pById.has(x.id) && !assigned.some((a) => a.id === x.id)).slice(0, 6);
+    const sp = (sg.programs || []).filter((x) => x && pById.has(x.id) && !assigned.some((a) => a.id === x.id) && !saved.includes(x.id)).slice(0, 6);
     const sv = (sg.videos || []).filter((x) => x && byId.get(x.id)).slice(0, 8);
     const st = (sg.tips || []).filter((x) => x && x.id && x.text).slice(0, 3);
     const gById = new Map((C.recommendations || []).map((r) => [r.id, r]));
-    const sgd = (sg.guides || []).filter((x) => x && gById.has(x.id)).slice(0, 4);
+    // A guide about a program already on this card ("State of Perpetual Growth (PSG) program" next to the PSG program) is left out
+    const tw = (t) => new Set(String(t || "").toLowerCase().split(/[^a-z0-9]+/).filter((w) => w.length > 2 && !["the", "and", "for", "program", "protocol", "week"].includes(w)));
+    const shownProgs = [...assigned.map((x) => x.id), ...saved, ...sp.map((x) => x.id)].map((id) => tw(pById.get(id).title));
+    const repeats = (title) => { const g = tw(title); return shownProgs.some((pw) => { let n = 0; for (const w of pw) if (g.has(w)) n++; return pw.size && n / pw.size >= 0.6; }); };
+    const sgd = (sg.guides || []).filter((x) => x && gById.has(x.id) && !repeats(gById.get(x.id).title)).slice(0, 4);
     const guideRow = (x) => { const r = gById.get(x.id);
       return `<li class="mp-sug"><button type="button" class="mp-item mp-vid" data-goto="tips/${esc(r.id)}">
         <span class="fp-ic mp-tip-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm8 1.5V8h4.5zM8 12v1.6h8V12zm0 3.6v1.6h6v-1.6z"/></svg></span>
-        <span class="mp-body">${TAG_SUG}<b>${esc(r.title)}</b><span class="muted small">${esc(r.area || "Guide")} · Dr. Jared's guide</span></span>
+        <span class="mp-body"><b>${esc(r.title)}</b><span class="muted small">${esc(r.area || "Guide")} · Dr. Jared's guide</span></span>
         <span class="mp-go">Read ›</span></button>${DISMISS("guides", x.id, r.title)}</li>`; };
     const sugRow = (x) => { const p = pById.get(x.id), lk = lockedFor(p);
       return `<li class="mp-sug"><button type="button" class="mp-item${lk ? " mp-locked" : ""}" ${lk ? `data-unlock="member"` : `data-fp="${esc(p.id)}"`}>
         ${p.image ? progImg(p.image, "", "56px", { sizes: "56px" }) : `<span class="fp-ic pp-blank"></span>`}
-        <span class="mp-body">${TAG_SUG}${lk ? lockBadge : ""}<b>${esc(p.title)}</b><span class="muted small">${esc(lvlName(p.level))}${p.category ? " · " + esc(p.category) : ""}</span></span>
+        <span class="mp-body">${lk ? lockBadge : ""}<b>${esc(p.title)}</b><span class="muted small">${esc(lvlName(p.level))}${p.category ? " · " + esc(p.category) : ""}</span></span>
         <span class="mp-go">${lk ? "Unlock ›" : "Open ›"}</span></button>${DISMISS("programs", x.id, p.title)}</li>`; };
     const vidRow = (x) => { const e = byId.get(x.id);
       return `<li class="mp-sug"><button type="button" class="mp-item mp-vid" data-sug-play="${esc(e.id)}">
         <span class="fp-ic mp-play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
-        <span class="mp-body">${TAG_SUG}<b>${esc(e.name)}</b><span class="muted small">${esc(exMeta(e))}</span></span>
+        <span class="mp-body"><b>${esc(e.name)}</b><span class="muted small">${esc(exMeta(e))}</span></span>
         <span class="mp-go">Play ›</span></button>${DISMISS("videos", x.id, e.name)}</li>`; };
     const tipRow = (x) => `<li class="mp-sug"><div class="mp-item mp-tip"><span class="fp-ic mp-tip-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21h6v-1H9zm3-19a7 7 0 0 0-4 12.7V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.3A7 7 0 0 0 12 2z"/></svg></span>
-        <span class="mp-body">${TAG_SUG}<span class="mp-tip-text">${esc(x.text)}</span></span></div>${DISMISS("tips", x.id, "this tip")}</li>`;
-    const anySug = sp.length || sv.length || st.length || sgd.length;
+        <span class="mp-body"><span class="mp-tip-text">${esc(x.text)}</span></span></div>${DISMISS("tips", x.id, "this tip")}</li>`;
+    // A few at a time (the owner sets how many, 0 hides them); the rest wait behind "Show more"
+    const cap = Number.isInteger(homeLayout.suggestions) ? homeLayout.suggestions : 3;
+    const all = [...sp.map((x) => ["p", x]), ...sv.map((x) => ["v", x]), ...sgd.map((x) => ["g", x]), ...st.map((x) => ["t", x])];
+    const shown = cap === 0 ? [] : sugOpen ? all : all.slice(0, cap), of = (k) => shown.filter((x) => x[0] === k).map((x) => x[1]);
+    const [vp, vv, vg, vt] = ["p", "v", "g", "t"].map(of), more = all.length - shown.length;
+    const anySug = shown.length > 0;
     const sugBox = $("#mp-suggested");
     if (sugBox) sugBox.innerHTML = anySug ? `<span class="label">Suggested for you <span class="muted small">by Solomon</span></span>
-      ${sp.length ? `<ul class="mp-list">${sp.map(sugRow).join("")}</ul>` : ""}
-      ${sv.length ? `<p class="mp-sub muted small">Videos</p><ul class="mp-list">${sv.map(vidRow).join("")}</ul>` : ""}
-      ${sgd.length ? `<p class="mp-sub muted small">From Dr. Jared's guides</p><ul class="mp-list">${sgd.map(guideRow).join("")}</ul>` : ""}
-      ${st.length ? `<p class="mp-sub muted small">Tips</p><ul class="mp-list">${st.map(tipRow).join("")}</ul>` : ""}
-      <p class="muted small mp-fine">Suggestions from Solomon, not medical advice. What Dr. Jared recommends is marked Recommended.</p>` : "";
+      ${vp.length ? `<ul class="mp-list">${vp.map(sugRow).join("")}</ul>` : ""}
+      ${vv.length ? `<p class="mp-sub muted small">Videos</p><ul class="mp-list">${vv.map(vidRow).join("")}</ul>` : ""}
+      ${vg.length ? `<p class="mp-sub muted small">From Dr. Jared's guides</p><ul class="mp-list">${vg.map(guideRow).join("")}</ul>` : ""}
+      ${vt.length ? `<p class="mp-sub muted small">Tips</p><ul class="mp-list">${vt.map(tipRow).join("")}</ul>` : ""}
+      ${more > 0 && cap > 0 ? `<button type="button" class="mp-more" data-mp-more>Show ${more} more</button>` : sugOpen && all.length > cap ? `<button type="button" class="mp-more" data-mp-more>Show fewer</button>` : ""}
+      <p class="muted small mp-fine">Suggestions from Solomon, not medical advice.</p>` : "";
     box.hidden = !assigned.length && !saved.length && !anySug;
   }
+  document.addEventListener("click", (e) => { if (e.target.closest("[data-mp-more]")) { sugOpen = !sugOpen; renderMyPlans(); } });
   // Solomon's suggestions arrive with an answer (mdfit-guide.js) or with GET /api/me; both land here
   function setSuggested(s) {
     if (!client || !s || typeof s !== "object") return;

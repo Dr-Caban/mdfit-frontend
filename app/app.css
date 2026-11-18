@@ -1626,3 +1626,17 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
   #view-profile .prof-logout { display: none; } /* Log out stays at the foot of the tab */
 }
 @media (max-width: 700px) and (prefers-reduced-motion: reduce) { #view-profile .card.p-fold > .card-head::after { transition: none; } }
+
+/* Home layout, set by the owner in the workspace (Client app → Home screen) and applied by account.js: each card gets an
+   order, and cards switched off get .home-off. On phones the two columns become one list, so any order works; on wide
+   screens each column keeps its cards and orders them among themselves. */
+#view-home .home-grid { display: flex; flex-direction: column; }
+#view-home .col-main, #view-home .col-side { display: contents; }
+#view-home .home-off { display: none !important; }
+@media (min-width: 1000px) {
+  #view-home .home-grid { display: grid; }
+  #view-home .col-main, #view-home .col-side { display: flex; flex-direction: column; min-width: 0; }
+}
+/* Solomon's suggestions: a few, then "Show more" */
+.mp-more { display: block; width: 100%; margin: 6px 0 2px; padding: 10px; border: 1px dashed var(--line); border-radius: 12px; background: none; color: var(--accent); font: 600 14px var(--body); cursor: pointer; }
+.mp-more:hover { border-color: var(--accent); }

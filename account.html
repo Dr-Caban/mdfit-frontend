@@ -19,10 +19,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="app/app.css?v=64f59cf8">
+  <link rel="stylesheet" href="app/app.css?v=6976218a">
   <link rel="stylesheet" href="account.css?v=7e0b90a0">
   <link rel="stylesheet" href="guides.css?v=704fb203">
-  <link rel="stylesheet" href="app-theme.css?v=ae27fa20">
+  <link rel="stylesheet" href="app-theme.css?v=b8d7e9c9">
   <link rel="stylesheet" href="mdfit-guide.css?v=408b8c88">
   <link rel="stylesheet" href="progress-charts.css?v=f0ec9711">
   <script src="app-theme.js?v=3afc6baa"></script>
@@ -111,6 +111,7 @@
         <div class="hp-grid" id="hero-prog-grid"></div>
       </div>
 
+      <div id="home-quick">
       <h2 class="section-title">Quick actions</h2>
       <div class="quick">
         <button type="button" class="card q" data-goto="generate"><svg viewBox="0 0 24 24" class="ic blue"><path d="M3 17v2h6v-2zM3 5v2h10V5zm10 16v-2h8v-2h-8v-2h-2v6zM7 9v2H3v2h4v2h2V9zm14 4v-2H11v2zm-6-4h2V7h4V5h-4V3h-2z"/></svg><b>Generate Workout</b><span>Custom routine</span></button>
@@ -119,6 +120,7 @@
         <button type="button" class="card q" data-goto="videos"><svg viewBox="0 0 24 24" class="ic purple"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M10 8.5v7l6-3.5z" fill="#fff"/></svg><b>Video Library</b><span id="lib-count">Exercises</span></button>
         <a class="card q" href="/book"><svg viewBox="0 0 24 24" class="ic green"><path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 16H5V9h14zM7 11h2v2H7zm4 0h2v2h-2zm4 0h2v2h-2zm-8 4h2v2H7zm4 0h2v2h-2z"/></svg><b>Book a Visit</b><span>See Dr. Jared</span></a>
         <a class="card q patient-tile" id="patient-tile" href="/intake?me=1"><svg viewBox="0 0 24 24" class="ic gold"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zm-1 7V3.5L18.5 9zM8 13h8v2H8zm0 4h5v2H8z"/></svg><b id="pt-title">Become a patient</b><span id="pt-sub">Intake documents</span></a>
+      </div>
       </div>
 
       </div><div class="col-side">
@@ -137,17 +139,17 @@
         <div id="plan"></div>
       </div>
 
-      <div class="card list-card">
+      <div class="card list-card" id="home-events">
         <div class="card-head"><span class="label">Upcoming events</span><a class="link-sm" href="/book">Book</a></div>
         <ul class="events" id="events"><li class="muted small">Loading…</li></ul>
       </div>
 
-      <div class="card list-card">
+      <div class="card list-card" id="home-activity">
         <div class="card-head"><span class="label">Recent activity</span></div>
         <ul class="activity" id="activity"></ul>
       </div>
 
-      <div class="card install install-card">
+      <div class="card install install-card" id="home-install">
         <div class="card-head"><span class="label accent">Get the app</span></div>
         <p class="small install-text"></p>
         <div class="install-steps-wrap" hidden><ol class="install-steps small"></ol></div>
@@ -857,7 +859,7 @@
   <script src="guides.js?v=8521968d"></script>
   <script src="stripe-checkout.js?v=087989ec"></script>
   <script src="progress-charts.js?v=df3a2256"></script>
-  <script src="account.js?v=947e234e"></script>
+  <script src="account.js?v=ab813f13"></script>
   <script src="account-xp.js?v=b9de2933"></script>
   <script src="account-share.js?v=763ef457"></script>
   <script src="account-habits.js?v=60e83046"></script>

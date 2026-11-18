@@ -187,6 +187,9 @@
     refresh: '<path d="M20 12a8 8 0 1 1-2.300-5.600"/><path d="M20 4v4h-4"/>',
     phone: '<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>',
     plus: '<path d="M12 5v14M5 12h14"/>',
+    up: '<path d="M6 15l6-6 6 6"/>', down: '<path d="M6 9l6 6 6-6"/>',
+    eye: '<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+    eyeOff: '<path d="M3 3l18 18"/><path d="M10.6 5.1A10 10 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 4M6.6 6.6C3.8 8.4 2 12 2 12s3.6 7 10 7a9.8 9.8 0 0 0 4.3-1"/>',
     upload: '<path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/>',
     download: '<path d="M12 4v12M7 11l5 5 5-5"/><path d="M4 20h16"/>',
     search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>'
@@ -1468,8 +1471,33 @@
     </div>`;
   };
 
-  V.portal = async () => `<div class="view-head"><div><h1>Client app</h1><p class="muted">What members use on their phone and on the web</p></div><a class="btn primary" href="/account" target="_blank" rel="noopener">Open the client app</a></div>
+  // Client app: what members can do, and the editor for their Home screen (which cards show, in what order, and how many
+  // of Solomon's suggestions before "Show more"). Changes are a draft until Save; members see them on their next load.
+  V.portal = async () => {
+    const c = can("content") ? await load("/content").catch(() => null) : null;
+    if (c) cache.content = c;
+    return `<div class="view-head"><div><h1>Client app</h1><p class="muted">What members use on their phone and on the web</p></div><a class="btn primary" href="/account" target="_blank" rel="noopener">Open the client app</a></div>
+    ${c && c.home ? homeEditor(c) : ""}
     <div class="card"><h2 style="margin-bottom:10px">What members can do today</h2>${["Read notes from you and play their prescribed movements", "Book and pay for video visits", "Fill out new patient documents", "Message you", "Log pain and workouts", "Follow programs and earn rewards"].map((x) => `<div class="list-item">${x}</div>`).join("")}</div>`;
+  };
+  const homeDraft = () => state.homeDraft || (state.homeDraft = JSON.parse(JSON.stringify(cache.content.home)));
+  function homeEditor(c) {
+    const d = homeDraft(), labels = new Map(((c.options && c.options.homeSections) || []).map((x) => [x.id, x.label]));
+    const dirty = JSON.stringify(d) !== JSON.stringify(c.home), on = d.sections.filter((x) => x.show).length;
+    const row = (x, i) => `<div class="list-item" style="gap:10px;${x.show ? "" : "opacity:.55"}">
+        <span style="width:22px;text-align:right" class="muted num">${i + 1}</span>
+        <span style="flex:1;min-width:0"><b>${esc(labels.get(x.id) || x.id)}</b></span>
+        <button type="button" class="btn sm" data-act="homeShow" data-i="${i}" aria-pressed="${x.show}" title="${x.show ? "Shown: tap to hide" : "Hidden: tap to show"}">${ui(x.show ? "eye" : "eyeOff", 14)} ${x.show ? "Shown" : "Hidden"}</button>
+        <button type="button" class="btn sm" data-act="homeMove" data-i="${i}" data-by="-1" aria-label="Move up" ${i ? "" : "disabled"}>${ui("up", 14)}</button>
+        <button type="button" class="btn sm" data-act="homeMove" data-i="${i}" data-by="1" aria-label="Move down" ${i < d.sections.length - 1 ? "" : "disabled"}>${ui("down", 14)}</button></div>`;
+    return `<div class="card" style="margin-bottom:16px" id="homeCard"><div class="card-head"><div><h2>Home screen</h2><p class="muted" style="margin:2px 0 0;font-size:12.5px">What members see first in the app, top to bottom. ${on} of ${d.sections.length} cards shown. On a phone it's one list in this order; on a computer each column keeps this order.</p></div></div>
+      ${d.sections.map(row).join("")}
+      <form class="row" data-form="homeSave" style="margin-top:14px;gap:10px;align-items:flex-end;flex-wrap:wrap">
+        ${fld("homeSug", "suggestions", "Solomon's suggestions shown before \u201cShow more\u201d (0 hides them)", d.suggestions, { type: "number", attrs: 'min="0" max="20" required style="max-width:110px"' })}
+        <button class="btn primary">Save Home screen</button>
+        <button type="button" class="btn" data-act="homeReset"${dirty ? "" : " disabled"}>Undo changes</button>
+      </form></div>`;
+  }
 
   V.booking = async () => {
     const s = await load("/settings"), url = location.origin + "/book";
@@ -2164,6 +2192,9 @@
   }
   Object.assign(ACT, {
     chartBilling: (el) => { state.chartClient = el.dataset.id; state.chartTab = "billing"; if (location.hash === "#chart") render(); else location.hash = "chart"; },
+    homeShow: (el) => { const d = homeDraft(), x = d.sections[Number(el.dataset.i)]; if (x) { x.show = !x.show; render(); } },
+    homeMove: (el) => { const d = homeDraft(), i = Number(el.dataset.i), j = i + Number(el.dataset.by); if (j < 0 || j >= d.sections.length) return; [d.sections[i], d.sections[j]] = [d.sections[j], d.sections[i]]; render(); },
+    homeReset: () => { state.homeDraft = null; render(); },
     progEdit: (el) => { const p = (cache.content.programs || []).find((x) => x.id === el.dataset.id); if (p) progForm(p, false); },
     progCopy: (el) => { const p = (cache.content.programs || []).find((x) => x.id === el.dataset.id); if (p) progForm({ ...p, id: p.id, title: p.title + " (copy)" }, true); },
     progDelete: async (el) => { const p = (cache.content.programs || []).find((x) => x.id === el.dataset.id); if (!p || !confirm(`Delete "${p.title}"? Members who were assigned it will no longer see it.`)) return; await putContent({ programs: cache.content.programs.filter((x) => x.id !== p.id) }, "Program deleted."); },
@@ -2201,6 +2232,10 @@
     setPlans: (f) => putSettings({ plans: Object.fromEntries(["gold", "silver", "silverPayments", "reviewDiscountPct", "ext12", "ext24"].map((k) => [k, Number(f[k].value)])) }, "Pricing saved."),
     setVideo: (f) => putSettings({ booking: { telehealthUrl: f.telehealthUrl.value.trim() } }, "Video link saved."),
     setIcs: async (f) => { const v = f.icsUrl.value.trim(); if (!v && !confirm("Disconnect the SimplePractice calendar? Its busy times will stop blocking bookings.")) return; await api("PUT", "/api/admin/calsync", { icsUrl: v }); await render(); toast(v ? "Calendar link saved." : "SimplePractice calendar disconnected."); },
+    homeSave: async (f) => {
+      const d = homeDraft(), home = { sections: d.sections.map((x) => ({ id: x.id, show: !!x.show })), suggestions: Number(f.suggestions.value) };
+      state.homeDraft = null; await putContent({ home }, "Home screen saved. Members see it the next time the app loads.");
+    },
     setTiers: (f) => putContent({ tiers: (cache.content.tiers || []).map((t, i) => ({ ...t, name: f["name" + i].value.trim(), price: Number(f["price" + i].value), meetings: Number(f["meetings" + i].value), meetingMinutes: Number(f["minutes" + i].value), directMessages: !!f["direct" + i].checked, perks: f["perks" + i].value.split("\n").map((x) => x.trim()).filter(Boolean) })) }, "Membership types saved."),
     progSave: (f) => {
       const all = cache.content.programs || [], src = all.find((x) => x.id === f.dataset.id) || {}, isNew = !!f.dataset.new;
