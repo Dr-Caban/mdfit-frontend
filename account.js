@@ -2413,7 +2413,7 @@
   // cards open. Both lists arrive with the content and are kept on the device, so the next launch is laid out at once.
   // The ids match lib/content.js LAYOUTS on the server.
   const LAYOUT = {
-    home: { gem: "#gem-card", care: "#next-card", fromJared: "#plan-card", today: "#today-card", plans: "#my-plans", quick: "#home-quick",
+    home: { gem: "#gem-card", care: "#next-card", fromJared: "#plan-card", journey: "#cave-card", today: "#today-card", plans: "#my-plans", quick: "#home-quick",
       programs: "#hero-progs, #featured-progs", habits: "#habits-card", challenges: "#challenges-card",
       myWorkouts: "#home-my-workouts", shared: "#shared-card", myPrograms: "#home-programs", events: "#home-events",
       activity: "#home-activity", install: "#home-install" },
@@ -2422,14 +2422,14 @@
       referral: "#referral-card", account: "#p-account-card", feedback: "#p-feedback-card", install: "#p-install" }
   };
   const LAYOUT_LABEL = {
-    home: { care: "What to do next", fromJared: "From Dr. Jared", today: "Today's workout", plans: "Your plans", gem: "Your gem and XP",
+    home: { care: "What to do next", fromJared: "From Dr. Jared", journey: "Your gem cave", today: "Today's workout", plans: "Your plans", gem: "Your gem and XP",
       programs: "Dr. Jared's Programs", quick: "Quick actions", habits: "Daily activities", challenges: "Challenges", myWorkouts: "My workouts",
       shared: "Shared workouts", myPrograms: "My programs", events: "Upcoming events", activity: "Recent activity", install: "Get the app" },
     profile: { care: "My care plan", membership: "Membership", patient: "Patient documents", progress: "My progress", appointments: "My appointments", classes: "My classes",
       history: "Workout history", goal: "My daily XP goal", nudges: "Reminders from Solomon", looks: "Make it yours", referral: "Refer a friend",
       account: "Profile", feedback: "Help us improve", install: "Get the app" }
   };
-  const LAYOUT_OPEN_BY_DEFAULT = { home: ["gem", "care", "fromJared", "today", "plans", "quick"], profile: ["care", "membership", "patient"] };
+  const LAYOUT_OPEN_BY_DEFAULT = { home: ["gem", "care", "fromJared", "journey", "today", "plans", "quick"], profile: ["care", "membership", "patient"] };
   const NATIVE_FOLD = new Set(["home:habits"]); // already one line with its own open/close
   const layoutDefault = (w) => ({ sections: Object.keys(LAYOUT[w]).map((id) => ({ id, state: LAYOUT_OPEN_BY_DEFAULT[w].includes(id) ? "open" : "folded" })), ...(w === "home" ? { suggestions: 3 } : {}) });
   const stateOfRow = (s) => (s.state || (s.show === false ? "hidden" : "open"));
@@ -3759,6 +3759,7 @@
       ${more > 0 && cap > 0 ? `<button type="button" class="mp-more" data-mp-more>Show ${more} more</button>` : sugOpen && all.length > cap ? `<button type="button" class="mp-more" data-mp-more>Show fewer</button>` : ""}
       <p class="muted small mp-fine">Suggestions from Solomon, not medical advice.</p>` : "";
     box.hidden = !assigned.length && !saved.length && !anySug;
+    document.dispatchEvent(new CustomEvent("mdfit:journey")); // plans, workouts or content changed: the gem cave redraws
   }
   document.addEventListener("click", (e) => { if (e.target.closest("[data-mp-more]")) { sugOpen = !sugOpen; renderMyPlans(); } });
   // Solomon's suggestions arrive with an answer (mdfit-guide.js) or with GET /api/me; both land here
@@ -3811,6 +3812,29 @@
   // ================= Hooks for the XP add-ons (account-xp.js: gem card, workout builder, challenges)
   // Paid membership? (content access "member"/"premium"; "free" otherwise). Loads the content once if needed.
   const isPaid = async () => { if (!C) await (contentLoading || loadContent()).catch(() => {}); return !!(C && C.access && C.access !== "free"); };
+  // The gem cave on Home (account-cave.js): the member's program as a road of stops. The first unfinished program
+  // (Dr. Jared's recommendations first, then saved plans) is the road; one chamber is one week of its split (or six
+  // sessions of a program paced another way); a stop is done once that day has been finished that many weeks running.
+  function journey() {
+    if (!C || !client) return null;
+    const pById = new Map((C.programs || []).map((p) => [p.id, p]));
+    const mine = [...(client.assignedPrograms || []).map((x) => x.id), ...(client.pinnedPrograms || [])].filter((id, i, a) => pById.has(id) && a.indexOf(id) === i).map((id) => pById.get(id)).filter((p) => !lockedFor(p));
+    const t = todayInTz(), r = reward;
+    const base = { today: { workout: allWorkouts.some((w) => w.date === t), pain: painLog.some((x) => x.date === t), goal: !!(r && r.dailyGoal && r.todayXp >= r.dailyGoal) },
+      next: r && r.rank && r.rank.next ? { name: r.rank.next.name, color: r.rank.next.color, xp: r.rank.xpToNext } : null, movements: ((carePlan && carePlan.movements) || []).length };
+    const p = mine.find((x) => { const s = progStats(x); return s.done < s.sessions; });
+    if (!p) return { ...base, program: null, finished: mine.length > 0 };
+    const st = progStats(p), grid = !st.isProto && !perWeekTotal(p) && p.days.length > 0, total = st.sessions, per = grid ? p.days.length : Math.min(6, total);
+    const isDone = (n) => (grid ? doneCount(p, n % per) > Math.floor(n / per) : n < st.done);
+    let cur = 0; while (cur < total && isDone(cur)) cur++;
+    const chambers = Math.ceil(total / per), chamber = Math.min(Math.floor(cur / per), chambers - 1), from = chamber * per, stops = [];
+    for (let n = from; n < Math.min(total, from + per); n++) {
+      const d = grid ? p.days[n % per] : null;
+      stops.push({ n, label: d ? d.name : `${st.isProto ? "Part" : "Session"} ${n + 1}`, sub: d && d.length ? `${d.length} min` : "", state: isDone(n) ? "done" : n === cur ? "now" : "locked" });
+    }
+    return { ...base, program: { id: p.id, title: p.title }, grid, chamber: chamber + 1, chambers, unit: grid ? "Week" : "Stage", left: Math.max(0, total - Math.min(total, st.done)), stops };
+  }
+  const journeyStart = (n) => { const j = journey(), p = j && j.program && (C.programs || []).find((x) => x.id === j.program.id); if (p && j.grid) startPlayer(progDayWorkout(p, n % p.days.length)); };
   // One day on the Progress calendar: was a workout logged, and is anything on it still open (an unpaid invoice dated
   // that day, a visit later that day or ahead). account-habits.js puts a check on goal days with a workout and nothing open.
   const dayStatus = (d) => {
@@ -3820,7 +3844,7 @@
     const visitAhead = (appts.upcoming || []).some((a) => a.date === d && a.status === "booked" && (d > t || (d === t && String(a.time || "") > now)));
     return { workout, open: unpaid || visitAhead };
   };
-  window.MDFitApp = { dayStatus, startPlayer, go, loadRewards, toast, celebrateToast, exMeta, byId, gemIcon: GEM_ICON, rewards: () => reward, isPaid, showPaywall,
+  window.MDFitApp = { journey, journeyStart, dayStatus, startPlayer, go, loadRewards, toast, celebrateToast, exMeta, byId, gemIcon: GEM_ICON, rewards: () => reward, isPaid, showPaywall,
     // For the guide (mdfit-guide.js) and the theme switch (app-theme.js): who is signed in, what the app holds, and two places to open
     client: () => client, content: async () => { if (!C) await (contentLoading || loadContent()).catch(() => {}); return C; },
     openBook: () => { go("profile"); setTimeout(() => $("#p-book-open") && $("#p-book-open").click(), 60); },
