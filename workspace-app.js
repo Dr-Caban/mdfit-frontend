@@ -1125,9 +1125,10 @@
     if (!d) return `<div class="view-head"><div><h1>Affiliates</h1></div></div>${none("Couldn't load the affiliate programme.")}`;
     const S = d.settings, T = d.totals || {}, lp = d.lastPayout;
     const tile = (label, val, sub) => `<div class="card kpi"><span class="muted">${label}</span><b class="num">${val}</b>${sub ? `<small class="muted">${sub}</small>` : ""}</div>`;
-    const tiers = (d.tiers || []).map((t) => t.clinical
-      ? `<label class="row" style="gap:8px;flex-wrap:nowrap;opacity:.6"><input type="checkbox" disabled><span><b>${esc(t.name)}</b> <span class="muted">· access to a clinician, can't earn a commission</span></span></label>`
-      : `<label class="row" style="gap:8px;flex-wrap:nowrap"><input type="checkbox" name="tier" value="${esc(t.id)}"${t.eligible ? " checked" : ""}><span><b>${esc(t.name)}</b>${t.price ? ` <span class="muted">· $${esc(t.price)}/month</span>` : ""}</span></label>`).join("");
+    // Every Recurring Membership can earn (Agreement 4.3, Exhibit A). What never earns is care itself: clinic visits and
+    // one-time remote clinical services are not subscriptions and never reach the programme.
+    const tiers = (d.tiers || []).map((t) => `<label class="row" style="gap:8px;flex-wrap:nowrap"><input type="checkbox" name="tier" value="${esc(t.id)}"${t.eligible ? " checked" : ""}><span><b>${esc(t.name)}</b>${t.price ? ` <span class="muted">· $${esc(t.price)}/month</span>` : ""}</span></label>`).join("")
+      + `<p class="muted" style="margin:6px 0 0;font-size:12.5px">Commissions are paid on recurring memberships only: access to MD Fit Online, member discounts at the rehab clinic, and partner gyms and studios. Clinic visits and one-time remote clinical services never earn one, and a commission never depends on whether a member uses the clinic.</p>`;
     const affRows = (d.affiliates || []).map((a) => `<tr><td><b>${esc(a.name)}</b><div class="muted" style="font-size:12px">${esc(a.email)}</div></td><td>${affPill(a.status)}</td>
       <td>${a.stripe.payoutsEnabled ? '<span class="pill ok">Payouts on</span>' : a.stripe.connected ? '<span class="pill warn">Checking</span>' : '<span class="pill">Not set up</span>'}</td>
       <td class="num">${a.referred}</td><td class="num">${usd(a.pendingCents)}</td><td class="num">${usd(a.readyCents)}</td><td class="num">${usd(a.paidCents)}</td>
@@ -1182,8 +1183,8 @@
           <div class="field"><label for="rsMgr">Manager (a staff account with the Manager role)</label><select id="rsMgr" name="managerStaffId" class="input">${mgrOpts}</select></div>
           <div class="grid g2"><div class="field"><label for="rsStatus">Status</label><select id="rsStatus" name="status" class="input"><option value="active"${S.status === "active" ? " selected" : ""}>Active (Section 4.2)</option><option value="continuing"${S.status === "continuing" ? " selected" : ""}>Continuing (Section 9.2)</option></select></div>
             <div class="field"><label for="rsHold">Extra hold after Stripe clears (days)</label><input id="rsHold" name="holdDays" class="input" type="number" min="0" max="60" step="1" value="${esc(S.holdDays)}"></div>
-            <div class="field"><label for="rsActive">Active share (%)</label><input id="rsActive" name="activePct" class="input" type="number" min="0" max="50" step="0.01" value="${esc(S.activePct)}"></div>
-            <div class="field"><label for="rsCont">Continuing share (%)</label><input id="rsCont" name="continuingPct" class="input" type="number" min="0" max="50" step="0.01" value="${esc(S.continuingPct)}"></div></div>
+            <div class="field"><label for="rsActive">Active share (%) · fixed by Section 4.2</label><input id="rsActive" name="activePct" class="input" type="number" value="${esc(S.activePct)}" readonly aria-readonly="true" title="Set by the agreement. It changes only by a signed amendment (Section 12.5)."></div>
+            <div class="field"><label for="rsCont">Continuing share (%) · Sections 9.2 and 8.2</label><select id="rsCont" name="continuingPct" class="input"><option value="5"${Number(S.continuingPct) === 5 ? " selected" : ""}>5% (Section 9.2)</option><option value="10"${Number(S.continuingPct) === 10 ? " selected" : ""}>10% (Section 8.2 remedy)</option></select></div></div>
           <p class="muted" style="margin:0;font-size:12.5px">A change applies to payments from now on. Every change is recorded in the audit ledger.</p>
           <div class="row"><button class="btn primary">Save terms</button></div></form>
         <div class="card stack"><div class="card-head"><h2>Automatic payouts</h2><button type="button" class="switch" role="switch" aria-checked="${S.autoPay}" aria-label="Automatic payouts" data-act="rsAutoPay"></button></div>
@@ -2303,6 +2304,8 @@
   // once and stays until the work is finished; a form whose first send is still on its way is not sent a second time.
   const going = new WeakSet(), RESEND = new Set(["message", "teleChat"]);
   const press = (el, run) => { going.add(el); el.setAttribute("aria-busy", "true"); const off = () => { going.delete(el); el.removeAttribute("aria-busy"); }; run.then(off, off); };
+  // Carry this tab's sign-in across to a console (same token; the server still decides what it may open)
+  document.addEventListener("click", (e) => { const a = e.target.closest("[data-portal]"); if (!a || !token) return; try { sessionStorage.setItem(a.dataset.portal, JSON.stringify({ token, expiresAt: new Date(Date.now() + 11 * 3600e3).toISOString() })); } catch {} });
   document.addEventListener("click", (e) => { const el = e.target.closest("[data-act]"); if (!el || !token) return; const fn = ACT[el.dataset.act]; if (fn) press(el, guard(fn)(el, e)); });
   document.addEventListener("submit", (e) => { const f = e.target.closest("[data-form]"); if (!f) return; e.preventDefault(); const fn = FORMS[f.dataset.form]; if (!fn || !token) return; if (going.has(f) && !RESEND.has(f.dataset.form)) return; press(f, guard(fn)(f, e)); });
   // Things that act as buttons without being one (a month in the graph, a row in a table) answer Enter and Space too
@@ -2911,6 +2914,12 @@
     try { cache.me = await get("/me"); } catch { cache.me = null; }
     if (!token || tk !== token) return;
     if (cache.me) $("#whoami").textContent = cache.me.email;
+    { // Manager and Developer staff (and the owner) can step across to their console without signing in again
+      const roles = (cache.me && (cache.me.roles || [cache.me.role])) || [], owner = !!(cache.me && cache.me.isOwner);
+      const links = [["manager", "/manager", "mdfit_manager", "Manager console"], ["developer", "/dev", "mdfit_dev", "Developer console"]].filter(([r]) => owner || roles.includes(r));
+      const box = $("#portals");
+      if (box) { box.innerHTML = links.map(([, href, key, label]) => `<a class="btn ghost sm" href="${href}" data-portal="${key}">${label}</a>`).join(""); box.hidden = !links.length; }
+    }
     mustChange = !!(cache.me && cache.me.mustChangePassword);
     if (mustChange) { renderGate(); return; }
     $("#qa").hidden = false; $("#globalSearch").disabled = false;
@@ -2959,11 +2968,32 @@
   document.addEventListener("click", (e) => { if (!e.target.closest(".search")) gClose(); });
   ACT.searchOpen = (el) => { $("#globalSearch").value = ""; gClose(); openChart(el.dataset.id); };
   // ---- Revenue share (owner)
-  ACT.rsEnabled = async (el) => { const on = el.getAttribute("aria-checked") !== "true"; await api("PUT", "/api/admin/partner-share/settings", { enabled: on }); await render(); toast(on ? "The revenue share is on." : "The revenue share is off. Nothing new is earned."); };
+  // The manager's terms are preset by the agreement. Changing any of them asks for the owner password each time,
+  // the way a subscription asks you to sign in again before you change it. The password is sent with that one
+  // request and kept nowhere.
+  function askOwnerPassword(what) {
+    return new Promise((resolve) => {
+      modal(`<div class="card-head"><h2>Owner password</h2><button type="button" class="btn sm" data-pw="cancel">Cancel</button></div>
+        <p class="muted" style="margin:0 0 10px">${esc(what)} These terms are set by the agreement, so changing them needs the owner password.</p>
+        <form id="pwAsk" class="stack"><div class="field"><label for="pwAskIn">Owner password</label><input id="pwAskIn" class="input" type="password" autocomplete="current-password" required></div>
+        <div class="row"><button class="btn primary">Confirm change</button></div></form>`);
+      const done = (v) => { closeModal(); resolve(v); };
+      $("#pwAsk").addEventListener("submit", (e) => { e.preventDefault(); e.stopPropagation(); const v = $("#pwAskIn").value; done(v || null); });
+      $('[data-pw="cancel"]').addEventListener("click", () => done(null));
+      $("#pwAskIn").focus();
+    });
+  }
+  async function rsChange(what, body) {
+    const password = await askOwnerPassword(what);
+    if (!password) { toast("Nothing was changed."); return false; }
+    await api("PUT", "/api/admin/partner-share/settings", { ...body, password });
+    return true;
+  }
+  ACT.rsEnabled = async (el) => { const on = el.getAttribute("aria-checked") !== "true"; if (!(await rsChange(on ? "Switch the revenue share on." : "Switch the revenue share off.", { enabled: on }))) return; await render(); toast(on ? "The revenue share is on." : "The revenue share is off. Nothing new is earned."); };
   ACT.rsAutoPay = async (el) => {
     const on = el.getAttribute("aria-checked") !== "true";
     if (on && !confirm("Switch on automatic payouts? Each share is then transferred to the manager's Stripe account as soon as its payment clears, instead of monthly (Section 4.8). This is recorded as your decision.")) return;
-    await api("PUT", "/api/admin/partner-share/settings", { autoPay: on }); await render(); toast(on ? "Automatic payouts are on." : "Automatic payouts are off. You pay shares from here.");
+    if (!(await rsChange(on ? "Switch automatic payouts on." : "Switch automatic payouts off.", { autoPay: on }))) return; await render(); toast(on ? "Automatic payouts are on." : "Automatic payouts are off. You pay shares from here.");
   };
   ACT.rsClassify = async (el) => { await api("POST", "/api/admin/partner-share/classify", { revenueId: el.dataset.id, category: el.dataset.c }); await render(); toast("Classified."); };
   ACT.rsAck = async (el) => { await api("PUT", `/api/admin/partner-share/partners/${encodeURIComponent(el.dataset.id)}`, { acknowledge: true }); await render(); toast("Partner acknowledged."); };
@@ -2977,7 +3007,7 @@
     toast(r.paid ? `${usd(r.paid.cents)} sent to the manager. A payment notice went to them.` : r.skipped || "Nothing to pay.");
   };
   FORMS.rsSettings = async (f) => {
-    await api("PUT", "/api/admin/partner-share/settings", { managerStaffId: f.managerStaffId.value, status: f.status.value, holdDays: Number(f.holdDays.value), activePct: Number(f.activePct.value), continuingPct: Number(f.continuingPct.value) });
+    if (!(await rsChange("Change the manager's terms.", { managerStaffId: f.managerStaffId.value, status: f.status.value, holdDays: Number(f.holdDays.value), activePct: Number(f.activePct.value), continuingPct: Number(f.continuingPct.value) }))) return;
     await render(); toast("Terms saved.");
   };
   // ---- Affiliates
