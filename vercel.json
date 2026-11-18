@@ -11,7 +11,7 @@
       ]
     },
     {
-      "source": "/:page(account|book|login|admin|admin-classic|workspace|manager|valuation|valuation-usage|visit|cancel|intake|invoice)",
+      "source": "/:page(account|book|login|admin|admin-classic|workspace|manager|dev|valuation|valuation-usage|visit|cancel|intake|invoice)",
       "headers": [
         {
           "key": "Cache-Control",
@@ -93,6 +93,15 @@
     },
     {
       "source": "/manager",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/dev",
       "headers": [
         {
           "key": "X-Robots-Tag",
@@ -243,6 +252,10 @@
     {
       "source": "/admin",
       "destination": "/workspace"
+    },
+    {
+      "source": "/developer",
+      "destination": "/dev"
     }
   ],
   "redirects": [

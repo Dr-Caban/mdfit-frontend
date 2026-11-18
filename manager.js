@@ -65,8 +65,10 @@
 
   // ---- shell
   let state = { tab: "share", month: thisMonth(), share: null };
+  // To the client management portal with the same sign-in (same tab, same token: no second password)
+  $("#toPortal").addEventListener("click", () => { const s = session.get(); if (!s) return; try { sessionStorage.setItem("mdfit_ws_token", s.token); sessionStorage.setItem("mdfit_staff_active", String(Date.now())); } catch {} });
   function show(signedIn) {
-    $("#signin").hidden = signedIn; $("#app").hidden = !signedIn; $("#signOut").hidden = !signedIn; $("#who").hidden = !signedIn;
+    $("#signin").hidden = signedIn; $("#app").hidden = !signedIn; $("#signOut").hidden = !signedIn; $("#who").hidden = !signedIn; $("#toPortal").hidden = !signedIn;
   }
   async function boot() {
     if (!session.get()) return show(false);
