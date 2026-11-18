@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MD Fit Valuation</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0A1A2E">
+<meta name="description" content="MD Fit valuation workbench. Passcode required.">
+<!-- The valuation workbench, behind a passcode. The page itself is kept in the API (lib/valuation.js +
+     lib/valuation-workbench.html) and handed over only after the passcode is checked there, so it is never a public
+     file on this site. Figures typed or uploaded into it stay in this browser. -->
+<style>
+:root{--bg:#F5F9FC;--surface:#FFFFFF;--ink:#0A1A2E;--muted:#5B6B7C;--line:#DCE8F2;--accent-text:#2F6E9E;--bad:#C62828;
+  --font-display:"Libre Baskerville",Georgia,"Times New Roman",serif;--font-body:"Montserrat",system-ui,-apple-system,"Segoe UI",sans-serif;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#0A1A2E;--surface:#10233B;--ink:#E8F0F7;--muted:#9BB0C4;--line:#1D3352;--accent-text:#8EC0E6;--bad:#EE7D68;color-scheme:dark}}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:15px/1.45 var(--font-body)}
+.gate{max-width:360px;margin:14vh auto 0;padding:0 16px}
+.gate h1{font:700 24px/1.25 var(--font-display);margin:0 0 6px;text-align:center}
+.gate p{color:var(--muted);text-align:center;margin:0 0 18px}
+form{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;display:grid;gap:10px}
+label{font-size:13px;font-weight:600}
+input{width:100%;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);padding:10px 12px;font:20px var(--font-body);letter-spacing:.3em;text-align:center}
+button{border:0;border-radius:10px;background:var(--ink);color:var(--surface);padding:11px;font:600 15px var(--font-body);cursor:pointer}
+button:disabled{opacity:.5}
+.msg{min-height:1.2em;margin:0;font-size:13px;color:var(--bad);text-align:center}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 16px;background:var(--surface);border-bottom:1px solid var(--line);font-size:13px;color:var(--muted)}
+.bar button{padding:6px 12px;font-size:13px;background:none;color:var(--ink);border:1.5px solid var(--line)}
+#app{display:flex;flex-direction:column;height:100%}
+iframe{flex:1;width:100%;border:0;background:#fff}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<section class="gate" id="gate">
+  <h1>Valuation</h1>
+  <p>Enter the passcode to open the workbench.</p>
+  <form id="f" novalidate>
+    <label for="code">Passcode</label>
+    <input id="code" name="code" inputmode="numeric" autocomplete="off" maxlength="40" required autofocus>
+    <button type="submit">Open</button>
+    <p class="msg" id="msg" role="status"></p>
+  </form>
+</section>
+<div id="app" hidden>
+  <div class="bar"><span>MD Fit valuation workbench · figures you enter stay in this browser</span><button type="button" id="lock">Lock</button></div>
+  <iframe id="wb" title="Valuation workbench" sandbox="allow-scripts allow-same-origin allow-downloads allow-forms allow-popups"></iframe>
+</div>
+<script src="config.js?v=aac711e3"></script>
+<script>
+(() => {
+  const API = window.MDFIT_CONFIG.apiUrl.replace(/\/+$/, ""), KEY = "mdfit_valuation";
+  const $ = (s) => document.querySelector(s);
+  const tok = { get() { try { const t = JSON.parse(sessionStorage.getItem(KEY) || "null"); return t && Date.parse(t.expiresAt) > Date.now() ? t.token : ""; } catch { return ""; } },
+    set(t) { try { sessionStorage.setItem(KEY, JSON.stringify(t)); } catch {} }, clear() { try { sessionStorage.removeItem(KEY); } catch {} } };
+  async function open() {
+    const t = tok.get(); if (!t) return false;
+    const r = await fetch(API + "/api/valuation/page", { headers: { Authorization: "Bearer " + t } });
+    if (!r.ok) { tok.clear(); return false; }
+    const { html } = await r.json();
+    $("#wb").srcdoc = html; $("#gate").hidden = true; $("#app").hidden = false;
+    return true;
+  }
+  $("#f").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const b = e.target.querySelector("button"), msg = $("#msg"); b.disabled = true; msg.textContent = "";
+    try {
+      const r = await fetch(API + "/api/valuation/enter", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code: $("#code").value.trim() }) });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) { msg.textContent = d.error || "That didn't work. Try again."; return; }
+      tok.set(d); $("#code").value = "";
+      if (!(await open())) msg.textContent = "The workbench couldn't be loaded. Try again.";
+    } catch { msg.textContent = "Couldn't reach the server. Try again."; }
+    finally { b.disabled = false; }
+  });
+  $("#lock").addEventListener("click", () => { tok.clear(); $("#wb").srcdoc = ""; $("#app").hidden = true; $("#gate").hidden = false; $("#code").focus(); });
+  open().catch(() => {});
+})();
+</script>
+</body>
+</html>
