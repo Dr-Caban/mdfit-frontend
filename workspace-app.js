@@ -1285,7 +1285,7 @@
   // The tick list. A permission the signed-in person does not hold themselves cannot be ticked here: the server
   // refuses to pass on what you do not have, so the box is shown but switched off, with the reason next to it.
   function permEditor(data, role, chosen, lock) {
-    const mine = myPerms(), owner = iAmOwner(), on = new Set((((data.roles || {})[role]) || {}).permissions || []), picked = new Set(chosen || []);
+    const mine = myPerms(), owner = iAmOwner(), on = new Set([].concat(role || []).flatMap((k) => (((data.roles || {})[k]) || {}).permissions || [])), picked = new Set(chosen || []);
     return `<div class="perm-groups" data-perms>
       <p class="muted" data-rolesum style="margin:0;font-size:12.5px"></p>
       ${permGroups(data.permissions).map((g) => `<div class="perm-g"><h3>${esc(g.title)}</h3>${g.note ? `<p class="muted" style="margin:0 0 6px;font-size:12px">${esc(g.note)}</p>` : ""}
@@ -1304,7 +1304,20 @@
   // Picking a role shows what that role means before anything is saved, and ticks its permissions.
   function permRoleSync(f, data, tick) {
     if (!f || !f.isConnected) return;
-    const sel = f.elements.role, role = sel && !sel.disabled ? sel.value : (f.dataset.role || ""), r = ((data.roles || {})[role]) || {}, on = new Set(r.permissions || []);
+    const boxes = [...f.querySelectorAll("input[name=role]")];
+    const picked = boxes.length && !boxes[0].disabled ? boxes.filter((b) => b.checked).map((b) => b.value) : (f.dataset.roles || "").split(",").filter(Boolean);
+    const R = (k) => ((data.roles || {})[k]) || {}, role = picked.join(", ");
+    const on = new Set(picked.flatMap((k) => R(k).permissions || []));
+    const neverBy = new Map(); picked.forEach((k) => (R(k).never || []).forEach((p) => { if (!neverBy.has(p)) neverBy.set(p, k); }));
+    const r = { never: [...neverBy.keys()] };
+    // A role that can't sit beside the ones already ticked is switched off, with the reason
+    const clash = (a, b) => (R(a).permissions || []).find((p) => (R(b).never || []).includes(p));
+    for (const b of boxes) {
+      if (b.dataset.baseDis === undefined) b.dataset.baseDis = b.disabled ? "1" : "";
+      const why = !b.checked && picked.map((k) => { const c = clash(b.value, k) || clash(k, b.value); return c ? `${R(b.value).label || b.value} can't be combined with ${R(k).label || k}` : ""; }).find(Boolean);
+      b.disabled = b.dataset.baseDis === "1" || !!why;
+      const lab = b.closest("label"); if (lab) { lab.classList.toggle("off", b.disabled); lab.title = why || ""; const n = lab.querySelector("[data-clash]"); if (n) n.textContent = why ? why + "." : ""; }
+    }
     for (const el of f.querySelectorAll(".perm")) {
       const k = el.dataset.perm, box = el.querySelector("input[name=perm]");
       // What this role may never hold (the Manager and Developer roles never reach patient records): switched off
@@ -1316,17 +1329,23 @@
         el.classList.toggle("off", box.disabled);
       }
       if (cantTag) cantTag.remove();
-      if (never) el.insertAdjacentHTML("beforeend", `<span class="perm-d muted" data-never>A ${esc(roleLabel(data, role))} account can never have this.</span>`);
+      if (never) el.insertAdjacentHTML("beforeend", `<span class="perm-d muted" data-never>A ${esc(roleLabel(data, neverBy.get(k)))} account can never have this.</span>`);
       el.classList.toggle("in-role", on.has(k));
       const tag = el.querySelector("[data-rolein]"); if (tag) tag.hidden = !on.has(k);
       if (tick && box && !box.disabled) box.checked = on.has(k);
     }
     const sum = f.querySelector("[data-rolesum]");
-    if (sum) sum.textContent = on.size
-      ? `${roleLabel(data, role)} turns on: ${[...on].map((k) => permLabel(data, k)).join(", ")}. Tick or untick below to change it for this person only.`
-      : `${roleLabel(data, role)} turns nothing on by itself. Tick what this person needs.`;
+    const names = picked.map((k) => roleLabel(data, k)).join(" + ");
+    if (sum) sum.textContent = !picked.length ? "Tick at least one role above."
+      : on.size ? `${names} turn${picked.length === 1 ? "s" : ""} on: ${[...on].map((k) => permLabel(data, k)).join(", ")}. Tick or untick below to change it for this person only.`
+      : `${names} turn${picked.length === 1 ? "s" : ""} nothing on by itself. Tick what this person needs.`;
   }
 
+  // Roles as tick boxes: a person can hold several, and gets what all of them turn on
+  const rolesOfStaff = (s) => (Array.isArray(s.roles) && s.roles.length ? s.roles : s.role ? [s.role] : []);
+  const rolePicker = (roles, chosen, locked) => `<fieldset class="field role-pick" style="border:0;padding:0;margin:0"><legend style="font-weight:600;font-size:13px;margin-bottom:6px">Roles <span class="muted" style="font-weight:400">(tick one or more)</span></legend>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:6px">${roles.map(([k, r]) => `<label class="perm" style="padding:8px 10px"><input type="checkbox" name="role" value="${esc(k)}" data-change="staffRole"${chosen.includes(k) ? " checked" : ""}${locked ? " disabled" : ""}>
+      <span class="perm-t">${esc(r.label || k)}</span><span class="perm-d muted" data-clash></span></label>`).join("")}</div></fieldset>`;
   function staffRow(s, data) {
     const owner = s.role === "owner", self = isMe(s), off = s.active === false;
     const why = owner ? "The owner's sign-in is set in the host's variables, so it is not changed from here and cannot be switched off."
@@ -1336,7 +1355,7 @@
     return `<li class="staff-row${off ? " off" : ""}" data-staff="${esc(s.id)}">
       <div class="staff-who">${avatar(s.name || s.email, 36)}<span style="min-width:0"><b>${nm}</b><span class="muted" style="display:block;font-size:12.5px;overflow-wrap:anywhere">${esc(s.email || "")}</span></span></div>
       <div class="staff-meta">
-        <span class="pill accent">${esc(roleLabel(data, s.role))}</span>
+        ${rolesOfStaff(s).map((k) => `<span class="pill accent">${esc(roleLabel(data, k))}</span>`).join("")}
         <span class="pill ${off ? "warn" : "ok"}">${off ? "Deactivated" : "Can sign in"}</span>
         ${self ? `<span class="pill">You</span>` : ""}
         <span class="muted" style="font-size:12.5px">${off ? `Deactivated ${when(s.deactivatedAt)}` : `Last sign-in ${when(s.lastLoginAt)}`}</span>
@@ -1637,7 +1656,7 @@
         <form class="stack" data-form="staffNew" autocomplete="off">
           ${fld("sfName", "name", "Full name", "", { max: 80, attrs: 'required autocomplete="off"' })}
           ${fld("sfEmail", "email", "Email they sign in with", "", { type: "email", max: 120, attrs: 'required autocomplete="off"' })}
-          <div class="field"><label for="sfRole">Role</label><select id="sfRole" name="role" class="input" data-change="staffRole" required>${roles.map(([k, r]) => `<option value="${esc(k)}">${esc(r.label || k)}</option>`).join("")}</select></div>
+          ${rolePicker(roles, [first], false)}
           ${fld("sfPass", "password", "First password", "", { type: "password", max: 72, attrs: 'required minlength="10" autocomplete="new-password"' })}
           <p class="muted" style="margin:0;font-size:12.5px">At least 10 characters. Say it to them in person or by phone, not in an email; they are asked to change it the first time they sign in.</p>
           <h3 style="margin:4px 0 0">What they may do</h3>
@@ -1653,16 +1672,16 @@
       if (s.role === "owner") return toast("The owner's sign-in is set in the host's variables and is not changed from here.");
       const self = isMe(s), roles = Object.entries(data.roles || {}).filter(([k]) => k !== "owner");
       modal(`<div class="card-head"><h2>${esc(s.name || s.email)}</h2>${xBtn}</div>
-        <form class="stack" data-form="staffSave" data-id="${esc(s.id)}" data-self="${self ? "1" : ""}" data-role="${esc(s.role)}" autocomplete="off">
+        <form class="stack" data-form="staffSave" data-id="${esc(s.id)}" data-self="${self ? "1" : ""}" data-roles="${esc(rolesOfStaff(s).join(","))}" autocomplete="off">
           <p class="muted" style="margin:0;overflow-wrap:anywhere">${esc(s.email)}</p>
           ${fld("seName", "name", "Full name", s.name, { max: 80, attrs: "required" })}
-          <div class="field"><label for="seRole">Role</label><select id="seRole" name="role" class="input" data-change="staffRole"${self ? ' disabled aria-disabled="true"' : ""}>${roles.map(([k, r]) => `<option value="${esc(k)}"${k === s.role ? " selected" : ""}>${esc(r.label || k)}</option>`).join("")}</select></div>
+          ${rolePicker(roles, rolesOfStaff(s), self)}
           ${self ? `<p class="muted" id="seSelf" style="margin:0;font-size:12.5px;display:flex;gap:6px;align-items:flex-start">${ui("lock", 14)}<span>This is you. Your own role, permissions and access are locked here, so nobody can lock themselves out or give themselves more. Ask the owner, or anyone else with the Team &amp; roles permission, to change them.</span></p>` : ""}
           <label class="perm" data-perm="active"><input type="checkbox" name="active" id="seActive"${s.active === false ? "" : " checked"}${self ? " disabled" : ""}>
             <span class="perm-t">Can sign in</span>
             <span class="perm-d muted">Turning this off is reversible and deletes nothing: it only stops them signing in until you turn it back on.</span></label>
           <h3 style="margin:4px 0 0">What they may do</h3>
-          ${permEditor(data, s.role, s.permissions || [], self)}
+          ${permEditor(data, rolesOfStaff(s), s.permissions || [], self)}
           <p role="alert" data-msg style="margin:0;color:var(--bad);min-height:1.2em"></p>
           <div class="row" style="justify-content:flex-end"><button type="button" class="btn" data-act="closeModal">Cancel</button><button class="btn primary">Save changes</button></div>
         </form>`);
@@ -1744,7 +1763,9 @@
       if (f.elements.password.value.length < 10) return formMsg(f, "The first password needs at least 10 characters.");
       formMsg(f, "");
       try {
-        await api("POST", "/api/admin/staff", { name, email, role: f.elements.role.value, permissions: picks(f), password: f.elements.password.value });
+        const roles = [...f.querySelectorAll("input[name=role]:checked")].map((x) => x.value);
+        if (!roles.length) { formMsg(f, "Tick at least one role."); return; }
+        await api("POST", "/api/admin/staff", { name, email, roles, permissions: picks(f), password: f.elements.password.value });
         f.elements.password.value = ""; closeModal(); toast(`${name} can sign in now.`); await render();
       } catch (err) { f.elements.password.value = ""; formMsg(f, errText(err)); toast(errText(err)); }
     },
@@ -1752,7 +1773,11 @@
       const self = f.dataset.self === "1", body = { name: f.elements.name.value.trim() };
       if (!body.name) return formMsg(f, "A name is needed.");
       // Your own role, permissions and access are never sent: the server refuses them, and the form has them locked.
-      if (!self) { body.role = f.elements.role.value; body.permissions = picks(f); body.active = !!(f.elements.active && f.elements.active.checked); }
+      if (!self) {
+        body.roles = [...f.querySelectorAll("input[name=role]:checked")].map((x) => x.value);
+        if (!body.roles.length) { formMsg(f, "Tick at least one role."); return; }
+        body.permissions = picks(f); body.active = !!(f.elements.active && f.elements.active.checked);
+      }
       formMsg(f, "");
       try { await api("PUT", `/api/admin/staff/${f.dataset.id}`, body); closeModal(); toast("Saved."); await render(); }
       catch (err) { formMsg(f, errText(err)); toast(errText(err)); }
