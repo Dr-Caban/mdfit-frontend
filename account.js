@@ -139,6 +139,10 @@
   // ================= Tabs (hash routing so the back button and refresh work)
   const TABS = ["home", "generate", "programs", "videos", "pain", "learn", "progress", "leaders", "premium", "messages", "tips", "profile"];
   // Hash is "#tab" or "#pain/muscle/<id>" (deep link to a muscle report)
+  const TRAIN = ["generate", "videos", "pain"];
+  TRAIN.forEach((v) => { const el = document.getElementById("view-" + v); if (el) el.insertAdjacentHTML("afterbegin",
+    `<nav class="train-seg" aria-label="Train"><button type="button" data-goto="generate">Workout</button><button type="button" data-goto="videos">Videos</button><button type="button" data-goto="pain">Pain tool</button></nav>`); });
+  const lastTrain = () => { try { const t = localStorage.getItem("mdfit-train"); return TRAIN.includes(t) ? t : "generate"; } catch { return "generate"; } };
   function show(hash) {
     let [tab, sub, arg] = String(hash).split("/");
     if (!TABS.includes(tab)) tab = "home";
@@ -147,6 +151,9 @@
     else if (tab === "pain" && !$("#muscle-report").hidden) setMode(reportFrom);
     $$("[data-view]").forEach((v) => (v.hidden = v.dataset.view !== tab));
     $$(".tabbar [data-tab]").forEach((b) => (b.dataset.tab === tab ? b.setAttribute("aria-current", "page") : b.removeAttribute("aria-current")));
+    // Phones: Workout, Videos and the Pain tool share one "Train" tab (the Workout button) with a switch at the top of each
+    { const gen = $('.tabbar [data-tab="generate"]'); if (gen) gen.toggleAttribute("data-group-current", TRAIN.includes(tab));
+      if (TRAIN.includes(tab)) { try { localStorage.setItem("mdfit-train", tab); } catch {} $$(".train-seg [data-goto]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.goto === tab))); } }
     if (tabDots.delete(tab)) renderDots();
     if (tab === "videos") renderVideos();
     if (tab === "profile") renderProfileMembership().catch(() => {}); // plan + review offer can change while the app is open
@@ -164,20 +171,20 @@
   }
   const go = (tab) => { if (location.hash !== "#" + tab) history.pushState(null, "", "#" + tab); show(tab); };
   window.addEventListener("hashchange", () => show(location.hash.slice(1)));
-  $$(".tabbar [data-tab]").forEach((b) => b.addEventListener("click", () => go(b.dataset.tab)));
+  // (on a phone the Workout button is "Train" and reopens whichever of the three was used last)
+  $$(".tabbar [data-tab]").forEach((b) => b.addEventListener("click", () => go(b.dataset.tab === "generate" && matchMedia("(max-width: 999px)").matches ? lastTrain() : b.dataset.tab)));
   document.addEventListener("click", (e) => { const g = e.target.closest("[data-goto]"); if (g) go(g.dataset.goto); });
   // Shortcut actions from the More sheet (e.g., Book an appointment)
   document.addEventListener("click", (e) => {
     const b = e.target.closest("[data-action]"); if (!b) return;
     const ms = $("#more-sheet"); if (ms && ms.open) ms.close();
+    const ps = $("#plus-sheet"); if (ps && ps.open) ps.close();
     if (b.dataset.action === "book") { go("profile"); setTimeout(() => $("#p-book-open") && $("#p-book-open").click(), 50); }
     if (b.dataset.action === "about") location.href = "/?site=1"; // the clinic's website, kept open for the rest of the visit
   });
   // Phones show five tabs plus "More"; the rest live in a sheet
   // Prepend high-value destinations (Pain Tool, Video Library, Book) above the overflow tabs
   const topLinks = [
-    { tab: "pain", label: "Pain Tool", icon: `<svg viewBox="0 0 24 24"><path d="M12 2a2 2 0 1 1-2 2 2 2 0 0 1 2-2zm-3 20v-7H7.5V9a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v6H15v7z"/></svg>` },
-    { tab: "videos", label: "Video Library", icon: `<svg viewBox="0 0 24 24"><path d="M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm6 3.5v7l6-3.5z"/></svg>` },
     { action: "book", label: "Book an appointment", icon: `<svg viewBox="0 0 24 24"><path d="M19 4h-2V2h-2v2H9V2H7v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 16H5V10h14zM7 12h5v5H7z"/></svg>` }
   ];
   const topHtml = topLinks.map((x) => `<button type="button" class="more-top" ${x.tab ? `data-goto="${x.tab}"` : `data-action="${x.action}"`}>${x.icon}<span>${x.label}</span></button>`).join("");
@@ -3102,7 +3109,8 @@
   // video), the video visits they paid for or have coming up, and Stripe buttons to pay for an online evaluation or
   // follow-up. Shown on Home as "What to do next" and on the Profile as "My care plan"; hidden for non-patients.
   let carePlan = null;
-  function carePlanHtml() {
+  // compact (Home): no empty-state paragraph, no "Video visits" heading, and booking another visit folds to one line
+  function carePlanHtml(compact = false) {
     const ch = carePlan; if (!ch) return "";
     const money0 = (n) => `$${Number(n).toFixed(Number(n) % 1 ? 2 : 0)}`;
     const notes = ch.notes.map((n) => `<div class="plan-notes care-note"><span class="muted small">${shortDate(n.at.slice(0, 10))}</span><p>${esc(n.text).replace(/\n/g, "<br>")}</p></div>`).join("");
@@ -3117,8 +3125,9 @@
     const paid = ch.paidVisits.map((v) => `<li class="care-visit"><b>${esc(v.name || "Video visit")}</b><span class="muted small">Paid ${shortDate(v.paidAt.slice(0, 10))}. Dr. Jared will schedule it; the video link will show here and under Appointments.</span></li>`).join("");
     const upcoming = ch.visits.map((v) => `<li class="care-visit"><b>${esc(v.typeName)}</b><span class="muted small">${fmtDate(v.date, { weekday: "long" })} at ${fmtTime(v.time)} · ${v.minutes} min</span>${v.meetingLink ? `<a class="btn-blue sm" href="${esc(v.meetingLink)}" target="_blank" rel="noopener">Join video visit</a>` : ""}</li>`).join("");
     const pay = bookHtml();
-    const visits = paid || upcoming ? `<p class="care-sub"><b>Video visits</b></p><ul class="care-visits">${paid}${upcoming}</ul>` : "";
+    const visits = paid || upcoming ? `${compact ? "" : `<p class="care-sub"><b>Video visits</b></p>`}<ul class="care-visits">${paid}${upcoming}</ul>` : "";
     const empty = !notes && !moves && !visits ? `<p class="muted">Dr. Jared hasn't left anything here yet. After your visit, your notes and movements will show up here.</p>` : "";
+    if (compact) return `${visits}${notes}${moves}${pay ? `<details class="care-book-fold"><summary>Book a video visit</summary>${pay}</details>` : ""}`;
     return `${notes}${moves}${visits}${empty}${pay}`;
   }
   // ---- Booking a video visit with Dr. Jared (Nov 2026)
@@ -3204,12 +3213,12 @@
   function renderCarePlan() {
     const ch = carePlan;
     const show = !!(ch && (ch.patient || ch.notes.length || ch.movements.length || ch.paidVisits.length || ch.visits.length));
-    const html = show ? carePlanHtml() : "";
+    const html = show ? carePlanHtml() : "", homeHtml = show ? carePlanHtml(true) : "";
     const date = ch && ch.updatedAt ? "Updated " + shortDate(ch.updatedAt.slice(0, 10)) : "";
     careShown = show;
     for (const [card, body, dt] of [["#next-card", "#next-body", "#next-date"], ["#p-care", "#p-care-body", "#p-care-date"]]) {
       const el = $(card); if (!el) continue;
-      el.hidden = !show; $(body).innerHTML = show ? html : ""; $(dt).textContent = show ? date : "";
+      el.hidden = !show; $(body).innerHTML = card === "#next-card" ? homeHtml : html; $(dt).textContent = show ? date : "";
     }
     syncNextCard();
   }
@@ -3221,7 +3230,32 @@
     const docsDue = !!(docs && !docs.hidden);
     card.hidden = !careShown && !docsDue;
     const intro = $(".care-intro", card); if (intro) intro.hidden = !careShown;
+    renderPlus();
+    // Phones show the card as one line (below) plus whatever Dr. Jared left; with neither, the card steps aside
+    const line = $("#next-line"), fromJared = !!(carePlan && (carePlan.notes.length || carePlan.movements.length));
+    card.classList.toggle("next-slim-empty", !!line && line.hidden && !fromJared);
   }
+  // Home's "+" (quick actions): join the video visit, intake documents, book a visit. The same facts make the one line
+  // Home's "What to do next" shows on a phone, and the red dot on the "+" when something is due.
+  const nextVisit = () => { const t = todayInTz(); return (appts.upcoming || []).filter((a) => a.status !== "cancelled" && a.date >= t).sort((a, b) => (a.date + a.time < b.date + b.time ? -1 : 1))[0] || null; };
+  const whenOf = (a) => { const t = todayInTz(); return `${a.date === t ? "today" : a.date === addDays(t, 1) ? "tomorrow" : fmtDate(a.date, { weekday: "long" })} at ${fmtTime(a.time)}`; };
+  function renderPlus() {
+    const v = nextVisit(), p = patientDocs, docsDue = !!(p && !p.done && v), video = !!(v && v.meetingLink);
+    const btn = $("#home-plus"); if (btn) btn.classList.toggle("has-dot", docsDue || !!(v && v.date === todayInTz()));
+    const line = $("#next-line");
+    if (line) { const parts = [docsDue ? "Intake documents due" : "", v ? `${v.typeName || "Visit"} ${whenOf(v)}` : ""].filter(Boolean); line.hidden = !parts.length; $("#next-line-text").textContent = parts.join(" · "); }
+    const list = $("#plus-list"); if (!list) return;
+    const ic = { video: `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="M16 10l6-3v10l-6-3z"/></svg>`,
+      docs: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h4"/></svg>`,
+      book: `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>` };
+    const body = (icon, title, sub, due) => `<span class="pi">${icon}</span><b>${title}${due ? ` <i class="due">Due</i>` : ""}</b><span class="ps">${esc(sub)}</span>`;
+    list.innerHTML =
+      (video ? `<a class="plus-row" href="${esc(v.meetingLink)}" target="_blank" rel="noopener">${body(ic.video, "Join video visit", `${v.typeName || "Video visit"} ${whenOf(v)}`)}</a>`
+        : `<div class="plus-row off">${body(ic.video, "Join video visit", v ? `Your next visit is ${v.typeName || "a visit"} ${whenOf(v)}, in the clinic.` : "No video visit booked yet.")}</div>`)
+      + `<a class="plus-row" href="/intake?me=1">${body(ic.docs, "Intake documents", p && p.done ? "On file for every visit. Tap to update." : p && p.completed ? `${p.completed} of ${p.total} done. Tap to continue.` : "Once, before your first visit. About 10 minutes.", docsDue)}</a>`
+      + `<button type="button" class="plus-row" data-action="book">${body(ic.book, "Book a visit", "See Dr. Jared in the clinic or on video.")}</button>`;
+  }
+  document.addEventListener("click", (e) => { if (e.target.closest("[data-plus-open]")) { renderPlus(); $("#plus-sheet").showModal(); } });
   function loadCarePlan() { return apiAuth("GET", "/api/me/chart").then((c) => { carePlan = c; renderCarePlan(); renderCalendar(); loadVisitOptions(); }).catch(() => {}); }
   document.addEventListener("click", async (e) => {
     const v = e.target.closest("[data-care-video]");

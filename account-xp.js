@@ -70,7 +70,7 @@
       ${todayRow(r)}
       <ol class="gc-ladder" aria-label="Gem levels">${r.gems.map((g) => `<li class="${g.id === cur.id ? "cur" : r.xp >= g.xp ? "done" : ""}" title="${esc(g.name)}: ${g.xp.toLocaleString()}+ XP">${gem(r.xp >= g.xp ? g.color : "#3a4a62", 18)}<small>${esc(g.name)}</small></li>`).join("")}</ol>
       <div class="gc-actions"><button type="button" class="btn-gold sm" data-activities>Daily activities: extra XP</button><button type="button" class="btn-outline-light sm" data-build-workout>Build a workout</button></div>
-      <button type="button" class="gc-more" data-gem-more aria-expanded="${gemMore()}">${gemMore() ? "Less" : "All gems and shortcuts"}</button>
+      <button type="button" class="gc-more" data-gem-more aria-expanded="${gemMore()}">${gemMore() ? "Less" : "More"}</button>
       ${o && o.hidden ? `<p class="gc-hidden">You're hidden from the leaderboard; only you see your rank.</p>` : ""}`;
     profGem.innerHTML = `<span class="pg-gem">${gem(cur.color, 30)}</span><div><b>${esc(cur.name)}</b><small>${r.xp.toLocaleString()} XP</small></div>
       <button type="button" class="pg-rank" data-overall><b>${rankText(o)}</b> overall</button>`;
