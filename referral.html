@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MD Fit Partner Referral Agreement (draft)</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0A1A2E">
+<meta name="description" content="Draft partner referral agreement for MD Fit: a recurring share of the subscriptions your community pays.">
+<link rel="icon" href="assets/icon-64.png" type="image/png">
+<!-- DRAFT for discussion, not linked from anywhere and not indexed. A partner (a studio, a gym, a coach) sends its
+     community to MD Fit and earns a share of the subscriptions they pay, every month they stay. The figures on this
+     page are worked out in the browser from the sliders; nothing is sent anywhere.
+     The terms mirror what the commission engine already does (mdfit-backend lib/affiliates.js): which plans earn, the
+     hold, the minimum payout, refunds. Plans that are access to Dr. Jared never earn a commission; that line is drawn
+     in the server code and is repeated here on purpose. Change PLANS and TERMS below if the settings change.
+
+     The page opens as an animation that plays by itself: what members get, the share, one payment from start to
+     finish, then a month of the partner's account (payments landing as pending, clearing, a refund, the payout on
+     the 1st, the next month's renewals), and how it builds. It was made to be screen-recorded and sent to a partner, and then
+     offers the full terms underneath. It is a proposal FROM MD Fit: the partner's name and the account holder's first
+     name are read from the link (?partner=...&contact=...&size=500&new=20&rate=5), shown as plain text, and are not
+     stored in this file. No partner logo or branding is used. ?full=1 skips the animation; ?rec=1 leaves the
+     buttons off the last scene, for a recording. -->
+<style>
+@font-face{font-family:"Libre Baskerville";src:url("assets/fonts/libre-baskerville.b1bcbff3.woff2") format("woff2");font-weight:400 700;font-display:swap}
+@font-face{font-family:"Montserrat";src:url("assets/fonts/montserrat-var.a5ec5492.woff2") format("woff2");font-weight:100 900;font-display:swap}
+:root{--bg:#F5F9FC;--surface:#FFFFFF;--sunk:#EEF4F9;--ink:#0A1A2E;--muted:#5B6B7C;--line:#DCE8F2;--accent:#2F6E9E;--bar:#3F86BD;--bar-hi:#0A1A2E;--gold:#8A6A1F;--gold-bg:#FBF4E2;--good:#1F7A4D;--no:#8B95A1;
+  --display:"Libre Baskerville",Georgia,"Times New Roman",serif;--body:"Montserrat",system-ui,-apple-system,"Segoe UI",sans-serif;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#0A1A2E;--surface:#10233B;--sunk:#0D1F35;--ink:#E8F0F7;--muted:#9BB0C4;--line:#1D3352;--accent:#8EC0E6;--bar:#5FA3D6;--bar-hi:#E8F0F7;--gold:#E2C98C;--gold-bg:#2A2414;--good:#6FCB9B;--no:#7C8CA0;color-scheme:dark}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 var(--body)}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px 56px}
+header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 0}
+header.top img{width:44px;height:44px;object-fit:contain}
+.draft{font:700 11px var(--body);letter-spacing:1.4px;text-transform:uppercase;color:var(--gold);background:var(--gold-bg);border-radius:999px;padding:6px 12px}
+h1{font:700 30px/1.18 var(--display);margin:10px 0 10px;letter-spacing:-.2px}
+h2{font:700 21px/1.25 var(--display);margin:0 0 4px}
+.lede{font-size:17px;color:var(--muted);margin:0 0 22px;max-width:60ch}
+.lede b{color:var(--ink)}
+section{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 16px;margin:0 0 16px}
+.sub{color:var(--muted);font-size:14.5px;margin:0 0 14px}
+.kicker{font:700 11px var(--body);letter-spacing:1.4px;text-transform:uppercase;color:var(--accent);margin:0 0 6px;display:block}
+/* the numbers that answer "what would we earn" */
+.tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 0 16px}
+.tile{background:var(--sunk);border-radius:12px;padding:12px 10px;min-width:0}
+.tile span{display:block;font:600 11.5px/1.3 var(--body);color:var(--muted)}
+.tile b{display:block;font:700 22px/1.15 var(--display);margin-top:4px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.tile.lead b{color:var(--accent)}
+/* controls */
+.ctl{display:grid;gap:14px;margin:0 0 6px}
+.row label{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font:600 14px var(--body)}
+.row label output{font:700 15px var(--body);font-variant-numeric:tabular-nums;color:var(--accent);white-space:nowrap}
+.row small{display:block;color:var(--muted);font-size:12.5px;margin-top:2px}
+input[type=range]{width:100%;margin:8px 0 0;accent-color:var(--accent);height:28px}
+.seg{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-top:8px}
+.seg button{min-height:44px;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font:700 15px var(--body);cursor:pointer}
+.seg button[aria-pressed=true]{border-color:var(--accent);background:var(--sunk);color:var(--accent)}
+/* the chart: one bar a month */
+.chart{position:relative;margin:6px 0 0}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.chart .grid{stroke:var(--line);stroke-width:1}
+.chart .ax{fill:var(--muted);font:500 11px var(--body)}
+.chart .bar{fill:var(--bar)}
+.chart .bar.on{fill:var(--bar-hi)}
+.chart .lbl{fill:var(--ink);font:700 12px var(--body)}
+.chart svg.tipping .lbl{opacity:0}
+.tip{position:absolute;top:0;left:0;transform:translate(-50%,-100%);background:var(--ink);color:var(--surface);border-radius:8px;padding:6px 9px;font:600 12px/1.35 var(--body);white-space:nowrap;pointer-events:none}
+.tip b{display:block;font-size:13px}
+.how{font-size:13px;color:var(--muted);margin:10px 0 0}
+details{margin-top:10px;font-size:14px}
+summary{cursor:pointer;color:var(--accent);font-weight:600;min-height:32px}
+table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums}
+th,td{text-align:right;padding:7px 6px;border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+th{font:600 12px var(--body);color:var(--muted)}
+/* what earns and what never does */
+.plans{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.plans li{display:flex;justify-content:space-between;align-items:center;gap:12px;border:1px solid var(--line);border-radius:12px;padding:11px 12px}
+.plans b{display:block;font-size:15px}
+.plans small{display:block;color:var(--muted);font-size:12.5px}
+.plans .yes{font:700 13px var(--body);color:var(--good);white-space:nowrap}
+.plans .nope{font:700 13px var(--body);color:var(--no);white-space:nowrap}
+.plans li.off{background:var(--sunk)}
+.note{border-left:3px solid var(--gold);background:var(--gold-bg);border-radius:0 10px 10px 0;padding:10px 12px;font-size:14px;margin:12px 0 0}
+ol.terms{margin:0;padding-left:22px;display:grid;gap:10px;font-size:15px}
+ol.terms b{display:block}
+.open{color:var(--gold);font-weight:700}
+.track{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.track div{border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.track span{display:block;font:600 12px var(--body);color:var(--muted)}
+.track b{font:700 19px var(--display);font-variant-numeric:tabular-nums}
+.sign{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;font-size:13px;color:var(--muted)}
+.sign div{border-top:1.5px solid var(--ink);padding-top:6px}
+footer{font-size:12.5px;color:var(--muted);text-align:center;margin-top:18px}
+@media (min-width:640px){h1{font-size:38px}.wrap{padding:0 24px 72px}section{padding:24px}.tile b{font-size:26px}.track{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media print{body{background:#fff}section{break-inside:avoid;border-color:#ccc}.ctl,.tip{display:none}}
+/* ---- the animation: always dark, portrait-first, plays by itself ---- */
+#stage{position:relative;min-height:100vh;min-height:100svh;display:grid;grid-template-rows:auto 1fr auto;background:radial-gradient(120% 70% at 50% -10%,#1B3556 0%,#0A1A2E 55%,#06101D 100%);color:#F2F6FA;overflow:hidden;--gold:#E2C98C;--sky:#8EC0E6;--dim:#A9BACB}
+#stage::before{content:"";position:absolute;inset:-20%;background:radial-gradient(40% 30% at 80% 20%,rgba(226,201,140,.10),transparent 70%),radial-gradient(45% 35% at 15% 85%,rgba(142,192,230,.10),transparent 70%);animation:stDrift 14s ease-in-out infinite alternate;pointer-events:none}
+@keyframes stDrift{to{transform:translate(3%,-2%) scale(1.06)}}
+.st-top{position:relative;display:flex;align-items:center;justify-content:center;gap:10px;padding:20px 16px 0;font:700 13px var(--body);letter-spacing:.3px;color:#D5E0EA}
+.st-top img{width:36px;height:36px;object-fit:contain}
+.st-top i{font-style:normal;color:var(--gold)}
+.st-mid{position:relative}
+.sc{position:absolute;inset:0;max-width:520px;margin:0 auto;background:none;border:0;border-radius:0;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:20px 22px;opacity:0;visibility:hidden;transform:translateY(18px) scale(.985);transition:opacity .45s ease,transform .6s cubic-bezier(.2,.8,.2,1),visibility 0s .45s}
+.sc.on{opacity:1;visibility:visible;transform:none;transition:opacity .5s ease,transform .6s cubic-bezier(.2,.8,.2,1)}
+.sc.out{transform:translateY(-16px) scale(.985)}
+#stage [data-step]{opacity:0;transform:translateY(14px);transition:opacity .45s ease,transform .5s cubic-bezier(.2,.8,.2,1)}
+#stage [data-step].in{opacity:1;transform:none}
+.eyebrow{font:700 12px var(--body);letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin:0 0 12px}
+#stage h1{font:700 34px/1.15 var(--display);margin:0;color:#fff;letter-spacing:-.2px}
+#stage h1 i{font-style:normal;color:var(--gold);padding:0 4px}
+#stage h2{font:700 27px/1.2 var(--display);margin:0 0 18px;color:#fff}
+#stage p{margin:12px 0 0;color:var(--dim);font-size:16px}
+#stage p b{color:#fff}
+.pop{list-style:none;margin:0;padding:0;display:grid;gap:10px;width:100%}
+.pop li{display:flex;align-items:center;gap:12px;text-align:left;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);border-radius:14px;padding:13px 14px;font:600 16px/1.3 var(--body);color:#fff}
+.pop svg{flex:none;width:26px;height:26px;fill:none;stroke:var(--gold);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.huge{display:block;font:700 128px/1 var(--display);color:var(--gold);letter-spacing:-3px;font-variant-numeric:tabular-nums;text-shadow:0 0 40px rgba(226,201,140,.35)}
+.chips{list-style:none;margin:18px 0 0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.chips li{border:1px solid rgba(226,201,140,.5);color:var(--gold);border-radius:999px;padding:7px 13px;font:700 13px var(--body)}
+.gchart{width:100%;margin:0 0 14px}
+.gchart svg{display:block;width:100%;height:auto;overflow:visible}
+.gchart rect{fill:var(--sky);transform-box:fill-box;transform-origin:50% 100%;transform:scaleY(0);transition:transform .32s cubic-bezier(.2,.8,.2,1)}
+.gchart rect.up{transform:scaleY(1)}
+.gchart rect.now{fill:var(--gold)}
+.gchart line{stroke:rgba(255,255,255,.14);stroke-width:1}
+.read{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:100%}
+.read div{background:rgba(255,255,255,.06);border-radius:12px;padding:10px 6px}
+.read span{display:block;font:600 11px/1.3 var(--body);color:var(--dim)}
+.read b{display:block;font:700 21px/1.2 var(--display);color:#fff;font-variant-numeric:tabular-nums;margin-top:2px}
+.read .lead b{color:var(--gold)}
+.mo{font:700 13px var(--body);letter-spacing:1.5px;text-transform:uppercase;color:var(--sky);margin:0 0 10px;font-variant-numeric:tabular-nums}
+.led{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:16px;padding:14px;text-align:left}
+.led-who{display:flex;align-items:center;gap:12px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.10)}
+.led-who .av{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--gold);color:#0A1A2E;font:700 20px var(--display)}
+.led-who b{display:block;font:700 17px var(--body);color:#fff}
+.led-who small{display:block;color:var(--dim);font-size:12.5px}
+.led-rows{list-style:none;margin:0;padding:0;height:232px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end}
+.led-rows li{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.07);font:600 14px var(--body);color:#E3EBF2;animation:ledIn .45s cubic-bezier(.2,.8,.2,1) both}
+.led-rows li>span:last-child{font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right;color:#fff}
+.led-rows li.minus>span:last-child{color:#F2A093}
+/* the three states a share moves through: always named, never colour alone */
+.chip{display:inline-block;font:700 10.5px/1 var(--body);font-style:normal;letter-spacing:.6px;text-transform:uppercase;border-radius:999px;padding:4px 8px;vertical-align:2px;margin-left:4px;transition:background-color .4s ease,color .4s ease}
+.chip.pend{background:rgba(242,184,75,.18);color:#F2B84B}
+.chip.ready{background:rgba(142,192,230,.18);color:#8EC0E6}
+.chip.paid{background:rgba(127,214,166,.18);color:#7FD6A6}
+.chip.rev{background:rgba(242,160,147,.16);color:#F2A093}
+.led-rows .chip{display:block;margin:4px 0 0;text-align:center}
+.led-rows li.flip{animation:ledFlip .7s ease}
+@keyframes ledFlip{30%{background:rgba(255,255,255,.09)}}
+.bal{display:grid;grid-template-columns:1fr 18px 1fr 18px 1fr;align-items:center;gap:4px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.10)}
+.bal div{border-radius:12px;padding:9px 4px;text-align:center;background:rgba(255,255,255,.05);border:1px solid transparent;transition:border-color .35s ease,background-color .35s ease}
+.bal span{display:block;font:700 10.5px var(--body);letter-spacing:.8px;text-transform:uppercase}
+.bal b{display:block;font:700 18px/1.25 var(--display);color:#fff;font-variant-numeric:tabular-nums}
+.bal .pend span{color:#F2B84B}.bal .ready span{color:#8EC0E6}.bal .paid span{color:#7FD6A6}
+.bal div.hit{background:rgba(255,255,255,.11)}
+.bal .pend.hit{border-color:#F2B84B}.bal .ready.hit{border-color:#8EC0E6}.bal .paid.hit{border-color:#7FD6A6}
+.bal-arrow{width:18px;height:18px;fill:none;stroke:#6F8399;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#stage p.say{min-height:2.9em;margin-top:14px;font:600 16px/1.4 var(--body);color:#fff;transition:opacity .3s ease}
+#stage p.say.swap{opacity:0}
+.flow{list-style:none;margin:0;padding:0;width:100%;text-align:left;display:grid;gap:0}
+.flow li{position:relative;display:flex;gap:14px;padding:0 0 18px}
+.flow li:last-child{padding-bottom:0}
+.flow i{flex:none;width:16px;height:16px;border-radius:50%;margin-top:3px;background:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.12);position:relative;z-index:1}
+.flow li::before{content:"";position:absolute;left:7px;top:10px;bottom:-10px;width:2px;background:rgba(255,255,255,.16)}
+.flow li:last-child::before{display:none}
+.flow .pend i{background:#F2B84B;box-shadow:0 0 0 4px rgba(242,184,75,.2)}
+.flow .ready i{background:#8EC0E6;box-shadow:0 0 0 4px rgba(142,192,230,.2)}
+.flow .paid i{background:#7FD6A6;box-shadow:0 0 0 4px rgba(127,214,166,.2)}
+.flow b{display:block;font:700 16.5px/1.3 var(--body);color:#fff}
+.flow small{display:block;color:var(--dim);font-size:14px;margin-top:2px}
+.led-rows small{display:block;color:var(--dim);font-weight:500;font-size:12px}
+@keyframes ledIn{from{opacity:0;transform:translateY(16px)}}
+.checks{list-style:none;margin:0;padding:0;display:grid;gap:12px;width:100%;text-align:left}
+.checks li{display:flex;gap:12px;align-items:flex-start;font:600 16px/1.35 var(--body);color:#fff}
+.checks li small{display:block;font-weight:500;color:var(--dim);font-size:13.5px}
+.checks svg{flex:none;width:24px;height:24px;margin-top:1px;fill:none;stroke:#7FD6A6;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.st-acts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+.st-acts button{min-height:46px;padding:0 18px;border-radius:999px;border:1.5px solid rgba(255,255,255,.3);background:none;color:#fff;font:700 14px var(--body);cursor:pointer}
+.st-acts button.main{background:var(--gold);border-color:var(--gold);color:#0A1A2E}
+.st-foot{position:relative;padding:0 16px 14px;text-align:center;font:500 11px var(--body);color:#7F93A8}
+.st-bar{height:3px;border-radius:3px;background:rgba(255,255,255,.12);margin:0 0 10px;overflow:hidden}
+.st-bar i{display:block;height:100%;width:0;background:var(--gold);border-radius:3px}
+.for{margin:0 0 8px;font:600 14px var(--body);color:var(--muted)}
+.for b{color:var(--ink)}
+@media (min-width:640px){#stage h1{font-size:44px}.huge{font-size:160px}}
+@media (prefers-reduced-motion:reduce){#stage::before{animation:none}.sc,#stage [data-step],.gchart rect{transition:none}.led-rows li{animation:none}}
+@media print{#stage{display:none}}
+</style>
+</head>
+<body>
+<main id="stage" aria-label="Partnership proposal from MD Fit: a short animation">
+  <div class="st-top"><img src="assets/logo.webp" alt="" width="36" height="36"><span>MD Fit</span><i>×</i><span data-partner-cap>Your studio</span></div>
+  <div class="st-mid">
+    <section class="sc" data-ms="3200">
+      <span class="eyebrow" data-step>Partnership proposal</span>
+      <h1 data-step>MD Fit <i>×</i> <span data-partner-cap>Your studio</span></h1>
+      <p data-step data-if-contact hidden>Prepared for <b data-contact></b></p>
+    </section>
+    <section class="sc" data-ms="4600">
+      <h2 data-step>What your members get</h2>
+      <ul class="pop">
+        <li data-step><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6M7 6v12M17 6v12M21 9v6M7 12h10"/></svg>Dr. Jared's programs, built by a physician</li>
+        <li data-step><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>A pain tool that shows what is likely behind it</li>
+        <li data-step><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18a4.5 4.5 0 0 1-.6-9A5.5 5.5 0 0 1 17 7.6 4 4 0 0 1 18 18z"/></svg>Solomon, a guide in their pocket</li>
+      </ul>
+    </section>
+    <section class="sc" data-ms="4600" data-sc="offer">
+      <span class="eyebrow" data-step>What <span data-partner>your studio</span> earns</span>
+      <b class="huge" data-step><span id="n-rate">0</span>%</b>
+      <p data-step>of every subscription payment your members make</p>
+      <ul class="chips"><li data-step>every month</li><li data-step>for as long as they stay</li><li data-step>no cut-off</li></ul>
+    </section>
+    <section class="sc" data-ms="8800" data-gap="1150" data-sc="flow">
+      <h2 data-step>One payment, start to finish</h2>
+      <ol class="flow">
+        <li data-step><i></i><div><b>A member joins with your link</b><small>Membership · <span id="f-price">$19.95</span> a month</small></div></li>
+        <li data-step class="pend"><i></i><div><b>Their payment lands <em class="chip pend">Pending</em></b><small>Your <span data-rate>5</span>% shows at once: <span id="f-share">$1.00</span></small></div></li>
+        <li data-step class="ready"><i></i><div><b>7 days later <em class="chip ready">Ready</em></b><small>The hold ends. It is yours.</small></div></li>
+        <li data-step class="paid"><i></i><div><b>On the 1st <em class="chip paid">Paid</em></b><small>Sent to your bank through Stripe</small></div></li>
+        <li data-step><i></i><div><b>Next month they pay again</b><small>And so do we, every month they stay</small></div></li>
+      </ol>
+    </section>
+    <section class="sc" data-ms="19800" data-sc="account">
+      <p class="mo" data-step id="a-day">Mar 3</p>
+      <div class="led" data-step>
+        <div class="led-who"><span class="av" id="l-av">P</span><div><b id="l-name">Account holder</b><small>Account holder · <span data-partner-cap>Your studio</span></small></div></div>
+        <div class="bal" aria-hidden="true">
+          <div class="pend"><span>Pending</span><b id="a-pend">$0.00</b></div><svg class="bal-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 7l5 5-5 5"/></svg>
+          <div class="ready"><span>Ready</span><b id="a-ready">$0.00</b></div><svg class="bal-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 7l5 5-5 5"/></svg>
+          <div class="paid"><span>Paid</span><b id="a-paid">$0.00</b></div>
+        </div>
+        <ul class="led-rows" id="a-rows" aria-hidden="true"></ul>
+      </div>
+      <p class="say" data-step id="a-say"></p>
+      <p data-step style="font-size:12.5px;margin-top:8px">Example entries. Counts, plans and amounts only: never a name, never health information.</p>
+    </section>
+    <section class="sc" data-ms="9800" data-sc="grow">
+      <h2 data-step>It builds every month</h2>
+      <p class="mo" data-step id="g-mo">Month 1</p>
+      <div class="gchart" data-step id="g-chart"></div>
+      <div class="read" data-step>
+        <div><span>Subscribed</span><b id="g-act">0</b></div>
+        <div class="lead"><span>That month</span><b id="g-earn">$0</b></div>
+        <div><span>Paid so far</span><b id="g-paid">$0</b></div>
+      </div>
+      <p data-step id="g-cap" style="font-size:13px"></p>
+    </section>
+    <section class="sc" data-ms="6400">
+      <h2 data-step>Simple, and clean</h2>
+      <ul class="checks">
+        <li data-step><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><div>Paid on the 1st of every month<small>Straight to your bank, through Stripe</small></div></li>
+        <li data-step><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><div>Your own link, code and live ledger<small>Every payment shows the moment it clears</small></div></li>
+        <li data-step><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><div>Refunds come off by themselves<small>Nothing to reconcile</small></div></li>
+        <li data-step><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><div>Medical care never earns a share<small>Subscriptions only. That keeps both of us on the right side of Florida law.</small></div></li>
+      </ul>
+    </section>
+    <section class="sc" data-ms="0" data-sc="close">
+      <span class="eyebrow" data-step>MD Fit <span style="padding:0 4px">×</span> <span data-partner-cap>Your studio</span></span>
+      <h1 data-step>Let's build it together.</h1>
+      <p data-step>Dr. Jared Caban · MD Fit, Sarasota<br><b>941-313-0562</b> · mymdfit.com</p>
+      <div class="st-acts" data-step><button type="button" id="st-replay">Replay</button><button type="button" class="main" id="st-full">Read the full terms</button></div>
+    </section>
+  </div>
+  <div class="st-foot"><div class="st-bar"><i id="st-prog"></i></div>A proposal from MD Fit. Figures are examples, not a promise of earnings.</div>
+</main>
+<div class="wrap" id="full" hidden>
+  <header class="top"><img src="assets/logo.webp" alt="MD Fit" width="44" height="44"><span class="draft">Draft for discussion</span></header>
+
+  <p class="for" data-if-partner hidden>Proposal for <b data-partner-cap></b><span data-if-contact hidden> · account holder <b data-contact></b></span></p>
+  <h1>Send your people to MD Fit. Earn every month they stay.</h1>
+  <p class="lede">Your community gets Dr. Jared's programs, the pain tool and Solomon in their pocket. You earn <b><span data-rate>5</span>% of every subscription payment</b> they make, for as long as they stay subscribed. Not a one-time bounty: it comes back every month, and it grows with each person who joins.</p>
+
+  <section aria-labelledby="h-calc">
+    <span class="kicker">Your numbers</span>
+    <h2 id="h-calc">What it adds up to</h2>
+    <p class="sub">Move the sliders to match your community. Everything here is an estimate worked out on this page.</p>
+
+    <div class="tiles" aria-live="polite">
+      <div class="tile"><span>Month 1</span><b id="t-m1">$0</b></div>
+      <div class="tile lead"><span>Month 12, every month</span><b id="t-m12">$0</b></div>
+      <div class="tile"><span>Paid to you in year one</span><b id="t-y1">$0</b></div>
+    </div>
+
+    <div class="chart" id="chart" role="img" aria-label="Estimated commission each month over two years"></div>
+    <p class="how" id="how"></p>
+    <details><summary>See the numbers as a table</summary><div id="tbl"></div></details>
+
+    <div class="ctl" style="margin-top:18px">
+      <div class="row"><label for="c-size">People in your community <output id="o-size"></output></label>
+        <input id="c-size" type="range" min="50" max="2000" step="10" value="500"></div>
+      <div class="row"><label for="c-new">Who subscribe each month <output id="o-new"></output></label>
+        <input id="c-new" type="range" min="1" max="100" step="1" value="20"><small id="s-new"></small></div>
+      <div class="row"><label for="c-mix">Choosing Accountability over Membership <output id="o-mix"></output></label>
+        <input id="c-mix" type="range" min="0" max="100" step="5" value="30"><small id="s-mix"></small></div>
+      <div class="row"><label for="c-churn">Who cancel in a given month <output id="o-churn"></output></label>
+        <input id="c-churn" type="range" min="0" max="20" step="1" value="5"></div>
+      <div class="row"><label id="l-rate">Your share <output id="o-rate"></output></label>
+        <div class="seg" role="group" aria-labelledby="l-rate"><button type="button" data-set-rate="5" aria-pressed="true">5%</button><button type="button" data-set-rate="10" aria-pressed="false">10%</button></div>
+        <small>The rate is fixed in the signed agreement. Both are shown here so we can talk it through.</small></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-plans">
+    <span class="kicker">What earns</span>
+    <h2 id="h-plans">Subscriptions, every month</h2>
+    <p class="sub">You earn on what a member you referred actually pays for these plans, each time they are charged.</p>
+    <ul class="plans" id="plans"></ul>
+    <p class="note">Plans and services that are care from Dr. Jared do not earn a share. Florida law does not allow a healthcare provider to pay for patient referrals, whatever the payment is called, so that line is built into the system and cannot be switched on by mistake.</p>
+  </section>
+
+  <section aria-labelledby="h-track">
+    <span class="kicker">How it is tracked</span>
+    <h2 id="h-track">Your own link, your own ledger</h2>
+    <p class="sub">You get one link and one code. Anyone who signs up with either is yours from then on, and every payment they make shows on your ledger the moment it clears. This is what month 12 would look like with the numbers above:</p>
+    <div class="track" aria-label="Example of a partner's ledger at month 12">
+      <div><span>Signed up through you</span><b id="k-joined">0</b></div>
+      <div><span>Still subscribed</span><b id="k-active">0</b></div>
+      <div><span>Earned this month</span><b id="k-month">$0</b></div>
+      <div><span>Paid to you so far</span><b id="k-paid">$0</b></div>
+    </div>
+    <p class="how">You see counts, plans, dates and amounts. You never see anyone's health information, and MD Fit never asks you for it.</p>
+  </section>
+
+  <section aria-labelledby="h-terms">
+    <span class="kicker">The agreement</span>
+    <h2 id="h-terms">Terms in plain words</h2>
+    <p class="sub">A draft. Items marked <span class="open">to agree</span> are open until both sides sign.</p>
+    <ol class="terms" id="terms"></ol>
+    <div class="sign"><div id="sign-partner">Partner · name, date</div><div>MD Fit · Dr. Jared Caban, date</div></div>
+  </section>
+
+  <footer>Draft for discussion. Not an offer until signed by both parties. Figures are estimates, not a promise of earnings.<br>MD Fit · Sarasota, Florida</footer>
+</div>
+
+<script>
+(() => {
+  "use strict";
+  // Kept in step with the app's own settings (mdfit-backend lib/content.js tiers, lib/affiliates.js)
+  const PLANS = [
+    { id: "member", name: "Membership", price: 19.95, earns: true, what: "Every program, the lecture library, Solomon" },
+    { id: "accountability", name: "Accountability Membership", price: 29.95, earns: true, what: "Drops $1 for each active day; you earn on what they pay" },
+    { id: "expert", name: "Expert Advice", price: 50, earns: false, what: "Direct messages with Dr. Jared" },
+    { id: "premium", name: "Premium 1-on-1", price: 200, earns: false, what: "Remote sessions with Dr. Jared" },
+    { id: "premium-plus", name: "Premium Plus", price: 349, earns: false, what: "More sessions, priority scheduling" }
+  ];
+  const TERMS = { holdDays: 7, minPayout: 25, months: 24 };
+  const $ = (s) => document.querySelector(s);
+  const usd = (n, d) => "$" + Number(n).toLocaleString("en-US", { minimumFractionDigits: d ? 2 : 0, maximumFractionDigits: d ? 2 : 0 });
+  // Who this copy is for, from the link. Plain text only, never stored.
+  const Q = new URLSearchParams(location.search);
+  const clean = (v, n) => String(v || "").replace(/[^\p{L}\p{N} .,&'\u2019-]/gu, "").replace(/\s+/g, " ").trim().slice(0, n);
+  const FOR = window.MDFIT_PROPOSAL || {}; // set only in a copy prepared for one partner (scripts/referral-for.js)
+  const PARTNER = clean(Q.get("partner") || FOR.partner, 48), CONTACT = clean(Q.get("contact") || FOR.contact, 32);
+  const num = (k, lo, hi) => { const v = Number(Q.get(k)); return Q.get(k) !== null && Number.isFinite(v) && v >= lo && v <= hi ? v : null; };
+  let rate = num("rate", 5, 10) === 10 ? 10 : 5;
+  { const a = num("size", 50, 2000), b = num("new", 1, 100); if (a) $("#c-size").value = a; if (b) $("#c-new").value = b; }
+  document.querySelectorAll("[data-partner]").forEach((e) => (e.textContent = PARTNER || "your studio"));
+  document.querySelectorAll("[data-partner-cap]").forEach((e) => (e.textContent = PARTNER || "Your studio"));
+  document.querySelectorAll("[data-contact]").forEach((e) => (e.textContent = CONTACT));
+  document.querySelectorAll("[data-if-contact]").forEach((e) => (e.hidden = !CONTACT));
+  document.querySelectorAll("[data-if-partner]").forEach((e) => (e.hidden = !PARTNER));
+  if (PARTNER) { document.title = `MD Fit × ${PARTNER}: partnership proposal`; $("#sign-partner").textContent = `${PARTNER}${CONTACT ? " · " + CONTACT : ""}, date`; }
+
+  // One month at a time: last month's members who stayed, plus this month's new ones, each paying their plan
+  function model() {
+    const size = +$("#c-size").value, mix = +$("#c-mix").value / 100, churn = +$("#c-churn").value / 100;
+    const perMonth = Math.min(+$("#c-new").value, size);
+    const blended = PLANS[0].price * (1 - mix) + PLANS[1].price * mix;
+    const rows = []; let active = 0, joined = 0, paid = 0;
+    for (let m = 1; m <= TERMS.months; m++) {
+      const fresh = Math.max(0, Math.min(perMonth, size - joined)); // nobody joins twice
+      active = active * (1 - churn) + fresh; joined += fresh;
+      const earn = active * blended * rate / 100; paid += earn;
+      rows.push({ m, fresh, active, joined, earn, paid });
+    }
+    return { size, mix, churn, perMonth, blended, rows };
+  }
+
+  function chart(rows) {
+    // drawn at the size it is shown, so the labels stay readable on a phone
+    const W = Math.max(280, Math.round($("#chart").clientWidth || 720)), H = W < 500 ? 230 : 300, L = 46, R = 8, T = 22, B = 28, iw = W - L - R, ih = H - T - B;
+    const max = Math.max(1, ...rows.map((r) => r.earn));
+    // a round number just above the tallest bar, three even steps
+    const step = [1, 2, 2.5, 5, 10].map((k) => k * Math.pow(10, Math.floor(Math.log10(max / 3)))).find((s) => s * 3 >= max) || max / 3, top = step * 3;
+    const slot = iw / rows.length, bw = Math.max(4, slot - 2), y = (v) => T + ih - (v / top) * ih;
+    let s = `<svg viewBox="0 0 ${W} ${H}" aria-hidden="true">`;
+    for (let i = 0; i <= 3; i++) { const v = step * i; s += `<line class="grid" x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}"/><text class="ax" x="${L - 6}" y="${y(v) + 4}" text-anchor="end">${usd(v)}</text>`; }
+    rows.forEach((r, i) => { const x = L + slot * i + 1, h = Math.max(1, T + ih - y(r.earn)), rr = Math.min(4, bw / 2, h);
+      s += `<path class="bar" data-i="${i}" d="M${x} ${T + ih}V${y(r.earn) + rr}q0-${rr} ${rr}-${rr}h${bw - 2 * rr}q${rr} 0 ${rr} ${rr}V${T + ih}z"/>`;
+      if (r.m === 1 || r.m % 6 === 0) s += `<text class="ax" x="${x + bw / 2}" y="${H - 8}" text-anchor="middle">${r.m === 1 ? "Month 1" : r.m}</text>`; });
+    const last = rows[rows.length - 1]; s += `<text class="lbl" x="${W - R}" y="${y(last.earn) - 6}" text-anchor="end">${usd(last.earn)}/mo</text>`;
+    // a tall invisible column over each bar, so a thumb does not have to hit the bar itself
+    rows.forEach((r, i) => { s += `<rect data-i="${i}" x="${L + slot * i}" y="${T}" width="${slot}" height="${ih}" fill="transparent"/>`; });
+    $("#chart").innerHTML = s + `</svg><div class="tip" hidden></div>`;
+    const tip = $("#chart .tip"), svg = $("#chart svg");
+    const show = (i) => { const r = rows[i], k = svg.getBoundingClientRect().width / W;
+      svg.querySelectorAll(".bar").forEach((b) => b.classList.toggle("on", +b.dataset.i === i));
+      tip.innerHTML = `<b>Month ${r.m}: ${usd(r.earn, true)}</b>${Math.round(r.active)} subscribed · ${usd(r.paid)} paid so far`; tip.hidden = false; svg.classList.add("tipping");
+      const half = tip.offsetWidth / 2, x = (L + slot * i + slot / 2) * k;
+      tip.style.left = Math.max(half, Math.min(svg.getBoundingClientRect().width - half, x)) + "px"; tip.style.top = Math.max(tip.offsetHeight, y(r.earn) * k - 8) + "px"; };
+    const hide = () => { tip.hidden = true; svg.classList.remove("tipping"); svg.querySelectorAll(".bar.on").forEach((b) => b.classList.remove("on")); };
+    svg.addEventListener("pointermove", (e) => { const t = e.target.closest("[data-i]"); if (t) show(+t.dataset.i); });
+    svg.addEventListener("pointerdown", (e) => { const t = e.target.closest("[data-i]"); if (t) show(+t.dataset.i); });
+    // a mouse leaving puts it away; after a tap it stays until the next tap somewhere else
+    svg.addEventListener("pointerleave", (e) => { if (e.pointerType === "mouse") hide(); });
+    chart.hide = hide;
+  }
+  document.addEventListener("pointerdown", (e) => { if (chart.hide && !e.target.closest("#chart")) chart.hide(); });
+
+  function draw() {
+    const d = model(), r = d.rows, m12 = r[11];
+    $("#o-size").textContent = d.size.toLocaleString(); $("#o-new").textContent = `${d.perMonth} a month`; $("#o-mix").textContent = Math.round(d.mix * 100) + "%"; $("#o-churn").textContent = Math.round(d.churn * 100) + "%"; $("#o-rate").textContent = rate + "%";
+    $("#s-new").textContent = `That is ${(d.perMonth / d.size * 100).toFixed(d.perMonth / d.size < 0.1 ? 1 : 0)}% of your community each month.`;
+    $("#s-mix").textContent = `Average subscription: ${usd(d.blended, true)} a month.`;
+    document.querySelectorAll("[data-rate]").forEach((e) => (e.textContent = rate));
+    document.querySelectorAll("[data-set-rate]").forEach((b) => b.setAttribute("aria-pressed", String(+b.dataset.setRate === rate)));
+    $("#t-m1").textContent = usd(r[0].earn); $("#t-m12").textContent = usd(m12.earn); $("#t-y1").textContent = usd(m12.paid);
+    $("#k-joined").textContent = Math.round(m12.joined).toLocaleString(); $("#k-active").textContent = Math.round(m12.active).toLocaleString(); $("#k-month").textContent = usd(m12.earn, true); $("#k-paid").textContent = usd(m12.paid);
+    $("#how").textContent = `How it grows: ${d.perMonth} new subscribers a month at an average ${usd(d.blended, true)}, ${Math.round(d.churn * 100)}% cancelling each month, ${rate}% to you. Each month you are paid on everyone still subscribed, not only the new ones.`;
+    chart(r);
+    $("#tbl").innerHTML = `<table><thead><tr><th>Month</th><th>Subscribed</th><th>That month</th><th>Paid so far</th></tr></thead><tbody>${[1, 3, 6, 12, 18, 24].map((m) => r[m - 1]).map((x) => `<tr><td>${x.m}</td><td>${Math.round(x.active)}</td><td>${usd(x.earn, true)}</td><td>${usd(x.paid)}</td></tr>`).join("")}</tbody></table>`;
+    $("#plans").innerHTML = PLANS.map((p) => `<li class="${p.earns ? "" : "off"}"><div><b>${p.name} · ${usd(p.price, true)}/mo</b><small>${p.what}</small></div><span class="${p.earns ? "yes" : "nope"}">${p.earns ? `${rate}% · ${usd(p.price * rate / 100, true)}/mo each` : "Does not earn"}</span></li>`).join("");
+    $("#terms").innerHTML = [
+      ["Your share", `${rate}% of each subscription payment made by a member you referred, on the plans listed above as earning.`],
+      ["It recurs", "You are paid on every monthly payment for as long as that member stays subscribed. There is no cut-off after the first month or the first year."],
+      ...(CONTACT ? [["Account holder", `${CONTACT} holds the partner account${PARTNER ? " for " + PARTNER : ""}: the link, the code and the ledger sit under that sign-in. Payouts go to the bank account the partner connects in Stripe. The partner can name someone else in writing.`]] : []),
+      ["How a referral is counted", "A person is yours when they sign up with your link or your code. The first partner whose link they used keeps them."],
+      ["What you are paid on", "The amount the member actually paid. Discounts, free months and Accountability's daily credits reduce it; sales tax is not part of it."],
+      ["Refunds", `A payment is held for ${TERMS.holdDays} days before it counts. If it is refunded or disputed, the share for that payment is taken back.`],
+      ["When you are paid", `On the 1st of each month, by bank transfer through Stripe, once your balance is ${usd(TERMS.minPayout)} or more. Smaller balances carry over.`],
+      ["Your ledger", "You can see every referral and every payment at any time: counts, plans, dates and amounts. No health information is shared in either direction."],
+      ["What does not earn", "Visits, treatment, massage, invoices for care, and any plan that is access to Dr. Jared. This cannot be changed by agreement."],
+      ["How you may promote it", `Honestly, and to your own community. No medical claims on MD Fit's behalf, no paid ads on MD Fit's name. <span class="open">Wording to agree.</span>`],
+      ["Length and ending it", `<span class="open">To agree:</span> the term, the notice either side gives to end it, and whether members already referred keep earning after it ends.`]
+    ].map(([a, b]) => `<li><b>${a}</b>${b}</li>`).join("");
+  }
+  document.querySelectorAll("input[type=range]").forEach((i) => i.addEventListener("input", draw));
+  document.addEventListener("click", (e) => { const b = e.target.closest("[data-set-rate]"); if (b) { rate = +b.dataset.setRate; draw(); } });
+  let lastW = 0; window.addEventListener("resize", () => { const w = $("#chart").clientWidth; if (w !== lastW) { lastW = w; draw(); } });
+  draw();
+
+  // ---- the animation: seven scenes that play by themselves, then wait on the last one ----
+  const stage = $("#stage"), scenes = [...stage.querySelectorAll(".sc")], prog = $("#st-prog");
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let run = 0;
+  const wait = (ms, id) => new Promise((ok, no) => setTimeout(() => (id === run ? ok() : no(new Error("stopped"))), still ? Math.min(ms, 30) : ms));
+  function count(el, to, ms, fmt, id) { const t0 = performance.now(), from = 0;
+    const step = (t) => { if (id !== run) return; const k = still ? 1 : Math.min(1, (t - t0) / ms), e = 1 - Math.pow(1 - k, 3); el.textContent = fmt(from + (to - from) * e); if (k < 1) requestAnimationFrame(step); };
+    requestAnimationFrame(step); }
+  const whole = (n) => Math.round(n).toLocaleString();
+  function growChart(rows) { const W = 320, H = 150, slot = W / rows.length, max = Math.max(...rows.map((r) => r.earn));
+    $("#g-chart").innerHTML = `<svg viewBox="0 0 ${W} ${H}" aria-hidden="true"><line x1="0" x2="${W}" y1="${H}" y2="${H}"/>${rows.map((r, i) => { const h = Math.max(2, (r.earn / max) * (H - 6)); return `<rect x="${(slot * i + 1.5).toFixed(1)}" y="${(H - h).toFixed(1)}" width="${(slot - 3).toFixed(1)}" height="${h.toFixed(1)}" rx="2.5"/>`; }).join("")}</svg>`; }
+  const scene = {
+    offer: (id) => count($("#n-rate"), rate, 900, whole, id),
+    async grow(id) { const d = model(), bars = [...document.querySelectorAll("#g-chart rect")];
+      $("#g-cap").textContent = `Example: ${d.size.toLocaleString()} members, ${d.perMonth} subscribe each month, ${Math.round(d.churn * 100)}% cancel.`;
+      await wait(900, id);
+      for (const r of d.rows) { const b = bars[r.m - 1]; bars.forEach((x) => x.classList.remove("now")); b.classList.add("up", "now");
+        $("#g-mo").textContent = `Month ${r.m}`; $("#g-act").textContent = whole(r.active); $("#g-earn").textContent = usd(r.earn); $("#g-paid").textContent = usd(r.paid);
+        await wait(r.m < 4 ? 480 : 280, id); } },
+    flow() { const share = PLANS[0].price * rate / 100; $("#f-price").textContent = usd(PLANS[0].price, true); $("#f-share").textContent = usd(share, true); },
+    // The partner's account over one month: payments land as pending, clear after the hold, a refund comes off, the 1st
+    // pays out what is ready, and the next month the same members pay again. Amounts are in cents.
+    async account(id) {
+      const m = Math.round(PLANS[0].price * rate), a = Math.round(PLANS[1].price * rate), list = $("#a-rows"), bal = { pend: 0, ready: 0, paid: 0 };
+      const money = (c) => usd(c / 100, true); list.innerHTML = "";
+      $("#l-av").textContent = (CONTACT || PARTNER || "P").slice(0, 1).toUpperCase(); $("#l-name").textContent = CONTACT || "Account holder";
+      const show = (k) => { const el = $("#a-" + k), from = Number(el.dataset.c || 0), to = bal[k], t0 = performance.now(), box = el.parentNode; el.dataset.c = to;
+        box.classList.add("hit"); setTimeout(() => box.classList.remove("hit"), 700);
+        const step = (t) => { if (id !== run) return; const q = still ? 1 : Math.min(1, (t - t0) / 600); el.textContent = money(from + (to - from) * (1 - Math.pow(1 - q, 3))); if (q < 1) requestAnimationFrame(step); };
+        requestAnimationFrame(step); };
+      ["pend", "ready", "paid"].forEach((k) => { const el = $("#a-" + k); el.dataset.c = 0; el.textContent = money(0); });
+      const WORD = { pend: "Pending", ready: "Ready", paid: "Paid", rev: "Taken back" };
+      const row = (what, sub, cents, state) => { const li = document.createElement("li"); if (cents < 0) li.className = "minus";
+        li.innerHTML = `<span>${what}<small>${sub}</small></span><span>${cents < 0 ? "−" : "+"}${money(Math.abs(cents))}<em class="chip ${state}">${WORD[state]}</em></span>`;
+        list.appendChild(li); while (list.children.length > 4) list.removeChild(list.firstChild); return li; };
+      const flip = (li, state) => { const c = li.querySelector(".chip"); c.className = "chip " + state; c.textContent = WORD[state]; li.classList.remove("flip"); void li.offsetWidth; li.classList.add("flip"); };
+      const move = (from, to, cents) => { bal[from] -= cents; bal[to] += cents; show(from); show(to); };
+      const day = (t) => ($("#a-day").textContent = t);
+      const say = async (t) => { const el = $("#a-say"); el.classList.add("swap"); await wait(220, id); el.textContent = t; el.classList.remove("swap"); };
+      const land = (li, cents) => { bal.pend += cents; show("pend"); return li; };
+      $("#a-say").textContent = ""; day("Mar 3"); await wait(700, id);
+      await say("A member's payment lands. Your share shows at once, as pending.");
+      const r1 = land(row("New subscriber", PLANS[0].name, m, "pend"), m); await wait(1300, id);
+      const r2 = land(row("New subscriber", PLANS[1].name, a, "pend"), a); await wait(1100, id);
+      day("Mar 4"); const r3 = land(row("Monthly renewal", PLANS[0].name, m, "pend"), m); await wait(1000, id);
+      day("Mar 9"); const week = 30 * m + 8 * a; const r4 = land(row("38 more payments", "This week", week, "pend"), week); await wait(1500, id);
+      day("Mar 10"); await say("After 7 days the hold ends. Pending becomes ready."); flip(r1, "ready"); flip(r2, "ready"); move("pend", "ready", m + a); await wait(1500, id);
+      day("Mar 11"); flip(r3, "ready"); move("pend", "ready", m); await wait(1100, id);
+      day("Mar 12"); await say("A refund comes off by itself. Nothing to chase."); row("Refund", PLANS[0].name, -m, "rev"); bal.pend -= m; show("pend"); await wait(1700, id);
+      day("Mar 16"); flip(r4, "ready"); move("pend", "ready", week - m); await wait(1200, id);
+      day("Mar 31"); await say("The rest of the month keeps arriving."); const mid = 54 * m + 20 * a, late = 16 * m + 6 * a;
+      row("74 more payments", "Mar 17 to 24", mid, "ready"); bal.ready += mid; show("ready"); await wait(900, id);
+      land(row("22 more payments", "Mar 25 to 31", late, "pend"), late); await wait(1500, id);
+      day("Apr 1"); await say("On the 1st, everything ready goes to your bank."); const out = bal.ready; row("Payout to your bank", "Stripe transfer", out, "paid"); move("ready", "paid", out); await wait(2300, id);
+      day("Apr 3"); await say("Next month the same members pay again. So do we."); land(row("Monthly renewal", PLANS[0].name, m, "pend"), m); await wait(900, id);
+      land(row("Monthly renewal", PLANS[1].name, a, "pend"), a); },
+  };
+  function reset() { scenes.forEach((s) => { s.classList.remove("on", "out"); s.querySelectorAll("[data-step]").forEach((e) => e.classList.remove("in")); });
+    document.querySelectorAll("#g-chart rect").forEach((b) => b.classList.remove("up", "now")); $("#n-rate").textContent = "0"; prog.style.transition = "none"; prog.style.width = "0"; }
+  async function play() {
+    const id = ++run; reset(); growChart(model().rows);
+    const total = scenes.reduce((n, s) => n + Number(s.dataset.ms), 0) + scenes.length * 250;
+    requestAnimationFrame(() => requestAnimationFrame(() => { prog.style.transition = still ? "none" : `width ${total}ms linear`; prog.style.width = "100%"; }));
+    try {
+      for (const s of scenes) {
+        s.classList.add("on");
+        const steps = [...s.querySelectorAll("[data-step]")]; const gap = Number(s.dataset.gap) || 260;
+        steps.forEach((e, i) => setTimeout(() => { if (id === run) e.classList.add("in"); }, still ? 0 : 180 + i * gap));
+        const t0 = performance.now(), extra = scene[s.dataset.sc]; if (extra) await extra(id);
+        const ms = Number(s.dataset.ms); if (!ms) return; // the last scene stays
+        await wait(Math.max(400, ms - (performance.now() - t0)), id);
+        s.classList.add("out"); s.classList.remove("on"); await wait(250, id);
+      }
+    } catch { /* replayed or left: the newer run carries on */ }
+  }
+  const openFull = (scroll) => { const f = $("#full"); f.hidden = false; draw(); if (scroll) f.scrollIntoView({ behavior: still ? "auto" : "smooth", block: "start" }); };
+  $("#st-replay").addEventListener("click", () => { window.scrollTo(0, 0); play(); });
+  $("#st-full").addEventListener("click", () => openFull(true));
+  // ?rec=1: for a screen recording, the last scene holds without its two buttons
+  if (Q.get("rec") === "1") document.querySelector(".st-acts").remove();
+  if (Q.get("full") === "1") { stage.hidden = true; openFull(false); } else play();
+})();
+</script>
+</body>
+</html>
