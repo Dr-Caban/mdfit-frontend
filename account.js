@@ -3245,11 +3245,11 @@
     const t = todayInTz(), usd = (c) => "$" + (Math.round(c) / 100).toFixed(2).replace(/\.00$/, ""), plan = $("#t3-plan"), a = aff, b = (a && a.balances) || {};
     const paid = b.paidCents || 0, waiting = (b.readyCents || 0) + (b.pendingCents || 0);
     if (paid + waiting > 0) set("plan", usd(paid + waiting), waiting ? `${usd(paid)} paid · ${usd(waiting)} on the way` : `${usd(paid)} paid to you`);
-    else if (a && a.joined) set("plan", "$0", a.referred ? `${a.referred} referred so far` : "Share your link to earn");
-    else if (a && a.enabled) set("plan", `Earn ${Number(a.ratePct)}%`, "of what friends pay");
+    else if (a && a.joined) set("plan", "$0 so far", a.referred ? `${a.referred} referred · ${Number(a.ratePct)}% when they subscribe` : `Share your link: ${Number(a.ratePct)}% in cash`);
+    else if (a && a.enabled) set("plan", `Earn ${Number(a.ratePct)}% cash`, "on every friend's subscription");
     else set("plan", a && a.freeMonth === false ? "Share" : "Free month", a && a.freeMonth === false ? "your code" : "for each friend who joins");
     // Nothing earned yet reads as an invitation ("Refer"), not as money already made
-    $("#t3-plan .t3-k").textContent = paid + waiting > 0 || (a && a.joined) ? "Earned" : "Refer";
+    $("#t3-plan .t3-k").textContent = paid + waiting > 0 || (a && a.joined) ? "Earned" : a && a.enabled ? "Earn" : "Refer";
     plan.dataset.go = "refer";
     const owed = calMoney.find((x) => x.k === "bill" && /^Unpaid/.test(x.s || ""));
     // Rank
