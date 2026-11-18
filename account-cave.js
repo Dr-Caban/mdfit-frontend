@@ -2,7 +2,8 @@
 // rock) with Solomon as the guide who speaks in short sayings of his own; nothing here quotes or names scripture, and
 // there are no religious symbols. The member's program drawn as a dirt road through the mine: one chamber per
 // week (or stage), one stop per session, a gem in the rock at each stop. Done stops are cracked open and lit, today's
-// stop glows with Solomon and his lantern beside it, the rest wait in the dark. Under the road: today's seam (workout,
+// stop glows, the rest wait in the dark. Solomon is not drawn here: the one cloud that follows the member round the app
+// speaks for the mine too (account-solomon.js). Under the road: today's seam (workout,
 // pain check-in, daily goal) and where the road ends (the program's finish and the next gem).
 // The data comes from account.js (MDFitApp.journey()); nothing here is stored or sent.
 //
@@ -11,7 +12,7 @@
 (() => {
   const A = window.MDFitApp, M = window.MDFit; if (!A || !M || !A.journey) return;
   const { $, esc } = M;
-  const ART = { mouth: "/assets/cave/gate.webp", road: "/assets/cave/wall.webp", vault: "/assets/cave/treasury.webp", guide: "/assets/cave/guide.webp", geode: "/assets/cave/geode.webp",
+  const ART = { mouth: "/assets/cave/gate.webp", road: "/assets/cave/wall.webp", vault: "/assets/cave/treasury.webp", geode: "/assets/cave/geode.webp",
     ore: { locked: "/assets/cave/ore-locked.webp", now: "/assets/cave/ore-now.webp", done: "/assets/cave/ore-done.webp" } };
   // The ore photos hold a ruby; each stop's own gem colour comes from turning the hue of a second copy that is masked
   // to the gem alone, so the rock and its gold veins keep their own colour (diamond: colour drained)
@@ -55,25 +56,10 @@
       ? `<svg class="cv-ore-svg" viewBox="0 0 84 84" aria-hidden="true"><path d="M8 52 16 30l18-8 6 34-14 14z" fill="${rock}" stroke="${edge}" stroke-width="2"/><path d="M76 50 68 28 50 22l-6 34 14 14z" fill="${rock}" stroke="${edge}" stroke-width="2"/><path d="M42 18 30 36l12 28 12-28z" fill="${gem}"/><path d="M42 18 30 36h24z" fill="#fff" opacity=".35"/><circle cx="62" cy="64" r="11" fill="#2E9D63" stroke="#0b0d12" stroke-width="3"/><path d="M57 64l4 4 7-8" fill="none" stroke="#fff" stroke-width="3"/></svg>`
       : `<svg class="cv-ore-svg" viewBox="0 0 84 84" aria-hidden="true"><path d="M10 54 20 26l24-12 24 10 8 30-16 18H26z" fill="${rock}" stroke="${edge}" stroke-width="2"/><path d="M20 26l22 14 26-16M42 40l-16 32M42 40l18 32" fill="none" stroke="${edge}" stroke-width="1.5"/><path d="M42 26 32 40l10 20 10-20z" fill="${gem}"/><path d="M42 26 32 40h20z" fill="#fff" opacity="${state === "locked" ? ".08" : ".35"}"/>${state === "locked" ? `<g transform="translate(52 52)"><rect x="0" y="8" width="18" height="13" rx="3" fill="#596273"/><path d="M4 8V5a5 5 0 0 1 10 0v3" fill="none" stroke="#596273" stroke-width="3"/></g>` : ""}</svg>`;
   }
-  const guide = () => (ART.guide ? `<img class="cv-guide-img" src="${esc(ART.guide)}" alt="" width="92" height="92">`
-    : `<svg class="cv-guide-svg" viewBox="0 0 104 96" aria-hidden="true"><path d="M24 58h58a20 20 0 0 0 2-40 26 26 0 0 0-49-6 18 18 0 0 0-11 46z" fill="#fff" stroke="#C8A763" stroke-width="4"/><circle cx="42" cy="38" r="4.5" fill="#C8A763"/><circle cx="56" cy="38" r="4.5" fill="#C8A763"/><circle cx="70" cy="38" r="4.5" fill="#C8A763"/><path d="M52 58v12" stroke="#8C7340" stroke-width="3"/><path d="M30 72h40l10-5 6 3-9 9q-14 12-36 8-11-3-11-15z" fill="#b5713c" stroke="#7a4a24" stroke-width="2.5"/><path class="cv-lamp" d="M84 66q-7-9 0-19 7 10 0 19z" fill="#FFD98A"/></svg>`);
   const crystal = (lit) => `<svg class="cv-cry${lit ? " lit" : ""}" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 7 9l5 13 5-13z"/><path d="M5 12 3 16l4 5zM19 12l2 4-4 5z"/></svg>`;
 
   // "Upper Body — 50-40-30-20-10 (light)" reads "Upper Body" on the road; the full name is on the stop's label for screen readers
   const short = (t) => String(t).split(/\s+[—–-]\s+|\s*\(/)[0].trim() || String(t);
-  // Solomon's own sayings (written for the app, in the manner of old proverbs; none is a quotation)
-  const SAYINGS = ["The patient miner finds the brighter stone.", "Small steps, well kept, move mountains.", "What you build daily, no one can take.",
-    "Strength is gathered, not found.", "A steady hand outlasts a strong one.", "The lamp you tend lights the whole road.", "Dig a little each day and the mountain yields."];
-  const INTRO_SAY = { solomon: "Tap me and ask anything. That's stop one.", pain: "Tell me what hurts, or that nothing does.", program: "Pick a road. I'll walk it with you.",
-    session: "One session. That's all today asks.", friend: "Bring a friend down here and you both gain." };
-  function line(j) {
-    if (j.intro) { const s = j.stops.find((x) => x.state === "now"); return (s && INTRO_SAY[s.ref]) || "Five stops, and your first new gem is yours."; }
-    const now = j.stops.find((s) => s.state === "now"), t = j.today, say = SAYINGS[Math.floor(Date.now() / 864e5) % SAYINGS.length];
-    if (t.workout && t.pain && t.goal) return "Every lamp is lit. Rest now; the road will keep.";
-    if (!t.workout && now) return `${short(now.label)} today. ${say}`;
-    if (!t.pain) return "Good work. Tell me how you feel, and another crystal wakes.";
-    return "One more light to kindle: reach your daily goal.";
-  }
   const flame = `<svg viewBox="0 0 26 34" aria-hidden="true"><path d="M3 24h20l-3 7H6z" fill="#8a5a30"/><path class="cv-flame" d="M13 22q-8-8 0-19 8 11 0 19z" fill="#ffb347"/><path class="cv-flame" d="M13 21q-4-5 0-11 4 6 0 11z" fill="#fff1c2"/></svg>`;
   const pathOf = (all, rowH) => all.map((p, i) => (i ? `C ${all[i - 1][0]} ${all[i - 1][1] + rowH / 2}, ${p[0]} ${p[1] - rowH / 2}, ${p[0]} ${p[1]}` : `M ${p[0]} ${p[1]}`)).join(" ");
 
@@ -85,15 +71,15 @@
     const sig = JSON.stringify(j); if (sig === lastSig && card.firstChild) return; lastSig = sig;
     if (!j.program) {
       card.innerHTML = `<div class="cv-mouth${ART.mouth ? " art" : ""}"${ART.mouth ? ` style="${shade(ART.mouth, 0.55, 0.9)}"` : ""}><span class="cv-kicker">The gem mine</span><b class="cv-title">${j.finished ? "You reached the vault" : "Every program is a road of gems"}</b>
-        <p class="cv-sub">${j.finished ? "Every stop on your road is mined. Pick the next program to open a new mine." : "Pick a program and each session becomes a stop on the road down. Solomon carries the lamp."}</p>
+        <p class="cv-sub">${j.finished ? "Every stop on your road is mined. Pick the next program to open a new mine." : "Pick a program and each session becomes a stop on the road down. Solomon walks it with you."}</p>
         <button type="button" class="cv-start" data-goto="programs">Choose a program</button></div>`;
       return;
     }
-    // Today's stop gets room above it (its Start bubble) and below it (Solomon and what he says)
+    // Today's stop gets room above it (its Start bubble)
     const rowH = 112, pts = []; let y = 104;
     // (a long name wraps the Start bubble to three lines; it must stay clear of the label of the stop above)
     const tall = (s) => (short(s.label) + (s.sub ? " · " + s.sub : "")).length > 19;
-    j.stops.forEach((s, i) => { if (s.state === "now") y += i ? (tall(s) ? 82 : 66) : 70; pts.push([X[i % X.length], y]); y += rowH + (s.state === "now" ? (ART.guide ? 92 : 64) : 0); });
+    j.stops.forEach((s, i) => { if (s.state === "now") y += i ? (tall(s) ? 82 : 66) : 70; pts.push([X[i % X.length], y]); y += rowH; });
     const H = y + 96, end = [50, H - 62], all = [...pts, end];
     // (with the gate photo above it, the road starts out of sight under the gate rather than as a loose stub on the wall)
     const from = [50, ART.road ? -40 : 30], d = pathOf([from, ...all], rowH);
@@ -110,7 +96,6 @@
           <button type="button" class="cv-ore${s.state === "done" && fresh.has(s.n) ? " mining" : ""}" ${s.state === "done" && fresh.has(s.n) ? `style="--el:-${((Date.now() - fresh.get(s.n)) / 1000).toFixed(2)}s"` : ""} ${act} aria-label="${esc(s.label)}${s.sub ? ", " + esc(s.sub) : ""}: ${s.state === "done" ? "mined" : s.state === "now" ? "today, start" : s.state === "open" ? "open, 10 XP" : s.state === "passed" ? "skipped, tap to do it" : "not open yet"}">${s.state === "done" && fresh.has(s.n) ? sequence(color) : s.state === "passed" ? ore("locked", color, true) : ore(s.state === "open" ? "now" : s.state, color)}</button>
           ${s.state === "done" ? `<i class="cv-tw t1"></i><i class="cv-tw t2"></i>` : ""}
           ${s.state === "now" ? "" : `<span class="cv-cap">${esc(short(s.label))}${j.intro && s.state === "passed" ? " · skipped" : j.intro && s.state !== "done" ? " · +10 XP" : ""}</span>`}
-          ${s.state === "now" ? `<button type="button" class="cv-guide ${left ? "right" : "left"}" data-solomon aria-label="Solomon says: ${esc(line(j))} Tap to talk to him."><span class="cv-say">${esc(line(j))}</span>${guide()}</button>` : ""}
         </div>`;
     }).join("");
     const chip = (lit, label, attrs = "") => `<button type="button" class="cv-chip${lit ? " lit" : ""}" ${attrs}>${crystal(lit)}<span>${label}</span></button>`;
@@ -148,25 +133,14 @@
     // (real actions earn their own XP too, so Amber often arrives before the last stop)
     if (vault) vault.innerHTML = j.next && j.next.name === "Amber" ? `Finish all five and <b>Amber</b>, your first new gem, is yours.` : `<b>Amber</b> is already yours. Finish the last stops for the XP.`;
   }
-  // One Solomon at a time: while the one in the mine is on screen he is the one to tap, and the floating cloud steps
-  // aside (mdfit-guide.css, html.sol-here). Scroll him away, or leave Home, and the floating cloud is back.
-  let io = null;
-  function watch() {
-    const root = document.documentElement, g = card.hidden ? null : card.querySelector(".cv-guide");
-    if (io) { io.disconnect(); io = null; }
-    if (!g || !window.IntersectionObserver) { root.classList.remove("sol-here"); return; }
-    io = new IntersectionObserver((es) => root.classList.toggle("sol-here", es[es.length - 1].isIntersecting), { rootMargin: "-80px 0px -90px 0px", threshold: 0.6 });
-    io.observe(g);
-  }
   card.addEventListener("click", (e) => {
-    if (e.target.closest("[data-solomon]")) { if (window.MDFitGuide && window.MDFitGuide.open) window.MDFitGuide.open(); return; }
     const b = e.target.closest("[data-cave-start]"); if (b) return A.journeyStart(Number(b.dataset.caveStart));
     const g = e.target.closest("[data-intro-go]"); if (g) return A.introGo(g.dataset.introGo);
     const v = e.target.closest("[data-mine-view]"); if (v) return A.setMineView(v.dataset.mineView);
     const ps = e.target.closest("[data-intro-pass]"); if (ps) return A.introPass(ps.dataset.introPass);
     if (e.target.closest("[data-intro-skip]") && confirm("Skip the intro? You can replay it from Profile.")) A.introSkip();
   });
-  const draw = () => { try { render(); decorate(); } catch { card.hidden = true; } try { watch(); } catch {} };
+  const draw = () => { try { render(); decorate(); } catch { card.hidden = true; } };
   ["mdfit:journey", "mdfit:rewards"].forEach((ev) => document.addEventListener(ev, draw));
   draw();
 })();

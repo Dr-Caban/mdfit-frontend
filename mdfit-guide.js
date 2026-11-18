@@ -128,7 +128,20 @@
     lock: '<svg viewBox="0 0 24 24" class="mg-lock-ic" aria-hidden="true"><path d="M17 9h-1V7a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2zm-7-2a2 2 0 0 1 4 0v2h-4z"/></svg>'
   };
   const btn = document.createElement("button"); btn.id = "mg-btn"; btn.type = "button"; btn.setAttribute("aria-label", "Open Solomon: tap me to talk"); btn.setAttribute("aria-expanded", "false"); btn.setAttribute("aria-controls", "mg"); btn.innerHTML = cloud("") + '<i class="mg-dot" hidden></i>';
-  const tag = document.createElement("span"); tag.id = "mg-tag"; tag.textContent = "Tap me to talk"; tag.setAttribute("aria-hidden", "true");
+  // What he says without being asked rises above the cloud and fades by itself. Tapping it does what it offers (or opens the chat).
+  const tag = document.createElement("button"); tag.id = "mg-tag"; tag.type = "button"; tag.hidden = true;
+  let sayT = 0, sayAct = null;
+  function hush() { clearTimeout(sayT); tag.hidden = true; sayAct = null; btn.classList.remove("mg-talk"); }
+  function speak(text, o) {
+    o = o || {}; text = String(text || "").trim();
+    if (!text || !box.hidden || btn.classList.contains("mg-away")) return false;
+    clearTimeout(sayT); sayAct = typeof o.act === "function" ? o.act : null;
+    tag.textContent = text; tag.setAttribute("aria-label", "Solomon says: " + text); tag.hidden = false;
+    tag.classList.remove("mg-in"); void tag.offsetWidth; tag.classList.add("mg-in"); btn.classList.add("mg-talk");
+    if (o.ms !== 0) sayT = setTimeout(hush, o.ms || Math.min(9500, 3600 + text.length * 60));
+    return true;
+  }
+  tag.addEventListener("click", () => { const act = sayAct; hush(); if (act) { try { act(); } catch {} } else open(true); });
   const scrim = document.createElement("div"); scrim.id = "mg-scrim"; scrim.hidden = true;
   const box = document.createElement("section"); box.id = "mg"; box.hidden = true; box.setAttribute("role", "dialog"); box.setAttribute("aria-label", "Solomon");
   box.innerHTML = `<header class="mg-head"><div class="mg-grab"></div><div class="mg-in">${cloud("mg-mini")}<div class="mg-who"><b>Solomon</b><span>Your MD Fit assistant</span></div>
@@ -207,7 +220,7 @@
     say(again ? "You're out of free Solomon answers for today. Members get unlimited Solomon for $19.95/mo, or come back tomorrow."
       : `You've used today's free Solomon answers, ${first()}. Members get unlimited Solomon for $19.95/mo. You can upgrade now, or I'll be right here tomorrow.`);
     offer([{ label: "Get unlimited Solomon", sub: "$19.95/mo", gold: true, run: () => { tell("upgrade"); if (App.showTier) App.showTier("member"); else App.go("premium"); }, name: "Membership" },
-      { label: "Come back tomorrow", more: () => { tell("tomorrow"); say(`See you tomorrow, ${first()}.`); setTimeout(() => { shut(); tag.textContent = "New answers tomorrow"; tag.hidden = false; dot.hidden = true; }, 1500); } }]);
+      { label: "Come back tomorrow", more: () => { tell("tomorrow"); say(`See you tomorrow, ${first()}.`); setTimeout(() => { shut(); speak("New answers tomorrow", { ms: 6000 }); dot.hidden = true; }, 1500); } }]);
     if (!again) { sys("Always open, limit or not"); offer([opt("pain"), opt("book"), opt("call")]); }
   }
 
@@ -566,7 +579,7 @@
   }
   function open(byHand) {
     if (!box.hidden) return;
-    box.hidden = false; scrim.hidden = !phone(); tag.hidden = true; dot.hidden = true; btn.setAttribute("aria-expanded", "true"); document.documentElement.classList.add("mg-open");
+    hush(); box.hidden = false; scrim.hidden = !phone(); dot.hidden = true; btn.setAttribute("aria-expanded", "true"); document.documentElement.classList.add("mg-open");
     try { localStorage.setItem("mdfit-guide-met", "1"); } catch {}
     if (!greeted) greet(); else news();
     if (!saidOpen) { saidOpen = true; tell("open"); }
@@ -583,11 +596,11 @@
   if (window.visualViewport) { window.visualViewport.addEventListener("resize", fitKeyboard); window.visualViewport.addEventListener("scroll", fitKeyboard); }
   window.matchMedia("(max-width: 720px)").addEventListener("change", () => { if (!box.hidden) { scrim.hidden = !phone(); fitKeyboard(); } });
 
-  // The label steps aside after a moment for someone who has met Solomon before; the cloud keeps breathing
+  // Someone who has not met him yet is invited once; after that what he says depends on where they are (account-solomon.js)
   let met = false; try { met = !!localStorage.getItem("mdfit-guide-met"); } catch {}
-  if (met) setTimeout(() => { if (box.hidden && tag.textContent === "Tap me to talk") tag.hidden = true; }, 7000);
+  if (!met) setTimeout(() => { if (tag.hidden) speak("Tap me to talk", { ms: 7000 }); }, 1200);
   // Out of the way of a full-screen workout, and lifted clear of the app's pop-up notifications
-  const hideFor = () => { const p = document.getElementById("player"), on = !!(p && !p.hidden); btn.classList.toggle("mg-away", on); tag.classList.toggle("mg-away", on); if (on && !box.hidden) shut(); };
+  const hideFor = () => { const p = document.getElementById("player"), on = !!(p && !p.hidden); btn.classList.toggle("mg-away", on); tag.classList.toggle("mg-away", on); if (on) hush(); if (on && !box.hidden) shut(); };
   const player = document.getElementById("player"); if (player && window.MutationObserver) { new MutationObserver(hideFor).observe(player, { attributes: true, attributeFilter: ["hidden"] }); hideFor(); }
   const notifs = document.getElementById("notifs");
   const lift = () => { let px = 0;
@@ -602,5 +615,5 @@
   lift();
 
   load();
-  window.MDFitGuide = { day: dayRows, understand, open: () => open(false), shut, reminders: () => G.reminders.slice() };
+  window.MDFitGuide = { day: dayRows, understand, open: () => open(false), shut, say: speak, hush, speaking: () => !tag.hidden, reminders: () => G.reminders.slice() };
 })();

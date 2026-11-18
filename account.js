@@ -168,6 +168,7 @@
     // Back/forward or a link away from the Pain Tool must not leave its pattern sheet open over the next screen
     if (tab !== "pain") $$("dialog.pm-sheet[open]").forEach((d) => d.close());
     window.scrollTo(0, 0);
+    show.at = tab; try { document.dispatchEvent(new CustomEvent("mdfit:view", { detail: tab })); } catch {}
   }
   const go = (tab) => { if (location.hash !== "#" + tab) history.pushState(null, "", "#" + tab); show(tab); };
   window.addEventListener("hashchange", () => show(location.hash.slice(1)));
@@ -3241,6 +3242,39 @@
   // Phones: three tiles at the top of Home. Earned: their referral commission. Rank: their gem, and their place
   // on the board only once they are past the first gem (a newcomer sees how far the next gem is instead). Next: the one
   // thing to do now. Rank opens the full gem card under the tiles.
+  // The one thing to do now, in order of urgency. The Next tile shows it and Solomon says it (account-solomon.js).
+  function nextUp() {
+    const t = todayInTz(), dues = calMoney.filter((x) => x.k === "bill" && /^Unpaid/.test(x.s || "")), owed = dues[0];
+    const cash = (x) => Number(((String(x.t).match(/\$([\d,]+(?:\.\d+)?)/) || [])[1] || "").replace(/,/g, "")) || 0;
+    const v = nextVisit(), p = patientDocs, docsDue = !!(p && !p.done && v), j = journey(), now = j && j.program && j.stops.find((x) => x.state === "now");
+    const brief = (s) => String(s).split(/\s+[—–-]\s+|\s*\(/)[0].trim() || String(s);
+    if (docsDue) return { kind: "docs", title: "Intake documents", sub: "Due before your visit", due: true, go: "plus" };
+    if (dues.length > 1) { const sum = dues.reduce((n, x) => n + cash(x), 0); return { kind: "invoice", count: dues.length, title: sum ? `$${sum.toFixed(2)} due` : `${dues.length} invoices`, sub: `${dues.length} invoices · tap to pay`, due: true, go: owed.path || "#progress" }; }
+    if (owed) return { kind: "invoice", count: 1, title: (String(owed.t).match(/\$[\d,.]+/) || ["Invoice"])[0] + " invoice", sub: "Tap to pay", due: true, go: owed.path || "#progress" };
+    if (j && j.intro) { const s = j.stops.find((x) => x.state === "now"); return { kind: "intro", ref: s ? s.ref : "", title: s ? s.label : "First descent", sub: "+10 XP · your first descent", go: "mine" }; }
+    if (v && v.date <= addDays(t, 1)) return { kind: "visit", title: v.typeName || "Visit", sub: whenOf(v), go: "plus" };
+    if (now && !j.today.workout) return { kind: "session", title: brief(now.label), sub: "Today's session", go: "mine" };
+    if (v) return { kind: "later", title: v.typeName || "Visit", sub: whenOf(v), go: "plus" };
+    if (j && j.today.workout) return { kind: "done", title: "Workout done", sub: "Nice work today", go: "#progress", today: j.today };
+    return { kind: "ask", title: "Ask Solomon", sub: "for today's workout", go: "solomon" }; // nothing is made ahead of time: Solomon builds it when asked
+  }
+  // Where a "next" leads: the + sheet, the referral card, the mine, Solomon, a tab, or a page
+  function goNext(go2) {
+    if (go2 === "plus") { renderPlus(); $("#plus-sheet").showModal(); }
+    else if (go2 === "refer") { go("profile"); setTimeout(() => { const c = $("#referral-card"); if (!c) return; if (c.classList.contains("lay-fold") && !c.classList.contains("open")) layToggle(c); c.scrollIntoView({ block: "start" }); }, 120); }
+    else if (go2 === "mine") { if ($("#view-home").hidden) go("home"); setTimeout(() => { const c = $("#cave-card"); if (c) c.scrollIntoView({ behavior: "smooth", block: "start" }); }, 60); }
+    else if (go2 === "solomon") { if (window.MDFitGuide && window.MDFitGuide.open) window.MDFitGuide.open(); else go("generate"); }
+    else if (go2.startsWith("#")) go(go2.slice(1));
+    else if (go2) location.href = go2;
+  }
+  // What Solomon may mention without being asked: all of it is already on the member's own screens
+  function guideFacts() {
+    const t = todayInTz(), from = addDays(t, -6), r = reward, a = aff;
+    return { first: String((client && client.name) || "").trim().split(/\s+/)[0] || "",
+      week: allWorkouts.filter((w) => w.date >= from && w.date <= t).length,
+      gem: r && r.rank ? r.rank.current.name : "", toNext: r && r.rank && r.rank.next ? { xp: r.rank.xpToNext, name: r.rank.next.name } : null,
+      refer: a && a.enabled ? { pct: Number(a.ratePct) || 0 } : null };
+  }
   function renderTop() {
     const box = $("#top3"); if (!box || !client) return;
     const set = (id, v, s, due) => { $(`#t3-${id}-v`).textContent = v; $(`#t3-${id}-s`).textContent = s; $(`#t3-${id}`).classList.toggle("due", !!due); };
@@ -3254,8 +3288,6 @@
     // Nothing earned yet reads as an invitation ("Refer"), not as money already made
     $("#t3-plan .t3-k").textContent = paid + waiting > 0 || (a && a.joined) ? "Earned" : a && a.enabled ? "Earn" : "Refer";
     plan.dataset.go = "refer";
-    const dues = calMoney.filter((x) => x.k === "bill" && /^Unpaid/.test(x.s || "")), owed = dues[0];
-    const cash = (x) => Number(((String(x.t).match(/\$([\d,]+(?:\.\d+)?)/) || [])[1] || "").replace(/,/g, "")) || 0;
     // Rank
     const r = reward;
     if (r && r.rank) { const o = r.overall, nx = r.rank.next, placed = r.xp > 50 && o && o.rank && !o.hidden;
@@ -3264,17 +3296,8 @@
       set("rank", r.rank.current.name, placed ? `#${o.rank} · ${r.xp.toLocaleString()} XP` : nx ? `${r.xp} XP · ${r.rank.xpToNext} to ${nx.name}` : `${r.xp.toLocaleString()} XP`); }
     else set("rank", "Peridot", "Earn XP to climb");
     // Next
-    const v = nextVisit(), p = patientDocs, docsDue = !!(p && !p.done && v), j = journey(), now = j && j.program && j.stops.find((x) => x.state === "now"), next = $("#t3-next");
-    const brief = (s) => String(s).split(/\s+[—–-]\s+|\s*\(/)[0].trim() || String(s);
-    if (docsDue) { set("next", "Intake documents", "Due before your visit", true); next.dataset.go = "plus"; }
-    else if (dues.length > 1) { const sum = dues.reduce((n, x) => n + cash(x), 0); set("next", sum ? `$${sum.toFixed(2)} due` : `${dues.length} invoices`, `${dues.length} invoices · tap to pay`, true); next.dataset.go = owed.path || "#progress"; }
-    else if (owed) { set("next", (String(owed.t).match(/\$[\d,.]+/) || ["Invoice"])[0] + " invoice", "Tap to pay", true); next.dataset.go = owed.path || "#progress"; }
-    else if (j && j.intro) { const s = j.stops.find((x) => x.state === "now"); set("next", s ? s.label : "First descent", "+10 XP · your first descent"); next.dataset.go = "mine"; }
-    else if (v && v.date <= addDays(t, 1)) { set("next", v.typeName || "Visit", whenOf(v)); next.dataset.go = "plus"; }
-    else if (now && !j.today.workout) { set("next", brief(now.label), "Today's session"); next.dataset.go = "mine"; }
-    else if (v) { set("next", v.typeName || "Visit", whenOf(v)); next.dataset.go = "plus"; }
-    else if (j && j.today.workout) { set("next", "Workout done", "Nice work today"); next.dataset.go = "#progress"; }
-    else { set("next", "Ask Solomon", "for today's workout"); next.dataset.go = "solomon"; } // nothing is made ahead of time: Solomon builds it when asked
+    const nx = nextUp(), next = $("#t3-next");
+    set("next", nx.title, nx.sub, nx.due); next.dataset.go = nx.go;
     // A newcomer is welcomed, not welcomed back
     const hello = $("#view-home .hello"); if (hello) hello.textContent = !allWorkouts.length && (!r || r.xp <= 10) ? "Welcome" : "Welcome back";
     box.hidden = false;
@@ -3282,13 +3305,7 @@
   document.addEventListener("click", (e) => {
     const b = e.target.closest(".t3"); if (!b) return;
     if (b.id === "t3-rank") { const open = $("#view-home").classList.toggle("gem-open"); b.setAttribute("aria-expanded", String(open)); return; }
-    const go2 = b.dataset.go || "";
-    if (go2 === "plus") { renderPlus(); $("#plus-sheet").showModal(); }
-    else if (go2 === "refer") { go("profile"); setTimeout(() => { const c = $("#referral-card"); if (!c) return; if (c.classList.contains("lay-fold") && !c.classList.contains("open")) layToggle(c); c.scrollIntoView({ block: "start" }); }, 120); }
-    else if (go2 === "mine") { const c = $("#cave-card"); if (c) c.scrollIntoView({ behavior: "smooth", block: "start" }); }
-    else if (go2 === "solomon") { if (window.MDFitGuide && window.MDFitGuide.open) window.MDFitGuide.open(); else go("generate"); }
-    else if (go2.startsWith("#")) go(go2.slice(1));
-    else if (go2) location.href = go2;
+    goNext(b.dataset.go || "");
   });
   ["mdfit:rewards", "mdfit:journey"].forEach((ev) => document.addEventListener(ev, () => { try { renderTop(); } catch {} }));
   // Home's "+" (quick actions): join the video visit, intake documents, book a visit. The same facts make the one line
@@ -3986,7 +4003,7 @@
       const key = `mdfit-tour-${client.id}`; if (localStorage.getItem(key)) return; localStorage.setItem(key, "1");
     } catch { return; }
     const steps = [["#top3", "What you can earn, the gem you hold, and what to do next. Tap any of them."], ["#home-plus", "Your shortcuts: join a video visit, your documents, book a visit."],
-      ["#mg-btn|#cave-card .cv-guide", "This is Solomon. Ask him anything, any time."], ["#cave-card .cv-road", "Your first descent: five stops, 10 XP each. Finish them all for your first new gem."]];
+      ["#mg-btn", "This is Solomon. He speaks up on every screen. Tap him and ask anything."], ["#cave-card .cv-road", "Your first descent: five stops, 10 XP each. Finish them all for your first new gem."]];
     const wrap = document.createElement("div"); wrap.className = "tour"; wrap.innerHTML = `<i class="tour-hole"></i><div class="tour-tip" role="dialog" aria-live="polite"><p></p><div><button type="button" class="link-sm" data-tour-skip>Skip</button><button type="button" class="btn-blue sm" data-tour-next>Next</button></div></div>`;
     document.body.appendChild(wrap);
     let at = -1;
@@ -4014,7 +4031,7 @@
     const visitAhead = (appts.upcoming || []).some((a) => a.date === d && a.status === "booked" && (d > t || (d === t && String(a.time || "") > now)));
     return { workout, open: unpaid || visitAhead };
   };
-  window.MDFitApp = { journey, journeyStart, introGo, introSkip, introPass, setMineView, dayStatus, startPlayer, go, loadRewards, toast, celebrateToast, exMeta, byId, gemIcon: GEM_ICON, rewards: () => reward, isPaid, showPaywall,
+  window.MDFitApp = { nextUp, goNext, guideFacts, view: () => show.at || "home", journey, journeyStart, introGo, introSkip, introPass, setMineView, dayStatus, startPlayer, go, loadRewards, toast, celebrateToast, exMeta, byId, gemIcon: GEM_ICON, rewards: () => reward, isPaid, showPaywall,
     // For the guide (mdfit-guide.js) and the theme switch (app-theme.js): who is signed in, what the app holds, and two places to open
     client: () => client, content: async () => { if (!C) await (contentLoading || loadContent()).catch(() => {}); return C; },
     openBook: () => { go("profile"); setTimeout(() => $("#p-book-open") && $("#p-book-open").click(), 60); },
