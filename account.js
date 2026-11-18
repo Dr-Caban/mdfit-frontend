@@ -2328,7 +2328,8 @@
     b.querySelector("button").addEventListener("click", () => b.remove());
     document.body.appendChild(b);
   }
-  // ---- Invoices from MD Fit: in the bell until paid, and a banner with one button when a new one arrives
+  // ---- Invoices from MD Fit: in the bell and on Home's "Next" tile until paid. The banner is only for one that arrives
+  // while the app is open, and it steps away by itself: on opening the app it would sit on top of Home every time.
   function invoiceBanner(v) {
     const old = document.getElementById("inv-banner"); if (old) old.parentNode.removeChild(old);
     if (!v) return;
@@ -2340,6 +2341,7 @@
     x.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
     x.addEventListener("click", () => { if (b.parentNode) b.parentNode.removeChild(b); });
     b.append(text, pay, x); document.body.appendChild(b);
+    setTimeout(() => { if (b.parentNode) b.parentNode.removeChild(b); }, 12000);
   }
   const loadInvoices = (announce) => apiAuth("GET", "/api/me/invoices").then((r) => {
     const had = new Set(myInvoices.map((v) => v.number)); myInvoices = (r && r.invoices) || [];
@@ -2347,7 +2349,7 @@
     try { renderNotes(); } catch {}
     if (announce && fresh) invoiceBanner(fresh); else if (!myInvoices.length) invoiceBanner(null);
   }).catch(() => {});
-  loadInvoices(true);
+  loadInvoices(false);
   if (window.MDFitRT) MDFitRT.on("invoice_sent", () => loadInvoices(true));
   document.addEventListener("visibilitychange", () => { if (!document.hidden) loadInvoices(false); });
   apiAuth("GET", "/api/me/telehealth/invite").then((r) => teleBanner(!!(r && r.invited))).catch(() => {});
@@ -3252,7 +3254,8 @@
     // Nothing earned yet reads as an invitation ("Refer"), not as money already made
     $("#t3-plan .t3-k").textContent = paid + waiting > 0 || (a && a.joined) ? "Earned" : a && a.enabled ? "Earn" : "Refer";
     plan.dataset.go = "refer";
-    const owed = calMoney.find((x) => x.k === "bill" && /^Unpaid/.test(x.s || ""));
+    const dues = calMoney.filter((x) => x.k === "bill" && /^Unpaid/.test(x.s || "")), owed = dues[0];
+    const cash = (x) => Number(((String(x.t).match(/\$([\d,]+(?:\.\d+)?)/) || [])[1] || "").replace(/,/g, "")) || 0;
     // Rank
     const r = reward;
     if (r && r.rank) { const o = r.overall, nx = r.rank.next, placed = r.xp > 50 && o && o.rank && !o.hidden;
@@ -3264,6 +3267,7 @@
     const v = nextVisit(), p = patientDocs, docsDue = !!(p && !p.done && v), j = journey(), now = j && j.program && j.stops.find((x) => x.state === "now"), next = $("#t3-next");
     const brief = (s) => String(s).split(/\s+[—–-]\s+|\s*\(/)[0].trim() || String(s);
     if (docsDue) { set("next", "Intake documents", "Due before your visit", true); next.dataset.go = "plus"; }
+    else if (dues.length > 1) { const sum = dues.reduce((n, x) => n + cash(x), 0); set("next", sum ? `$${sum.toFixed(2)} due` : `${dues.length} invoices`, `${dues.length} invoices · tap to pay`, true); next.dataset.go = owed.path || "#progress"; }
     else if (owed) { set("next", (String(owed.t).match(/\$[\d,.]+/) || ["Invoice"])[0] + " invoice", "Tap to pay", true); next.dataset.go = owed.path || "#progress"; }
     else if (j && j.intro) { const s = j.stops.find((x) => x.state === "now"); set("next", s ? s.label : "First descent", "+10 XP · your first descent"); next.dataset.go = "mine"; }
     else if (v && v.date <= addDays(t, 1)) { set("next", v.typeName || "Visit", whenOf(v)); next.dataset.go = "plus"; }
@@ -3982,14 +3986,14 @@
       const key = `mdfit-tour-${client.id}`; if (localStorage.getItem(key)) return; localStorage.setItem(key, "1");
     } catch { return; }
     const steps = [["#top3", "What you can earn, the gem you hold, and what to do next. Tap any of them."], ["#home-plus", "Your shortcuts: join a video visit, your documents, book a visit."],
-      ["#mg-btn", "This is Solomon. Ask him anything, any time."], ["#cave-card .cv-road", "Your first descent: five stops, 10 XP each. Finish them all for your first new gem."]];
+      ["#mg-btn|#cave-card .cv-guide", "This is Solomon. Ask him anything, any time."], ["#cave-card .cv-road", "Your first descent: five stops, 10 XP each. Finish them all for your first new gem."]];
     const wrap = document.createElement("div"); wrap.className = "tour"; wrap.innerHTML = `<i class="tour-hole"></i><div class="tour-tip" role="dialog" aria-live="polite"><p></p><div><button type="button" class="link-sm" data-tour-skip>Skip</button><button type="button" class="btn-blue sm" data-tour-next>Next</button></div></div>`;
     document.body.appendChild(wrap);
     let at = -1;
     const end = () => { wrap.remove(); window.scrollTo({ top: 0 }); };
     const step = () => {
-      at++; const s = steps[at], el = s && document.querySelector(s[0]);
-      if (!s) return end(); if (!el || !el.getClientRects().length) return step();
+      at++; const s = steps[at], el = s && s[0].split("|").map((q) => document.querySelector(q)).find((x) => x && x.getClientRects().length);
+      if (!s) return end(); if (!el) return step();
       el.scrollIntoView({ block: "center" });
       setTimeout(() => {
         const r = el.getBoundingClientRect(), hole = wrap.querySelector(".tour-hole"), tip = wrap.querySelector(".tour-tip"), h = Math.min(r.height, 260);

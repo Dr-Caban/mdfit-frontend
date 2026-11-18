@@ -93,9 +93,10 @@
     const rowH = 112, pts = []; let y = 104;
     j.stops.forEach((s, i) => { if (s.state === "now") y += i ? 62 : 70; pts.push([X[i % X.length], y]); y += rowH + (s.state === "now" ? (ART.guide ? 92 : 64) : 0); });
     const H = y + 96, end = [50, H - 62], all = [...pts, end];
-    const d = pathOf([[50, 30], ...all], rowH);
+    // (with the gate photo above it, the road starts out of sight under the gate rather than as a loose stub on the wall)
+    const from = [50, ART.road ? -40 : 30], d = pathOf([from, ...all], rowH);
     // The stretch already travelled carries moving lights, from the gate to today's stop (the whole road once it is cleared)
-    const nowAt = j.stops.findIndex((s) => s.state === "now"), lit = pathOf([[50, 30], ...(nowAt < 0 ? all : pts.slice(0, nowAt + 1))], rowH);
+    const nowAt = j.stops.findIndex((s) => s.state === "now"), lit = pathOf([from, ...(nowAt < 0 ? all : pts.slice(0, nowAt + 1))], rowH);
     let lamps = ""; for (let k = 0, ly = 150; ly < H - 110; k++, ly += 210) lamps += `<span class="cv-wlamp ${k % 2 ? "r" : "l"}" style="top:${ly}px">${flame}</span>`;
     const lastChamber = j.chamber >= j.chambers, cleared = j.stops.every((s) => s.state === "done" || s.state === "passed");
     const fresh = freshDone(j);
@@ -107,7 +108,7 @@
           <button type="button" class="cv-ore${s.state === "done" && fresh.has(s.n) ? " mining" : ""}" ${s.state === "done" && fresh.has(s.n) ? `style="--el:-${((Date.now() - fresh.get(s.n)) / 1000).toFixed(2)}s"` : ""} ${act} aria-label="${esc(s.label)}${s.sub ? ", " + esc(s.sub) : ""}: ${s.state === "done" ? "mined" : s.state === "now" ? "today, start" : s.state === "open" ? "open, 10 XP" : s.state === "passed" ? "skipped, tap to do it" : "not open yet"}">${s.state === "done" && fresh.has(s.n) ? sequence(color) : s.state === "passed" ? ore("locked", color, true) : ore(s.state === "open" ? "now" : s.state, color)}</button>
           ${s.state === "done" ? `<i class="cv-tw t1"></i><i class="cv-tw t2"></i>` : ""}
           ${s.state === "now" ? "" : `<span class="cv-cap">${esc(short(s.label))}${j.intro && s.state === "passed" ? " · skipped" : j.intro && s.state !== "done" ? " · +10 XP" : ""}</span>`}
-          ${s.state === "now" ? `<div class="cv-guide ${left ? "right" : "left"}"><span class="cv-say">${esc(line(j))}</span>${guide()}</div>` : ""}
+          ${s.state === "now" ? `<button type="button" class="cv-guide ${left ? "right" : "left"}" data-solomon aria-label="Solomon says: ${esc(line(j))} Tap to talk to him."><span class="cv-say">${esc(line(j))}</span>${guide()}</button>` : ""}
         </div>`;
     }).join("");
     const chip = (lit, label, attrs = "") => `<button type="button" class="cv-chip${lit ? " lit" : ""}" ${attrs}>${crystal(lit)}<span>${label}</span></button>`;
@@ -118,8 +119,7 @@
         ${j.intro ? `<button type="button" class="cv-guidebook" data-intro-skip aria-label="Skip the intro">Skip</button>` : `<button type="button" class="cv-guidebook" data-fp="${esc(j.program.id)}" aria-label="Open the program">Program</button>`}
         ${j.intro && j.hasProgram ? `<button type="button" class="cv-guidebook cv-alt" data-mine-view="program">My program</button>` : j.introAlt ? `<button type="button" class="cv-guidebook cv-alt" data-mine-view="intro">First descent</button>` : ""}
       </div>
-      <div class="cv-road${ART.road ? " art" : ""}" style="height:${H}px">
-        ${ART.road ? `<div class="cv-wall" aria-hidden="true">${`<img src="${esc(ART.road)}" alt="" decoding="async">`.repeat(3)}</div>` : ""}
+      <div class="cv-road${ART.road ? " art" : ""}" style="height:${H}px${ART.road ? `;--wall:url('${esc(ART.road)}')` : ""}">
         <i class="cv-dust d1"></i><i class="cv-dust d2"></i><i class="cv-dust d3"></i><i class="cv-dust d4"></i>
         <svg class="cv-path" viewBox="0 0 100 ${H}" preserveAspectRatio="none" aria-hidden="true"><path d="${d}" class="cv-dirt"/><path d="${d}" class="cv-track"/><path d="${lit}" class="cv-glow"/></svg>
         <svg class="cv-gate" viewBox="0 0 390 52" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0h390v52H272c0-40-154-40-154 0H0z" fill="#3b3024"/><path d="M0 17h130M260 17h130M0 35h118M272 35h118M40 0v17M96 17v18M300 0v17M344 17v18M70 35v17M330 35v17" stroke="#261e15" stroke-width="2"/><path d="M118 52c0-40 154-40 154 0" fill="none" stroke="#c8a763" stroke-width="2.5"/></svg>
@@ -146,13 +146,25 @@
     // (real actions earn their own XP too, so Amber often arrives before the last stop)
     if (vault) vault.innerHTML = j.next && j.next.name === "Amber" ? `Finish all five and <b>Amber</b>, your first new gem, is yours.` : `<b>Amber</b> is already yours. Finish the last stops for the XP.`;
   }
+  // One Solomon at a time: while the one in the mine is on screen he is the one to tap, and the floating cloud steps
+  // aside (mdfit-guide.css, html.sol-here). Scroll him away, or leave Home, and the floating cloud is back.
+  let io = null;
+  function watch() {
+    const root = document.documentElement, g = card.hidden ? null : card.querySelector(".cv-guide");
+    if (io) { io.disconnect(); io = null; }
+    if (!g || !window.IntersectionObserver) { root.classList.remove("sol-here"); return; }
+    io = new IntersectionObserver((es) => root.classList.toggle("sol-here", es[es.length - 1].isIntersecting), { rootMargin: "-80px 0px -90px 0px", threshold: 0.6 });
+    io.observe(g);
+  }
   card.addEventListener("click", (e) => {
+    if (e.target.closest("[data-solomon]")) { if (window.MDFitGuide && window.MDFitGuide.open) window.MDFitGuide.open(); return; }
     const b = e.target.closest("[data-cave-start]"); if (b) return A.journeyStart(Number(b.dataset.caveStart));
     const g = e.target.closest("[data-intro-go]"); if (g) return A.introGo(g.dataset.introGo);
     const v = e.target.closest("[data-mine-view]"); if (v) return A.setMineView(v.dataset.mineView);
     const ps = e.target.closest("[data-intro-pass]"); if (ps) return A.introPass(ps.dataset.introPass);
     if (e.target.closest("[data-intro-skip]") && confirm("Skip the intro? You can replay it from Profile.")) A.introSkip();
   });
-  ["mdfit:journey", "mdfit:rewards"].forEach((ev) => document.addEventListener(ev, () => { try { render(); decorate(); } catch { card.hidden = true; } }));
-  try { render(); decorate(); } catch { card.hidden = true; }
+  const draw = () => { try { render(); decorate(); } catch { card.hidden = true; } try { watch(); } catch {} };
+  ["mdfit:journey", "mdfit:rewards"].forEach((ev) => document.addEventListener(ev, draw));
+  draw();
 })();
