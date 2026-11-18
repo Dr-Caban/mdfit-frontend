@@ -116,3 +116,7 @@
 .cv-stop.open .cv-cap { color: #e2c98c; }
 .cv-intro-line { margin: 6px 0 10px; font-size: 14px; color: #cfd5de; }
 .cv-intro-line b { color: #fff; }
+.cv-guidebook.cv-alt { right: auto; left: 14px; }
+.cv-mouth.art .cv-guidebook.cv-alt { position: absolute; }
+.cv-stop.passed .cv-ore { cursor: pointer; }
+.cv-stop.passed .cv-ore-img { width: 76px; height: 76px; margin: 4px; filter: brightness(.55); }
