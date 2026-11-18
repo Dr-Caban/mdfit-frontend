@@ -859,12 +859,47 @@ html[data-theme="black"] {
 :where(html[data-theme=black]) .next-docs { border: 1px solid rgba(200, 167, 99, .55); background: rgba(200, 167, 99, .1); color: inherit; }
 :where(html[data-theme=black]) .next-docs .pc-ic { background: rgba(200, 167, 99, .18); }
 :where(html[data-theme=black]) .next-docs .pc-ic svg { fill: var(--gold); }
+:where(html[data-theme=black]) .next-docs .pc-txt { color: var(--muted); }
+:where(html[data-theme=black]) .next-docs .pc-txt b { color: var(--heading, inherit); }
 :where(html[data-theme=black]) .next-docs .pc-go { background: var(--card-2); color: var(--navy); }
+@media (max-width: 700px) {
+:where(html[data-theme=black]) .gc-more { border: 0; background: none; color: var(--gold); }
+}
 @media (prefers-reduced-motion: reduce) {
 :where(html[data-theme=black]) #gem-card.xp-ding { outline: 2px solid #C8A763; }
 }
 :where(html[data-theme=black]) .mp-more { border: 1px dashed var(--line); background: none; color: var(--accent); }
 :where(html[data-theme=black]) .mp-more:hover { border-color: var(--accent); }
+@media (max-width: 999px) {
+:where(html[data-theme=black]) .tabbar button[data-group-current] { color: var(--accent-bright); }
+:where(html[data-theme=black]) .train-seg { border: 1px solid var(--line); background: var(--card); }
+:where(html[data-theme=black]) .train-seg button { border: 0; background: none; color: var(--muted); }
+:where(html[data-theme=black]) .train-seg button[aria-pressed="true"] { background: var(--accent); color: #0A1A2E; }
+}
+:where(html[data-theme=black]) .care-book-fold > summary { color: var(--accent); }
+:where(html[data-theme=black]) .home-plus { border: 0; background: var(--gold); color: #0A1A2E; }
+:where(html[data-theme=black]) .home-plus svg { fill: none; stroke: currentColor; }
+:where(html[data-theme=black]) .home-plus.has-dot::after { background: #E05A4F; }
+:where(html[data-theme=black]) .plus-row { border: 1px solid var(--line); background: var(--card); color: inherit; }
+:where(html[data-theme=black]) .plus-row .pi { background: var(--accent-soft); color: var(--accent); }
+:where(html[data-theme=black]) .plus-row .pi svg { fill: none; stroke: currentColor; }
+:where(html[data-theme=black]) .plus-row .ps { color: var(--muted); }
+:where(html[data-theme=black]) .plus-row .due { color: #fff; background: #E05A4F; }
+@media (max-width: 700px) {
+:where(html[data-theme=black]) .next-line:not([hidden]) { border: 0; background: none; color: inherit; }
+:where(html[data-theme=black]) .next-line svg { fill: none; stroke: currentColor; }
+:where(html[data-theme=black]) .gem-card .gc-today div + div { border-left: 0; }
+:where(html[data-theme=black]) .t3 { border: 1px solid var(--line); background: var(--card); color: inherit; }
+:where(html[data-theme=black]) .t3-k { color: var(--muted); }
+:where(html[data-theme=black]) .t3 small { color: var(--muted); }
+:where(html[data-theme=black]) #t3-rank { border-color: rgba(200, 167, 99, .55); }
+:where(html[data-theme=black]) #t3-rank .t3-k, :where(html[data-theme=black]) #t3-rank b { color: var(--gold); }
+:where(html[data-theme=black]) #t3-rank[aria-expanded="true"] { background: rgba(200, 167, 99, .12); }
+:where(html[data-theme=black]) .t3.due { border-color: #E05A4F; }
+:where(html[data-theme=black]) .t3.due small { color: #E05A4F; }
+}
+:where(html[data-theme=black]) .tour-tip { background: var(--card-2); color: var(--navy); }
+:where(html[data-theme=black]) .tour-tip .link-sm { color: #a8b6c7; }
 :where(html[data-theme=black]) .auth-page { background: var(--ink); }
 :where(html[data-theme=black]) .auth-card { background: var(--paper); }
 :where(html[data-theme=black]) .auth-tabs { border-bottom: 1px solid var(--line); }
@@ -2154,11 +2189,69 @@ html[data-theme="black"] { --aff-earned: #4a94dc; --aff-pend: #b98522; }
 :where(html[data-layout=compact]) .lay-seg button { font-size: 12px; padding: 6px 9px; }
 :where(html[data-layout=compact]) .lay-move { gap: 2px; }
 :where(html[data-layout=compact]) .lay-actions { gap: 10px; margin-top: 8.5px; }
-:where(html[data-layout=compact]) .next-docs { gap: 4px 8.5px; padding: 8.5px; margin: 4px 0 8.5px; }
-:where(html[data-layout=compact]) .next-docs .pc-txt { gap: 2px; font-size: 14px; }
+:where(html[data-layout=compact]) .next-docs { gap: 4px 8.5px; padding: 8px 8.5px; margin: 4px 0 8.5px; }
+:where(html[data-layout=compact]) .next-docs .pc-txt { gap: 2px; font-size: 13px; }
 :where(html[data-layout=compact]) .next-docs .pc-txt b { font-size: 14px; }
-:where(html[data-layout=compact]) .next-docs .pc-go { margin-top: 6px; padding: 8px 10px; font-size: 14px; }
+:where(html[data-layout=compact]) .next-docs .pc-go { padding: 8px 10px; font-size: 14px; }
+@media (max-width: 700px) {
+:where(html[data-layout=compact]) #view-home .hello { font-size: 14px; margin: 4px 0 0; }
+:where(html[data-layout=compact]) #view-home .name { font-size: 23.5px; margin: 0 0 8px; }
+:where(html[data-layout=compact]) .gem-card { padding: 14px 16px; }
+:where(html[data-layout=compact]) .gem-card .gc-top { gap: 8px; }
+:where(html[data-layout=compact]) .gem-card .gc-id { gap: 6px; }
+:where(html[data-layout=compact]) .gem-card .gc-name { font-size: 22px; }
+:where(html[data-layout=compact]) .gem-card .gc-xp { font-size: 13px; }
+:where(html[data-layout=compact]) .gem-card .gc-xp b { font-size: 14px; }
+:where(html[data-layout=compact]) .gem-card .gc-rank { padding: 5px 7px; }
+:where(html[data-layout=compact]) .gem-card .gc-rank b { font-size: 16px; }
+:where(html[data-layout=compact]) .gem-card .gc-rank small { font-size: 9px; margin-top: 1px; }
+:where(html[data-layout=compact]) .gem-card .gc-bar { margin: 8px 0 6px; }
+:where(html[data-layout=compact]) .gem-card .gc-next { font-size: 13px; }
+:where(html[data-layout=compact]) .gem-card .gc-today { margin-top: 8px; padding-top: 6px; }
+:where(html[data-layout=compact]) .gem-card .gc-today b { font-size: 17px; }
+:where(html[data-layout=compact]) .gem-card .gc-today span { font-size: 11px; }
+:where(html[data-layout=compact]) .gc-more { margin: 6px 0 -4px; padding: 6px; font-size: 12px; }
+}
 :where(html[data-layout=compact]) .mp-more { margin: 6px 0 2px; padding: 8px; font-size: 14px; }
+@media (max-width: 999px) {
+:where(html[data-layout=compact]) .train-seg { gap: 4px; margin: 4px 0 10px; padding: 4px; }
+:where(html[data-layout=compact]) .train-seg button { font-size: 14px; }
+}
+@media (max-width: 700px) {
+:where(html[data-layout=compact]) #next-card { padding-top: 14px; padding-bottom: 12px; }
+:where(html[data-layout=compact]) #next-card .care-visits { margin: 0 0 6px; padding: 0; }
+:where(html[data-layout=compact]) #next-card .care-visit { gap: 0 8px; padding: 6px 0; }
+:where(html[data-layout=compact]) #next-card .care-visit > a, :where(html[data-layout=compact]) #next-card .care-visit > button { margin: 0; }
+}
+:where(html[data-layout=compact]) .care-book-fold > summary { font-size: 14px; }
+:where(html[data-layout=compact]) .care-book-fold[open] > summary { margin-bottom: 6px; }
+:where(html[data-layout=compact]) .plus-list { gap: 6px; }
+:where(html[data-layout=compact]) .plus-row { gap: 2px 8.5px; padding: 8.5px; font-size: inherit; }
+:where(html[data-layout=compact]) .plus-row b { font-size: 14px; }
+:where(html[data-layout=compact]) .plus-row .ps { font-size: 13px; }
+:where(html[data-layout=compact]) .plus-row .due { font-size: 11px; padding: 2px 7px; margin-left: 6px; }
+@media (max-width: 700px) {
+:where(html[data-layout=compact]) #next-card .card-head { margin-bottom: 2px; }
+:where(html[data-layout=compact]) .next-line:not([hidden]) { gap: 6px; padding: 0; font-size: 14px; }
+:where(html[data-layout=compact]) .gem-card { padding: 12px 14px; }
+:where(html[data-layout=compact]) .gem-card .gc-name { font-size: 20px; }
+:where(html[data-layout=compact]) .gem-card .gc-bar { margin: 6px 0 4px; }
+:where(html[data-layout=compact]) .gem-card .gc-next { font-size: 12px; }
+:where(html[data-layout=compact]) .gem-card .gc-today { gap: 2px 8.5px; margin-top: 6px; padding: 6px 56px 0 0; }
+:where(html[data-layout=compact]) .gem-card .gc-today div { gap: 4px; }
+:where(html[data-layout=compact]) .gem-card .gc-today b { font-size: 14px; }
+:where(html[data-layout=compact]) .gem-card .gc-today span { font-size: 11px; }
+:where(html[data-layout=compact]) .gem-card .gc-more { margin: 0; padding: 6px 6px; }
+:where(html[data-layout=compact]) .gem-card.more .gc-more { margin: 6px 0 -4px; }
+:where(html[data-layout=compact]) .top3:not([hidden]) { gap: 6px; margin: 0 0 8.5px; }
+:where(html[data-layout=compact]) .t3 { gap: 2px; padding: 8px; font-size: inherit; }
+:where(html[data-layout=compact]) .t3-k { font-size: 10px; }
+:where(html[data-layout=compact]) .t3 b { font-size: 14px; }
+:where(html[data-layout=compact]) .t3 small { font-size: 11.5px; }
+:where(html[data-layout=compact]) #t3-rank .t3-k, :where(html[data-layout=compact]) #t3-rank b { padding-right: 30px; }
+}
+:where(html[data-layout=compact]) .tour-tip { padding: 10px 11.5px; }
+:where(html[data-layout=compact]) .tour-tip p { margin: 0 0 8px; font-size: 14px; }
 :where(html[data-layout=compact]) .auth-wrap { margin: 0 auto; padding: 40px 0; gap: 13px; }
 :where(html[data-layout=compact]) .auth-tabs button { padding: 15px; font-size: 15px; }
 :where(html[data-layout=compact]) .auth-form { padding: 18px; }

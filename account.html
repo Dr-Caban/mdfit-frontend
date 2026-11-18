@@ -19,11 +19,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="app/app.css?v=79070e8f">
+  <link rel="stylesheet" href="app/app.css?v=373beead">
   <link rel="stylesheet" href="account.css?v=7e0b90a0">
   <link rel="stylesheet" href="guides.css?v=704fb203">
-  <link rel="stylesheet" href="app-theme.css?v=ffff18aa">
+  <link rel="stylesheet" href="app-theme.css?v=e449956c">
   <link rel="stylesheet" href="mdfit-guide.css?v=408b8c88">
+  <link rel="stylesheet" href="account-cave.css?v=00c796c7">
   <link rel="stylesheet" href="progress-charts.css?v=f0ec9711">
   <script src="app-theme.js?v=3afc6baa"></script>
 </head>
@@ -45,6 +46,7 @@
     <section class="view" id="view-home" data-view="home">
       <div class="hello-row"><p class="hello">Welcome back</p>
         <button type="button" class="xp-chip" data-goto="home" data-gem-jump id="xp-chip"><b id="chip-lv">Lv 1</b><span id="chip-xp">0 XP</span></button>
+        <button type="button" class="home-plus" id="home-plus" data-plus-open aria-haspopup="dialog" aria-label="Quick actions: join a video visit, intake documents, book a visit"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
       </div>
       <h1 class="name" id="hello-name">&nbsp;</h1>
 
@@ -54,15 +56,22 @@
         <button type="button" class="qsearch-x" id="qsearch-x" aria-label="Clear" hidden>&times;</button>
       </div>
       <div class="qsearch-results" id="qsearch-results" hidden></div>
+      <!-- Phones: referral earnings, rank and what's next at a glance (account.js renderTop). Rank opens the gem card below. -->
+      <div class="top3" id="top3" hidden>
+        <button type="button" class="t3" id="t3-plan"><span class="t3-k">Earned</span><b id="t3-plan-v"></b><small id="t3-plan-s"></small></button>
+        <button type="button" class="t3" id="t3-rank" aria-expanded="false" aria-controls="gem-card"><i class="t3-jewel" id="t3-jewel" aria-hidden="true"></i><span class="t3-k">Rank</span><b id="t3-rank-v"></b><small id="t3-rank-s"></small></button>
+        <button type="button" class="t3" id="t3-next"><span class="t3-k">Next</span><b id="t3-next-v"></b><small id="t3-next-s"></small></button>
+      </div>
 
       <div class="home-grid"><div class="col-main">
       <!-- Patients: notes and movements from Dr. Jared, paid or upcoming video visits -->
       <div class="card care-card" id="next-card" hidden>
         <div class="card-head"><span class="label accent">What to do next</span><span class="muted small" id="next-date"></span></div>
+        <button type="button" class="next-line" id="next-line" data-plus-open hidden><span id="next-line-text"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
         <!-- First, when a visit is booked and the intake documents aren't finished -->
         <a class="next-docs" id="patient-urgent" href="/intake?me=1" hidden>
           <span class="pc-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zm-1 7V3.5L18.5 9zM8 13h8v2H8zm0 4h5v2H8z"/></svg></span>
-          <span class="pc-txt"><b>Before your visit</b><span id="pu-sub">Please finish your intake documents before your appointment.</span></span>
+          <span class="pc-txt"><b>Intake documents</b><span id="pu-sub">Please finish your intake documents before your appointment.</span></span>
           <span class="pc-go" id="pu-go">Finish documents ›</span>
         </a>
         <p class="muted small care-intro">From Dr. Jared, for you.</p>
@@ -88,7 +97,10 @@
         </div>
       </div>
 
-      <div class="card today" id="today-card">
+      <!-- No workout is made for a member ahead of time (owner, Nov 2026): a workout comes from Solomon, from the member's
+           program, or from the generator when they ask for one. The card stays in the page, hidden, for the code that still
+           reads its buttons. -->
+      <div class="card today" id="today-card" hidden>
         <div class="today-head"><span class="label blue">Today's workout</span><span class="ready">Ready</span></div>
         <div class="today-body">
           <div class="today-icon"><svg viewBox="0 0 24 24"><path d="M12 5.5a2 2 0 1 0-2-2 2 2 0 0 0 2 2zM21 9h-2V7h-2v2H7V7H5v2H3v2h2v2h2v-2h3l-2 10h2l2-6 2 6h2l-2-10h3v2h2v-2h2z"/></svg></div>
@@ -670,7 +682,7 @@
       </div>
       </div>
 
-      <p class="lay-custom-row"><button type="button" class="link-sm" data-lay-custom="profile">Customize this page</button></p>
+      <p class="lay-custom-row"><button type="button" class="link-sm" data-lay-custom="profile">Customize this page</button> · <button type="button" class="link-sm" data-intro-replay>Replay the intro</button></p>
       <div class="profile-links">
         <a href="/?site=1">mymdfit.com</a><a href="tel:+19413130562">Call 941-313-0562</a><a href="/privacy-policy">Privacy</a><a href="/terms">Terms</a>
         <button type="button" class="link" id="logout">Log out</button>
@@ -683,7 +695,7 @@
   <nav class="tabbar" aria-label="App">
     <a class="side-brand" href="/?site=1"><img src="assets/logo.webp" alt="" width="48" height="48"><span><b>MD Fit</b><small>Physical Rehabilitation &amp; Fitness</small></span></a>
     <button type="button" data-tab="home" aria-current="page"><svg viewBox="0 0 24 24"><path d="M12 3 2 12h3v8h5v-6h4v6h5v-8h3z"/></svg><span class="short">Home</span><span class="long">Dashboard</span></button>
-    <button type="button" data-tab="generate"><svg viewBox="0 0 24 24"><path d="M3 17v2h6v-2zM3 5v2h10V5zm10 16v-2h8v-2h-8v-2h-2v6zM7 9v2H3v2h4v2h2V9zm14 4v-2H11v2zm-6-4h2V7h4V5h-4V3h-2z"/></svg><span class="short">Workout</span><span class="long">Workout Generator</span></button>
+    <button type="button" data-tab="generate"><svg viewBox="0 0 24 24"><path d="M3 17v2h6v-2zM3 5v2h10V5zm10 16v-2h8v-2h-8v-2h-2v6zM7 9v2H3v2h4v2h2V9zm14 4v-2H11v2zm-6-4h2V7h4V5h-4V3h-2z"/></svg><span class="short">Train</span><span class="long">Workout Generator</span></button>
     <button type="button" data-tab="programs" class="ov"><svg viewBox="0 0 24 24"><path d="M19 3h-4.2A3 3 0 0 0 12 1a3 3 0 0 0-2.8 2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-7 0a1 1 0 1 1-1 1 1 1 0 0 1 1-1zm-2 14-4-4 1.4-1.4 2.6 2.6 6.6-6.6L18 9z"/></svg><span class="short">Programs</span><span class="long">Programs</span></button>
     <button type="button" data-tab="videos"><svg viewBox="0 0 24 24"><path d="M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm6 3.5v7l6-3.5z"/></svg><span class="short">Videos</span><span class="long">Video Library</span></button>
     <button type="button" data-tab="pain"><svg viewBox="0 0 24 24"><path d="M12 2a2 2 0 1 1-2 2 2 2 0 0 1 2-2zm-3 20v-7H7.5V9a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v6H15v7z"/></svg><span class="short">Pain</span><span class="long">Pain Tool</span></button>
@@ -748,6 +760,10 @@
     <p class="muted small lay-intro">Top to bottom, most important first. Open shows the whole card, Fold keeps it to one line you can tap open, Hide takes it off this page.</p>
     <ol class="lay-list" id="lay-list"></ol>
     <div class="lay-actions"><button type="button" class="btn-blue" id="lay-save">Save</button><button type="button" class="link-sm" id="lay-reset" hidden>Use Dr. Jared's layout</button></div>
+  </dialog>
+  <dialog class="sheet plus-sheet" id="plus-sheet" aria-labelledby="plus-title">
+    <div class="sheet-head"><b id="plus-title">Quick actions</b><button type="button" class="icon-btn" data-close aria-label="Close"><svg viewBox="0 0 24 24"><path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/></svg></button></div>
+    <div class="plus-list" id="plus-list"></div>
   </dialog>
   <dialog class="sheet more-sheet" id="more-sheet" aria-label="More">
     <div class="sheet-head"><b>More</b><button type="button" class="icon-btn" data-close aria-label="Close"><svg viewBox="0 0 24 24"><path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/></svg></button></div>
@@ -873,10 +889,11 @@
   <script src="guides.js?v=8521968d"></script>
   <script src="stripe-checkout.js?v=087989ec"></script>
   <script src="progress-charts.js?v=df3a2256"></script>
-  <script src="account.js?v=87ab1ea6"></script>
-  <script src="account-xp.js?v=b9de2933"></script>
+  <script src="account.js?v=968d485f"></script>
+  <script src="account-xp.js?v=97c923ce"></script>
   <script src="account-share.js?v=763ef457"></script>
   <script src="account-habits.js?v=8bebfbfe"></script>
-  <script src="mdfit-guide.js?v=65755f4d"></script>
+  <script src="account-cave.js?v=0ffa7e82"></script>
+  <script src="mdfit-guide.js?v=a270c6cb"></script>
 </body>
 </html>

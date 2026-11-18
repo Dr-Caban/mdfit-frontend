@@ -139,6 +139,10 @@
   // ================= Tabs (hash routing so the back button and refresh work)
   const TABS = ["home", "generate", "programs", "videos", "pain", "learn", "progress", "leaders", "premium", "messages", "tips", "profile"];
   // Hash is "#tab" or "#pain/muscle/<id>" (deep link to a muscle report)
+  const TRAIN = ["generate", "videos", "pain"];
+  TRAIN.forEach((v) => { const el = document.getElementById("view-" + v); if (el) el.insertAdjacentHTML("afterbegin",
+    `<nav class="train-seg" aria-label="Train"><button type="button" data-goto="generate">Workout</button><button type="button" data-goto="videos">Videos</button><button type="button" data-goto="pain">Pain tool</button></nav>`); });
+  const lastTrain = () => { try { const t = localStorage.getItem("mdfit-train"); return TRAIN.includes(t) ? t : "generate"; } catch { return "generate"; } };
   function show(hash) {
     let [tab, sub, arg] = String(hash).split("/");
     if (!TABS.includes(tab)) tab = "home";
@@ -147,6 +151,9 @@
     else if (tab === "pain" && !$("#muscle-report").hidden) setMode(reportFrom);
     $$("[data-view]").forEach((v) => (v.hidden = v.dataset.view !== tab));
     $$(".tabbar [data-tab]").forEach((b) => (b.dataset.tab === tab ? b.setAttribute("aria-current", "page") : b.removeAttribute("aria-current")));
+    // Phones: Workout, Videos and the Pain tool share one "Train" tab (the Workout button) with a switch at the top of each
+    { const gen = $('.tabbar [data-tab="generate"]'); if (gen) gen.toggleAttribute("data-group-current", TRAIN.includes(tab));
+      if (TRAIN.includes(tab)) { try { localStorage.setItem("mdfit-train", tab); } catch {} $$(".train-seg [data-goto]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.goto === tab))); } }
     if (tabDots.delete(tab)) renderDots();
     if (tab === "videos") renderVideos();
     if (tab === "profile") renderProfileMembership().catch(() => {}); // plan + review offer can change while the app is open
@@ -164,20 +171,20 @@
   }
   const go = (tab) => { if (location.hash !== "#" + tab) history.pushState(null, "", "#" + tab); show(tab); };
   window.addEventListener("hashchange", () => show(location.hash.slice(1)));
-  $$(".tabbar [data-tab]").forEach((b) => b.addEventListener("click", () => go(b.dataset.tab)));
+  // (on a phone the Workout button is "Train" and reopens whichever of the three was used last)
+  $$(".tabbar [data-tab]").forEach((b) => b.addEventListener("click", () => go(b.dataset.tab === "generate" && matchMedia("(max-width: 999px)").matches ? lastTrain() : b.dataset.tab)));
   document.addEventListener("click", (e) => { const g = e.target.closest("[data-goto]"); if (g) go(g.dataset.goto); });
   // Shortcut actions from the More sheet (e.g., Book an appointment)
   document.addEventListener("click", (e) => {
     const b = e.target.closest("[data-action]"); if (!b) return;
     const ms = $("#more-sheet"); if (ms && ms.open) ms.close();
+    const ps = $("#plus-sheet"); if (ps && ps.open) ps.close();
     if (b.dataset.action === "book") { go("profile"); setTimeout(() => $("#p-book-open") && $("#p-book-open").click(), 50); }
     if (b.dataset.action === "about") location.href = "/?site=1"; // the clinic's website, kept open for the rest of the visit
   });
   // Phones show five tabs plus "More"; the rest live in a sheet
   // Prepend high-value destinations (Pain Tool, Video Library, Book) above the overflow tabs
   const topLinks = [
-    { tab: "pain", label: "Pain Tool", icon: `<svg viewBox="0 0 24 24"><path d="M12 2a2 2 0 1 1-2 2 2 2 0 0 1 2-2zm-3 20v-7H7.5V9a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v6H15v7z"/></svg>` },
-    { tab: "videos", label: "Video Library", icon: `<svg viewBox="0 0 24 24"><path d="M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm6 3.5v7l6-3.5z"/></svg>` },
     { action: "book", label: "Book an appointment", icon: `<svg viewBox="0 0 24 24"><path d="M19 4h-2V2h-2v2H9V2H7v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 16H5V10h14zM7 12h5v5H7z"/></svg>` }
   ];
   const topHtml = topLinks.map((x) => `<button type="button" class="more-top" ${x.tab ? `data-goto="${x.tab}"` : `data-action="${x.action}"`}>${x.icon}<span>${x.label}</span></button>`).join("");
@@ -1299,7 +1306,7 @@
   const affTrack = $("#aff-slides");
   async function loadAffiliate(flashNew) {
     try { aff = await apiAuth("GET", "/api/me/affiliate"); } catch { return; }
-    renderAffiliate(flashNew);
+    renderAffiliate(flashNew); try { renderTop(); } catch {}
   }
   function affSlides() { return $$("#aff-slides > .aff-slide").filter((s) => !s.hidden); }
   function renderAffDots() {
@@ -2413,7 +2420,7 @@
   // cards open. Both lists arrive with the content and are kept on the device, so the next launch is laid out at once.
   // The ids match lib/content.js LAYOUTS on the server.
   const LAYOUT = {
-    home: { gem: "#gem-card", care: "#next-card", fromJared: "#plan-card", today: "#today-card", plans: "#my-plans", quick: "#home-quick",
+    home: { gem: "#gem-card", care: "#next-card", fromJared: "#plan-card", journey: "#cave-card", plans: "#my-plans", quick: "#home-quick",
       programs: "#hero-progs, #featured-progs", habits: "#habits-card", challenges: "#challenges-card",
       myWorkouts: "#home-my-workouts", shared: "#shared-card", myPrograms: "#home-programs", events: "#home-events",
       activity: "#home-activity", install: "#home-install" },
@@ -2422,16 +2429,17 @@
       referral: "#referral-card", account: "#p-account-card", feedback: "#p-feedback-card", install: "#p-install" }
   };
   const LAYOUT_LABEL = {
-    home: { care: "What to do next", fromJared: "From Dr. Jared", today: "Today's workout", plans: "Your plans", gem: "Your gem and XP",
+    home: { care: "What to do next", fromJared: "From Dr. Jared", journey: "The gem mine", plans: "Your plans", gem: "Your gem and XP",
       programs: "Dr. Jared's Programs", quick: "Quick actions", habits: "Daily activities", challenges: "Challenges", myWorkouts: "My workouts",
       shared: "Shared workouts", myPrograms: "My programs", events: "Upcoming events", activity: "Recent activity", install: "Get the app" },
     profile: { care: "My care plan", membership: "Membership", patient: "Patient documents", progress: "My progress", appointments: "My appointments", classes: "My classes",
       history: "Workout history", goal: "My daily XP goal", nudges: "Reminders from Solomon", looks: "Make it yours", referral: "Refer a friend",
       account: "Profile", feedback: "Help us improve", install: "Get the app" }
   };
-  const LAYOUT_OPEN_BY_DEFAULT = { home: ["gem", "care", "fromJared", "today", "plans", "quick"], profile: ["care", "membership", "patient"] };
+  const LAYOUT_OPEN_BY_DEFAULT = { home: ["gem", "care", "fromJared", "journey", "plans", "quick"], profile: ["care", "membership", "patient"] };
   const NATIVE_FOLD = new Set(["home:habits"]); // already one line with its own open/close
-  const layoutDefault = (w) => ({ sections: Object.keys(LAYOUT[w]).map((id) => ({ id, state: LAYOUT_OPEN_BY_DEFAULT[w].includes(id) ? "open" : "folded" })), ...(w === "home" ? { suggestions: 3 } : {}) });
+  const LAYOUT_HIDDEN_BY_DEFAULT = { home: ["quick"], profile: [] }; // the "+" button and the Train tab cover the quick actions grid
+  const layoutDefault = (w) => ({ sections: Object.keys(LAYOUT[w]).map((id) => ({ id, state: LAYOUT_HIDDEN_BY_DEFAULT[w].includes(id) ? "hidden" : LAYOUT_OPEN_BY_DEFAULT[w].includes(id) ? "open" : "folded" })), ...(w === "home" ? { suggestions: 3 } : {}) });
   const stateOfRow = (s) => (s.state || (s.show === false ? "hidden" : "open"));
   const LAYOUT_KEY = "mdfit-layouts", OPEN_KEY = "mdfit-folds-open";
   let layouts = (() => {
@@ -3102,7 +3110,8 @@
   // video), the video visits they paid for or have coming up, and Stripe buttons to pay for an online evaluation or
   // follow-up. Shown on Home as "What to do next" and on the Profile as "My care plan"; hidden for non-patients.
   let carePlan = null;
-  function carePlanHtml() {
+  // compact (Home): no empty-state paragraph, no "Video visits" heading, and booking another visit folds to one line
+  function carePlanHtml(compact = false) {
     const ch = carePlan; if (!ch) return "";
     const money0 = (n) => `$${Number(n).toFixed(Number(n) % 1 ? 2 : 0)}`;
     const notes = ch.notes.map((n) => `<div class="plan-notes care-note"><span class="muted small">${shortDate(n.at.slice(0, 10))}</span><p>${esc(n.text).replace(/\n/g, "<br>")}</p></div>`).join("");
@@ -3117,8 +3126,9 @@
     const paid = ch.paidVisits.map((v) => `<li class="care-visit"><b>${esc(v.name || "Video visit")}</b><span class="muted small">Paid ${shortDate(v.paidAt.slice(0, 10))}. Dr. Jared will schedule it; the video link will show here and under Appointments.</span></li>`).join("");
     const upcoming = ch.visits.map((v) => `<li class="care-visit"><b>${esc(v.typeName)}</b><span class="muted small">${fmtDate(v.date, { weekday: "long" })} at ${fmtTime(v.time)} · ${v.minutes} min</span>${v.meetingLink ? `<a class="btn-blue sm" href="${esc(v.meetingLink)}" target="_blank" rel="noopener">Join video visit</a>` : ""}</li>`).join("");
     const pay = bookHtml();
-    const visits = paid || upcoming ? `<p class="care-sub"><b>Video visits</b></p><ul class="care-visits">${paid}${upcoming}</ul>` : "";
+    const visits = paid || upcoming ? `${compact ? "" : `<p class="care-sub"><b>Video visits</b></p>`}<ul class="care-visits">${paid}${upcoming}</ul>` : "";
     const empty = !notes && !moves && !visits ? `<p class="muted">Dr. Jared hasn't left anything here yet. After your visit, your notes and movements will show up here.</p>` : "";
+    if (compact) return `${visits}${notes}${moves}${pay ? `<details class="care-book-fold"><summary>Book a video visit</summary>${pay}</details>` : ""}`;
     return `${notes}${moves}${visits}${empty}${pay}`;
   }
   // ---- Booking a video visit with Dr. Jared (Nov 2026)
@@ -3204,12 +3214,12 @@
   function renderCarePlan() {
     const ch = carePlan;
     const show = !!(ch && (ch.patient || ch.notes.length || ch.movements.length || ch.paidVisits.length || ch.visits.length));
-    const html = show ? carePlanHtml() : "";
+    const html = show ? carePlanHtml() : "", homeHtml = show ? carePlanHtml(true) : "";
     const date = ch && ch.updatedAt ? "Updated " + shortDate(ch.updatedAt.slice(0, 10)) : "";
     careShown = show;
     for (const [card, body, dt] of [["#next-card", "#next-body", "#next-date"], ["#p-care", "#p-care-body", "#p-care-date"]]) {
       const el = $(card); if (!el) continue;
-      el.hidden = !show; $(body).innerHTML = show ? html : ""; $(dt).textContent = show ? date : "";
+      el.hidden = !show; $(body).innerHTML = card === "#next-card" ? homeHtml : html; $(dt).textContent = show ? date : "";
     }
     syncNextCard();
   }
@@ -3221,7 +3231,83 @@
     const docsDue = !!(docs && !docs.hidden);
     card.hidden = !careShown && !docsDue;
     const intro = $(".care-intro", card); if (intro) intro.hidden = !careShown;
+    renderPlus(); try { renderTop(); } catch {}
+    // Phones show the card only for what Dr. Jared left; with nothing from him, the card steps aside
+    const line = $("#next-line"), fromJared = !!(carePlan && (carePlan.notes.length || carePlan.movements.length));
+    card.classList.toggle("next-slim-empty", !fromJared); // (the "Next" tile carries the rest on a phone)
   }
+  // Phones: three tiles at the top of Home. Earned: their referral commission. Rank: their gem, and their place
+  // on the board only once they are past the first gem (a newcomer sees how far the next gem is instead). Next: the one
+  // thing to do now. Rank opens the full gem card under the tiles.
+  function renderTop() {
+    const box = $("#top3"); if (!box || !client) return;
+    const set = (id, v, s, due) => { $(`#t3-${id}-v`).textContent = v; $(`#t3-${id}-s`).textContent = s; $(`#t3-${id}`).classList.toggle("due", !!due); };
+    // Earned: referral commission (paid, ready and pending together; the small line splits it), or how to start
+    const t = todayInTz(), usd = (c) => "$" + (Math.round(c) / 100).toFixed(2).replace(/\.00$/, ""), plan = $("#t3-plan"), a = aff, b = (a && a.balances) || {};
+    const paid = b.paidCents || 0, waiting = (b.readyCents || 0) + (b.pendingCents || 0);
+    if (paid + waiting > 0) set("plan", usd(paid + waiting), waiting ? `${usd(paid)} paid · ${usd(waiting)} on the way` : `${usd(paid)} paid to you`);
+    else if (a && a.joined) set("plan", "$0 so far", a.referred ? `${a.referred} referred · ${Number(a.ratePct)}% when they subscribe` : `Share your link: ${Number(a.ratePct)}% in cash`);
+    else if (a && a.enabled) set("plan", `Earn ${Number(a.ratePct)}% cash`, "on every friend's subscription");
+    else set("plan", a && a.freeMonth === false ? "Share" : "Free month", a && a.freeMonth === false ? "your code" : "for each friend who joins");
+    // Nothing earned yet reads as an invitation ("Refer"), not as money already made
+    $("#t3-plan .t3-k").textContent = paid + waiting > 0 || (a && a.joined) ? "Earned" : a && a.enabled ? "Earn" : "Refer";
+    plan.dataset.go = "refer";
+    const owed = calMoney.find((x) => x.k === "bill" && /^Unpaid/.test(x.s || ""));
+    // Rank
+    const r = reward;
+    if (r && r.rank) { const o = r.overall, nx = r.rank.next, placed = r.xp > 50 && o && o.rank && !o.hidden;
+      // The jewel they hold now, in its own colour, in the corner of the tile
+      const jewel = $("#t3-jewel"); if (jewel) { jewel.innerHTML = GEM_ICON(r.rank.current.color, 30); jewel.style.setProperty("--gem", r.rank.current.color); }
+      set("rank", r.rank.current.name, placed ? `#${o.rank} · ${r.xp.toLocaleString()} XP` : nx ? `${r.xp} XP · ${r.rank.xpToNext} to ${nx.name}` : `${r.xp.toLocaleString()} XP`); }
+    else set("rank", "Peridot", "Earn XP to climb");
+    // Next
+    const v = nextVisit(), p = patientDocs, docsDue = !!(p && !p.done && v), j = journey(), now = j && j.program && j.stops.find((x) => x.state === "now"), next = $("#t3-next");
+    const brief = (s) => String(s).split(/\s+[—–-]\s+|\s*\(/)[0].trim() || String(s);
+    if (docsDue) { set("next", "Intake documents", "Due before your visit", true); next.dataset.go = "plus"; }
+    else if (owed) { set("next", (String(owed.t).match(/\$[\d,.]+/) || ["Invoice"])[0] + " invoice", "Tap to pay", true); next.dataset.go = owed.path || "#progress"; }
+    else if (j && j.intro) { const s = j.stops.find((x) => x.state === "now"); set("next", s ? s.label : "First descent", "+10 XP · your first descent"); next.dataset.go = "mine"; }
+    else if (v && v.date <= addDays(t, 1)) { set("next", v.typeName || "Visit", whenOf(v)); next.dataset.go = "plus"; }
+    else if (now && !j.today.workout) { set("next", brief(now.label), "Today's session"); next.dataset.go = "mine"; }
+    else if (v) { set("next", v.typeName || "Visit", whenOf(v)); next.dataset.go = "plus"; }
+    else if (j && j.today.workout) { set("next", "Workout done", "Nice work today"); next.dataset.go = "#progress"; }
+    else { set("next", "Ask Solomon", "for today's workout"); next.dataset.go = "solomon"; } // nothing is made ahead of time: Solomon builds it when asked
+    // A newcomer is welcomed, not welcomed back
+    const hello = $("#view-home .hello"); if (hello) hello.textContent = !allWorkouts.length && (!r || r.xp <= 10) ? "Welcome" : "Welcome back";
+    box.hidden = false;
+  }
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest(".t3"); if (!b) return;
+    if (b.id === "t3-rank") { const open = $("#view-home").classList.toggle("gem-open"); b.setAttribute("aria-expanded", String(open)); return; }
+    const go2 = b.dataset.go || "";
+    if (go2 === "plus") { renderPlus(); $("#plus-sheet").showModal(); }
+    else if (go2 === "refer") { go("profile"); setTimeout(() => { const c = $("#referral-card"); if (!c) return; if (c.classList.contains("lay-fold") && !c.classList.contains("open")) layToggle(c); c.scrollIntoView({ block: "start" }); }, 120); }
+    else if (go2 === "mine") { const c = $("#cave-card"); if (c) c.scrollIntoView({ behavior: "smooth", block: "start" }); }
+    else if (go2 === "solomon") { if (window.MDFitGuide && window.MDFitGuide.open) window.MDFitGuide.open(); else go("generate"); }
+    else if (go2.startsWith("#")) go(go2.slice(1));
+    else if (go2) location.href = go2;
+  });
+  ["mdfit:rewards", "mdfit:journey"].forEach((ev) => document.addEventListener(ev, () => { try { renderTop(); } catch {} }));
+  // Home's "+" (quick actions): join the video visit, intake documents, book a visit. The same facts make the one line
+  // Home's "What to do next" shows on a phone, and the red dot on the "+" when something is due.
+  const nextVisit = () => { const t = todayInTz(); return (appts.upcoming || []).filter((a) => a.status !== "cancelled" && a.date >= t).sort((a, b) => (a.date + a.time < b.date + b.time ? -1 : 1))[0] || null; };
+  const whenOf = (a) => { const t = todayInTz(); return `${a.date === t ? "today" : a.date === addDays(t, 1) ? "tomorrow" : fmtDate(a.date, { weekday: "long" })} at ${fmtTime(a.time)}`; };
+  function renderPlus() {
+    const v = nextVisit(), p = patientDocs, docsDue = !!(p && !p.done && v), video = !!(v && v.meetingLink);
+    const btn = $("#home-plus"); if (btn) btn.classList.toggle("has-dot", docsDue || !!(v && v.date === todayInTz()));
+    const line = $("#next-line");
+    if (line) { const parts = [docsDue ? "Intake documents due" : "", v ? `${v.typeName || "Visit"} ${whenOf(v)}` : ""].filter(Boolean); line.hidden = !parts.length; $("#next-line-text").textContent = parts.join(" · "); }
+    const list = $("#plus-list"); if (!list) return;
+    const ic = { video: `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="M16 10l6-3v10l-6-3z"/></svg>`,
+      docs: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h4"/></svg>`,
+      book: `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>` };
+    const body = (icon, title, sub, due) => `<span class="pi">${icon}</span><b>${title}${due ? ` <i class="due">Due</i>` : ""}</b><span class="ps">${esc(sub)}</span>`;
+    list.innerHTML =
+      (video ? `<a class="plus-row" href="${esc(v.meetingLink)}" target="_blank" rel="noopener">${body(ic.video, "Join video visit", `${v.typeName || "Video visit"} ${whenOf(v)}`)}</a>`
+        : `<div class="plus-row off">${body(ic.video, "Join video visit", v ? `Your next visit is ${v.typeName || "a visit"} ${whenOf(v)}, in the clinic.` : "No video visit booked yet.")}</div>`)
+      + `<a class="plus-row" href="/intake?me=1">${body(ic.docs, "Intake documents", p && p.done ? "On file for every visit. Tap to update." : p && p.completed ? `${p.completed} of ${p.total} done. Tap to continue.` : "Once, before your first visit. About 10 minutes.", docsDue)}</a>`
+      + `<button type="button" class="plus-row" data-action="book">${body(ic.book, "Book a visit", "See Dr. Jared in the clinic or on video.")}</button>`;
+  }
+  document.addEventListener("click", (e) => { if (e.target.closest("[data-plus-open]")) { renderPlus(); $("#plus-sheet").showModal(); } });
   function loadCarePlan() { return apiAuth("GET", "/api/me/chart").then((c) => { carePlan = c; renderCarePlan(); renderCalendar(); loadVisitOptions(); }).catch(() => {}); }
   document.addEventListener("click", async (e) => {
     const v = e.target.closest("[data-care-video]");
@@ -3524,10 +3610,13 @@
     if (!client || Date.now() - welcomeAt < 10 * 60 * 1000) return;
     welcomeAt = Date.now();
     try {
+      // The very first time in (a new account, nothing earned yet) is a welcome, not a welcome back
+      const firstEver = !allWorkouts.length && (!reward || reward.xp === 0);
       const r = await apiAuth("POST", "/api/me/xp", { kind: "open" });
       if (!r || !r.first || !r.xp) return;
       await loadRewards(false);
-      celebrateToast([`Welcome back! +${r.xp} XP`]); ding();
+      celebrateToast([firstEver ? `Welcome to MD Fit! +${r.xp} XP` : `Welcome back! +${r.xp} XP`]); ding();
+      const tr = $("#t3-rank"); if (tr) { tr.classList.add("xp-ding"); setTimeout(() => tr.classList.remove("xp-ding"), 1600); }
       const g = $("#gem-card"); if (g) { g.classList.remove("xp-ding"); void g.offsetWidth; g.classList.add("xp-ding"); setTimeout(() => g.classList.remove("xp-ding"), 1600); }
     } catch {}
   }
@@ -3600,7 +3689,7 @@
   // Keep the calendar in step with the clinic: everything on it is asked for again when the server says something of
   // this member's changed (a visit booked or moved in the workspace, a payment, a workout logged on the phone app),
   // when the app comes back to the front, when Progress is opened, and every two minutes while Progress is on screen.
-  function loadCalMoney() { return apiAuth("GET", "/api/me/calendar").then((r) => { calMoney = (r && r.entries) || []; }).catch(() => {}); }
+  function loadCalMoney() { return apiAuth("GET", "/api/me/calendar").then((r) => { calMoney = (r && r.entries) || []; try { renderTop(); } catch {} }).catch(() => {}); }
   function syncCalendar(force = false) {
     if (calSyncing) return calSyncing;
     if (!force && Date.now() - calSyncAt < 20000) return Promise.resolve();
@@ -3658,8 +3747,9 @@
       urgent.hidden = !visit;
       if (visit) {
         const when = visit.date === t ? "today" : visit.date === addDays(t, 1) ? "tomorrow" : fmtDate(visit.date, { weekday: "long" });
-        $("#pu-sub").textContent = `Your ${visit.typeName || "visit"} is ${when} at ${fmtTime(visit.time)}. The intake documents take about 10 minutes${p.completed ? ` (${p.completed} of ${p.total} done)` : ""}.`;
-        $("#pu-go").textContent = p.completed ? "Continue documents ›" : "Start documents ›";
+        // One short line: what is due, for which visit, how long (the card it sits in is already "What to do next")
+        $("#pu-sub").textContent = `Before your ${when === "today" || when === "tomorrow" ? "" : when + " "}${(visit.typeName || "visit").toLowerCase()}${when === "today" || when === "tomorrow" ? " " + when : ""} · about 10 min${p.completed ? ` · ${p.completed} of ${p.total} done` : ""}`;
+        $("#pu-go").textContent = p.completed ? "Continue" : "Start";
       }
       syncNextCard();
     }
@@ -3758,6 +3848,7 @@
       ${more > 0 && cap > 0 ? `<button type="button" class="mp-more" data-mp-more>Show ${more} more</button>` : sugOpen && all.length > cap ? `<button type="button" class="mp-more" data-mp-more>Show fewer</button>` : ""}
       <p class="muted small mp-fine">Suggestions from Solomon, not medical advice.</p>` : "";
     box.hidden = !assigned.length && !saved.length && !anySug;
+    document.dispatchEvent(new CustomEvent("mdfit:journey")); // plans, workouts or content changed: the gem cave redraws
   }
   document.addEventListener("click", (e) => { if (e.target.closest("[data-mp-more]")) { sugOpen = !sugOpen; renderMyPlans(); } });
   // Solomon's suggestions arrive with an answer (mdfit-guide.js) or with GET /api/me; both land here
@@ -3810,6 +3901,106 @@
   // ================= Hooks for the XP add-ons (account-xp.js: gem card, workout builder, challenges)
   // Paid membership? (content access "member"/"premium"; "free" otherwise). Loads the content once if needed.
   const isPaid = async () => { if (!C) await (contentLoading || loadContent()).catch(() => {}); return !!(C && C.access && C.access !== "free"); };
+  // The gem cave on Home (account-cave.js): the member's program as a road of stops. The first unfinished program
+  // (Dr. Jared's recommendations first, then saved plans) is the road; one chamber is one week of its split (or six
+  // sessions of a program paced another way); a stop is done once that day has been finished that many weeks running.
+  function journey() {
+    if (!C || !client) return null;
+    const pById = new Map((C.programs || []).map((p) => [p.id, p]));
+    const mine = [...(client.assignedPrograms || []).map((x) => x.id), ...(client.pinnedPrograms || [])].filter((id, i, a) => pById.has(id) && a.indexOf(id) === i).map((id) => pById.get(id)).filter((p) => !lockedFor(p));
+    const t = todayInTz(), r = reward;
+    const base = { today: { workout: allWorkouts.some((w) => w.date === t), pain: painLog.some((x) => x.date === t), goal: !!(r && r.dailyGoal && r.todayXp >= r.dailyGoal) },
+      next: r && r.rank && r.rank.next ? { name: r.rank.next.name, color: r.rank.next.color, xp: r.rank.xpToNext } : null, movements: ((carePlan && carePlan.movements) || []).length };
+    // The first descent comes before any program: five stops, any order, the first one not yet done is "now"
+    // It never hides a program they already have: one tap switches the mine between the two (remembered on the device).
+    const p = mine.find((x) => { const s = progStats(x); return s.done < s.sessions; }), introOn = !!(intro && intro.offered);
+    if (introOn && !(p && mineView() === "program")) {
+      let lead = true;
+      const stops = INTRO_STEPS.map(([ref, label, sub], n) => { const st = intro.steps[ref], state = st === true ? "done" : st === "skipped" ? "passed" : lead ? "now" : "open"; if (state === "now") lead = false; return { n, ref, label, sub, state }; });
+      return { ...base, intro: true, hasProgram: !!p, program: { id: "intro", title: "Your first descent" }, grid: false, chamber: 1, chambers: 1, unit: "Stage", left: stops.filter((s) => s.state === "now" || s.state === "open").length, stops };
+    }
+    if (!p) return { ...base, program: null, finished: mine.length > 0 };
+    const st = progStats(p), grid = !st.isProto && !perWeekTotal(p) && p.days.length > 0, total = st.sessions, per = grid ? p.days.length : Math.min(6, total);
+    const isDone = (n) => (grid ? doneCount(p, n % per) > Math.floor(n / per) : n < st.done);
+    let cur = 0; while (cur < total && isDone(cur)) cur++;
+    const chambers = Math.ceil(total / per), chamber = Math.min(Math.floor(cur / per), chambers - 1), from = chamber * per, stops = [];
+    for (let n = from; n < Math.min(total, from + per); n++) {
+      const d = grid ? p.days[n % per] : null;
+      stops.push({ n, label: d ? d.name : `${st.isProto ? "Part" : "Session"} ${n + 1}`, sub: d && d.length ? `${d.length} min` : "", state: isDone(n) ? "done" : n === cur ? "now" : "locked" });
+    }
+    return { ...base, introAlt: introOn, program: { id: p.id, title: p.title }, grid, chamber: chamber + 1, chambers, unit: grid ? "Week" : "Stage", left: Math.max(0, total - Math.min(total, st.done)), stops };
+  }
+  const journeyStart = (n) => { const j = journey(), p = j && j.program && (C.programs || []).find((x) => x.id === j.program.id); if (p && j.grid) startPlayer(progDayWorkout(p, n % p.days.length)); };
+  // ---- The first descent: a new member's tutorial as the first road in the mine. Five stops, each a real action in the
+  // app, 10 XP each, once ever (the server checks the ones it can see: lib/clients.js). Any order. Skip ends it; Replay
+  // (Profile) brings it back. "Meet Solomon" and "Bring a friend" are noted on the device when they happen.
+  let intro = null, introBusy = false;
+  const mineView = () => { try { return localStorage.getItem("mdfit-mine-view") === "program" ? "program" : "intro"; } catch { return "intro"; } };
+  const setMineView = (v) => { try { localStorage.setItem("mdfit-mine-view", v === "program" ? "program" : "intro"); } catch {} document.dispatchEvent(new CustomEvent("mdfit:journey")); };
+  // Pass over one stop they can't do right now: no XP for it, the road can still finish, and doing it later still pays
+  async function introPass(ref) { try { intro = await apiAuth("POST", "/api/me/intro/skip", { ref }); } catch {} document.dispatchEvent(new CustomEvent("mdfit:journey")); }
+  const INTRO_STEPS = [["solomon", "Meet Solomon", "Ask him anything"], ["pain", "Tell us what hurts", "One check-in"], ["program", "Pick your road", "Choose a program"],
+    ["session", "First session", "Finish one workout"], ["friend", "Bring a friend", "See your link"]];
+  const introKey = (k) => `mdfit-intro-${client ? client.id : ""}-${k}`;
+  const introFlag = (k) => { try { return localStorage.getItem(introKey(k)) === "1"; } catch { return false; } };
+  const introMark = (k) => { try { localStorage.setItem(introKey(k), "1"); } catch {} introSync(); };
+  const introMet = () => ({ solomon: introFlag("solomon"), pain: painLog.length > 0, program: (client.pinnedPrograms || []).length + (client.assignedPrograms || []).length > 0, session: allWorkouts.length > 0, friend: introFlag("friend") });
+  function loadIntro() { return apiAuth("GET", "/api/me/intro").then((r) => { intro = r; document.dispatchEvent(new CustomEvent("mdfit:journey")); setTimeout(introTour, 900); }).catch(() => {}); }
+  async function introSync() {
+    if (!intro || !intro.offered || introBusy || !client) return;
+    const met = introMet(), todo = INTRO_STEPS.map((s) => s[0]).filter((k) => met[k] && intro.steps[k] !== true);
+    if (!todo.length) return;
+    introBusy = true;
+    try {
+      for (const k of todo) {
+        const r = await apiAuth("POST", "/api/me/xp", { kind: "intro", ref: k });
+        if (r && r.intro) intro = r.intro;
+        if (r && r.first) { celebrateToast([`+${r.xp} XP`, intro.done ? "First descent complete!" : INTRO_STEPS.find((x) => x[0] === k)[1]]); ding(); }
+      }
+      await loadRewards(false);
+    } catch {} finally { introBusy = false; }
+    document.dispatchEvent(new CustomEvent("mdfit:journey"));
+  }
+  const openRefer = () => { go("profile"); setTimeout(() => { const c = $("#referral-card"); if (!c) return; if (c.classList.contains("lay-fold") && !c.classList.contains("open")) layToggle(c); c.scrollIntoView({ block: "start" }); }, 120); };
+  function introGo(ref) {
+    const prog = ((client.assignedPrograms || [])[0] || {}).id || (client.pinnedPrograms || [])[0];
+    if (ref === "solomon") { if (window.MDFitGuide && window.MDFitGuide.open) window.MDFitGuide.open(); }
+    else if (ref === "pain") go("pain");
+    else if (ref === "program") go("programs");
+    else if (ref === "session") go(prog ? "programs/" + prog : "generate");
+    else if (ref === "friend") { introMark("friend"); openRefer(); }
+  }
+  async function introSkip(replay) { try { intro = await apiAuth("POST", "/api/me/intro/skip", { skip: !replay }); } catch {} document.dispatchEvent(new CustomEvent("mdfit:journey")); }
+  document.addEventListener("mdfit:guide-asked", () => introMark("solomon"));
+  ["mdfit:journey", "mdfit:rewards"].forEach((ev) => document.addEventListener(ev, () => { introSync(); }));
+  document.addEventListener("click", async (e) => { if (!e.target.closest("[data-intro-replay]")) return; await introSkip(true); if (intro && intro.offered) { go("home"); toast("Your first descent is back on Home."); } else toast("You've finished the intro. Nothing left to replay."); });
+  // First open, on a phone: four pointers on the real screen (the three blocks, the +, Solomon, the first descent). Once.
+  function introTour() {
+    try {
+      // (shown once per member on a device, even when a stop is already credited: someone given a program starts with one)
+      if (!intro || !intro.offered || $("#view-home").hidden || !matchMedia("(max-width: 700px)").matches) return;
+      const key = `mdfit-tour-${client.id}`; if (localStorage.getItem(key)) return; localStorage.setItem(key, "1");
+    } catch { return; }
+    const steps = [["#top3", "What you can earn, the gem you hold, and what to do next. Tap any of them."], ["#home-plus", "Your shortcuts: join a video visit, your documents, book a visit."],
+      ["#mg-btn", "This is Solomon. Ask him anything, any time."], ["#cave-card .cv-road", "Your first descent: five stops, 10 XP each. Finish them all for your first new gem."]];
+    const wrap = document.createElement("div"); wrap.className = "tour"; wrap.innerHTML = `<i class="tour-hole"></i><div class="tour-tip" role="dialog" aria-live="polite"><p></p><div><button type="button" class="link-sm" data-tour-skip>Skip</button><button type="button" class="btn-blue sm" data-tour-next>Next</button></div></div>`;
+    document.body.appendChild(wrap);
+    let at = -1;
+    const end = () => { wrap.remove(); window.scrollTo({ top: 0 }); };
+    const step = () => {
+      at++; const s = steps[at], el = s && document.querySelector(s[0]);
+      if (!s) return end(); if (!el || !el.getClientRects().length) return step();
+      el.scrollIntoView({ block: "center" });
+      setTimeout(() => {
+        const r = el.getBoundingClientRect(), hole = wrap.querySelector(".tour-hole"), tip = wrap.querySelector(".tour-tip"), h = Math.min(r.height, 260);
+        Object.assign(hole.style, { left: r.left - 6 + "px", top: r.top - 6 + "px", width: r.width + 12 + "px", height: h + 12 + "px" });
+        tip.querySelector("p").textContent = s[1]; wrap.querySelector("[data-tour-next]").textContent = at === steps.length - 1 ? "Got it" : "Next";
+        const below = r.top + h + 150 < innerHeight; tip.style.top = below ? r.top + h + 18 + "px" : "auto"; tip.style.bottom = below ? "auto" : innerHeight - r.top + 18 + "px";
+      }, 260);
+    };
+    wrap.addEventListener("click", (e) => { if (e.target.closest("[data-tour-skip]")) end(); else if (e.target.closest("[data-tour-next]")) step(); });
+    step();
+  }
   // One day on the Progress calendar: was a workout logged, and is anything on it still open (an unpaid invoice dated
   // that day, a visit later that day or ahead). account-habits.js puts a check on goal days with a workout and nothing open.
   const dayStatus = (d) => {
@@ -3819,7 +4010,7 @@
     const visitAhead = (appts.upcoming || []).some((a) => a.date === d && a.status === "booked" && (d > t || (d === t && String(a.time || "") > now)));
     return { workout, open: unpaid || visitAhead };
   };
-  window.MDFitApp = { dayStatus, startPlayer, go, loadRewards, toast, celebrateToast, exMeta, byId, gemIcon: GEM_ICON, rewards: () => reward, isPaid, showPaywall,
+  window.MDFitApp = { journey, journeyStart, introGo, introSkip, introPass, setMineView, dayStatus, startPlayer, go, loadRewards, toast, celebrateToast, exMeta, byId, gemIcon: GEM_ICON, rewards: () => reward, isPaid, showPaywall,
     // For the guide (mdfit-guide.js) and the theme switch (app-theme.js): who is signed in, what the app holds, and two places to open
     client: () => client, content: async () => { if (!C) await (contentLoading || loadContent()).catch(() => {}); return C; },
     openBook: () => { go("profile"); setTimeout(() => $("#p-book-open") && $("#p-book-open").click(), 60); },
@@ -3858,7 +4049,7 @@
     renderStats(); renderEvents(); renderActivity(); renderNotes(); renderCalendar();
     loadCalMoney().then(renderCalendar); calSyncAt = Date.now();
     setTimeout(notifyVisits, 1200);
-    loadRewards().then(welcomeBack);
+    loadRewards().then(welcomeBack).then(loadIntro);
     loadSite().catch(() => {});
   })();
 })();
