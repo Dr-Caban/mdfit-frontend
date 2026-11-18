@@ -528,6 +528,13 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
 .k-bg-workout { background: var(--accent) !important; } .k-bg-visit { background: var(--navy) !important; } .k-bg-pain { background: var(--gold) !important; }
 .k-bg-care { background: #2e7d4f !important; }
 .k-bg-class { background: #8a5fb0 !important; }
+/* Billing (invoices, card payments) and the membership (started, renews, ends): a rose dot and a gold ring, so the
+   two money marks differ in shape as well as colour */
+.k-bill { background: #d4688e; }
+.k-plan { background: transparent; box-shadow: inset 0 0 0 1.5px var(--gold); }
+.k-bg-bill { background: #d4688e !important; }
+.k-bg-plan { background: transparent !important; box-shadow: inset 0 0 0 2px var(--gold); }
+.cal-day .act-links { display: flex; gap: 12px; margin-top: 4px; }
 .badges { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; }
 .badge { display: grid; justify-items: center; text-align: center; gap: 4px; padding: 12px 8px; border-radius: 14px; background: var(--card-2); }
 .b-ic { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; background: #e2ddd1; color: #a19c90; }

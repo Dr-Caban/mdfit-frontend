@@ -31,6 +31,7 @@
   // choices and old "today's workout"). Sign-in, favorites and everything on the account are left alone.
   try { ["mdfit_prefs", "mdfit_prefs1", "mdfit_prefs2", "mdfit_today", "mdfit_today1", "mdfit_today2"].forEach((k) => localStorage.removeItem(k)); } catch {}
   let client = auth.client(), stats = null, appts = { upcoming: [], past: [] }, painLog = [], allWorkouts = [], reward = null;
+  let calMoney = [], calSyncAt = 0, calSyncing = null; // the Progress calendar's invoices, payments and membership dates, and its sync state
   let lib = { favorites: [], programs: [] };
 
   function toast(msg) {
@@ -151,7 +152,7 @@
     if (tab === "profile") renderProfileMembership().catch(() => {}); // plan + review offer can change while the app is open
     if (tab === "profile") { renderProgress(); loadNudgePref(); }
     if (tab === "pain" && !show.painMap) { show.painMap = true; if (window.MDFitPainMap) window.MDFitPainMap.init($("[data-painmap='app']")); }
-    if (tab === "progress") renderCalendar();
+    if (tab === "progress") { renderCalendar(); if (typeof syncCalendar === "function") syncCalendar(); }
     if (tab === "leaders" && typeof loadBoard === "function") loadBoard();
     if (["programs", "learn", "premium", "tips"].includes(tab)) renderContent(tab, tab === "programs" ? String(hash).split("/").slice(1).join("/") : sub);
     if (tab === "messages") openMessages(); else clearInterval(msgPoll);
@@ -3392,7 +3393,9 @@
       ...((carePlan && carePlan.paidVisits) || []).filter((v) => String(v.paidAt).slice(0, 10) === d)
         .map((v) => ({ k: "care", t: v.name || "Video visit", s: "Paid, waiting for a time" })),
       ...[...myClasses.upcoming, ...myClasses.past].filter((c) => c.date === d)
-        .map((c) => ({ k: "class", t: c.title, s: `${fmtTime(c.time)}${c.minutes ? ` · ${c.minutes} min` : ""}${c.coach ? ` · ${c.coach}` : ""}` }))
+        .map((c) => ({ k: "class", t: c.title, s: `${fmtTime(c.time)}${c.minutes ? ` · ${c.minutes} min` : ""}${c.coach ? ` · ${c.coach}` : ""}` })),
+      // Invoices, card payments and membership dates (GET /api/me/calendar)
+      ...calMoney.filter((x) => x.date === d).map((x) => ({ k: x.k, t: x.t, s: x.s, pay: x.path || "", receipt: x.receipt || "" }))
     ];
   }
   function renderCalendar() {
@@ -3418,6 +3421,7 @@
     const canRepair = d < t && !items.length && repairs && repairs.available >= 1 && !alreadyRepaired;
     $("#cal-day").innerHTML = `<p class="label">${d === t ? "Today" : fmtDate(d, { weekday: "long", month: "short", day: "numeric" })}</p>` + (items.length
       ? `<ul class="activity">${items.map((x) => `<li class="act"><span class="check k-bg-${x.k}"></span><div><b>${esc(x.t)}</b><span>${esc(x.s)}</span>${
+          x.pay || x.receipt ? `<span class="act-links">${x.pay ? `<a class="btn-gold sm" href="${esc(x.pay)}">Pay invoice</a>` : ""}${/^https:\/\//.test(x.receipt) ? `<a class="link-sm" href="${esc(x.receipt)}" target="_blank" rel="noopener">Receipt</a>` : ""}</span>` : ""}${
           x.k === "care" && x.video ? `<button type="button" class="link sm" data-care-video="${esc(x.video)}" data-care-name="${esc(x.t)}">Watch it</button>` : x.link ? `<a class="btn-blue sm join-link" href="${esc(x.link)}" target="_blank" rel="noopener">Join video visit</a>` : x.video && x.s.includes("upcoming") ? `<span class="muted small">Your video link will be emailed before the visit.</span>` : ""}</div></li>`).join("")}</ul>`
       : `<p class="muted small">Nothing logged. ${d === t ? "A quick workout keeps your streak alive." : ""}</p>`)
       + (alreadyRepaired ? `<p class="muted small"><b>Streak repair applied</b> — this missed day is bridged for your streak.</p>` : "")
@@ -3429,6 +3433,23 @@
     catch (err) { toast(err.message); }
   });
   $("#cal").addEventListener("click", (e) => { const b = e.target.closest("[data-day]"); if (b) { calPick = b.dataset.day; renderCalendar(); } });
+  // Keep the calendar in step with the clinic: everything on it is asked for again when the server says something of
+  // this member's changed (a visit booked or moved in the workspace, a payment, a workout logged on the phone app),
+  // when the app comes back to the front, when Progress is opened, and every two minutes while Progress is on screen.
+  function loadCalMoney() { return apiAuth("GET", "/api/me/calendar").then((r) => { calMoney = (r && r.entries) || []; }).catch(() => {}); }
+  function syncCalendar(force = false) {
+    if (calSyncing) return calSyncing;
+    if (!force && Date.now() - calSyncAt < 20000) return Promise.resolve();
+    calSyncAt = Date.now();
+    calSyncing = Promise.allSettled([
+      apiAuth("GET", "/api/me/workouts").then((w) => { allWorkouts = w; }),
+      loadAppointments(), loadPain(), loadClasses(), loadCarePlan(), loadCalMoney()
+    ]).then(() => { renderCalendar(); renderStats(); renderActivity(); }).finally(() => { calSyncing = null; });
+    return calSyncing;
+  }
+  if (window.MDFitRT) MDFitRT.on("calendar_changed", () => { syncCalendar(true); loadRewards(); });
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) syncCalendar(); });
+  setInterval(() => { if (!document.hidden && !$("#view-progress").hidden) syncCalendar(); }, 120000);
   $("#cal-prev").addEventListener("click", () => { calMonth = monthAdd(calMonth, -1); renderCalendar(); });
   $("#cal-next").addEventListener("click", () => { calMonth = monthAdd(calMonth, 1); renderCalendar(); });
 
@@ -3636,6 +3657,7 @@
     loadContent().then(() => { renderFeaturedPrograms(); renderMyPlans(); const t = location.hash.slice(1).split("/"); if (["programs", "learn", "premium", "tips"].includes(t[0])) renderContent(t[0], t[0] === "programs" ? t.slice(1).join("/") : t[1]); });
     if (lb.status === "fulfilled") { lib = lb.value; renderPrograms(); if (!$("#view-videos").hidden) renderVideos(); }
     renderStats(); renderEvents(); renderActivity(); renderNotes(); renderCalendar();
+    loadCalMoney().then(renderCalendar); calSyncAt = Date.now();
     setTimeout(notifyVisits, 1200);
     loadRewards();
     loadSite().catch(() => {});
