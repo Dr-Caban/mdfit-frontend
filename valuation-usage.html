@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MD Fit Online valuation: how the number was reached</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0A1A2E">
+<meta name="description" content="What was entered into the MD Fit valuation workbench for MD Fit Online, where each figure came from, and which plain variables move the result up or down.">
+<!-- Companion to /valuation. The figures here were entered into the workbench on Nov 18, 2026 after checking the
+     platform inventory against the source code (mdfit-frontend, mdfit-backend), the Railway production service and the
+     live site. The arithmetic below is the workbench's own calc(), reduced to the online segment (no clinic revenue,
+     no clinic costs, no tangible assets). Change a slider and every figure on the page recomputes. -->
+<style>
+:root{--bg:#F5F9FC;--surface:#FFFFFF;--ink:#0A1A2E;--muted:#5B6B7C;--line:#DCE8F2;--accent:#2F6E9E;--accent-text:#2F6E9E;--good:#1F7A4D;--bad:#C62828;--warn:#9A6700;
+  --income:#1f7a7a;--market:#4a6fa5;--asset:#8a8f3a;
+  --font-display:"Libre Baskerville",Georgia,"Times New Roman",serif;--font-body:"Montserrat",system-ui,-apple-system,"Segoe UI",sans-serif;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A1A2E;--surface:#10233B;--ink:#E8F0F7;--muted:#9BB0C4;--line:#1D3352;--accent:#8EC0E6;--accent-text:#8EC0E6;--good:#6FCF97;--bad:#EE7D68;--warn:#E3B341;--income:#3fb4b0;--market:#7fa3dc;--asset:#c3c86a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0A1A2E;--surface:#10233B;--ink:#E8F0F7;--muted:#9BB0C4;--line:#1D3352;--accent:#8EC0E6;--accent-text:#8EC0E6;--good:#6FCF97;--bad:#EE7D68;--warn:#E3B341;--income:#3fb4b0;--market:#7fa3dc;--asset:#c3c86a;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--font-body);font-variant-numeric:tabular-nums}
+a{color:var(--accent-text)}
+.wrap{max-width:880px;margin:0 auto;padding:28px 16px 64px}
+h1{font:700 clamp(24px,4vw,34px)/1.2 var(--font-display);margin:0 0 6px}
+h2{font:700 20px/1.3 var(--font-display);margin:36px 0 10px;scroll-margin-top:16px}
+h3{font:600 15px/1.3 var(--font-body);margin:18px 0 6px}
+p{margin:8px 0}
+.lede{color:var(--muted);font-size:14px;max-width:66ch}
+.hero{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px 20px;margin-top:18px}
+.hero .big{font:700 clamp(38px,8vw,56px)/1 var(--font-display);letter-spacing:-.01em;margin:4px 0 6px;transition:opacity .25s}
+.hero .what{color:var(--muted);font-size:14px;max-width:62ch}
+.hero .asof{font-size:12.5px;color:var(--muted);margin-top:10px}
+.bars{margin-top:16px;display:grid;gap:8px}
+.bar{display:grid;grid-template-columns:72px 1fr 92px;gap:10px;align-items:center;font-size:13px}
+.bar .track{height:14px;background:var(--bg);border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.bar .fill{height:100%;width:0;transition:width .45s cubic-bezier(.2,.7,.2,1)}
+.bar .v{text-align:right;font-weight:600}
+.i .fill{background:var(--income)}.m .fill{background:var(--market)}.a .fill{background:var(--asset)}.c .fill{background:var(--accent)}
+.bar.c{font-weight:700}
+.note{font-size:13px;color:var(--muted)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;margin-top:12px}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:8px}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+td.v{white-space:nowrap;font-weight:600}
+td small{display:block;color:var(--muted);font-size:12px;font-weight:400}
+.ok{color:var(--good);font-weight:600}.no{color:var(--warn);font-weight:600}.bad{color:var(--bad);font-weight:600}
+.lever{display:grid;grid-template-columns:1fr;gap:6px;padding:14px 0;border-bottom:1px solid var(--line)}
+.lever:last-child{border-bottom:0}
+.lever .top{display:flex;justify-content:space-between;gap:12px;align-items:baseline;flex-wrap:wrap}
+.lever label{font-weight:600}
+.lever .read{font-weight:700;font-variant-numeric:tabular-nums}
+.lever input[type=range]{width:100%;accent-color:var(--accent);margin:2px 0}
+.lever .delta{font-size:13px;color:var(--muted)}
+.lever .delta b{color:var(--ink)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{background:var(--surface);color:var(--ink);border:0;padding:8px 12px;font:500 13px var(--font-body);cursor:pointer}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed=true]{background:var(--ink);color:var(--bg);font-weight:600}
+.pill{display:inline-block;font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:20px;border:1px solid var(--line);color:var(--muted);vertical-align:middle;margin-left:6px}
+ol.rank{padding-left:20px}ol.rank li{margin:8px 0}
+.foot{margin-top:40px;padding-top:14px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:520px){.bar{grid-template-columns:60px 1fr 80px}th:nth-child(3),td:nth-child(3){display:none}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <p class="lede"><a href="/valuation">← Back to the workbench</a></p>
+  <h1>MD Fit Online: how the number was reached</h1>
+  <p class="lede">This page shows exactly what was typed into the valuation workbench for the online segment, where each figure came from, and which plain variables move the result. Nothing here is an appraisal; it is the arithmetic an appraiser will check.</p>
+
+  <section class="hero" aria-labelledby="hv">
+    <div class="note" id="hv">Indicated value of MD Fit Online, from the inputs below</div>
+    <div class="big" id="bigV">$105,000</div>
+    <div class="what" id="bigWhat"></div>
+    <div class="bars" aria-label="The three approaches">
+      <div class="bar i"><span>Income</span><div class="track"><div class="fill" id="fI"></div></div><span class="v" id="vI"></span></div>
+      <div class="bar m"><span>Market</span><div class="track"><div class="fill" id="fM"></div></div><span class="v" id="vM"></span></div>
+      <div class="bar a"><span>Asset</span><div class="track"><div class="fill" id="fA"></div></div><span class="v" id="vA"></span></div>
+      <div class="bar c"><span>Weighted</span><div class="track"><div class="fill" id="fC"></div></div><span class="v" id="vC"></span></div>
+    </div>
+    <div class="asof">Baseline entered Nov 18, 2026. Move a slider in <a href="#levers">the levers</a> and this box recomputes with the workbench's own formulas.</div>
+  </section>
+
+  <h2 id="entered">1. What was entered, field by field</h2>
+  <p class="lede">These are the workbench fields in order. "Load these inputs" on the workbench page enters them for you.</p>
+  <div class="card">
+    <table>
+      <thead><tr><th>Workbench field</th><th>Entered</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td>Valuation date</td><td class="v">2026-11-18</td><td>The day the source, Railway and the live site were checked.</td></tr>
+        <tr><td>Standard · premise · level · purpose</td><td class="v">FMV · going concern · controlling · equity extraction</td><td>Workbench defaults; they match the stated goal.</td></tr>
+        <tr><td>App subscriptions per month</td><td class="v">$50</td><td>Recurring card revenue reported by the workspace (two paying members). The owner's figure: how it is computed was checked in code, the number itself was not pulled from the live database.</td></tr>
+        <tr><td>Clinic revenue per year</td><td class="v">$0</td><td>The clinic is left out on purpose. This values MD Fit Online alone.</td></tr>
+        <tr><td>Card processing fees</td><td class="v">3.2%</td><td>Stripe's blended card fee, taken off the top.</td></tr>
+        <tr><td>Clinic operating costs</td><td class="v">$0</td><td>None belong to the online segment.</td></tr>
+        <tr><td>Platform costs per month</td><td class="v">$150<small>placeholder</small></td><td>Workbench default. Railway's own footprint is small (average 0.24 GB RAM, 1.7% CPU over 7 days). The owner's typed running costs in Admin → System economics should replace this.</td></tr>
+        <tr><td>Owner pay · add-backs · market salary</td><td class="v">$0 · $0 · $0</td><td>No payroll is booked against the online segment.</td></tr>
+        <tr><td>Developer status · rates</td><td class="v">Active · 15% / 5%</td><td>As written in <code>lib/partner-share.js</code> (Agreement Revision 2): 15% of online net revenue while active, 5% after stepping down.</td></tr>
+        <tr><td>Discount-rate build-up</td><td class="v">4.5 + 6 + 10 + 2 + 8 = 30.5%<small>growth 4%</small></td><td>Workbench defaults: risk-free, equity premium, size, industry, company-specific. Typical for a very small business; the company-specific 8% is the part evidence can lower.</td></tr>
+        <tr><td>Earnings measure</td><td class="v">SDE</td><td>EBITDA would subtract a market salary and go negative, which zeroes the income approach without saying so.</td></tr>
+        <tr><td>Price ÷ SDE multiple</td><td class="v">3.0×</td><td>Workbench default.</td></tr>
+        <tr><td>Tangible net assets</td><td class="v">$0</td><td>No equipment belongs to the online segment.</td></tr>
+        <tr><td>Software replacement cost</td><td class="v">$150,000</td><td>The low end of the inventory's own anchors ($150K–$400K for a single-clinic EHR core). The verified platform also includes CRM, payments with revenue-share accounting, telehealth, the member app and a 403-page SEO site, so this is conservative.</td></tr>
+        <tr><td>Obsolescence</td><td class="v">30%</td><td>Workbench default. The code is weeks old on current runtimes (Node 20, Express 5) with 374 passing tests, so 30% is on the heavy side.</td></tr>
+        <tr><td>Weights: income · market · asset</td><td class="v">0 · 0 · 100</td><td>The segment has no earnings yet, so the income and market approaches return nothing. Standard practice weights the cost approach for pre-revenue software. The workbench's clinic default (50/40/10) would give $10,500: a working platform at a tenth of what it would cost to rebuild.</td></tr>
+      </tbody>
+    </table>
+    <p class="note">Result: income $0, market $0, asset $150,000 × (1 − 0.30) = <b>$105,000</b>. Partial-stake and lender steps are left at defaults and are not part of this figure.</p>
+  </div>
+
+  <h2 id="levers">2. The levers, in plain terms</h2>
+  <p class="lede">Each slider is one workbench field. The box at the top follows them live. The figures under each slider say what one step of it is worth.</p>
+  <div class="card" id="leverBox">
+    <div class="lever">
+      <div class="top"><label for="members">Paying members</label><span class="read" id="rMembers"></span></div>
+      <input id="members" type="range" min="0" max="200" step="1" value="2">
+      <div class="delta" id="dMembers"></div>
+    </div>
+    <div class="lever">
+      <div class="top"><label for="price">Price per member, per month</label><span class="read" id="rPrice"></span></div>
+      <input id="price" type="range" min="10" max="150" step="5" value="25">
+      <div class="delta" id="dPrice"></div>
+    </div>
+    <div class="lever">
+      <div class="top"><label>How the three approaches are weighted</label><span class="seg" id="weights" role="group" aria-label="Weighting"><button type="button" data-v="asset" aria-pressed="true">No earnings yet: asset only</button><button type="button" data-v="mix" aria-pressed="false">Earning: 50 / 40 / 10</button></span></div>
+      <div class="delta" id="dWeights"></div>
+    </div>
+    <div class="lever">
+      <div class="top"><label for="plat">Platform costs per month</label><span class="read" id="rPlat"></span></div>
+      <input id="plat" type="range" min="0" max="1000" step="10" value="150">
+      <div class="delta" id="dPlat"></div>
+    </div>
+    <div class="lever">
+      <div class="top"><label>Developer status</label><span class="seg" id="status" role="group" aria-label="Developer status"><button type="button" data-v="active" aria-pressed="true">Active (15%)</button><button type="button" data-v="continuing" aria-pressed="false">Stepped down (5%)</button></span></div>
+      <div class="delta" id="dStatus"></div>
+    </div>
+    <div class="lever">
+      <div class="top"><label for="csr">Company-specific risk</label><span class="read" id="rCsr"></span></div>
+      <input id="csr" type="range" min="2" max="14" step="0.5" value="8">
+      <div class="delta" id="dCsr"></div>
+    </div>
+    <div class="lever">
+      <div class="top"><label for="sw">Software replacement cost</label><span class="read" id="rSw"></span></div>
+      <input id="sw" type="range" min="50000" max="500000" step="10000" value="150000">
+      <div class="delta" id="dSw"></div>
+    </div>
+    <div class="lever">
+      <div class="top"><label for="obs">Obsolescence</label><span class="read" id="rObs"></span></div>
+      <input id="obs" type="range" min="0" max="50" step="5" value="30">
+      <div class="delta" id="dObs"></div>
+    </div>
+    <p class="note"><button type="button" id="resetL" class="seg" style="padding:7px 12px;font:600 13px var(--font-body);cursor:pointer;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:8px">Back to the entered figures</button></p>
+  </div>
+
+  <h2 id="raise">3. What raises the number, in order</h2>
+  <div class="card">
+    <ol class="rank">
+      <li><b>Paying members.</b> The platform has 83 members and 2 of them pay. Every member moved to a card subscription adds the amount shown under the first slider to the income and market approaches, and a few of them switch the weighting from "asset only" to "earning", which is when the number starts to move with the business rather than with the rebuild cost. Break-even on the platform cost is shown under the slider too.</li>
+      <li><b>Software replacement cost.</b> The appraiser sets this; what moves it is evidence. Everything in the inventory that could be checked from here was checked (section 4). Each $50,000 of defensible replacement cost adds $35,000 at 30% obsolescence.</li>
+      <li><b>Company-specific risk.</b> This is where the open items in the inventory bite: public repositories, no hosting BAA on file, developer IP carve-out unstated. Closing them lowers the rate; each point off the rate is worth about 4% more on the income approach once there are earnings.</li>
+      <li><b>Obsolescence.</b> Each 5 points less adds $7,500 at $150,000. Current runtimes and a passing test suite are the argument.</li>
+      <li><b>Developer share.</b> A fixed 15% off online net revenue while active. It only matters once there are earnings, and it is a contract term, not a slider the business controls.</li>
+    </ol>
+    <p class="note">What does <em>not</em> raise it: line counts (57% of the website's HTML is generated from data by <code>scripts/seo/build.js</code>), page counts, or endpoint counts on their own. They support the replacement-cost anchor; they are not value by themselves.</p>
+  </div>
+
+  <h2 id="verified">4. What was checked, and what was not</h2>
+  <div class="card">
+    <table>
+      <thead><tr><th>Inventory claim</th><th>Found</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>Backend 13,482 lines JS; 353 tests</td><td>14,167 lines; <b>374 tests, 374 pass</b> (<code>npm test</code>, Nov 18)</td><td class="ok">Verified, grown since</td></tr>
+        <tr><td>318 API endpoints (162 / 105 / 42 / 9)</td><td>319 unique method+path (166 admin, 113 member, 43 public, 11 board + valuation)</td><td class="ok">Verified</td></tr>
+        <tr><td>4 third-party libraries</td><td>express, socket.io, stripe, ffmpeg-static; no dev dependencies</td><td class="ok">Verified</td></tr>
+        <tr><td>Encryption, audit chain, scrypt, BAA gate, edge gate</td><td>Every named file exists; AES-256-GCM, scrypt, SHA-256 + Ed25519 present where stated</td><td class="ok">Verified</td></tr>
+        <tr><td>Revenue share 15% / 5% / ≤15%</td><td><code>DEFAULTS</code> in <code>lib/partner-share.js</code>; online / clinic / unclassified split; monthly statement CSV</td><td class="ok">Verified</td></tr>
+        <tr><td>Website 72,887 lines; 403-page sitemap; schema counts</td><td>74,171 lines; sitemap 403; JSON-LD 404, medical 392, FAQ 373, canonical 403, OG 394</td><td class="ok">Verified, exact</td></tr>
+        <tr><td>Coverage: 115 / 101 / 78 / 59 / 15 / 7 / 7 / 6</td><td>Same, directory by directory</td><td class="ok">Verified, exact</td></tr>
+        <tr><td>67 muscle reports; 26 pain tracks; 308 media; 254 search docs</td><td>67; 26; 316; <b>593</b> (the index is larger than stated)</td><td class="ok">Verified; one undercount</td></tr>
+        <tr><td>Railway: created Nov 4; 51 variables; 37,959 requests / 98.8%</td><td>Nov 4; 53 non-Railway variable names; 40,180 requests / 98.9% (7 days to Nov 18)</td><td class="ok">Verified</td></tr>
+        <tr><td>Repositories are public</td><td>frontend, backend and mymdfitapp public; the iOS repo private</td><td class="ok">Confirmed (open item stands)</td></tr>
+        <tr><td>188 exercise videos</td><td>159 in the site catalog, 196 in the backend library; the live <code>/api/videos</code> refused this check (edge gate, as designed)</td><td class="no">Partly</td></tr>
+        <tr><td>210 accounts; 81 granted; 2 paying; ~$50/month</td><td>Definitions confirmed in code; the numbers come from Admin → Insights and were not read from the live database</td><td class="no">Owner's figure</td></tr>
+        <tr><td>iPhone app 28,576 lines Swift</td><td>Private repository, outside what this review was given</td><td class="no">Not checked</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="foot">Not an appraisal, legal opinion or financial advice. Figures come from the source code, Railway and the live site as of Nov 18, 2026, entered into the workbench at <a href="/valuation">/valuation</a>. A conclusion of value has to be written by a credentialed appraiser.</p>
+</main>
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const BASE = { members: 2, price: 25, plat: 150, csr: 8, sw: 150000, obs: 30, status: "active", weights: "asset" };
+  const FIX = { fee: 0.032, g: 0.04, rf: 0.045, erp: 0.06, size: 0.10, ind: 0.02, mult: 3, activePct: 15, contPct: 5 };
+  const st = { ...BASE };
+  const usd = (n) => !isFinite(n) ? "—" : (n < 0 ? "−$" : "$") + Math.round(Math.abs(n)).toLocaleString("en-US");
+  // The workbench's calc(), reduced to the online segment: no clinic revenue, no clinic costs, no tangible assets.
+  function calc(s) {
+    const onlineNet = s.members * s.price * 12 * (1 - FIX.fee);
+    const share = onlineNet * (s.status === "active" ? FIX.activePct : FIX.contPct) / 100;
+    const sde = onlineNet - s.plat * 12 - share;
+    const r = FIX.rf + FIX.erp + FIX.size + FIX.ind + s.csr / 100, cap = r - FIX.g;
+    const income = cap > 0 ? Math.max(0, sde * (1 + FIX.g) / cap) : NaN;
+    const market = Math.max(0, sde * FIX.mult);
+    const asset = s.sw * (1 - s.obs / 100);
+    const [wI, wM, wA] = s.weights === "asset" ? [0, 0, 100] : [50, 40, 10];
+    const value = (income * wI + market * wM + asset * wA) / 100;
+    return { onlineNet, share, sde, r, cap, income, market, asset, value, wI, wM, wA };
+  }
+  const base = calc(BASE);
+  function perMember(s) { const a = calc({ ...s, members: s.members + 1 }), b = calc(s); return { inc: a.income - b.income, mkt: a.market - b.market, sde: a.sde - b.sde }; }
+  function paint() {
+    const c = calc(st), max = Math.max(c.income, c.market, c.asset, c.value, 1);
+    $("#bigV".slice(1)).textContent = usd(c.value);
+    const d = c.value - base.value;
+    $("bigWhat").textContent = (st.weights === "asset"
+      ? "Asset approach only: software replacement cost less obsolescence. Income and market are shown but carry no weight because the segment has no earnings."
+      : "Weighted 50% income, 40% market, 10% asset: the clinic's default, right once the segment earns.")
+      + (Math.abs(d) >= 1 ? ` That is ${d > 0 ? "up" : "down"} ${usd(Math.abs(d))} from the entered figures.` : "");
+    const set = (k, v) => { $("f" + k).style.width = Math.max(0, Math.min(100, v / max * 100)) + "%"; $("v" + k).textContent = usd(v); };
+    set("I", c.income); set("M", c.market); set("A", c.asset); set("C", c.value);
+    const pm = perMember(st), be = Math.ceil((st.plat * 12) / Math.max(1e-9, pm.sde));
+    $("rMembers").textContent = `${st.members} · ${usd(st.members * st.price)}/month`;
+    $("dMembers").innerHTML = `Each paying member at ${usd(st.price)}/month adds <b>${usd(pm.sde)}</b> a year to SDE, which is <b>${usd(pm.inc)}</b> on the income approach and <b>${usd(pm.mkt)}</b> on the market approach. Break-even on the platform cost: <b>${pm.sde > 0 ? be + " members" : "n/a"}</b>. Right now SDE is <b>${usd(c.sde)}</b> a year.`;
+    $("rPrice").textContent = usd(st.price) + "/month";
+    $("dPrice").innerHTML = `Price and member count multiply: the number of members that covers costs falls as the price rises.`;
+    $("dWeights").innerHTML = st.weights === "asset"
+      ? `Asset only. Switch to "Earning" to see what the same members are worth when income and market carry the weight: <b>${usd(calc({ ...st, weights: "mix" }).value)}</b>.`
+      : `Earning. The asset-only figure with these inputs is <b>${usd(calc({ ...st, weights: "asset" }).value)}</b>. While the weighted figure sits below it, replacement cost is the better statement of value.`;
+    $("rPlat").textContent = usd(st.plat) + "/month";
+    $("dPlat").innerHTML = `Every $10/month of running cost takes <b>${usd(calc({ ...st, plat: st.plat - 10 }).income - c.income)}</b> off the income approach once there are earnings. Replace the placeholder with the owner's own figure from Admin → System economics.`;
+    $("dStatus").innerHTML = `Developer share this year: <b>${usd(c.share)}</b>. ${st.status === "active" ? "Stepping down would take it to 5% of online net revenue." : "At 5%, after active service ends."} A contract term, not something the business adjusts.`;
+    $("rCsr").textContent = st.csr.toFixed(1) + "% · rate " + (c.r * 100).toFixed(1) + "%";
+    $("dCsr").innerHTML = `One point lower is worth <b>${usd(calc({ ...st, csr: st.csr - 1 }).income - c.income)}</b> on the income approach at these earnings. What lowers it: private repositories, a hosting BAA on file, the developer IP carve-out written down, the passing test suite, an uptime record.`;
+    $("rSw").textContent = usd(st.sw);
+    $("dSw").innerHTML = `Each $50,000 of defensible replacement cost adds <b>${usd(50000 * (1 - st.obs / 100))}</b> at ${st.obs}% obsolescence. The inventory's anchors run $150,000–$400,000 for an EHR core alone.`;
+    $("rObs").textContent = st.obs + "%";
+    $("dObs").innerHTML = `Each 5 points less adds <b>${usd(st.sw * 0.05)}</b>. Argument against heavy obsolescence: weeks-old code on Node 20 / Express 5, 374 tests passing, 43+ releases in two weeks.`;
+  }
+  const bind = (id, k, f = Number) => $(id).addEventListener("input", (e) => { st[k] = f(e.target.value); paint(); });
+  bind("members", "members"); bind("price", "price"); bind("plat", "plat"); bind("csr", "csr", parseFloat); bind("sw", "sw"); bind("obs", "obs");
+  ["weights", "status"].forEach((g) => $(g).addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; st[g] = b.dataset.v; $(g).querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", String(x === b))); paint(); }));
+  $("resetL").addEventListener("click", () => { Object.assign(st, BASE); ["members","price","plat","csr","sw","obs"].forEach((k) => $(k).value = BASE[k]); ["weights","status"].forEach((g) => $(g).querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", String(x.dataset.v === BASE[g])))); paint(); });
+  paint();
+})();
+</script>
+</body>
+</html>

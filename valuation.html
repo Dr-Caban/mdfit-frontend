@@ -27,6 +27,12 @@ button:disabled{opacity:.5}
 .msg{min-height:1.2em;margin:0;font-size:13px;color:var(--bad);text-align:center}
 .bar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 16px;background:var(--surface);border-bottom:1px solid var(--line);font-size:13px;color:var(--muted)}
 .bar button{padding:6px 12px;font-size:13px;background:none;color:var(--ink);border:1.5px solid var(--line)}
+.verdict{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:10px 16px;background:var(--surface);border-bottom:1px solid var(--line)}
+.verdict b{display:block;font:700 18px/1.2 var(--font-display)}
+.verdict span{display:block;font-size:12.5px;color:var(--muted);max-width:70ch}
+.verdict .acts{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.verdict .acts a{font-size:13px;color:var(--accent-text)}
+.verdict .acts button{padding:7px 12px;font-size:13px;background:var(--ink);color:var(--surface)}
 #app{display:flex;flex-direction:column;height:100%}
 iframe{flex:1;width:100%;border:0;background:#fff}
 [hidden]{display:none!important}
@@ -45,6 +51,10 @@ iframe{flex:1;width:100%;border:0;background:#fff}
 </section>
 <div id="app" hidden>
   <div class="bar"><span>MD Fit valuation workbench · figures you enter stay in this browser</span><button type="button" id="lock">Lock</button></div>
+  <div class="verdict" id="verdict">
+    <div><b>MD Fit Online · $105,000</b><span>Asset approach: $150,000 replacement cost less 30% obsolescence. Income and market approaches are nil on about $50 a month of recurring revenue. Inputs checked against the source code, Railway and the live site on Nov 18, 2026.</span></div>
+    <div class="acts"><button type="button" id="loadScn">Load these inputs</button><a href="/valuation-usage">How this number was reached</a></div>
+  </div>
   <iframe id="wb" title="Valuation workbench" sandbox="allow-scripts allow-same-origin allow-downloads allow-forms allow-popups"></iframe>
 </div>
 <script src="config.js?v=aac711e3"></script>
@@ -54,12 +64,26 @@ iframe{flex:1;width:100%;border:0;background:#fff}
   const $ = (s) => document.querySelector(s);
   const tok = { get() { try { const t = JSON.parse(sessionStorage.getItem(KEY) || "null"); return t && Date.parse(t.expiresAt) > Date.now() ? t.token : ""; } catch { return ""; } },
     set(t) { try { sessionStorage.setItem(KEY, JSON.stringify(t)); } catch {} }, clear() { try { sessionStorage.removeItem(KEY); } catch {} } };
+  let lastHtml = "";
+  // The figures entered for MD Fit Online on Nov 18, 2026 (see /valuation-usage). The workbench runs in a same-origin
+  // srcdoc frame and reads its saved inputs from this key on load, so writing them here and reloading the frame is
+  // the same as typing them in. Clinic revenue, clinic costs and tangible assets are 0: this values the online segment.
+  const SCENARIO = { stdv: "Fair market value", premise: "Going concern", level: "Controlling interest", purpose: "Equity extraction or financing",
+    subsMo: "50", clinic: "0", fee: "3.2", g: "4", clinicCost: "0", platCost: "150", ownerPay: "0", addbacks: "0", marketPay: "0",
+    activePct: "15", contPct: "5", rf: "4.5", erp: "6", size: "10", ind: "2", csr: "8", mult: "3", tangible: "0", swCost: "150000", obs: "30",
+    wI: "0", wM: "0", wA: "100", interest: "5", dloc: "15", dlom: "25", dscr: "1.25", rate: "10.5", term: "10", status: "active", stream: "sde" };
+  $("#loadScn").addEventListener("click", () => {
+    if (!lastHtml) return;
+    if (!confirm("Replace the figures saved in this browser's workbench with the MD Fit Online inputs from Nov 18, 2026?")) return;
+    try { localStorage.setItem("mdfit-eval-v2", JSON.stringify(SCENARIO)); } catch {}
+    $("#wb").srcdoc = ""; $("#wb").srcdoc = lastHtml;
+  });
   async function open() {
     const t = tok.get(); if (!t) return false;
     const r = await fetch(API + "/api/valuation/page", { headers: { Authorization: "Bearer " + t } });
     if (!r.ok) { tok.clear(); return false; }
     const { html } = await r.json();
-    $("#wb").srcdoc = html; $("#gate").hidden = true; $("#app").hidden = false;
+    lastHtml = html; $("#wb").srcdoc = html; $("#gate").hidden = true; $("#app").hidden = false;
     return true;
   }
   $("#f").addEventListener("submit", async (e) => {
