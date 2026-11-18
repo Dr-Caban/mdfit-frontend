@@ -23,5 +23,9 @@ const mark = "<script>\n(() => {";
 if (html.split(mark).length !== 2) { console.error("referral.html: the page script was not found where expected"); process.exit(1); }
 html = html.replace(mark, `<script>window.MDFIT_PROPOSAL = ${who};</script>\n${mark}`)
   .replace("<!DOCTYPE html>", `<!DOCTYPE html>\n<!-- Made by scripts/referral-for.js from referral.html. Do not edit: change referral.html and run it again. -->`);
+// its own title and description (the site check wants every page's to differ)
+const esc = (t) => String(t).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+html = html.replace(/<title>[^<]*<\/title>/, `<title>${esc(`MD Fit × ${partner}`.slice(0, 40))}: proposal</title>`)
+  .replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="Partnership proposal from MD Fit for ${esc(partner)}: a recurring share of the subscriptions your members pay.">`);
 fs.writeFileSync(path.join(root, out), html);
 console.log(`${out}: ${(html.length / 1024).toFixed(0)} KB, prepared for ${partner}${contact ? " (" + contact + ")" : ""}`);
