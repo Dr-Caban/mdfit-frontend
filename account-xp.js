@@ -70,12 +70,20 @@
       ${todayRow(r)}
       <ol class="gc-ladder" aria-label="Gem levels">${r.gems.map((g) => `<li class="${g.id === cur.id ? "cur" : r.xp >= g.xp ? "done" : ""}" title="${esc(g.name)}: ${g.xp.toLocaleString()}+ XP">${gem(r.xp >= g.xp ? g.color : "#3a4a62", 18)}<small>${esc(g.name)}</small></li>`).join("")}</ol>
       <div class="gc-actions"><button type="button" class="btn-gold sm" data-activities>Daily activities: extra XP</button><button type="button" class="btn-outline-light sm" data-build-workout>Build a workout</button></div>
+      <button type="button" class="gc-more" data-gem-more aria-expanded="${gemMore()}">${gemMore() ? "Less" : "All gems and shortcuts"}</button>
       ${o && o.hidden ? `<p class="gc-hidden">You're hidden from the leaderboard; only you see your rank.</p>` : ""}`;
     profGem.innerHTML = `<span class="pg-gem">${gem(cur.color, 30)}</span><div><b>${esc(cur.name)}</b><small>${r.xp.toLocaleString()} XP</small></div>
       <button type="button" class="pg-rank" data-overall><b>${rankText(o)}</b> overall</button>`;
   }
+  // On a phone the card is three lines (gem and rank, the bar, today); the gem ladder and the two shortcuts open
+  // with "All gems and shortcuts", remembered on the device. Wider screens always show everything.
+  const GEM_MORE = "mdfit-gem-more";
+  function gemMore() { try { return localStorage.getItem(GEM_MORE) === "1"; } catch { return false; } }
+  const gemMoreSync = () => gemCard.classList.toggle("more", gemMore());
+  gemMoreSync();
   document.addEventListener("mdfit:rewards", (e) => { reward = e.detail; renderGem(); });
   document.addEventListener("click", (e) => {
+    if (e.target.closest("[data-gem-more]")) { try { localStorage.setItem(GEM_MORE, gemMore() ? "0" : "1"); } catch {} gemMoreSync(); renderGem(); return; }
     if (e.target.closest("[data-overall]")) { A.showBoard("all", "all"); return; }
     if (e.target.closest("[data-gem-jump]")) { setTimeout(() => gemCard.scrollIntoView({ behavior: "smooth", block: "center" }), 60); return; }
     if (e.target.closest("[data-activities]")) {

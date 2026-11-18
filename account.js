@@ -3658,8 +3658,9 @@
       urgent.hidden = !visit;
       if (visit) {
         const when = visit.date === t ? "today" : visit.date === addDays(t, 1) ? "tomorrow" : fmtDate(visit.date, { weekday: "long" });
-        $("#pu-sub").textContent = `Your ${visit.typeName || "visit"} is ${when} at ${fmtTime(visit.time)}. The intake documents take about 10 minutes${p.completed ? ` (${p.completed} of ${p.total} done)` : ""}.`;
-        $("#pu-go").textContent = p.completed ? "Continue documents ›" : "Start documents ›";
+        // One short line: what is due, for which visit, how long (the card it sits in is already "What to do next")
+        $("#pu-sub").textContent = `Before your ${when === "today" || when === "tomorrow" ? "" : when + " "}${(visit.typeName || "visit").toLowerCase()}${when === "today" || when === "tomorrow" ? " " + when : ""} · about 10 min${p.completed ? ` · ${p.completed} of ${p.total} done` : ""}`;
+        $("#pu-go").textContent = p.completed ? "Continue" : "Start";
       }
       syncNextCard();
     }
