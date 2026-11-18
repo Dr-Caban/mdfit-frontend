@@ -260,7 +260,7 @@
 .mp-item img, .mp-item .fp-ic { width: 56px; height: 56px; border-radius: 10px; object-fit: cover; display: block; }
 .mp-body b { display: block; color: var(--navy); }
 .mp-go { font-weight: 700; color: var(--accent-text, #2a6aa8); white-space: nowrap; }
-/* Recommended (Dr. Jared) and Suggested (Sunny): two labels that never look alike */
+/* Recommended (Dr. Jared) and Suggested (Solomon): two labels that never look alike */
 .mp-tag { display: inline-block; font-size: 10.5px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; border-radius: 999px; padding: 2px 8px; margin: 0 6px 3px 0; vertical-align: middle; }
 .mp-tag.rec { background: var(--navy); color: #fff; }
 .mp-tag.sug { background: var(--gold-soft, #f6efdf); color: #7a5a14; border: 1px solid var(--gold, #C8A763); }

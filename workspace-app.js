@@ -118,9 +118,35 @@
   document.addEventListener("visibilitychange", () => { if (!document.hidden) idleCheck(); });
   window.addEventListener("pageshow", idleCheck); window.addEventListener("focus", idleCheck);
 
+  // Sign in with Google (owner and staff). Google proves the address; the emailed code still applies when it's on.
+  let gCred = "";
+  async function googleIn(code) {
+    const msg = $("#siMsg"), f = $("#signinForm");
+    try {
+      const out = await api("POST", "/api/admin/login/google", { credential: gCred, ...(code ? { code } : {}) });
+      gCred = ""; token = out.token; store.set(token); idleStamp();
+      try { sessionStorage.setItem("mdfit_token", token); } catch {}
+      f.reset(); $("#siCodeRow").hidden = true; msg.textContent = ""; start();
+    } catch (err) {
+      if (/code/i.test(err.message)) { $("#siCodeRow").hidden = false; f.code.focus(); } else gCred = "";
+      msg.textContent = err.message;
+    }
+  }
+  fetch(API + "/api/app/config").then((r) => r.json()).then((c) => {
+    if (!c || !c.googleClientId) return;
+    const sc = document.createElement("script"); sc.src = "https://accounts.google.com/gsi/client"; sc.async = true;
+    sc.onload = () => {
+      google.accounts.id.initialize({ client_id: c.googleClientId, callback: (resp) => { gCred = resp.credential; googleIn(""); } });
+      $("#siGoogleWrap").hidden = false;
+      google.accounts.id.renderButton($("#siGoogle"), { theme: "outline", size: "large", width: 300, text: "signin_with" });
+    };
+    document.head.appendChild(sc);
+  }).catch(() => {});
+
   $("#signinForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     const f = e.target, msg = $("#siMsg"); msg.textContent = "";
+    if (gCred && !f.password.value && f.code.value.trim()) return googleIn(f.code.value.trim()); // finishing a Google sign-in with the emailed code
     try {
       const body = { email: f.email.value.trim(), password: f.password.value }; if (f.code.value.trim()) body.code = f.code.value.trim();
       const out = await api("POST", "/api/admin/login", body);
@@ -179,6 +205,8 @@
     nutrition: '<path d="M12 21c-5 0-8-4-8-9 0-4 3-6 6-6 1 0 2 .5 2 .5s1-.5 2-.5c3 0 6 2 6 6 0 5-3 9-8 9z"/><path d="M12 6c0-2 1-3 3-4"/>',
     fitness: '<path d="M6 7v10M18 7v10M3 10v4M21 10v4M6 12h12"/>',
     payments: '<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/>',
+    affiliates: '<circle cx="8" cy="8" r="3"/><circle cx="17" cy="17" r="3"/><path d="M10.5 10.5l4 4M17 3v6M14 6h6"/>',
+    revshare: '<path d="M12 3v18"/><path d="M12 12 4.5 7.5M12 12l7.5-4.5"/><circle cx="12" cy="12" r="9"/>',
     newsletter: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
     insights: '<path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/>',
     team: '<circle cx="12" cy="7" r="4"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/>',
@@ -193,8 +221,8 @@
   const NAV = [
     { g: "Practice", items: [["dashboard", "Dashboard"], ["calendar", "Calendar"], ["clients", "Clients"], ["chart", "Client chart"], ["leads", "Leads"], ["messages", "Messages"], ["telehealth", "Telehealth"]] },
     { g: "Clinical", items: [["notes", "Notes & AI scribe"], ["forms", "Forms & intake"], ["programs", "Programs"], ["nutrition", "Nutrition"], ["fitness", "Fitness"]] },
-    { g: "Business", items: [["payments", "Payments"], ["newsletter", "Newsletter"]] },
-    { g: "Admin", items: [["team", "Team & roles"], ["feedback", "Reviews & feedback"], ["security", "Security & audit"], ["settings", "Modules & settings"], ["insights", "Insights"], ["economics", "System economics"], ["guide", "Sunny"]] },
+    { g: "Business", items: [["payments", "Payments"], ["affiliates", "Affiliates"], ["revshare", "Revenue share"], ["newsletter", "Newsletter"]] },
+    { g: "Admin", items: [["team", "Team & roles"], ["feedback", "Reviews & feedback"], ["security", "Security & audit"], ["settings", "Modules & settings"], ["insights", "Insights"], ["economics", "System economics"], ["guide", "Solomon"]] },
     { g: "Client-facing", items: [["portal", "Client app"], ["booking", "Booking page"]] }
   ];
   function renderNav(active) {
@@ -362,7 +390,7 @@
     return list.map((c) => `<tr class="click" data-act="chart" data-id="${esc(c.id)}">
       <td data-act="stop"><input type="checkbox" data-change="pickOne" data-id="${esc(c.id)}" aria-label="Select ${esc(c.name)}"${state.picked.has(c.id) ? " checked" : ""}></td>
       <td><div class="row" style="flex-wrap:nowrap">${avatar(c.name)}<div style="min-width:0"><b>${esc(c.name)}</b><div class="muted" style="font-size:12px;overflow-wrap:anywhere">${esc(c.email)}${c.phone ? " · " + esc(c.phone) : ""}</div></div></div></td>
-      <td data-act="stop"><div class="seg" role="group" aria-label="Client type for ${esc(c.name)}" title="Inpatients get the full MD Fit app free."><button type="button" data-act="typeSet" data-type="inpatient" data-id="${esc(c.id)}" data-name="${esc(c.name)}" aria-pressed="${c.clientType === "inpatient"}">In-patient</button><button type="button" data-act="typeSet" data-type="outpatient" data-id="${esc(c.id)}" data-name="${esc(c.name)}" aria-pressed="${c.clientType !== "inpatient"}">Out-patient</button></div>
+      <td data-act="stop"><div class="seg" role="group" aria-label="Client type for ${esc(c.name)}" title="Subscription exempt clients get the full MD Fit app free, and their visits are not charged."><button type="button" data-act="typeSet" data-type="inpatient" data-id="${esc(c.id)}" data-name="${esc(c.name)}" aria-pressed="${c.clientType === "inpatient"}">Exempt</button><button type="button" data-act="typeSet" data-type="outpatient" data-id="${esc(c.id)}" data-name="${esc(c.name)}" aria-pressed="${c.clientType !== "inpatient"}">Standard</button></div>
         <div class="muted" style="font-size:12px;margin-top:4px">${patients.has(c.id) ? "Active patient" : waiting.has(c.id) ? "Documents done, not yet converted" : "Member"}</div></td>
       <td>${c.documents ? (c.documents.complete ? `<span class="pill ok">Complete</span>` : `${c.documents.done} of ${c.documents.total}`) : "—"}</td>
       <td class="num">${c.next ? `${fmtDate(c.next.date)} · ${fmtTime(c.next.time)}` : `<span class="muted">Not booked</span>`}</td>
@@ -407,8 +435,8 @@
       <div class="row"><button class="btn ${d.patient ? "" : "primary"}" data-act="convert" data-on="${d.patient ? "0" : "1"}">${d.patient ? "Mark as not a patient" : "Convert to active patient"}</button>
       <button class="btn" data-act="thread" data-id="${esc(id)}">Message</button><button class="btn" data-act="book">Book</button><button class="btn ${d.patient ? "primary" : ""}" data-act="chartNewNote">${ui("plus", 14)} Note</button><a class="btn" href="#chart" data-act="chartClose">Other client</a></div></div>
     <div class="row chart-types"><label for="chTier">Membership</label><select id="chTier" class="input" data-change="chartTier">${tierOptions(tier)}</select>
-      <label for="chType">Client type</label><select id="chType" class="input" data-change="chartType"><option value="outpatient"${d.clientType !== "inpatient" ? " selected" : ""}>Outpatient</option><option value="inpatient"${d.clientType === "inpatient" ? " selected" : ""}>Inpatient (visits not charged)</option></select>
-      <span class="muted" style="font-size:12px">Inpatients get the full MD Fit app free.</span></div>
+      <label for="chType">Client type</label><select id="chType" class="input" data-change="chartType"><option value="outpatient"${d.clientType !== "inpatient" ? " selected" : ""}>Standard</option><option value="inpatient"${d.clientType === "inpatient" ? " selected" : ""}>Subscription exempt (visits not charged)</option></select>
+      <span class="muted" style="font-size:12px">Subscription exempt clients get the full MD Fit app free.</span></div>
     <div class="tabs" role="tablist">${tabs.map(([t, l]) => `<button class="tab ${state.chartTab === t ? "active" : ""}" role="tab" data-act="chartTab" data-tab="${t}">${l}</button>`).join("")}</div>
     <div id="chartBody">${chartTab()}</div>`;
   };
@@ -510,7 +538,7 @@
           <p class="muted" style="margin:0;font-size:12.5px">Sending emails ${first} the amount and a secure card payment page. You write the subject and message before it goes.</p></form></div>
         <div class="card"><div class="card-head"><h2>Video visits</h2><button class="btn sm" data-act="book">Schedule</button></div>
           ${d.paidVisits.map((v) => `<div class="list-item"><span style="flex:1"><b>${esc(v.name || v.service)}</b><div class="muted" style="font-size:12px">paid ${when(v.paidAt)}${v.amount != null ? ` · ${usd(v.amount)}` : ""}</div></span><span class="pill warn">Needs a time</span></div>`).join("")}
-          ${d.visits.map((v) => `<div class="list-item"><span style="flex:1"><b>${esc(v.typeName)}</b><div class="muted" style="font-size:12px">${fmtDate(v.date)} ${fmtTime(v.time)} · ${v.minutes} min</div></span>${v.payment === "paid" ? `<span class="pill ok">Paid</span>` : v.payment === "exempt" ? `<span class="pill">Inpatient</span>` : ""}</div>`).join("")}
+          ${d.visits.map((v) => `<div class="list-item"><span style="flex:1"><b>${esc(v.typeName)}</b><div class="muted" style="font-size:12px">${fmtDate(v.date)} ${fmtTime(v.time)} · ${v.minutes} min</div></span>${v.payment === "paid" ? `<span class="pill ok">Paid</span>` : v.payment === "exempt" ? `<span class="pill">Subscription exempt</span>` : ""}</div>`).join("")}
           ${d.paidVisits.length || d.visits.length ? "" : none("No video visits.")}</div></div>
       <div class="stack"><div class="card stack"><h2>Payment</h2><div id="billPay">${none("Loading…")}</div>
           <button class="btn" data-act="superbill">Generate superbill</button><button class="btn" data-act="gfe">Good Faith Estimate</button></div>
@@ -865,7 +893,8 @@
       <div class="card" style="margin-bottom:16px"><h2 style="margin-bottom:10px">Ledger check</h2><div id="auditResult">${none("Not checked in this session. Press Verify.")}</div></div>${ledgerTable(a)}`;
     }
     const days = state.insDays;
-    const [d, sa, mail, people] = await Promise.all([load(`/analytics?days=${days}`), load(`/search-analytics?days=${days}`).catch(() => null), load("/email-log").catch(() => null), clients(), content()]);
+    const [d, sa, mail, people, , rf, lg] = await Promise.all([load(`/analytics?days=${days}`), load(`/search-analytics?days=${days}`).catch(() => null), load("/email-log").catch(() => null), clients(), content(),
+      load(`/referrals?days=${days}`).catch(() => null), load(`/logs/summary?days=${Math.min(days, 90)}`).catch(() => null)]);
     // Sign-ups and members, counted from the accounts themselves. "Paying" means a card subscription is running;
     // a membership set by hand (no card on a schedule) is counted separately so the two are never confused.
     const since = Date.now() - days * 864e5, fresh = people.filter((c) => c.createdAt && Date.parse(c.createdAt) >= since).length;
@@ -893,9 +922,16 @@
     <div class="grid g3" style="margin-top:16px">${mixCard("Device", m.devices)}${mixCard("Where they came from", m.sources)}${mixCard("Location", m.places)}${mixCard("Operating system", m.os)}${mixCard("Browser", m.browsers)}${mixCard("Country", m.countries)}</div>
     <div class="card" style="padding:0;margin-top:16px"><div class="card-head" style="padding:14px 16px 0"><h2>Referring sites</h2></div><div class="table-wrap"><table><thead><tr><th>Source</th><th class="num">Views</th></tr></thead><tbody>${(d.referrers || []).map((r) => `<tr><td>${esc(r.source)}</td><td class="num">${r.views}</td></tr>`).join("") || noneRow(2, "No referral traffic yet.")}</tbody></table></div></div>
     <div class="grid g2" style="margin-top:16px">
-      <div class="card" style="padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>Site search: top queries</h2><span class="muted" style="font-size:12px">${st.events || 0} searches · ${st.uniqueQueries || 0} different</span></div><div class="table-wrap"><table><thead><tr><th>Query</th><th class="num">Shown</th><th class="num">Clicks</th><th class="num">CTR</th></tr></thead><tbody>${qRows(sa && sa.top)}</tbody></table></div></div>
-      <div class="card" style="padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>Site search: nothing found</h2></div><div class="table-wrap"><table><thead><tr><th>Query</th><th class="num">Shown</th><th class="num">Clicks</th><th class="num">CTR</th></tr></thead><tbody>${qRows(sa && sa.zeroResult)}</tbody></table></div></div>
+      <div class="card" style="padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>Site search: top queries</h2><span class="muted" style="font-size:12px">${st.searches != null ? st.searches : (st.events || 0)} searches · ${st.uniqueQueries || 0} different${st.ctr != null ? ` · ${st.ctr}% clicked` : ""}</span></div><div class="table-wrap"><table><thead><tr><th>Query</th><th class="num">Searches</th><th class="num">Clicks</th><th class="num">CTR</th></tr></thead><tbody>${qRows(sa && sa.top)}</tbody></table></div></div>
+      <div class="card" style="padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>Site search: nothing found</h2></div><div class="table-wrap"><table><thead><tr><th>Query</th><th class="num">Searches</th><th class="num">Clicks</th><th class="num">CTR</th></tr></thead><tbody>${qRows(sa && sa.zeroResult)}</tbody></table></div></div>
     </div>
+    <div class="grid g2" style="margin-top:16px">
+      <div class="card" style="padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>Referral sign-ups</h2><span class="muted" style="font-size:12px">${rf ? `${(rf.totals || {}).referred || 0} in ${days} days · ${(rf.totals || {}).referredAllTime || 0} all time · ${(rf.totals || {}).share || 0}% of new accounts` : "Not available yet"}</span></div><div class="table-wrap" style="max-height:420px;overflow-y:auto"><table><thead><tr><th>Referred by</th><th class="num">In range</th><th class="num">All time</th><th>Latest</th></tr></thead><tbody>${((rf && rf.topReferrers) || []).map((r) => `<tr><td>${esc(r.referrer)}</td><td class="num">${esc(r.inRange)}</td><td class="num">${esc(r.total)}</td><td>${esc(when(r.lastAt))}</td></tr>`).join("") || noneRow(4, "No referral sign-ups yet.")}</tbody></table></div></div>
+      <div class="card" style="padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>All referred accounts</h2></div><div class="table-wrap" style="max-height:420px;overflow-y:auto"><table><thead><tr><th>New account</th><th>Referred by</th><th>How</th><th>Signed up</th><th>Member</th></tr></thead><tbody>${((rf && rf.recent) || []).map((r) => `<tr><td>${esc(r.name)}</td><td>${esc(r.referrer)}</td><td>${esc(({ email: "Email sign-up", google: "Google", apple: "Apple", claim: "Added after joining" })[r.via] || "Before tracking")}</td><td>${esc(when(r.at))}</td><td>${r.member ? "Yes" : "No"}</td></tr>`).join("") || noneRow(5, "No data yet.")}</tbody></table></div></div>
+      ${(() => { const ev = (rf && rf.events) || null, t = (ev && ev.totals) || {}; return `<div class="card" style="padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>Referral sharing</h2><span class="muted" style="font-size:12px">${ev ? `${t.copies || 0} code copies · ${t.linkCopies || 0} link copies · ${t.shares || 0} link shares · ${t.linkVisits || 0} link visits · ${t.claims || 0} codes added after joining in ${days} days${ev.since ? ` · recorded since ${esc(when(ev.since))}` : ""}` : "Not available yet"}</span></div><div class="table-wrap" style="max-height:420px;overflow-y:auto"><table><thead><tr><th>Member</th><th class="num">Copied code</th><th class="num">Copied link</th><th class="num">Shared link</th><th class="num">Link opened</th><th>Last</th></tr></thead><tbody>${((ev && ev.members) || []).map((m) => `<tr><td>${esc(m.member)}</td><td class="num">${esc(m.copies)}</td><td class="num">${esc(m.linkCopies || 0)}</td><td class="num">${esc(m.shares)}</td><td class="num">${esc(m.linkVisits)}</td><td>${esc(when(m.lastAt))}</td></tr>`).join("") || noneRow(6, "No Copy or Share presses recorded yet.")}</tbody></table></div></div>
+      <div class="card" style="padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>Codes that matched nobody</h2><span class="muted" style="font-size:12px">${ev ? `${t.unmatchedCodes || 0} in ${days} days · mistyped or old codes; the referrer got no credit` : "Not available yet"}</span></div><div class="table-wrap" style="max-height:420px;overflow-y:auto"><table><thead><tr><th>Code typed</th><th>Account</th><th>How</th><th>When</th></tr></thead><tbody>${((ev && ev.unmatched) || []).map((u) => `<tr><td><code>${esc(u.code)}</code></td><td>${esc(u.name)}</td><td>${esc(({ email: "Email sign-up", google: "Google", apple: "Apple", claim: "Added after joining" })[u.via] || "")}</td><td>${esc(when(u.at))}</td></tr>`).join("") || noneRow(4, "None.")}</tbody></table></div></div>`; })()}
+    </div>
+    <div class="card" style="padding:0;margin-top:16px"><div class="card-head" style="padding:14px 16px 0"><h2>Server activity log</h2><span class="muted" style="font-size:12px">${lg ? `${(lg.totals || {}).requests || 0} requests · ${(lg.totals || {}).s5xx || 0} failed · ${(lg.totals || {}).restarts || 0} restarts · kept 90 days` : "Not available yet"}</span></div><div class="table-wrap"><table><thead><tr><th>Day</th><th class="num">Requests</th><th class="num">Failed</th><th class="num">Warnings</th><th class="num">Errors</th><th class="num">Restarts</th></tr></thead><tbody>${((lg && lg.perDay) || []).slice().reverse().slice(0, 21).map((r) => `<tr><td>${esc(fmtDate(r.date))}</td><td class="num">${esc(r.requests)}</td><td class="num">${esc(r.s5xx)}</td><td class="num">${esc(r.warn)}</td><td class="num">${esc(r.error)}</td><td class="num">${esc(r.restarts)}</td></tr>`).join("") || noneRow(6, "Recording starts when the backend update is live.")}</tbody></table></div></div>
     <div class="card" style="margin-top:16px"><div class="card-head"><h2>Email alerts</h2><span class="pill ${mail && mail.enabled ? "ok" : "warn"}">${mail && mail.enabled ? "On" : "Off"}</span></div>
       ${mail ? `<p class="muted" style="margin:0">Alerts go to ${esc((mail.alertsTo || []).join(", ") || "nobody yet")}. ${plural((mail.failures || []).length, "failed send")} on record.</p>` : none("Email log unavailable.")}</div>`;
   };
@@ -1004,7 +1040,7 @@
       ${S.truncated ? `<p class="muted" style="margin:8px 0 0;font-size:12.5px">Stripe holds more entries than were read for this month.</p>` : ""}</div>`;
   }
 
-  // ---- Sunny in numbers: who opened it, how many answers it gave, who used up the free
+  // ---- Solomon in numbers: who opened it, how many answers it gave, who used up the free
   // plan's daily tokens and who upgraded after that. Counts only: nothing anyone typed to it is kept or shown here.
   const GUIDE_DAYS = [7, 30, 90];
   const dayName = (d, long) => new Date(d + "T12:00:00Z").toLocaleDateString("en-US", { timeZone: "UTC", month: "short", day: "numeric", ...(long ? { weekday: "short" } : {}) });
@@ -1049,25 +1085,102 @@
     }
     try { const g = await load(p); guideBad.delete(days); return g; } catch (err) { guideBad.set(days, { why: err.message, at: Date.now(), epoch }); throw err; }
   }
+  // ---- Affiliates (Business): members earn a share of what friends they refer pay for subscriptions or subscription
+  // add-ons. The owner sets the rate and the rules here; the server keeps clinical tiers out whatever is sent.
+  const affPill = (s) => `<span class="pill ${s === "active" ? "ok" : s === "removed" ? "bad" : "warn"}">${esc({ active: "Active", paused: "Paused", removed: "Removed", left: "Left" }[s] || s)}</span>`;
+  const affStatus = (s) => `<span class="pill ${s === "paid" ? "ok" : s === "reversed" ? "bad" : s === "ready" ? "" : "warn"}">${esc({ pending: "Pending", ready: "Payout ready", paid: "Paid", reversed: "Reversed" }[s] || s)}</span>`;
+  V.affiliates = async () => {
+    const d = await load("/affiliates");
+    if (!d) return `<div class="view-head"><div><h1>Affiliates</h1></div></div>${none("Couldn't load the affiliate programme.")}`;
+    const S = d.settings, T = d.totals || {}, lp = d.lastPayout;
+    const tile = (label, val, sub) => `<div class="card kpi"><span class="muted">${label}</span><b class="num">${val}</b>${sub ? `<small class="muted">${sub}</small>` : ""}</div>`;
+    const tiers = (d.tiers || []).map((t) => t.clinical
+      ? `<label class="row" style="gap:8px;flex-wrap:nowrap;opacity:.6"><input type="checkbox" disabled><span><b>${esc(t.name)}</b> <span class="muted">· access to a clinician, can't earn a commission</span></span></label>`
+      : `<label class="row" style="gap:8px;flex-wrap:nowrap"><input type="checkbox" name="tier" value="${esc(t.id)}"${t.eligible ? " checked" : ""}><span><b>${esc(t.name)}</b>${t.price ? ` <span class="muted">· $${esc(t.price)}/month</span>` : ""}</span></label>`).join("");
+    const affRows = (d.affiliates || []).map((a) => `<tr><td><b>${esc(a.name)}</b><div class="muted" style="font-size:12px">${esc(a.email)}</div></td><td>${affPill(a.status)}</td>
+      <td>${a.stripe.payoutsEnabled ? '<span class="pill ok">Payouts on</span>' : a.stripe.connected ? '<span class="pill warn">Checking</span>' : '<span class="pill">Not set up</span>'}</td>
+      <td class="num">${a.referred}</td><td class="num">${usd(a.pendingCents)}</td><td class="num">${usd(a.readyCents)}</td><td class="num">${usd(a.paidCents)}</td>
+      <td><div class="row" style="gap:6px;flex-wrap:nowrap">${a.status === "active" ? `<button type="button" class="btn sm" data-act="affStatus" data-id="${esc(a.clientId)}" data-s="paused">Pause</button>` : a.status === "paused" ? `<button type="button" class="btn sm" data-act="affStatus" data-id="${esc(a.clientId)}" data-s="active">Resume</button>` : ""}
+        ${a.status !== "removed" ? `<button type="button" class="btn sm" data-act="affStatus" data-id="${esc(a.clientId)}" data-s="removed">Remove</button>` : ""}<button type="button" class="btn sm ghost" data-act="affAdjust" data-id="${esc(a.clientId)}" data-name="${esc(a.name)}">Adjust</button></div></td></tr>`).join("");
+    const recent = (d.recent || []).slice(0, 100).map((r) => `<tr><td>${esc(when(r.ts))}</td><td>${esc(r.kind === "commission" ? "Commission" : r.kind === "clawback" ? "Refund taken back" : "Adjustment")}</td><td>${esc(r.affiliate)}</td>
+      <td>${esc(r.kind === "adjustment" ? r.reason || "" : r.referred)}</td><td>${esc(r.label || "")}</td><td class="num">${usd(r.cents)}</td><td>${affStatus(r.status)}</td></tr>`).join("");
+    return `<div class="view-head"><div><h1>Affiliates</h1><p class="muted">Members earn a share of what friends they refer pay for subscriptions or subscription add-ons. Nothing clinical ever earns a commission.</p></div>
+        <button type="button" class="btn" data-act="affExport">Export CSV</button></div>
+      <div class="card stack" style="margin-bottom:16px"><div class="card-head"><h2>Affiliate programme</h2><button type="button" class="switch" role="switch" aria-checked="${S.enabled}" aria-label="Affiliate programme" data-act="affEnabled"></button></div>
+        <p style="margin:0">${S.enabled ? "<b>Open:</b> members see Refer a friend → Earn on referrals on their Profile and can turn on affiliate commission." : "<b>Closed:</b> members see only their referral code. Have your attorney review the programme and the affiliate terms before opening it."}</p>
+        ${d.stripe ? "" : '<p class="muted" style="margin:0">Stripe isn\'t configured on the API, so payouts can\'t run yet.</p>'}
+        <p class="muted" style="margin:0;font-size:12.5px">Payouts are Stripe transfers to each affiliate's Stripe Express account. Stripe Connect must be on for the account, and a Connect webhook (account.updated) set to the API's /api/stripe/webhook with its signing secret in STRIPE_CONNECT_WEBHOOK_SECRET.</p></div>
+      <div class="grid g4" style="margin-bottom:16px">${tile("Active affiliates", T.affiliates || 0)}${tile("Pending", usd(T.pendingCents), `held ${S.holdDays} days`)}${tile("Payout ready", usd(T.readyCents), `paid on the 1st from ${usd(S.minPayoutCents)}`)}${tile("Paid all time", usd(T.paidCents), lp ? `last run ${esc(when(lp.lastRunAt))}` : "no payouts yet")}</div>
+      <div class="grid g2" style="margin-bottom:16px;align-items:start">
+        <form class="card stack" data-form="affSettings"><div class="card-head"><h2>Commission settings</h2></div>
+          <div class="grid g2"><div class="field"><label for="affRate">Commission rate (%, up to 15: the Partner Allowance)</label><input id="affRate" name="ratePct" class="input" type="number" min="0" max="15" step="0.01" value="${esc(S.ratePct)}" required></div>
+            <div class="field"><label for="affHold">Hold before payout ready (days)</label><input id="affHold" name="holdDays" class="input" type="number" min="0" max="60" step="1" value="${esc(S.holdDays)}" required></div>
+            <div class="field"><label for="affMin">Payout minimum ($)</label><input id="affMin" name="minPayout" class="input" type="number" min="1" max="1000" step="0.01" value="${esc((S.minPayoutCents / 100).toFixed(2))}" required></div>
+            <div class="field"><label for="affDur">Earning window (months, 0 = as long as they stay)</label><input id="affDur" name="durationMonths" class="input" type="number" min="0" max="120" step="1" value="${esc(S.durationMonths)}" required></div></div>
+          <fieldset class="stack" style="border:0;padding:0;margin:0"><legend style="font-weight:700;margin-bottom:6px">Subscriptions that earn</legend>${tiers}</fieldset>
+          <div class="field"><label for="affAddOns">Subscription add-ons that earn (Stripe price lookup keys or price ids, comma separated)</label><input id="affAddOns" name="addOns" class="input" maxlength="2000" value="${esc((S.eligibleAddOns || []).join(", "))}" placeholder="e.g. sunny_unlimited"></div>
+          <label class="row" style="gap:8px;flex-wrap:nowrap"><input type="checkbox" name="freeMonth"${S.freeMonthReward ? " checked" : ""}><span>Also give the referrer 1 free month of membership for each sign-up</span></label>
+          <p class="muted" style="margin:0;font-size:12.5px">A new rate applies to payments from now on; commissions already recorded keep their rate. Every change is recorded in the audit ledger.</p>
+          <div class="row"><button class="btn primary">Save settings</button></div></form>
+        <div class="card stack"><div class="card-head"><h2>Run now</h2></div>
+          <p style="margin:0">Holds end on their own every hour, and payouts run on the 1st of each month. Run either one now if you need to.</p>
+          <div class="row"><button type="button" class="btn" data-act="affRun" data-job="clear">End due holds</button><button type="button" class="btn primary" data-act="affRun" data-job="payout">Pay out now</button></div>
+          ${lp ? `<p class="muted" style="margin:0;font-size:12.5px">Last payout run ${esc(when(lp.lastRunAt))} (${esc(lp.by)}): ${lp.paid} paid, ${lp.failed} failed.</p>` : ""}</div></div>
+      <div class="card" style="padding:0;margin-bottom:16px"><div class="card-head" style="padding:14px 16px 0"><h2>Affiliates</h2></div><div class="table-wrap"><table><thead><tr><th>Member</th><th>Status</th><th>Stripe</th><th class="num">Referred</th><th class="num">Pending</th><th class="num">Ready</th><th class="num">Paid</th><th></th></tr></thead><tbody>${affRows || noneRow(8, "No one has turned on affiliate commission yet.")}</tbody></table></div></div>
+      <div class="card" style="padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>Recent commissions</h2></div><div class="table-wrap" style="max-height:480px;overflow-y:auto"><table><thead><tr><th>When</th><th>Kind</th><th>Affiliate</th><th>Referred member</th><th>Subscription</th><th class="num">Amount</th><th>Status</th></tr></thead><tbody>${recent || noneRow(7, "No commissions yet.")}</tbody></table></div></div>`;
+  };
+  // ---- Revenue share (Business): the manager's share under the partnership agreement, owner only. The manager's own
+  // console is /manager; this is where the owner names the manager, sets the terms, switches automatic payouts on,
+  // classifies payments the code couldn't place, and acknowledges or disputes partner registrations.
+  V.revshare = async () => {
+    const d = await load("/partner-share"), patf = await load("/partner-share/patf").catch(() => null);
+    if (!d) return `<div class="view-head"><div><h1>Revenue share</h1></div></div>${none("Couldn't load the revenue share.")}`;
+    const S = d.settings, v = d.view, st = d.statement, b = v.balances;
+    const tile = (label, val, sub) => `<div class="card kpi"><span class="muted">${label}</span><b class="num">${val}</b>${sub ? `<small class="muted">${sub}</small>` : ""}</div>`;
+    const mgrOpts = `<option value="">Nobody yet</option>${(d.managers || []).filter((m) => m.active).map((m) => `<option value="${esc(m.id)}"${m.id === S.managerStaffId ? " selected" : ""}>${esc(m.name)} (${esc(m.email)})</option>`).join("")}`;
+    const unc = (d.unclassified || []).map((r) => `<tr><td>${esc(when(r.ts))}</td><td>${esc(r.product)}<div class="muted" style="font-size:12px">${esc(r.kind)}</div></td><td class="num">${usd(r.grossCents)}</td>
+      <td><div class="row" style="gap:6px;flex-wrap:nowrap"><button type="button" class="btn sm" data-act="rsClassify" data-id="${esc(r.id)}" data-c="online">MD Fit Online</button><button type="button" class="btn sm" data-act="rsClassify" data-id="${esc(r.id)}" data-c="clinic">In-Clinic</button></div></td></tr>`).join("");
+    const parts = ((patf && patf.partners) || []).map((p) => `<tr><td><b>${esc(p.name)}</b><div class="muted" style="font-size:12px">${esc(p.type)}${p.originatedByManager ? " · originated by the manager" : ""} · <code>${esc(p.code)}</code></div></td><td class="num">${esc(p.ratePct)}%</td>
+      <td class="num">${p.clicks}</td><td class="num">${p.signups}</td><td class="num">${p.payingNow}</td><td class="num">${usd(p.commissionDueCents)}</td>
+      <td><span class="pill ${p.state === "disputed" ? "bad" : p.state === "awaiting acknowledgment" ? "warn" : "ok"}">${esc(p.state)}</span>${p.state === "awaiting acknowledgment" ? `<div class="muted" style="font-size:12px">by ${esc(when(p.ackDueAt))}</div>` : ""}</td>
+      <td>${p.state === "awaiting acknowledgment" ? `<div class="row" style="gap:6px;flex-wrap:nowrap"><button type="button" class="btn sm" data-act="rsAck" data-id="${esc(p.id)}">Acknowledge</button><button type="button" class="btn sm ghost" data-act="rsDispute" data-id="${esc(p.id)}" data-name="${esc(p.name)}">Dispute</button></div>` : ""}</td></tr>`).join("");
+    return `<div class="view-head"><div><h1>Revenue share</h1><p class="muted">The manager's share of MD Fit Online Net Revenue under the Junior Partnership, Platform &amp; EMR Agreement (Revision 2). In-Clinic revenue stays 100% the Clinic's. The manager's own console is <a href="/manager" target="_blank" rel="noopener">/manager</a>.</p></div></div>
+      <div class="grid g4" style="margin-bottom:16px">${tile("Pending", usd(b.pendingCents), "until Stripe clears")}${tile("Payout ready", usd(b.readyCents), S.autoPay ? "paid automatically" : "you pay it")}${tile("Paid", usd(b.paidCents), "to the manager")}${tile("MD Fit Online net this month", usd(st.categories.online.netCents), `${st.categories.online.payments} payments · In-Clinic ${usd(st.categories.clinic.grossCents)}`)}</div>
+      <div class="grid g2" style="margin-bottom:16px;align-items:start">
+        <form class="card stack" data-form="rsSettings"><div class="card-head"><h2>Terms</h2><button type="button" class="switch" role="switch" aria-checked="${S.enabled}" aria-label="Revenue share on" data-act="rsEnabled"></button></div>
+          <div class="field"><label for="rsMgr">Manager (a staff account with the Manager role)</label><select id="rsMgr" name="managerStaffId" class="input">${mgrOpts}</select></div>
+          <div class="grid g2"><div class="field"><label for="rsStatus">Status</label><select id="rsStatus" name="status" class="input"><option value="active"${S.status === "active" ? " selected" : ""}>Active (Section 4.2)</option><option value="continuing"${S.status === "continuing" ? " selected" : ""}>Continuing (Section 9.2)</option></select></div>
+            <div class="field"><label for="rsHold">Extra hold after Stripe clears (days)</label><input id="rsHold" name="holdDays" class="input" type="number" min="0" max="60" step="1" value="${esc(S.holdDays)}"></div>
+            <div class="field"><label for="rsActive">Active share (%)</label><input id="rsActive" name="activePct" class="input" type="number" min="0" max="50" step="0.01" value="${esc(S.activePct)}"></div>
+            <div class="field"><label for="rsCont">Continuing share (%)</label><input id="rsCont" name="continuingPct" class="input" type="number" min="0" max="50" step="0.01" value="${esc(S.continuingPct)}"></div></div>
+          <p class="muted" style="margin:0;font-size:12.5px">A change applies to payments from now on. Every change is recorded in the audit ledger.</p>
+          <div class="row"><button class="btn primary">Save terms</button></div></form>
+        <div class="card stack"><div class="card-head"><h2>Automatic payouts</h2><button type="button" class="switch" role="switch" aria-checked="${S.autoPay}" aria-label="Automatic payouts" data-act="rsAutoPay"></button></div>
+          <p style="margin:0">${S.autoPay ? `<b>On</b> since ${esc(when(S.autoPayOnAt))} (by ${esc(S.autoPayOnBy || "")}): each share is transferred to the manager's Stripe account as soon as its payment clears, with a payment notice.` : "<b>Off:</b> shares become payout ready as payments clear, and you pay them here. The agreement says monthly, within 15 days (Section 4.8); switching this on pays as each payment clears instead, and is recorded as your decision."}</p>
+          <p class="muted" style="margin:0;font-size:12.5px">The manager's Stripe account: ${v.stripe.payoutsEnabled ? "ready for payouts" : v.stripe.connected ? "Stripe is checking their details" : "not set up yet"}.</p>
+          <div class="row"><button type="button" class="btn" data-act="rsRun" data-job="clear">Check what has cleared</button><button type="button" class="btn primary" data-act="rsRun" data-job="payout">Pay what's ready now</button></div></div></div>
+      <div class="card" style="padding:0;margin-bottom:16px"><div class="card-head" style="padding:14px 16px 0"><h2>Payments to classify</h2><span class="muted" style="font-size:12px">Section 4.7: anything the code can't place earns nothing until you classify it</span></div><div class="table-wrap"><table><thead><tr><th>When</th><th>Payment</th><th class="num">Amount</th><th></th></tr></thead><tbody>${unc || noneRow(4, "Nothing to classify.")}</tbody></table></div></div>
+      <div class="card" style="padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>Partners (PATF)</h2><span class="muted" style="font-size:12px">Section 7.2: acknowledge or dispute a registration within five business days</span></div><div class="table-wrap"><table><thead><tr><th>Partner</th><th class="num">Rate</th><th class="num">Clicks</th><th class="num">Sign-ups</th><th class="num">Paying</th><th class="num">Commission due</th><th>Registration</th><th></th></tr></thead><tbody>${parts || noneRow(8, "No partners registered.")}</tbody></table></div></div>`;
+  };
   V.guide = async () => {
     const days = GUIDE_DAYS.includes(state.guideDays) ? state.guideDays : 30; let g = null, why = "";
     try { g = await guideStats(days); } catch (err) { why = err.message; }
     cache.guide = g;
-    const head = `<div class="view-head"><div><h1>Sunny</h1><p class="muted">How members use Sunny in the app, and who upgrades after using up the free daily tokens · counts only, nothing anyone typed is kept</p></div>
+    const head = `<div class="view-head"><div><h1>Solomon</h1><p class="muted">How members use Solomon in the app, and who upgrades after using up the free daily tokens · counts only, nothing anyone typed is kept</p></div>
       <div class="seg" role="group" aria-label="Days shown">${GUIDE_DAYS.map((d) => `<button type="button" data-act="guideDays" data-d="${d}" aria-pressed="${d === days}">${d} days</button>`).join("")}</div></div>`;
-    if (!g) return `${head}<div class="card" id="guideErr"><b>Sunny's numbers could not be loaded.</b><p class="muted" style="margin:6px 0 0">${esc(why)}</p></div>`;
-    // Sunny's daily nudges (server: lib/nudges.js): counts only, no names
+    if (!g) return `${head}<div class="card" id="guideErr"><b>Solomon's numbers could not be loaded.</b><p class="muted" style="margin:6px 0 0">${esc(why)}</p></div>`;
+    // Solomon's daily nudges (server: lib/nudges.js): counts only, no names
     let nd = null; try { nd = await load(`/guide/nudges?days=${days}`); } catch {}
     const T = g.totals || {}, n = (k) => Number(T[k]) || 0, S = g.settings || {};
     const any = ["opens", "people", "answers", "limitHits", "limitPeople", "upgradeTaps", "upgraded"].some((k) => n(k) > 0);
     const reached = n("limitPeople"), up = n("upgraded"), byWeek = days > 31, rows = guideRows(g.byDay, days), table = state.guideView === "table";
     const right = 'style="text-align:right"';
-    const numbers = !any ? `<div class="card" id="guideNone" style="margin-bottom:16px"><b>No Sunny activity yet</b><p class="muted" style="margin:6px 0 0">Nobody opened Sunny in the last ${days} days. The numbers appear here as members use it in the app.</p></div>` : `
+    const numbers = !any ? `<div class="card" id="guideNone" style="margin-bottom:16px"><b>No Solomon activity yet</b><p class="muted" style="margin:6px 0 0">Nobody opened Solomon in the last ${days} days. The numbers appear here as members use it in the app.</p></div>` : `
     <div class="grid" id="guideTiles" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr));margin-bottom:16px">
       ${kpi("People who opened it", n("people"), `${plural(n("opens"), "open")} in ${days} days`)}
       ${kpi("Answers given", n("answers"), n("people") ? `${(n("answers") / n("people")).toFixed(1)} per person` : "")}
       ${kpi("People who reached the limit", reached, `${plural(n("limitHits"), "time")} in all`)}
-      ${kpi("Upgrade taps", n("upgradeTaps"), "taps on Upgrade in Sunny")}
+      ${kpi("Upgrade taps", n("upgradeTaps"), "taps on Upgrade in Solomon")}
       ${kpi("Upgraded after the limit", up, "started a membership after reaching it")}
     </div>
     <div class="card" id="guideRate" style="margin-bottom:16px"><div class="card-head"><h2>Conversion</h2><span class="muted" style="font-size:12px">last ${days} days</span></div>
@@ -1085,14 +1198,14 @@
         <p class="muted" style="margin:0;font-size:12.5px">One AI answer uses about 3,000 tokens; an answer found on the device uses 300. The default, 50,000, is about 15 AI answers a day.</p>
         <p class="muted" style="margin:0;font-size:12.5px">Any whole number from 1,000 to 1,000,000. Opening the pain tool, booking and calling the clinic never use tokens.</p></div>
       ${hasAi ? `<div class="card stack" id="guideAiCard"><div class="card-head"><h2>AI answers</h2><button type="button" class="switch" id="guideAi" role="switch" aria-checked="${ai}" aria-label="AI answers" data-act="guideAi"${!ai && !canAi ? " disabled" : ""}></button></div>
-        <p style="margin:0" id="guideAiState">${ai ? `<b>On:</b> members' messages are read by ${esc(S.aiModel || "the AI model")} at ${esc(S.aiHost || "the AI service")} to find the right place and suggest programs, videos, your guides and general tips, which are added to the member's Home. Their activity in the app (programs, check-ins, workouts) is read to personalize it; their name and contact details are never sent, and nothing typed is saved.` : `<b>Off:</b> Sunny understands messages on the member's own device, nothing they type leaves it, and she suggests nothing.`}</p>
+        <p style="margin:0" id="guideAiState">${ai ? `<b>On:</b> members' messages are read by ${esc(S.aiModel || "the AI model")} at ${esc(S.aiHost || "the AI service")} to find the right place and suggest programs, videos, your guides and general tips, which are added to the member's Home. Their activity in the app (programs, check-ins, workouts) is read to personalize it; their name and contact details are never sent, and nothing typed is saved.` : `<b>Off:</b> Solomon understands messages on the member's own device, nothing they type leaves it, and Solomon suggests nothing.`}</p>
         ${!canAi ? `<p class="muted" style="margin:0;font-size:12.5px" id="guideAiWhy">${ai ? "The AI service is not ready" : "It cannot be turned on"}: ${esc(S.aiWhy || "no AI service is connected on the server.")}</p>` : ""}
         ${state.guideAiErr ? `<p style="margin:0;color:var(--bad)" id="guideAiErr" role="alert">Not changed: ${esc(state.guideAiErr)}</p>` : ""}</div>` : ""}
     </div>
     ${nudgeCard(nd, days)}`;
   };
   const NUDGE_KINDS = { streak: ["Streak saver", "the evening one, when a streak is about to break"], comeback: ["Comeback", "2, 7, 14 and 30 days after someone was last active"],
-    picks: ["New picks", "Sunny suggested something since they last opened the app"], morning: ["Morning", "the Sarasota-sunlight line on a clear morning, otherwise a friendly one"] };
+    picks: ["New picks", "Solomon suggested something since they last opened the app"], morning: ["Morning", "the Sarasota-sunlight line on a clear morning, otherwise a friendly one"] };
   function nudgeCard(nd, days) {
     const rows = (nd && Array.isArray(nd.kinds) ? nd.kinds : []).filter((k) => NUDGE_KINDS[k.kind]);
     const pct = (a, b) => (b ? `${Math.round((a / b) * 100)}%` : "–"), right = 'style="text-align:right"';
@@ -1508,7 +1621,7 @@
           ${fld("rfAmt", "amount", "Amount to refund ($)", (left / 100).toFixed(2), { type: "number", attrs: `required min="0.01" max="${(left / 100).toFixed(2)}" step="0.01"` })}
           <div class="field"><label for="rfPass">Owner password</label><input id="rfPass" name="password" class="input" type="password" required autocomplete="current-password"><p class="muted" style="margin:4px 0 0;font-size:12.5px">Asked for every refund, even though you are signed in.</p></div>
           <div class="row"><button class="btn primary">Refund to the card</button><span class="muted" id="rfMsg" role="status" style="font-size:12.5px"></span></div></form>`); },
-    // ---- Sunny (Insights): the range, chart or table, and the AI switch
+    // ---- Solomon (Insights): the range, chart or table, and the AI switch
     guideDays: (el) => { state.guideDays = Number(el.dataset.d) || 30; return render(); },
     guideView: (el) => { state.guideView = el.dataset.v === "table" ? "table" : "chart"; return render(); },
     // Off is one click. On asks first, in the page: members type health details, so the service must have signed.
@@ -1587,7 +1700,7 @@
       pair.forEach((b) => b.setAttribute("aria-pressed", String(b === el)));
       // one person's changes go to the server in the order they were pressed
       const turn = typeTurn[id] = (typeTurn[id] || Promise.resolve()).catch(() => {}).then(() => api("PUT", `/api/admin/clients/${id}/type`, { type }));
-      try { await turn; cache.clients = null; toast(`${String(el.dataset.name).split(" ")[0]} is now ${type === "inpatient" ? "an in-patient: visits are not charged" : "an out-patient"}.`); }
+      try { await turn; cache.clients = null; toast(`${String(el.dataset.name).split(" ")[0]} is now ${type === "inpatient" ? "subscription exempt: visits are not charged" : "standard"}.`); }
       catch (err) { if (typeTurn[id] === turn) pair.forEach((b, i) => b.setAttribute("aria-pressed", before[i])); throw err; }
     },
     // Forms & intake: ask someone to finish and sign their new patient documents (app notice, push and email)
@@ -1690,7 +1803,7 @@
       const n = Number(f.freeTokensPerDay.value);
       if (!Number.isInteger(n) || n < 1000 || n > 1000000) { toast("Enter a whole number from 1,000 to 1,000,000."); f.freeTokensPerDay.focus(); return; }
       await api("PUT", "/api/admin/guide/settings", { freeTokensPerDay: n }); await render();
-      toast(`Saved. People on the free plan get ${n.toLocaleString("en-US")} Sunny tokens a day.`);
+      toast(`Saved. People on the free plan get ${n.toLocaleString("en-US")} Solomon tokens a day.`);
     },
     guideAiOn: async (f) => {
       if (!f.signed.checked) return;
@@ -1869,7 +1982,7 @@
     }
     if (e.target.matches("[data-change=rowTier]")) guard(async (el) => { const was = ((cache.clients || []).find((x) => x.id === el.dataset.id) || {}).membership; const said = await setMembership(el.dataset.id, el.value, was && was.tier === el.value ? was.until : "", el.dataset.name); if (said) { await clients(true); toast(said); } else el.value = (was && was.tier) || ""; el.classList.toggle("on", !!el.value); })(e.target);
     if (e.target.matches("[data-change=chartTier]")) guard(async (el) => { const was = cache.chart.c.membership, said = await setMembership(cid(), el.value, "", firstOf()); if (said) { await render(); toast(said); } else el.value = (was && was.tier) || ""; })(e.target);
-    if (e.target.matches("[data-change=chartType]")) guard(async (el) => { await api("PUT", `/api/admin/clients/${cid()}/type`, { type: el.value }); cache.clients = null; const type = el.value; await render(); toast(`${firstOf()} is now ${type === "inpatient" ? "an inpatient: visits are not charged" : "an outpatient"}.`); })(e.target);
+    if (e.target.matches("[data-change=chartType]")) guard(async (el) => { await api("PUT", `/api/admin/clients/${cid()}/type`, { type: el.value }); cache.clients = null; const type = el.value; await render(); toast(`${firstOf()} is now ${type === "inpatient" ? "subscription exempt: visits are not charged" : "standard"}.`); })(e.target);
     if (e.target.matches("[data-change=teleScribe]")) teleScribe(e.target.checked);
     if (e.target.matches("[data-change=teleGroup]")) {
       const cur = [...tele.peers.values()][0];
@@ -2458,6 +2571,75 @@
   $("#globalSearch").addEventListener("focus", (e) => { if (gWords(e.target.value).length && gRes.hidden) e.target.dispatchEvent(new Event("input")); });
   document.addEventListener("click", (e) => { if (!e.target.closest(".search")) gClose(); });
   ACT.searchOpen = (el) => { $("#globalSearch").value = ""; gClose(); openChart(el.dataset.id); };
+  // ---- Revenue share (owner)
+  ACT.rsEnabled = async (el) => { const on = el.getAttribute("aria-checked") !== "true"; await api("PUT", "/api/admin/partner-share/settings", { enabled: on }); await render(); toast(on ? "The revenue share is on." : "The revenue share is off. Nothing new is earned."); };
+  ACT.rsAutoPay = async (el) => {
+    const on = el.getAttribute("aria-checked") !== "true";
+    if (on && !confirm("Switch on automatic payouts? Each share is then transferred to the manager's Stripe account as soon as its payment clears, instead of monthly (Section 4.8). This is recorded as your decision.")) return;
+    await api("PUT", "/api/admin/partner-share/settings", { autoPay: on }); await render(); toast(on ? "Automatic payouts are on." : "Automatic payouts are off. You pay shares from here.");
+  };
+  ACT.rsClassify = async (el) => { await api("POST", "/api/admin/partner-share/classify", { revenueId: el.dataset.id, category: el.dataset.c }); await render(); toast("Classified."); };
+  ACT.rsAck = async (el) => { await api("PUT", `/api/admin/partner-share/partners/${encodeURIComponent(el.dataset.id)}`, { acknowledge: true }); await render(); toast("Partner acknowledged."); };
+  ACT.rsDispute = async (el) => { const why = prompt(`Why is the registration of ${el.dataset.name} disputed? (sent in writing, Section 7.2)`); if (!why) return; await api("PUT", `/api/admin/partner-share/partners/${encodeURIComponent(el.dataset.id)}`, { dispute: why }); await render(); toast("Registration disputed."); };
+  ACT.rsRun = async (el) => {
+    const job = el.dataset.job;
+    if (job === "payout" && !confirm("Transfer everything that is payout ready to the manager's Stripe account now?")) return;
+    const r = await api("POST", "/api/admin/partner-share/run", { job });
+    await render();
+    if (job === "clear") { toast(r.cleared ? `${plural(r.cleared, "share")} cleared.` : "Nothing new has cleared in Stripe."); return; }
+    toast(r.paid ? `${usd(r.paid.cents)} sent to the manager. A payment notice went to them.` : r.skipped || "Nothing to pay.");
+  };
+  FORMS.rsSettings = async (f) => {
+    await api("PUT", "/api/admin/partner-share/settings", { managerStaffId: f.managerStaffId.value, status: f.status.value, holdDays: Number(f.holdDays.value), activePct: Number(f.activePct.value), continuingPct: Number(f.continuingPct.value) });
+    await render(); toast("Terms saved.");
+  };
+  // ---- Affiliates
+  ACT.affEnabled = async (el) => {
+    const on = el.getAttribute("aria-checked") !== "true";
+    if (on && !confirm("Open the affiliate programme? Members will be able to earn commission on referrals. Do this only after your attorney has reviewed the programme and the affiliate terms.")) return;
+    await api("PUT", "/api/admin/affiliates/settings", { enabled: on });
+    await render(); toast(on ? "The affiliate programme is open." : "The affiliate programme is closed. Nothing new is earned; what's owed is still paid.");
+  };
+  ACT.affStatus = async (el) => {
+    const s = el.dataset.s, msg = { paused: "Pause this affiliate? No new commissions and no payouts until you resume.", removed: "Remove this affiliate? No new commissions, and what is payout ready is not paid out.", active: "Resume this affiliate?" }[s];
+    if (!confirm(msg)) return;
+    await api("PUT", `/api/admin/affiliates/${encodeURIComponent(el.dataset.id)}`, { status: s });
+    await render(); toast("Saved.");
+  };
+  ACT.affAdjust = (el) => modal(`<div class="card-head"><h2>Adjust ${esc(el.dataset.name)}</h2>${xBtn}</div>
+    <form class="stack" data-form="affAdjust"><input type="hidden" name="id" value="${esc(el.dataset.id)}">
+      <div class="field"><label for="adjAmt">Amount ($, negative to take off)</label><input id="adjAmt" name="amount" class="input" type="number" step="0.01" min="-1000" max="1000" required></div>
+      <div class="field"><label for="adjWhy">Reason (the affiliate sees this)</label><input id="adjWhy" name="reason" class="input" minlength="3" maxlength="200" required></div>
+      <div class="row"><button class="btn primary">Add adjustment</button><button type="button" class="btn" data-act="closeModal">Cancel</button></div></form>`);
+  ACT.affRun = async (el) => {
+    const job = el.dataset.job;
+    if (job === "payout" && !confirm("Pay out every affiliate whose payout-ready balance is over the minimum, now? This sends Stripe transfers.")) return;
+    const r = await api("POST", "/api/admin/affiliates/run", { job });
+    await render();
+    if (job === "clear") { const n = Object.keys(r.moved || {}).length; toast(n ? `Holds ended for ${plural(n, "affiliate")}.` : "No holds were due."); return; }
+    if (r.error) throw new Error(r.error);
+    const why = [...new Set(r.skipped.map((x) => x.why))].join("; ");
+    toast(`${r.paid.length} paid, ${r.skipped.length} skipped${why ? " (" + why + ")" : ""}, ${r.failed.length} failed${r.failed.length ? ": " + r.failed.map((f) => f.error).join("; ") : ""}.`);
+  };
+  ACT.affExport = async () => {
+    const res = await fetch(`${API}/api/admin/affiliates/export`, { headers: { Authorization: "Bearer " + token } });
+    if (!res.ok) throw new Error("The export could not be made.");
+    const name = ((res.headers.get("content-disposition") || "").match(/filename="?([^";]+)"?/) || [])[1] || "mdfit-affiliate-commissions.csv";
+    const url = URL.createObjectURL(await res.blob()), a = document.createElement("a");
+    a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 30000);
+    toast("Exported. The file is in your downloads.");
+  };
+  FORMS.affSettings = async (f) => {
+    const body = { ratePct: Number(f.ratePct.value), holdDays: Number(f.holdDays.value), minPayoutCents: Math.round(Number(f.minPayout.value) * 100), durationMonths: Number(f.durationMonths.value),
+      eligibleTiers: [...f.querySelectorAll("[name=tier]:checked")].map((x) => x.value), eligibleAddOns: f.addOns.value.split(",").map((x) => x.trim()).filter(Boolean), freeMonthReward: f.freeMonth.checked };
+    await api("PUT", "/api/admin/affiliates/settings", body);
+    await render(); toast("Commission settings saved.");
+  };
+  FORMS.affAdjust = async (f) => {
+    const cents = Math.round(Number(f.amount.value) * 100);
+    await api("POST", "/api/admin/affiliates/adjust", { clientId: f.id.value, cents, reason: f.reason.value.trim() });
+    closeModal(); await render(); toast("Adjustment added.");
+  };
 
   // ---------------------------------------------------------------- "+" quick actions
   // One round button in reach on every screen: pick what to send or open, then who it is for (the open chart's

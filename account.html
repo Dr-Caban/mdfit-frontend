@@ -19,11 +19,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="app/app.css?v=609f2f6e">
-  <link rel="stylesheet" href="account.css?v=d560caac">
+  <link rel="stylesheet" href="app/app.css?v=704af208">
+  <link rel="stylesheet" href="account.css?v=7e0b90a0">
   <link rel="stylesheet" href="guides.css?v=704fb203">
-  <link rel="stylesheet" href="app-theme.css?v=92dd6fc5">
-  <link rel="stylesheet" href="mdfit-guide.css?v=f8b23b50">
+  <link rel="stylesheet" href="app-theme.css?v=fad3e70d">
+  <link rel="stylesheet" href="mdfit-guide.css?v=408b8c88">
   <link rel="stylesheet" href="progress-charts.css?v=f0ec9711">
   <script src="app-theme.js?v=3afc6baa"></script>
 </head>
@@ -490,10 +490,10 @@
         <p class="muted small" id="p-goal-now"></p>
       </div>
       <div class="card" id="p-nudges">
-        <div class="card-head"><span class="label">Reminders from Sunny</span></div>
+        <div class="card-head"><span class="label">Reminders from Solomon</span></div>
         <p class="muted small">At most one a day, at the time you usually train, and never on a day you've already heard from us. Nothing about your health ever shows on your lock screen.</p>
-        <div class="hb-norm" id="p-nudge-pick" role="radiogroup" aria-label="Reminders from Sunny">
-          <button type="button" role="radio" data-nudges="all" aria-checked="true">All <small>Sunny's daily nudge</small></button>
+        <div class="hb-norm" id="p-nudge-pick" role="radiogroup" aria-label="Reminders from Solomon">
+          <button type="button" role="radio" data-nudges="all" aria-checked="true">All <small>Solomon's daily nudge</small></button>
           <button type="button" role="radio" data-nudges="streaks" aria-checked="false">Streaks only <small>evening save</small></button>
           <button type="button" role="radio" data-nudges="off" aria-checked="false">Off <small>none</small></button>
         </div>
@@ -582,15 +582,76 @@
       </div>
 
       <div class="card" id="referral-card">
-        <div class="card-head"><span class="label accent">Refer a friend</span></div>
-        <p class="small">Share your code — when someone signs up with it, <strong>you get 1 free month</strong> of membership credit.</p>
-        <div class="referral-code-row">
-          <code class="referral-code" id="ref-code">—</code>
-          <button type="button" class="btn-gold sm" id="copy-ref">Copy</button>
-          <button type="button" class="btn-blue sm" id="share-ref">Share link</button>
+        <div class="card-head"><span class="label accent">Refer a friend</span><span class="aff-chip" id="aff-head-live" hidden title="Updates the moment a friend pays"><i></i>LIVE</span></div>
+        <!-- Slide 1 is the card as it always was. Slides 2-5 (affiliate commission) appear only once the clinic opens the programme. -->
+        <div class="aff-slides" id="aff-slides">
+          <div class="aff-slide" aria-label="Your code">
+            <p class="small" id="ref-pitch">Share your code — when someone signs up with it, <strong>you get 1 free month</strong> of membership credit.</p>
+            <div class="referral-code-row">
+              <code class="referral-code" id="ref-code">—</code>
+              <button type="button" class="btn-gold sm" id="copy-ref">Copy</button>
+              <button type="button" class="btn-blue sm" id="share-ref">Share link</button>
+            </div>
+            <p class="small muted" id="ref-stats"></p>
+            <form id="ref-claim" hidden style="margin-top:12px;display:grid;gap:8px" novalidate>
+              <label class="small">Joined through a friend? Add their referral code <span class="muted">(within 30 days of joining)</span>
+                <input name="code" maxlength="20" placeholder="e.g. MDFIT-1A2B3C" autocomplete="off" autocapitalize="characters" style="display:block;width:100%;margin-top:6px"></label>
+              <button type="submit" class="btn-blue sm" style="justify-self:start">Add code</button>
+              <p class="small muted" id="ref-claim-msg" aria-live="polite"></p>
+            </form>
+            <p class="aff-hint small" data-aff hidden>Swipe to earn on referrals <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></p>
+          </div>
+
+          <div class="aff-slide" data-aff hidden aria-label="Earn on referrals">
+            <p class="aff-title">Earn on referrals</p>
+            <p class="small">Earn <b class="aff-rate">5%</b> of what friends you refer pay for <b>subscriptions or subscription add-ons</b><span id="aff-eligible"></span>.</p>
+            <ol class="aff-how small">
+              <li>A friend joins with your code or link.</li>
+              <li>Each time they pay for a subscription or subscription add-on, your share shows as <b>Pending</b>.</li>
+              <li>After <span class="aff-hold">7 days</span> it turns <b>Payout ready</b>; Stripe pays it to your bank on the 1st once you have <span class="aff-min">$25</span>.</li>
+            </ol>
+            <div class="aff-setup" id="aff-setup">
+              <button type="button" class="btn-gold aff-step" id="aff-join"><span><span class="aff-n">Step 1</span>Set up affiliate commission<small>Read and agree to the terms</small></span></button>
+              <button type="button" class="btn-blue aff-step" data-aff-stripe disabled><span><span class="aff-n">Step 2</span>Set up Stripe account<small>Where your payouts go</small></span></button>
+            </div>
+            <button type="button" class="aff-live" id="aff-live" hidden aria-expanded="false" aria-controls="aff-live-detail"><span>Affiliate commission<small id="aff-live-sub"></small></span><span class="aff-lv"><i></i>LIVE</span></button>
+            <div class="aff-live-detail small" id="aff-live-detail" hidden>
+              <p>You're an affiliate. Share your code or link from the first slide. Each payment a friend makes for a subscription or subscription add-on shows up as <b>Pending</b>, then <b>Payout ready</b>.</p>
+              <button type="button" class="link" id="aff-leave">Stop earning on referrals</button>
+            </div>
+            <button type="button" class="btn-blue aff-stripe2" data-aff-stripe hidden>Set up Stripe account<small>Payouts need a bank account through Stripe</small></button>
+            <button type="button" class="btn-ghost aff-stripe-dash" id="aff-dash" hidden>Payouts and cash out</button>
+            <p class="small muted aff-status" id="aff-status" aria-live="polite"></p>
+          </div>
+
+          <div class="aff-slide" data-aff hidden aria-label="Weekly earnings">
+            <p class="aff-title">Earnings by week</p>
+            <div class="aff-bal">
+              <div><span>Pending</span><b id="aff-pend">$0.00</b></div>
+              <div><span>Payout ready</span><b id="aff-ready">$0.00</b></div>
+              <div><span>Paid</span><b id="aff-paid">$0.00</b></div>
+            </div>
+            <div class="aff-legend small" aria-hidden="true"><span><i class="k-earned"></i>Earned</span><span><i class="k-pend"></i>Pending</span></div>
+            <div class="aff-chart-wrap"><svg class="aff-chart" id="aff-chart" viewBox="0 0 320 150" role="img" aria-label="Commission earned per week, last 8 weeks"></svg><div class="aff-tip" id="aff-tip" role="status"></div></div>
+            <details class="aff-table small"><summary>Show as a table</summary><table id="aff-table"></table></details>
+          </div>
+
+          <div class="aff-slide" data-aff hidden aria-label="Your referral funnel">
+            <p class="aff-title">Your referrals</p>
+            <div class="aff-funnel" id="aff-funnel"></div>
+            <p class="small muted" id="aff-conv"></p>
+          </div>
+
+          <div class="aff-slide" data-aff hidden aria-label="Commissions">
+            <p class="aff-title">Commissions</p>
+            <div class="aff-sec is-pend"><div class="aff-sec-head"><b>Pending payments</b><span id="aff-pend-total">$0.00</span></div><p class="small muted">Held <span class="aff-hold">7 days</span> in case of a refund</p><ul class="aff-list" id="aff-pend-list"></ul></div>
+            <div class="aff-sec is-ready"><div class="aff-sec-head"><b>Payout ready</b><span id="aff-ready-total">$0.00</span></div><p class="small muted">Paid to your bank on the 1st once you have <span class="aff-min">$25</span></p><ul class="aff-list" id="aff-ready-list"></ul></div>
+            <details class="small"><summary>Paid out</summary><ul class="aff-list" id="aff-paid-list"></ul></details>
+          </div>
         </div>
-        <p class="small muted" id="ref-stats"></p>
+        <div class="aff-dots" id="aff-dots" data-aff hidden role="tablist" aria-label="Refer a friend pages"></div>
       </div>
+
 
       <div class="card install install-card">
         <div class="card-head"><span class="label accent">Get the app</span></div>
@@ -626,6 +687,30 @@
     <button type="button" class="more-btn" id="more-btn" aria-haspopup="dialog"><svg viewBox="0 0 24 24"><path d="M6 10a2 2 0 1 0 2 2 2 2 0 0 0-2-2zm6 0a2 2 0 1 0 2 2 2 2 0 0 0-2-2zm6 0a2 2 0 1 0 2 2 2 2 0 0 0-2-2z"/></svg><span class="short">More</span></button>
     <div class="side-foot"><p class="side-tag">Move better<br>Feel stronger<br>Live more</p><a class="side-book" href="/book">Book a visit</a><a href="tel:+19413130562">941-313-0562</a></div>
   </nav>
+
+  <dialog class="sheet" id="aff-sheet" aria-label="Affiliate commission terms">
+    <div class="sheet-head"><b>Affiliate commission</b><button type="button" class="icon-btn" data-close aria-label="Close"><svg viewBox="0 0 24 24"><path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/></svg></button></div>
+    <div class="aff-rate-box"><span>Your commission</span><b class="aff-rate">5%</b></div>
+    <ul class="small aff-terms">
+      <li>You earn on <b>subscriptions or subscription add-ons</b><span class="aff-eligible-2"></span> paid by people who joined with your code or link<span id="aff-duration"></span>.</li>
+      <li>Clinic visits, massage, treatment plans, Expert Advice, Premium 1-on-1 and anything else that is care from a clinician never earn a commission.</li>
+      <li>Each commission is pending for <span class="aff-hold">7 days</span> in case the payment is refunded. A refund after payout comes off your next payout.</li>
+      <li>Payouts go to your bank through Stripe on the 1st once you have <span class="aff-min">$25</span>. Stripe checks your identity and may ask for tax details; MD Fit never sees your bank details.</li>
+      <li>Don't spam, buy ads on the MD Fit name, or refer yourself. MD Fit can pause or end the programme, or your account in it, at any time.</li>
+    </ul>
+    <label class="small aff-agree"><input type="checkbox" id="aff-agree"> I agree to the <a href="/terms#affiliates" target="_blank" rel="noopener">affiliate terms</a>.</label>
+    <p class="form-msg" id="aff-sheet-msg"></p>
+    <button type="button" class="btn-gold" id="aff-agree-go" disabled>Turn on affiliate commission</button>
+    <button type="button" class="link" data-close>Not now</button>
+  </dialog>
+
+  <dialog class="sheet aff-stripe-sheet" id="aff-stripe-sheet" aria-labelledby="aff-stripe-title">
+    <div class="sheet-head"><b id="aff-stripe-title">Payouts</b><button type="button" class="icon-btn" data-close aria-label="Close"><svg viewBox="0 0 24 24"><path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/></svg></button></div>
+    <div id="aff-stripe-banner"></div>
+    <div id="aff-stripe-mount" class="aff-stripe-mount"></div>
+    <details id="aff-stripe-more" class="small" hidden><summary>Bank account and details</summary><div id="aff-stripe-account"></div></details>
+    <p class="tiny muted">Payouts are handled by Stripe. MD Fit never sees your bank details.</p>
+  </dialog>
 
   <dialog class="sheet" id="close-account-sheet" aria-label="Close my account">
     <div class="sheet-head"><b>Close my account</b><button type="button" class="icon-btn" data-close aria-label="Close"><svg viewBox="0 0 24 24"><path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/></svg></button></div>
@@ -759,8 +844,8 @@
   <script src="config.js?v=aac711e3"></script>
   <script src="analytics.js?v=f3f61f9e" defer></script>
   <script src="realtime.js?v=22ae7ae5"></script>
-  <script src="common.js?v=2a625715"></script>
-  <script src="search.js?v=c2d8a6de" defer></script>
+  <script src="common.js?v=8727e0ea"></script>
+  <script src="search.js?v=f0487273" defer></script>
   <script src="app/exercises.js?v=d121be98"></script>
   <script src="app/library.js?v=4e053a85"></script>
   <script src="app/generator.js?v=488e449e"></script>
@@ -772,10 +857,10 @@
   <script src="guides.js?v=8521968d"></script>
   <script src="stripe-checkout.js?v=087989ec"></script>
   <script src="progress-charts.js?v=df3a2256"></script>
-  <script src="account.js?v=99d69aef"></script>
+  <script src="account.js?v=392c5fae"></script>
   <script src="account-xp.js?v=b9de2933"></script>
   <script src="account-share.js?v=763ef457"></script>
   <script src="account-habits.js?v=60e83046"></script>
-  <script src="mdfit-guide.js?v=bc7a1068"></script>
+  <script src="mdfit-guide.js?v=65755f4d"></script>
 </body>
 </html>

@@ -797,6 +797,44 @@ html[data-theme="black"] {
 :where(html[data-theme=black]) .sh-btn:hover { color: var(--navy); }
 :where(html[data-theme=black]) .sh-btn[aria-pressed="true"] { color: var(--accent-text); }
 :where(html[data-theme=black]) .ic-line { fill: none; stroke: currentColor; }
+:where(html[data-theme=black]) .aff-title { color: var(--heading); }
+:where(html[data-theme=black]) .aff-hint { color: var(--accent-text); }
+:where(html[data-theme=black]) .aff-chip { border: 1.5px solid var(--ok); color: var(--ok); }
+:where(html[data-theme=black]) .aff-chip i, :where(html[data-theme=black]) .aff-lv i { background: #2e7d4f; }
+:where(html[data-theme=black]) .aff-live { background: var(--card-2); border: 1.5px solid var(--ok); color: var(--heading); }
+:where(html[data-theme=black]) .aff-live small { color: var(--muted); }
+:where(html[data-theme=black]) .aff-lv { color: var(--ok); }
+:where(html[data-theme=black]) .aff-live-detail { background: var(--card-2); }
+:where(html[data-theme=black]) .aff-bal div { background: var(--card-2); }
+:where(html[data-theme=black]) .aff-bal span { color: var(--muted); }
+:where(html[data-theme=black]) .aff-bal b { color: var(--heading); }
+:where(html[data-theme=black]) .aff-legend { color: var(--muted); }
+:where(html[data-theme=black]) .aff-legend .k-earned { background: var(--aff-earned); }
+:where(html[data-theme=black]) .aff-legend .k-pend { background: var(--aff-pend); }
+:where(html[data-theme=black]) .aff-chart .grid { stroke: var(--line); }
+:where(html[data-theme=black]) .aff-chart text { fill: var(--muted); }
+:where(html[data-theme=black]) .aff-chart .val { fill: var(--heading); }
+:where(html[data-theme=black]) .aff-chart .s-earned { fill: var(--aff-earned); }
+:where(html[data-theme=black]) .aff-chart .s-pend { fill: var(--aff-pend); }
+:where(html[data-theme=black]) .aff-chart .hit { fill: transparent; }
+:where(html[data-theme=black]) .aff-tip { background: var(--t-deep); color: #fff; }
+:where(html[data-theme=black]) .aff-table summary, :where(html[data-theme=black]) .aff-slide details summary { color: var(--accent-text); }
+:where(html[data-theme=black]) .aff-table th, :where(html[data-theme=black]) .aff-table td { border-top: 1px solid var(--line); }
+:where(html[data-theme=black]) .aff-frow .bar { background: var(--aff-earned); }
+:where(html[data-theme=black]) .aff-frow b { color: var(--heading); }
+:where(html[data-theme=black]) .aff-sec { background: var(--card-2); }
+:where(html[data-theme=black]) .aff-sec-head b { color: var(--heading); }
+:where(html[data-theme=black]) .aff-sec-head span { color: var(--heading); }
+:where(html[data-theme=black]) .aff-list li { border-top: 1px solid var(--line); }
+:where(html[data-theme=black]) .aff-list li:first-child { border-top: 0; }
+:where(html[data-theme=black]) .aff-list li small { color: var(--muted); }
+:where(html[data-theme=black]) .aff-list li .amt { color: var(--heading); }
+:where(html[data-theme=black]) .aff-list li.empty { color: var(--muted); }
+:where(html[data-theme=black]) .aff-dots button { border: 0; background: var(--line); }
+:where(html[data-theme=black]) .aff-dots button[aria-selected="true"] { background: var(--heading); }
+:where(html[data-theme=black]) .aff-rate-box { background: var(--card-2); }
+:where(html[data-theme=black]) .aff-rate-box b { color: var(--gold); }
+:where(html[data-theme=black]) #aff-stripe-more summary { color: var(--accent-text); }
 :where(html[data-theme=black]) .auth-page { background: var(--ink); }
 :where(html[data-theme=black]) .auth-card { background: var(--paper); }
 :where(html[data-theme=black]) .auth-tabs { border-bottom: 1px solid var(--line); }
@@ -1235,6 +1273,9 @@ html[data-theme="black"] #ci-form input[type="number"] { background-color: var(-
 html[data-theme="black"] .opt[aria-checked="true"]::after, html[data-theme="black"] .pill[aria-checked="true"]::after { box-shadow: 0 0 0 2px var(--card); }
 /* Search: the matched word keeps a gold wash, with ink that reads on it */
 html[data-theme="black"] .qsearch-txt mark { background: rgba(232, 194, 94, .24); color: var(--heading); }
+
+/* ---- Refer a friend: affiliate chart series on the black card (validated against #15181E) */
+html[data-theme="black"] { --aff-earned: #4a94dc; --aff-pend: #b98522; }
 
 /* ---- 4. Compact layout (made by a script; do not edit by hand)
    A copy of every spacing and type-size declaration in the same three stylesheets, tightened: padding, margins and
@@ -2011,6 +2052,56 @@ html[data-theme="black"] .qsearch-txt mark { background: rgba(232, 194, 94, .24)
 @media (min-width: 1000px) {
 :where(html[data-layout=compact]) .tabbar button { font-size: 14.5px; }
 }
+:where(html[data-layout=compact]) .aff-slides { margin: 0 -13px; }
+:where(html[data-layout=compact]) .aff-slide { padding: 0 13px; }
+:where(html[data-layout=compact]) .aff-title { font-size: 14px; margin: 0 0 6px; }
+:where(html[data-layout=compact]) .aff-hint { gap: 4px; margin: 8px 0 0; }
+:where(html[data-layout=compact]) .aff-chip { gap: 6px; padding: 3px 9px; font-size: 11px; }
+:where(html[data-layout=compact]) .aff-how { margin: 6px 0 8.5px; padding-left: 14px; }
+:where(html[data-layout=compact]) .aff-how li { margin: 4px 0; }
+:where(html[data-layout=compact]) .aff-setup { gap: 8px; }
+:where(html[data-layout=compact]) .aff-step { padding: 9.5px 11.5px; }
+:where(html[data-layout=compact]) .aff-step small, :where(html[data-layout=compact]) .aff-stripe2 small { font-size: 12.5px; margin-top: 2px; }
+:where(html[data-layout=compact]) .aff-n { font-size: 11px; }
+:where(html[data-layout=compact]) .aff-live { gap: 8px; padding: 9.5px 11px; font-size: 14px; }
+:where(html[data-layout=compact]) .aff-live small { font-size: 12.5px; margin-top: 2px; }
+:where(html[data-layout=compact]) .aff-lv { gap: 7px; font-size: 12px; }
+:where(html[data-layout=compact]) .aff-live-detail { padding: 8px 8.5px; margin-top: 6px; }
+:where(html[data-layout=compact]) .aff-live-detail p { margin: 0 0 6px; }
+:where(html[data-layout=compact]) .aff-stripe2 { margin-top: 8px; padding: 9.5px 11.5px; }
+:where(html[data-layout=compact]) .aff-stripe-dash { margin-top: 8px; padding: 8.5px; font-size: 14px; }
+:where(html[data-layout=compact]) .aff-status { margin: 6px 0 0; }
+:where(html[data-layout=compact]) .aff-bal { gap: 6px; margin: 4px 0 6px; }
+:where(html[data-layout=compact]) .aff-bal div { padding: 6px 8px; }
+:where(html[data-layout=compact]) .aff-bal span { font-size: 11.5px; }
+:where(html[data-layout=compact]) .aff-bal b { font-size: 15px; }
+:where(html[data-layout=compact]) .aff-legend { gap: 10px; margin: 0 0 4px; }
+:where(html[data-layout=compact]) .aff-legend span { gap: 6px; }
+:where(html[data-layout=compact]) .aff-chart text { font-size: 10px; }
+:where(html[data-layout=compact]) .aff-tip { padding: 6px 7px; font-size: 12px; }
+:where(html[data-layout=compact]) .aff-table summary, :where(html[data-layout=compact]) .aff-slide details summary { margin-top: 6px; }
+:where(html[data-layout=compact]) .aff-table table { margin-top: 6px; }
+:where(html[data-layout=compact]) .aff-table th, :where(html[data-layout=compact]) .aff-table td { padding: 4px 2px; }
+:where(html[data-layout=compact]) .aff-funnel { gap: 8px; margin: 6px 0 6px; }
+:where(html[data-layout=compact]) .aff-frow { gap: 6px; font-size: 13px; }
+:where(html[data-layout=compact]) .aff-sec { padding: 8px 8.5px; margin-bottom: 8px; }
+:where(html[data-layout=compact]) .aff-sec p { margin: 2px 0 4px; }
+:where(html[data-layout=compact]) .aff-sec-head { gap: 8px; }
+:where(html[data-layout=compact]) .aff-sec-head b { font-size: 14px; }
+:where(html[data-layout=compact]) .aff-list { padding: 0; margin: 0; }
+:where(html[data-layout=compact]) .aff-list li { gap: 8px; padding: 6px 0; font-size: 13.5px; }
+:where(html[data-layout=compact]) .aff-list li small { font-size: 11.5px; }
+:where(html[data-layout=compact]) .aff-dots { gap: 6px; padding: 8.5px 0 0; }
+:where(html[data-layout=compact]) .aff-dots button { padding: 0; }
+:where(html[data-layout=compact]) .aff-rate-box { padding: 8.5px 10px; margin: 4px 0 6px; }
+:where(html[data-layout=compact]) .aff-rate-box b { font-size: 22px; }
+:where(html[data-layout=compact]) .aff-terms { padding-left: 13px; }
+:where(html[data-layout=compact]) .aff-terms li { margin: 6px 0; }
+:where(html[data-layout=compact]) .aff-agree { gap: 8px; margin: 8px 0 8.5px; }
+:where(html[data-layout=compact]) .aff-agree input { margin-top: 2px; }
+:where(html[data-layout=compact]) .aff-stripe-mount { margin: 4px 0 8.5px; }
+:where(html[data-layout=compact]) #aff-stripe-banner { margin-bottom: 8px; }
+:where(html[data-layout=compact]) #aff-stripe-more summary { margin: 4px 0 6px; }
 :where(html[data-layout=compact]) .auth-wrap { margin: 0 auto; padding: 40px 0; gap: 13px; }
 :where(html[data-layout=compact]) .auth-tabs button { padding: 15px; font-size: 15px; }
 :where(html[data-layout=compact]) .auth-form { padding: 18px; }

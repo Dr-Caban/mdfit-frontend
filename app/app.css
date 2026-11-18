@@ -1512,3 +1512,94 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
 .sh-btn[aria-pressed="true"] { color: var(--accent-text); }
 .sh-btn:disabled { opacity: .45; cursor: not-allowed; }
 .ic-line { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+/* Refer a friend, affiliate commission (slides 2-5 show only once the clinic opens the programme).
+   Chart series: --aff-earned (paid or payout ready) and --aff-pend (pending), validated against the white and black cards. */
+:root { --aff-earned: #3d7fc0; --aff-pend: #b98522; }
+#referral-card { overflow: hidden; }
+.aff-slides { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch; margin: 0 -18px; overscroll-behavior-x: contain; }
+.aff-slides::-webkit-scrollbar { display: none; }
+.aff-slide { flex: 0 0 100%; min-width: 0; scroll-snap-align: start; scroll-snap-stop: always; padding: 0 18px; }
+.aff-slide[hidden] { display: none; }
+.aff-title { font-weight: 700; font-size: 15px; color: var(--heading); margin: 0 0 6px; }
+.aff-hint { display: flex; align-items: center; gap: 4px; color: var(--accent-text); font-weight: 700; margin: 10px 0 0; }
+.aff-hint[hidden] { display: none; }
+.aff-chip { display: inline-flex; align-items: center; gap: 6px; border: 1.5px solid var(--ok); color: var(--ok); border-radius: 999px; padding: 3px 9px; font-size: 11px; font-weight: 700; letter-spacing: .12em; }
+.aff-chip[hidden] { display: none; }
+.aff-chip i, .aff-lv i { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); animation: aff-pulse 1.6s infinite; }
+@keyframes aff-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+.aff-how { margin: 8px 0 12px; padding-left: 20px; }
+.aff-how li { margin: 4px 0; }
+.aff-setup { display: grid; gap: 10px; }
+.aff-setup[hidden] { display: none; }
+.aff-step { justify-content: flex-start; text-align: left; padding: 13px 16px; }
+.aff-step > span, .aff-stripe2 { display: block; }
+.aff-step small, .aff-stripe2 small { display: block; font-weight: 500; font-size: 12.5px; opacity: .8; margin-top: 2px; }
+.aff-n { display: block; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; opacity: .75; }
+.aff-step:disabled, .aff-stripe2:disabled { opacity: .5; cursor: default; }
+.aff-live { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 10px; background: var(--card-2); border: 1.5px solid var(--ok); color: var(--heading); border-radius: 14px; padding: 13px 15px; font: 700 15px var(--body); text-align: left; cursor: pointer; }
+.aff-live[hidden] { display: none; }
+.aff-live small { display: block; font-weight: 500; color: var(--muted); font-size: 12.5px; margin-top: 2px; }
+.aff-lv { display: inline-flex; align-items: center; gap: 7px; color: var(--ok); font-size: 12px; letter-spacing: .14em; flex: none; }
+.aff-live-detail { background: var(--card-2); border-radius: 12px; padding: 10px 12px; margin-top: 8px; }
+.aff-live-detail p { margin: 0 0 8px; }
+.aff-stripe2 { margin-top: 10px; text-align: left; padding: 13px 16px; }
+.aff-stripe2[hidden], .aff-stripe-dash[hidden] { display: none; }
+.aff-stripe-dash { margin-top: 10px; padding: 12px; font-size: 15px; }
+.aff-status { margin: 8px 0 0; min-height: 1em; }
+.aff-bal { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 4px 0 8px; }
+.aff-bal div { background: var(--card-2); border-radius: 12px; padding: 8px 10px; }
+.aff-bal span { display: block; color: var(--muted); font-size: 11.5px; }
+.aff-bal b { font-size: 16px; color: var(--heading); font-variant-numeric: tabular-nums; }
+.aff-legend { display: flex; gap: 14px; color: var(--muted); margin: 0 0 4px; }
+.aff-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.aff-legend i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+.aff-legend .k-earned { background: var(--aff-earned); }
+.aff-legend .k-pend { background: var(--aff-pend); }
+.aff-chart-wrap { position: relative; }
+.aff-chart { width: 100%; height: auto; display: block; }
+.aff-chart .grid { stroke: var(--line); stroke-width: 1; }
+.aff-chart text { fill: var(--muted); font: 500 10px var(--body); }
+.aff-chart .val { fill: var(--heading); font-weight: 700; }
+.aff-chart .s-earned { fill: var(--aff-earned); }
+.aff-chart .s-pend { fill: var(--aff-pend); }
+.aff-chart .hit { fill: transparent; cursor: pointer; }
+.aff-tip { position: absolute; pointer-events: none; background: var(--navy); color: #fff; border-radius: 10px; padding: 6px 9px; font-size: 12px; white-space: nowrap; transform: translate(-50%, -110%); opacity: 0; transition: opacity .15s; }
+.aff-tip.on { opacity: 1; }
+.aff-table summary, .aff-slide details summary { cursor: pointer; color: var(--accent-text); font-weight: 700; margin-top: 6px; }
+.aff-table table { width: 100%; border-collapse: collapse; margin-top: 6px; font-variant-numeric: tabular-nums; }
+.aff-table th, .aff-table td { text-align: right; padding: 4px 2px; border-top: 1px solid var(--line); }
+.aff-table th:first-child, .aff-table td:first-child { text-align: left; }
+.aff-funnel { display: grid; gap: 10px; margin: 6px 0 8px; }
+.aff-frow { display: grid; grid-template-columns: 96px minmax(0, 1fr) 36px; align-items: center; gap: 8px; font-size: 13px; }
+.aff-frow .bar { height: 14px; min-width: 2px; border-radius: 0 4px 4px 0; background: var(--aff-earned); transition: width .5s ease; }
+.aff-frow b { text-align: right; color: var(--heading); font-variant-numeric: tabular-nums; }
+.aff-sec { background: var(--card-2); border-radius: 14px; padding: 10px 12px; margin-bottom: 10px; }
+.aff-sec p { margin: 2px 0 4px; }
+.aff-sec-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.aff-sec-head b { font-size: 14px; color: var(--heading); }
+.aff-sec-head span { font-weight: 700; font-variant-numeric: tabular-nums; color: var(--heading); }
+.aff-list { list-style: none; padding: 0; margin: 0; max-height: 180px; overflow-y: auto; }
+.aff-list li { display: flex; justify-content: space-between; gap: 10px; padding: 8px 0; border-top: 1px solid var(--line); font-size: 13.5px; }
+.aff-list li:first-child { border-top: 0; }
+.aff-list li small { display: block; color: var(--muted); font-size: 11.5px; }
+.aff-list li .amt { font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; color: var(--heading); }
+.aff-list li.empty { color: var(--muted); justify-content: flex-start; }
+.aff-list li.new { animation: aff-flash 1.6s ease; }
+@keyframes aff-flash { 0% { background: var(--gold-soft); } 100% { background: transparent; } }
+.aff-dots { display: flex; justify-content: center; gap: 6px; padding: 12px 0 0; }
+.aff-dots[hidden] { display: none; }
+.aff-dots button { width: 8px; height: 8px; border-radius: 4px; border: 0; padding: 0; background: var(--line); cursor: pointer; transition: width .2s; }
+.aff-dots button[aria-selected="true"] { background: var(--heading); width: 20px; }
+.aff-rate-box { display: flex; justify-content: space-between; align-items: baseline; background: var(--card-2); border-radius: 14px; padding: 12px 14px; margin: 4px 0 8px; }
+.aff-rate-box b { font: 700 24px var(--display); color: var(--gold); }
+.aff-terms { padding-left: 18px; }
+.aff-terms li { margin: 6px 0; }
+.aff-agree { display: flex; gap: 10px; align-items: flex-start; margin: 10px 0 12px; }
+.aff-agree input { margin-top: 2px; width: 18px; height: 18px; flex: none; }
+@media (prefers-reduced-motion: reduce) { .aff-chip i, .aff-lv i, .aff-list li.new { animation: none; } .aff-frow .bar { transition: none; } }
+/* Stripe's set-up and payouts screens, embedded in a sheet */
+.aff-stripe-sheet { min-height: 70vh; }
+.aff-stripe-mount { min-height: 320px; margin: 4px 0 12px; }
+#aff-stripe-banner:empty { display: none; }
+#aff-stripe-banner { margin-bottom: 10px; }
+#aff-stripe-more summary { cursor: pointer; color: var(--accent-text); font-weight: 700; margin: 4px 0 8px; }

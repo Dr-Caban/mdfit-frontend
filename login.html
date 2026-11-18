@@ -11,7 +11,7 @@
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="apple-touch-icon" href="assets/app-icon-192.png">
   <link rel="stylesheet" href="styles.css?v=ec75b4b1">
-  <link rel="stylesheet" href="account.css?v=d560caac">
+  <link rel="stylesheet" href="account.css?v=7e0b90a0">
   <link rel="stylesheet" href="/site-header.css?v=f429a526">
   <script src="/site-header.js?v=312f6631" defer></script>
   <script type="application/ld+json" data-mdfit-app>{"@context":"https://schema.org","@type":"WebApplication","@id":"https://www.mymdfit.com/mdfit-app#app","name":"MD Fit","url":"https://www.mymdfit.com/mdfit-app","applicationCategory":"HealthApplication","operatingSystem":"Any web browser (iPhone, Android, computer)","browserRequirements":"Requires JavaScript","description":"Dr. Jared Caban's free app: tap where it hurts, then follow the exercise videos and the program built for it.","provider":{"@id":"https://www.mymdfit.com/#clinic"},"featureList":["Pain tool: tap where it hurts to see the muscles that usually cause it","Exercise video library","Programs designated for each problem"],"offers":[{"@type":"Offer","name":"Free","price":"0","priceCurrency":"USD"}],"isAccessibleForFree":true}</script>
@@ -103,7 +103,7 @@
 
   <script src="config.js?v=aac711e3"></script>
   <script src="analytics.js?v=f3f61f9e" defer></script>
-  <script src="common.js?v=2a625715"></script>
+  <script src="common.js?v=8727e0ea"></script>
   <script>
     (() => {
       const { $, $$, api, auth, wire, API } = window.MDFit;
@@ -125,7 +125,9 @@
       document.addEventListener("click", (e) => { const b = e.target.closest("[data-mode]"); if (b) mode(b.dataset.mode); });
       const done = (sess) => { if (!sess || !sess.token) throw new Error("Something went wrong. Please try again, or call 941-313-0562."); auth.set(sess); location.replace(next); return { message: "Logged in. Loading your account…" }; };
 
-      const ref = q.get("ref") || "";
+      // The link's own code first; otherwise one kept on this device from a referral link opened earlier (common.js)
+      const urlRef = q.get("ref") || "";
+      const ref = urlRef || (window.MDFit.refCode ? window.MDFit.refCode() : "");
       wire($("#login-form"), async (d) => done(await api("/api/clients/login", d)), { reset: false });
       wire($("#signup-form"), async (d) => done(await api("/api/clients/signup", { ...d, referralCode: (d.referralCode || "").trim() || ref || undefined })), { reset: false });
       wire($("#forgot-form"), async (d) => {
@@ -146,7 +148,7 @@
       if (ref) { const ri = $("#signup-form [name=referralCode]"); if (ri) ri.value = ref; }
 
       if (q.get("reset")) { auth.clear(); resetToken = q.get("reset"); mode("reset"); }
-      else if (q.get("signup") !== null || ref) mode("signup");
+      else if (q.get("signup") !== null || urlRef) mode("signup");
 
       // Sign in with Google (website only; the apps use Sign in with Apple). Needs GOOGLE_CLIENT_ID on the server.
       const showSso = () => ["sso-login", "sso-signup", "auth-divider-login", "auth-divider-signup"].forEach((id) => { const el = document.getElementById(id); if (el) el.hidden = false; });

@@ -407,21 +407,26 @@
   // Personalization: favorites and the user's logged pain regions re-rank for them specifically.
   const personal = () => ({ favorites: new Set(lib.favorites || []), painRegions: [...new Set((painLog || []).map((p) => String(p.area || "").toLowerCase()))].slice(0, 6) });
   // Track last query and shown hits so we can log a "noclick" when the user abandons without picking anything.
-  let qsLastQ = "", qsLastHits = [], qsClicked = false;
+  let qsLastQ = "", qsLastHits = [], qsClicked = false, qsLogT = 0;
+  // Count a search once the user has settled on it (1.5 s idle or Enter), never per keystroke.
+  const qsLog = () => { clearTimeout(qsLogT); if (qsLastQ && window.MDFitSearch) window.MDFitSearch.logQuery(qsLastQ, qsLastHits.length); };
+  qsIn && qsIn.addEventListener("keydown", (e) => { if (e.key === "Enter") qsLog(); });
   qsIn && qsIn.addEventListener("input", () => {
     const q = qsIn.value.trim();
     qsClear.hidden = !q;
-    clearTimeout(qsT);
+    clearTimeout(qsT); clearTimeout(qsLogT);
     qsT = setTimeout(async () => {
       if (q.length < 2) { qsOut.hidden = true; return; }
       const r = await (window.MDFitSearch ? window.MDFitSearch.search(q, { limit: 12, personal: personal() }) : Promise.resolve({ hits: [] }));
       qsLastQ = q; qsLastHits = r.hits; qsClicked = false;
       qsRender(r.hits, q);
+      qsLogT = setTimeout(qsLog, 1500);
     }, 80);
   });
   qsClear && qsClear.addEventListener("click", () => { qsIn.value = ""; qsOut.hidden = true; qsClear.hidden = true; qsIn.focus(); });
   qsIn && qsIn.addEventListener("blur", () => setTimeout(() => {
     qsOut.hidden = true;
+    clearTimeout(qsLogT);
     // Log the no-click so the server knows this query didn't satisfy the user (zero-result signal).
     if (qsLastQ && !qsClicked && window.MDFitSearch) window.MDFitSearch.noClick(qsLastQ, qsLastHits.length);
     qsLastQ = "";
@@ -433,6 +438,7 @@
     const [kind, id] = row.dataset.id.split(":");
     // Log the click with position so CTR aggregation can re-rank for future queries.
     const pos = qsLastHits.findIndex((h) => h.id === row.dataset.id);
+    clearTimeout(qsLogT);
     if (qsLastQ && window.MDFitSearch) window.MDFitSearch.click(qsLastQ, row.dataset.id, Math.max(0, pos));
     qsClicked = true;
     qsOut.hidden = true; qsIn.value = "";
@@ -1236,17 +1242,37 @@
   caSheet.addEventListener("click", (e) => { if (e.target.closest("[data-close]") || e.target === caSheet) caSheet.close(); });
 
   async function loadReferral() {
+    loadAffiliate(); // the affiliate slides of the same card
     try {
       const r = await apiAuth("GET", "/api/me/referral");
       if (r.code) {
         $("#ref-code").textContent = r.code;
         $("#ref-stats").textContent = r.referrals ? `${r.referrals} friend${r.referrals === 1 ? "" : "s"} signed up with your code` : "No one has used your code yet — share it!";
       }
+      const form = $("#ref-claim");
+      if (form) form.hidden = !r.canClaim;
+      // Signed up without the code (Google, Apple, the app) but opened a friend's link on this phone: add it for them
+      const kept = window.MDFit.refCode ? window.MDFit.refCode() : "";
+      if (r.canClaim && kept && kept !== String(r.code || "").toUpperCase()) await claimRef(kept, true);
+      else if (!r.canClaim && window.MDFit.forgetRef) window.MDFit.forgetRef();
     } catch {}
   }
+  async function claimRef(code, quiet) {
+    const msg = $("#ref-claim-msg");
+    try {
+      await apiAuth("POST", "/api/me/referral/claim", { code });
+      if (window.MDFit.forgetRef) window.MDFit.forgetRef();
+      $("#ref-claim").hidden = true;
+      toast("Referral code added. Thanks for joining through a friend!");
+    } catch (e) { if (!quiet && msg) { msg.className = "small form-msg err"; msg.textContent = e.message || "Couldn't add that code."; } }
+  }
+  const claimForm = $("#ref-claim");
+  if (claimForm) claimForm.addEventListener("submit", (e) => { e.preventDefault(); const v = (claimForm.elements.code.value || "").trim(); if (v) claimRef(v, false); });
+  const pressed = (type) => apiAuth("POST", "/api/me/referral/event", { type }).catch(() => {});
   $("#copy-ref").addEventListener("click", () => {
     const code = $("#ref-code").textContent;
     if (!code || code === "—") return;
+    pressed("copy");
     navigator.clipboard.writeText(code).then(() => { toast("Referral code copied!"); $("#copy-ref").textContent = "Copied"; setTimeout(() => ($("#copy-ref").textContent = "Copy"), 2000); }).catch(() => toast("Couldn't copy — long-press the code to select it."));
   });
   $("#share-ref").addEventListener("click", () => {
@@ -1254,8 +1280,233 @@
     const code = $("#ref-code").textContent;
     if (!code || code === "—") return;
     const url = `${location.origin}/login?signup&ref=${encodeURIComponent(code)}`;
+    // Recorded apart: the share sheet (phones) and the link copied (computers), so Insights shows which one was used
+    pressed(navigator.share ? "share" : "copy_link");
     if (navigator.share) navigator.share({ title: "Join MD Fit", text: `Sign up with my referral code ${code} and get 3 months free!`, url }).catch(() => {});
     else navigator.clipboard.writeText(url).then(() => toast("Share link copied!")).catch(() => toast("Couldn't copy the link."));
+  });
+
+  // ---- Affiliate commission: slides 2-5 of Refer a friend. They show once the clinic opens the programme (or while
+  // a member still has commissions on record). Balances move live: the server pushes "referral_update" the moment a
+  // referred friend pays, a hold ends, or a payout goes out.
+  const usd = (c) => (c < 0 ? "−$" : "$") + (Math.abs(Number(c) || 0) / 100).toFixed(2);
+  const pct = (n) => `${Number(n || 0).toLocaleString("en-US", { maximumFractionDigits: 2 })}%`;
+  let aff = null, affSeen = new Set();
+  const affTrack = $("#aff-slides");
+  async function loadAffiliate(flashNew) {
+    try { aff = await apiAuth("GET", "/api/me/affiliate"); } catch { return; }
+    renderAffiliate(flashNew);
+  }
+  function affSlides() { return $$("#aff-slides > .aff-slide").filter((s) => !s.hidden); }
+  function renderAffDots() {
+    const dots = $("#aff-dots"), slides = affSlides();
+    const cur = Math.round(affTrack.scrollLeft / Math.max(1, affTrack.clientWidth));
+    dots.innerHTML = slides.length > 1 ? slides.map((s, i) => `<button type="button" role="tab" aria-label="${esc(s.getAttribute("aria-label"))}" aria-selected="${i === cur}" data-i="${i}"></button>`).join("") : "";
+    dots.hidden = slides.length < 2;
+  }
+  function renderAffiliate(flashNew) {
+    const a = aff; if (!a) return;
+    const on = !!(a.enabled || (a.ledger && a.ledger.length));
+    $$("#referral-card [data-aff]").forEach((el) => { el.hidden = !on; });
+    // Slide 1 pitch follows the clinic's settings: the free month, the commission, or both
+    const fm = a.freeMonth !== false;
+    $("#ref-pitch").innerHTML = a.enabled
+      ? `Share your code.${fm ? " When someone signs up with it, <strong>you get 1 free month</strong> of membership credit." : ""} Turn on affiliate commission to earn <strong>${pct(a.ratePct)}</strong> of what they pay for subscriptions or subscription add-ons.`
+      : `Share your code — when someone signs up with it, <strong>you get 1 free month</strong> of membership credit.`;
+    if (!on) { renderAffDots(); return; }
+    const hold = `${a.holdDays} day${a.holdDays === 1 ? "" : "s"}`;
+    $$(".aff-rate").forEach((el) => (el.textContent = pct(a.ratePct)));
+    $$(".aff-hold").forEach((el) => (el.textContent = hold));
+    $$(".aff-min").forEach((el) => (el.textContent = usd(a.minPayoutCents)));
+    const names = (a.eligible || []).map((t) => t.name);
+    const list = names.length ? `: ${names.length > 1 ? names.slice(0, -1).join(", ") + " and " + names[names.length - 1] : names[0]}${(a.addOns || []).length ? ", plus listed add-ons" : ""}` : "";
+    $("#aff-eligible").textContent = list;
+    $$(".aff-eligible-2").forEach((el) => (el.textContent = list ? ` (${list.slice(2)})` : ""));
+    $("#aff-duration").textContent = a.durationMonths ? `, for ${a.durationMonths} month${a.durationMonths === 1 ? "" : "s"} from their first payment` : ", for as long as they stay";
+
+    // Set-up: two steps until joined; then the box gives way to the LIVE button
+    const st = a.status, joined = st === "active", stripe = a.stripe || {};
+    $("#aff-setup").hidden = joined || st === "paused" || st === "removed" || !a.enabled;
+    $("#aff-join").disabled = !a.enabled;
+    $("#aff-live").hidden = !joined;
+    if (!joined) { $("#aff-live-detail").hidden = true; $("#aff-live").setAttribute("aria-expanded", "false"); }
+    $("#aff-head-live").hidden = !joined;
+    $("#aff-live-sub").textContent = `Earning ${pct(a.ratePct)} of subscriptions and subscription add-ons${client.referralCode ? " · code " + client.referralCode : ""}`;
+    const stripeBtns = $$("[data-aff-stripe]");
+    stripeBtns[0].disabled = true; // the step-2 button inside the set-up box waits for step 1
+    const s2 = stripeBtns[1];
+    s2.hidden = !(joined && !stripe.payoutsEnabled);
+    s2.disabled = !stripe.available;
+    s2.firstChild.textContent = stripe.connected ? "Finish Stripe set-up" : "Set up Stripe account";
+    $("#aff-dash").hidden = !(stripe.connected && stripe.payoutsEnabled);
+    const status = $("#aff-status");
+    status.textContent = st === "removed" ? "This account can't earn referral commission. Contact the clinic with any questions."
+      : st === "paused" ? "Your affiliate account is paused by the clinic. What you've earned is kept."
+      : !a.enabled && st !== "none" ? "The clinic has closed the programme to new commissions. What you've earned is still paid."
+      : joined && !stripe.available ? "Payouts through Stripe open soon. Your commissions are kept until then."
+      : joined && stripe.connected && !stripe.payoutsEnabled ? "Stripe is still checking your details. Payouts start once it's done."
+      : "";
+
+    // Balances
+    const b = a.balances || {};
+    $("#aff-pend").textContent = usd(b.pendingCents); $("#aff-ready").textContent = usd(b.readyCents); $("#aff-paid").textContent = usd(b.paidCents);
+    $("#aff-pend-total").textContent = usd(b.pendingCents); $("#aff-ready-total").textContent = usd(b.readyCents);
+    renderAffChart(a.ledger || []);
+    renderAffFunnel(a.funnel || { opened: 0, joined: a.referred || 0, paying: 0 });
+    // Commission lists: newest first; a row that wasn't there before flashes once
+    const row = (r) => `<li class="${flashNew && !affSeen.has(r.id) ? "new" : ""}"><span>${esc(r.who)}<small>${esc(r.what)}${r.status === "pending" && r.clearsAt ? " · ready " + esc(shortDate(r.clearsAt.slice(0, 10))) : ""}${r.status === "paid" && r.paidAt ? " · paid " + esc(shortDate(r.paidAt.slice(0, 10))) : ""}</small></span><span class="amt">${r.cents < 0 ? "" : "+"}${usd(r.cents)}</span></li>`;
+    const by = (s) => (a.ledger || []).filter((r) => r.status === s);
+    const fill = (id, rows, empty) => { $(id).innerHTML = rows.length ? rows.map(row).join("") : `<li class="empty">${empty}</li>`; };
+    fill("#aff-pend-list", by("pending"), "Nothing pending. When a friend pays, it shows here.");
+    fill("#aff-ready-list", by("ready"), "Nothing ready yet.");
+    fill("#aff-paid-list", by("paid"), "No payouts yet.");
+    affSeen = new Set((a.ledger || []).map((r) => r.id));
+    renderAffDots();
+  }
+  // Weekly stacked bars, last 8 weeks: Earned (payout ready or paid) under Pending. Reversed rows don't count.
+  function renderAffChart(rows) {
+    const svg = $("#aff-chart"), W = 320, H = 150, L = 34, R = 6, T = 14, B = 24, weeks = 8;
+    const monday = (d) => { const x = new Date(d); x.setHours(0, 0, 0, 0); x.setDate(x.getDate() - ((x.getDay() + 6) % 7)); return x; };
+    const start = monday(new Date()); start.setDate(start.getDate() - 7 * (weeks - 1));
+    const wk = Array.from({ length: weeks }, (_, i) => { const d = new Date(start); d.setDate(d.getDate() + 7 * i); return { d, earned: 0, pend: 0 }; });
+    for (const r of rows) {
+      if (!(r.cents > 0) || r.status === "reversed") continue;
+      const i = Math.floor((monday(r.at) - start) / (7 * 864e5));
+      if (i < 0 || i >= weeks) continue;
+      if (r.status === "pending") wk[i].pend += r.cents; else wk[i].earned += r.cents;
+    }
+    const max = Math.max(...wk.map((w) => w.earned + w.pend), 0);
+    const step = [100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000].find((s) => s * 3 >= max) || Math.ceil(max / 300) * 100;
+    const top = step * 3, y = (c) => T + (H - T - B) * (1 - c / top), slot = (W - L - R) / weeks, bw = Math.min(22, slot * 0.56);
+    const lab = (d) => d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+    const seg = (x, y0, y1, round) => { const h = y0 - y1; if (h <= 0) return ""; const r = round ? Math.min(4, h, bw / 2) : 0; return `M${x},${y0}V${y1 + r}${r ? `Q${x},${y1} ${x + r},${y1}H${x + bw - r}Q${x + bw},${y1} ${x + bw},${y1 + r}` : `H${x + bw}`}V${y0}Z`; };
+    let g = "";
+    for (let k = 0; k <= 3; k++) { const v = step * k, yy = y(v); g += `<line class="grid" x1="${L}" x2="${W - R}" y1="${yy}" y2="${yy}"/><text x="${L - 6}" y="${yy + 3}" text-anchor="end">${v ? "$" + (v / 100).toFixed(v % 100 ? 2 : 0) : "$0"}</text>`; }
+    wk.forEach((w, i) => {
+      const x = L + slot * i + (slot - bw) / 2, base = y(0), ye = y(w.earned), yp = y(w.earned + w.pend);
+      const gap = w.earned && w.pend ? 2 : 0;
+      g += `<path class="s-earned" d="${seg(x, base, ye, !w.pend)}"/>`;
+      g += `<path class="s-pend" d="${seg(x, ye - gap, yp, true)}"/>`;
+      if (i % 2 === 1 || weeks <= 4) g += `<text x="${x + bw / 2}" y="${H - 8}" text-anchor="middle">${esc(lab(w.d))}</text>`;
+      g += `<rect class="hit" x="${L + slot * i}" y="${T}" width="${slot}" height="${H - T - B}" data-i="${i}"/>`;
+    });
+    if (!max) g += `<text class="val" x="${(L + W - R) / 2}" y="${(T + H - B) / 2}" text-anchor="middle">No commissions yet</text>`;
+    svg.innerHTML = g;
+    const tip = $("#aff-tip");
+    const show = (i) => { const w = wk[i], x = L + slot * i + slot / 2; tip.textContent = `Week of ${lab(w.d)}: ${usd(w.earned)} earned · ${usd(w.pend)} pending`; tip.style.left = `${(x / W) * 100}%`; tip.style.top = `${(y(w.earned + w.pend) / H) * 100}%`; tip.classList.add("on"); };
+    svg.onpointerover = (e) => { const t = e.target.closest(".hit"); if (t) show(+t.dataset.i); };
+    svg.onclick = svg.onpointerover;
+    svg.onpointerleave = () => tip.classList.remove("on");
+    $("#aff-table").innerHTML = `<thead><tr><th>Week of</th><th>Earned</th><th>Pending</th></tr></thead><tbody>${wk.map((w) => `<tr><td>${esc(lab(w.d))}</td><td>${usd(w.earned)}</td><td>${usd(w.pend)}</td></tr>`).join("")}</tbody>`;
+  }
+  function renderAffFunnel(f) {
+    const rows = [["Opened your link", f.opened], ["Joined", f.joined], ["Paying now", f.paying]];
+    const max = Math.max(1, ...rows.map((r) => r[1]));
+    $("#aff-funnel").innerHTML = rows.map(([k, v]) => `<div class="aff-frow"><span>${k}</span><div class="bar" style="width:${(v / max) * 100}%"></div><b>${v}</b></div>`).join("");
+    $("#aff-conv").textContent = f.joined ? `${Math.round((f.paying / f.joined) * 100)}% of the friends who joined are paying for a subscription now.` : "Share your code or link to get started.";
+  }
+  // Swipe: dots follow the scroll; a dot scrolls to its slide
+  affTrack.addEventListener("scroll", () => {
+    const i = Math.round(affTrack.scrollLeft / Math.max(1, affTrack.clientWidth));
+    $$("#aff-dots button").forEach((b, j) => b.setAttribute("aria-selected", String(i === j)));
+  }, { passive: true });
+  $("#aff-dots").addEventListener("click", (e) => { const b = e.target.closest("button[data-i]"); if (b) affTrack.scrollTo({ left: affTrack.clientWidth * +b.dataset.i, behavior: "smooth" }); });
+  // Step 1: the terms, then join
+  const affSheet = $("#aff-sheet");
+  $("#aff-join").addEventListener("click", () => { $("#aff-agree").checked = false; $("#aff-agree-go").disabled = true; $("#aff-sheet-msg").textContent = ""; affSheet.showModal(); });
+  $("#aff-agree").addEventListener("change", (e) => { $("#aff-agree-go").disabled = !e.target.checked; });
+  affSheet.addEventListener("click", (e) => { if (e.target.closest("[data-close]") || e.target === affSheet) affSheet.close(); });
+  $("#aff-agree-go").addEventListener("click", async () => {
+    const btn = $("#aff-agree-go"), msg = $("#aff-sheet-msg");
+    btn.disabled = true; msg.className = "form-msg"; msg.textContent = "Turning it on…";
+    try { aff = await apiAuth("POST", "/api/me/affiliate/join", { agree: true }); affSheet.close(); renderAffiliate(); toast("Affiliate commission is on. Next: set up Stripe for payouts."); }
+    catch (e) { btn.disabled = false; msg.className = "form-msg err"; msg.textContent = e.message || "Couldn't turn it on. Try again."; }
+  });
+  // Step 2: Stripe's own set-up page; it sends them back to /account?affiliate=stripe-done#profile
+  // In a browser, Stripe's own set-up and payouts screens open inside the app (Connect embedded components, in a
+  // sheet). Stripe doesn't support them inside an app's web view, so the native apps keep Stripe's hosted page.
+  const nativeShell = !!window.MDFitNative || /; wv\)/.test(navigator.userAgent);
+  const embedded = () => !nativeShell && !!(aff && aff.stripe && aff.stripe.embedded && aff.stripe.publishableKey);
+  let connectP = null;
+  const stripeLooks = () => {
+    const css = getComputedStyle(document.documentElement), v = (n, d) => css.getPropertyValue(n).trim() || d;
+    return { overlays: "dialog", variables: { colorPrimary: v("--navy", "#0A1A2E"), colorBackground: v("--bg", "#F6F4EE"), colorText: v("--heading", "#0A1A2E"),
+      colorSecondaryText: v("--muted", "#6b6a6e"), colorBorder: v("--line", "#e4ded1"), borderRadius: "12px", fontFamily: "Montserrat, system-ui, -apple-system, sans-serif" } };
+  };
+  function stripeConnect() {
+    if (!connectP) {
+      // One Connect instance per page; each session secret is fresh and for this member's own account only
+      connectP = import("/vendor/stripe-connect-js-3.5.0.esm.js").then(({ loadConnectAndInitialize }) => loadConnectAndInitialize({
+        publishableKey: aff.stripe.publishableKey,
+        fetchClientSecret: async () => (await apiAuth("POST", "/api/me/affiliate/stripe/session")).clientSecret,
+        appearance: stripeLooks() }));
+      connectP.catch(() => { connectP = null; });
+    }
+    return connectP;
+  }
+  document.addEventListener("mdfit:theme", () => { if (connectP) connectP.then((sc) => sc.update({ appearance: stripeLooks() })).catch(() => {}); });
+  const stripeSheet = $("#aff-stripe-sheet");
+  async function stripeBack() { try { await apiAuth("GET", "/api/me/affiliate/stripe/status"); } catch {} loadAffiliate(); }
+  stripeSheet.addEventListener("click", (e) => { if (e.target.closest("[data-close]") || e.target === stripeSheet) stripeSheet.close(); });
+  stripeSheet.addEventListener("close", () => { $("#aff-stripe-mount").innerHTML = ""; $("#aff-stripe-banner").innerHTML = ""; $("#aff-stripe-more").hidden = true; stripeBack(); });
+  async function openStripe(kind) {
+    const mount = $("#aff-stripe-mount"), banner = $("#aff-stripe-banner");
+    $("#aff-stripe-title").textContent = kind === "onboarding" ? "Set up payouts" : "Payouts";
+    mount.innerHTML = '<p class="small muted">Loading Stripe…</p>'; banner.innerHTML = ""; $("#aff-stripe-more").hidden = true;
+    stripeSheet.showModal();
+    let sc;
+    try { sc = await stripeConnect(); }
+    catch { stripeSheet.close(); toast("Couldn't load Stripe here. Opening Stripe's own page instead."); return hostedStripe(kind); }
+    const failed = () => { if (stripeSheet.open) { stripeSheet.close(); toast("Stripe couldn't load here. Opening Stripe's own page instead."); hostedStripe(kind); } };
+    mount.innerHTML = "";
+    if (kind === "onboarding") {
+      const el = sc.create("account-onboarding");
+      el.setOnExit(() => { stripeSheet.close(); toast("Saved. Stripe will confirm your details shortly."); });
+      el.setOnLoadError(failed);
+      mount.appendChild(el);
+    } else {
+      const nb = sc.create("notification-banner"); banner.appendChild(nb);
+      const po = sc.create("payouts"); po.setOnLoadError(failed); mount.appendChild(po);
+      const more = $("#aff-stripe-more"); more.hidden = false; more.open = false;
+      const box = $("#aff-stripe-account"); box.innerHTML = ""; box.appendChild(sc.create("account-management"));
+    }
+  }
+  // Stripe's hosted pages: the native apps, and the fallback if the embedded screens can't load
+  async function hostedStripe(kind) {
+    if (kind === "payouts") {
+      try { const r = await apiAuth("POST", "/api/me/affiliate/stripe/dashboard"); location.href = r.url; }
+      catch (e) { toast(e.message || "Couldn't open your Stripe payouts."); }
+      return;
+    }
+    $("#aff-status").textContent = "Opening Stripe…";
+    try { const r = await apiAuth("POST", "/api/me/affiliate/stripe/onboard"); location.href = r.url; }
+    catch (e) { $("#aff-status").textContent = e.message || "Stripe couldn't start the set-up. Try again in a minute."; }
+  }
+  $$("[data-aff-stripe]").forEach((btn) => btn.addEventListener("click", async () => {
+    btn.disabled = true;
+    try { await (embedded() ? openStripe("onboarding") : hostedStripe("onboarding")); } finally { btn.disabled = false; }
+  }));
+  $("#aff-dash").addEventListener("click", () => (embedded() ? openStripe("payouts") : hostedStripe("payouts")));
+  $("#aff-live").addEventListener("click", () => { const d = $("#aff-live-detail"); d.hidden = !d.hidden; $("#aff-live").setAttribute("aria-expanded", String(!d.hidden)); });
+  $("#aff-leave").addEventListener("click", async () => {
+    if (!confirm("Stop earning on referrals? What you've already earned is still paid out.")) return;
+    try { aff = await apiAuth("POST", "/api/me/affiliate/leave"); renderAffiliate(); toast("You've stopped earning on new referrals."); } catch (e) { toast(e.message || "Couldn't change that."); }
+  });
+  // Back from Stripe: ask where the account stands, then tidy the address bar
+  (async () => {
+    const q = new URLSearchParams(location.search).get("affiliate");
+    if (!q) return;
+    history.replaceState(null, "", location.pathname + location.hash);
+    try {
+      const s = await apiAuth("GET", "/api/me/affiliate/stripe/status");
+      toast(s.payoutsEnabled ? "Stripe is set up. Payouts go to your bank on the 1st." : q === "stripe-again" ? "The Stripe link expired. Tap Set up Stripe account to carry on." : "Saved. Stripe is still checking your details.");
+    } catch {}
+    loadAffiliate();
+  })();
+  if (window.MDFitRT) MDFitRT.on("referral_update", (d) => {
+    if (d && d.kind === "pending" && d.cents > 0) toast(`${d.from || "A friend"} paid: +${usd(d.cents)} pending`);
+    else if (d && d.kind === "paid") toast(`${usd(d.cents)} is on its way to your bank.`);
+    loadAffiliate(true);
   });
 
   // Group classes the member booked on the events page. Matched by email on the server, so nothing is booked twice.
@@ -2653,10 +2904,10 @@
     $("#tier-grid").innerHTML = C.tiers.map((t, i) => `<article class="tier${i === 1 ? " featured" : ""}${cur && cur.id === t.id ? " current" : ""}" data-tier-card="${esc(t.id)}">
       ${i === 1 ? `<span class="tag">Most popular</span>` : ""}
       <h3>${esc(t.name)}</h3><p class="tier-price"><b>${money(t.price)}</b>/month</p>
-      <p class="tier-ai">Unlimited Sunny</p>
+      <p class="tier-ai">Unlimited Solomon</p>
       ${t.directMessages ? `<p class="tier-dm"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"/></svg>Message Dr. Jared directly</p>` : ""}
       ${t.meetings ? `<p class="tier-meet">${t.meetings} remote 1-on-1 sessions a month · ${t.meetingMinutes} min each</p>` : t.accountability ? `<p class="tier-meet">$1 off per active day · 20 active days = <b>${money(t.floor || 0)}</b> that month</p>` : ""}
-      <ul>${t.perks.filter((x) => !/^unlimited sunny/i.test(x) && !(t.directMessages && /^message dr\. jared directly/i.test(x))).map((x) => `<li>${esc(x)}</li>`).join("")}</ul>
+      <ul>${t.perks.filter((x) => !/^unlimited (sunny|solomon)/i.test(x) && !(t.directMessages && /^message dr\. jared directly/i.test(x))).map((x) => `<li>${esc(x)}</li>`).join("")}</ul>
       ${cur && cur.id === t.id ? `<span class="tier-cur">Your plan</span>` : `<button type="button" class="${i === 1 ? "btn-gold" : "btn-ghost"} sm" data-tier="${t.id}">${payOn ? "Subscribe" : "Request"} ${keepWhole(t.name)}</button>`}
     </article>`).join("");
     renderPayments();
@@ -3193,8 +3444,8 @@
   // ================= My progress on Profile: graphs built from what the member logs (progress-charts.js). Loaded the
   // first time Profile opens and refreshed on every later visit, since a workout or check-in may have been logged since.
   let progressView = null;
-  // ================= Reminders from Sunny on Profile: all / the evening streak one only / off (PUT /api/me/prefs)
-  const NUDGE_SAY = { all: "Sunny can send one friendly nudge a day.", streaks: "Sunny only reminds you in the evening when a streak is about to break.", off: "Sunny won't send reminders. Class reminders still come." };
+  // ================= Reminders from Solomon on Profile: all / the evening streak one only / off (PUT /api/me/prefs)
+  const NUDGE_SAY = { all: "Solomon can send one friendly nudge a day.", streaks: "Solomon only reminds you in the evening when a streak is about to break.", off: "Solomon won't send reminders. Class reminders still come." };
   let nudgePref = null;
   function paintNudges(v) {
     nudgePref = ["all", "streaks", "off"].includes(v) ? v : "all";
@@ -3219,8 +3470,8 @@
   }
 
   // ================= My plans on Home: programs Dr. Jared assigned ("Recommended by Dr. Jared"), programs the member
-  // saved, and what Sunny suggested ("Suggested for you"). The two labels never mix: Recommended
-  // comes from Dr. Jared, Suggested from Sunny, and a suggestion never changes what Dr. Jared recommended.
+  // saved, and what Solomon suggested ("Suggested for you"). The two labels never mix: Recommended
+  // comes from Dr. Jared, Suggested from Solomon, and a suggestion never changes what Dr. Jared recommended.
   const ACCESS_RANK = { free: 0, member: 1, premium: 2 };
   // Locked = the program needs more than this person's access (server: C.access, which is "premium" for inpatients)
   const lockedFor = (p) => !!p && p.locked === true; // what the Programs screen locks (the server decides), so Home never shows a lock on something they can open
@@ -3263,15 +3514,15 @@
         <span class="mp-body">${TAG_SUG}<span class="mp-tip-text">${esc(x.text)}</span></span></div>${DISMISS("tips", x.id, "this tip")}</li>`;
     const anySug = sp.length || sv.length || st.length || sgd.length;
     const sugBox = $("#mp-suggested");
-    if (sugBox) sugBox.innerHTML = anySug ? `<span class="label">Suggested for you <span class="muted small">by Sunny</span></span>
+    if (sugBox) sugBox.innerHTML = anySug ? `<span class="label">Suggested for you <span class="muted small">by Solomon</span></span>
       ${sp.length ? `<ul class="mp-list">${sp.map(sugRow).join("")}</ul>` : ""}
       ${sv.length ? `<p class="mp-sub muted small">Videos</p><ul class="mp-list">${sv.map(vidRow).join("")}</ul>` : ""}
       ${sgd.length ? `<p class="mp-sub muted small">From Dr. Jared's guides</p><ul class="mp-list">${sgd.map(guideRow).join("")}</ul>` : ""}
       ${st.length ? `<p class="mp-sub muted small">Tips</p><ul class="mp-list">${st.map(tipRow).join("")}</ul>` : ""}
-      <p class="muted small mp-fine">Suggestions from Sunny, not medical advice. What Dr. Jared recommends is marked Recommended.</p>` : "";
+      <p class="muted small mp-fine">Suggestions from Solomon, not medical advice. What Dr. Jared recommends is marked Recommended.</p>` : "";
     box.hidden = !assigned.length && !saved.length && !anySug;
   }
-  // Sunny's suggestions arrive with an answer (mdfit-guide.js) or with GET /api/me; both land here
+  // Solomon's suggestions arrive with an answer (mdfit-guide.js) or with GET /api/me; both land here
   function setSuggested(s) {
     if (!client || !s || typeof s !== "object") return;
     client.suggested = { programs: Array.isArray(s.programs) ? s.programs : [], videos: Array.isArray(s.videos) ? s.videos : [], tips: Array.isArray(s.tips) ? s.tips : [], guides: Array.isArray(s.guides) ? s.guides : [] };
@@ -3290,7 +3541,7 @@
     const un = e.target.closest("[data-unlock]");
     if (un) showTier(un.dataset.unlock);
   });
-  // The membership page with one tier picked out (a locked suggestion, the messaging upgrade, Sunny's limit)
+  // The membership page with one tier picked out (a locked suggestion, the messaging upgrade, Solomon's limit)
   let hlTier = "";
   function showTier(id) {
     hlTier = String(id || "");
@@ -3325,7 +3576,7 @@
     // For the guide (mdfit-guide.js) and the theme switch (app-theme.js): who is signed in, what the app holds, and two places to open
     client: () => client, content: async () => { if (!C) await (contentLoading || loadContent()).catch(() => {}); return C; },
     openBook: () => { go("profile"); setTimeout(() => $("#p-book-open") && $("#p-book-open").click(), 60); },
-    // For Sunny: the area of the last pain check-in (kept on the device), her suggestions on Home, a suggested video,
+    // For Solomon: the area of the last pain check-in (kept on the device), its suggestions on Home, a suggested video,
     // and the membership page with a tier picked out
     lastPain: () => { const p = (painLog || [])[(painLog || []).length - 1]; return p ? String(p.area || "") : ""; },
     setSuggested, showTier, lockedFor,

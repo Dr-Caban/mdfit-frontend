@@ -21,3 +21,6 @@ html[data-theme="black"] #ci-form input[type="number"] { background-color: var(-
 html[data-theme="black"] .opt[aria-checked="true"]::after, html[data-theme="black"] .pill[aria-checked="true"]::after { box-shadow: 0 0 0 2px var(--card); }
 /* Search: the matched word keeps a gold wash, with ink that reads on it */
 html[data-theme="black"] .qsearch-txt mark { background: rgba(232, 194, 94, .24); color: var(--heading); }
+
+/* ---- Refer a friend: affiliate chart series on the black card (validated against #15181E) */
+html[data-theme="black"] { --aff-earned: #4a94dc; --aff-pend: #b98522; }

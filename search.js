@@ -120,8 +120,7 @@
     }
     results.sort((a, b) => b.score - a.score);
     const hits = results.slice(0, limit);
-    // Fire-and-forget: log the query so the server can measure zero-result and no-click rates.
-    logEvent({ type: "query", q, resultCount: hits.length });
+    // Logging is the caller's job (logQuery): search() runs on every typing pause and must not count each one.
     return { query: q, hits, analysis: A };
   }
   function highlight(text, q) {
@@ -141,8 +140,11 @@
         .call(navigator, API + "/api/search/log", new Blob([body], { type: "application/json" }));
     } catch {}
   }
-  const click = (q, id, position) => logEvent({ type: "click", q, id, position });
-  const noClick = (q, resultCount) => logEvent({ type: "noclick", q, resultCount });
+  // One "query" event per finished search: call when the user stops typing, presses Enter, leaves the box, or clicks.
+  let lastLogged = "";
+  const logQuery = (q, resultCount, src = "quick") => { if (!q || q === lastLogged) return; lastLogged = q; logEvent({ type: "query", q, resultCount, src }); };
+  const click = (q, id, position) => { logQuery(q, undefined); logEvent({ type: "click", q, id, position, src: "quick" }); lastLogged = ""; };
+  const noClick = (q, resultCount) => { logQuery(q, resultCount); logEvent({ type: "noclick", q, resultCount, src: "quick" }); lastLogged = ""; };
 
-  window.MDFitSearch = { load, search, highlight, click, noClick };
+  window.MDFitSearch = { load, search, highlight, logQuery, click, noClick };
 })();
