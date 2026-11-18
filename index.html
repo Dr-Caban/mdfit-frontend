@@ -4,8 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <!-- Signed-in members land on their dashboard, not the marketing page (owner: "if auth, then dashboard").
-       /?site=1 or a section hash (#dr, #reviews) still shows the site, so the app's own links back here work. -->
-  <script>(function(){try{if(location.hash||/[?&]site=1/.test(location.search))return;var s=JSON.parse(localStorage.getItem("mdfit_client")||"null");if(s&&s.token&&Date.parse(s.expiresAt)>Date.now())location.replace("/account");}catch(e){}})();</script>
+       Opened as the app (Home Screen icon, or the phone app's shell) without a sign-in, it goes to sign-in instead: people
+       open the app to log in, not to read the clinic's site. /?site=1 or a section hash (#dr, #reviews) still shows the
+       site, and ?site=1 keeps it shown for the rest of the visit (More → About MD Fit in the app), so the site's own
+       links back here don't bounce. A browser that isn't signed in always sees the site. -->
+  <script>(function(){try{var ss=window.sessionStorage;if(/[?&]site=1/.test(location.search)){ss.setItem("mdfit-site","1");return;}if(location.hash||ss.getItem("mdfit-site"))return;var s=JSON.parse(localStorage.getItem("mdfit_client")||"null");if(s&&s.token&&Date.parse(s.expiresAt)>Date.now()){location.replace("/account");return;}var app=(window.matchMedia&&matchMedia("(display-mode: standalone)").matches)||navigator.standalone===true||!!window.MDFitNative||/; wv\)/.test(navigator.userAgent);if(app)location.replace("/login?next=%2Faccount");}catch(e){}})();</script>
   <title>MD Fit | Pain Treatment &amp; Physical Rehab in Sarasota, FL</title>
   <meta name="google-site-verification" content="tXmi747OUhWtW5HYMKnydjEGummaEW3ns28Bcpi_YBg">
   <meta name="description" content="Back, neck, shoulder, knee and hip pain treatment and rehab in Sarasota, FL with Dr. Jared Caban, MD, MSc, CEP. ★ 5.0 from 89 Google reviews. Book online.">
