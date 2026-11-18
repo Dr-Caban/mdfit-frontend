@@ -2471,7 +2471,6 @@
       });
     });
     if (w === "home") {
-      const pu = $("#patient-urgent"); if (pu) pu.style.order = "0"; // "Before your visit" always leads when it shows
       // The small gem badge by "Welcome back" repeats the gem card: shown only when the card is folded or hidden
       const gem = L.sections.find((x) => x.id === "gem"), chip = $("#xp-chip"); if (chip) chip.hidden = !!gem && stateOfRow(gem) === "open";
     }
@@ -3207,10 +3206,21 @@
     const show = !!(ch && (ch.patient || ch.notes.length || ch.movements.length || ch.paidVisits.length || ch.visits.length));
     const html = show ? carePlanHtml() : "";
     const date = ch && ch.updatedAt ? "Updated " + shortDate(ch.updatedAt.slice(0, 10)) : "";
+    careShown = show;
     for (const [card, body, dt] of [["#next-card", "#next-body", "#next-date"], ["#p-care", "#p-care-body", "#p-care-date"]]) {
       const el = $(card); if (!el) continue;
-      el.hidden = !show; if (show) { $(body).innerHTML = html; $(dt).textContent = date; }
+      el.hidden = !show; $(body).innerHTML = show ? html : ""; $(dt).textContent = show ? date : "";
     }
+    syncNextCard();
+  }
+  // Home's "What to do next" also carries the intake documents, first, when a visit is booked and they aren't done:
+  // it shows when either has something, and the "From Dr. Jared" line only when he has left something
+  let careShown = false;
+  function syncNextCard() {
+    const card = $("#next-card"), docs = $("#patient-urgent"); if (!card) return;
+    const docsDue = !!(docs && !docs.hidden);
+    card.hidden = !careShown && !docsDue;
+    const intro = $(".care-intro", card); if (intro) intro.hidden = !careShown;
   }
   function loadCarePlan() { return apiAuth("GET", "/api/me/chart").then((c) => { carePlan = c; renderCarePlan(); renderCalendar(); loadVisitOptions(); }).catch(() => {}); }
   document.addEventListener("click", async (e) => {
@@ -3651,6 +3661,7 @@
         $("#pu-sub").textContent = `Your ${visit.typeName || "visit"} is ${when} at ${fmtTime(visit.time)}. The intake documents take about 10 minutes${p.completed ? ` (${p.completed} of ${p.total} done)` : ""}.`;
         $("#pu-go").textContent = p.completed ? "Continue documents ›" : "Start documents ›";
       }
+      syncNextCard();
     }
   }
   function loadPatientDocs() {
