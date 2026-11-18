@@ -18,7 +18,8 @@
      The page opens as a short animation that plays by itself (made to be screen-recorded and sent to a partner), then
      offers the full terms underneath. It is a proposal FROM MD Fit: the partner's name and the account holder's first
      name are read from the link (?partner=...&contact=...&size=500&new=20&rate=5), shown as plain text, and are not
-     stored in this file. No partner logo or branding is used. ?full=1 skips the animation. -->
+     stored in this file. No partner logo or branding is used. ?full=1 skips the animation; ?rec=1 leaves the
+     buttons off the last scene, for a recording. -->
 <style>
 @font-face{font-family:"Libre Baskerville";src:url("assets/fonts/libre-baskerville.b1bcbff3.woff2") format("woff2");font-weight:400 700;font-display:swap}
 @font-face{font-family:"Montserrat";src:url("assets/fonts/montserrat-var.a5ec5492.woff2") format("woff2");font-weight:100 900;font-display:swap}
@@ -446,6 +447,8 @@ footer{font-size:12.5px;color:var(--muted);text-align:center;margin-top:18px}
   const openFull = (scroll) => { const f = $("#full"); f.hidden = false; draw(); if (scroll) f.scrollIntoView({ behavior: still ? "auto" : "smooth", block: "start" }); };
   $("#st-replay").addEventListener("click", () => { window.scrollTo(0, 0); play(); });
   $("#st-full").addEventListener("click", () => openFull(true));
+  // ?rec=1: for a screen recording, the last scene holds without its two buttons
+  if (Q.get("rec") === "1") document.querySelector(".st-acts").remove();
   if (Q.get("full") === "1") { stage.hidden = true; openFull(false); } else play();
 })();
 </script>
