@@ -16,8 +16,11 @@
   `/admin` (a rewrite in `vercel.json`) and `/workspace`. The earlier admin is `admin-classic.html` + `admin.js` at
   `/admin-classic`; it stays until every setting it holds has a screen in the workspace. Patients join video visits at
   `/visit` (`visit.html` + `visit.js`). Icons in the workspace are inline SVG only: no emoji or text glyphs.
-- Work on a branch → pull request → Vercel preview → merge. One session merges at a time. Never edit permissions or
-  secrets from here; all keys live in Vercel/Railway.
+- Work on a branch → pull request → Vercel preview → merge. One session merges at a time. All keys live in
+  Vercel/Railway. A session may set or change Railway/Vercel variables (CLI or MCP) only when the user asks for that
+  change in the session: set exactly what was asked, never print, copy or log a key's value, take a secret's value only
+  from the user (never invent or reuse one), and say afterwards which names changed. Never change GitHub, Railway,
+  Vercel or Stripe account permissions or API-key scopes from here.
 - **Video uploads — `/video-upload`.** When asked to `/video-upload`, to upload or migrate videos, to get footage
   from Drive onto Bunny, or to publish video for the web/Android/Apple apps: **read `docs/VIDEO-UPLOAD.md` first
   and follow its phases in order.** Treat that file as the command; do not improvise a run, and do not start at the
