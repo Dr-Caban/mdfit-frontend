@@ -1198,33 +1198,6 @@
     const code = client.referralCode;
     if (code && $("#ref-code").textContent === "—") $("#ref-code").textContent = code;
   }
-  // Profile on phones: folded cards open on a tap of their heading (not on its buttons or links). Open/closed is
-  // remembered on this device per card. The CSS only folds on narrow screens, so this does nothing visible elsewhere.
-  const FOLD_KEY = "mdfit-profile-open";
-  const foldKey = (c) => c.id || ((c.querySelector(".card-head .label") || {}).textContent || "");
-  const openSet = () => { try { return new Set(JSON.parse(localStorage.getItem(FOLD_KEY) || "[]")); } catch { return new Set(); } };
-  const foldSync = (c) => { const h = c.querySelector(":scope > .card-head"); if (!h) return; h.setAttribute("role", "button"); h.tabIndex = 0; h.setAttribute("aria-expanded", String(c.classList.contains("open"))); };
-  (() => { const open = openSet(); $$("#view-profile .card.p-fold").forEach((c) => { if (open.has(foldKey(c))) c.classList.add("open"); foldSync(c); }); })();
-  const foldToggle = (c) => {
-    c.classList.toggle("open"); foldSync(c);
-    const open = openSet(), k = foldKey(c);
-    if (c.classList.contains("open")) open.add(k); else open.delete(k);
-    try { localStorage.setItem(FOLD_KEY, JSON.stringify([...open])); } catch {}
-  };
-  const profView = document.getElementById("view-profile");
-  profView.addEventListener("click", (e) => {
-    const h = e.target.closest(".card.p-fold > .card-head");
-    if (!h || e.target.closest("a, button, input, select, textarea, label")) return;
-    foldToggle(h.parentElement);
-  });
-  profView.addEventListener("keydown", (e) => {
-    if (e.key !== "Enter" && e.key !== " ") return;
-    const h = e.target.closest(".card.p-fold > .card-head");
-    if (!h || e.target !== h) return;
-    e.preventDefault(); foldToggle(h.parentElement);
-  });
-  // "Make it yours" is filled in after load (app-theme.js); its heading gets the same button semantics then
-  { const looks = document.getElementById("p-looks"); if (looks) new MutationObserver(() => foldSync(looks)).observe(looks, { childList: true }); }
   const signOut = () => { auth.clear(); location.href = "/"; };
   $("#logout").addEventListener("click", signOut);
   $("#logout-top").addEventListener("click", signOut);
@@ -2433,33 +2406,147 @@
     [/lateral|tennis elbow/i, "assets/programs/tennis-elbow.png", true], [/medial|golfer/i, "assets/programs/golfers-elbow.png", true]]; // true = the poster already carries its title text; draw nothing over it
   const COMPLETE_POSTERS = new Set([...PROG_ART.filter((x) => x[2]).map((x) => x[1]), "assets/programs/mobility-ladder-poster.png"]);
   const withArt = (d) => { (d && d.programs || []).forEach((p) => { if (!p.image) { const m = PROG_ART.find(([re]) => re.test(p.title || "")); if (m) p.image = m[1]; } }); return d; };
-  // ---- Home layout: which cards show and in what order, set by the owner in the workspace (Client app → Home screen).
-  // It arrives with the content and is kept on the device, so the next launch is laid out before the content loads.
-  // The ids match lib/content.js HOME_SECTIONS on the server.
-  // "programs" is the phone card ("Not sure where to start?") and the list beside it on wide screens: one switch for both
-  const HOME_SECTIONS = { care: "#next-card", plans: "#my-plans", gem: "#gem-card", challenges: "#challenges-card", habits: "#habits-card",
-    today: "#today-card", myWorkouts: "#home-my-workouts", shared: "#shared-card", programs: "#hero-progs, #featured-progs",
-    quick: "#home-quick", myPrograms: "#home-programs", fromJared: "#plan-card", events: "#home-events",
-    activity: "#home-activity", install: "#home-install" };
-  const HOME_KEY = "mdfit-home-layout";
-  const homeDefault = () => ({ sections: Object.keys(HOME_SECTIONS).map((id) => ({ id, show: true })), suggestions: 3 });
-  let homeLayout = (() => { try { const h = JSON.parse(localStorage.getItem(HOME_KEY) || "null"); return h && Array.isArray(h.sections) ? h : homeDefault(); } catch { return homeDefault(); } })();
+  // ---- Home and Profile layouts: every card in priority order, each Open, Folded or Hidden.
+  // The owner sets the default in the workspace (Client app); a member can arrange their own ("Customize this page",
+  // PUT /api/me/layout), inside the owner's: a card the owner hid stays hidden and "care" can't be hidden. Folded means
+  // one line on a phone that opens on a tap (its own heading, or a plain one added here); wider screens show folded
+  // cards open. Both lists arrive with the content and are kept on the device, so the next launch is laid out at once.
+  // The ids match lib/content.js LAYOUTS on the server.
+  const LAYOUT = {
+    home: { care: "#next-card", fromJared: "#plan-card", today: "#today-card", plans: "#my-plans", quick: "#home-quick",
+      gem: "#gem-card", programs: "#hero-progs, #featured-progs", habits: "#habits-card", challenges: "#challenges-card",
+      myWorkouts: "#home-my-workouts", shared: "#shared-card", myPrograms: "#home-programs", events: "#home-events",
+      activity: "#home-activity", install: "#home-install" },
+    profile: { care: "#p-care", membership: "#p-membership", patient: "#p-patient", progress: "#p-progress", appointments: "#p-appts-card",
+      classes: "#p-classes-card", history: "#p-history-card", goal: "#p-goal-card", nudges: "#p-nudges", looks: "#p-looks",
+      referral: "#referral-card", account: "#p-account-card", feedback: "#p-feedback-card", install: "#p-install" }
+  };
+  const LAYOUT_LABEL = {
+    home: { care: "What to do next", fromJared: "From Dr. Jared", today: "Today's workout", plans: "Your plans", gem: "Your gem and XP",
+      programs: "Dr. Jared's Programs", quick: "Quick actions", habits: "Daily activities", challenges: "Challenges", myWorkouts: "My workouts",
+      shared: "Shared workouts", myPrograms: "My programs", events: "Upcoming events", activity: "Recent activity", install: "Get the app" },
+    profile: { care: "My care plan", membership: "Membership", patient: "Patient documents", progress: "My progress", appointments: "My appointments", classes: "My classes",
+      history: "Workout history", goal: "My daily XP goal", nudges: "Reminders from Solomon", looks: "Make it yours", referral: "Refer a friend",
+      account: "Profile", feedback: "Help us improve", install: "Get the app" }
+  };
+  const LAYOUT_OPEN_BY_DEFAULT = { home: ["care", "fromJared", "today", "plans", "quick"], profile: ["care", "membership", "patient"] };
+  const NATIVE_FOLD = new Set(["home:habits"]); // already one line with its own open/close
+  const layoutDefault = (w) => ({ sections: Object.keys(LAYOUT[w]).map((id) => ({ id, state: LAYOUT_OPEN_BY_DEFAULT[w].includes(id) ? "open" : "folded" })), ...(w === "home" ? { suggestions: 3 } : {}) });
+  const stateOfRow = (s) => (s.state || (s.show === false ? "hidden" : "open"));
+  const LAYOUT_KEY = "mdfit-layouts", OPEN_KEY = "mdfit-folds-open";
+  let layouts = (() => {
+    try { const v = JSON.parse(localStorage.getItem(LAYOUT_KEY) || "null"); if (v && v.owner && v.owner.home && v.owner.profile) return { owner: v.owner, mine: v.mine || {} }; } catch {}
+    return { owner: { home: layoutDefault("home"), profile: layoutDefault("profile") }, mine: {} };
+  })();
+  const ownerHome = () => layouts.owner.home || layoutDefault("home");
+  const effective = (w) => (layouts.mine && layouts.mine[w]) || layouts.owner[w] || layoutDefault(w);
   let sugOpen = false; // "Show more" on Solomon's suggestions, for this visit
-  function applyHomeLayout() {
-    homeLayout.sections.forEach((s, i) => { if (HOME_SECTIONS[s.id]) document.querySelectorAll(HOME_SECTIONS[s.id]).forEach((el) => { el.style.order = String(i + 1); el.classList.toggle("home-off", !s.show); }); });
-    const pu = $("#patient-urgent"); if (pu) pu.style.order = "0"; // "Before your visit" always leads when it shows
+  const openSet = () => { try { return new Set(JSON.parse(localStorage.getItem(OPEN_KEY) || "[]")); } catch { return new Set(); } };
+  function layHead(w, id, el) {
+    let h = el.querySelector(":scope > .card-head");
+    if (!h) {
+      h = el.querySelector(":scope > .lay-head-syn");
+      if (!h) { h = document.createElement("button"); h.type = "button"; h.className = "lay-head-syn"; h.innerHTML = `<span class="label">${esc(LAYOUT_LABEL[w][id] || id)}</span>`; el.prepend(h); }
+    } else { h.setAttribute("role", "button"); h.tabIndex = 0; }
+    h.classList.add("lay-head");
+    h.setAttribute("aria-expanded", String(el.classList.contains("open")));
   }
-  function setHomeLayout(h) {
-    if (!h || !Array.isArray(h.sections)) return;
-    const changed = JSON.stringify(h) !== JSON.stringify(homeLayout);
-    homeLayout = h; try { localStorage.setItem(HOME_KEY, JSON.stringify(h)); } catch {}
-    applyHomeLayout(); if (changed) renderMyPlans();
+  function applyLayout(w) {
+    const L = effective(w), open = openSet(), inOrder = [];
+    L.sections.forEach((s, i) => {
+      const sel = LAYOUT[w][s.id]; if (!sel) return;
+      const st = stateOfRow(s);
+      document.querySelectorAll(sel).forEach((el) => {
+        el.dataset.lay = `${w}:${s.id}`;
+        el.classList.toggle("lay-off", st === "hidden");
+        const fold = st === "folded" && !NATIVE_FOLD.has(`${w}:${s.id}`);
+        el.classList.toggle("lay-fold", fold);
+        if (fold) {
+          el.classList.toggle("open", open.has(`${w}:${s.id}`)); layHead(w, s.id, el);
+          // a card its own script redraws (the gem card, Make it yours) gets its heading back each time
+          if (!el._layObs) { el._layObs = new MutationObserver(() => { const [lw, lid] = (el.dataset.lay || "").split(":"); if (el.classList.contains("lay-fold") && !el.querySelector(":scope > .lay-head")) layHead(lw, lid, el); }); el._layObs.observe(el, { childList: true }); }
+        }
+        else { el.classList.remove("open"); const syn = el.querySelector(":scope > .lay-head-syn"); if (syn) syn.remove(); }
+        if (w === "home") el.style.order = String(i + 1); else inOrder.push(el);
+      });
+    });
+    if (w === "home") { const pu = $("#patient-urgent"); if (pu) pu.style.order = "0"; } // "Before your visit" always leads when it shows
+    else {
+      // Profile: the cards are moved into this order (the two-column view on a computer follows the page order)
+      const grid = $("#view-profile .profile-grid");
+      if (grid) { layApplying = true; inOrder.forEach((el) => { if (el.closest("#view-profile")) grid.appendChild(el); }); const pn = $("#phone-nudge"); if (pn && pn.parentElement === grid) grid.prepend(pn); layApplying = false; }
+    }
   }
-  applyHomeLayout();
-  // Cards other scripts add later (gem, challenges, daily activities, my workouts, shared) take their place as they arrive
-  $$("#view-home .col-main, #view-home .col-side").forEach((col) => new MutationObserver(applyHomeLayout).observe(col, { childList: true }));
+  let layApplying = false;
+  function setLayouts(owner, mine) {
+    const before = JSON.stringify(layouts);
+    if (owner) for (const w of ["home", "profile"]) if (owner[w] && Array.isArray(owner[w].sections)) layouts.owner[w] = owner[w];
+    if (mine) layouts.mine = mine;
+    try { localStorage.setItem(LAYOUT_KEY, JSON.stringify(layouts)); } catch {}
+    applyLayout("home"); applyLayout("profile");
+    if (before !== JSON.stringify(layouts)) renderMyPlans();
+  }
+  applyLayout("home"); applyLayout("profile");
+  // Cards other scripts add later (gem, challenges, daily activities, my workouts, shared) take their place as they arrive,
+  // and "Make it yours" gets its heading once app-theme.js fills it
+  $$("#view-home .col-main, #view-home .col-side").forEach((col) => new MutationObserver(() => applyLayout("home")).observe(col, { childList: true }));
+  { const looks = $("#p-looks"); if (looks) new MutationObserver(() => { if (!layApplying) applyLayout("profile"); }).observe(looks, { childList: true }); }
+  // A tap on a folded card's heading opens or closes it (not on the buttons or links inside it); Enter and Space too
+  const layToggle = (el) => {
+    el.classList.toggle("open");
+    const h = el.querySelector(":scope > .lay-head"); if (h) h.setAttribute("aria-expanded", String(el.classList.contains("open")));
+    const open = openSet(), k = el.dataset.lay; if (el.classList.contains("open")) open.add(k); else open.delete(k);
+    try { localStorage.setItem(OPEN_KEY, JSON.stringify([...open])); } catch {}
+  };
+  document.addEventListener("click", (e) => {
+    const h = e.target.closest(".lay-fold > .lay-head"); if (!h) return;
+    const inner = e.target.closest("a, button, input, select, textarea, label");
+    if (inner && inner !== h) return;
+    e.preventDefault(); layToggle(h.parentElement);
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    const h = e.target.closest(".lay-fold > .lay-head"); if (!h || e.target !== h) return;
+    e.preventDefault(); layToggle(h.parentElement);
+  });
+
+  // "Customize this page": the member's own order and Open / Fold / Hide, saved to their account
+  let layDraft = null, layWhich = "home";
+  const LAY_STATE_LABEL = { open: "Open", folded: "Fold", hidden: "Hide" };
+  function layDraw() {
+    const w = layWhich, ownerOff = new Set((layouts.owner[w].sections || []).filter((x) => stateOfRow(x) === "hidden").map((x) => x.id));
+    const rows = layDraft.filter((x) => !ownerOff.has(x.id) && LAYOUT[w][x.id]);
+    $("#lay-title").textContent = w === "home" ? "Customize Home" : "Customize Profile";
+    $("#lay-list").innerHTML = rows.map((x, i) => `<li class="lay-row${x.state === "hidden" ? " off" : ""}">
+      <span class="lay-n">${i + 1}</span><b>${esc(LAYOUT_LABEL[w][x.id] || x.id)}</b>
+      <span class="lay-seg" role="group" aria-label="${esc(LAYOUT_LABEL[w][x.id])}">${["open", "folded", "hidden"].map((st) => `<button type="button" data-lay-state="${st}" data-id="${x.id}" aria-pressed="${x.state === st}"${st === "hidden" && x.id === "care" ? ` disabled title="What Dr. Jared left for you can be folded, not hidden"` : ""}>${LAY_STATE_LABEL[st]}</button>`).join("")}</span>
+      <span class="lay-move"><button type="button" data-lay-move="-1" data-id="${x.id}" aria-label="Move ${esc(LAYOUT_LABEL[w][x.id])} up"${i ? "" : " disabled"}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.4 15.4 12 10.8l4.6 4.6L18 14l-6-6-6 6z"/></svg></button><button type="button" data-lay-move="1" data-id="${x.id}" aria-label="Move ${esc(LAYOUT_LABEL[w][x.id])} down"${i < rows.length - 1 ? "" : " disabled"}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.4 8.6 12 13.2l4.6-4.6L18 10l-6 6-6-6z"/></svg></button></span></li>`).join("");
+    $("#lay-reset").hidden = !(layouts.mine && layouts.mine[w]);
+  }
+  document.addEventListener("click", async (e) => {
+    const open = e.target.closest("[data-lay-custom]");
+    if (open) { layWhich = open.dataset.layCustom; layDraft = effective(layWhich).sections.map((x) => ({ id: x.id, state: stateOfRow(x) })); layDraw(); $("#lay-sheet").showModal(); return; }
+    const st = e.target.closest("[data-lay-state]");
+    if (st) { const x = layDraft.find((y) => y.id === st.dataset.id); if (x) { x.state = st.dataset.layState; layDraw(); } return; }
+    const mv = e.target.closest("[data-lay-move]");
+    if (mv) {
+      // Moves among the cards the member can see, so a card the owner hid never blocks a move
+      const w = layWhich, ownerOff = new Set((layouts.owner[w].sections || []).filter((x) => stateOfRow(x) === "hidden").map((x) => x.id));
+      const vis = layDraft.filter((x) => !ownerOff.has(x.id)), i = vis.findIndex((x) => x.id === mv.dataset.id), j = i + Number(mv.dataset.layMove);
+      if (i < 0 || j < 0 || j >= vis.length) return;
+      const a = layDraft.indexOf(vis[i]), b = layDraft.indexOf(vis[j]); [layDraft[a], layDraft[b]] = [layDraft[b], layDraft[a]]; layDraw(); return;
+    }
+    const save = e.target.closest("#lay-save"), reset = e.target.closest("#lay-reset");
+    if (!save && !reset) return;
+    try {
+      const r = await apiAuth("PUT", "/api/me/layout", { [layWhich]: reset ? null : { sections: layDraft } });
+      setLayouts(null, (r && r.myLayout) || {}); $("#lay-sheet").close();
+      toast(reset ? "Back to Dr. Jared's layout." : "Saved. This page is laid out your way on every device.");
+    } catch (err) { toast(err.message || "Couldn't save. Try again."); }
+  });
   const loadContent = () => (contentLoading = apiAuth("GET", "/api/me/content").then((d) => (C = withArt(d))).catch(() => api("/api/content").then((d) => (C = withArt({ ...d, access: "free" }))))
-    .then((d) => { if (d && d.home) setHomeLayout(d.home); return d; }));
+    // (the public content has no member layout: what is held on the device is kept)
+    .then((d) => { if (d) setLayouts({ home: d.home, profile: d.profile }, "myLayout" in d ? d.myLayout || {} : null); return d; }));
   const money = (n) => "$" + Number(n).toLocaleString("en-US");
   const lockBadge = `<span class="lock" title="Members"><svg viewBox="0 0 24 24"><path d="M17 9h-1V7a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2zm-7-2a2 2 0 0 1 4 0v2h-4z"/></svg> Members</span>`;
   const unlockBtn = (what) => `<button type="button" class="btn-gold sm" data-goto="premium">Unlock ${what} with a membership</button>`;
@@ -3479,6 +3566,20 @@
   if (window.MDFitRT) MDFitRT.on("calendar_changed", () => { syncCalendar(true); loadRewards(); });
   document.addEventListener("visibilitychange", () => { if (!document.hidden) syncCalendar(); });
   setInterval(() => { if (!document.hidden && !$("#view-progress").hidden) syncCalendar(); }, 120000);
+  // The phone's own calendar: a private feed of the same visits, classes, billing and subscription dates. iPhone opens
+  // webcal: links as "Subscribe to calendar"; anywhere else, Copy link and paste it into Google or Outlook ("From URL").
+  // New link makes a fresh one and the old one stops working (for a link that was shared by mistake).
+  const calFeed = (fresh) => apiAuth(fresh ? "POST" : "GET", fresh ? "/api/me/calendar/feed/reset" : "/api/me/calendar/feed");
+  document.addEventListener("click", async (e) => {
+    const sub = e.target.closest("[data-cal-sub]"), copy = e.target.closest("[data-cal-copy]"), reset = e.target.closest("[data-cal-reset]");
+    if (!sub && !copy && !reset) return;
+    try {
+      if (reset && !confirm("Make a new calendar link? The old one stops working, and a calendar already subscribed to it needs the new one.")) return;
+      const f = await calFeed(!!reset);
+      if (sub) { location.href = f.webcal; $("#cal-sync-note").textContent = "If nothing opened: Copy link, then on iPhone go to Settings → Calendar → Accounts → Add Account → Other → Add Subscribed Calendar and paste it."; }
+      else { try { await navigator.clipboard.writeText(f.url); toast(reset ? "New link copied. The old one no longer works." : "Calendar link copied. Paste it into your calendar app's \"Add from URL\"."); } catch { prompt("Copy your calendar link:", f.url); } }
+    } catch (err) { toast(err.message || "Couldn't get your calendar link. Try again."); }
+  });
   $("#cal-prev").addEventListener("click", () => { calMonth = monthAdd(calMonth, -1); renderCalendar(); });
   $("#cal-next").addEventListener("click", () => { calMonth = monthAdd(calMonth, 1); renderCalendar(); });
 
@@ -3594,7 +3695,7 @@
     const tipRow = (x) => `<li class="mp-sug"><div class="mp-item mp-tip"><span class="fp-ic mp-tip-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21h6v-1H9zm3-19a7 7 0 0 0-4 12.7V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.3A7 7 0 0 0 12 2z"/></svg></span>
         <span class="mp-body"><span class="mp-tip-text">${esc(x.text)}</span></span></div>${DISMISS("tips", x.id, "this tip")}</li>`;
     // A few at a time (the owner sets how many, 0 hides them); the rest wait behind "Show more"
-    const cap = Number.isInteger(homeLayout.suggestions) ? homeLayout.suggestions : 3;
+    const cap = Number.isInteger(ownerHome().suggestions) ? ownerHome().suggestions : 3;
     const all = [...sp.map((x) => ["p", x]), ...sv.map((x) => ["v", x]), ...sgd.map((x) => ["g", x]), ...st.map((x) => ["t", x])];
     const shown = cap === 0 ? [] : sugOpen ? all : all.slice(0, cap), of = (k) => shown.filter((x) => x[0] === k).map((x) => x[1]);
     const [vp, vv, vg, vt] = ["p", "v", "g", "t"].map(of), more = all.length - shown.length;

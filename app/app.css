@@ -528,13 +528,17 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
 .k-bg-workout { background: var(--accent) !important; } .k-bg-visit { background: var(--navy) !important; } .k-bg-pain { background: var(--gold) !important; }
 .k-bg-care { background: #2e7d4f !important; }
 .k-bg-class { background: #8a5fb0 !important; }
-/* Billing (invoices, card payments) and the membership (started, renews, ends): a rose dot and a gold ring, so the
-   two money marks differ in shape as well as colour */
-.k-bill { background: #d4688e; }
-.k-plan { background: transparent; box-shadow: inset 0 0 0 1.5px var(--gold); }
-.k-bg-bill { background: #d4688e !important; }
-.k-bg-plan { background: transparent !important; box-shadow: inset 0 0 0 2px var(--gold); }
+/* Billing (invoices, one-off card payments) in pink; Subscription (membership started, renews, ends, and its monthly
+   charge) in lime. Checked for colour-blind separation against the six activity colours; the day list names each one. */
+.k-bill { background: #f472b6; }
+.k-plan { background: #a3e635; }
+.k-bg-bill { background: #f472b6 !important; }
+.k-bg-plan { background: #a3e635 !important; }
 .cal-day .act-links { display: flex; gap: 12px; margin-top: 4px; }
+/* Subscribe in the phone's own calendar (a private feed, account.js) */
+.cal-sync { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin: 10px 0 2px; }
+.cal-sync .btn-ghost svg { width: 16px; height: 16px; fill: currentColor; vertical-align: -3px; }
+.cal-sync-note { flex-basis: 100%; margin: 0; }
 .badges { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; }
 .badge { display: grid; justify-items: center; text-align: center; gap: 4px; padding: 12px 8px; border-radius: 14px; background: var(--card-2); }
 .b-ic { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; background: #e2ddd1; color: #a19c90; }
@@ -1610,22 +1614,43 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
 #aff-stripe-banner:empty { display: none; }
 #aff-stripe-banner { margin-bottom: 10px; }
 #aff-stripe-more summary { cursor: pointer; color: var(--accent-text); font-weight: 700; margin: 4px 0 8px; }
-/* Profile on phones: everything below progress and membership folds to a one-line row that opens on tap, so the
-   tab is a short list instead of five screens of open cards. Buttons in a folded card's heading still work. The
-   choice is remembered on the device (account.js). Wider screens show every card open, as before. */
+/* Home and Profile layouts (account.js applyLayout): a card the owner or member hid is gone; a folded card is one line
+   on a phone, its own heading or a plain one added for it, and opens on a tap. Wider screens show folded cards open. */
+.lay-off { display: none !important; }
+.lay-head-syn { display: none; }
 @media (max-width: 700px) {
-  #view-profile .card.p-fold { padding-top: 14px; padding-bottom: 14px; }
-  #view-profile .card.p-fold:not(.open) > :not(.card-head) { display: none !important; }
-  #view-profile .card.p-fold:not(.open) > .card-head { margin-bottom: 0; }
-  #view-profile .card.p-fold > .card-head { cursor: pointer; -webkit-user-select: none; user-select: none; flex-wrap: nowrap; }
-  #view-profile .card.p-fold > .card-head .label { flex: 0 1 auto; min-width: 0; }
-  #view-profile .card.p-fold > .card-head > .btn-blue, #view-profile .card.p-fold > .card-head > button { flex: none; white-space: nowrap; }
-  #view-profile .card.p-fold > .card-head::after { content: ""; flex: none; width: 8px; height: 8px; margin: 0 4px 0 auto; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg); opacity: .55; transition: transform .2s; }
-  #view-profile .card.p-fold.open > .card-head::after { transform: rotate(-135deg); }
-  #view-profile .card.p-fold > .card-head .label { margin-bottom: 0; }
+  .lay-fold:not(.open) > :not(.lay-head) { display: none !important; }
+  .card.lay-fold { padding-top: 14px; padding-bottom: 14px; }
+  .lay-fold:not(.card) { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 18px; margin: 0 0 14px; }
+  .lay-fold > .lay-head { cursor: pointer; -webkit-user-select: none; user-select: none; display: flex; align-items: center; gap: 10px; flex-wrap: nowrap; }
+  .lay-fold:not(.open) > .lay-head { margin-bottom: 0; }
+  .lay-fold > .lay-head .label { margin-bottom: 0; flex: 0 1 auto; min-width: 0; }
+  .lay-fold > .lay-head > .btn-blue, .lay-fold > .lay-head > button:not(.lay-head) { flex: none; white-space: nowrap; }
+  .lay-fold > .lay-head::after { content: ""; flex: none; width: 8px; height: 8px; margin: 0 4px 0 auto; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg); opacity: .55; transition: transform .2s; }
+  .lay-fold.open > .lay-head::after { transform: rotate(-135deg); }
+  .lay-fold > .lay-head-syn { width: 100%; background: none; border: 0; padding: 0; color: inherit; font: inherit; text-align: left; }
+  .lay-fold.open > .lay-head-syn { margin-bottom: 12px; }
   #view-profile .prof-logout { display: none; } /* Log out stays at the foot of the tab */
 }
-@media (max-width: 700px) and (prefers-reduced-motion: reduce) { #view-profile .card.p-fold > .card-head::after { transition: none; } }
+@media (max-width: 700px) and (prefers-reduced-motion: reduce) { .lay-fold > .lay-head::after { transition: none; } }
+/* "Customize this page" and its sheet */
+.lay-custom-row { text-align: center; margin: 4px 0 18px; }
+.lay-intro { margin: 0 0 10px; }
+.lay-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; max-height: 62vh; overflow: auto; }
+.lay-row { display: grid; grid-template-columns: 22px 1fr auto auto; align-items: center; gap: 8px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+.lay-row.off b { opacity: .5; }
+.lay-row b { font-size: 14px; line-height: 1.2; min-width: 0; }
+.lay-n { color: var(--muted); font-size: 12px; text-align: right; }
+.lay-seg { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+.lay-seg button { border: 0; background: none; color: var(--muted); font: 600 12px var(--body); padding: 6px 9px; cursor: pointer; }
+.lay-seg button[aria-pressed="true"] { background: var(--accent); color: #0A1A2E; }
+.lay-seg button:disabled { opacity: .35; cursor: not-allowed; }
+.lay-move { display: inline-flex; gap: 2px; }
+.lay-move button { width: 30px; height: 30px; border: 1px solid var(--line); border-radius: 8px; background: none; color: inherit; display: grid; place-items: center; cursor: pointer; }
+.lay-move button:disabled { opacity: .3; cursor: default; }
+.lay-move svg { width: 18px; height: 18px; fill: currentColor; }
+.lay-actions { display: flex; align-items: center; gap: 14px; margin-top: 12px; }
+@media (max-width: 420px) { .lay-row { grid-template-columns: 18px 1fr auto; } .lay-move { grid-column: 2 / -1; justify-self: end; } }
 
 /* Home layout, set by the owner in the workspace (Client app → Home screen) and applied by account.js: each card gets an
    order, and cards switched off get .home-off. On phones the two columns become one list, so any order works; on wide

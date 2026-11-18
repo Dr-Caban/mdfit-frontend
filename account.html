@@ -19,10 +19,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="app/app.css?v=6976218a">
+  <link rel="stylesheet" href="app/app.css?v=aec66867">
   <link rel="stylesheet" href="account.css?v=7e0b90a0">
   <link rel="stylesheet" href="guides.css?v=704fb203">
-  <link rel="stylesheet" href="app-theme.css?v=b8d7e9c9">
+  <link rel="stylesheet" href="app-theme.css?v=02ed8251">
   <link rel="stylesheet" href="mdfit-guide.css?v=408b8c88">
   <link rel="stylesheet" href="progress-charts.css?v=f0ec9711">
   <script src="app-theme.js?v=3afc6baa"></script>
@@ -156,6 +156,7 @@
         <button type="button" class="btn-blue install-btn"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:8px" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Install MD Fit</button>
       </div>
       </div></div>
+      <p class="lay-custom-row"><button type="button" class="link-sm" data-lay-custom="home">Customize this page</button></p>
     </section>
 
     <!-- ================= GENERATE ================= -->
@@ -391,7 +392,13 @@
               <div class="cal-nav"><button type="button" class="icon-btn" id="cal-prev" aria-label="Previous month"><svg viewBox="0 0 24 24"><path d="M15.4 7.4 14 6l-6 6 6 6 1.4-1.4-4.6-4.6z"/></svg></button><b id="cal-title"></b><button type="button" class="icon-btn" id="cal-next" aria-label="Next month"><svg viewBox="0 0 24 24"><path d="M8.6 16.6 10 18l6-6-6-6-1.4 1.4 4.6 4.6z"/></svg></button></div>
             </div>
             <div class="cal" id="cal"></div>
-            <ul class="cal-legend"><li><i class="k-workout"></i>Workout</li><li><i class="k-visit"></i>Visit</li><li><i class="k-pain"></i>Pain log</li><li><i class="k-care"></i>Care plan</li><li><i class="k-class"></i>Class</li><li><i class="k-reminder"></i>Reminder</li><li><i class="k-bill"></i>Billing</li><li><i class="k-plan"></i>Membership</li></ul>
+            <ul class="cal-legend"><li><i class="k-workout"></i>Workout</li><li><i class="k-visit"></i>Visit</li><li><i class="k-pain"></i>Pain log</li><li><i class="k-care"></i>Care plan</li><li><i class="k-class"></i>Class</li><li><i class="k-reminder"></i>Reminder</li><li><i class="k-bill"></i>Billing</li><li><i class="k-plan"></i>Subscription</li></ul>
+            <div class="cal-sync" id="cal-sync">
+              <button type="button" class="btn-ghost sm" data-cal-sub><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 16H5V9h14zm-8-9h2v3h3v2h-3v3h-2v-3H8v-2h3z"/></svg> Add to iPhone Calendar</button>
+              <button type="button" class="link-sm" data-cal-copy>Copy link</button>
+              <button type="button" class="link-sm" data-cal-reset>New link</button>
+              <p class="muted small cal-sync-note" id="cal-sync-note">Your visits, classes, billing and subscription dates in your phone's calendar, kept up to date. Titles only, nothing about your care.</p>
+            </div>
             <div class="cal-day" id="cal-day"></div>
           </div>
           <div class="card checkin" id="checkin">
@@ -484,14 +491,14 @@
       </div>
 
       <div class="profile-grid">
-      <div class="card p-fold" id="p-looks" hidden></div>
-      <div class="card p-fold" id="p-goal-card">
+      <div class="card" id="p-looks" hidden></div>
+      <div class="card" id="p-goal-card">
         <div class="card-head"><span class="label">My daily XP goal</span></div>
         <p class="muted small">How much XP counts as a full day for you. Reach it to keep your streak and paint the day gold on your calendar. A change applies from today.</p>
         <div class="hb-norm p-goal" id="p-goal" role="radiogroup" aria-label="My daily XP goal"></div>
         <p class="muted small" id="p-goal-now"></p>
       </div>
-      <div class="card p-fold" id="p-nudges">
+      <div class="card" id="p-nudges">
         <div class="card-head"><span class="label">Reminders from Solomon</span></div>
         <p class="muted small">At most one a day, at the time you usually train, and never on a day you've already heard from us. Nothing about your health ever shows on your lock screen.</p>
         <div class="hb-norm" id="p-nudge-pick" role="radiogroup" aria-label="Reminders from Solomon">
@@ -508,25 +515,25 @@
         <p class="muted small" id="p-mem-note">Everything in the app is included free. Membership adds your own workout builder and challenges, and the 1-on-1 tiers add monthly video calls with Dr. Jared.</p>
       </div>
 
-      <a class="card patient-card" href="/intake?me=1"><span class="pc-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zm-1 7V3.5L18.5 9zM8 13h8v2H8zm0 4h5v2H8z"/></svg></span><span class="pc-txt"><b class="pc-title">Become a patient</b><span class="pc-sub">Fill out your intake documents once, before your first visit. They stay on file for every appointment.</span></span><span class="pc-go">Start intake documents ›</span></a>
+      <a class="card patient-card" id="p-patient" href="/intake?me=1"><span class="pc-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zm-1 7V3.5L18.5 9zM8 13h8v2H8zm0 4h5v2H8z"/></svg></span><span class="pc-txt"><b class="pc-title">Become a patient</b><span class="pc-sub">Fill out your intake documents once, before your first visit. They stay on file for every appointment.</span></span><span class="pc-go">Start intake documents ›</span></a>
 
       <div class="card care-card" id="p-care" hidden>
         <div class="card-head"><span class="label accent">My care plan</span><span class="muted small" id="p-care-date"></span></div>
         <div id="p-care-body"></div>
       </div>
 
-      <div class="card list-card p-fold">
+      <div class="card list-card" id="p-appts-card">
         <div class="card-head"><span class="label">My appointments</span><button type="button" class="btn-blue sm" id="p-book-open">Book an evaluation</button></div>
         <ul class="events" id="p-appts"></ul>
         <details class="sub"><summary>Visit history</summary><ul class="events" id="p-history"></ul></details>
       </div>
 
-      <div class="card list-card p-fold">
+      <div class="card list-card" id="p-classes-card">
         <div class="card-head"><span class="label">My classes</span><a class="link" href="/events">See what's on</a></div>
         <div id="p-classes"></div>
       </div>
 
-      <div class="card list-card p-fold">
+      <div class="card list-card" id="p-history-card">
         <div class="card-head"><span class="label">Workout history</span></div>
         <ul class="activity" id="p-workouts"></ul>
       </div>
@@ -542,7 +549,7 @@
         </form>
       </div>
 
-      <div class="card p-fold">
+      <div class="card" id="p-account-card">
         <div class="card-head"><span class="label">Profile</span></div>
         <form id="profile-form" class="stack-form" novalidate>
           <label>Name<input name="name" class="input" required minlength="2" maxlength="100" autocomplete="name"></label>
@@ -566,7 +573,7 @@
         </details>
       </div>
 
-      <div class="card p-fold">
+      <div class="card" id="p-feedback-card">
         <div class="card-head"><span class="label accent">Help us improve</span></div>
         <p class="small muted" id="fb-intro">Found a bug? Have an idea for a feature? Dr. Jared reads every one.</p>
         <div class="fb-tabs" role="tablist" aria-label="Feedback kind">
@@ -583,7 +590,7 @@
         <details class="sub" id="fb-mine-wrap"><summary>What I've sent (<span id="fb-count">0</span>)</summary><ul class="activity" id="fb-mine"></ul></details>
       </div>
 
-      <div class="card p-fold" id="referral-card">
+      <div class="card" id="referral-card">
         <div class="card-head"><span class="label accent">Refer a friend</span><span class="aff-chip" id="aff-head-live" hidden title="Updates the moment a friend pays"><i></i>LIVE</span></div>
         <!-- Slide 1 is the card as it always was. Slides 2-5 (affiliate commission) appear only once the clinic opens the programme. -->
         <div class="aff-slides" id="aff-slides">
@@ -655,7 +662,7 @@
       </div>
 
 
-      <div class="card install install-card p-fold">
+      <div class="card install install-card" id="p-install">
         <div class="card-head"><span class="label accent">Get the app</span></div>
         <p class="small install-text"></p>
         <div class="install-steps-wrap" hidden><ol class="install-steps small"></ol></div>
@@ -663,6 +670,7 @@
       </div>
       </div>
 
+      <p class="lay-custom-row"><button type="button" class="link-sm" data-lay-custom="profile">Customize this page</button></p>
       <div class="profile-links">
         <a href="/?site=1">mymdfit.com</a><a href="tel:+19413130562">Call 941-313-0562</a><a href="/privacy-policy">Privacy</a><a href="/terms">Terms</a>
         <button type="button" class="link" id="logout">Log out</button>
@@ -735,6 +743,12 @@
     <button type="button" class="btn-blue" id="pw-subscribe">See memberships</button>
   </dialog>
 
+  <dialog class="sheet lay-sheet" id="lay-sheet" aria-labelledby="lay-title">
+    <div class="sheet-head"><b id="lay-title">Customize</b><button type="button" class="icon-btn" data-close aria-label="Close"><svg viewBox="0 0 24 24"><path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/></svg></button></div>
+    <p class="muted small lay-intro">Top to bottom, most important first. Open shows the whole card, Fold keeps it to one line you can tap open, Hide takes it off this page.</p>
+    <ol class="lay-list" id="lay-list"></ol>
+    <div class="lay-actions"><button type="button" class="btn-blue" id="lay-save">Save</button><button type="button" class="link-sm" id="lay-reset" hidden>Use Dr. Jared's layout</button></div>
+  </dialog>
   <dialog class="sheet more-sheet" id="more-sheet" aria-label="More">
     <div class="sheet-head"><b>More</b><button type="button" class="icon-btn" data-close aria-label="Close"><svg viewBox="0 0 24 24"><path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/></svg></button></div>
     <div class="more-list" id="more-list"></div>
@@ -859,7 +873,7 @@
   <script src="guides.js?v=8521968d"></script>
   <script src="stripe-checkout.js?v=087989ec"></script>
   <script src="progress-charts.js?v=df3a2256"></script>
-  <script src="account.js?v=ab813f13"></script>
+  <script src="account.js?v=0e3d8bdd"></script>
   <script src="account-xp.js?v=b9de2933"></script>
   <script src="account-share.js?v=763ef457"></script>
   <script src="account-habits.js?v=60e83046"></script>

@@ -1480,21 +1480,29 @@
     ${c && c.home ? homeEditor(c) : ""}
     <div class="card"><h2 style="margin-bottom:10px">What members can do today</h2>${["Read notes from you and play their prescribed movements", "Book and pay for video visits", "Fill out new patient documents", "Message you", "Log pain and workouts", "Follow programs and earn rewards"].map((x) => `<div class="list-item">${x}</div>`).join("")}</div>`;
   };
-  const homeDraft = () => state.homeDraft || (state.homeDraft = JSON.parse(JSON.stringify(cache.content.home)));
+  // Home and Profile in the member app: every card in priority order (top first), each Open, Folded (one line on a
+  // phone that opens on a tap) or Hidden. A draft until Save; members see it the next time the app loads. Members can
+  // also arrange their own inside this (a card hidden here stays hidden for them).
+  const layTab = () => (state.layTab === "profile" ? "profile" : "home");
+  const layDraft = (w = layTab()) => { state.layDraft = state.layDraft || {}; return state.layDraft[w] || (state.layDraft[w] = JSON.parse(JSON.stringify(cache.content[w]))); };
+  const layState = (x) => x.state || (x.show === false ? "hidden" : "open");
+  const LAY_STATES = [["open", "Open"], ["folded", "Folded"], ["hidden", "Hidden"]];
   function homeEditor(c) {
-    const d = homeDraft(), labels = new Map(((c.options && c.options.homeSections) || []).map((x) => [x.id, x.label]));
-    const dirty = JSON.stringify(d) !== JSON.stringify(c.home), on = d.sections.filter((x) => x.show).length;
-    const row = (x, i) => `<div class="list-item" style="gap:10px;${x.show ? "" : "opacity:.55"}">
+    const w = layTab(), d = layDraft(w), defs = ((c.options && c.options.layouts) || {})[w] || (w === "home" ? (c.options && c.options.homeSections) || [] : []);
+    const labels = new Map(defs.map((x) => [x.id, x.label]));
+    const dirty = JSON.stringify(d) !== JSON.stringify(c[w]), n = (st) => d.sections.filter((x) => layState(x) === st).length;
+    const row = (x, i) => { const st = layState(x); return `<div class="list-item" style="gap:10px;${st === "hidden" ? "opacity:.55" : ""}">
         <span style="width:22px;text-align:right" class="muted num">${i + 1}</span>
         <span style="flex:1;min-width:0"><b>${esc(labels.get(x.id) || x.id)}</b></span>
-        <button type="button" class="btn sm" data-act="homeShow" data-i="${i}" aria-pressed="${x.show}" title="${x.show ? "Shown: tap to hide" : "Hidden: tap to show"}">${ui(x.show ? "eye" : "eyeOff", 14)} ${x.show ? "Shown" : "Hidden"}</button>
-        <button type="button" class="btn sm" data-act="homeMove" data-i="${i}" data-by="-1" aria-label="Move up" ${i ? "" : "disabled"}>${ui("up", 14)}</button>
-        <button type="button" class="btn sm" data-act="homeMove" data-i="${i}" data-by="1" aria-label="Move down" ${i < d.sections.length - 1 ? "" : "disabled"}>${ui("down", 14)}</button></div>`;
-    return `<div class="card" style="margin-bottom:16px" id="homeCard"><div class="card-head"><div><h2>Home screen</h2><p class="muted" style="margin:2px 0 0;font-size:12.5px">What members see first in the app, top to bottom. ${on} of ${d.sections.length} cards shown. On a phone it's one list in this order; on a computer each column keeps this order.</p></div></div>
+        <span class="row" role="group" aria-label="${esc(labels.get(x.id) || x.id)}" style="gap:4px">${LAY_STATES.map(([v, l]) => `<button type="button" class="btn sm${st === v ? " primary" : ""}" data-act="layState" data-i="${i}" data-v="${v}" aria-pressed="${st === v}">${ui(v === "hidden" ? "eyeOff" : v === "folded" ? "down" : "eye", 14)} ${l}</button>`).join("")}</span>
+        <button type="button" class="btn sm" data-act="layMove" data-i="${i}" data-by="-1" aria-label="Move up" ${i ? "" : "disabled"}>${ui("up", 14)}</button>
+        <button type="button" class="btn sm" data-act="layMove" data-i="${i}" data-by="1" aria-label="Move down" ${i < d.sections.length - 1 ? "" : "disabled"}>${ui("down", 14)}</button></div>`; };
+    const tab = (v, l) => `<button type="button" class="btn sm${w === v ? " primary" : ""}" data-act="layTab" data-v="${v}" aria-pressed="${w === v}">${l}</button>`;
+    return `<div class="card" style="margin-bottom:16px" id="homeCard"><div class="card-head"><div><h2>Home and Profile pages</h2><p class="muted" style="margin:2px 0 0;font-size:12.5px">What members see, top to bottom by priority. ${n("open")} open, ${n("folded")} folded to one line on a phone, ${n("hidden")} hidden. Members can rearrange their own, but never see a card hidden here.</p></div><div class="row" style="gap:6px">${tab("home", "Home")}${tab("profile", "Profile")}</div></div>
       ${d.sections.map(row).join("")}
       <form class="row" data-form="homeSave" style="margin-top:14px;gap:10px;align-items:flex-end;flex-wrap:wrap">
-        ${fld("homeSug", "suggestions", "Solomon's suggestions shown before \u201cShow more\u201d (0 hides them)", d.suggestions, { type: "number", attrs: 'min="0" max="20" required style="max-width:110px"' })}
-        <button class="btn primary">Save Home screen</button>
+        ${w === "home" ? fld("homeSug", "suggestions", "Solomon's suggestions shown before \u201cShow more\u201d (0 hides them)", d.suggestions, { type: "number", attrs: 'min="0" max="20" required style="max-width:110px"' }) : ""}
+        <button class="btn primary">Save ${w === "home" ? "Home" : "Profile"}</button>
         <button type="button" class="btn" data-act="homeReset"${dirty ? "" : " disabled"}>Undo changes</button>
       </form></div>`;
   }
@@ -2192,9 +2200,10 @@
   }
   Object.assign(ACT, {
     chartBilling: (el) => { state.chartClient = el.dataset.id; state.chartTab = "billing"; if (location.hash === "#chart") render(); else location.hash = "chart"; },
-    homeShow: (el) => { const d = homeDraft(), x = d.sections[Number(el.dataset.i)]; if (x) { x.show = !x.show; render(); } },
-    homeMove: (el) => { const d = homeDraft(), i = Number(el.dataset.i), j = i + Number(el.dataset.by); if (j < 0 || j >= d.sections.length) return; [d.sections[i], d.sections[j]] = [d.sections[j], d.sections[i]]; render(); },
-    homeReset: () => { state.homeDraft = null; render(); },
+    layTab: (el) => { state.layTab = el.dataset.v; render(); },
+    layState: (el) => { const x = layDraft().sections[Number(el.dataset.i)]; if (x) { x.state = el.dataset.v; delete x.show; render(); } },
+    layMove: (el) => { const d = layDraft(), i = Number(el.dataset.i), j = i + Number(el.dataset.by); if (j < 0 || j >= d.sections.length) return; [d.sections[i], d.sections[j]] = [d.sections[j], d.sections[i]]; render(); },
+    homeReset: () => { if (state.layDraft) delete state.layDraft[layTab()]; render(); },
     progEdit: (el) => { const p = (cache.content.programs || []).find((x) => x.id === el.dataset.id); if (p) progForm(p, false); },
     progCopy: (el) => { const p = (cache.content.programs || []).find((x) => x.id === el.dataset.id); if (p) progForm({ ...p, id: p.id, title: p.title + " (copy)" }, true); },
     progDelete: async (el) => { const p = (cache.content.programs || []).find((x) => x.id === el.dataset.id); if (!p || !confirm(`Delete "${p.title}"? Members who were assigned it will no longer see it.`)) return; await putContent({ programs: cache.content.programs.filter((x) => x.id !== p.id) }, "Program deleted."); },
@@ -2233,8 +2242,9 @@
     setVideo: (f) => putSettings({ booking: { telehealthUrl: f.telehealthUrl.value.trim() } }, "Video link saved."),
     setIcs: async (f) => { const v = f.icsUrl.value.trim(); if (!v && !confirm("Disconnect the SimplePractice calendar? Its busy times will stop blocking bookings.")) return; await api("PUT", "/api/admin/calsync", { icsUrl: v }); await render(); toast(v ? "Calendar link saved." : "SimplePractice calendar disconnected."); },
     homeSave: async (f) => {
-      const d = homeDraft(), home = { sections: d.sections.map((x) => ({ id: x.id, show: !!x.show })), suggestions: Number(f.suggestions.value) };
-      state.homeDraft = null; await putContent({ home }, "Home screen saved. Members see it the next time the app loads.");
+      const w = layTab(), d = layDraft(w), body = { sections: d.sections.map((x) => ({ id: x.id, state: layState(x) })) };
+      if (w === "home") body.suggestions = Number(f.suggestions.value);
+      delete state.layDraft[w]; await putContent({ [w]: body }, `${w === "home" ? "Home" : "Profile"} saved. Members see it the next time the app loads.`);
     },
     setTiers: (f) => putContent({ tiers: (cache.content.tiers || []).map((t, i) => ({ ...t, name: f["name" + i].value.trim(), price: Number(f["price" + i].value), meetings: Number(f["meetings" + i].value), meetingMinutes: Number(f["minutes" + i].value), directMessages: !!f["direct" + i].checked, perks: f["perks" + i].value.split("\n").map((x) => x.trim()).filter(Boolean) })) }, "Membership types saved."),
     progSave: (f) => {
