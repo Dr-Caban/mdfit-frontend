@@ -1792,3 +1792,12 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
   #view-home:not(.gem-open) #gem-card { display: none !important; }
   .next-line:not([hidden]) { display: none; }
 }
+
+/* First-open pointers (account.js introTour): a lit hole over the real thing, and a tip beside it */
+.tour { position: fixed; inset: 0; z-index: 200; }
+.tour-hole { position: fixed; border-radius: 16px; box-shadow: 0 0 0 9999px rgba(5, 7, 10, .78), 0 0 0 3px var(--gold); transition: all .25s ease; pointer-events: none; }
+.tour-tip { position: fixed; left: 16px; right: 16px; padding: 14px 16px; border-radius: 16px; background: #F3F1EA; color: #0A1A2E; box-shadow: 0 10px 30px rgba(0, 0, 0, .5); }
+.tour-tip p { margin: 0 0 10px; font: 600 15px/1.4 var(--body); }
+.tour-tip div { display: flex; justify-content: space-between; align-items: center; }
+.tour-tip .link-sm { color: #3a4a5e; }
+@media (prefers-reduced-motion: reduce) { .tour-hole { transition: none; } }

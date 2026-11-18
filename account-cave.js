@@ -64,7 +64,10 @@
   // Solomon's own sayings (written for the app, in the manner of old proverbs; none is a quotation)
   const SAYINGS = ["The patient miner finds the brighter stone.", "Small steps, well kept, move mountains.", "What you build daily, no one can take.",
     "Strength is gathered, not found.", "A steady hand outlasts a strong one.", "The lamp you tend lights the whole road.", "Dig a little each day and the mountain yields."];
+  const INTRO_SAY = { solomon: "Tap me and ask anything. That's stop one.", pain: "Tell me what hurts, or that nothing does.", program: "Pick a road. I'll walk it with you.",
+    session: "One session. That's all today asks.", friend: "Bring a friend down here and you both gain." };
   function line(j) {
+    if (j.intro) { const s = j.stops.find((x) => x.state === "now"); return (s && INTRO_SAY[s.ref]) || "Five stops, and your first new gem is yours."; }
     const now = j.stops.find((s) => s.state === "now"), t = j.today, say = SAYINGS[Math.floor(Date.now() / 864e5) % SAYINGS.length];
     if (t.workout && t.pain && t.goal) return "Every lamp is lit. Rest now; the road will keep.";
     if (!t.workout && now) return `${short(now.label)} today. ${say}`;
@@ -98,21 +101,21 @@
     const fresh = freshDone(j);
     const stopHtml = j.stops.map((s, i) => {
       const [x, y] = pts[i], color = GEMS[s.n % GEMS.length], left = x < 50;
-      const act = s.state === "now" ? (j.grid ? `data-cave-start="${s.n}"` : `data-fp="${esc(j.program.id)}"`) : s.state === "done" ? `data-fp="${esc(j.program.id)}"` : "disabled";
+      const act = j.intro ? (s.state === "done" ? "disabled" : `data-intro-go="${esc(s.ref)}"`) : s.state === "now" ? (j.grid ? `data-cave-start="${s.n}"` : `data-fp="${esc(j.program.id)}"`) : s.state === "done" ? `data-fp="${esc(j.program.id)}"` : "disabled";
       return `<div class="cv-stop ${s.state}" style="left:${x}%;top:${y}px;--gem:${color}">
-          ${s.state === "now" ? `<span class="cv-bubble">${j.today.workout ? "Go again" : "Start"}<small>${esc(short(s.label))}${s.sub ? " · " + esc(s.sub) : ""}</small></span>` : ""}
-          <button type="button" class="cv-ore${s.state === "done" && fresh.has(s.n) ? " mining" : ""}" ${s.state === "done" && fresh.has(s.n) ? `style="--el:-${((Date.now() - fresh.get(s.n)) / 1000).toFixed(2)}s"` : ""} ${act} aria-label="${esc(s.label)}${s.sub ? ", " + esc(s.sub) : ""}: ${s.state === "done" ? "mined" : s.state === "now" ? "today, start" : "not open yet"}">${s.state === "done" && fresh.has(s.n) ? sequence(color) : ore(s.state, color)}</button>
+          ${s.state === "now" ? `<span class="cv-bubble">${j.intro ? "Start here" : j.today.workout ? "Go again" : "Start"}<small>${esc(short(s.label))}${s.sub ? " · " + esc(s.sub) : ""}</small></span>` : ""}
+          <button type="button" class="cv-ore${s.state === "done" && fresh.has(s.n) ? " mining" : ""}" ${s.state === "done" && fresh.has(s.n) ? `style="--el:-${((Date.now() - fresh.get(s.n)) / 1000).toFixed(2)}s"` : ""} ${act} aria-label="${esc(s.label)}${s.sub ? ", " + esc(s.sub) : ""}: ${s.state === "done" ? "mined" : s.state === "now" ? "today, start" : s.state === "open" ? "open, 10 XP" : "not open yet"}">${s.state === "done" && fresh.has(s.n) ? sequence(color) : ore(s.state === "open" ? "now" : s.state, color)}</button>
           ${s.state === "done" ? `<i class="cv-tw t1"></i><i class="cv-tw t2"></i>` : ""}
-          ${s.state === "now" ? "" : `<span class="cv-cap">${esc(short(s.label))}</span>`}
+          ${s.state === "now" ? "" : `<span class="cv-cap">${esc(short(s.label))}${j.intro && s.state !== "done" ? " · +10 XP" : ""}</span>`}
           ${s.state === "now" ? `<div class="cv-guide ${left ? "right" : "left"}"><span class="cv-say">${esc(line(j))}</span>${guide()}</div>` : ""}
         </div>`;
     }).join("");
     const chip = (lit, label, attrs = "") => `<button type="button" class="cv-chip${lit ? " lit" : ""}" ${attrs}>${crystal(lit)}<span>${label}</span></button>`;
     card.innerHTML = `
       <div class="cv-mouth${ART.mouth ? " art" : ""}"${ART.mouth ? ` style="${shade(ART.mouth, 0, 0.92)}"` : ""}>
-        <span class="cv-kicker">The gem mine · ${esc(j.unit)} ${j.chamber} of ${j.chambers}</span>
+        <span class="cv-kicker">${j.intro ? "The gem mine · start here" : `The gem mine · ${esc(j.unit)} ${j.chamber} of ${j.chambers}`}</span>
         <b class="cv-title">${esc(j.program.title)}</b>
-        <button type="button" class="cv-guidebook" data-fp="${esc(j.program.id)}" aria-label="Open the program">Program</button>
+        ${j.intro ? `<button type="button" class="cv-guidebook" data-intro-skip aria-label="Skip the intro">Skip</button>` : `<button type="button" class="cv-guidebook" data-fp="${esc(j.program.id)}" aria-label="Open the program">Program</button>`}
       </div>
       <div class="cv-road${ART.road ? " art" : ""}" style="height:${H}px">
         ${ART.road ? `<div class="cv-wall" aria-hidden="true">${`<img src="${esc(ART.road)}" alt="" decoding="async">`.repeat(3)}</div>` : ""}
@@ -122,7 +125,7 @@
         ${lamps}
         ${stopHtml}
         <div class="cv-end${cleared ? " lit" : ""}" style="top:${end[1]}px">${ART.geode ? `<img src="${esc(ART.geode)}" alt="" width="64" height="64">` : `<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M8 38a24 22 0 0 1 48 0c0 10-10 18-24 18S8 48 8 38z" fill="#2b313d" stroke="#3b4352" stroke-width="2"/><path d="M18 38l6-10 8 6 8-8 6 12-8 10H24z" fill="${cleared ? "#b58cff" : "#3a4252"}"/><path d="M24 28l8 6 8-8" fill="none" stroke="#fff" stroke-opacity="${cleared ? ".5" : ".12"}" stroke-width="2"/></svg>`}
-          <span>${cleared ? `${esc(j.unit)} ${j.chamber} cleared` : lastChamber ? "The treasury lies past this chamber" : `Steps down to ${esc(j.unit.toLowerCase())} ${j.chamber + 1}`}</span></div>
+          <span>${j.intro ? (cleared ? "First descent complete" : j.next && j.next.name === "Amber" ? "Your first new gem: Amber" : "The end of your first descent") : cleared ? `${esc(j.unit)} ${j.chamber} cleared` : lastChamber ? "The treasury lies past this chamber" : `Steps down to ${esc(j.unit.toLowerCase())} ${j.chamber + 1}`}</span></div>
       </div>
       <div class="cv-seam" aria-label="Today's seam">
         <span class="cv-kicker">Today's seam</span>
@@ -134,7 +137,19 @@
         <p><b>${j.left}</b> stop${j.left === 1 ? "" : "s"} to the treasury of ${esc(j.program.title)}${j.next ? ` · <b>${Number(j.next.xp).toLocaleString()} XP</b> to <i class="cv-next" style="--gem:${esc(j.next.color)}"></i>${esc(j.next.name)}` : ""}</p>
       </div>`;
   }
-  card.addEventListener("click", (e) => { const b = e.target.closest("[data-cave-start]"); if (b) A.journeyStart(Number(b.dataset.caveStart)); });
-  ["mdfit:journey", "mdfit:rewards"].forEach((ev) => document.addEventListener(ev, () => { try { render(); } catch { card.hidden = true; } }));
-  try { render(); } catch { card.hidden = true; }
+  // The first descent has its own footer: how far along, and what finishing earns
+  function decorate() {
+    const j = A.journey(); if (!j || !j.intro) return;
+    const seam = card.querySelector(".cv-seam"), vault = card.querySelector(".cv-vault p"), done = j.stops.filter((s) => s.state === "done").length;
+    if (seam) seam.innerHTML = `<span class="cv-kicker">Your first descent</span><p class="cv-intro-line"><b>${done} of ${j.stops.length}</b> stops done · 10 XP each · any order</p>`;
+    // (real actions earn their own XP too, so Amber often arrives before the last stop)
+    if (vault) vault.innerHTML = j.next && j.next.name === "Amber" ? `Finish all five and <b>Amber</b>, your first new gem, is yours.` : `<b>Amber</b> is already yours. Finish the last stops for the XP.`;
+  }
+  card.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-cave-start]"); if (b) return A.journeyStart(Number(b.dataset.caveStart));
+    const g = e.target.closest("[data-intro-go]"); if (g) return A.introGo(g.dataset.introGo);
+    if (e.target.closest("[data-intro-skip]") && confirm("Skip the intro? You can replay it from Profile.")) A.introSkip();
+  });
+  ["mdfit:journey", "mdfit:rewards"].forEach((ev) => document.addEventListener(ev, () => { try { render(); decorate(); } catch { card.hidden = true; } }));
+  try { render(); decorate(); } catch { card.hidden = true; }
 })();

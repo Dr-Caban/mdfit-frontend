@@ -472,6 +472,7 @@
   }
   async function ask(raw) {
     const text = String(raw || "").trim(); if (!text || busy) return false;
+    try { document.dispatchEvent(new CustomEvent("mdfit:guide-asked")); } catch {} // the first descent's "Meet Solomon" stop (account.js)
     say(text, true);
     const u = understand(text);
     // An emergency is answered at once: never counted, never behind the limit
