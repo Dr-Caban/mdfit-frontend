@@ -11,7 +11,7 @@
       ]
     },
     {
-      "source": "/:page(account|book|login|admin|admin-classic|workspace|manager|dev|valuation|visit|cancel|intake|invoice)",
+      "source": "/:page(account|book|login|admin|admin-classic|workspace|manager|dev|valuation|valuation-usage|visit|cancel|intake|invoice)",
       "headers": [
         {
           "key": "Cache-Control",
@@ -111,6 +111,15 @@
     },
     {
       "source": "/valuation",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/valuation-usage",
       "headers": [
         {
           "key": "X-Robots-Tag",

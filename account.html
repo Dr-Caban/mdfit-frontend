@@ -23,8 +23,8 @@
   <link rel="stylesheet" href="account.css?v=7e0b90a0">
   <link rel="stylesheet" href="guides.css?v=704fb203">
   <link rel="stylesheet" href="app-theme.css?v=e449956c">
-  <link rel="stylesheet" href="mdfit-guide.css?v=408b8c88">
-  <link rel="stylesheet" href="account-cave.css?v=00c796c7">
+  <link rel="stylesheet" href="mdfit-guide.css?v=add63703">
+  <link rel="stylesheet" href="account-cave.css?v=23206a15">
   <link rel="stylesheet" href="progress-charts.css?v=f0ec9711">
   <script src="app-theme.js?v=3afc6baa"></script>
 </head>
@@ -294,11 +294,11 @@
         <header class="msgr-head thread-head">
           <button type="button" class="msgr-back" id="msgr-back" aria-label="Back to conversations"><svg viewBox="0 0 24 24"><path d="M15.4 7.4 14 6l-6 6 6 6 1.4-1.4-4.6-4.6z"/></svg></button>
           <span class="av av-dr"><img src="assets/logo.webp" alt=""></span>
-          <div class="thread-who"><b>Dr. Jared Caban</b><small id="thread-sub">MD, MSc · usually replies within a day</small></div>
+          <div class="thread-who"><b>Dr. Jared Caban</b><small id="thread-sub">MD, MSc · replies on business days, during clinic hours</small></div>
         </header>
         <div class="card msg-gate" id="msg-gate" hidden>
           <h3>Talk to Dr. Jared directly</h3>
-          <p class="muted" id="msg-gate-why">Messaging Dr. Jared directly is part of Expert Advice ($50/mo) and the 1-on-1 tiers.</p>
+          <p class="muted" id="msg-gate-why">Messaging Dr. Jared directly is part of Expert Advice ($50/mo) and the 1-on-1 tiers. He replies on business days, during clinic hours.</p>
           <p class="muted small">Get expert advice from Dr. Jared himself about your pain, programs and progress. Your past messages stay here.</p>
           <button type="button" class="btn-gold sm" data-unlock="expert">See Expert Advice</button>
         </div>
@@ -519,6 +519,11 @@
           <button type="button" role="radio" data-nudges="off" aria-checked="false">Off <small>none</small></button>
         </div>
         <p class="muted small" id="p-nudge-now"></p>
+        <p class="muted small" style="margin-top:14px">In the app, Solomon says a line about the screen you are on.</p>
+        <div class="hb-norm" id="p-speak-pick" role="radiogroup" aria-label="Solomon in the app">
+          <button type="button" role="radio" data-speak="on" aria-checked="true">Speaks up <small>a line on each screen</small></button>
+          <button type="button" role="radio" data-speak="off" aria-checked="false">Quiet <small>only when tapped</small></button>
+        </div>
       </div>
 
       <div class="card" id="p-membership">
@@ -889,11 +894,12 @@
   <script src="guides.js?v=8521968d"></script>
   <script src="stripe-checkout.js?v=087989ec"></script>
   <script src="progress-charts.js?v=df3a2256"></script>
-  <script src="account.js?v=968d485f"></script>
+  <script src="account.js?v=f6546770"></script>
   <script src="account-xp.js?v=97c923ce"></script>
   <script src="account-share.js?v=763ef457"></script>
   <script src="account-habits.js?v=8bebfbfe"></script>
-  <script src="account-cave.js?v=0ffa7e82"></script>
-  <script src="mdfit-guide.js?v=a270c6cb"></script>
+  <script src="account-cave.js?v=ed1c1001"></script>
+  <script src="mdfit-guide.js?v=75f13bea"></script>
+  <script src="account-solomon.js?v=877ff675"></script>
 </body>
 </html>
