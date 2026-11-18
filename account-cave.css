@@ -74,7 +74,6 @@
 /* With photo art in the slots (account-cave.js ART) */
 .cv-mouth.art { min-height: 190px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: flex-end; background-size: cover; background-position: center 18%; }
 .cv-mouth.art .cv-guidebook { position: absolute; }
-.cv-road.art { background-size: 100% auto; background-repeat: repeat-y; }
 .cv-road.art::before { display: none; }
 .cv-road.art .cv-gate { display: none; }
 .cv-vault.art { padding-bottom: 84px; background-size: cover; background-position: center 60%; }
@@ -90,3 +89,24 @@
 .cv-guide-img { width: 92px; }
 .cv-end img { width: 76px; height: 76px; filter: saturate(.25) brightness(.6); }
 .cv-end.lit img { filter: drop-shadow(0 0 12px #b58cff); }
+
+/* Movement from the same photos */
+.cv-road { overflow: hidden; }
+.cv-wall { position: absolute; left: 0; top: 0; width: 100%; opacity: .5; will-change: transform; animation: cvDescend 80s linear infinite; }
+.cv-wall img { display: block; width: 100%; height: auto; }
+.cv-mouth.art, .cv-vault.art { background-size: auto 130%; animation: cvPan 18s ease-in-out infinite alternate; }
+.cv-ore.mining { position: absolute; }
+.cv-ore.mining .cv-fr { position: absolute; left: 2px; top: 2px; width: 84px; height: 84px; opacity: 0; }
+.cv-ore.mining .cv-fr .cv-ore-img { filter: none; }
+.cv-ore.mining .f1 { animation: cvF1 2.4s linear var(--el, 0s) forwards, cvShake .16s linear 6; }
+.cv-ore.mining .f2 { animation: cvF2 2.4s linear var(--el, 0s) forwards, cvShake .12s linear .85s 6; }
+.cv-ore.mining .f3 { animation: cvF3 2.4s ease-out var(--el, 0s) forwards; }
+.cv-burst { position: absolute; left: 50%; top: 50%; width: 10px; height: 10px; margin: -5px; border-radius: 50%; background: #fff; opacity: 0; pointer-events: none; animation: cvBurst 2.4s ease-out var(--el, 0s) forwards; }
+@keyframes cvDescend { to { transform: translateY(-33.333%); } }
+@keyframes cvPan { from { background-position: 30% 8%; } to { background-position: 70% 34%; } }
+@keyframes cvF1 { 0%, 30% { opacity: 1; } 38%, 100% { opacity: 0; } }
+@keyframes cvF2 { 0%, 30% { opacity: 0; } 38%, 62% { opacity: 1; } 70%, 100% { opacity: 0; } }
+@keyframes cvF3 { 0%, 62% { opacity: 0; transform: scale(.9); } 72% { opacity: 1; transform: scale(1.14); } 100% { opacity: 1; transform: scale(1); } }
+@keyframes cvShake { 0%, 100% { transform: translateX(0) rotate(0); } 25% { transform: translateX(-2px) rotate(-2deg); } 75% { transform: translateX(2px) rotate(2deg); } }
+@keyframes cvBurst { 0%, 62% { opacity: 0; transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 236, 190, 0); } 68% { opacity: .95; transform: scale(5); box-shadow: 0 0 30px 18px rgba(255, 236, 190, .8); } 100% { opacity: 0; transform: scale(11); box-shadow: 0 0 40px 30px rgba(255, 236, 190, 0); } }
+@media (prefers-reduced-motion: reduce) { .cv-wall, .cv-mouth.art, .cv-vault.art, .cv-ore.mining .cv-fr, .cv-burst { animation: none; } .cv-ore.mining .f3 { opacity: 1; } .cv-burst { display: none; } }

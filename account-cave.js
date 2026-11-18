@@ -28,7 +28,26 @@
   { const after = $("#next-card", home) || $("#gem-card", home); after ? after.after(card) : home.prepend(card); }
 
   // One stop's picture: the photo for its state when there is one, otherwise a drawn rock with its gem
-  function ore(state, color) {
+  // Movement from the same photos: a stop that was finished since the mine was last looked at plays the three ore
+  // photos in order (dull rock, glowing gem, split open) once. What has been seen is kept on the device per program.
+  const SEEN = "mdfit-mine-seen";
+  function freshDone(j) {
+    const done = j.stops.filter((s) => s.state === "done").map((s) => s.n);
+    let seen = null; try { seen = JSON.parse(localStorage.getItem(SEEN) || "null"); } catch {}
+    const known = seen && seen.prog === j.program.id && Array.isArray(seen.done) ? seen.done : null;
+    const fresh = known ? done.filter((n) => !known.includes(n)) : done.slice(-1); // first look: the latest one, once
+    try { localStorage.setItem(SEEN, JSON.stringify({ prog: j.program.id, done: [...new Set([...(known || []), ...done])].slice(-400) })); } catch {}
+    // A sequence lasts 2.4 seconds; a redraw inside that time (more data arriving) carries on from where it was
+    const now = Date.now(); fresh.forEach((n) => playing.set(n, now));
+    for (const [n, t] of playing) if (now - t > 2400) playing.delete(n);
+    return playing;
+  }
+  const playing = new Map(); // stop number -> when its sequence started
+  const sequence = (color) => (ART.ore.locked && ART.ore.now && ART.ore.done
+    ? `<span class="cv-fr f1">${ore("locked", color, true)}</span><span class="cv-fr f2">${ore("now", color, true)}</span><span class="cv-fr f3">${ore("done", color)}</span><i class="cv-burst"></i>` : ore("done", color));
+  function ore(state, color, bare) {
+    if (ART.ore[state] && bare) { const t = tint(state, color), m = GEM_AT[state] ? `radial-gradient(circle at ${GEM_AT[state]})` : "";
+      return `<img class="cv-ore-img" src="${esc(ART.ore[state])}" alt="" width="96" height="96">${t && m ? `<img class="cv-ore-img cv-tint" src="${esc(ART.ore[state])}" alt="" width="96" height="96" style="${t};-webkit-mask-image:${m};mask-image:${m}">` : ""}`; }
     if (ART.ore[state]) { const t = tint(state, color), m = GEM_AT[state] ? `radial-gradient(circle at ${GEM_AT[state]})` : "";
       return `<img class="cv-ore-img" src="${esc(ART.ore[state])}" alt="" width="96" height="96">${t && m ? `<img class="cv-ore-img cv-tint" src="${esc(ART.ore[state])}" alt="" width="96" height="96" style="${t};-webkit-mask-image:${m};mask-image:${m}">` : ""}${state === "done" ? `<i class="cv-badge ok"></i>` : state === "locked" ? `<i class="cv-badge lock"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 11V8a4.5 4.5 0 0 1 9 0v3" fill="none" stroke="#c3cad6" stroke-width="2.5"/><rect x="5" y="11" width="14" height="9" rx="2" fill="#c3cad6"/></svg></i>` : ""}`; }
     const gem = state === "locked" ? "#3a4252" : color, rock = state === "locked" ? "#1d222b" : "#2b313d", edge = state === "locked" ? "#262c37" : "#3b4352";
@@ -55,9 +74,12 @@
   const flame = `<svg viewBox="0 0 26 34" aria-hidden="true"><path d="M3 24h20l-3 7H6z" fill="#8a5a30"/><path class="cv-flame" d="M13 22q-8-8 0-19 8 11 0 19z" fill="#ffb347"/><path class="cv-flame" d="M13 21q-4-5 0-11 4 6 0 11z" fill="#fff1c2"/></svg>`;
   const pathOf = (all, rowH) => all.map((p, i) => (i ? `C ${all[i - 1][0]} ${all[i - 1][1] + rowH / 2}, ${p[0]} ${p[1] - rowH / 2}, ${p[0]} ${p[1]}` : `M ${p[0]} ${p[1]}`)).join(" ");
 
+  let lastSig = "";
   function render() {
     const j = A.journey(); if (!j) { card.hidden = true; return; }
     card.hidden = false;
+    // Nothing changed: leave the card alone, so an animation in flight isn't restarted by a second redraw
+    const sig = JSON.stringify(j); if (sig === lastSig && card.firstChild) return; lastSig = sig;
     if (!j.program) {
       card.innerHTML = `<div class="cv-mouth${ART.mouth ? " art" : ""}"${ART.mouth ? ` style="${shade(ART.mouth, 0, 0.92)}"` : ""}><span class="cv-kicker">The gem mine</span><b class="cv-title">${j.finished ? "You reached the vault" : "Every program is a road of gems"}</b>
         <p class="cv-sub">${j.finished ? "Every stop on your road is mined. Pick the next program to open a new mine." : "Pick a program and each session becomes a stop on the road down. Solomon carries the lamp."}</p>
@@ -73,12 +95,13 @@
     const nowAt = j.stops.findIndex((s) => s.state === "now"), lit = pathOf([[50, 30], ...(nowAt < 0 ? all : pts.slice(0, nowAt + 1))], rowH);
     let lamps = ""; for (let k = 0, ly = 150; ly < H - 110; k++, ly += 210) lamps += `<span class="cv-wlamp ${k % 2 ? "r" : "l"}" style="top:${ly}px">${flame}</span>`;
     const lastChamber = j.chamber >= j.chambers, cleared = j.stops.every((s) => s.state === "done");
+    const fresh = freshDone(j);
     const stopHtml = j.stops.map((s, i) => {
       const [x, y] = pts[i], color = GEMS[s.n % GEMS.length], left = x < 50;
       const act = s.state === "now" ? (j.grid ? `data-cave-start="${s.n}"` : `data-fp="${esc(j.program.id)}"`) : s.state === "done" ? `data-fp="${esc(j.program.id)}"` : "disabled";
       return `<div class="cv-stop ${s.state}" style="left:${x}%;top:${y}px;--gem:${color}">
           ${s.state === "now" ? `<span class="cv-bubble">${j.today.workout ? "Go again" : "Start"}<small>${esc(short(s.label))}${s.sub ? " · " + esc(s.sub) : ""}</small></span>` : ""}
-          <button type="button" class="cv-ore" ${act} aria-label="${esc(s.label)}${s.sub ? ", " + esc(s.sub) : ""}: ${s.state === "done" ? "mined" : s.state === "now" ? "today, start" : "not open yet"}">${ore(s.state, color)}</button>
+          <button type="button" class="cv-ore${s.state === "done" && fresh.has(s.n) ? " mining" : ""}" ${s.state === "done" && fresh.has(s.n) ? `style="--el:-${((Date.now() - fresh.get(s.n)) / 1000).toFixed(2)}s"` : ""} ${act} aria-label="${esc(s.label)}${s.sub ? ", " + esc(s.sub) : ""}: ${s.state === "done" ? "mined" : s.state === "now" ? "today, start" : "not open yet"}">${s.state === "done" && fresh.has(s.n) ? sequence(color) : ore(s.state, color)}</button>
           ${s.state === "done" ? `<i class="cv-tw t1"></i><i class="cv-tw t2"></i>` : ""}
           ${s.state === "now" ? "" : `<span class="cv-cap">${esc(short(s.label))}</span>`}
           ${s.state === "now" ? `<div class="cv-guide ${left ? "right" : "left"}"><span class="cv-say">${esc(line(j))}</span>${guide()}</div>` : ""}
@@ -91,7 +114,8 @@
         <b class="cv-title">${esc(j.program.title)}</b>
         <button type="button" class="cv-guidebook" data-fp="${esc(j.program.id)}" aria-label="Open the program">Program</button>
       </div>
-      <div class="cv-road${ART.road ? " art" : ""}" style="height:${H}px${ART.road ? ";" + shade(ART.road, 0.5, 0.5) : ""}">
+      <div class="cv-road${ART.road ? " art" : ""}" style="height:${H}px">
+        ${ART.road ? `<div class="cv-wall" aria-hidden="true">${`<img src="${esc(ART.road)}" alt="" decoding="async">`.repeat(3)}</div>` : ""}
         <i class="cv-dust d1"></i><i class="cv-dust d2"></i><i class="cv-dust d3"></i><i class="cv-dust d4"></i>
         <svg class="cv-path" viewBox="0 0 100 ${H}" preserveAspectRatio="none" aria-hidden="true"><path d="${d}" class="cv-dirt"/><path d="${d}" class="cv-track"/><path d="${lit}" class="cv-glow"/></svg>
         <svg class="cv-gate" viewBox="0 0 390 52" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0h390v52H272c0-40-154-40-154 0H0z" fill="#3b3024"/><path d="M0 17h130M260 17h130M0 35h118M272 35h118M40 0v17M96 17v18M300 0v17M344 17v18M70 35v17M330 35v17" stroke="#261e15" stroke-width="2"/><path d="M118 52c0-40 154-40 154 0" fill="none" stroke="#c8a763" stroke-width="2.5"/></svg>
