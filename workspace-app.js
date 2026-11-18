@@ -192,6 +192,8 @@
     eyeOff: '<path d="M3 3l18 18"/><path d="M10.6 5.1A10 10 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 4M6.6 6.6C3.8 8.4 2 12 2 12s3.6 7 10 7a9.8 9.8 0 0 0 4.3-1"/>',
     upload: '<path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/>',
     download: '<path d="M12 4v12M7 11l5 5 5-5"/><path d="M4 20h16"/>',
+    trash: '<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/>',
+    restore: '<path d="M4 12a8 8 0 1 0 2.4-5.7"/><path d="M4 4v5h5"/>',
     search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>'
   };
   const ui = (name, size = 16) => `<svg class="ui-ic" viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${UI[name]}</svg>`;
@@ -391,7 +393,7 @@
     if (drawn === seq || !cache.clientView) cache.clientView = { rows: shown, patients, waiting };
     return `
     <div class="view-head"><div><h1>Clients</h1><p class="muted">${plural(list.length, "account")} · ${plural(patients.size, "active patient")} · ${waiting.size} waiting to be converted</p></div>
-    <div class="row"><input class="input" id="clientQ" style="width:240px" placeholder="Filter by name, email or phone" value="${esc(state.clientQ)}" aria-label="Filter clients"><button class="btn" data-act="exportAsk" id="exportBtn">${ui("download", 14)} <span id="exportLabel">${state.picked.size ? `Export ${state.picked.size} selected` : "Export all"}</span></button></div></div>
+    <div class="row"><input class="input" id="clientQ" style="width:240px" placeholder="Filter by name, email or phone" value="${esc(state.clientQ)}" aria-label="Filter clients"><button class="btn" data-act="exportAsk" id="exportBtn">${ui("download", 14)} <span id="exportLabel">${state.picked.size ? `Export ${state.picked.size} selected` : "Export all"}</span></button><button class="btn" data-act="trashOpen">${ui("trash", 14)} Trash</button></div></div>
     <div class="card" style="padding:0"><div class="table-wrap"><table>
       <thead><tr><th style="width:34px"><input type="checkbox" data-change="pickAll" aria-label="Select everyone shown"${shown.length && shown.every((c) => state.picked.has(c.id)) ? " checked" : ""}></th><th>Client</th><th>Status</th><th>Documents</th><th>Next visit</th><th>Membership</th><th>Last sign-in</th></tr></thead>
       <tbody id="clientRows">${clientRows(shown.slice(0, ROWS_FIRST), patients, waiting) || noneRow(7, list.length ? "No one matches." : "No clients yet.")}</tbody>
@@ -462,7 +464,7 @@
       <p class="muted">${esc(d.email)}${d.phone ? " · " + esc(d.phone) : ""} · Next: ${d.nextVisit ? `${fmtDate(d.nextVisit.date)} ${fmtTime(d.nextVisit.time)}` : "nothing booked"}</p>
       <div class="row" style="margin-top:6px" id="chartPills">${chartPills()}</div></div></div>
       <div class="row"><button class="btn ${d.patient ? "" : "primary"}" data-act="convert" data-on="${d.patient ? "0" : "1"}">${d.patient ? "Mark as not a patient" : "Convert to active patient"}</button>
-      <button class="btn" data-act="thread" data-id="${esc(id)}">Message</button><button class="btn" data-act="book">Book</button><button class="btn ${d.patient ? "primary" : ""}" data-act="chartNewNote">${ui("plus", 14)} Note</button><a class="btn" href="#chart" data-act="chartClose">Other client</a></div></div>
+      <button class="btn" data-act="thread" data-id="${esc(id)}">Message</button><button class="btn" data-act="book">Book</button><button class="btn ${d.patient ? "primary" : ""}" data-act="chartNewNote">${ui("plus", 14)} Note</button><a class="btn" href="#chart" data-act="chartClose">Other client</a><button class="btn danger" data-act="clientTrash" data-id="${esc(id)}" data-name="${esc(d.name)}">${ui("trash", 14)} Delete</button></div></div>
     <div class="row chart-types"><label for="chTier">Membership</label><select id="chTier" class="input" data-change="chartTier">${tierOptions(tier)}</select>
       <label for="chType">Client type</label><select id="chType" class="input" data-change="chartType"><option value="outpatient"${d.clientType !== "inpatient" ? " selected" : ""}>Standard</option><option value="inpatient"${d.clientType === "inpatient" ? " selected" : ""}>Subscription exempt (visits not charged)</option></select>
       <span class="muted" style="font-size:12px">Subscription exempt clients get the full MD Fit app free.</span></div>
@@ -2028,6 +2030,31 @@
       catch (err) { el.disabled = false; throw err; }
     },
     // Export: the people ticked on the Clients list, or everyone when nobody is ticked
+    // ---- the trash: Delete sets a client aside for 30 days; Restore puts them back as they were
+    clientTrash: async (el) => {
+      const name = el.dataset.name || "this client";
+      if (!confirm(`Move ${name} to the trash?\n\nThey disappear from every list and can't sign in. You have 30 days to restore them from Clients → Trash, exactly as they were.\n\nAfter 30 days the trash empties: a client with a chart is kept as a "Closed account" with the chart, anyone else is removed. A membership keeps billing until then, so cancel it first if it should stop now.`)) return;
+      const r = await api("DELETE", `/api/admin/clients/${encodeURIComponent(el.dataset.id)}`);
+      cache.clients = null; cache.emr = null; cache.chart = null; state.chartClient = null; state.picked.delete(el.dataset.id);
+      toast(`${name} is in the trash for ${r.daysLeft} days.`);
+      if (location.hash === "#clients") render(); else location.hash = "clients";
+    },
+    trashOpen: async () => {
+      const r = await get("/clients/trash/list");
+      const rows = (r.trash || []).map((x) => `<div class="list-item" style="align-items:flex-start"><span style="flex:1;min-width:0"><b>${esc(x.name)}</b> <span class="muted">${esc(x.email)}</span>
+          <div class="muted" style="font-size:12px">Deleted ${when(x.trashedAt)}${x.trashedBy ? ` by ${esc(x.trashedBy)}` : ""} · empties ${fmtDate(x.emptiesOn)} (${x.daysLeft} day${x.daysLeft === 1 ? "" : "s"} left)</div>
+          <div class="muted" style="font-size:12px">${x.keepsChart ? "Has a record: the chart will be kept as a closed account." : "No record: will be removed completely."}${x.membership ? " Membership still billing." : ""}</div></span>
+          <button class="btn sm" data-act="trashRestore" data-id="${esc(x.id)}" data-name="${esc(x.name)}">${ui("restore", 14)} Restore</button></div>`).join("");
+      modal(`<div class="card-head"><h2>Trash</h2><button class="btn sm" data-act="closeModal">Close</button></div>
+        <p class="muted" style="margin:0 0 10px">Deleted clients wait here for ${r.days || 30} days. Restore puts a client back exactly as they were; they sign in again with the same password.</p>
+        ${rows || none("The trash is empty.")}`);
+    },
+    trashRestore: async (el) => {
+      await api("POST", `/api/admin/clients/${encodeURIComponent(el.dataset.id)}/restore`, {});
+      cache.clients = null; cache.emr = null;
+      toast(`${el.dataset.name || "Client"} is restored.`);
+      closeModal(); render();
+    },
     exportAsk: async () => {
       const n = state.picked.size, all = !n, total = (await clients()).length;
       modal(`<div class="card-head"><h2>Export ${all ? `all ${total} clients` : plural(n, "selected client")}</h2>${xBtn}</div>

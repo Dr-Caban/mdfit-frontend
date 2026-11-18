@@ -938,8 +938,8 @@
       toast(r.message);
     }));
     $("[data-delete]", box).addEventListener("click", run(async () => {
-      if (!confirm(`Delete ${c.name}'s account? Their appointments stay; their plan and pain log are removed.`)) return;
-      await api("DELETE", `/api/admin/clients/${id}`); toast("Account deleted."); loadClients();
+      if (!confirm(`Move ${c.name} to the trash? They can't sign in and disappear from the lists. You have 30 days to restore them from the workspace (Clients → Trash).`)) return;
+      await api("DELETE", `/api/admin/clients/${id}`); toast("In the trash for 30 days."); loadClients();
     }));
     // Client type, booking link, video consultation, programs
     $$("[data-ctype]", box).forEach((b) => b.addEventListener("click", run(async () => {
