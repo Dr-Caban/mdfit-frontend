@@ -114,8 +114,13 @@
 .cv-skip-row span { flex-basis: 100%; }
 .cv-skip { min-height: 34px; padding: 0 11px; border: 1px dashed #3a4252; border-radius: 999px; background: none; color: #b9c2cf; font: 600 12.5px Montserrat, system-ui, sans-serif; cursor: pointer; }
 
-/* Tomorrow's stop, once today's session is done: lit enough to see what is coming, without the pull of "start" */
-.cv-stop.next .cv-ore { box-shadow: 0 0 0 3px rgba(200, 167, 99, .22); }
-.cv-stop.next .cv-ore-img { filter: saturate(.55) brightness(.7); }
-.cv-stop.next .cv-bubble { background: #1b2230; color: #e8eaed; box-shadow: 0 4px 0 #0e131c; border: 1px solid #333a46; }
-.cv-stop.next .cv-bubble::after { border-top-color: #1b2230; }
+/* The week as a road: a day with some of its lights lit, a day with none, and the count on the rock */
+.cv-stop.part .cv-ore-img { filter: saturate(.7) brightness(.78); }
+.cv-stop.missed .cv-ore-img { width: 76px; height: 76px; margin: 4px; filter: brightness(.45); }
+.cv-stop.missed .cv-cap { color: #7b8494; }
+.cv-stop.part .cv-cap { color: #cfd5de; }
+.cv-badge.count { display: grid; place-items: center; width: auto; min-width: 34px; height: 24px; padding: 0 7px; border-radius: 999px; background: #1b2230; color: #e2c98c; font: 700 12px/1 Montserrat, system-ui, sans-serif; font-style: normal; border: 1px solid #6b5a2e; }
+.cv-stop.done.today .cv-bubble { background: #1b2230; color: #e8eaed; box-shadow: 0 4px 0 #0e131c; border: 1px solid #333a46; }
+.cv-stop.done.today .cv-bubble::after { border-top-color: #1b2230; }
+.cv-chips.four { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+.cv-chips.four .cv-chip { font-size: 11.5px; padding: 8px 2px; }

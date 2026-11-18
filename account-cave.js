@@ -1,7 +1,8 @@
 // MD Fit member app: the gem mine on Home. The look is an ancient hewn mine (stone gate, clay oil lamps, gold in the
 // rock) with Solomon as the guide who speaks in short sayings of his own; nothing here quotes or names scripture, and
-// there are no religious symbols. The member's program drawn as a dirt road through the mine: one chamber per
-// week (or stage), one stop per session, a gem in the rock at each stop. Done stops are cracked open and lit, today's
+// there are no religious symbols. The member's week drawn as a dirt road through the mine: one stop a day, a gem in
+// the rock at each, lit by everything done that day (a workout, a pain check-in, a daily activity, the daily goal).
+// With a program, each day carries its session. A day with all four is cracked open and lit, today's
 // stop glows, the rest wait in the dark. Solomon is not drawn here: the one cloud that follows the member round the app
 // speaks for the mine too (account-solomon.js). Under the road: today's seam (workout,
 // pain check-in, daily goal) and where the road ends (the program's finish and the next gem).
@@ -35,9 +36,9 @@
   function freshDone(j) {
     const done = j.stops.filter((s) => s.state === "done").map((s) => s.n);
     let seen = null; try { seen = JSON.parse(localStorage.getItem(SEEN) || "null"); } catch {}
-    const known = seen && seen.prog === j.program.id && Array.isArray(seen.done) ? seen.done : null;
+    const key = j.key || j.program.id, known = seen && seen.prog === key && Array.isArray(seen.done) ? seen.done : null;
     const fresh = known ? done.filter((n) => !known.includes(n)) : done.slice(-1); // first look: the latest one, once
-    try { localStorage.setItem(SEEN, JSON.stringify({ prog: j.program.id, done: [...new Set([...(known || []), ...done])].slice(-400) })); } catch {}
+    try { localStorage.setItem(SEEN, JSON.stringify({ prog: key, done: [...new Set([...(known || []), ...done])].slice(-400) })); } catch {}
     // A sequence lasts 2.4 seconds; a redraw inside that time (more data arriving) carries on from where it was
     const now = Date.now(); fresh.forEach((n) => playing.set(n, now));
     for (const [n, t] of playing) if (now - t > 2400) playing.delete(n);
@@ -69,7 +70,7 @@
     card.hidden = false;
     // Nothing changed: leave the card alone, so an animation in flight isn't restarted by a second redraw
     const sig = JSON.stringify(j); if (sig === lastSig && card.firstChild) return; lastSig = sig;
-    if (!j.program) {
+    if (!j.stops) {
       card.innerHTML = `<div class="cv-mouth${ART.mouth ? " art" : ""}"${ART.mouth ? ` style="${shade(ART.mouth, 0.55, 0.9)}"` : ""}><span class="cv-kicker">The gem mine</span><b class="cv-title">${j.finished ? "You reached the vault" : "Every program is a road of gems"}</b>
         <p class="cv-sub">${j.finished ? "Every stop on your road is mined. Pick the next program to open a new mine." : "Pick a program and each session becomes a stop on the road down. Solomon walks it with you."}</p>
         <button type="button" class="cv-start" data-goto="programs">Choose a program</button></div>`;
@@ -78,8 +79,8 @@
     // Today's stop gets room above it (its Start bubble)
     const rowH = 112, pts = []; let y = 104;
     // (a long name wraps the Start bubble to three lines; it must stay clear of the label of the stop above)
-    const tall = (s) => (short(s.label) + (s.sub ? " · " + s.sub : "")).length > 19;
-    const here = (s) => s.state === "now" || s.state === "next"; // today's stop, or tomorrow's once today's is done
+    const tall = (s) => (short(s.label) + (s.sub ? " · " + s.sub : "")).length + (j.intro ? 0 : 8) > 19;
+    const here = (s) => (j.intro ? s.state === "now" : !!s.today); // the stop that carries the bubble
     j.stops.forEach((s, i) => { if (here(s)) y += i ? (tall(s) ? 82 : 66) : 70; pts.push([X[i % X.length], y]); y += rowH; });
     const H = y + 96, end = [50, H - 62], all = [...pts, end];
     // (with the gate photo above it, the road starts out of sight under the gate rather than as a loose stub on the wall)
@@ -87,24 +88,34 @@
     // The stretch already travelled carries moving lights, from the gate to today's stop (the whole road once it is cleared)
     const nowAt = j.stops.findIndex(here), lit = pathOf([from, ...(nowAt < 0 ? all : pts.slice(0, nowAt + 1))], rowH);
     let lamps = ""; for (let k = 0, ly = 150; ly < H - 110; k++, ly += 210) lamps += `<span class="cv-wlamp ${k % 2 ? "r" : "l"}" style="top:${ly}px">${flame}</span>`;
-    const lastChamber = j.chamber >= j.chambers, cleared = j.stops.every((s) => s.state === "done" || s.state === "passed");
+    const cleared = j.stops.every((s) => s.state === "done" || s.state === "passed");
     const fresh = freshDone(j);
     const stopHtml = j.stops.map((s, i) => {
-      const [x, y] = pts[i], color = GEMS[s.n % GEMS.length], left = x < 50;
-      const act = j.intro ? (s.state === "done" ? "disabled" : `data-intro-go="${esc(s.ref)}"`) : s.state === "now" ? (j.grid ? `data-cave-start="${s.n}"` : `data-fp="${esc(j.program.id)}"`) : s.state === "done" || s.state === "next" ? `data-fp="${esc(j.program.id)}"` : "disabled";
-      return `<div class="cv-stop ${s.state}" style="left:${x}%;top:${y}px;--gem:${color}">
-          ${here(s) ? `<span class="cv-bubble">${j.intro ? "Start here" : s.state === "next" ? "Tomorrow" : "Start"}<small>${esc(short(s.label))}${s.sub ? " · " + esc(s.sub) : ""}</small></span>` : ""}
-          <button type="button" class="cv-ore${s.state === "done" && fresh.has(s.n) ? " mining" : ""}" ${s.state === "done" && fresh.has(s.n) ? `style="--el:-${((Date.now() - fresh.get(s.n)) / 1000).toFixed(2)}s"` : ""} ${act} aria-label="${esc(s.label)}${s.sub ? ", " + esc(s.sub) : ""}: ${s.state === "done" ? "mined" : s.state === "now" ? "today, start" : s.state === "next" ? "tomorrow. Today's session is done" : s.state === "open" ? "open, 10 XP" : s.state === "passed" ? "skipped, tap to do it" : "not open yet"}">${s.state === "done" && fresh.has(s.n) ? sequence(color) : s.state === "passed" ? ore("locked", color, true) : ore(s.state === "open" || s.state === "next" ? "now" : s.state, color)}</button>
+      const [x, y] = pts[i], color = GEMS[s.n % GEMS.length];
+      if (j.intro) { const act = s.state === "done" ? "disabled" : `data-intro-go="${esc(s.ref)}"`;
+        return `<div class="cv-stop ${s.state}" style="left:${x}%;top:${y}px;--gem:${color}">
+          ${s.state === "now" ? `<span class="cv-bubble">Start here<small>${esc(short(s.label))}${s.sub ? " · " + esc(s.sub) : ""}</small></span>` : ""}
+          <button type="button" class="cv-ore${s.state === "done" && fresh.has(s.n) ? " mining" : ""}" ${s.state === "done" && fresh.has(s.n) ? `style="--el:-${((Date.now() - fresh.get(s.n)) / 1000).toFixed(2)}s"` : ""} ${act} aria-label="${esc(s.label)}${s.sub ? ", " + esc(s.sub) : ""}: ${s.state === "done" ? "mined" : s.state === "now" ? "start here" : s.state === "passed" ? "skipped, tap to do it" : "open, 10 XP"}">${s.state === "done" && fresh.has(s.n) ? sequence(color) : s.state === "passed" ? ore("locked", color, true) : ore(s.state === "open" ? "now" : s.state, color)}</button>
           ${s.state === "done" ? `<i class="cv-tw t1"></i><i class="cv-tw t2"></i>` : ""}
-          ${here(s) ? "" : `<span class="cv-cap">${esc(short(s.label))}${j.intro && s.state === "passed" ? " · skipped" : j.intro && s.state !== "done" ? " · +10 XP" : ""}</span>`}
+          ${s.state === "now" ? "" : `<span class="cv-cap">${esc(short(s.label))}${s.state === "passed" ? " · skipped" : s.state !== "done" ? " · +10 XP" : ""}</span>`}
+        </div>`; }
+      // a day: its weekday, its session if the program has one, and how many of its four lights are lit
+      const name = s.session ? `${s.wd} · ${short(s.label)}` : s.wd, count = `<i class="cv-badge count">${s.lit}/${s.of}</i>`;
+      const said = s.today ? (s.state === "done" ? "today, every light lit" : `today, ${s.lit} of ${s.of} lit`) : s.state === "done" ? "every light lit" : s.state === "part" ? `${s.lit} of ${s.of} lit` : s.state === "missed" ? "nothing logged" : "not yet";
+      const first = !j.today.workout || (j.hasProgram && !j.rested) ? (s.session ? "Start" : "Today") : "Today";
+      return `<div class="cv-stop ${s.state}${s.today ? " today" : ""}" style="left:${x}%;top:${y}px;--gem:${color}">
+          ${s.today ? `<span class="cv-bubble">${s.state === "done" ? "Done today" : first}<small>${first === "Start" ? esc(short(s.label)) + (s.sub ? " · " + esc(s.sub) : "") : `${s.lit} of ${s.of} lit${s.session ? " · " + esc(short(s.label)) : ""}`}</small></span>` : ""}
+          <button type="button" class="cv-ore${s.state === "done" && fresh.has(s.n) ? " mining" : ""}" ${s.state === "done" && fresh.has(s.n) ? `style="--el:-${((Date.now() - fresh.get(s.n)) / 1000).toFixed(2)}s"` : ""} ${s.today ? "data-cave-today" : "disabled"} aria-label="${esc(name)}: ${said}">${s.state === "done" && fresh.has(s.n) ? sequence(color) : s.state === "missed" ? ore("locked", color, true) : s.state === "part" || s.state === "now" ? ore("now", color, true) + (s.lit ? count : "") : ore(s.state, color)}</button>
+          ${s.state === "done" ? `<i class="cv-tw t1"></i><i class="cv-tw t2"></i>` : ""}
+          ${s.today ? "" : `<span class="cv-cap">${esc(name)}</span>`}
         </div>`;
     }).join("");
     const chip = (lit, label, attrs = "") => `<button type="button" class="cv-chip${lit ? " lit" : ""}" ${attrs}>${crystal(lit)}<span>${label}</span></button>`;
     card.innerHTML = `
       <div class="cv-mouth${ART.mouth ? " art" : ""}"${ART.mouth ? ` style="${shade(ART.mouth, 0, 0.92)}"` : ""}>
-        <span class="cv-kicker">${j.intro ? "The gem mine · start here" : `The gem mine · ${esc(j.unit)} ${j.chamber} of ${j.chambers}`}</span>
-        <b class="cv-title">${esc(j.program.title)}</b>
-        ${j.intro ? `<button type="button" class="cv-guidebook" data-intro-skip aria-label="Skip the intro">Skip</button>` : `<button type="button" class="cv-guidebook" data-fp="${esc(j.program.id)}" aria-label="Open the program">Program</button>`}
+        <span class="cv-kicker">${j.intro ? "The gem mine · start here" : j.program ? `The gem mine · ${esc(j.unit)} ${j.chamber} of ${j.chambers}` : "The gem mine · this week"}</span>
+        <b class="cv-title">${esc(j.intro ? j.program.title : j.title)}</b>
+        ${j.intro ? `<button type="button" class="cv-guidebook" data-intro-skip aria-label="Skip the intro">Skip</button>` : j.program ? `<button type="button" class="cv-guidebook" data-fp="${esc(j.program.id)}" aria-label="Open the program">Program</button>` : `<button type="button" class="cv-guidebook" data-goto="programs">Pick a program</button>`}
         ${j.intro && j.hasProgram ? `<button type="button" class="cv-guidebook cv-alt" data-mine-view="program">My program</button>` : j.introAlt ? `<button type="button" class="cv-guidebook cv-alt" data-mine-view="intro">First descent</button>` : ""}
       </div>
       <div class="cv-road${ART.road ? " art" : ""}" style="height:${H}px${ART.road ? `;--wall:url('${esc(ART.road)}')` : ""}">
@@ -114,16 +125,16 @@
         ${lamps}
         ${stopHtml}
         <div class="cv-end${cleared ? " lit" : ""}" style="top:${end[1]}px">${ART.geode ? `<img src="${esc(ART.geode)}" alt="" width="64" height="64">` : `<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M8 38a24 22 0 0 1 48 0c0 10-10 18-24 18S8 48 8 38z" fill="#2b313d" stroke="#3b4352" stroke-width="2"/><path d="M18 38l6-10 8 6 8-8 6 12-8 10H24z" fill="${cleared ? "#b58cff" : "#3a4252"}"/><path d="M24 28l8 6 8-8" fill="none" stroke="#fff" stroke-opacity="${cleared ? ".5" : ".12"}" stroke-width="2"/></svg>`}
-          <span>${j.intro ? (cleared ? "First descent complete" : j.next && j.next.name === "Amber" ? "Your first new gem: Amber" : "The end of your first descent") : cleared ? `${esc(j.unit)} ${j.chamber} cleared` : lastChamber ? "The treasury lies past this chamber" : `Steps down to ${esc(j.unit.toLowerCase())} ${j.chamber + 1}`}</span></div>
+          <span>${j.intro ? (cleared ? "First descent complete" : j.next && j.next.name === "Amber" ? "Your first new gem: Amber" : "The end of your first descent") : cleared ? "A whole week, every lamp lit" : "Steps down to next week"}</span></div>
       </div>
       <div class="cv-seam" aria-label="Today's seam">
         <span class="cv-kicker">Today's seam</span>
-        <div class="cv-chips">${chip(j.today.workout, "Workout")}${chip(j.today.pain, "Pain check-in", `data-goto="pain"`)}${chip(j.today.goal, "Daily goal")}</div>
+        <div class="cv-chips four">${chip(j.today.workout, "Workout", "data-cave-today")}${chip(j.today.pain, "Check-in", `data-goto="pain"`)}${chip(j.today.acts, "Activities", "data-cave-acts")}${chip(j.today.goal, "Daily goal", "data-cave-acts")}</div>
         ${j.movements ? `<button type="button" class="cv-moves" data-goto="profile">${j.movements} movement${j.movements === 1 ? "" : "s"} from Dr. Jared to do today</button>` : ""}
       </div>
       <div class="cv-vault${ART.vault ? " art" : ""}"${ART.vault ? ` style="${shade(ART.vault, 0.86, 0.3)}"` : ""}>
         <span class="cv-kicker">The treasury ahead</span>
-        <p><b>${j.left}</b> stop${j.left === 1 ? "" : "s"} to the treasury of ${esc(j.program.title)}${j.next ? ` · <b>${Number(j.next.xp).toLocaleString()} XP</b> to <i class="cv-next" style="--gem:${esc(j.next.color)}"></i>${esc(j.next.name)}` : ""}</p>
+        <p>${j.intro || j.program ? `<b>${j.left}</b> ${j.intro ? "stop" : "session"}${j.left === 1 ? "" : "s"} to the treasury of ${esc(j.program.title)}` : "Every day you light all four adds a gem to the week"}${j.next ? ` · <b>${Number(j.next.xp).toLocaleString()} XP</b> to <i class="cv-next" style="--gem:${esc(j.next.color)}"></i>${esc(j.next.name)}` : ""}</p>
       </div>`;
   }
   // The first descent has its own footer: how far along, and what finishing earns
@@ -136,6 +147,8 @@
   }
   card.addEventListener("click", (e) => {
     const b = e.target.closest("[data-cave-start]"); if (b) return A.journeyStart(Number(b.dataset.caveStart));
+    if (e.target.closest("[data-cave-today]")) return A.journeyToday();
+    if (e.target.closest("[data-cave-acts]")) { document.dispatchEvent(new CustomEvent("mdfit:habits-open")); const c = document.getElementById("habits-card"); if (c) c.scrollIntoView({ behavior: "smooth", block: "start" }); return; }
     const g = e.target.closest("[data-intro-go]"); if (g) return A.introGo(g.dataset.introGo);
     const v = e.target.closest("[data-mine-view]"); if (v) return A.setMineView(v.dataset.mineView);
     const ps = e.target.closest("[data-intro-pass]"); if (ps) return A.introPass(ps.dataset.introPass);

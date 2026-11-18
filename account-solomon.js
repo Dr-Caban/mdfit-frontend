@@ -57,8 +57,10 @@
       if (n.kind === "visit") out.push({ t: `${n.title}: ${n.sub}. Tap here to get ready.`, act: to("plus") });
       if (n.kind === "session") out.push({ t: `${n.title} today. ${saying()}`, act: to("mine") });
       if (n.kind === "later") out.push({ t: `${n.title} is booked: ${n.sub}.`, act: to("plus") });
-      if (n.kind === "done") { const d = n.today || {};
-        out.push(d.pain && d.goal ? { t: "Every lamp is lit. Rest now; the road will keep." } : !d.pain ? { t: "Good work. Tell me how you feel, and another crystal wakes.", act: () => A.go("pain") } : { t: "One more light to kindle: reach your daily goal." }); }
+      if (n.kind === "lights") { const d = n.today || {};
+        out.push(!d.pain ? { t: "Good work. Tell me how you feel, and another light wakes.", act: () => A.go("pain") }
+          : !d.acts ? { t: `${d.lit} of ${d.of} lit today. One daily activity lights the next.`, act: to("today") } : { t: "One more light to kindle: reach your daily goal.", act: to("today") }); }
+      if (n.kind === "done") out.push({ t: "Every lamp is lit. Rest now; the road will keep." });
       if (n.kind === "ask") out.push({ t: `${f.first ? f.first + ", tell" : "Tell"} me what you want to train today and I'll build it.`, act: open });
       rank(); refer();
     } else if (view === "generate") {
