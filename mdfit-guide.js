@@ -130,7 +130,7 @@
   const btn = document.createElement("button"); btn.id = "mg-btn"; btn.type = "button"; btn.setAttribute("aria-label", "Open Solomon: tap me to talk"); btn.setAttribute("aria-expanded", "false"); btn.setAttribute("aria-controls", "mg"); btn.innerHTML = cloud("") + '<i class="mg-dot" hidden></i>';
   // What he says without being asked rises above the cloud and fades by itself. Tapping it does what it offers (or opens the chat).
   const tag = document.createElement("button"); tag.id = "mg-tag"; tag.type = "button"; tag.hidden = true;
-  let sayT = 0, sayAct = null;
+  let sayT = 0, sayAct = null, dayHello = "";
   function hush() { clearTimeout(sayT); tag.hidden = true; sayAct = null; btn.classList.remove("mg-talk"); }
   function speak(text, o) {
     o = o || {}; text = String(text || "").trim();
@@ -558,7 +558,8 @@
   async function greet() {
     greeted = true;
     const w = waiting(); lastSig = w.sig;
-    say(`Hey ${first()}, I'm Solomon. What are we working on today?`);
+    // (on the first opening of a day the chat opens with the same welcome he gave above the cloud)
+    say(dayHello ? `${dayHello} What are we working on today?` : `Hey ${first()}, I'm Solomon. What are we working on today?`);
     if (w.line) say(w.line);
     const m = await mine();
     if (m.rec && !w.line) say(`Want to pick up ${m.title} that Dr. Jared recommended?`);
@@ -615,5 +616,5 @@
   lift();
 
   load();
-  window.MDFitGuide = { day: dayRows, understand, open: () => open(false), shut, say: speak, hush, speaking: () => !tag.hidden, reminders: () => G.reminders.slice() };
+  window.MDFitGuide = { day: dayRows, understand, open: () => open(false), shut, say: speak, hush, speaking: () => !tag.hidden, greeting: (t) => { dayHello = String(t || "").trim(); }, reminders: () => G.reminders.slice() };
 })();

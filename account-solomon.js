@@ -5,6 +5,8 @@
 // Every line is put together here, on the device, from what is already on the member's own screens (the Next tile, the
 // mine, the rank card). Nothing is sent anywhere to make one, and none of this is the member's own words.
 // He speaks when a screen opens, at most twice more if they stay on it, and never repeats a line inside ten minutes.
+// On the first opening of a day he welcomes them first: by how long they were away and whether it is earlier or later
+// than they usually train (two numbers the server works out from dates and hours; nothing from their record).
 // Profile → Reminders from Solomon has the switch that keeps him quiet until tapped (kept on the device).
 (() => {
   const A = window.MDFitApp, G = window.MDFitGuide; if (!A || !G || !G.say || !A.nextUp) return;
@@ -18,6 +20,27 @@
   const INTRO = { solomon: "I'm Solomon. Tap me and ask anything: that's your first stop.", pain: "Next stop: tell me what hurts, or that nothing does.", program: "Pick a road. I'll walk it with you.",
     session: "One session. That's all today asks.", friend: "Bring a friend down here and you both gain." };
   const open = () => G.open(), to = (go) => () => A.goNext(go);
+  // His welcome on the first opening of a day. The joke is always on him (a cloud who cannot lift anything), never on
+  // the member, and a long absence gets one dry line or none: nobody is teased for having been away.
+  // {first} = their first name, {n} = days since they were last here.
+  const HELLO = {
+    first: ["Welcome, {first} 🤗 Glad you made it. I'm Solomon: a cloud with a lamp and good intentions."],
+    back30: ["{first}! No speech. I'm just glad you're here."],
+    back14: ["It's been a while, {first}. I kept your spot warm. As warm as a cloud can."],
+    back7: ["A week! I practised a welcome speech, {first}. That was it."],
+    back3: ["{n} days. I counted the gems twice. Same number. Good to have you back."],
+    missed: ["Missed you yesterday, {first}. I kept the lamp lit. Mostly I just stood here.", "Missed you yesterday. The mine was quiet. I talked to a rock. It didn't answer."],
+    early: ["Welcome 🤗 Glad you made it. Earlier than usual, let's get started.", "Up before the lamp, {first}. I'd raise an eyebrow, but: cloud. Let's get started."],
+    late: ["Later than usual, {first}. I'm a cloud, I had nowhere to be. Let's get started."],
+    daily: ["Welcome back, {first} 🤗 Glad you made it.", "There you are, {first}. I was floating here trying to look busy.", "Good to see you, {first}. The lamp's lit. Let's get started."]
+  };
+  function greetingFor(d) {
+    const away = Number.isFinite(d.away) ? d.away : null, u = Number.isFinite(d.usual) ? d.usual : null, h = Number.isFinite(d.hour) ? d.hour : null;
+    const k = d.firstEver ? "first" : away >= 30 ? "back30" : away >= 14 ? "back14" : away >= 7 ? "back7" : away >= 3 ? "back3" : away === 2 ? "missed"
+      : u !== null && h !== null && h <= u - 2 ? "early" : u !== null && h !== null && h >= u + 3 ? "late" : "daily";
+    const set = HELLO[k], first = A.guideFacts().first || "friend";
+    return set[Math.floor(Date.now() / 864e5) % set.length].replace(/\{first\}/g, first).replace(/\{n\}/g, String(away));
+  }
 
   // The lines for one screen, most useful first. Each is { t: what he says, act: what a tap on it does }.
   function lines(view) {
@@ -66,12 +89,14 @@
   }
 
   const said = new Map(); // line -> when he last said it
-  let timer = 0, turns = 0, lastKind = "";
+  let timer = 0, turns = 0, lastKind = "", hello = "";
   const busy = () => !!document.querySelector(".tour, dialog[open]") || document.hidden;
   function speakFor(view) {
     clearTimeout(timer);
     if (quiet() || view !== A.view()) return;
     if (busy() || G.speaking()) { timer = setTimeout(() => speakFor(view), 4000); return; } // wait for a sheet or a pointer to close
+    // The day's welcome comes first, then what this screen has to say
+    if (hello) { const h = hello; hello = ""; if (G.say(h, { ms: 8000 })) { timer = setTimeout(() => speakFor(view), 10500); return; } }
     let list = []; try { list = lines(view); } catch { return; }
     const now = Date.now(), c = list.find((x) => !said.has(x.t) || now - said.get(x.t) > AGAIN);
     if (!c || !G.say(c.t, { act: c.act })) return;
@@ -83,6 +108,8 @@
   document.addEventListener("mdfit:view", (e) => arrive(e.detail, 700));
   // What is next has changed while they are on Home (a session finished, an invoice paid): he says the new thing
   document.addEventListener("mdfit:journey", () => { let k = ""; try { k = A.nextUp().kind; } catch {} if (lastKind && k !== lastKind && A.view() === "home") arrive("home", 1800); lastKind = k; });
+  // The first opening of the day (account.js welcomeBack): he greets them above the cloud, and the chat opens with the same words
+  document.addEventListener("mdfit:arrive", (e) => { try { hello = greetingFor(e.detail || {}); } catch { hello = ""; } if (G.greeting) G.greeting(hello); arrive(A.view(), 4000); });
   // First words: once the app has its data and the welcome toast has had its moment
   arrive(A.view(), 4200);
 

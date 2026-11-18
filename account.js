@@ -3636,7 +3636,9 @@
       const r = await apiAuth("POST", "/api/me/xp", { kind: "open" });
       if (!r || !r.first || !r.xp) return;
       await loadRewards(false);
-      celebrateToast([firstEver ? `Welcome to MD Fit! +${r.xp} XP` : `Welcome back! +${r.xp} XP`]); ding();
+      // The toast is the XP; the welcome itself is Solomon's (account-solomon.js), who knows how long they were away
+      celebrateToast([firstEver ? `Welcome to MD Fit! +${r.xp} XP` : `+${r.xp} XP for showing up`]); ding();
+      try { document.dispatchEvent(new CustomEvent("mdfit:arrive", { detail: { firstEver, ...(r.arrive || {}) } })); } catch {}
       const tr = $("#t3-rank"); if (tr) { tr.classList.add("xp-ding"); setTimeout(() => tr.classList.remove("xp-ding"), 1600); }
       const g = $("#gem-card"); if (g) { g.classList.remove("xp-ding"); void g.offsetWidth; g.classList.add("xp-ding"); setTimeout(() => g.classList.remove("xp-ding"), 1600); }
     } catch {}
