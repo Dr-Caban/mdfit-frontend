@@ -15,7 +15,9 @@
      hold, the minimum payout, refunds. Plans that are access to Dr. Jared never earn a commission; that line is drawn
      in the server code and is repeated here on purpose. Change PLANS and TERMS below if the settings change.
 
-     The page opens as a short animation that plays by itself (made to be screen-recorded and sent to a partner), then
+     The page opens as an animation that plays by itself: what members get, the share, one payment from start to
+     finish, then a month of the partner's account (payments landing as pending, clearing, a refund, the payout on
+     the 1st, the next month's renewals), and how it builds. It was made to be screen-recorded and sent to a partner, and then
      offers the full terms underneath. It is a proposal FROM MD Fit: the partner's name and the account holder's first
      name are read from the link (?partner=...&contact=...&size=500&new=20&rate=5), shown as plain text, and are not
      stored in this file. No partner logo or branding is used. ?full=1 skips the animation; ?rec=1 leaves the
@@ -136,15 +138,42 @@ footer{font-size:12.5px;color:var(--muted);text-align:center;margin-top:18px}
 .led-who .av{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--gold);color:#0A1A2E;font:700 20px var(--display)}
 .led-who b{display:block;font:700 17px var(--body);color:#fff}
 .led-who small{display:block;color:var(--dim);font-size:12.5px}
-.led-rows{list-style:none;margin:0;padding:0;height:168px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end}
+.led-rows{list-style:none;margin:0;padding:0;height:232px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end}
 .led-rows li{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.07);font:600 14px var(--body);color:#E3EBF2;animation:ledIn .45s cubic-bezier(.2,.8,.2,1) both}
-.led-rows li span:last-child{color:#7FD6A6;font-variant-numeric:tabular-nums;white-space:nowrap}
+.led-rows li>span:last-child{font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right;color:#fff}
+.led-rows li.minus>span:last-child{color:#F2A093}
+/* the three states a share moves through: always named, never colour alone */
+.chip{display:inline-block;font:700 10.5px/1 var(--body);font-style:normal;letter-spacing:.6px;text-transform:uppercase;border-radius:999px;padding:4px 8px;vertical-align:2px;margin-left:4px;transition:background-color .4s ease,color .4s ease}
+.chip.pend{background:rgba(242,184,75,.18);color:#F2B84B}
+.chip.ready{background:rgba(142,192,230,.18);color:#8EC0E6}
+.chip.paid{background:rgba(127,214,166,.18);color:#7FD6A6}
+.chip.rev{background:rgba(242,160,147,.16);color:#F2A093}
+.led-rows .chip{display:block;margin:4px 0 0;text-align:center}
+.led-rows li.flip{animation:ledFlip .7s ease}
+@keyframes ledFlip{30%{background:rgba(255,255,255,.09)}}
+.bal{display:grid;grid-template-columns:1fr 18px 1fr 18px 1fr;align-items:center;gap:4px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.10)}
+.bal div{border-radius:12px;padding:9px 4px;text-align:center;background:rgba(255,255,255,.05);border:1px solid transparent;transition:border-color .35s ease,background-color .35s ease}
+.bal span{display:block;font:700 10.5px var(--body);letter-spacing:.8px;text-transform:uppercase}
+.bal b{display:block;font:700 18px/1.25 var(--display);color:#fff;font-variant-numeric:tabular-nums}
+.bal .pend span{color:#F2B84B}.bal .ready span{color:#8EC0E6}.bal .paid span{color:#7FD6A6}
+.bal div.hit{background:rgba(255,255,255,.11)}
+.bal .pend.hit{border-color:#F2B84B}.bal .ready.hit{border-color:#8EC0E6}.bal .paid.hit{border-color:#7FD6A6}
+.bal-arrow{width:18px;height:18px;fill:none;stroke:#6F8399;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#stage p.say{min-height:2.9em;margin-top:14px;font:600 16px/1.4 var(--body);color:#fff;transition:opacity .3s ease}
+#stage p.say.swap{opacity:0}
+.flow{list-style:none;margin:0;padding:0;width:100%;text-align:left;display:grid;gap:0}
+.flow li{position:relative;display:flex;gap:14px;padding:0 0 18px}
+.flow li:last-child{padding-bottom:0}
+.flow i{flex:none;width:16px;height:16px;border-radius:50%;margin-top:3px;background:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.12);position:relative;z-index:1}
+.flow li::before{content:"";position:absolute;left:7px;top:10px;bottom:-10px;width:2px;background:rgba(255,255,255,.16)}
+.flow li:last-child::before{display:none}
+.flow .pend i{background:#F2B84B;box-shadow:0 0 0 4px rgba(242,184,75,.2)}
+.flow .ready i{background:#8EC0E6;box-shadow:0 0 0 4px rgba(142,192,230,.2)}
+.flow .paid i{background:#7FD6A6;box-shadow:0 0 0 4px rgba(127,214,166,.2)}
+.flow b{display:block;font:700 16.5px/1.3 var(--body);color:#fff}
+.flow small{display:block;color:var(--dim);font-size:14px;margin-top:2px}
 .led-rows small{display:block;color:var(--dim);font-weight:500;font-size:12px}
 @keyframes ledIn{from{opacity:0;transform:translateY(16px)}}
-.led-sum{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}
-.led-sum span{display:block;font:600 11px var(--body);color:var(--dim)}
-.led-sum b{font:700 19px var(--display);color:#fff;font-variant-numeric:tabular-nums}
-.led-sum .lead b{color:var(--gold)}
 .checks{list-style:none;margin:0;padding:0;display:grid;gap:12px;width:100%;text-align:left}
 .checks li{display:flex;gap:12px;align-items:flex-start;font:600 16px/1.35 var(--body);color:#fff}
 .checks li small{display:block;font-weight:500;color:var(--dim);font-size:13.5px}
@@ -166,12 +195,12 @@ footer{font-size:12.5px;color:var(--muted);text-align:center;margin-top:18px}
 <main id="stage" aria-label="Partnership proposal from MD Fit: a short animation">
   <div class="st-top"><img src="assets/logo.webp" alt="" width="36" height="36"><span>MD Fit</span><i>×</i><span data-partner-cap>Your studio</span></div>
   <div class="st-mid">
-    <section class="sc" data-ms="3600">
+    <section class="sc" data-ms="3200">
       <span class="eyebrow" data-step>Partnership proposal</span>
       <h1 data-step>MD Fit <i>×</i> <span data-partner-cap>Your studio</span></h1>
       <p data-step data-if-contact hidden>Prepared for <b data-contact></b></p>
     </section>
-    <section class="sc" data-ms="5200">
+    <section class="sc" data-ms="4600">
       <h2 data-step>What your members get</h2>
       <ul class="pop">
         <li data-step><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6M7 6v12M17 6v12M21 9v6M7 12h10"/></svg>Dr. Jared's programs, built by a physician</li>
@@ -179,13 +208,37 @@ footer{font-size:12.5px;color:var(--muted);text-align:center;margin-top:18px}
         <li data-step><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18a4.5 4.5 0 0 1-.6-9A5.5 5.5 0 0 1 17 7.6 4 4 0 0 1 18 18z"/></svg>Solomon, a guide in their pocket</li>
       </ul>
     </section>
-    <section class="sc" data-ms="5000" data-sc="offer">
+    <section class="sc" data-ms="4600" data-sc="offer">
       <span class="eyebrow" data-step>What <span data-partner>your studio</span> earns</span>
       <b class="huge" data-step><span id="n-rate">0</span>%</b>
       <p data-step>of every subscription payment your members make</p>
       <ul class="chips"><li data-step>every month</li><li data-step>for as long as they stay</li><li data-step>no cut-off</li></ul>
     </section>
-    <section class="sc" data-ms="10400" data-sc="grow">
+    <section class="sc" data-ms="8800" data-gap="1150" data-sc="flow">
+      <h2 data-step>One payment, start to finish</h2>
+      <ol class="flow">
+        <li data-step><i></i><div><b>A member joins with your link</b><small>Membership · <span id="f-price">$19.95</span> a month</small></div></li>
+        <li data-step class="pend"><i></i><div><b>Their payment lands <em class="chip pend">Pending</em></b><small>Your <span data-rate>5</span>% shows at once: <span id="f-share">$1.00</span></small></div></li>
+        <li data-step class="ready"><i></i><div><b>7 days later <em class="chip ready">Ready</em></b><small>The hold ends. It is yours.</small></div></li>
+        <li data-step class="paid"><i></i><div><b>On the 1st <em class="chip paid">Paid</em></b><small>Sent to your bank through Stripe</small></div></li>
+        <li data-step><i></i><div><b>Next month they pay again</b><small>And so do we, every month they stay</small></div></li>
+      </ol>
+    </section>
+    <section class="sc" data-ms="19800" data-sc="account">
+      <p class="mo" data-step id="a-day">Mar 3</p>
+      <div class="led" data-step>
+        <div class="led-who"><span class="av" id="l-av">P</span><div><b id="l-name">Account holder</b><small>Account holder · <span data-partner-cap>Your studio</span></small></div></div>
+        <div class="bal" aria-hidden="true">
+          <div class="pend"><span>Pending</span><b id="a-pend">$0.00</b></div><svg class="bal-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 7l5 5-5 5"/></svg>
+          <div class="ready"><span>Ready</span><b id="a-ready">$0.00</b></div><svg class="bal-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 7l5 5-5 5"/></svg>
+          <div class="paid"><span>Paid</span><b id="a-paid">$0.00</b></div>
+        </div>
+        <ul class="led-rows" id="a-rows" aria-hidden="true"></ul>
+      </div>
+      <p class="say" data-step id="a-say"></p>
+      <p data-step style="font-size:12.5px;margin-top:8px">Example entries. Counts, plans and amounts only: never a name, never health information.</p>
+    </section>
+    <section class="sc" data-ms="9800" data-sc="grow">
       <h2 data-step>It builds every month</h2>
       <p class="mo" data-step id="g-mo">Month 1</p>
       <div class="gchart" data-step id="g-chart"></div>
@@ -195,15 +248,6 @@ footer{font-size:12.5px;color:var(--muted);text-align:center;margin-top:18px}
         <div><span>Paid so far</span><b id="g-paid">$0</b></div>
       </div>
       <p data-step id="g-cap" style="font-size:13px"></p>
-    </section>
-    <section class="sc" data-ms="8600" data-sc="ledger">
-      <span class="eyebrow" data-step>The partner account</span>
-      <div class="led" data-step>
-        <div class="led-who"><span class="av" id="l-av">P</span><div><b id="l-name">Account holder</b><small>Account holder · <span data-partner-cap>Your studio</span></small></div></div>
-        <ul class="led-rows" id="l-rows" aria-hidden="true"></ul>
-        <div class="led-sum"><div><span>Subscribed</span><b id="l-act">0</b></div><div class="lead"><span>This month</span><b id="l-earn">$0</b></div><div><span>Paid so far</span><b id="l-paid">$0</b></div></div>
-      </div>
-      <p data-step style="font-size:13px">Example entries. Counts, plans and amounts only: never a name, never health information.</p>
     </section>
     <section class="sc" data-ms="6400">
       <h2 data-step>Simple, and clean</h2>
@@ -309,7 +353,8 @@ footer{font-size:12.5px;color:var(--muted);text-align:center;margin-top:18px}
   // Who this copy is for, from the link. Plain text only, never stored.
   const Q = new URLSearchParams(location.search);
   const clean = (v, n) => String(v || "").replace(/[^\p{L}\p{N} .,&'\u2019-]/gu, "").replace(/\s+/g, " ").trim().slice(0, n);
-  const PARTNER = clean(Q.get("partner"), 48), CONTACT = clean(Q.get("contact"), 32);
+  const FOR = window.MDFIT_PROPOSAL || {}; // set only in a copy prepared for one partner (scripts/referral-for.js)
+  const PARTNER = clean(Q.get("partner") || FOR.partner, 48), CONTACT = clean(Q.get("contact") || FOR.contact, 32);
   const num = (k, lo, hi) => { const v = Number(Q.get(k)); return Q.get(k) !== null && Number.isFinite(v) && v >= lo && v <= hi ? v : null; };
   let rate = num("rate", 5, 10) === 10 ? 10 : 5;
   { const a = num("size", 50, 2000), b = num("new", 1, 100); if (a) $("#c-size").value = a; if (b) $("#c-new").value = b; }
@@ -413,19 +458,47 @@ footer{font-size:12.5px;color:var(--muted);text-align:center;margin-top:18px}
     offer: (id) => count($("#n-rate"), rate, 900, whole, id),
     async grow(id) { const d = model(), bars = [...document.querySelectorAll("#g-chart rect")];
       $("#g-cap").textContent = `Example: ${d.size.toLocaleString()} members, ${d.perMonth} subscribe each month, ${Math.round(d.churn * 100)}% cancel.`;
-      await wait(1100, id);
+      await wait(900, id);
       for (const r of d.rows) { const b = bars[r.m - 1]; bars.forEach((x) => x.classList.remove("now")); b.classList.add("up", "now");
         $("#g-mo").textContent = `Month ${r.m}`; $("#g-act").textContent = whole(r.active); $("#g-earn").textContent = usd(r.earn); $("#g-paid").textContent = usd(r.paid);
-        await wait(r.m < 4 ? 520 : 300, id); } },
-    async ledger(id) { const d = model(), m = d.rows[11], list = $("#l-rows"); list.innerHTML = "";
+        await wait(r.m < 4 ? 480 : 280, id); } },
+    flow() { const share = PLANS[0].price * rate / 100; $("#f-price").textContent = usd(PLANS[0].price, true); $("#f-share").textContent = usd(share, true); },
+    // The partner's account over one month: payments land as pending, clear after the hold, a refund comes off, the 1st
+    // pays out what is ready, and the next month the same members pay again. Amounts are in cents.
+    async account(id) {
+      const m = Math.round(PLANS[0].price * rate), a = Math.round(PLANS[1].price * rate), list = $("#a-rows"), bal = { pend: 0, ready: 0, paid: 0 };
+      const money = (c) => usd(c / 100, true); list.innerHTML = "";
       $("#l-av").textContent = (CONTACT || PARTNER || "P").slice(0, 1).toUpperCase(); $("#l-name").textContent = CONTACT || "Account holder";
-      count($("#l-act"), m.active, 2600, whole, id); count($("#l-earn"), m.earn, 2600, (n) => usd(n, true), id); count($("#l-paid"), m.paid, 2600, usd, id);
-      await wait(900, id);
-      const share = (i) => usd(PLANS[i].price * rate / 100, true);
-      for (const [what, plan] of [["New subscriber", 0], ["Monthly renewal", 1], ["New subscriber", 0], ["Monthly renewal", 0], ["New subscriber", 1], ["Monthly renewal", 0], ["New subscriber", 0]]) {
-        const li = document.createElement("li"); li.innerHTML = `<span>${what}<small>${PLANS[plan].name}</small></span><span>+${share(plan)}</span>`; list.appendChild(li);
-        while (list.children.length > 3) list.removeChild(list.firstChild);
-        await wait(820, id); } }
+      const show = (k) => { const el = $("#a-" + k), from = Number(el.dataset.c || 0), to = bal[k], t0 = performance.now(), box = el.parentNode; el.dataset.c = to;
+        box.classList.add("hit"); setTimeout(() => box.classList.remove("hit"), 700);
+        const step = (t) => { if (id !== run) return; const q = still ? 1 : Math.min(1, (t - t0) / 600); el.textContent = money(from + (to - from) * (1 - Math.pow(1 - q, 3))); if (q < 1) requestAnimationFrame(step); };
+        requestAnimationFrame(step); };
+      ["pend", "ready", "paid"].forEach((k) => { const el = $("#a-" + k); el.dataset.c = 0; el.textContent = money(0); });
+      const WORD = { pend: "Pending", ready: "Ready", paid: "Paid", rev: "Taken back" };
+      const row = (what, sub, cents, state) => { const li = document.createElement("li"); if (cents < 0) li.className = "minus";
+        li.innerHTML = `<span>${what}<small>${sub}</small></span><span>${cents < 0 ? "−" : "+"}${money(Math.abs(cents))}<em class="chip ${state}">${WORD[state]}</em></span>`;
+        list.appendChild(li); while (list.children.length > 4) list.removeChild(list.firstChild); return li; };
+      const flip = (li, state) => { const c = li.querySelector(".chip"); c.className = "chip " + state; c.textContent = WORD[state]; li.classList.remove("flip"); void li.offsetWidth; li.classList.add("flip"); };
+      const move = (from, to, cents) => { bal[from] -= cents; bal[to] += cents; show(from); show(to); };
+      const day = (t) => ($("#a-day").textContent = t);
+      const say = async (t) => { const el = $("#a-say"); el.classList.add("swap"); await wait(220, id); el.textContent = t; el.classList.remove("swap"); };
+      const land = (li, cents) => { bal.pend += cents; show("pend"); return li; };
+      $("#a-say").textContent = ""; day("Mar 3"); await wait(700, id);
+      await say("A member's payment lands. Your share shows at once, as pending.");
+      const r1 = land(row("New subscriber", PLANS[0].name, m, "pend"), m); await wait(1300, id);
+      const r2 = land(row("New subscriber", PLANS[1].name, a, "pend"), a); await wait(1100, id);
+      day("Mar 4"); const r3 = land(row("Monthly renewal", PLANS[0].name, m, "pend"), m); await wait(1000, id);
+      day("Mar 9"); const week = 30 * m + 8 * a; const r4 = land(row("38 more payments", "This week", week, "pend"), week); await wait(1500, id);
+      day("Mar 10"); await say("After 7 days the hold ends. Pending becomes ready."); flip(r1, "ready"); flip(r2, "ready"); move("pend", "ready", m + a); await wait(1500, id);
+      day("Mar 11"); flip(r3, "ready"); move("pend", "ready", m); await wait(1100, id);
+      day("Mar 12"); await say("A refund comes off by itself. Nothing to chase."); row("Refund", PLANS[0].name, -m, "rev"); bal.pend -= m; show("pend"); await wait(1700, id);
+      day("Mar 16"); flip(r4, "ready"); move("pend", "ready", week - m); await wait(1200, id);
+      day("Mar 31"); await say("The rest of the month keeps arriving."); const mid = 54 * m + 20 * a, late = 16 * m + 6 * a;
+      row("74 more payments", "Mar 17 to 24", mid, "ready"); bal.ready += mid; show("ready"); await wait(900, id);
+      land(row("22 more payments", "Mar 25 to 31", late, "pend"), late); await wait(1500, id);
+      day("Apr 1"); await say("On the 1st, everything ready goes to your bank."); const out = bal.ready; row("Payout to your bank", "Stripe transfer", out, "paid"); move("ready", "paid", out); await wait(2300, id);
+      day("Apr 3"); await say("Next month the same members pay again. So do we."); land(row("Monthly renewal", PLANS[0].name, m, "pend"), m); await wait(900, id);
+      land(row("Monthly renewal", PLANS[1].name, a, "pend"), a); },
   };
   function reset() { scenes.forEach((s) => { s.classList.remove("on", "out"); s.querySelectorAll("[data-step]").forEach((e) => e.classList.remove("in")); });
     document.querySelectorAll("#g-chart rect").forEach((b) => b.classList.remove("up", "now")); $("#n-rate").textContent = "0"; prog.style.transition = "none"; prog.style.width = "0"; }
@@ -436,7 +509,8 @@ footer{font-size:12.5px;color:var(--muted);text-align:center;margin-top:18px}
     try {
       for (const s of scenes) {
         s.classList.add("on");
-        const steps = [...s.querySelectorAll("[data-step]")]; steps.forEach((e, i) => setTimeout(() => { if (id === run) e.classList.add("in"); }, still ? 0 : 180 + i * 260));
+        const steps = [...s.querySelectorAll("[data-step]")]; const gap = Number(s.dataset.gap) || 260;
+        steps.forEach((e, i) => setTimeout(() => { if (id === run) e.classList.add("in"); }, still ? 0 : 180 + i * gap));
         const t0 = performance.now(), extra = scene[s.dataset.sc]; if (extra) await extra(id);
         const ms = Number(s.dataset.ms); if (!ms) return; // the last scene stays
         await wait(Math.max(400, ms - (performance.now() - t0)), id);
