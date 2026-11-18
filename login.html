@@ -9,6 +9,16 @@
   <meta name="theme-color" content="#0A1A2E">
   <link rel="icon" href="assets/icon-64.png" type="image/png">
   <link rel="manifest" href="/manifest.webmanifest">
+  <!-- In the app (Home Screen icon or the phone app's shell) people already know why they're here: sign-in only, no
+       site menu, phone number or booking links. Set before first paint so the site chrome never flashes. -->
+  <script>(function(){try{if((window.matchMedia&&matchMedia("(display-mode: standalone)").matches)||navigator.standalone===true||!!window.MDFitNative||/; wv\)/.test(navigator.userAgent))document.documentElement.classList.add("in-app");}catch(e){}})();</script>
+  <style>
+    .app-brand { display: none; }
+    html.in-app .sh, html.in-app .site-only { display: none !important; }
+    html.in-app .app-brand { display: block; text-align: center; padding: calc(env(safe-area-inset-top, 0px) + 32px) 0 4px; }
+    html.in-app .app-brand { width: 100%; align-self: stretch; }
+    html.in-app .app-brand img { display: block; width: 96px; height: 96px; margin: 0 auto; }
+  </style>
   <link rel="apple-touch-icon" href="assets/app-icon-192.png">
   <link rel="stylesheet" href="styles.css?v=ec75b4b1">
   <link rel="stylesheet" href="account.css?v=7e0b90a0">
@@ -38,6 +48,7 @@
   </header>
   <!-- /site-header -->
   <main class="auth-wrap">
+    <div class="app-brand"><img src="/assets/logo.webp" alt="MD Fit" width="96" height="96"></div>
 
     <div class="auth-card">
       <div class="auth-tabs" role="tablist">
@@ -98,7 +109,7 @@
         <p class="form-msg" role="status"></p>
       </form>
     </div>
-    <p class="auth-foot"><a href="/?site=1">← Back to mymdfit.com</a> · <a href="/book">Book an appointment</a><br><a href="/privacy-policy">Privacy</a> · <a href="/terms">Terms</a></p>
+    <p class="auth-foot"><span class="site-only"><a href="/?site=1">← Back to mymdfit.com</a> · <a href="/book">Book an appointment</a><br></span><a href="/privacy-policy">Privacy</a> · <a href="/terms">Terms</a></p>
   </main>
 
   <script src="config.js?v=aac711e3"></script>
