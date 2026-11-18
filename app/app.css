@@ -1603,3 +1603,19 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
 #aff-stripe-banner:empty { display: none; }
 #aff-stripe-banner { margin-bottom: 10px; }
 #aff-stripe-more summary { cursor: pointer; color: var(--accent-text); font-weight: 700; margin: 4px 0 8px; }
+/* Profile on phones: everything below progress and membership folds to a one-line row that opens on tap, so the
+   tab is a short list instead of five screens of open cards. Buttons in a folded card's heading still work. The
+   choice is remembered on the device (account.js). Wider screens show every card open, as before. */
+@media (max-width: 700px) {
+  #view-profile .card.p-fold { padding-top: 14px; padding-bottom: 14px; }
+  #view-profile .card.p-fold:not(.open) > :not(.card-head) { display: none !important; }
+  #view-profile .card.p-fold:not(.open) > .card-head { margin-bottom: 0; }
+  #view-profile .card.p-fold > .card-head { cursor: pointer; -webkit-user-select: none; user-select: none; flex-wrap: nowrap; }
+  #view-profile .card.p-fold > .card-head .label { flex: 0 1 auto; min-width: 0; }
+  #view-profile .card.p-fold > .card-head > .btn-blue, #view-profile .card.p-fold > .card-head > button { flex: none; white-space: nowrap; }
+  #view-profile .card.p-fold > .card-head::after { content: ""; flex: none; width: 8px; height: 8px; margin: 0 4px 0 auto; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg); opacity: .55; transition: transform .2s; }
+  #view-profile .card.p-fold.open > .card-head::after { transform: rotate(-135deg); }
+  #view-profile .card.p-fold > .card-head .label { margin-bottom: 0; }
+  #view-profile .prof-logout { display: none; } /* Log out stays at the foot of the tab */
+}
+@media (max-width: 700px) and (prefers-reduced-motion: reduce) { #view-profile .card.p-fold > .card-head::after { transition: none; } }

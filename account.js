@@ -1194,6 +1194,33 @@
     const code = client.referralCode;
     if (code && $("#ref-code").textContent === "—") $("#ref-code").textContent = code;
   }
+  // Profile on phones: folded cards open on a tap of their heading (not on its buttons or links). Open/closed is
+  // remembered on this device per card. The CSS only folds on narrow screens, so this does nothing visible elsewhere.
+  const FOLD_KEY = "mdfit-profile-open";
+  const foldKey = (c) => c.id || ((c.querySelector(".card-head .label") || {}).textContent || "");
+  const openSet = () => { try { return new Set(JSON.parse(localStorage.getItem(FOLD_KEY) || "[]")); } catch { return new Set(); } };
+  const foldSync = (c) => { const h = c.querySelector(":scope > .card-head"); if (!h) return; h.setAttribute("role", "button"); h.tabIndex = 0; h.setAttribute("aria-expanded", String(c.classList.contains("open"))); };
+  (() => { const open = openSet(); $$("#view-profile .card.p-fold").forEach((c) => { if (open.has(foldKey(c))) c.classList.add("open"); foldSync(c); }); })();
+  const foldToggle = (c) => {
+    c.classList.toggle("open"); foldSync(c);
+    const open = openSet(), k = foldKey(c);
+    if (c.classList.contains("open")) open.add(k); else open.delete(k);
+    try { localStorage.setItem(FOLD_KEY, JSON.stringify([...open])); } catch {}
+  };
+  const profView = document.getElementById("view-profile");
+  profView.addEventListener("click", (e) => {
+    const h = e.target.closest(".card.p-fold > .card-head");
+    if (!h || e.target.closest("a, button, input, select, textarea, label")) return;
+    foldToggle(h.parentElement);
+  });
+  profView.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    const h = e.target.closest(".card.p-fold > .card-head");
+    if (!h || e.target !== h) return;
+    e.preventDefault(); foldToggle(h.parentElement);
+  });
+  // "Make it yours" is filled in after load (app-theme.js); its heading gets the same button semantics then
+  { const looks = document.getElementById("p-looks"); if (looks) new MutationObserver(() => foldSync(looks)).observe(looks, { childList: true }); }
   const signOut = () => { auth.clear(); location.href = "/"; };
   $("#logout").addEventListener("click", signOut);
   $("#logout-top").addEventListener("click", signOut);
