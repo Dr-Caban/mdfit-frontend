@@ -1782,6 +1782,10 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
   #t3-rank { border-color: rgba(200, 167, 99, .55); }
   #t3-rank .t3-k, #t3-rank b { color: var(--gold); }
   #t3-rank[aria-expanded="true"] { background: rgba(200, 167, 99, .12); }
+  #t3-rank { position: relative; }
+  .t3-jewel { position: absolute; top: 6px; right: 6px; width: 30px; height: 30px; filter: drop-shadow(0 0 6px var(--gem, #c8a763)); }
+  .t3-jewel svg { display: block; }
+  #t3-rank .t3-k, #t3-rank b { padding-right: 30px; }
   .t3.due { border-color: #E05A4F; }
   .t3.due small { color: #E05A4F; font-weight: 700; }
   #t3-rank.xp-ding { animation: xpDing 1.5s ease-out; }

@@ -3255,6 +3255,8 @@
     // Rank
     const r = reward;
     if (r && r.rank) { const o = r.overall, nx = r.rank.next, placed = r.xp > 50 && o && o.rank && !o.hidden;
+      // The jewel they hold now, in its own colour, in the corner of the tile
+      const jewel = $("#t3-jewel"); if (jewel) { jewel.innerHTML = GEM_ICON(r.rank.current.color, 30); jewel.style.setProperty("--gem", r.rank.current.color); }
       set("rank", r.rank.current.name, placed ? `#${o.rank} · ${r.xp.toLocaleString()} XP` : nx ? `${r.xp} XP · ${r.rank.xpToNext} to ${nx.name}` : `${r.xp.toLocaleString()} XP`); }
     else set("rank", "Peridot", "Earn XP to climb");
     // Next
@@ -3606,10 +3608,12 @@
     if (!client || Date.now() - welcomeAt < 10 * 60 * 1000) return;
     welcomeAt = Date.now();
     try {
+      // The very first time in (a new account, nothing earned yet) is a welcome, not a welcome back
+      const firstEver = !allWorkouts.length && (!reward || reward.xp === 0);
       const r = await apiAuth("POST", "/api/me/xp", { kind: "open" });
       if (!r || !r.first || !r.xp) return;
       await loadRewards(false);
-      celebrateToast([`Welcome back! +${r.xp} XP`]); ding();
+      celebrateToast([firstEver ? `Welcome to MD Fit! +${r.xp} XP` : `Welcome back! +${r.xp} XP`]); ding();
       const tr = $("#t3-rank"); if (tr) { tr.classList.add("xp-ding"); setTimeout(() => tr.classList.remove("xp-ding"), 1600); }
       const g = $("#gem-card"); if (g) { g.classList.remove("xp-ding"); void g.offsetWidth; g.classList.add("xp-ding"); setTimeout(() => g.classList.remove("xp-ding"), 1600); }
     } catch {}
