@@ -171,6 +171,7 @@
     const b = e.target.closest("[data-action]"); if (!b) return;
     const ms = $("#more-sheet"); if (ms && ms.open) ms.close();
     if (b.dataset.action === "book") { go("profile"); setTimeout(() => $("#p-book-open") && $("#p-book-open").click(), 50); }
+    if (b.dataset.action === "about") location.href = "/?site=1"; // the clinic's website, kept open for the rest of the visit
   });
   // Phones show five tabs plus "More"; the rest live in a sheet
   // Prepend high-value destinations (Pain Tool, Video Library, Book) above the overflow tabs
@@ -181,7 +182,9 @@
   ];
   const topHtml = topLinks.map((x) => `<button type="button" class="more-top" ${x.tab ? `data-goto="${x.tab}"` : `data-action="${x.action}"`}>${x.icon}<span>${x.label}</span></button>`).join("");
   const restHtml = $$(".tabbar .ov").map((b) => `<button type="button" data-goto="${b.dataset.tab}">${b.querySelector("svg").outerHTML}<span>${b.querySelector(".long").innerHTML}</span></button>`).join("");
-  $("#more-list").innerHTML = topHtml + `<div class="more-sep"></div>` + restHtml;
+  // The clinic's website: the app opens to sign-in or the account, so the site lives here
+  const aboutHtml = `<div class="more-sep"></div><button type="button" data-action="about"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 15h-2v-6h2zm0-8h-2V7h2z"/></svg><span>About MD Fit</span></button>`;
+  $("#more-list").innerHTML = topHtml + `<div class="more-sep"></div>` + restHtml + aboutHtml;
   if (typeof renderDots === "function") renderDots();
   $("#more-btn").addEventListener("click", () => $("#more-sheet").showModal());
 
