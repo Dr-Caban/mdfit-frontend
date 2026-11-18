@@ -835,6 +835,9 @@ html[data-theme="black"] {
 :where(html[data-theme=black]) .aff-rate-box { background: var(--card-2); }
 :where(html[data-theme=black]) .aff-rate-box b { color: var(--gold); }
 :where(html[data-theme=black]) #aff-stripe-more summary { color: var(--accent-text); }
+@media (max-width: 700px) {
+:where(html[data-theme=black]) #view-profile .card.p-fold > .card-head::after { border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; }
+}
 :where(html[data-theme=black]) .auth-page { background: var(--ink); }
 :where(html[data-theme=black]) .auth-card { background: var(--paper); }
 :where(html[data-theme=black]) .auth-tabs { border-bottom: 1px solid var(--line); }
@@ -2102,6 +2105,12 @@ html[data-theme="black"] { --aff-earned: #4a94dc; --aff-pend: #b98522; }
 :where(html[data-layout=compact]) .aff-stripe-mount { margin: 4px 0 8.5px; }
 :where(html[data-layout=compact]) #aff-stripe-banner { margin-bottom: 8px; }
 :where(html[data-layout=compact]) #aff-stripe-more summary { margin: 4px 0 6px; }
+@media (max-width: 700px) {
+:where(html[data-layout=compact]) #view-profile .card.p-fold { padding-top: 10px; padding-bottom: 10px; }
+:where(html[data-layout=compact]) #view-profile .card.p-fold:not(.open) > .card-head { margin-bottom: 0; }
+:where(html[data-layout=compact]) #view-profile .card.p-fold > .card-head::after { margin: 0 4px 0 auto; }
+:where(html[data-layout=compact]) #view-profile .card.p-fold > .card-head .label { margin-bottom: 0; }
+}
 :where(html[data-layout=compact]) .auth-wrap { margin: 0 auto; padding: 40px 0; gap: 13px; }
 :where(html[data-layout=compact]) .auth-tabs button { padding: 15px; font-size: 15px; }
 :where(html[data-layout=compact]) .auth-form { padding: 18px; }
