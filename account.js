@@ -2422,7 +2422,7 @@
       referral: "#referral-card", account: "#p-account-card", feedback: "#p-feedback-card", install: "#p-install" }
   };
   const LAYOUT_LABEL = {
-    home: { care: "What to do next", fromJared: "From Dr. Jared", journey: "Your gem cave", today: "Today's workout", plans: "Your plans", gem: "Your gem and XP",
+    home: { care: "What to do next", fromJared: "From Dr. Jared", journey: "The gem mine", today: "Today's workout", plans: "Your plans", gem: "Your gem and XP",
       programs: "Dr. Jared's Programs", quick: "Quick actions", habits: "Daily activities", challenges: "Challenges", myWorkouts: "My workouts",
       shared: "Shared workouts", myPrograms: "My programs", events: "Upcoming events", activity: "Recent activity", install: "Get the app" },
     profile: { care: "My care plan", membership: "Membership", patient: "Patient documents", progress: "My progress", appointments: "My appointments", classes: "My classes",

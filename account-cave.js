@@ -1,4 +1,6 @@
-// MD Fit member app: the gem cave on Home. The member's program drawn as a dirt road through a cave: one chamber per
+// MD Fit member app: the gem mine on Home. The look is an ancient hewn mine (stone gate, clay oil lamps, gold in the
+// rock) with Solomon as the guide who speaks in short sayings of his own; nothing here quotes or names scripture, and
+// there are no religious symbols. The member's program drawn as a dirt road through the mine: one chamber per
 // week (or stage), one stop per session, a gem in the rock at each stop. Done stops are cracked open and lit, today's
 // stop glows with Solomon and his lantern beside it, the rest wait in the dark. Under the road: today's seam (workout,
 // pain check-in, daily goal) and where the road ends (the program's finish and the next gem).
@@ -15,7 +17,7 @@
 
   const home = $("#view-home .col-main"); if (!home) return;
   const card = document.createElement("section");
-  card.className = "card cave-card"; card.id = "cave-card"; card.hidden = true; card.setAttribute("aria-label", "Your gem cave");
+  card.className = "card cave-card"; card.id = "cave-card"; card.hidden = true; card.setAttribute("aria-label", "The gem mine");
   { const after = $("#next-card", home) || $("#gem-card", home); after ? after.after(card) : home.prepend(card); }
 
   // One stop's picture: the photo for its state when there is one, otherwise a drawn rock with its gem
@@ -27,33 +29,41 @@
       : `<svg class="cv-ore-svg" viewBox="0 0 84 84" aria-hidden="true"><path d="M10 54 20 26l24-12 24 10 8 30-16 18H26z" fill="${rock}" stroke="${edge}" stroke-width="2"/><path d="M20 26l22 14 26-16M42 40l-16 32M42 40l18 32" fill="none" stroke="${edge}" stroke-width="1.5"/><path d="M42 26 32 40l10 20 10-20z" fill="${gem}"/><path d="M42 26 32 40h20z" fill="#fff" opacity="${state === "locked" ? ".08" : ".35"}"/>${state === "locked" ? `<g transform="translate(52 52)"><rect x="0" y="8" width="18" height="13" rx="3" fill="#596273"/><path d="M4 8V5a5 5 0 0 1 10 0v3" fill="none" stroke="#596273" stroke-width="3"/></g>` : ""}</svg>`;
   }
   const guide = () => (ART.guide ? `<img class="cv-guide-img" src="${esc(ART.guide)}" alt="" width="92" height="92">`
-    : `<svg class="cv-guide-svg" viewBox="0 0 104 96" aria-hidden="true"><path d="M24 58h58a20 20 0 0 0 2-40 26 26 0 0 0-49-6 18 18 0 0 0-11 46z" fill="#fff" stroke="#C8A763" stroke-width="4"/><circle cx="42" cy="38" r="4.5" fill="#C8A763"/><circle cx="56" cy="38" r="4.5" fill="#C8A763"/><circle cx="70" cy="38" r="4.5" fill="#C8A763"/><path d="M56 58v10" stroke="#8C7340" stroke-width="3"/><rect class="cv-lamp" x="47" y="68" width="18" height="22" rx="5" fill="#FFD98A" stroke="#8C7340" stroke-width="3"/></svg>`);
+    : `<svg class="cv-guide-svg" viewBox="0 0 104 96" aria-hidden="true"><path d="M24 58h58a20 20 0 0 0 2-40 26 26 0 0 0-49-6 18 18 0 0 0-11 46z" fill="#fff" stroke="#C8A763" stroke-width="4"/><circle cx="42" cy="38" r="4.5" fill="#C8A763"/><circle cx="56" cy="38" r="4.5" fill="#C8A763"/><circle cx="70" cy="38" r="4.5" fill="#C8A763"/><path d="M52 58v12" stroke="#8C7340" stroke-width="3"/><path d="M30 72h40l10-5 6 3-9 9q-14 12-36 8-11-3-11-15z" fill="#b5713c" stroke="#7a4a24" stroke-width="2.5"/><path class="cv-lamp" d="M84 66q-7-9 0-19 7 10 0 19z" fill="#FFD98A"/></svg>`);
   const crystal = (lit) => `<svg class="cv-cry${lit ? " lit" : ""}" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 7 9l5 13 5-13z"/><path d="M5 12 3 16l4 5zM19 12l2 4-4 5z"/></svg>`;
 
   // "Upper Body — 50-40-30-20-10 (light)" reads "Upper Body" on the road; the full name is on the stop's label for screen readers
   const short = (t) => String(t).split(/\s+[—–-]\s+|\s*\(/)[0].trim() || String(t);
+  // Solomon's own sayings (written for the app, in the manner of old proverbs; none is a quotation)
+  const SAYINGS = ["The patient miner finds the brighter stone.", "Small steps, well kept, move mountains.", "What you build daily, no one can take.",
+    "Strength is gathered, not found.", "A steady hand outlasts a strong one.", "The lamp you tend lights the whole road.", "Dig a little each day and the mountain yields."];
   function line(j) {
-    const now = j.stops.find((s) => s.state === "now"), t = j.today;
-    if (t.workout && t.pain && t.goal) return "Seam mined. Every crystal lit. See you tomorrow.";
-    if (!t.workout && now) return `${short(now.label)} today. I'll hold the lantern.`;
-    if (!t.pain) return "Workout's in. Log how you feel to light the next crystal.";
-    return "Nearly there. A little more XP lights the last crystal.";
+    const now = j.stops.find((s) => s.state === "now"), t = j.today, say = SAYINGS[Math.floor(Date.now() / 864e5) % SAYINGS.length];
+    if (t.workout && t.pain && t.goal) return "Every lamp is lit. Rest now; the road will keep.";
+    if (!t.workout && now) return `${short(now.label)} today. ${say}`;
+    if (!t.pain) return "Good work. Tell me how you feel, and another crystal wakes.";
+    return "One more light to kindle: reach your daily goal.";
   }
+  const flame = `<svg viewBox="0 0 26 34" aria-hidden="true"><path d="M3 24h20l-3 7H6z" fill="#8a5a30"/><path class="cv-flame" d="M13 22q-8-8 0-19 8 11 0 19z" fill="#ffb347"/><path class="cv-flame" d="M13 21q-4-5 0-11 4 6 0 11z" fill="#fff1c2"/></svg>`;
+  const pathOf = (all, rowH) => all.map((p, i) => (i ? `C ${all[i - 1][0]} ${all[i - 1][1] + rowH / 2}, ${p[0]} ${p[1] - rowH / 2}, ${p[0]} ${p[1]}` : `M ${p[0]} ${p[1]}`)).join(" ");
 
   function render() {
     const j = A.journey(); if (!j) { card.hidden = true; return; }
     card.hidden = false;
     if (!j.program) {
-      card.innerHTML = `<div class="cv-mouth"${ART.mouth ? ` style="background-image:url('${esc(ART.mouth)}')"` : ""}><span class="cv-kicker">Your gem cave</span><b class="cv-title">${j.finished ? "You reached the vault" : "Every program is a road of gems"}</b>
-        <p class="cv-sub">${j.finished ? "Every stop on your road is mined. Pick the next program to open a new cave." : "Pick a program and each session becomes a stop on the road down. Solomon carries the lantern."}</p>
+      card.innerHTML = `<div class="cv-mouth"${ART.mouth ? ` style="background-image:url('${esc(ART.mouth)}')"` : ""}><span class="cv-kicker">The gem mine</span><b class="cv-title">${j.finished ? "You reached the vault" : "Every program is a road of gems"}</b>
+        <p class="cv-sub">${j.finished ? "Every stop on your road is mined. Pick the next program to open a new mine." : "Pick a program and each session becomes a stop on the road down. Solomon carries the lamp."}</p>
         <button type="button" class="cv-start" data-goto="programs">Choose a program</button></div>`;
       return;
     }
     // Today's stop gets room above it (its Start bubble) and below it (Solomon and what he says)
-    const rowH = 112, pts = []; let y = 56;
+    const rowH = 112, pts = []; let y = 104;
     j.stops.forEach((s, i) => { if (s.state === "now") y += i ? 62 : 70; pts.push([X[i % X.length], y]); y += rowH + (s.state === "now" ? 64 : 0); });
     const H = y + 96, end = [50, H - 62], all = [...pts, end];
-    const d = all.map((p, i) => (i ? `C ${all[i - 1][0]} ${all[i - 1][1] + rowH / 2}, ${p[0]} ${p[1] - rowH / 2}, ${p[0]} ${p[1]}` : `M ${p[0]} ${p[1]}`)).join(" ");
+    const d = pathOf([[50, 30], ...all], rowH);
+    // The stretch already travelled carries moving lights, from the gate to today's stop (the whole road once it is cleared)
+    const nowAt = j.stops.findIndex((s) => s.state === "now"), lit = pathOf([[50, 30], ...(nowAt < 0 ? all : pts.slice(0, nowAt + 1))], rowH);
+    let lamps = ""; for (let k = 0, ly = 150; ly < H - 110; k++, ly += 210) lamps += `<span class="cv-wlamp ${k % 2 ? "r" : "l"}" style="top:${ly}px">${flame}</span>`;
     const lastChamber = j.chamber >= j.chambers, cleared = j.stops.every((s) => s.state === "done");
     const stopHtml = j.stops.map((s, i) => {
       const [x, y] = pts[i], color = GEMS[s.n % GEMS.length], left = x < 50;
@@ -61,6 +71,7 @@
       return `<div class="cv-stop ${s.state}" style="left:${x}%;top:${y}px;--gem:${color}">
           ${s.state === "now" ? `<span class="cv-bubble">${j.today.workout ? "Go again" : "Start"}<small>${esc(short(s.label))}${s.sub ? " · " + esc(s.sub) : ""}</small></span>` : ""}
           <button type="button" class="cv-ore" ${act} aria-label="${esc(s.label)}${s.sub ? ", " + esc(s.sub) : ""}: ${s.state === "done" ? "mined" : s.state === "now" ? "today, start" : "not open yet"}">${ore(s.state, color)}</button>
+          ${s.state === "done" ? `<i class="cv-tw t1"></i><i class="cv-tw t2"></i>` : ""}
           ${s.state === "now" ? "" : `<span class="cv-cap">${esc(short(s.label))}</span>`}
           ${s.state === "now" ? `<div class="cv-guide ${left ? "right" : "left"}"><span class="cv-say">${esc(line(j))}</span>${guide()}</div>` : ""}
         </div>`;
@@ -68,16 +79,18 @@
     const chip = (lit, label, attrs = "") => `<button type="button" class="cv-chip${lit ? " lit" : ""}" ${attrs}>${crystal(lit)}<span>${label}</span></button>`;
     card.innerHTML = `
       <div class="cv-mouth"${ART.mouth ? ` style="background-image:url('${esc(ART.mouth)}')"` : ""}>
-        <span class="cv-kicker">Your gem cave · ${esc(j.unit)} ${j.chamber} of ${j.chambers}</span>
+        <span class="cv-kicker">The gem mine · ${esc(j.unit)} ${j.chamber} of ${j.chambers}</span>
         <b class="cv-title">${esc(j.program.title)}</b>
         <button type="button" class="cv-guidebook" data-fp="${esc(j.program.id)}" aria-label="Open the program">Program</button>
       </div>
       <div class="cv-road" style="height:${H}px${ART.road ? `;background-image:url('${esc(ART.road)}')` : ""}">
         <i class="cv-dust d1"></i><i class="cv-dust d2"></i><i class="cv-dust d3"></i><i class="cv-dust d4"></i>
-        <svg class="cv-path" viewBox="0 0 100 ${H}" preserveAspectRatio="none" aria-hidden="true"><path d="${d}" class="cv-dirt"/><path d="${d}" class="cv-track"/></svg>
+        <svg class="cv-path" viewBox="0 0 100 ${H}" preserveAspectRatio="none" aria-hidden="true"><path d="${d}" class="cv-dirt"/><path d="${d}" class="cv-track"/><path d="${lit}" class="cv-glow"/></svg>
+        <svg class="cv-gate" viewBox="0 0 390 52" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0h390v52H272c0-40-154-40-154 0H0z" fill="#3b3024"/><path d="M0 17h130M260 17h130M0 35h118M272 35h118M40 0v17M96 17v18M300 0v17M344 17v18M70 35v17M330 35v17" stroke="#261e15" stroke-width="2"/><path d="M118 52c0-40 154-40 154 0" fill="none" stroke="#c8a763" stroke-width="2.5"/></svg>
+        ${lamps}
         ${stopHtml}
         <div class="cv-end${cleared ? " lit" : ""}" style="top:${end[1]}px">${ART.geode ? `<img src="${esc(ART.geode)}" alt="" width="64" height="64">` : `<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M8 38a24 22 0 0 1 48 0c0 10-10 18-24 18S8 48 8 38z" fill="#2b313d" stroke="#3b4352" stroke-width="2"/><path d="M18 38l6-10 8 6 8-8 6 12-8 10H24z" fill="${cleared ? "#b58cff" : "#3a4252"}"/><path d="M24 28l8 6 8-8" fill="none" stroke="#fff" stroke-opacity="${cleared ? ".5" : ".12"}" stroke-width="2"/></svg>`}
-          <span>${cleared ? `${esc(j.unit)} ${j.chamber} cleared` : lastChamber ? "The vault is past this chamber" : `Ladder down to ${esc(j.unit.toLowerCase())} ${j.chamber + 1}`}</span></div>
+          <span>${cleared ? `${esc(j.unit)} ${j.chamber} cleared` : lastChamber ? "The treasury lies past this chamber" : `Steps down to ${esc(j.unit.toLowerCase())} ${j.chamber + 1}`}</span></div>
       </div>
       <div class="cv-seam" aria-label="Today's seam">
         <span class="cv-kicker">Today's seam</span>
@@ -85,8 +98,8 @@
         ${j.movements ? `<button type="button" class="cv-moves" data-goto="profile">${j.movements} movement${j.movements === 1 ? "" : "s"} from Dr. Jared to do today</button>` : ""}
       </div>
       <div class="cv-vault"${ART.vault ? ` style="background-image:url('${esc(ART.vault)}')"` : ""}>
-        <span class="cv-kicker">Where the road ends</span>
-        <p><b>${j.left}</b> stop${j.left === 1 ? "" : "s"} to the vault of ${esc(j.program.title)}${j.next ? ` · <b>${Number(j.next.xp).toLocaleString()} XP</b> to <i class="cv-next" style="--gem:${esc(j.next.color)}"></i>${esc(j.next.name)}` : ""}</p>
+        <span class="cv-kicker">The treasury ahead</span>
+        <p><b>${j.left}</b> stop${j.left === 1 ? "" : "s"} to the treasury of ${esc(j.program.title)}${j.next ? ` · <b>${Number(j.next.xp).toLocaleString()} XP</b> to <i class="cv-next" style="--gem:${esc(j.next.color)}"></i>${esc(j.next.name)}` : ""}</p>
       </div>`;
   }
   card.addEventListener("click", (e) => { const b = e.target.closest("[data-cave-start]"); if (b) A.journeyStart(Number(b.dataset.caveStart)); });
