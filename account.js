@@ -1306,7 +1306,7 @@
   const affTrack = $("#aff-slides");
   async function loadAffiliate(flashNew) {
     try { aff = await apiAuth("GET", "/api/me/affiliate"); } catch { return; }
-    renderAffiliate(flashNew);
+    renderAffiliate(flashNew); try { renderTop(); } catch {}
   }
   function affSlides() { return $$("#aff-slides > .aff-slide").filter((s) => !s.hidden); }
   function renderAffDots() {
@@ -3230,11 +3230,59 @@
     const docsDue = !!(docs && !docs.hidden);
     card.hidden = !careShown && !docsDue;
     const intro = $(".care-intro", card); if (intro) intro.hidden = !careShown;
-    renderPlus();
-    // Phones show the card as one line (below) plus whatever Dr. Jared left; with neither, the card steps aside
+    renderPlus(); try { renderTop(); } catch {}
+    // Phones show the card only for what Dr. Jared left; with nothing from him, the card steps aside
     const line = $("#next-line"), fromJared = !!(carePlan && (carePlan.notes.length || carePlan.movements.length));
-    card.classList.toggle("next-slim-empty", !!line && line.hidden && !fromJared);
+    card.classList.toggle("next-slim-empty", !fromJared); // (the "Next" tile carries the rest on a phone)
   }
+  // Phones: three tiles at the top of Home. Earned: their referral commission. Rank: their gem, and their place
+  // on the board only once they are past the first gem (a newcomer sees how far the next gem is instead). Next: the one
+  // thing to do now. Rank opens the full gem card under the tiles.
+  function renderTop() {
+    const box = $("#top3"); if (!box || !client) return;
+    const set = (id, v, s, due) => { $(`#t3-${id}-v`).textContent = v; $(`#t3-${id}-s`).textContent = s; $(`#t3-${id}`).classList.toggle("due", !!due); };
+    // Earned: referral commission (paid, ready and pending together; the small line splits it), or how to start
+    const t = todayInTz(), usd = (c) => "$" + (Math.round(c) / 100).toFixed(2).replace(/\.00$/, ""), plan = $("#t3-plan"), a = aff, b = (a && a.balances) || {};
+    const paid = b.paidCents || 0, waiting = (b.readyCents || 0) + (b.pendingCents || 0);
+    if (paid + waiting > 0) set("plan", usd(paid + waiting), waiting ? `${usd(paid)} paid · ${usd(waiting)} on the way` : `${usd(paid)} paid to you`);
+    else if (a && a.joined) set("plan", "$0", a.referred ? `${a.referred} referred so far` : "Share your link to earn");
+    else if (a && a.enabled) set("plan", `Earn ${Number(a.ratePct)}%`, "of what friends pay");
+    else set("plan", a && a.freeMonth === false ? "Share" : "Free month", a && a.freeMonth === false ? "your code" : "for each friend who joins");
+    // Nothing earned yet reads as an invitation ("Refer"), not as money already made
+    $("#t3-plan .t3-k").textContent = paid + waiting > 0 || (a && a.joined) ? "Earned" : "Refer";
+    plan.dataset.go = "refer";
+    const owed = calMoney.find((x) => x.k === "bill" && /^Unpaid/.test(x.s || ""));
+    // Rank
+    const r = reward;
+    if (r && r.rank) { const o = r.overall, nx = r.rank.next, placed = r.xp > 50 && o && o.rank && !o.hidden;
+      set("rank", r.rank.current.name, placed ? `#${o.rank} · ${r.xp.toLocaleString()} XP` : nx ? `${r.xp} XP · ${r.rank.xpToNext} to ${nx.name}` : `${r.xp.toLocaleString()} XP`); }
+    else set("rank", "Peridot", "Earn XP to climb");
+    // Next
+    const v = nextVisit(), p = patientDocs, docsDue = !!(p && !p.done && v), j = journey(), now = j && j.program && j.stops.find((x) => x.state === "now"), next = $("#t3-next");
+    const brief = (s) => String(s).split(/\s+[—–-]\s+|\s*\(/)[0].trim() || String(s);
+    if (docsDue) { set("next", "Intake documents", "Due before your visit", true); next.dataset.go = "plus"; }
+    else if (owed) { set("next", (String(owed.t).match(/\$[\d,.]+/) || ["Invoice"])[0] + " invoice", "Tap to pay", true); next.dataset.go = owed.path || "#progress"; }
+    else if (v && v.date <= addDays(t, 1)) { set("next", v.typeName || "Visit", whenOf(v)); next.dataset.go = "plus"; }
+    else if (now && !j.today.workout) { set("next", brief(now.label), "Today's session"); next.dataset.go = "mine"; }
+    else if (v) { set("next", v.typeName || "Visit", whenOf(v)); next.dataset.go = "plus"; }
+    else if (j && !j.program) { set("next", "Pick a program", "Start your road"); next.dataset.go = "#programs"; }
+    else { set("next", "Today's workout", j && j.today.workout ? "Done. Nice work." : "Ready when you are"); next.dataset.go = "today"; }
+    // A newcomer is welcomed, not welcomed back
+    const hello = $("#view-home .hello"); if (hello) hello.textContent = !allWorkouts.length && (!r || r.xp <= 10) ? "Welcome" : "Welcome back";
+    box.hidden = false;
+  }
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest(".t3"); if (!b) return;
+    if (b.id === "t3-rank") { const open = $("#view-home").classList.toggle("gem-open"); b.setAttribute("aria-expanded", String(open)); return; }
+    const go2 = b.dataset.go || "";
+    if (go2 === "plus") { renderPlus(); $("#plus-sheet").showModal(); }
+    else if (go2 === "refer") { go("profile"); setTimeout(() => { const c = $("#referral-card"); if (!c) return; if (c.classList.contains("lay-fold") && !c.classList.contains("open")) layToggle(c); c.scrollIntoView({ block: "start" }); }, 120); }
+    else if (go2 === "mine") { const c = $("#cave-card"); if (c) c.scrollIntoView({ behavior: "smooth", block: "start" }); }
+    else if (go2 === "today") { const c = $("#today-card"); if (c) c.scrollIntoView({ behavior: "smooth", block: "center" }); }
+    else if (go2.startsWith("#")) go(go2.slice(1));
+    else if (go2) location.href = go2;
+  });
+  ["mdfit:rewards", "mdfit:journey"].forEach((ev) => document.addEventListener(ev, () => { try { renderTop(); } catch {} }));
   // Home's "+" (quick actions): join the video visit, intake documents, book a visit. The same facts make the one line
   // Home's "What to do next" shows on a phone, and the red dot on the "+" when something is due.
   const nextVisit = () => { const t = todayInTz(); return (appts.upcoming || []).filter((a) => a.status !== "cancelled" && a.date >= t).sort((a, b) => (a.date + a.time < b.date + b.time ? -1 : 1))[0] || null; };
@@ -3562,6 +3610,7 @@
       if (!r || !r.first || !r.xp) return;
       await loadRewards(false);
       celebrateToast([`Welcome back! +${r.xp} XP`]); ding();
+      const tr = $("#t3-rank"); if (tr) { tr.classList.add("xp-ding"); setTimeout(() => tr.classList.remove("xp-ding"), 1600); }
       const g = $("#gem-card"); if (g) { g.classList.remove("xp-ding"); void g.offsetWidth; g.classList.add("xp-ding"); setTimeout(() => g.classList.remove("xp-ding"), 1600); }
     } catch {}
   }
@@ -3634,7 +3683,7 @@
   // Keep the calendar in step with the clinic: everything on it is asked for again when the server says something of
   // this member's changed (a visit booked or moved in the workspace, a payment, a workout logged on the phone app),
   // when the app comes back to the front, when Progress is opened, and every two minutes while Progress is on screen.
-  function loadCalMoney() { return apiAuth("GET", "/api/me/calendar").then((r) => { calMoney = (r && r.entries) || []; }).catch(() => {}); }
+  function loadCalMoney() { return apiAuth("GET", "/api/me/calendar").then((r) => { calMoney = (r && r.entries) || []; try { renderTop(); } catch {} }).catch(() => {}); }
   function syncCalendar(force = false) {
     if (calSyncing) return calSyncing;
     if (!force && Date.now() - calSyncAt < 20000) return Promise.resolve();

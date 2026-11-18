@@ -889,6 +889,14 @@ html[data-theme="black"] {
 :where(html[data-theme=black]) .next-line:not([hidden]) { border: 0; background: none; color: inherit; }
 :where(html[data-theme=black]) .next-line svg { fill: none; stroke: currentColor; }
 :where(html[data-theme=black]) .gem-card .gc-today div + div { border-left: 0; }
+:where(html[data-theme=black]) .t3 { border: 1px solid var(--line); background: var(--card); color: inherit; }
+:where(html[data-theme=black]) .t3-k { color: var(--muted); }
+:where(html[data-theme=black]) .t3 small { color: var(--muted); }
+:where(html[data-theme=black]) #t3-rank { border-color: rgba(200, 167, 99, .55); }
+:where(html[data-theme=black]) #t3-rank .t3-k, :where(html[data-theme=black]) #t3-rank b { color: var(--gold); }
+:where(html[data-theme=black]) #t3-rank[aria-expanded="true"] { background: rgba(200, 167, 99, .12); }
+:where(html[data-theme=black]) .t3.due { border-color: #E05A4F; }
+:where(html[data-theme=black]) .t3.due small { color: #E05A4F; }
 }
 :where(html[data-theme=black]) .auth-page { background: var(--ink); }
 :where(html[data-theme=black]) .auth-card { background: var(--paper); }
@@ -2233,6 +2241,11 @@ html[data-theme="black"] { --aff-earned: #4a94dc; --aff-pend: #b98522; }
 :where(html[data-layout=compact]) .gem-card .gc-today span { font-size: 11px; }
 :where(html[data-layout=compact]) .gem-card .gc-more { margin: 0; padding: 6px 6px; }
 :where(html[data-layout=compact]) .gem-card.more .gc-more { margin: 6px 0 -4px; }
+:where(html[data-layout=compact]) .top3:not([hidden]) { gap: 6px; margin: 0 0 8.5px; }
+:where(html[data-layout=compact]) .t3 { gap: 2px; padding: 8px; font-size: inherit; }
+:where(html[data-layout=compact]) .t3-k { font-size: 10px; }
+:where(html[data-layout=compact]) .t3 b { font-size: 14px; }
+:where(html[data-layout=compact]) .t3 small { font-size: 11.5px; }
 }
 :where(html[data-layout=compact]) .auth-wrap { margin: 0 auto; padding: 40px 0; gap: 13px; }
 :where(html[data-layout=compact]) .auth-tabs button { padding: 15px; font-size: 15px; }

@@ -1769,3 +1769,22 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
   .gem-card .gc-more { position: absolute; right: 6px; bottom: 2px; width: auto; margin: 0; padding: 6px 8px; min-height: 32px; }
   .gem-card.more .gc-more { position: static; width: 100%; margin: 8px 0 -4px; }
 }
+
+/* Phones: Plan, Rank and Next at the top of Home (account.js renderTop). The gem card opens under them from Rank; the
+   one-line "What to do next" gives way to the Next tile. Wider screens keep the full cards. */
+.top3 { display: none; }
+@media (max-width: 700px) {
+  .top3:not([hidden]) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 0 0 12px; }
+  .t3 { display: flex; flex-direction: column; gap: 2px; min-height: 78px; padding: 10px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); color: inherit; text-align: left; font: inherit; cursor: pointer; overflow: hidden; }
+  .t3-k { font: 700 10px var(--body); letter-spacing: 1.4px; text-transform: uppercase; color: var(--muted); }
+  .t3 b { font: 700 15px/1.2 var(--body); overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+  .t3 small { font-size: 11.5px; line-height: 1.25; color: var(--muted); }
+  #t3-rank { border-color: rgba(200, 167, 99, .55); }
+  #t3-rank .t3-k, #t3-rank b { color: var(--gold); }
+  #t3-rank[aria-expanded="true"] { background: rgba(200, 167, 99, .12); }
+  .t3.due { border-color: #E05A4F; }
+  .t3.due small { color: #E05A4F; font-weight: 700; }
+  #t3-rank.xp-ding { animation: xpDing 1.5s ease-out; }
+  #view-home:not(.gem-open) #gem-card { display: none !important; }
+  .next-line:not([hidden]) { display: none; }
+}

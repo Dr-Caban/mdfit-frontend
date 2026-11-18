@@ -19,10 +19,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="app/app.css?v=3799b953">
+  <link rel="stylesheet" href="app/app.css?v=48b0db39">
   <link rel="stylesheet" href="account.css?v=7e0b90a0">
   <link rel="stylesheet" href="guides.css?v=704fb203">
-  <link rel="stylesheet" href="app-theme.css?v=a1b80ccb">
+  <link rel="stylesheet" href="app-theme.css?v=1d62f11e">
   <link rel="stylesheet" href="mdfit-guide.css?v=408b8c88">
   <link rel="stylesheet" href="account-cave.css?v=55ae4af1">
   <link rel="stylesheet" href="progress-charts.css?v=f0ec9711">
@@ -56,6 +56,12 @@
         <button type="button" class="qsearch-x" id="qsearch-x" aria-label="Clear" hidden>&times;</button>
       </div>
       <div class="qsearch-results" id="qsearch-results" hidden></div>
+      <!-- Phones: referral earnings, rank and what's next at a glance (account.js renderTop). Rank opens the gem card below. -->
+      <div class="top3" id="top3" hidden>
+        <button type="button" class="t3" id="t3-plan"><span class="t3-k">Earned</span><b id="t3-plan-v"></b><small id="t3-plan-s"></small></button>
+        <button type="button" class="t3" id="t3-rank" aria-expanded="false" aria-controls="gem-card"><span class="t3-k">Rank</span><b id="t3-rank-v"></b><small id="t3-rank-s"></small></button>
+        <button type="button" class="t3" id="t3-next"><span class="t3-k">Next</span><b id="t3-next-v"></b><small id="t3-next-s"></small></button>
+      </div>
 
       <div class="home-grid"><div class="col-main">
       <!-- Patients: notes and movements from Dr. Jared, paid or upcoming video visits -->
@@ -880,7 +886,7 @@
   <script src="guides.js?v=8521968d"></script>
   <script src="stripe-checkout.js?v=087989ec"></script>
   <script src="progress-charts.js?v=df3a2256"></script>
-  <script src="account.js?v=07827515"></script>
+  <script src="account.js?v=a5a7ed68"></script>
   <script src="account-xp.js?v=97c923ce"></script>
   <script src="account-share.js?v=763ef457"></script>
   <script src="account-habits.js?v=8bebfbfe"></script>
