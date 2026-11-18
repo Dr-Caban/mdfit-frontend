@@ -141,8 +141,8 @@
   // The first descent has its own footer: how far along, and what finishing earns
   function decorate() {
     const j = A.journey(); if (!j || !j.intro) return;
-    const seam = card.querySelector(".cv-seam"), vault = card.querySelector(".cv-vault p"), done = j.stops.filter((s) => s.state === "done").length, now = j.stops.find((s) => s.state === "now");
-    if (seam) seam.innerHTML = `<span class="cv-kicker">Your first descent</span><p class="cv-intro-line"><b>${done} of ${j.stops.length}</b> stops done · 10 XP each · any order</p>${now ? `<button type="button" class="cv-moves" data-intro-pass="${esc(now.ref)}">Can't do "${esc(now.label)}" right now? Skip this stop</button>` : ""}`;
+    const seam = card.querySelector(".cv-seam"), vault = card.querySelector(".cv-vault p"), done = j.stops.filter((s) => s.state === "done").length, todo = j.stops.filter((s) => s.state === "now" || s.state === "open");
+    if (seam) seam.innerHTML = `<span class="cv-kicker">Your first descent</span><p class="cv-intro-line"><b>${done} of ${j.stops.length}</b> stops done · 10 XP each · any order</p>${todo.length ? `<p class="cv-skip-row"><span>Can't do one right now? Skip it, no XP:</span>${todo.map((x) => `<button type="button" class="cv-skip" data-intro-pass="${esc(x.ref)}" aria-label="Skip ${esc(x.label)}">${esc(x.label)}</button>`).join("")}</p>` : ""}`;
     // (real actions earn their own XP too, so Amber often arrives before the last stop)
     if (vault) vault.innerHTML = j.next && j.next.name === "Amber" ? `Finish all five and <b>Amber</b>, your first new gem, is yours.` : `<b>Amber</b> is already yours. Finish the last stops for the XP.`;
   }

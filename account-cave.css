@@ -120,3 +120,6 @@
 .cv-mouth.art .cv-guidebook.cv-alt { position: absolute; }
 .cv-stop.passed .cv-ore { cursor: pointer; }
 .cv-stop.passed .cv-ore-img { width: 76px; height: 76px; margin: 4px; filter: brightness(.55); }
+.cv-skip-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0 0 10px; font-size: 12.5px; color: #9aa3b2; }
+.cv-skip-row span { flex-basis: 100%; }
+.cv-skip { min-height: 34px; padding: 0 11px; border: 1px dashed #3a4252; border-radius: 999px; background: none; color: #b9c2cf; font: 600 12.5px Montserrat, system-ui, sans-serif; cursor: pointer; }
