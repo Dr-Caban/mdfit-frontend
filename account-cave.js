@@ -11,7 +11,14 @@
 (() => {
   const A = window.MDFitApp, M = window.MDFit; if (!A || !M || !A.journey) return;
   const { $, esc } = M;
-  const ART = { mouth: "", road: "", vault: "", guide: "", geode: "", ore: { locked: "", now: "", done: "" } };
+  const ART = { mouth: "/assets/cave/gate.webp", road: "/assets/cave/wall.webp", vault: "/assets/cave/treasury.webp", guide: "/assets/cave/guide.webp", geode: "/assets/cave/geode.webp",
+    ore: { locked: "/assets/cave/ore-locked.webp", now: "/assets/cave/ore-now.webp", done: "/assets/cave/ore-done.webp" } };
+  // The ore photos hold a ruby; each stop's own gem colour comes from turning the hue of a second copy that is masked
+  // to the gem alone, so the rock and its gold veins keep their own colour (diamond: colour drained)
+  const GEM_AT = { now: "62% 40%, #000 20%, transparent 33%", done: "50% 46%, #000 13%, transparent 24%" };
+  const HUE = { "#d8213c": 0, "#3f7fe0": 225, "#2fa06a": 160, "#8b5cf6": 268, "#f2a900": 50, "#9ac85a": 95 };
+  const tint = (state, color) => (state === "locked" ? "" : color in HUE ? (HUE[color] ? `filter:hue-rotate(${HUE[color]}deg)` : "") : "filter:saturate(.05) brightness(1.5)");
+  const shade = (url, a, b) => `background-image:linear-gradient(180deg,rgba(11,13,18,${a}),rgba(11,13,18,${b})),url('${esc(url)}')`;
   const GEMS = ["#d8213c", "#3f7fe0", "#2fa06a", "#8b5cf6", "#f2a900", "#9ac85a", "#c6edff"]; // ruby, sapphire, emerald, amethyst, amber, peridot, diamond
   const X = [50, 70, 76, 60, 38, 26, 34, 52]; // where each stop sits across the road, in percent
 
@@ -22,7 +29,8 @@
 
   // One stop's picture: the photo for its state when there is one, otherwise a drawn rock with its gem
   function ore(state, color) {
-    if (ART.ore[state]) return `<img class="cv-ore-img" src="${esc(ART.ore[state])}" alt="" width="84" height="84">`;
+    if (ART.ore[state]) { const t = tint(state, color), m = GEM_AT[state] ? `radial-gradient(circle at ${GEM_AT[state]})` : "";
+      return `<img class="cv-ore-img" src="${esc(ART.ore[state])}" alt="" width="96" height="96">${t && m ? `<img class="cv-ore-img cv-tint" src="${esc(ART.ore[state])}" alt="" width="96" height="96" style="${t};-webkit-mask-image:${m};mask-image:${m}">` : ""}${state === "done" ? `<i class="cv-badge ok"></i>` : state === "locked" ? `<i class="cv-badge lock"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 11V8a4.5 4.5 0 0 1 9 0v3" fill="none" stroke="#c3cad6" stroke-width="2.5"/><rect x="5" y="11" width="14" height="9" rx="2" fill="#c3cad6"/></svg></i>` : ""}`; }
     const gem = state === "locked" ? "#3a4252" : color, rock = state === "locked" ? "#1d222b" : "#2b313d", edge = state === "locked" ? "#262c37" : "#3b4352";
     return state === "done"
       ? `<svg class="cv-ore-svg" viewBox="0 0 84 84" aria-hidden="true"><path d="M8 52 16 30l18-8 6 34-14 14z" fill="${rock}" stroke="${edge}" stroke-width="2"/><path d="M76 50 68 28 50 22l-6 34 14 14z" fill="${rock}" stroke="${edge}" stroke-width="2"/><path d="M42 18 30 36l12 28 12-28z" fill="${gem}"/><path d="M42 18 30 36h24z" fill="#fff" opacity=".35"/><circle cx="62" cy="64" r="11" fill="#2E9D63" stroke="#0b0d12" stroke-width="3"/><path d="M57 64l4 4 7-8" fill="none" stroke="#fff" stroke-width="3"/></svg>`
@@ -51,14 +59,14 @@
     const j = A.journey(); if (!j) { card.hidden = true; return; }
     card.hidden = false;
     if (!j.program) {
-      card.innerHTML = `<div class="cv-mouth"${ART.mouth ? ` style="background-image:url('${esc(ART.mouth)}')"` : ""}><span class="cv-kicker">The gem mine</span><b class="cv-title">${j.finished ? "You reached the vault" : "Every program is a road of gems"}</b>
+      card.innerHTML = `<div class="cv-mouth${ART.mouth ? " art" : ""}"${ART.mouth ? ` style="${shade(ART.mouth, 0, 0.92)}"` : ""}><span class="cv-kicker">The gem mine</span><b class="cv-title">${j.finished ? "You reached the vault" : "Every program is a road of gems"}</b>
         <p class="cv-sub">${j.finished ? "Every stop on your road is mined. Pick the next program to open a new mine." : "Pick a program and each session becomes a stop on the road down. Solomon carries the lamp."}</p>
         <button type="button" class="cv-start" data-goto="programs">Choose a program</button></div>`;
       return;
     }
     // Today's stop gets room above it (its Start bubble) and below it (Solomon and what he says)
     const rowH = 112, pts = []; let y = 104;
-    j.stops.forEach((s, i) => { if (s.state === "now") y += i ? 62 : 70; pts.push([X[i % X.length], y]); y += rowH + (s.state === "now" ? 64 : 0); });
+    j.stops.forEach((s, i) => { if (s.state === "now") y += i ? 62 : 70; pts.push([X[i % X.length], y]); y += rowH + (s.state === "now" ? (ART.guide ? 92 : 64) : 0); });
     const H = y + 96, end = [50, H - 62], all = [...pts, end];
     const d = pathOf([[50, 30], ...all], rowH);
     // The stretch already travelled carries moving lights, from the gate to today's stop (the whole road once it is cleared)
@@ -78,12 +86,12 @@
     }).join("");
     const chip = (lit, label, attrs = "") => `<button type="button" class="cv-chip${lit ? " lit" : ""}" ${attrs}>${crystal(lit)}<span>${label}</span></button>`;
     card.innerHTML = `
-      <div class="cv-mouth"${ART.mouth ? ` style="background-image:url('${esc(ART.mouth)}')"` : ""}>
+      <div class="cv-mouth${ART.mouth ? " art" : ""}"${ART.mouth ? ` style="${shade(ART.mouth, 0, 0.92)}"` : ""}>
         <span class="cv-kicker">The gem mine · ${esc(j.unit)} ${j.chamber} of ${j.chambers}</span>
         <b class="cv-title">${esc(j.program.title)}</b>
         <button type="button" class="cv-guidebook" data-fp="${esc(j.program.id)}" aria-label="Open the program">Program</button>
       </div>
-      <div class="cv-road" style="height:${H}px${ART.road ? `;background-image:url('${esc(ART.road)}')` : ""}">
+      <div class="cv-road${ART.road ? " art" : ""}" style="height:${H}px${ART.road ? ";" + shade(ART.road, 0.5, 0.5) : ""}">
         <i class="cv-dust d1"></i><i class="cv-dust d2"></i><i class="cv-dust d3"></i><i class="cv-dust d4"></i>
         <svg class="cv-path" viewBox="0 0 100 ${H}" preserveAspectRatio="none" aria-hidden="true"><path d="${d}" class="cv-dirt"/><path d="${d}" class="cv-track"/><path d="${lit}" class="cv-glow"/></svg>
         <svg class="cv-gate" viewBox="0 0 390 52" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0h390v52H272c0-40-154-40-154 0H0z" fill="#3b3024"/><path d="M0 17h130M260 17h130M0 35h118M272 35h118M40 0v17M96 17v18M300 0v17M344 17v18M70 35v17M330 35v17" stroke="#261e15" stroke-width="2"/><path d="M118 52c0-40 154-40 154 0" fill="none" stroke="#c8a763" stroke-width="2.5"/></svg>
@@ -97,7 +105,7 @@
         <div class="cv-chips">${chip(j.today.workout, "Workout")}${chip(j.today.pain, "Pain check-in", `data-goto="pain"`)}${chip(j.today.goal, "Daily goal")}</div>
         ${j.movements ? `<button type="button" class="cv-moves" data-goto="profile">${j.movements} movement${j.movements === 1 ? "" : "s"} from Dr. Jared to do today</button>` : ""}
       </div>
-      <div class="cv-vault"${ART.vault ? ` style="background-image:url('${esc(ART.vault)}')"` : ""}>
+      <div class="cv-vault${ART.vault ? " art" : ""}"${ART.vault ? ` style="${shade(ART.vault, 0.86, 0.3)}"` : ""}>
         <span class="cv-kicker">The treasury ahead</span>
         <p><b>${j.left}</b> stop${j.left === 1 ? "" : "s"} to the treasury of ${esc(j.program.title)}${j.next ? ` · <b>${Number(j.next.xp).toLocaleString()} XP</b> to <i class="cv-next" style="--gem:${esc(j.next.color)}"></i>${esc(j.next.name)}` : ""}</p>
       </div>`;

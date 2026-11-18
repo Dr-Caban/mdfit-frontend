@@ -70,3 +70,23 @@
 @keyframes cvFlame { 0% { transform: scale(1, 1) rotate(-3deg); } 100% { transform: scale(.88, 1.12) rotate(3deg); } }
 @keyframes cvTwinkle { 0%, 100% { opacity: 0; transform: scale(.3) rotate(0deg); } 50% { opacity: 1; transform: scale(1) rotate(45deg); } }
 @media (prefers-reduced-motion: reduce) { .cv-stop.now .cv-ore, .cv-guide-svg, .cv-guide-img, .cv-lamp, .cv-dust, .cv-mouth::before, .cv-glow, .cv-wlamp::before, .cv-flame, .cv-tw { animation: none; } .cv-dust, .cv-tw { display: none; } }
+
+/* With photo art in the slots (account-cave.js ART) */
+.cv-mouth.art { min-height: 190px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: flex-end; background-size: cover; background-position: center 18%; }
+.cv-mouth.art .cv-guidebook { position: absolute; }
+.cv-road.art { background-size: 100% auto; background-repeat: repeat-y; }
+.cv-road.art::before { display: none; }
+.cv-road.art .cv-gate { display: none; }
+.cv-vault.art { padding-bottom: 84px; background-size: cover; background-position: center 60%; }
+.cv-ore-img { width: 96px; height: 96px; margin: -6px; display: block; }
+.cv-ore-img.cv-tint { position: absolute; left: 2px; top: 2px; }
+.cv-stop.locked .cv-ore-img { width: 76px; height: 76px; margin: 4px; filter: brightness(.5); }
+.cv-stop.done .cv-ore-img { filter: none; }
+.cv-badge { position: absolute; right: 2px; bottom: 6px; width: 26px; height: 26px; border-radius: 50%; box-shadow: 0 0 0 3px #0b0d12; }
+.cv-badge.ok { background: #2e9d63; }
+.cv-badge.ok::after { content: ""; position: absolute; left: 9px; top: 5px; width: 6px; height: 12px; border-right: 3px solid #fff; border-bottom: 3px solid #fff; transform: rotate(45deg); }
+.cv-badge.lock { background: #3a4252; }
+.cv-badge.lock svg { display: block; width: 16px; height: 16px; margin: 5px; }
+.cv-guide-img { width: 92px; }
+.cv-end img { width: 76px; height: 76px; filter: saturate(.25) brightness(.6); }
+.cv-end.lit img { filter: drop-shadow(0 0 12px #b58cff); }
