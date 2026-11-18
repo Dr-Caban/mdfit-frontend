@@ -106,7 +106,7 @@
   let sum = null;
   if (calCard) {
     sum = document.createElement("div"); sum.className = "hbc-under";
-    sum.innerHTML = `<p class="hbc-sum" id="hbc-sum"></p><p class="hbc-key muted"><i class="k q"></i>Goal reached <i class="k r"></i>Repaired <i class="k m"></i>Missed</p>`;
+    sum.innerHTML = `<p class="hbc-sum" id="hbc-sum"></p><p class="hbc-key muted"><i class="k q"></i>Goal reached <i class="k r"></i>Repaired <i class="k m"></i>Missed <i class="k done"></i>All done</p>`;
     mainCal.after(sum);
   }
   const monthCache = new Map();
@@ -122,10 +122,15 @@
     const d = monthData; if (!d || !mainCal) return;
     for (const day of d.days) {
       const el = mainCal.querySelector(`[data-day="${day.date}"]`); if (!el) continue;
-      el.classList.remove("goal-q", "goal-r", "goal-m");
+      el.classList.remove("goal-q", "goal-r", "goal-m", "all-done");
       const cls = day.future ? "" : day.qualifying ? "goal-q" : day.repaired ? "goal-r" : day.missed ? "goal-m" : "";
       if (cls) el.classList.add(cls);
-      const what = day.future ? "" : day.qualifying ? `daily goal reached, ${day.points} XP` : day.repaired ? "missed, repaired in your streak" : day.missed ? `goal missed, ${day.points} XP` : day.today ? `today, ${day.points} XP so far` : "";
+      // All done: the daily goal reached, a workout logged, and nothing left open that day (account.js dayStatus)
+      const st = day.qualifying && window.MDFitApp && window.MDFitApp.dayStatus ? window.MDFitApp.dayStatus(day.date) : null;
+      const done = !!(st && st.workout && !st.open);
+      el.classList.toggle("all-done", done);
+      { const al = (el.getAttribute("aria-label") || day.date).replace(/, all done$/, ""); el.setAttribute("aria-label", done ? `${al}, all done` : al); }
+      const what = day.future ? "" : done ? `all done: goal reached, workout logged, nothing left open (${day.points} XP)` : day.qualifying ? `daily goal reached, ${day.points} XP` : day.repaired ? "missed, repaired in your streak" : day.missed ? `goal missed, ${day.points} XP` : day.today ? `today, ${day.points} XP so far` : "";
       if (what) el.title = what;
     }
     $("#hbc-sum").innerHTML = `<b>${d.qualifyingDays}</b> goal day${d.qualifyingDays === 1 ? "" : "s"} this month · best streak ${d.streak.best} · ${d.streak.lifetimeQualifying} all time`;

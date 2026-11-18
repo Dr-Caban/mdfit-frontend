@@ -9,9 +9,10 @@
   <meta name="theme-color" content="#0A1A2E">
   <link rel="icon" href="assets/icon-64.png" type="image/png">
   <link rel="manifest" href="/manifest.webmanifest">
-  <!-- In the app (Home Screen icon or the phone app's shell) people already know why they're here: sign-in only, no
-       site menu, phone number or booking links. Set before first paint so the site chrome never flashes. -->
-  <script>(function(){try{if((window.matchMedia&&matchMedia("(display-mode: standalone)").matches)||navigator.standalone===true||!!window.MDFitNative||/; wv\)/.test(navigator.userAgent))document.documentElement.classList.add("in-app");}catch(e){}})();</script>
+  <!-- In the Home Screen web app people already know why they're here: sign-in only, no
+       site menu, phone number or booking links. Set before first paint so the site chrome never flashes. The iPhone app's
+       own shell keeps the page as it was: its Sign in with Apple is the iPhone app's own. -->
+  <script>(function(){try{var shell=!!window.MDFitNative||/; wv\)/.test(navigator.userAgent);if(!shell&&((window.matchMedia&&matchMedia("(display-mode: standalone)").matches)||navigator.standalone===true))document.documentElement.classList.add("in-app");}catch(e){}})();</script>
   <style>
     .app-brand { display: none; }
     html.in-app .sh, html.in-app .site-only { display: none !important; }
