@@ -91,7 +91,9 @@
     }
     // Today's stop gets room above it (its Start bubble) and below it (Solomon and what he says)
     const rowH = 112, pts = []; let y = 104;
-    j.stops.forEach((s, i) => { if (s.state === "now") y += i ? 62 : 70; pts.push([X[i % X.length], y]); y += rowH + (s.state === "now" ? (ART.guide ? 92 : 64) : 0); });
+    // (a long name wraps the Start bubble to three lines; it must stay clear of the label of the stop above)
+    const tall = (s) => (short(s.label) + (s.sub ? " · " + s.sub : "")).length > 19;
+    j.stops.forEach((s, i) => { if (s.state === "now") y += i ? (tall(s) ? 82 : 66) : 70; pts.push([X[i % X.length], y]); y += rowH + (s.state === "now" ? (ART.guide ? 92 : 64) : 0); });
     const H = y + 96, end = [50, H - 62], all = [...pts, end];
     // (with the gate photo above it, the road starts out of sight under the gate rather than as a loose stub on the wall)
     const from = [50, ART.road ? -40 : 30], d = pathOf([from, ...all], rowH);
