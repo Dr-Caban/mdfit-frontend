@@ -852,6 +852,9 @@ html[data-theme="black"] {
 :where(html[data-theme=black]) .lay-seg button[aria-pressed="true"] { background: var(--accent); color: #0A1A2E; }
 :where(html[data-theme=black]) .lay-move button { border: 1px solid var(--line); background: none; color: inherit; }
 :where(html[data-theme=black]) .lay-move svg { fill: currentColor; }
+@media (prefers-reduced-motion: reduce) {
+:where(html[data-theme=black]) #gem-card.xp-ding { outline: 2px solid #C8A763; }
+}
 :where(html[data-theme=black]) .mp-more { border: 1px dashed var(--line); background: none; color: var(--accent); }
 :where(html[data-theme=black]) .mp-more:hover { border-color: var(--accent); }
 :where(html[data-theme=black]) .auth-page { background: var(--ink); }

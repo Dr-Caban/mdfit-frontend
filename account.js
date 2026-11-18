@@ -3488,6 +3488,40 @@
       if (msgs.length) celebrateToast(msgs);
     } catch {}
   }
+  // "Welcome back": the first time the app is opened each day earns 5 XP (the server keeps it to once a day and says
+  // when it is the first, so only one device celebrates). A short two-note chime, the gold glow on the gem card and a
+  // toast. Phones only play sound after a first tap in some cases (iPhone browsers); then it is the toast and glow alone.
+  // Sounds can be switched off on the device (localStorage "mdfit-sounds" = "off").
+  function ding() {
+    try {
+      if (localStorage.getItem("mdfit-sounds") === "off") return;
+      const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+      const ac = ding.ac || (ding.ac = new AC());
+      const play = () => {
+        const t = ac.currentTime;
+        [[1318.5, 0], [1975.5, 0.1]].forEach(([f, d]) => {
+          const o = ac.createOscillator(), g = ac.createGain();
+          o.type = "sine"; o.frequency.value = f;
+          g.gain.setValueAtTime(0.0001, t + d); g.gain.exponentialRampToValueAtTime(0.2, t + d + 0.015); g.gain.exponentialRampToValueAtTime(0.0001, t + d + 0.7);
+          o.connect(g); g.connect(ac.destination); o.start(t + d); o.stop(t + d + 0.75);
+        });
+      };
+      if (ac.state === "suspended") ac.resume().then(play).catch(() => {}); else play();
+    } catch {}
+  }
+  let welcomeAt = 0;
+  async function welcomeBack() {
+    if (!client || Date.now() - welcomeAt < 10 * 60 * 1000) return;
+    welcomeAt = Date.now();
+    try {
+      const r = await apiAuth("POST", "/api/me/xp", { kind: "open" });
+      if (!r || !r.first || !r.xp) return;
+      await loadRewards(false);
+      celebrateToast([`Welcome back! +${r.xp} XP`]); ding();
+      const g = $("#gem-card"); if (g) { g.classList.remove("xp-ding"); void g.offsetWidth; g.classList.add("xp-ding"); setTimeout(() => g.classList.remove("xp-ding"), 1600); }
+    } catch {}
+  }
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) welcomeBack(); });
   function celebrateToast(msgs) {
     const t = $("#toast");
     t.innerHTML = msgs.map((m, i) => `<div class="${i ? "" : "xp-gain"}">${esc(m)}</div>`).join("");
@@ -3804,7 +3838,7 @@
     renderStats(); renderEvents(); renderActivity(); renderNotes(); renderCalendar();
     loadCalMoney().then(renderCalendar); calSyncAt = Date.now();
     setTimeout(notifyVisits, 1200);
-    loadRewards();
+    loadRewards().then(welcomeBack);
     loadSite().catch(() => {});
   })();
 })();
