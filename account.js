@@ -3810,7 +3810,16 @@
   // ================= Hooks for the XP add-ons (account-xp.js: gem card, workout builder, challenges)
   // Paid membership? (content access "member"/"premium"; "free" otherwise). Loads the content once if needed.
   const isPaid = async () => { if (!C) await (contentLoading || loadContent()).catch(() => {}); return !!(C && C.access && C.access !== "free"); };
-  window.MDFitApp = { startPlayer, go, loadRewards, toast, celebrateToast, exMeta, byId, gemIcon: GEM_ICON, rewards: () => reward, isPaid, showPaywall,
+  // One day on the Progress calendar: was a workout logged, and is anything on it still open (an unpaid invoice dated
+  // that day, a visit later that day or ahead). account-habits.js puts a check on goal days with a workout and nothing open.
+  const dayStatus = (d) => {
+    const items = dayItems(d), t = todayInTz(), now = new Date().toTimeString().slice(0, 5);
+    const workout = items.some((x) => x.k === "workout");
+    const unpaid = items.some((x) => x.k === "bill" && /^Unpaid/.test(x.s || ""));
+    const visitAhead = (appts.upcoming || []).some((a) => a.date === d && a.status === "booked" && (d > t || (d === t && String(a.time || "") > now)));
+    return { workout, open: unpaid || visitAhead };
+  };
+  window.MDFitApp = { dayStatus, startPlayer, go, loadRewards, toast, celebrateToast, exMeta, byId, gemIcon: GEM_ICON, rewards: () => reward, isPaid, showPaywall,
     // For the guide (mdfit-guide.js) and the theme switch (app-theme.js): who is signed in, what the app holds, and two places to open
     client: () => client, content: async () => { if (!C) await (contentLoading || loadContent()).catch(() => {}); return C; },
     openBook: () => { go("profile"); setTimeout(() => $("#p-book-open") && $("#p-book-open").click(), 60); },

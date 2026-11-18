@@ -852,6 +852,10 @@ html[data-theme="black"] {
 :where(html[data-theme=black]) .lay-seg button[aria-pressed="true"] { background: var(--accent); color: #0A1A2E; }
 :where(html[data-theme=black]) .lay-move button { border: 1px solid var(--line); background: none; color: inherit; }
 :where(html[data-theme=black]) .lay-move svg { fill: currentColor; }
+:where(html[data-theme=black]) .cal-d.all-done::before { background: #2E9D63; }
+:where(html[data-theme=black]) .cal-d.all-done::after { border-right: 2px solid var(--line); border-bottom: 2px solid var(--line); }
+:where(html[data-theme=black]) .hbc-key .k.done { background: #2E9D63; }
+:where(html[data-theme=black]) .hbc-key .k.done::after { border-right: 2px solid var(--line); border-bottom: 2px solid var(--line); }
 :where(html[data-theme=black]) .next-docs { border: 1px solid rgba(200, 167, 99, .55); background: rgba(200, 167, 99, .1); color: inherit; }
 :where(html[data-theme=black]) .next-docs .pc-ic { background: rgba(200, 167, 99, .18); }
 :where(html[data-theme=black]) .next-docs .pc-ic svg { fill: var(--gold); }

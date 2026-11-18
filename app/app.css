@@ -508,7 +508,7 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
 .cal-nav .icon-btn { width: 34px; height: 34px; }
 .cal { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
 .cal-h { text-align: center; font-size: 11px; font-weight: 700; color: var(--muted); padding-bottom: 4px; }
-.cal-d { aspect-ratio: 1; border: 0; border-radius: 10px; background: var(--card-2); color: var(--navy); cursor: pointer; display: grid; grid-template-rows: 1fr auto; justify-items: center; padding: 5px 2px 6px; font-weight: 600; font-size: 14px; }
+.cal-d { position: relative; aspect-ratio: 1; border: 0; border-radius: 10px; background: var(--card-2); color: var(--navy); cursor: pointer; display: grid; grid-template-rows: 1fr auto; justify-items: center; padding: 5px 2px 6px; font-weight: 600; font-size: 14px; }
 .cal-d:hover { background: var(--gold-soft); }
 .cal-d.has-workout { background: var(--accent-soft); }
 .cal-d.today { box-shadow: inset 0 0 0 2px var(--navy); }
@@ -1662,6 +1662,11 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
   #view-home .home-grid { display: grid; }
   #view-home .col-main, #view-home .col-side { display: flex; flex-direction: column; min-width: 0; }
 }
+/* All done for the day (account-habits.js): a green badge with a white tick in the day's corner, and in the key */
+.cal-d.all-done::before { content: ""; position: absolute; top: -4px; right: -4px; width: 16px; height: 16px; border-radius: 50%; background: #2E9D63; box-shadow: 0 0 0 2px var(--card, #15181E); }
+.cal-d.all-done::after { content: ""; position: absolute; top: -1px; right: 1px; width: 4px; height: 8px; border-right: 2px solid #fff; border-bottom: 2px solid #fff; transform: rotate(45deg); }
+.hbc-key .k.done { position: relative; display: inline-block; width: 14px; height: 14px; border-radius: 50%; background: #2E9D63; vertical-align: -2px; }
+.hbc-key .k.done::after { content: ""; position: absolute; left: 5px; top: 2px; width: 3px; height: 7px; border-right: 2px solid #fff; border-bottom: 2px solid #fff; transform: rotate(45deg); }
 /* Intake documents, first inside "What to do next" when a visit is booked and they aren't done */
 .next-docs { display: grid; grid-template-columns: 40px 1fr; gap: 4px 12px; align-items: start; padding: 12px; margin: 4px 0 12px; border: 1px solid rgba(200, 167, 99, .55); border-radius: 14px; background: rgba(200, 167, 99, .1); color: inherit; text-decoration: none; }
 .next-docs .pc-ic { width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; background: rgba(200, 167, 99, .18); }
