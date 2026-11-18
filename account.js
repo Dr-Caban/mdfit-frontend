@@ -2413,8 +2413,8 @@
   // cards open. Both lists arrive with the content and are kept on the device, so the next launch is laid out at once.
   // The ids match lib/content.js LAYOUTS on the server.
   const LAYOUT = {
-    home: { care: "#next-card", fromJared: "#plan-card", today: "#today-card", plans: "#my-plans", quick: "#home-quick",
-      gem: "#gem-card", programs: "#hero-progs, #featured-progs", habits: "#habits-card", challenges: "#challenges-card",
+    home: { gem: "#gem-card", care: "#next-card", fromJared: "#plan-card", today: "#today-card", plans: "#my-plans", quick: "#home-quick",
+      programs: "#hero-progs, #featured-progs", habits: "#habits-card", challenges: "#challenges-card",
       myWorkouts: "#home-my-workouts", shared: "#shared-card", myPrograms: "#home-programs", events: "#home-events",
       activity: "#home-activity", install: "#home-install" },
     profile: { care: "#p-care", membership: "#p-membership", patient: "#p-patient", progress: "#p-progress", appointments: "#p-appts-card",
@@ -2429,7 +2429,7 @@
       history: "Workout history", goal: "My daily XP goal", nudges: "Reminders from Solomon", looks: "Make it yours", referral: "Refer a friend",
       account: "Profile", feedback: "Help us improve", install: "Get the app" }
   };
-  const LAYOUT_OPEN_BY_DEFAULT = { home: ["care", "fromJared", "today", "plans", "quick"], profile: ["care", "membership", "patient"] };
+  const LAYOUT_OPEN_BY_DEFAULT = { home: ["gem", "care", "fromJared", "today", "plans", "quick"], profile: ["care", "membership", "patient"] };
   const NATIVE_FOLD = new Set(["home:habits"]); // already one line with its own open/close
   const layoutDefault = (w) => ({ sections: Object.keys(LAYOUT[w]).map((id) => ({ id, state: LAYOUT_OPEN_BY_DEFAULT[w].includes(id) ? "open" : "folded" })), ...(w === "home" ? { suggestions: 3 } : {}) });
   const stateOfRow = (s) => (s.state || (s.show === false ? "hidden" : "open"));
@@ -2470,7 +2470,11 @@
         if (w === "home") el.style.order = String(i + 1); else inOrder.push(el);
       });
     });
-    if (w === "home") { const pu = $("#patient-urgent"); if (pu) pu.style.order = "0"; } // "Before your visit" always leads when it shows
+    if (w === "home") {
+      const pu = $("#patient-urgent"); if (pu) pu.style.order = "0"; // "Before your visit" always leads when it shows
+      // The small gem badge by "Welcome back" repeats the gem card: shown only when the card is folded or hidden
+      const gem = L.sections.find((x) => x.id === "gem"), chip = $("#xp-chip"); if (chip) chip.hidden = !!gem && stateOfRow(gem) === "open";
+    }
     else {
       // Profile: the cards are moved into this order (the two-column view on a computer follows the page order)
       const grid = $("#view-profile .profile-grid");
