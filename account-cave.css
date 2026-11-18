@@ -40,11 +40,6 @@
 .cv-bubble { position: absolute; bottom: 56px; left: -76px; width: 152px; box-sizing: border-box; padding: 8px 10px; border-radius: 12px; background: #f3f1ea; color: #0a1a2e; text-align: center; font: 800 14px Montserrat, system-ui, sans-serif; box-shadow: 0 4px 0 #bdb8a9; pointer-events: none; }
 .cv-bubble small { display: block; font: 600 11.5px Montserrat, system-ui, sans-serif; }
 .cv-bubble::after { content: ""; position: absolute; left: 50%; bottom: -9px; margin-left: -8px; border: 8px solid transparent; border-bottom: 0; border-top-color: #f3f1ea; }
-.cv-guide { position: absolute; top: -6px; display: flex; flex-direction: column; align-items: center; gap: 4px; width: 132px; pointer-events: none; }
-.cv-guide.right { left: 52px; } .cv-guide.left { right: 52px; }
-.cv-guide-svg, .cv-guide-img { width: 78px; height: auto; animation: cvFloat 3.4s ease-in-out infinite; }
-.cv-lamp { animation: cvFlicker 2.6s linear infinite; }
-.cv-say { padding: 7px 9px; border-radius: 12px; border: 1px solid #333a46; background: #15181e; font: 600 12px/1.35 Montserrat, system-ui, sans-serif; color: #e8eaed; text-align: center; }
 .cv-end { position: absolute; left: 0; right: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; transform: translateY(-34px); font: 700 12px Montserrat, system-ui, sans-serif; color: #9aa3b2; }
 .cv-end svg, .cv-end img { width: 64px; height: 64px; }
 .cv-end.lit { color: #e2c98c; } .cv-end.lit svg { filter: drop-shadow(0 0 12px #b58cff); }
@@ -62,19 +57,18 @@
 .cv-vault b { color: #fff; }
 .cv-next { display: inline-block; width: 10px; height: 10px; margin: 0 5px 0 2px; background: var(--gem); transform: rotate(45deg); box-shadow: 0 0 8px var(--gem); }
 @keyframes cvPulse { 0%, 100% { box-shadow: 0 0 0 5px rgba(200, 167, 99, .35), 0 0 34px 6px rgba(200, 167, 99, .45); } 50% { box-shadow: 0 0 0 8px rgba(200, 167, 99, .2), 0 0 44px 12px rgba(200, 167, 99, .6); } }
-@keyframes cvFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 @keyframes cvFlicker { 0%, 100% { opacity: 1; } 42% { opacity: .82; } 46% { opacity: 1; } 71% { opacity: .9; } }
 @keyframes cvDust { 0% { transform: translate(0, 0); opacity: 0; } 15% { opacity: .9; } 100% { transform: translate(14px, -70px); opacity: 0; } }
 @keyframes cvRays { 0%, 100% { opacity: .55; transform: rotate(-1.5deg); } 50% { opacity: 1; transform: rotate(1.5deg); } }
 @keyframes cvFlow { to { stroke-dashoffset: -29; } }
 @keyframes cvFlame { 0% { transform: scale(1, 1) rotate(-3deg); } 100% { transform: scale(.88, 1.12) rotate(3deg); } }
-@keyframes cvTwinkle { 0%, 100% { opacity: 0; transform: scale(.3) rotate(0deg); } 50% { opacity: 1; transform: scale(1) rotate(45deg); } }
-@media (prefers-reduced-motion: reduce) { .cv-stop.now .cv-ore, .cv-guide-svg, .cv-guide-img, .cv-lamp, .cv-dust, .cv-mouth::before, .cv-glow, .cv-wlamp::before, .cv-flame, .cv-tw { animation: none; } .cv-dust, .cv-tw { display: none; } }
+@keyframes cvTwinkle { 0%, 100% { opacity: 0; transform: scale(.3); } 50% { opacity: 1; transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) { .cv-stop.now .cv-ore, .cv-dust, .cv-mouth::before, .cv-glow, .cv-wlamp::before, .cv-flame, .cv-tw { animation: none; } .cv-dust, .cv-tw { display: none; } }
 
 /* With photo art in the slots (account-cave.js ART) */
 .cv-mouth.art { min-height: 190px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: flex-end; background-size: cover; background-position: center 18%; }
 .cv-mouth.art .cv-guidebook { position: absolute; }
-.cv-road.art::before { display: none; }
+.cv-road.art::before { background: var(--wall) center top / 100% auto repeat-y; opacity: .5; }
 .cv-road.art .cv-gate { display: none; }
 .cv-vault.art { padding-bottom: 84px; background-size: cover; background-position: center 60%; }
 .cv-ore-img { width: 96px; height: 96px; margin: -6px; display: block; }
@@ -86,14 +80,11 @@
 .cv-badge.ok::after { content: ""; position: absolute; left: 9px; top: 5px; width: 6px; height: 12px; border-right: 3px solid #fff; border-bottom: 3px solid #fff; transform: rotate(45deg); }
 .cv-badge.lock { background: #3a4252; }
 .cv-badge.lock svg { display: block; width: 16px; height: 16px; margin: 5px; }
-.cv-guide-img { width: 92px; }
 .cv-end img { width: 76px; height: 76px; filter: saturate(.25) brightness(.6); }
 .cv-end.lit img { filter: drop-shadow(0 0 12px #b58cff); }
 
 /* Movement from the same photos */
 .cv-road { overflow: hidden; }
-.cv-wall { position: absolute; left: 0; top: 0; width: 100%; opacity: .5; will-change: transform; animation: cvDescend 80s linear infinite; }
-.cv-wall img { display: block; width: 100%; height: auto; }
 .cv-mouth.art, .cv-vault.art { background-size: auto 130%; animation: cvPan 18s ease-in-out infinite alternate; }
 .cv-ore.mining { position: absolute; }
 .cv-ore.mining .cv-fr { position: absolute; left: 2px; top: 2px; width: 84px; height: 84px; opacity: 0; }
@@ -102,14 +93,13 @@
 .cv-ore.mining .f2 { animation: cvF2 2.4s linear var(--el, 0s) forwards, cvShake .12s linear .85s 6; }
 .cv-ore.mining .f3 { animation: cvF3 2.4s ease-out var(--el, 0s) forwards; }
 .cv-burst { position: absolute; left: 50%; top: 50%; width: 10px; height: 10px; margin: -5px; border-radius: 50%; background: #fff; opacity: 0; pointer-events: none; animation: cvBurst 2.4s ease-out var(--el, 0s) forwards; }
-@keyframes cvDescend { to { transform: translateY(-33.333%); } }
 @keyframes cvPan { from { background-position: 30% 8%; } to { background-position: 70% 34%; } }
 @keyframes cvF1 { 0%, 30% { opacity: 1; } 38%, 100% { opacity: 0; } }
 @keyframes cvF2 { 0%, 30% { opacity: 0; } 38%, 62% { opacity: 1; } 70%, 100% { opacity: 0; } }
 @keyframes cvF3 { 0%, 62% { opacity: 0; transform: scale(.9); } 72% { opacity: 1; transform: scale(1.14); } 100% { opacity: 1; transform: scale(1); } }
 @keyframes cvShake { 0%, 100% { transform: translateX(0) rotate(0); } 25% { transform: translateX(-2px) rotate(-2deg); } 75% { transform: translateX(2px) rotate(2deg); } }
 @keyframes cvBurst { 0%, 62% { opacity: 0; transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 236, 190, 0); } 68% { opacity: .95; transform: scale(5); box-shadow: 0 0 30px 18px rgba(255, 236, 190, .8); } 100% { opacity: 0; transform: scale(11); box-shadow: 0 0 40px 30px rgba(255, 236, 190, 0); } }
-@media (prefers-reduced-motion: reduce) { .cv-wall, .cv-mouth.art, .cv-vault.art, .cv-ore.mining .cv-fr, .cv-burst { animation: none; } .cv-ore.mining .f3 { opacity: 1; } .cv-burst { display: none; } }
+@media (prefers-reduced-motion: reduce) { .cv-mouth.art, .cv-vault.art, .cv-ore.mining .cv-fr, .cv-burst { animation: none; } .cv-ore.mining .f3 { opacity: 1; } .cv-burst { display: none; } }
 
 /* The first descent (a new member's tutorial road): stops not yet done are all open, any order */
 .cv-stop.open .cv-ore { cursor: pointer; box-shadow: 0 0 0 3px rgba(200, 167, 99, .25); }
