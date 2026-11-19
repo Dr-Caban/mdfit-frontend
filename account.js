@@ -3331,7 +3331,8 @@
     // (today's program stop is still open, whatever else they trained today; once it is done the mine holds the next one for tomorrow)
     if (now) return { kind: "session", title: brief(now.label), sub: "Today's session", go: "mine" };
     // the day's other lights, once the training is done
-    if (day && day.workout && day.lit < day.of) { const [title, go3] = !day.pain ? ["Pain check-in", "#pain"] : !day.acts ? ["Daily activities", "today"] : ["Daily goal", "today"];
+    if (day && day.skipped && day.lit >= day.of - 1) return { kind: "done", title: "Session skipped", sub: `${day.lit} of ${day.of} lit today`, go: "#progress", today: day };
+    if (day && (day.workout || day.skipped) && day.lit < day.of) { const [title, go3] = !day.pain ? ["Pain check-in", "#pain"] : !day.acts ? ["Daily activities", "today"] : ["Daily goal", "today"];
       return { kind: "lights", title, sub: `${day.lit} of ${day.of} lit today`, go: go3, today: day }; }
     if (v) return { kind: "later", title: v.typeName || "Visit", sub: whenOf(v), go: "plus" };
     if (day && day.lit === day.of) return { kind: "done", title: "Every lamp lit", sub: "Nice work today", go: "#progress", today: day };
@@ -4078,9 +4079,10 @@
     const mark = new RegExp("^prog-" + String(p.id).replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "-[dw]\\d");
     const mineW = allWorkouts.filter((w) => mark.test(String(w.key || "")));
     const start = roadPlan && roadPlan.program === p.id ? roadPlan.start : mineW.reduce((a, w) => (w.date < a ? w.date : a), t);
-    const key = [p.id, cur, total, start, t, mineW.length, mineW.some((w) => w.date === t)].join("|"); if (planMemo.key === key) return planMemo.v;
+    const key = [p.id, cur, total, start, t, mineW.length, mineW.some((w) => w.date === t), roadSkips.includes(t)].join("|"); if (planMemo.key === key) return planMemo.v;
     const nameOf = (n) => { const d = grid ? p.days[n % per] : null; return { label: d ? d.name : `${st.isProto ? "Part" : "Session"} ${n + 1}`, sub: d && d.length ? `${d.length} min` : "" }; };
     const didOn = (d) => { const w = mineW.find((x) => x.date === d); if (!w) return null; const m = String(w.key).match(/-d(\d+)$/); return grid && m ? nameOf(Number(m[1])) : { label: p.title, sub: "" }; };
+    const skipped = roadSkips.includes(t);
     const rested = !!didOn(t), gap = (d) => Math.round((Date.parse(d + "T12:00:00Z") - Date.parse(start + "T12:00:00Z")) / 864e5);
     // A week-by-week protocol counts its progress in weeks, but is trained on its own days: three named days is three
     // a week, and a single "daily routine" is every day
@@ -4089,11 +4091,11 @@
     const isDay = (d) => { const g = gap(d); return g >= 0 && SPREAD[weekly(Math.floor(g / 7))].includes(g % 7); };
     // from today on: each training day carries the next session not yet done
     const map = new Map(); let n = cur;
-    if (protoDays) { for (let i = 0, d = t > start ? t : start; i < 420; i++, d = addDays(d, 1)) { const g = gap(d), w = Math.floor(g / 7); if (w >= st.nWeeks) break; if (!isDay(d) || (d === t && rested)) continue;
+    if (protoDays) { for (let i = 0, d = t > start ? t : start; i < 420; i++, d = addDays(d, 1)) { const g = gap(d), w = Math.floor(g / 7); if (w >= st.nWeeks) break; if (!isDay(d) || (d === t && (rested || skipped))) continue;
         const dd = p.days[SPREAD[protoDays].indexOf(g % 7) % Math.max(1, p.days.length)]; map.set(d, { label: dd && dd.name ? dd.name : `Week ${w + 1}`, sub: dd && dd.length ? `${dd.length} min` : "", n: -1 }); } }
-    else for (let i = 0, d = t > start ? t : start; i < 420 && n < total; i++, d = addDays(d, 1)) { if (!isDay(d) || (d === t && rested)) continue; map.set(d, { ...nameOf(n), n }); n++; }
+    else for (let i = 0, d = t > start ? t : start; i < 420 && n < total; i++, d = addDays(d, 1)) { if (!isDay(d) || (d === t && (rested || skipped))) continue; map.set(d, { ...nameOf(n), n }); n++; }
     const last = [...map.keys()].pop() || t, per2 = Math.max(1, per), chambers = Math.ceil(total / per2);
-    const v = { id: p.id, title: p.title, grid, total, cur, rested, start, didOn, map, isRest: (d) => d >= start && d <= last && !isDay(d),
+    const v = { id: p.id, title: p.title, grid, total, cur, rested, skipped: skipped && !rested && isDay(t), start, didOn, map, isRest: (d) => d >= start && d <= last && !isDay(d),
       left: Math.max(0, total - Math.min(total, st.done)), chamber: Math.min(Math.floor(cur / per2), chambers - 1) + 1, chambers, unit: grid ? "Week" : "Stage" };
     planMemo = { key, v }; return v;
   }
@@ -4129,25 +4131,46 @@
       plan = progPlan(p);
       // a past day: what was done; today and ahead: that day's session, or a rest day
       sessionOn = (d) => { if (d < t || (d === t && plan.rested)) return plan.didOn(d) || (plan.isRest(d) ? { label: "Rest", sub: "", rest: true } : null);
+        if (d === t && plan.skipped) return { label: "Skipped", sub: "", skipped: true };
         const x = plan.map.get(d); return x ? { label: x.label, sub: x.sub, ...(d === t ? { start: plan.grid && x.n >= 0 ? x.n : -1 } : {}) } : plan.isRest(d) ? { label: "Rest", sub: "", rest: true } : null; };
     }
     // No program, but a pain track on their road: it is today's session until a workout is logged today
     const track = !p ? activeTrack() : null;
-    if (track) sessionOn = (d) => (d === t && !allWorkouts.some((w) => w.date === t) ? { label: `${track.source} track`, sub: `${track.minutes} min`, start: -1, track: track.id } : null);
+    if (track) sessionOn = (d) => (d === t && roadSkips.includes(t) && !allWorkouts.some((w) => w.date === t) ? { label: "Skipped", sub: "", skipped: true } : d === t && !allWorkouts.some((w) => w.date === t) ? { label: `${track.source} track`, sub: `${track.minutes} min`, start: -1, track: track.id } : null);
     const stops = WD.map((wd, n) => { const date = addDays(monday, n), L = lightsOf(date), ses = sessionOn(date, n - dow);
       if (ses && ses.rest) L.workout = true; // on a rest day, resting is the work
       const k = lit(L);
       const state = date > t ? "locked" : k === 4 ? "done" : date === t ? "now" : k ? "part" : "missed";
-      return { n, date, wd, label: ses ? ses.label : wd, sub: ses ? ses.sub : "", session: !!ses && !ses.rest, rest: !!(ses && ses.rest), start: ses && ses.start !== undefined ? ses.start : null, track: (ses && ses.track) || "", state, today: date === t, lit: k, of: 4, lights: L }; });
+      return { n, date, wd, label: ses ? ses.label : wd, sub: ses ? ses.sub : "", session: !!ses && !ses.rest && !ses.skipped, rest: !!(ses && ses.rest), skipped: !!(ses && ses.skipped), start: ses && ses.start !== undefined ? ses.start : null, track: (ses && ses.track) || "", state, today: date === t, lit: k, of: 4, lights: L }; });
     const now = stops[dow];
-    return { ...base, today: { ...now.lights, lit: now.lit, of: 4, start: now.start, session: now.session ? { label: now.label, sub: now.sub } : null, track: now.track, rest: now.rest }, days: true, key: "week-" + monday, introAlt: introOn,
+    const meters = (() => { const L = now.lights, hab = hT ? (hT.habits || []).filter((x) => !x.auto) : [], did = hab.filter((x) => x.done).length;
+      const gx = hT ? Number(hT.total) || 0 : r ? r.todayXp || 0 : 0, gg = hT ? Number(hT.goal) || 0 : r ? r.dailyGoal || 0 : 0;
+      const span = r && r.nextLevel ? r.nextLevel - r.levelStart : 0, into = r && r.nextLevel ? r.xp - r.levelStart : 0;
+      return [
+        { id: "workout", label: now.rest ? "Rest day" : "Workout", p: L.workout ? 1 : 0, text: now.rest ? "Rest is the work" : L.workout ? "Done" : now.skipped ? "Skipped" : now.session ? "To do" : "Not yet" },
+        { id: "pain", label: "Check-in", p: L.pain ? 1 : 0, text: L.pain ? "Done" : "Not yet" },
+        { id: "acts", label: "Activities", p: hab.length ? did / hab.length : L.acts ? 1 : 0, text: hab.length ? `${did} of ${hab.length}` : L.acts ? "Done" : "None yet", lit: L.acts },
+        { id: "goal", label: "Daily goal", p: gg ? Math.min(1, gx / gg) : L.goal ? 1 : 0, text: gg ? `${Math.min(gx, 9999)} of ${gg} XP` : "", lit: L.goal },
+        ...(r && r.rank && r.rank.next ? [{ id: "gem", label: r.rank.next.name, p: span > 0 ? Math.max(0, Math.min(1, into / span)) : 0, text: `${r.rank.xpToNext} XP to go`, color: r.rank.next.color }] : [])
+      ]; })();
+    return { ...base, meters, today: { ...now.lights, skipped: now.skipped, lit: now.lit, of: 4, start: now.start, session: now.session ? { label: now.label, sub: now.sub } : null, track: now.track, rest: now.rest }, days: true, key: "week-" + monday, introAlt: introOn,
       startsOn: plan && plan.start > t ? fmtDate(plan.start, { weekday: "long", month: "short", day: "numeric" }) : "", track: track ? track.id : "", hasProgram: !!p, program: plan ? { id: plan.id, title: plan.title } : null, title: plan ? plan.title : "Your week", grid: !!(plan && plan.grid), rested: !!(plan && plan.rested),
       chamber: plan ? plan.chamber : 0, chambers: plan ? plan.chambers : 0, unit: plan ? plan.unit : "", left: plan ? plan.left : 0, stops };
   }
+  const brief2 = (x) => String(x).split(/\s+[—–-]\s+|\s*\(/)[0].trim() || String(x);
+  // A tap on one of today's stones
+  function journeyMeter(id) {
+    const j = journey(); if (!j || !j.days) return;
+    if (id === "workout") { if (j.today.skipped) return skipToday(false).then(() => journeyToday()); if (j.today.workout) return toast(j.today.rest ? "Rest day. Rest is the work." : "Today's training is done."); return journeyToday(true); }
+    if (id === "pain") { if (j.today.pain) return toast("Today's check-in is in."); if (!lesson("pain")) go("pain"); return; }
+    if (id === "gem") { const h = $("#view-home"); h.classList.add("gem-open"); const b = $("#t3-rank"); if (b) b.setAttribute("aria-expanded", "true"); const c = $("#gem-card"); if (c) c.scrollIntoView({ behavior: "smooth", block: "start" }); return; }
+    showCard("home", "habits");
+  }
   // What a tap on today's stop does: the first thing today still asks for
-  function journeyToday() {
+  function journeyToday(onlyTraining) {
     const j = journey(); if (!j || !j.days) return;
     const d = j.today;
+    if (d.skipped && !onlyTraining) { if (!d.pain) { if (!lesson("pain")) go("pain"); return; } return showCard("home", "habits"); }
     if (d.track && !d.workout) return openTrack(d.track, true);
     if (!d.workout || (j.hasProgram && !j.rested)) { if (d.start !== null && d.start >= 0) return journeyStart(d.start); if (j.program && !j.rested) return go("programs/" + j.program.id); if (!d.workout) return goNext("solomon"); }
     if (!d.pain) { if (!lesson("pain")) go("pain"); return; }
@@ -4159,10 +4182,19 @@
   // app, 10 XP each, once ever (the server checks the ones it can see: lib/clients.js). Any order. Skip ends it; Replay
   // (Profile) brings it back. "Meet Solomon" and "Bring a friend" are noted on the device when they happen.
   let intro = null, introBusy = false;
+  let roadSkips = []; // days the member skipped the session (kept on the account)
+  async function skipToday(on) {
+    const t = todayInTz();
+    try { roadSkips = (await apiAuth(on === false ? "DELETE" : "PUT", `/api/me/about/skip/${t}`)).skips || []; }
+    catch { roadSkips = on === false ? roadSkips.filter((d) => d !== t) : [...new Set([...roadSkips, t])]; } // an older server: remembered until the app reloads
+    planMemo = { key: "", v: null };
+    try { document.dispatchEvent(new CustomEvent("mdfit:journey")); } catch {}
+    if (on !== false) toast("Skipped for today. No XP, and it's waiting on your next training day.");
+  }
   let roadPlan = null; // { program, start }: the program on the road and the day the member chose to start it
   let aboutMe = null, roadTracks = []; // "Let me get to know you" answers, and the pain tracks put on the road (GET /api/me/about)
   async function loadAbout() {
-    try { const r = await apiAuth("GET", "/api/me/about"); aboutMe = r.about || null; roadTracks = r.tracks || []; roadPlan = r.plan || null;
+    try { const r = await apiAuth("GET", "/api/me/about"); aboutMe = r.about || null; roadTracks = r.tracks || []; roadPlan = r.plan || null; roadSkips = r.skips || [];
       // tracks added on this device before they were kept on the account move up once
       let old = []; try { old = JSON.parse(localStorage.getItem(`mdfit-my-tracks-${client.id}`) || "[]"); } catch {}
       for (const id of Array.isArray(old) ? old : []) if (!roadTracks.includes(id)) { try { roadTracks = (await apiAuth("PUT", `/api/me/about/tracks/${encodeURIComponent(id)}`)).tracks || roadTracks; } catch {} }
@@ -4264,7 +4296,7 @@
     const visitAhead = (appts.upcoming || []).some((a) => a.date === d && a.status === "booked" && (d > t || (d === t && String(a.time || "") > now)));
     return { workout, open: unpaid || visitAhead };
   };
-  window.MDFitApp = { showPlanOnCalendar, today: () => todayInTz(), about: () => aboutMe, saveAbout, tripStart, backToRoad, openTrack, saveProgram, logPain, painAreas: () => AREAS.slice(), showCard, customize, journeyToday, nextUp, goNext, guideFacts, view: () => show.at || "home", journey, journeyStart, introGo, introSkip, introPass, setMineView, dayStatus, startPlayer, go, loadRewards, toast, celebrateToast, exMeta, byId, gemIcon: GEM_ICON, rewards: () => reward, isPaid, showPaywall,
+  window.MDFitApp = { journeyMeter, skipToday, showPlanOnCalendar, today: () => todayInTz(), about: () => aboutMe, saveAbout, tripStart, backToRoad, openTrack, saveProgram, logPain, painAreas: () => AREAS.slice(), showCard, customize, journeyToday, nextUp, goNext, guideFacts, view: () => show.at || "home", journey, journeyStart, introGo, introSkip, introPass, setMineView, dayStatus, startPlayer, go, loadRewards, toast, celebrateToast, exMeta, byId, gemIcon: GEM_ICON, rewards: () => reward, isPaid, showPaywall,
     // For the guide (mdfit-guide.js) and the theme switch (app-theme.js): who is signed in, what the app holds, and two places to open
     client: () => client, content: async () => { if (!C) await (contentLoading || loadContent()).catch(() => {}); return C; },
     openBook: () => { go("profile"); setTimeout(() => $("#p-book-open") && $("#p-book-open").click(), 60); },
