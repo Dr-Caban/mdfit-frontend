@@ -4,6 +4,10 @@
   if (!auth.get()) { location.replace("/login?next=" + encodeURIComponent("/account" + location.hash)); return; }
   // Live updates; the new_message handler is registered once, with the Messages code below.
   if (window.MDFitRT) MDFitRT.connect({ namespace: "/member", token: auth.get().token });
+  // The server ended a live connection's sign-in (password changed on another device, account closed). Ask once: a
+  // sign-in that is no longer good sends the member to the sign-in page (common.js does that on a 401); one that is
+  // still good (this device just changed the password itself) simply connects again.
+  document.addEventListener("mdfit:signed-out", () => { apiAuth("GET", "/api/me/about").then(() => { if (window.MDFitRT) MDFitRT.connect({ namespace: "/member", token: auth.get().token }); }).catch(() => {}); });
   const EX = window.MDFIT_EXERCISES || [], INTROS = window.MDFIT_INTROS || {}, Gen = window.MDFitGen;
 
   const ADDRESS = "3214 Clark Road, Sarasota, FL 34231";
@@ -1004,7 +1008,7 @@
     if (add) { const id = add.dataset.trackAdd, on = !add.classList.contains("on"); add.disabled = true;
       try { roadTracks = (await apiAuth(on ? "PUT" : "DELETE", `/api/me/about/tracks/${encodeURIComponent(id)}`)).tracks || [];
         add.classList.toggle("on", on); add.textContent = on ? "On my road ✓" : "Add to my road";
-        toast(on ? "Added. It's today's stop on your road." : "Taken off your road.");
+        toast(on ? trackAddedSay(id) : "Taken off your road.");
       } catch (err) { toast(err.message); }
       add.disabled = false;
       try { document.dispatchEvent(new CustomEvent("mdfit:journey")); } catch {} return; }
@@ -1390,8 +1394,8 @@
     // Slide 1 pitch follows the clinic's settings: the free month, the commission, or both
     const fm = a.freeMonth !== false;
     $("#ref-pitch").innerHTML = a.enabled
-      ? `Share your code.${fm ? " When someone signs up with it, <strong>you get 1 free month</strong> of membership credit." : ""} Turn on affiliate commission to earn <strong>${pct(a.ratePct)}</strong> of what they pay for subscriptions or subscription add-ons.`
-      : `Share your code — when someone signs up with it, <strong>you get 1 free month</strong> of membership credit.`;
+      ? `Share your code.${fm ? " When someone signs up with it and confirms their email, <strong>you get 1 free month</strong> of membership credit." : ""} Turn on affiliate commission to earn <strong>${pct(a.ratePct)}</strong> of what they pay for subscriptions or subscription add-ons.`
+      : `Share your code — when someone signs up with it and confirms their email, <strong>you get 1 free month</strong> of membership credit.`;
     if (!on) { renderAffDots(); return; }
     const hold = `${a.holdDays} day${a.holdDays === 1 ? "" : "s"}`;
     $$(".aff-rate").forEach((el) => (el.textContent = pct(a.ratePct)));
@@ -3203,7 +3207,7 @@
       apiAuth("GET", "/api/me/accountability").then((a) => {
         const el = $("#accountability-tracker"); if (!el || !a.enabled) return;
         const pct = Math.min(100, Math.round((a.activeDays / a.threshold) * 100)), left = a.threshold - a.activeDays;
-        el.innerHTML = `<div class="card acct-card"><span class="label accent">Accountability tracker · ${esc(a.month)}</span>
+        el.innerHTML = `<div class="card acct-card"><span class="label accent">Accountability tracker · ${esc(a.from && a.to ? `${fmtDate(a.from, { month: "short", day: "numeric" })} to ${fmtDate(a.to, { month: "short", day: "numeric" })}` : a.month)}</span>
           <div class="acct-progress"><div class="acct-bar"><i style="width:${pct}%"></i></div><span>${a.activeDays} of ${a.threshold} days</span></div>
           ${a.free ? `<p class="acct-free">You hit ${a.threshold} days! This month is <b>free</b>.</p>` : a.atFloor ? `<p class="acct-free">You hit ${a.threshold} days! This month is just <b>$${a.owed.toFixed(2)}</b>.</p>`
             : `<p class="acct-owed">$${a.credit.toFixed(2)} off so far · $${a.owed.toFixed(2)} this month · ${left} more day${left === 1 ? "" : "s"} to get it down to $${Number(a.floor || 0).toFixed(2)}</p>`}

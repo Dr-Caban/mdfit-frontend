@@ -54,6 +54,12 @@
           document.dispatchEvent(new CustomEvent("mdfit:rt-error", { detail: { message: (err && err.message) || "" } }));
         });
 
+        // The server ended this sign-in (password changed elsewhere, account closed or switched off, sign-in expired)
+        // and is about to hang up: the page is told so it can go to its sign-in screen.
+        socket.on("signed_out", function (why) {
+          document.dispatchEvent(new CustomEvent("mdfit:signed-out", { detail: why || {} }));
+        });
+
         listeners.forEach(function (l) { socket.on(l.event, l.fn); });
         return socket;
       }).catch(function () { return null; });
