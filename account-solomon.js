@@ -119,8 +119,9 @@
   }
 
   const said = new Map(); // line -> when he last said it
-  let timer = 0, turns = 0, lastKind = "", hello = "", cheer = "";
-  const busy = () => !!document.querySelector(".tour, dialog[open]") || document.hidden;
+  let timer = 0, turns = 0, lastKind = "", hello = "", cheer = "", weekDue = false;
+  const WEEK = "mdfit-recap-week"; // the Monday of the week he last offered the recap for (kept on the device)
+  const busy = () => !!document.querySelector("#gt, dialog[open]") || document.hidden;
   function speakFor(view) {
     clearTimeout(timer);
     if (quiet() || view !== A.view()) return;
@@ -129,6 +130,11 @@
     if (cheer) { const c = cheer; cheer = ""; if (G.say(c, { ms: 7000 })) { timer = setTimeout(() => speakFor(view), 9500); return; } }
     // The day's welcome comes first, then what this screen has to say
     if (hello) { const h = hello; hello = ""; if (G.say(h, { ms: 8000 })) { timer = setTimeout(() => speakFor(view), 10500); return; } }
+    // The first opening of a new week: last week's numbers are ready, once, for anyone who has a week to hear about
+    if (weekDue && view === "home") { weekDue = false;
+      try { const f = A.weekFacts(), mon = f.weeks[3].from, worth = f.any && (f.weeks[2].sessions || f.weeks[2].checkins || f.weeks[1].sessions);
+        if (worth && localStorage.getItem(`${WEEK}-${f.me}`) !== mon && G.recap && G.say(`Your week is in${f.first ? ", " + f.first : ""}. Tap here and I’ll read it to you.`, { act: () => G.recap("last"), ms: 12000 })) { localStorage.setItem(`${WEEK}-${f.me}`, mon); timer = setTimeout(() => speakFor(view), 13500); return; }
+      } catch {} }
     let list = []; try { list = lines(view); } catch { return; }
     const now = Date.now(), c = list.find((x) => !said.has(x.t) || now - said.get(x.t) > AGAIN);
     if (!c || !G.say(c.t, { act: c.act })) return;
@@ -143,7 +149,7 @@
   // A session was finished and saved: he says so when they are back on the road (the player closes onto it)
   document.addEventListener("mdfit:workout", () => { cheer = hype("workout"); });
   // The first opening of the day (account.js welcomeBack): he greets them above the cloud, and the chat opens with the same words
-  document.addEventListener("mdfit:arrive", (e) => { try { hello = greetingFor(e.detail || {}); } catch { hello = ""; } if (G.greeting) G.greeting(hello); arrive(A.view(), 4000); });
+  document.addEventListener("mdfit:arrive", (e) => { try { hello = greetingFor(e.detail || {}); } catch { hello = ""; } if (G.greeting) G.greeting(hello); weekDue = true; arrive(A.view(), 4000); });
   // First words: once the app has its data and the welcome toast has had its moment
   arrive(A.view(), 4200);
 
