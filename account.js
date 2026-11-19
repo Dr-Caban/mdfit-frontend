@@ -1670,6 +1670,13 @@
     return { message: "Logged." };
   }, { reset: false });
   $("#chart-area").addEventListener("change", renderChart);
+  // The same check-in, saved from Solomon's chat: the log, the chart, the XP and the road all follow
+  async function logPain(area, level) {
+    await apiAuth("POST", "/api/me/pain", { area: AREAS.includes(area) ? area : "Other", level: Math.max(0, Math.min(10, Math.round(Number(level) || 0))), note: "" });
+    await loadPain(); loadRewards(true);
+    try { await introSync(); } catch {} // the first descent's check-in stop is credited before the chat says what is next
+    try { document.dispatchEvent(new CustomEvent("mdfit:journey")); } catch {}
+  }
 
   async function loadPain() {
     painLog = await apiAuth("GET", "/api/me/pain");
@@ -3275,6 +3282,15 @@
     else if (go2.startsWith("#")) go(go2.slice(1));
     else if (go2) location.href = go2;
   }
+  // Take the member to one card on Home or Profile, opened and in view (Solomon's "how do I get there")
+  function showCard(w, id) {
+    const sel = (LAYOUT[w] || {})[id]; if (!sel) return false;
+    go(w === "home" ? "home" : "profile");
+    setTimeout(() => { const c = $(sel.split(",")[0].trim()); if (!c) return; if (c.classList.contains("lay-fold") && !c.classList.contains("open")) layToggle(c);
+      if (id === "habits") document.dispatchEvent(new CustomEvent("mdfit:habits-open")); c.scrollIntoView({ block: "start" }); }, 140);
+    return true;
+  }
+  const customize = (w) => { go(w === "home" ? "home" : "profile"); setTimeout(() => { const b = $(`[data-lay-custom="${w === "home" ? "home" : "profile"}"]`); if (b) b.click(); }, 140); };
   // What Solomon may mention without being asked: all of it is already on the member's own screens
   function guideFacts() {
     const t = todayInTz(), from = addDays(t, -6), r = reward, a = aff;
@@ -4081,7 +4097,7 @@
     const visitAhead = (appts.upcoming || []).some((a) => a.date === d && a.status === "booked" && (d > t || (d === t && String(a.time || "") > now)));
     return { workout, open: unpaid || visitAhead };
   };
-  window.MDFitApp = { journeyToday, nextUp, goNext, guideFacts, view: () => show.at || "home", journey, journeyStart, introGo, introSkip, introPass, setMineView, dayStatus, startPlayer, go, loadRewards, toast, celebrateToast, exMeta, byId, gemIcon: GEM_ICON, rewards: () => reward, isPaid, showPaywall,
+  window.MDFitApp = { logPain, painAreas: () => AREAS.slice(), showCard, customize, journeyToday, nextUp, goNext, guideFacts, view: () => show.at || "home", journey, journeyStart, introGo, introSkip, introPass, setMineView, dayStatus, startPlayer, go, loadRewards, toast, celebrateToast, exMeta, byId, gemIcon: GEM_ICON, rewards: () => reward, isPaid, showPaywall,
     // For the guide (mdfit-guide.js) and the theme switch (app-theme.js): who is signed in, what the app holds, and two places to open
     client: () => client, content: async () => { if (!C) await (contentLoading || loadContent()).catch(() => {}); return C; },
     openBook: () => { go("profile"); setTimeout(() => $("#p-book-open") && $("#p-book-open").click(), 60); },

@@ -65,6 +65,34 @@
     { id: "visit", kind: "visit", label: "Join my video visit", name: "your video visit", kw: ["video visit", "telehealth", "video call", "video session", "virtual visit", "zoom"] },
     { id: "call", kind: "other", label: `Call the clinic · ${PHONE_SAY}`, kw: ["call", "phone", "speak to", "human", "real person", "front desk", "phone number"] }
   ];
+  // Where each of those is, in the words on the screen: [on a phone, on a computer]
+  const AT = { book: ["Tap + at the top of Home, then Book a visit.", "Tap + at the top of Home, then Book a visit."], pain: ["Tap Train, then Pain tool at the top.", "It's Pain Tool in the menu."],
+    programs: ["Tap More, then Programs.", "It's Programs in the menu."], generate: ["Tap Train in the bar at the bottom.", "It's Workout Generator in the menu."],
+    videos: ["Tap Train, then Videos at the top.", "It's Video Library in the menu."], messages: ["Tap More, then Messages.", "It's Message Dr. Jared in the menu."],
+    progress: ["Tap Progress in the bar at the bottom.", "It's Progress Tracking in the menu."], learn: ["Tap More, then Learn.", "It's Lectures & Live Q&A in the menu."],
+    tips: ["Tap More, then Tips.", "It's Health Tips in the menu."], leaders: ["Tap More, then Leaders.", "It's Leaderboard in the menu."],
+    premium: ["Tap More, then Membership.", "It's Membership & 1-on-1 in the menu."], profile: ["Tap Profile in the bar at the bottom.", "It's My Profile in the menu."],
+    visit: ["Tap + at the top of Home, then Join video visit.", "Tap + at the top of Home, then Join video visit."] };
+  // The smaller things people ask the way to. w = the words that mean it; at = where it is, as the screen names it;
+  // label + href / card / run = the button that takes them straight there. Answered on the device, never sent, never counted.
+  const WAYS = [
+    { w: ["intake", "documents", "document", "paperwork", "forms", "intake form", "consent", "consents", "waiver", "health history", "new patient"], at: "Your intake documents are under the + button at the top of Home: tap +, then Intake documents.", label: "Open my intake documents", href: "/intake?me=1" },
+    { w: ["refer", "referral", "referrals", "refer a friend", "my link", "referral link", "referral code", "invite a friend", "commission"], at: "Your referral link and what it has earned are on Profile, in Refer a friend.", label: "Open Refer a friend", card: ["profile", "referral"], name: "Refer a friend" },
+    { w: ["calendar sync", "sync my calendar", "sync calendar", "iphone calendar", "apple calendar", "google calendar", "phone calendar", "add to my calendar", "subscribe to my calendar"], at: "Calendar sync is on Progress, under the calendar.", label: "Open the calendar", hash: "progress", name: "Progress" },
+    { w: ["rearrange", "reorder", "move the cards", "hide a card", "hide cards", "customize home", "customise home", "customize my home", "home layout", "customize profile", "customize this page"], at: "At the bottom of Home and of Profile there is Customize this page: move a card up or down, fold it or hide it.", label: "Customize Home", run: () => App.customize("home"), name: "Home" },
+    { w: ["be quiet", "stop talking", "mute you", "mute solomon", "quiet", "stop the bubbles", "turn you off", "turn off solomon", "notifications", "notification", "nudge", "nudges"], at: "That's on Profile, in Reminders from Solomon: my daily reminder, and whether I speak up in the app.", label: "Open Reminders from Solomon", card: ["profile", "nudges"], name: "Reminders from Solomon" },
+    { w: ["daily activities", "daily activity", "activities", "habits", "habit", "check off"], at: "Daily activities are on Home, in the Daily activities card. Each is worth XP once a day.", label: "Open Daily activities", card: ["home", "habits"], name: "Daily activities" },
+    { w: ["daily goal", "xp goal", "my goal", "change my goal", "goal level"], at: "Your daily XP goal is on Profile, in My daily XP goal.", label: "Open my daily goal", card: ["profile", "goal"], name: "My daily XP goal" },
+    { w: ["gem mine", "the mine", "my week", "the road", "my gems", "gems"], at: "The gem mine is on Home: one stop a day, lit by your workout, check-in, daily activities and daily goal.", label: "Show me the mine", run: () => App.goNext("mine"), name: "the gem mine" },
+    { w: ["password", "change my email", "email address", "my name", "phone number on file", "log out", "logout", "sign out", "delete my account", "close my account"], at: "Your sign-in details are on Profile, in the Profile card.", label: "Open my details", card: ["profile", "account"], name: "your details" },
+    { w: ["workout history", "past workouts", "previous workouts", "old workouts"], at: "Every workout you've logged is on Profile, in Workout history.", label: "Open Workout history", card: ["profile", "history"], name: "Workout history" },
+    { w: ["my appointments", "my visits", "upcoming visits", "upcoming appointments", "past visits"], at: "Your visits are on Profile, in My appointments.", label: "Open My appointments", card: ["profile", "appointments"], name: "My appointments" },
+    { w: ["care plan", "my plan from", "prescribed", "movements from", "notes from dr", "what dr jared left"], at: "What Dr. Jared left for you is on Profile, in My care plan.", label: "Open My care plan", card: ["profile", "care"], name: "My care plan" },
+    { w: ["feedback", "suggestion", "report a problem", "report a bug", "complaint"], at: "You can tell us on Profile, in Help us improve.", label: "Open Help us improve", card: ["profile", "feedback"], name: "Help us improve" },
+    { w: ["install", "home screen", "add to home", "download the app", "get the app"], at: "How to put MD Fit on your phone is on Profile, in Get the app.", label: "Open Get the app", card: ["profile", "install"], name: "Get the app" }
+  ];
+  // Asking the way: "where is", "how do I get to", "find", "take me to", "can't find"...
+  const WHERE = /\b(where|how (do|can|would) i (get|find|open|see|go|access|reach|view|change|turn|use|do that|do this)|how to (get|find|open|see|access|view|change|use)|find|locate|take me|bring me|go to|get to|show me|open (the|my|up)|navigate|can'?t find|cannot find|looking for|can'?t you help|can you help)\b/;
   // Body areas: w = words a member might type; f = words to find in the app's own program titles and pain-track regions
   const AREAS = {
     knee: { w: ["knee", "knees", "patella", "acl", "meniscus"], f: ["knee"] },
@@ -279,10 +307,55 @@
     if (m.rec) say(`Want to pick up ${m.title} that Dr. Jared recommended?`);
     offer([...own3(m), opt("pain"), opt("programs"), opt("generate")]);
   }
+  // ---------- the road: where this member is right now (the same "next" as the Home tile), read on the device ----------
+  // Solomon opens with it, falls back to it when a message is vague, and says the new stop when the last one is done.
+  function road() {
+    let n = null; try { n = App.nextUp ? App.nextUp() : null; } catch {} if (!n) return null;
+    const sig = [n.kind, n.ref || "", n.title || ""].join("|");
+    const R = (text, label, how, name) => ({ sig, kind: n.kind, ref: n.ref || "", say: text, opt: label ? { label, gold: true, name: name || "it", ...how } : null });
+    if (n.kind === "intro") {
+      if (n.ref === "pain") return R("You're on your first descent, and this stop is the check-in: tell me what hurts, or that nothing does. We can do it right here.", "Do my check-in here", { more: () => beat(() => checkin()) });
+      if (n.ref === "program") return R("You're on your first descent. This stop: pick a program that fits you.", "Pick a program", { hash: "programs" }, "Programs");
+      if (n.ref === "session") return R("You're on your first descent. This stop: finish one workout. Tell me how long you have, or start one now.", "Build a workout", { hash: "generate" }, "the workout builder");
+      if (n.ref === "friend") return R("Last stop of your first descent: see your referral link.", "Open Refer a friend", { run: () => App.goNext("refer") }, "Refer a friend");
+      return R("You're on your first descent. Ask me anything and the first stop is yours.");
+    }
+    if (n.kind === "docs") return R("Next on your road: your intake documents are due before your visit.", "Open my intake documents", { href: "/intake?me=1" });
+    if (n.kind === "invoice") return R(`Next on your road: ${n.title} to settle.`, "Pay it now", { run: () => App.goNext(n.go) }, "your invoice");
+    if (n.kind === "visit" || n.kind === "later") return R(`Coming up: ${n.title}, ${n.sub}.`, "Get ready for my visit", { run: () => App.goNext("plus") }, "your visit");
+    if (n.kind === "session") return R(`Today's stop on your road is ${n.title}.`, `Start ${n.title}`, { run: () => App.journeyToday() }, "today's session");
+    if (n.kind === "lights") { const d = n.today || {};
+      if (!d.pain) return R(`${d.lit} of ${d.of} lit today. Next light: your check-in. We can do it right here.`, "Do my check-in here", { more: () => beat(() => checkin()) });
+      return R(`${d.lit} of ${d.of} lit today. Next light: ${n.title.toLowerCase()}.`, `Open ${n.title}`, { run: () => App.goNext("today") }, n.title); }
+    if (n.kind === "done") return R("Every lamp is lit today. The road keeps until tomorrow.");
+    return R("Nothing is on your road yet today. Tell me what you want to train and I'll build it.", "Build a workout", { hash: "generate" }, "the workout builder");
+  }
+  let lastRoad = "";
+  // ---------- a pain check-in, done in the chat: where, how strong, saved ----------
+  // The words the app's own check-in uses for each area a member might name
+  const LOG_AREA = { knee: "Knee", back: "Lower back", shoulder: "Shoulder", hip: "Hip", neck: "Neck", ankle: "Ankle / foot", foot: "Ankle / foot", elbow: "Elbow / wrist / hand", wrist: "Elbow / wrist / hand" };
+  function checkin(areaKey, opener) {
+    const areas = App.painAreas ? App.painAreas() : [];
+    if (!App.logPain || !areas.length) { say("The check-in is in the pain tool."); return offer([{ ...opt("pain"), gold: true }]); }
+    const strong = (area) => { say(area === "Other" ? "How strong is it right now, 0 to 10?" : `How strong is your ${area.toLowerCase()} right now, 0 to 10?`);
+      offer(Array.from({ length: 11 }, (_, n) => ({ label: String(n), more: () => save(area, n) }))); };
+    const save = async (area, n) => { const d = thinking();
+      try { await App.logPain(area, n); d.remove();
+        say(n === 0 ? "Logged: no pain today. Good." : `Logged: ${area.toLowerCase()}, ${n} out of 10.${n >= 7 ? " That is a lot to carry. It's worth having Dr. Jared look at it." : ""}`);
+        const key = Object.keys(LOG_AREA).find((k) => LOG_AREA[k] === area), rd = road(); lastRoad = rd ? rd.sig : "";
+        if (rd && rd.kind !== "done") say(rd.say.replace(/^You're on your first descent[.,] ?(This stop: )?/, "That stop is done. Next: "));
+        offer([...(rd && rd.opt ? [rd.opt] : []), ...(key && n > 0 ? [{ label: `Programs for your ${key}`, more: () => beat(() => showArea(key)) }] : []), ...(n > 0 ? [{ label: "See what is likely behind it", hash: "pain", name: "the pain tool" }] : []), ...(n >= 5 ? [opt("book")] : [])]);
+      } catch (e) { d.remove(); say("I couldn't save that just now. You can log it in the pain tool."); offer([{ ...opt("pain"), gold: true }]); } end(); };
+    const known = LOG_AREA[areaKey];
+    if (known) return strong(known);
+    say(opener || "Let's log it right here. Where does it bother you most?");
+    offer([...areas.filter((a) => a !== "Other").map((a) => ({ label: a, more: () => beat(() => strong(a)) })), { label: "Somewhere else", more: () => beat(() => strong("Other")) }, { label: "Nothing hurts today", more: () => save("Other", 0) }]);
+  }
+  checkin.none = async () => { const d = thinking(); try { await App.logPain("Other", 0); d.remove(); const rd = road(); lastRoad = rd ? rd.sig : ""; say(rd && rd.kind !== "done" ? `Logged. ${rd.say.replace(/^You're on your first descent[.,] ?(This stop: )?/, "Next: ")}` : "Logged."); offer(rd && rd.opt ? [rd.opt] : [opt("generate")]); } catch { d.remove(); say("I couldn't save that just now."); offer([opt("pain")]); } end(); };
   function hurting(area, extra) {
     if (area) ctx.area = area;
     say(`Okay, I understand how frustrating that can be${area ? `, especially with your ${area}` : ""}. Here's what I can take you to:`);
-    offer([...(area ? [{ label: `Programs for your ${area}`, more: () => beat(() => showArea(area)) }] : []), opt("pain"), opt("book"), ...(extra || []), opt("call")]);
+    offer([{ label: "Log it now", gold: true, more: () => beat(() => checkin(area)) }, ...(area ? [{ label: `Programs for your ${area}`, more: () => beat(() => showArea(area)) }] : []), opt("pain"), opt("book"), ...(extra || []), opt("call")]);
   }
   // When a reminder is for: a day and a time worked out from the words, on this device
   function whenFrom(raw) {
@@ -454,6 +527,12 @@
   }
   // Work out what was asked: which kind (one word, for the count) and what to answer
   // local: true = the device answers this itself in every mode (the member's own data, reminders, how the app looks)
+  // the best match is the longest phrase found, so "customize home" beats "home"
+  function wayFor(t) { let best = null, len = 0; for (const w of WAYS) for (const k of w.w) if (k.length > len && has(t, k)) { best = w; len = k.length; } return best; }
+  function showWay(w) {
+    say(`${w.at} I can take you there now.`);
+    offer([{ label: w.label, gold: true, name: w.name, ...(w.href ? { href: w.href } : w.card ? { run: () => App.showCard(w.card[0], w.card[1]) } : w.run ? { run: w.run } : { hash: w.hash }) }, opt("call")]);
+  }
   function decide(u, raw) {
     const plan = route(u, raw); if (["looks", "reminder"].includes(plan.kind) || plan.own) plan.local = true; return plan;
   }
@@ -468,7 +547,12 @@
     if (/\b(remind me|set a reminder|reminder (for|to|at)|save (it|that|this)|put (it|that|this) (in|on)|add (it|that|this) to|(on|in|to) my calendar)\b/.test(t)) return { kind: "reminder", run: () => remind(u, raw) };
     if (/\breminders?\b/.test(t)) return { kind: "reminder", run: myReminders };
     if (FOLLOW.test(String(raw || "")) && lastTopic === "invoice") return { kind: "membership", own: true, run: () => invoiceTalk(true) };
+    if (/\b(check ?-?in|log (my |the |a )?pain|log it|record (my |the )?pain)\b/.test(t)) return { kind: "pain", local: true, free: true, run: () => checkin(u.area) };
+    if (!u.area && /^\s*(it'?s |its |it is |i hurt |hurts )?(everything|everywhere|all over|all of it|my whole body|whole body|all of me)( hurts| aches| is sore)?\s*$/.test(t)) return { kind: "pain", local: true, free: true, run: () => checkin("", "That's a lot to carry. Start with the one that bothers you most, and we'll log it right here:") };
+    if (!u.area && /^\s*(nothing|nothing hurts|no pain|none|i'?m fine|im fine|i feel (fine|good|great)|all good|nothing really)\s*$/.test(t)) return { kind: "pain", local: true, free: true, run: () => { say("Good to hear. I'll log that as no pain today."); checkin.none(); } };
     const acct = own(u); if (acct) return { ...acct, own: true };
+    // The way to something in the app: answered here, with the path and a button that goes there
+    if (!u.pained && !u.area) { const w = wayFor(t); if (w) return { kind: "other", local: true, free: true, run: () => showWay(w) }; }
     // On the phone: a real pick from the app's programs, and plain answers to the usual next questions
     if (RECOMMEND.test(t) && !u.pained) return { kind: "programs", run: () => recommend(u) };
     // A goal said plainly ("I want to get stronger", "lose weight", "better at golf") is asking for a pick too
@@ -477,7 +561,12 @@
     if (FOLLOW.test(String(raw || "")) && lastTopic === "programs") return { kind: "programs", run: FAQ[0].run };
     if (u.pained) return { kind: "pain", run: () => hurting(u.area, u.places.filter((p) => !["pain", "book", "call"].includes(p.id)).slice(0, 1).map((p) => opt(p.id))) };
     if (u.area) return { kind: (u.places[0] || {}).kind || "programs", run: () => showArea(u.area) };
+    if (u.places.length && WHERE.test(t) && AT[u.places[0].id]) return { kind: u.places[0].kind, local: true, free: true, run: () => { const p = u.places[0];
+      say(`${AT[p.id][phone() ? 0 : 1]} I can take you there now.`); offer([{ ...opt(p.id), gold: true }, ...u.places.slice(1, 3).map((x) => opt(x.id))]); } };
     if (u.places.length) return { kind: u.places[0].kind, run: () => { say(u.places.length === 1 ? "Got it. This is the place for that:" : "Got it. These look like what you're after:"); offer([...u.places.slice(0, 4).map((p) => opt(p.id)), ...(u.places.some((p) => p.id === "call") ? [] : [opt("call")])]); } };
+    // Short and unplaceable ("everything", "ok", "what now"): answered from where they are on their road, on the device
+    { const rd = road(), words = t.trim().split(/\s+/).filter(Boolean).length;
+      if (rd && words <= 4) return { kind: "other", local: true, free: true, run: () => { lastRoad = rd.sig; say(rd.say); offer([...(rd.opt ? [rd.opt] : []), opt("generate"), opt("programs"), opt("call")]); } }; }
     return { kind: "other", run: async () => {
       const m = await mine(), theirs = own3(m);
       say(theirs.length ? "I didn't quite get that one. Try telling me what you're working on, like a sore knee, getting stronger, or booking a visit. Here's what you have going:" : "I didn't quite get that one. Try telling me what you're working on, like a sore knee, getting stronger, or booking a visit. Or start here:");
@@ -494,8 +583,9 @@
     busy = true; const d = thinking(), t0 = Date.now();
     // With the assistant on, a question the device does not answer itself is read on MD Fit's server; anything else
     // (and any failure there) is understood here and only counted.
-    let ai = null; if (G.ai && !plan.local) ai = await askServer(text);
-    const ok = ai || plan.free ? true : await count(plan.kind); // a hello is never counted
+    let ai = null, asked = false; if (G.ai && !plan.local) { ai = await askServer(text); asked = !!ai; }
+    if (ai && ai.ok !== false && !ai.urgent && /\bcan only help with\b/i.test(String(ai.say || "")) && (u.places.length || u.area)) ai = null;
+    const ok = ai || asked || plan.free ? true : await count(plan.kind); // a hello is never counted (nor a question the server already counted)
     const rest = 750 - (Date.now() - t0); if (rest > 0) await wait(rest);
     d.remove();
     lastTopic = ""; // a follow-up belongs to the answer just given; the answer below sets it again if it has one
@@ -522,7 +612,8 @@
     const area = AREAS[r.area] ? r.area : ""; if (area) ctx.area = area;
     const ids = [...new Set((Array.isArray(r.places) ? r.places : []).map((x) => FROM_SERVER[x] || x))].filter((id) => id !== "call" && PLACES.some((p) => p.id === id)).slice(0, 5);
     say(String(r.say || "").trim().slice(0, 600) || "Here's where I can take you:");
-    offer([...(area ? [{ label: `Programs for your ${area}`, more: () => beat(() => showArea(area)) }] : []), ...ids.map(opt), opt("call")]);
+    const rd = road();
+    offer([...(rd && rd.opt && !["done", "ask"].includes(rd.kind) ? [{ ...rd.opt, label: rd.opt.label === "Do my check-in here" ? "Next on your road: my check-in" : `Next on your road: ${rd.opt.label.replace(/^(Open|Start|Pick|Build) /, (m) => m.toLowerCase())}` }] : []), ...(area ? [{ label: `Programs for your ${area}`, more: () => beat(() => showArea(area)) }] : []), ...ids.map(opt), opt("call")]);
     let C = null; try { C = await App.content(); } catch {}
     suggest(r.suggested, new Map(((C && C.programs) || []).map((p) => [p.id, p])));
   }
@@ -561,15 +652,19 @@
     // (on the first opening of a day the chat opens with the same welcome he gave above the cloud)
     say(dayHello ? `${dayHello} What are we working on today?` : `Hey ${first()}, I'm Solomon. What are we working on today?`);
     if (w.line) say(w.line);
-    const m = await mine();
-    if (m.rec && !w.line) say(`Want to pick up ${m.title} that Dr. Jared recommended?`);
-    offer([...w.opts, ...own3(m),
+    const m = await mine(), rd = road(); lastRoad = rd ? rd.sig : "";
+    if (rd && !w.line && rd.kind !== "ask") say(rd.say);
+    else if (m.rec && !w.line) say(`Want to pick up ${m.title} that Dr. Jared recommended?`);
+    offer([...(rd && rd.opt && rd.kind !== "ask" ? [rd.opt] : []), ...w.opts, ...own3(m),
       { label: "Something hurts", more: () => beat(() => { say("I'm sorry to hear that. Where is it bothering you?"); offer(["knee", "back", "shoulder", "hip", "neck", "foot"].map((a) => ({ label: cap(a), more: () => beat(() => hurting(a)) }))); }) },
       opt("book"), opt("programs"), opt("generate"),
       ...(theme() ? [{ label: "Make the app mine", more: () => beat(() => look(null, "Here's what you can change. Pick one, or just tell me.")) }] : [])]);
   }
   // Something new turned up since the guide last looked (a visit, an invoice, a message): say so on the next open
-  function news() { const w = waiting(); if (w.sig && w.sig !== lastSig) { say(`Something is waiting for you. ${w.line}`.trim()); offer(w.opts); } lastSig = w.sig; }
+  function news() { const w = waiting(), rd = road();
+    if (w.sig && w.sig !== lastSig) { say(`Something is waiting for you. ${w.line}`.trim()); offer(w.opts); }
+    else if (rd && lastRoad && rd.sig !== lastRoad) { say(rd.kind === "done" ? rd.say : `You moved along. ${rd.say.replace(/^You're on your first descent[.,] ?/, "Still on your first descent. ")}`); if (rd.opt) offer([rd.opt]); }
+    lastSig = w.sig; lastRoad = rd ? rd.sig : lastRoad; }
 
   // ---------- open and close ----------
   function fitKeyboard() { // keep the box above a phone's on-screen keyboard
