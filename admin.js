@@ -54,10 +54,9 @@
   });
   // Logging out also empties every rendered list: client names, messages and documents must not stay in the DOM
   // on a shared screen (HIPAA automatic logoff). The idle timer signs out after 15 minutes without input.
-  // Signing out ends this sign-in on the server too, so a copy of it kept anywhere stops working at once
-  const endSignIn = (t) => { if (!t) return; try { fetch(API + "/api/admin/me/logout", { method: "POST", headers: { Authorization: "Bearer " + t }, keepalive: true }).catch(() => {}); } catch {} };
   function logout() {
-    endSignIn(token); token = ""; session.set(""); $("#app").hidden = true; $("#login").hidden = false; if (window.MDFitRT) MDFitRT.disconnect();
+    if (token) { try { fetch(API + "/api/admin/logout", { method: "POST", keepalive: true, headers: { "Content-Type": "application/json", Authorization: "Bearer " + token }, body: "{}" }).catch(() => {}); } catch {} } // the session ends on the server too
+    token = ""; session.set(""); $("#app").hidden = true; $("#login").hidden = false; if (window.MDFitRT) MDFitRT.disconnect();
     $$("#appts-list, #clients-list, #client-totals, #client-detail, #emr-list .table-wrap, #emr-detail, #leads-list, #members-list, #msg-thread, #msg-threads, #bc-list, #feedback-list, #reviews-list, #cal-grid, #cal-pop-body, #notif-list, #home-inbox, #app table tbody").forEach((el) => { el.innerHTML = ""; });
     const pop = $("#cal-pop"); if (pop && pop.open) pop.close();
     // the client overview pop-up sits outside #app: close it and empty it too
@@ -77,6 +76,8 @@
   const idleStamp = () => { lastStamp = Date.now(); try { sessionStorage.setItem(ACTIVE_KEY, String(lastStamp)); } catch {} };
   const idleFor = () => { try { const t = Number(sessionStorage.getItem(ACTIVE_KEY)); return t ? Date.now() - t : 0; } catch { return 0; } };
   const idleOut = () => { logout(); $("#login .form-msg").textContent = "Signed out after 15 minutes of inactivity."; };
+  // The server ends a session that goes 15 minutes without a request; while there has been input lately, say so.
+  setInterval(() => { if (token && idleFor() < 4 * 60 * 1000) fetch(API + "/api/admin/me", { headers: { Authorization: "Bearer " + token, "X-Idle-Seconds": String(Math.round(idleFor() / 1000)) } }).then((r) => { if (r.status === 401 && token) idleOut(); }).catch(() => {}); }, 4 * 60 * 1000);
   const idleArm = () => { clearTimeout(idleT); if (token) idleT = setTimeout(() => (idleFor() >= IDLE_MS ? idleOut() : idleArm()), Math.max(1000, IDLE_MS - idleFor())); };
   const idleBump = () => { if (!token) return; if (Date.now() - lastStamp > 5000) idleStamp(); idleArm(); };
   const idleCheck = () => { if (token && (!session.get() || idleFor() >= IDLE_MS)) idleOut(); };

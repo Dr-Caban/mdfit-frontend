@@ -43,10 +43,15 @@
     if (!res.ok) { const e = new Error((data && data.error) || "Request failed."); e.status = res.status; e.data = data; throw e; }
     return data;
   }
-  // Signing out ends this sign-in on the server too, so a copy of it kept anywhere stops working at once
-  const endSignIn = (t) => { if (!t) return; try { fetch(API + "/api/admin/me/logout", { method: "POST", headers: { Authorization: "Bearer " + t }, keepalive: true }).catch(() => {}); } catch {} };
-  function signOut() { endSignIn((session.get() || {}).token); clearTimeout(idleT); try { STAFF_KEYS.forEach((k) => sessionStorage.removeItem(k)); } catch {} connectP = null; show(false); }
-  $("#signOut").addEventListener("click", signOut);
+
+  // The server ends a staff session after 15 minutes without a request and at sign-out (see README: DO NOT TOUCH).
+  // While this page is being used, it says so every few minutes; signing out ends the session on the server.
+  let beatAt = Date.now();
+  const beat = () => { const s = session.get(); if (!s || Date.now() - beatAt < 4 * 60 * 1000) return; beatAt = Date.now(); fetch(API + "/api/admin/me", { headers: { Authorization: "Bearer " + s.token } }).then((r) => { if (r.status === 401) signOut(); }).catch(() => {}); };
+  ["pointerdown", "keydown", "scroll"].forEach((ev) => window.addEventListener(ev, beat, { passive: true, capture: true }));
+  const endSession = () => { const s = session.get(); if (s) { try { fetch(API + "/api/admin/logout", { method: "POST", keepalive: true, headers: { "Content-Type": "application/json", Authorization: "Bearer " + s.token }, body: "{}" }).catch(() => {}); } catch {} } };
+  function signOut() { clearTimeout(idleT); session.clear(); try { STAFF_KEYS.forEach((k) => sessionStorage.removeItem(k)); } catch {} connectP = null; show(false); }
+  $("#signOut").addEventListener("click", () => { endSession(); signOut(); });
 
   // ---- sign in: password, or Google (the address must be the Manager account's; the emailed code still applies)
   let gCred = "";

@@ -33,4 +33,8 @@
   `GET /api/admin/videos/status` and read its `mirror` block. Before blaming a quota, check the logs: the believed
   Cloudinary cap was three ordinary bugs and zero quota errors. MP4 Fallback must be ON in the Bunny library or
   nothing ever publishes; keep Token Authentication OFF until a client signs URLs. Never print or copy a key.
+- **DO NOT TOUCH after compliancy is set.** This is a live patient EMR. The compliance safeguards are locked: read the
+  "DO NOT TOUCH" section of `README.md` here and in `mdfit-backend` before editing anything near sign-in, sessions,
+  roles and permissions, the audit ledger, encryption, the chart, patient-rights records, the Compliance screen, or the
+  agreement locks. Change them only when the owner asks for that exact change in the session; never as a side effect.
 - Only `mdfit-frontend` and `mdfit-backend` are worked on from these sessions. **Do not touch the iOS app.**
