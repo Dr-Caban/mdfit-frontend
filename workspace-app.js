@@ -393,7 +393,7 @@
     if (drawn === seq || !cache.clientView) cache.clientView = { rows: shown, patients, waiting };
     return `
     <div class="view-head"><div><h1>Clients</h1><p class="muted">${plural(list.length, "account")} · ${plural(patients.size, "active patient")} · ${waiting.size} waiting to be converted</p></div>
-    <div class="row"><input class="input" id="clientQ" style="width:240px" placeholder="Filter by name, email or phone" value="${esc(state.clientQ)}" aria-label="Filter clients"><button class="btn" data-act="exportAsk" id="exportBtn">${ui("download", 14)} <span id="exportLabel">${state.picked.size ? `Export ${state.picked.size} selected` : "Export all"}</span></button><button class="btn" data-act="trashOpen">${ui("trash", 14)} Trash</button></div></div>
+    <div class="row"><input class="input" id="clientQ" style="width:240px" placeholder="Filter by name, email or phone" value="${esc(state.clientQ)}" aria-label="Filter clients"><button class="btn" data-act="exportAsk" id="exportBtn">${ui("download", 14)} <span id="exportLabel">${state.picked.size ? `Export ${state.picked.size} selected` : "Export all"}</span></button><button class="btn danger" data-act="trashPicked" id="trashPicked"${state.picked.size ? "" : " hidden"}>${ui("trash", 14)} <span id="trashPickedLabel">Delete ${state.picked.size} selected</span></button><button class="btn" data-act="trashOpen">${ui("restore", 14)} View trash</button></div></div>
     <div class="card" style="padding:0"><div class="table-wrap"><table>
       <thead><tr><th style="width:34px"><input type="checkbox" data-change="pickAll" aria-label="Select everyone shown"${shown.length && shown.every((c) => state.picked.has(c.id)) ? " checked" : ""}></th><th>Client</th><th>Status</th><th>Documents</th><th>Next visit</th><th>Membership</th><th>Last sign-in</th></tr></thead>
       <tbody id="clientRows">${clientRows(shown.slice(0, ROWS_FIRST), patients, waiting) || noneRow(7, list.length ? "No one matches." : "No clients yet.")}</tbody>
@@ -2034,11 +2034,23 @@
     // ---- the trash: Delete sets a client aside for 30 days; Restore puts them back as they were
     clientTrash: async (el) => {
       const name = el.dataset.name || "this client";
-      if (!confirm(`Move ${name} to the trash?\n\nThey disappear from every list and can't sign in. You have 30 days to restore them from Clients → Trash, exactly as they were.\n\nAfter 30 days the trash empties: a client with a chart is kept as a "Closed account" with the chart, anyone else is removed. A membership keeps billing until then, so cancel it first if it should stop now.`)) return;
+      if (!confirm(`Move ${name} to the trash?\n\nThey disappear from every list and can't sign in. You have 30 days to restore them from Clients → View trash, exactly as they were.\n\nAfter 30 days the trash empties: a client with a chart is kept as a "Closed account" with the chart, anyone else is removed. A membership keeps billing until then, so cancel it first if it should stop now.`)) return;
       const r = await api("DELETE", `/api/admin/clients/${encodeURIComponent(el.dataset.id)}`);
       cache.clients = null; cache.emr = null; cache.chart = null; state.chartClient = null; state.picked.delete(el.dataset.id);
       toast(`${name} is in the trash for ${r.daysLeft} days.`);
       if (location.hash === "#clients") render(); else location.hash = "clients";
+    },
+    // The clients ticked in the list, moved to the trash together (the same 30 days and Restore as deleting one)
+    trashPicked: async () => {
+      const ids = [...state.picked]; if (!ids.length) return;
+      const all = await clients(), names = ids.map((id) => (all.find((c) => c.id === id) || {}).name || "A client"), n = ids.length;
+      const who = n === 1 ? names[0] : `${n} clients`, list = n === 1 ? "" : `\n\n${names.slice(0, 8).join("\n")}${n > 8 ? `\nand ${n - 8} more` : ""}`;
+      if (!confirm(`Move ${who} to the trash?${list}\n\nThey disappear from every list and can't sign in. You have 30 days to restore them from Clients → View trash, exactly as they were.\n\nAfter 30 days the trash empties: a client with a chart is kept as a "Closed account" with the chart, anyone else is removed. A membership keeps billing until then, so cancel it first if it should stop now.`)) return;
+      let done = 0, days = 30; const failed = [];
+      for (let i = 0; i < ids.length; i++) { try { const r = await api("DELETE", `/api/admin/clients/${encodeURIComponent(ids[i])}`); done++; days = r.daysLeft || days; state.picked.delete(ids[i]); } catch (e) { failed.push(`${names[i]}: ${e.message}`); } }
+      cache.clients = null; cache.emr = null; cache.chart = null; state.chartClient = null;
+      toast(failed.length ? `${done} moved to the trash. Not moved: ${failed.join("; ")}` : n === 1 ? `${names[0]} is in the trash for ${days} days.` : `${done} clients are in the trash for ${days} days.`);
+      render();
     },
     trashOpen: async () => {
       const r = await get("/clients/trash/list");
@@ -2337,6 +2349,7 @@
       if (e.target.matches("[data-change=pickAll]")) document.querySelectorAll("[data-change=pickOne]").forEach((b) => { b.checked = e.target.checked; if (b.checked) state.picked.add(b.dataset.id); else state.picked.delete(b.dataset.id); });
       else if (e.target.checked) state.picked.add(e.target.dataset.id); else state.picked.delete(e.target.dataset.id);
       const l = $("#exportLabel"); if (l) l.textContent = state.picked.size ? `Export ${state.picked.size} selected` : "Export all";
+      const tp = $("#trashPicked"), tl = $("#trashPickedLabel"); if (tp) { tp.hidden = !state.picked.size; if (tl) tl.textContent = `Delete ${state.picked.size} selected`; }
     }
     if (e.target.matches("[data-change=rowTier]")) guard(async (el) => { const was = ((cache.clients || []).find((x) => x.id === el.dataset.id) || {}).membership; const said = await setMembership(el.dataset.id, el.value, was && was.tier === el.value ? was.until : "", el.dataset.name); if (said) { await clients(true); toast(said); } else el.value = (was && was.tier) || ""; el.classList.toggle("on", !!el.value); })(e.target);
     if (e.target.matches("[data-change=chartTier]")) guard(async (el) => { const was = cache.chart.c.membership, said = await setMembership(cid(), el.value, "", firstOf()); if (said) { await render(); toast(said); } else el.value = (was && was.tier) || ""; })(e.target);
