@@ -4382,33 +4382,17 @@
   async function introSkip(replay) { try { intro = await apiAuth("POST", "/api/me/intro/skip", { skip: !replay }); } catch {} document.dispatchEvent(new CustomEvent("mdfit:journey")); }
   document.addEventListener("mdfit:guide-asked", () => introMark("solomon"));
   ["mdfit:journey", "mdfit:rewards"].forEach((ev) => document.addEventListener(ev, () => { introSync(); }));
-  document.addEventListener("click", async (e) => { if (!e.target.closest("[data-intro-replay]")) return; await introSkip(true); if (intro && intro.offered) { go("home"); toast("Your first descent is back on Home."); } else toast("You've finished the intro. Nothing left to replay."); });
-  // First open, on a phone: four pointers on the real screen (the three blocks, the +, Solomon, the first descent). Once.
-  function introTour() {
+  document.addEventListener("click", async (e) => { if (!e.target.closest("[data-intro-replay]")) return; await introSkip(true); go("home"); if (intro && intro.offered) toast("Your first descent is back on Home."); setTimeout(() => introTour(true), 700); });
+  // First open, on a phone: Solomon's tour (account-tour.js). He lights one thing at a time, the member does it as he
+  // says it, and it ends on the road. Once per member on a device; "Replay the intro" in Profile runs it again.
+  function introTour(again) {
     try {
-      // (shown once per member on a device, even when a stop is already credited: someone given a program starts with one)
-      if (!intro || !intro.offered || $("#view-home").hidden || !matchMedia("(max-width: 700px)").matches) return;
-      const key = `mdfit-tour-${client.id}`; if (localStorage.getItem(key)) return; localStorage.setItem(key, "1");
+      // (shown once even when a stop is already credited: someone given a program starts with one)
+      if (!window.MDFitTour || window.MDFitTour.running() || $("#view-home").hidden || !matchMedia("(max-width: 700px)").matches) return;
+      if (!again && (!intro || !intro.offered)) return;
+      const key = `mdfit-tour-${client.id}`; if (!again && localStorage.getItem(key)) return; localStorage.setItem(key, "1");
     } catch { return; }
-    const steps = [["#top3", "What you can earn, the gem you hold, and what to do next. Tap any of them."], ["#home-plus", "Your shortcuts: join a video visit, your documents, book a visit."],
-      ["#mg-btn", "This is Solomon. He speaks up on every screen. Tap him and ask anything."], ["#cave-card .cv-road", `Your first descent: ${numWord(INTRO_STEPS.length)} stops, 10 XP each. Finish them all for your first new gem.`]];
-    const wrap = document.createElement("div"); wrap.className = "tour"; wrap.innerHTML = `<i class="tour-hole"></i><div class="tour-tip" role="dialog" aria-live="polite"><p></p><div><button type="button" class="link-sm" data-tour-skip>Skip</button><button type="button" class="btn-blue sm" data-tour-next>Next</button></div></div>`;
-    document.body.appendChild(wrap);
-    let at = -1;
-    const end = () => { wrap.remove(); window.scrollTo({ top: 0 }); };
-    const step = () => {
-      at++; const s = steps[at], el = s && s[0].split("|").map((q) => document.querySelector(q)).find((x) => x && x.getClientRects().length);
-      if (!s) return end(); if (!el) return step();
-      el.scrollIntoView({ block: "center" });
-      setTimeout(() => {
-        const r = el.getBoundingClientRect(), hole = wrap.querySelector(".tour-hole"), tip = wrap.querySelector(".tour-tip"), h = Math.min(r.height, 260);
-        Object.assign(hole.style, { left: r.left - 6 + "px", top: r.top - 6 + "px", width: r.width + 12 + "px", height: h + 12 + "px" });
-        tip.querySelector("p").textContent = s[1]; wrap.querySelector("[data-tour-next]").textContent = at === steps.length - 1 ? "Got it" : "Next";
-        const below = r.top + h + 150 < innerHeight; tip.style.top = below ? r.top + h + 18 + "px" : "auto"; tip.style.bottom = below ? "auto" : innerHeight - r.top + 18 + "px";
-      }, 260);
-    };
-    wrap.addEventListener("click", (e) => { if (e.target.closest("[data-tour-skip]")) end(); else if (e.target.closest("[data-tour-next]")) step(); });
-    step();
+    window.MDFitTour.start({ name: client.firstName || String(client.name || "").split(" ")[0], onEnd: (done) => { if (!done) { go("home"); window.scrollTo({ top: 0 }); } } });
   }
   // One day on the Progress calendar: was a workout logged, and is anything on it still open (an unpaid invoice dated
   // that day, a visit later that day or ahead). account-habits.js puts a check on goal days with a workout and nothing open.
