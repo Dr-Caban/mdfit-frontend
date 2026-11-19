@@ -55,24 +55,117 @@
   // on a shared screen (HIPAA automatic logoff). The idle timer signs out after 15 minutes without input.
   function logout() {
     token = ""; session.set(""); $("#app").hidden = true; $("#login").hidden = false; if (window.MDFitRT) MDFitRT.disconnect();
-    $$("#appts-list, #clients-list, #client-totals, #leads-list, #members-list, #msg-thread, #msg-threads, #bc-list, #feedback-list, #reviews-list, #app table tbody").forEach((el) => { el.innerHTML = ""; });
-    clearTimeout(idleT);
+    $$("#appts-list, #clients-list, #client-totals, #leads-list, #members-list, #msg-thread, #msg-threads, #bc-list, #feedback-list, #reviews-list, #compliance-root, #app table tbody").forEach((el) => { el.innerHTML = ""; });
+    clearTimeout(idleT); closeSheet(); if ($("#quick").open) $("#quick").close();
   }
   $("#logout").addEventListener("click", logout);
   const IDLE_MS = 15 * 60 * 1000; let idleT = 0;
   const idleBump = () => { if (!token) return; clearTimeout(idleT); idleT = setTimeout(() => { logout(); $("#login .form-msg").textContent = "Signed out after 15 minutes of inactivity."; }, IDLE_MS); };
   ["pointerdown", "keydown", "scroll", "touchstart"].forEach((t) => document.addEventListener(t, idleBump, { passive: true }));
 
-  // ---- Tabs
+  // ---- Navigation: one grouped list of screens (#admin-nav). Desktop shows it as a left sidebar, phones and tablets
+  // as a slide-in sheet; the URL hash (#clients) names the open screen so reload and the back button return to it.
   const loaders = { dash: loadDash, clients: loadClients, appts: loadAppts, hours: loadHours, leads: loadLeads, classes: loadClasses, bookings: loadBookings, subs: loadSubs, reviews: loadReviews, audit: loadAudit, messages: loadThreads, members: loadMembers, content: loadContent, settings: loadSettings, feedback: loadFeedback, analytics: loadAnalytics };
-  let current = "dash";
-  $$(".tabs [data-tab]").forEach((b) => b.addEventListener("click", () => openTab(b.dataset.tab)));
-  function openTab(name) {
+  const nav = $("#admin-nav"), sidebar = $("#sidebar");
+  const tabFromHash = () => { const t = location.hash.slice(1).split("/")[0]; return t && $(`[data-panel="${CSS.escape(t)}"]`) ? t : ""; };
+  let current = tabFromHash() || "dash";
+  const navButtons = () => $$("[data-tab]", nav);
+  const labelOf = (name) => { const b = $(`[data-tab="${CSS.escape(name)}"]`, nav); return b ? [...b.childNodes].filter((n) => n.nodeType === 3).map((n) => n.textContent).join("").trim() || b.textContent.trim() : name; };
+  function openTab(name, { push = true } = {}) {
+    if (!$(`[data-panel="${CSS.escape(name)}"]`)) name = "dash";
     current = name;
-    $$(".tabs [data-tab]").forEach((b) => b.setAttribute("aria-selected", b.dataset.tab === name));
+    navButtons().forEach((b) => { const on = b.dataset.tab === name; b.setAttribute("aria-current", on ? "page" : "false"); b.tabIndex = on ? 0 : -1; });
     $$("[data-panel]").forEach((p) => (p.hidden = p.dataset.panel !== name));
-    run(loaders[name])();
+    $("#section-title").textContent = labelOf(name);
+    document.title = `${labelOf(name)} · MD Fit Admin`;
+    if (push && location.hash.slice(1).split("/")[0] !== name) history.pushState(null, "", "#" + name);
+    closeSheet();
+    window.scrollTo(0, 0);
+    if (loaders[name]) run(loaders[name])(location.hash.slice(1).split("/").slice(1).join("/"));
   }
+  nav.addEventListener("click", (e) => { const b = e.target.closest("[data-tab]"); if (b) openTab(b.dataset.tab); });
+  window.addEventListener("hashchange", () => { if (token && tabFromHash() && tabFromHash() !== current) openTab(tabFromHash(), { push: false }); });
+  // Arrow keys move through the list (wrapping), Home/End jump, Enter/Space open (native button behaviour)
+  nav.addEventListener("keydown", (e) => {
+    const keys = { ArrowDown: 1, ArrowUp: -1, Home: 0, End: 0 }; if (!(e.key in keys) || !e.target.matches("[data-tab]")) return;
+    e.preventDefault();
+    const list = navButtons(), i = list.indexOf(e.target);
+    const j = e.key === "Home" ? 0 : e.key === "End" ? list.length - 1 : (i + keys[e.key] + list.length) % list.length;
+    list[j].focus();
+  });
+
+  // Groups: known ids (or their labels) map to the sections in admin.html; anything else becomes a new group
+  // placed before Settings, so screens other files register always land somewhere sensible.
+  const GROUP_ALIASES = { today: "today", dashboard: "today", schedule: "schedule", people: "people", patients: "people", clients: "people", "patients & clients": "people",
+    comms: "comms", communication: "comms", messages: "comms", engage: "engage", engagement: "engage", insights: "insights", compliance: "insights", settings: "settings" };
+  function groupFor(group) {
+    const key = GROUP_ALIASES[String(group || "").trim().toLowerCase()];
+    let sec = key ? $(`.nav-group[data-group="${key}"]`, nav) : $$(".nav-group", nav).find((g) => $("h2", g).textContent.trim().toLowerCase() === String(group || "").trim().toLowerCase());
+    if (sec) return sec;
+    sec = document.createElement("section"); sec.className = "nav-group"; sec.dataset.group = String(group || "more").toLowerCase().replace(/[^a-z0-9]+/g, "-");
+    sec.innerHTML = `<h2></h2><div class="nav-items"></div>`; $("h2", sec).textContent = group || "More";
+    nav.insertBefore(sec, $('.nav-group[data-group="settings"]', nav));
+    return sec;
+  }
+  // Public hook for admin-<feature>.js files: adds the screen's loader and renders its menu item in the right group.
+  // Works whether that file loads before admin.js (it queued the call in window.MDFitAdmin._q) or after it.
+  function register(id, loadFn, opts = {}) {
+    if (!id) return;
+    const { label, badgeId } = opts;
+    if (typeof loadFn === "function") loaders[id] = loadFn;
+    let b = $(`[data-tab="${CSS.escape(id)}"]`, nav);
+    if (!b) { b = document.createElement("button"); b.type = "button"; b.dataset.tab = id; b.textContent = label || id; }
+    if (label) { const pill = $(".pill", b); b.textContent = label + " "; if (pill) b.appendChild(pill); }
+    if (badgeId && !$("#" + CSS.escape(badgeId), b)) { const pill = document.createElement("span"); pill.className = "pill pending"; pill.id = badgeId; pill.hidden = true; b.appendChild(pill); }
+    b.removeAttribute("role"); b.removeAttribute("aria-selected"); b.tabIndex = -1; b.setAttribute("aria-current", "false");
+    // A group names where the item goes; without one, an item that is already in a group stays put
+    if (opts.group || !b.closest(".nav-items")) $(".nav-items", groupFor(opts.group || "More")).appendChild(b);
+    if (token && location.hash.slice(1).split("/")[0] === id && current !== id) openTab(id, { push: false });
+  }
+  // Buttons another file appended to the end of the nav (outside any group) still work: move them into "More".
+  $$(":scope > [data-tab]", nav).forEach((b) => register(b.dataset.tab, null, { group: "More" }));
+  const queued = (window.MDFitAdmin && window.MDFitAdmin._q) || [];
+  window.MDFitAdmin = { register, openTab, current: () => current, api: (m, p, b) => api(m, p, b), toast, esc, _q: [] };
+  queued.forEach((args) => register(...args));
+
+  // Phone / tablet sheet, and the desktop "hide menu" toggle (remembered per browser)
+  const NAV_KEY = "mdfit_admin_nav";
+  const navPref = { get: () => { try { return localStorage.getItem(NAV_KEY) || ""; } catch { return ""; } }, set: (v) => { try { localStorage.setItem(NAV_KEY, v); } catch {} } };
+  const openSheet = () => { sidebar.classList.add("open"); $("#sidebar-backdrop").hidden = false; $("#nav-toggle").setAttribute("aria-expanded", "true"); const on = $('[data-tab][aria-current="page"]', nav); (on || navButtons()[0]).focus(); };
+  function closeSheet() { if (!sidebar.classList.contains("open")) return; sidebar.classList.remove("open"); $("#sidebar-backdrop").hidden = true; $("#nav-toggle").setAttribute("aria-expanded", "false"); }
+  $("#nav-toggle").addEventListener("click", () => {
+    const collapsed = $("#app").classList.contains("nav-collapsed"), desktop = matchMedia("(min-width: 900px)").matches;
+    if (desktop && collapsed) { $("#app").classList.remove("nav-collapsed"); navPref.set(""); return; }
+    sidebar.classList.contains("open") ? closeSheet() : openSheet();
+  });
+  $("#nav-close").addEventListener("click", closeSheet);
+  $("#sidebar-backdrop").addEventListener("click", closeSheet);
+  $("#sidebar-collapse").addEventListener("click", () => { $("#app").classList.add("nav-collapsed"); navPref.set("collapsed"); closeSheet(); $("#nav-toggle").focus(); });
+  if (navPref.get() === "collapsed") $("#app").classList.add("nav-collapsed");
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && sidebar.classList.contains("open")) { closeSheet(); $("#nav-toggle").focus(); } });
+
+  // Quick switcher (Ctrl+K / Cmd+K): type part of a screen's name, Enter opens it
+  const quick = $("#quick"), quickQ = $("#quick-q"), quickList = $("#quick-list");
+  let quickSel = 0;
+  function renderQuick() {
+    const q = quickQ.value.trim().toLowerCase();
+    const items = navButtons().map((b) => ({ id: b.dataset.tab, label: labelOf(b.dataset.tab), group: $("h2", b.closest(".nav-group")).textContent.trim() }))
+      .filter((x) => !q || `${x.label} ${x.group}`.toLowerCase().includes(q));
+    quickSel = Math.min(quickSel, Math.max(0, items.length - 1));
+    quickList.innerHTML = items.length ? items.map((x, i) => `<button type="button" role="option" data-go="${esc(x.id)}" aria-selected="${i === quickSel}"${i === quickSel ? ' class="on"' : ""}><b>${esc(x.label)}</b><span class="muted">${esc(x.group)}</span></button>`).join("") : `<p class="muted small">No screen matches.</p>`;
+  }
+  const openQuick = () => { if (!token || typeof quick.showModal !== "function") return; quickQ.value = ""; quickSel = 0; renderQuick(); quick.showModal(); quickQ.focus(); };
+  $("#quick-open").addEventListener("click", openQuick);
+  document.addEventListener("keydown", (e) => { if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") { e.preventDefault(); quick.open ? quick.close() : openQuick(); } });
+  quickQ.addEventListener("input", () => { quickSel = 0; renderQuick(); });
+  quickQ.addEventListener("keydown", (e) => {
+    const n = $$("[data-go]", quickList).length;
+    if (e.key === "ArrowDown") { e.preventDefault(); quickSel = (quickSel + 1) % Math.max(1, n); renderQuick(); }
+    if (e.key === "ArrowUp") { e.preventDefault(); quickSel = (quickSel - 1 + Math.max(1, n)) % Math.max(1, n); renderQuick(); }
+  });
+  $(".quick-form").addEventListener("submit", (e) => { const b = $$("[data-go]", quickList)[quickSel]; if (b) openTab(b.dataset.go); else e.preventDefault(); });
+  quickList.addEventListener("click", (e) => { const b = e.target.closest("[data-go]"); if (b) { quick.close(); openTab(b.dataset.go); } });
+  quick.addEventListener("click", (e) => { if (e.target === quick) quick.close(); }); // tap the backdrop to close
   function rtToast(text, icon) {
     const box = $("#rt-toasts"); if (!box) return;
     const el = document.createElement("div"); el.className = "rt-toast";
@@ -87,7 +180,7 @@
   const hasNotify = typeof window.Notification !== "undefined";
   let rtWired = false; // live-update handlers are registered once; logging in again only reconnects
   function show() {
-    $("#login").hidden = true; $("#app").hidden = false; openTab(current); idleBump();
+    $("#login").hidden = true; $("#app").hidden = false; openTab(tabFromHash() || current, { push: false }); idleBump();
     pollBadges(); // unread messages / open feedback counts right away, not a minute after logging in
     if (hasNotify && Notification.permission === "default") { try { Promise.resolve(Notification.requestPermission()).catch(() => {}); } catch {} }
     if (window.MDFitRT) {
@@ -408,6 +501,8 @@
         msg.className = "form-msg ok"; msg.textContent = "Saved. It's on their dashboard now.";
       } catch (err) { msg.className = "form-msg err"; msg.textContent = err.message; }
     }));
+    // Other admin-*.js files add their own blocks to the profile (privacy preferences, documents, EMR status…)
+    document.dispatchEvent(new CustomEvent("mdfit:admin:client", { detail: { id, box, client: c } }));
   }
 
   // ---- Leads

@@ -27,34 +27,65 @@
     </form>
   </section>
 
-  <div id="app" hidden>
-    <header class="nav">
-      <div class="wrap nav-inner">
-        <a href="/" class="brand"><img class="brand-logo" src="assets/logo.webp" alt="MD Fit" width="160" height="160"><span class="brand-text"><span class="brand-sub">Admin</span></span></a>
-        <nav class="tabs" role="tablist">
-          <button data-tab="dash" aria-selected="true">Dashboard</button>
-          <button data-tab="appts">Appointments</button>
-          <button data-tab="clients">Clients</button>
-          <button data-tab="leads">Leads</button>
-          <button data-tab="classes">Classes</button>
-          <button data-tab="bookings">Bookings</button>
-          <button data-tab="subs">Subscribers</button>
-          <button data-tab="messages">Messages <span class="pill pending" id="admin-msg-count" hidden></span></button>
-          <button data-tab="reviews">Reviews</button>
-          <button data-tab="feedback">Feedback <span class="pill pending" id="admin-fb-count" hidden></span></button>
-          <button data-tab="members">Members</button>
-          <button data-tab="content">Content</button>
-          <button data-tab="hours">Booking</button>
-          <button data-tab="analytics">Analytics</button>
-          <button data-tab="audit">Audit</button>
-          <button data-tab="settings">Settings</button>
-          <button id="logout" class="link">Log out</button>
-        </nav>
-      </div>
+  <div id="app" class="shell" hidden>
+    <!-- Top bar: menu button (phone/tablet, or when the sidebar is collapsed), the current screen's name, quick switcher -->
+    <header class="topbar">
+      <button type="button" class="nav-btn" id="nav-toggle" aria-controls="sidebar" aria-expanded="false" aria-label="Open menu"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg></button>
+      <a href="/" class="brand"><img class="brand-logo" src="assets/logo.webp" alt="MD Fit" width="160" height="160"><span class="brand-text"><span class="brand-sub">Admin</span></span></a>
+      <h1 class="section-title" id="section-title" aria-live="polite">Dashboard</h1>
+      <button type="button" class="nav-btn quick-btn" id="quick-open" title="Jump to any screen (Ctrl+K)"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M10 2a8 8 0 0 1 6.3 12.9l5.4 5.4-1.4 1.4-5.4-5.4A8 8 0 1 1 10 2zm0 2a6 6 0 1 0 0 12 6 6 0 0 0 0-12z"/></svg><span>Jump to…</span><kbd>Ctrl K</kbd></button>
     </header>
 
+    <!-- One grouped list of screens: a left sidebar on desktop, a slide-in sheet on phones and tablets.
+         Other admin-*.js files add their screens with window.MDFitAdmin.register(id, loadFn, { label, group }). -->
+    <div class="sidebar-backdrop" id="sidebar-backdrop" hidden></div>
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-head"><span>Menu</span><button type="button" class="nav-btn" id="nav-close" aria-label="Close menu">✕</button></div>
+      <nav class="tabs" id="admin-nav" aria-label="Admin sections">
+        <section class="nav-group" data-group="today"><h2>Today</h2><div class="nav-items">
+          <button type="button" data-tab="dash" aria-current="page">Dashboard</button>
+        </div></section>
+        <section class="nav-group" data-group="schedule"><h2>Schedule</h2><div class="nav-items">
+          <button type="button" data-tab="appts">Appointments</button>
+          <button type="button" data-tab="hours">Booking hours &amp; calendar</button>
+          <button type="button" data-tab="classes">Classes</button>
+          <button type="button" data-tab="bookings">Class bookings</button>
+        </div></section>
+        <section class="nav-group" data-group="people"><h2>Patients &amp; clients</h2><div class="nav-items">
+          <button type="button" data-tab="clients">Clients</button>
+          <button type="button" data-tab="leads">Leads</button>
+          <button type="button" data-tab="members">Members</button>
+        </div></section>
+        <section class="nav-group" data-group="comms"><h2>Communication</h2><div class="nav-items">
+          <button type="button" data-tab="messages">Messages <span class="pill pending" id="admin-msg-count" hidden></span></button>
+          <button type="button" data-tab="reviews">Reviews</button>
+          <button type="button" data-tab="feedback">Feedback <span class="pill pending" id="admin-fb-count" hidden></span></button>
+          <button type="button" data-tab="subs">Subscribers</button>
+        </div></section>
+        <section class="nav-group" data-group="engage"><h2>Engagement</h2><div class="nav-items">
+          <button type="button" data-tab="content">Content</button>
+        </div></section>
+        <section class="nav-group" data-group="insights"><h2>Insights</h2><div class="nav-items">
+          <button type="button" data-tab="analytics">Analytics</button>
+          <button type="button" data-tab="audit">Audit</button>
+        </div></section>
+        <section class="nav-group" data-group="settings"><h2>Settings</h2><div class="nav-items">
+          <button type="button" data-tab="settings">Settings</button>
+        </div></section>
+      </nav>
+      <div class="sidebar-foot">
+        <button type="button" class="nav-btn" id="sidebar-collapse" title="Hide the sidebar">« Hide menu</button>
+        <button id="logout" class="link" type="button">Log out</button>
+      </div>
+    </aside>
+
+    <!-- Quick switcher: Ctrl+K / Cmd+K, type a few letters, Enter -->
+    <dialog class="quick" id="quick">
+      <form method="dialog" class="quick-form"><input id="quick-q" type="search" placeholder="Type a screen name…" aria-label="Jump to a screen" autocomplete="off"><div class="quick-list" id="quick-list" role="listbox"></div><p class="muted small">↑↓ to move · Enter to open · Esc to close</p></form>
+    </dialog>
+
     <div class="rt-toasts" id="rt-toasts"></div>
-    <main class="wrap panel-wrap">
+    <main class="panel-wrap">
       <p id="toast" class="toast" role="status" hidden></p>
 
       <section data-panel="dash">
@@ -358,6 +389,11 @@
           <p class="form-msg" role="status"></p>
         </form>
       </section>
+
+      <section data-panel="compliance" hidden>
+        <p class="muted">HIPAA records that aren't anywhere else: who you have disclosed records to, patients' requests to correct their records, how long records are kept, and the security incident log. Everything here is encrypted at rest and kept for six years.</p>
+        <div id="compliance-root"><p class="muted">Loading…</p></div>
+      </section>
     </main>
   </div>
 
@@ -367,6 +403,7 @@
   <script src="painmuscles.js?v=74e3b348"></script>
   <script src="paintracks.js?v=55ce1cb4"></script>
   <script src="admin.js?v=f7122692"></script>
+  <script src="admin-hipaa.js"></script>
 <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
