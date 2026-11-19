@@ -950,7 +950,54 @@
     return { title: `${t.title.split(" →")[0]} pain track`.slice(0, 80), key: `track-${String(t.id).toLowerCase().replace(/[^a-z0-9-]+/g, "-").slice(0, 60)}`, goal: "Mobility & Recovery", goalId: "mobility", location: "home", level: "beginner", levelLabel: "Pain track",
       rounds: 1, restEx: 0, restRound: 0, minutes: Math.max(5, ex.length * 3), warmup: [], circuit: ex, cooldown: [], exercises: ex, perRound: ex.length, noRest: true };
   };
-  function openTrack(id) { TK.ready.then(() => { const t = TK.TRACKS.find((x) => x.id === id); if (t) startPlayer(trackWorkout(t)); }); }
+  // A pattern used to drop the member straight into its first video ("why am I here, what even is this"). It now opens on
+  // what the pattern is, a check-in, the levels and their movements, with Start and Add to my road; start = true goes
+  // straight to the session (today's stop on the road does that for a track already begun).
+  const trackKey = (t) => trackWorkout(t).key;
+  const trackSessions = (t) => allWorkouts.filter((w) => w.key === trackKey(t)).length;
+  const MY_TRACKS = () => `mdfit-my-tracks-${client ? client.id : ""}`;
+  const addedTracks = () => { try { const v = JSON.parse(localStorage.getItem(MY_TRACKS()) || "[]"); return Array.isArray(v) ? v : []; } catch { return []; } };
+  // The track on the member's road: the one they last did a session of, else the one they last added (added is kept on
+  // the device; a session is on the account, so a track once started follows them to every device)
+  function activeTrack() {
+    if (!TK || !TK.TRACKS) return null;
+    const byKey = new Map(TK.TRACKS.map((t) => [trackKey(t), t]));
+    const last = allWorkouts.filter((w) => byKey.has(w.key)).sort((a, b) => (String(a.completedAt || a.date) < String(b.completedAt || b.date) ? 1 : -1))[0];
+    const t = last ? byKey.get(last.key) : TK.TRACKS.find((x) => x.id === addedTracks().slice(-1)[0]);
+    return t ? { id: t.id, source: t.title.split(/\s*→\s*/)[0], title: t.title, sessions: trackSessions(t), minutes: trackWorkout(t).minutes, levels: t.levels.length } : null;
+  }
+  const TRACK_AREA = { "Neck & shoulder": "Neck", Shoulder: "Shoulder", "Low back": "Lower back", "Low back & hip": "Lower back", Hip: "Hip", "Hip & groin": "Hip", Glutes: "Hip", Knee: "Knee", Foot: "Ankle / foot", Forearm: "Elbow / wrist / hand" };
+  function showTrack(t) {
+    const done = trackSessions(t), mine = done > 0 || addedTracks().includes(t.id), [src, felt] = t.title.split(/\s*→\s*/), today = todayInTz();
+    const logged = painLog.filter((x) => x.date === today).slice(-1)[0];
+    // Dr. Jared's documents call the steps levels in some tracks and stages in others: the screen uses the track's own word
+    const step = /^stage/i.test((t.levels[0] || {}).title || "") ? "stage" : "level";
+    const lead = `<section class="tk-what">
+        <span class="tk-eyebrow">What this is</span>
+        <p>${felt ? `Pain felt in the <b>${esc(felt)}</b> often starts in the <b>${esc(src.toLowerCase())}</b>, not where it hurts.` : esc(t.title) + "."} This track works on it in ${t.levels.length} ${step}${t.levels.length === 1 ? "" : "s"}, about ${trackWorkout(t).minutes} minutes a session. ${esc(t.note)}</p>
+        ${done ? `<p class="tk-prog">You've done <b>${done} session${done === 1 ? "" : "s"}</b> of this track.</p>` : ""}
+        <div class="tk-pain" data-track-area="${esc(TRACK_AREA[t.region] || "Other")}">${logged ? `<p class="tk-logged">Today's check-in: ${esc(logged.area.toLowerCase())}, ${logged.level} out of 10.</p>`
+          : `<p>How strong is it right now? <span class="muted">0 is none, 10 is the worst.</span></p><div class="tk-nums">${Array.from({ length: 11 }, (_, n) => `<button type="button" data-track-pain="${n}">${n}</button>`).join("")}</div>`}</div>
+      </section>`;
+    TK.open(t.id, { autoplay: false, startLabel: done ? "Start today's session" : `Start ${step} 1`, onStart: () => startPlayer(trackWorkout(t)), lead,
+      extra: `<button type="button" class="tk-add${mine ? " on" : ""}" data-track-add="${esc(t.id)}"${done ? " disabled" : ""}>${mine ? "On my road ✓" : "Add to my road"}</button>` });
+    const dlg = document.querySelector("dialog.tk-dialog");
+    if (dlg && !dlg.dataset.app) { dlg.dataset.app = "1"; dlg.addEventListener("close", () => { if (/^#pain\/track\//.test(location.hash)) history.replaceState(null, "", "#pain"); }); }
+  }
+  function openTrack(id, start) { TK.ready.then(() => { const t = TK.TRACKS.find((x) => x.id === id); if (!t) return; if (start) startPlayer(trackWorkout(t)); else showTrack(t); }); }
+  document.addEventListener("click", async (e) => {
+    const add = e.target.closest("[data-track-add]");
+    if (add) { const id = add.dataset.trackAdd, list = addedTracks().filter((x) => x !== id), on = !add.classList.contains("on");
+      try { localStorage.setItem(MY_TRACKS(), JSON.stringify(on ? [...list, id].slice(-10) : list)); } catch {}
+      add.classList.toggle("on", on); add.textContent = on ? "On my road ✓" : "Add to my road";
+      toast(on ? "Added. It's today's stop on your road." : "Taken off your road.");
+      try { document.dispatchEvent(new CustomEvent("mdfit:journey")); } catch {} return; }
+    const pn = e.target.closest("[data-track-pain]");
+    if (pn) { const box = pn.closest(".tk-pain"), n = Number(pn.dataset.trackPain), area = box.dataset.trackArea;
+      box.querySelectorAll("button").forEach((b) => (b.disabled = true));
+      try { await logPain(area, n); box.innerHTML = `<p class="tk-logged">Logged: ${n} out of 10. Next time you'll see whether it moved.</p>`; }
+      catch (err) { box.querySelectorAll("button").forEach((b) => (b.disabled = false)); toast(err.message); } }
+  });
   document.addEventListener("click", (e) => { const c = e.target.closest("[data-track]"); if (c && !e.target.closest(".pm-sheet")) openTrack(c.dataset.track); });
   const GROUPS = [
     ["Head & jaw", ["suboccipitals", "occipitalis", "splenius", "temporalis", "masseter", "scm"]],
@@ -1917,7 +1964,10 @@
     $("#player").hidden = true;
     $("#p-body").innerHTML = "";
     document.body.style.overflow = "";
+    // The road is home base: a session that was finished and saved brings the member back to it
+    if (P.backToRoad) { P.backToRoad = false; setTimeout(() => { try { goNext("mine"); } catch {} }, 180); }
   }
+  document.addEventListener("mdfit:workout", () => { P.backToRoad = true; });
   // One clock drives everything: the session timer, the rest countdown and the per-move countdown
   function onTick() {
     if (P.done) return;
@@ -3270,7 +3320,7 @@
     const cash = (x) => Number(((String(x.t).match(/\$([\d,]+(?:\.\d+)?)/) || [])[1] || "").replace(/,/g, "")) || 0;
     const v = nextVisit(), p = patientDocs, docsDue = !!(p && !p.done && v), j = journey(), day = j && j.days ? j.today : null;
     // today's program session, while it is still to do
-    const now = day && day.session && j.hasProgram && !j.rested ? day.session : null;
+    const now = day && day.session && ((j.hasProgram && !j.rested) || day.track) ? day.session : null;
     const brief = (s) => String(s).split(/\s+[—–-]\s+|\s*\(/)[0].trim() || String(s);
     if (docsDue) return { kind: "docs", title: "Intake documents", sub: "Due before your visit", due: true, go: "plus" };
     if (dues.length > 1) { const sum = dues.reduce((n, x) => n + cash(x), 0); return { kind: "invoice", count: dues.length, title: sum ? `$${sum.toFixed(2)} due` : `${dues.length} invoices`, sub: `${dues.length} invoices · tap to pay`, due: true, go: owed.path || "#progress" }; }
@@ -3312,6 +3362,7 @@
     return { first: String((client && client.name) || "").trim().split(/\s+/)[0] || "",
       week: allWorkouts.filter((w) => w.date >= from && w.date <= t).length,
       gem: r && r.rank ? r.rank.current.name : "", toNext: r && r.rank && r.rank.next ? { xp: r.rank.xpToNext, name: r.rank.next.name } : null,
+      track: (() => { try { return activeTrack(); } catch { return null; } })(),
       refer: a && a.enabled ? { pct: Number(a.ratePct) || 0 } : null };
   }
   function renderTop() {
@@ -4012,18 +4063,22 @@
       const per2 = Math.max(1, per), chambers = Math.ceil(total / per2);
       plan = { id: p.id, title: p.title, grid, rested, left: Math.max(0, total - Math.min(total, st.done)), chamber: Math.min(Math.floor(cur / per2), chambers - 1) + 1, chambers, unit: grid ? "Week" : "Stage" };
     }
+    // No program, but a pain track on their road: it is today's session until a workout is logged today
+    const track = !p ? activeTrack() : null;
+    if (track) sessionOn = (d) => (d === t && !allWorkouts.some((w) => w.date === t) ? { label: `${track.source} track`, sub: `${track.minutes} min`, start: -1, track: track.id } : null);
     const stops = WD.map((wd, n) => { const date = addDays(monday, n), L = lightsOf(date), k = lit(L), ses = sessionOn(date, n - dow);
       const state = date > t ? "locked" : k === 4 ? "done" : date === t ? "now" : k ? "part" : "missed";
-      return { n, date, wd, label: ses ? ses.label : wd, sub: ses ? ses.sub : "", session: !!ses, start: ses && ses.start !== undefined ? ses.start : null, state, today: date === t, lit: k, of: 4, lights: L }; });
+      return { n, date, wd, label: ses ? ses.label : wd, sub: ses ? ses.sub : "", session: !!ses, start: ses && ses.start !== undefined ? ses.start : null, track: (ses && ses.track) || "", state, today: date === t, lit: k, of: 4, lights: L }; });
     const now = stops[dow];
-    return { ...base, today: { ...now.lights, lit: now.lit, of: 4, start: now.start, session: now.session ? { label: now.label, sub: now.sub } : null }, days: true, key: "week-" + monday, introAlt: introOn,
-      hasProgram: !!p, program: plan ? { id: plan.id, title: plan.title } : null, title: plan ? plan.title : "Your week", grid: !!(plan && plan.grid), rested: !!(plan && plan.rested),
+    return { ...base, today: { ...now.lights, lit: now.lit, of: 4, start: now.start, session: now.session ? { label: now.label, sub: now.sub } : null, track: now.track }, days: true, key: "week-" + monday, introAlt: introOn,
+      track: track ? track.id : "", hasProgram: !!p, program: plan ? { id: plan.id, title: plan.title } : null, title: plan ? plan.title : "Your week", grid: !!(plan && plan.grid), rested: !!(plan && plan.rested),
       chamber: plan ? plan.chamber : 0, chambers: plan ? plan.chambers : 0, unit: plan ? plan.unit : "", left: plan ? plan.left : 0, stops };
   }
   // What a tap on today's stop does: the first thing today still asks for
   function journeyToday() {
     const j = journey(); if (!j || !j.days) return;
     const d = j.today;
+    if (d.track && !d.workout) return openTrack(d.track, true);
     if (!d.workout || (j.hasProgram && !j.rested)) { if (d.start !== null && d.start >= 0) return journeyStart(d.start); if (j.program && !j.rested) return go("programs/" + j.program.id); if (!d.workout) return goNext("solomon"); }
     if (!d.pain) { if (!lesson("pain")) go("pain"); return; }
     if (!d.acts || !d.goal) { if ($("#view-home").hidden) go("home"); document.dispatchEvent(new CustomEvent("mdfit:habits-open")); return setTimeout(() => { const c = $("#habits-card"); if (c) c.scrollIntoView({ behavior: "smooth", block: "start" }); }, 80); }
@@ -4121,7 +4176,7 @@
     const visitAhead = (appts.upcoming || []).some((a) => a.date === d && a.status === "booked" && (d > t || (d === t && String(a.time || "") > now)));
     return { workout, open: unpaid || visitAhead };
   };
-  window.MDFitApp = { saveProgram, logPain, painAreas: () => AREAS.slice(), showCard, customize, journeyToday, nextUp, goNext, guideFacts, view: () => show.at || "home", journey, journeyStart, introGo, introSkip, introPass, setMineView, dayStatus, startPlayer, go, loadRewards, toast, celebrateToast, exMeta, byId, gemIcon: GEM_ICON, rewards: () => reward, isPaid, showPaywall,
+  window.MDFitApp = { openTrack, saveProgram, logPain, painAreas: () => AREAS.slice(), showCard, customize, journeyToday, nextUp, goNext, guideFacts, view: () => show.at || "home", journey, journeyStart, introGo, introSkip, introPass, setMineView, dayStatus, startPlayer, go, loadRewards, toast, celebrateToast, exMeta, byId, gemIcon: GEM_ICON, rewards: () => reward, isPaid, showPaywall,
     // For the guide (mdfit-guide.js) and the theme switch (app-theme.js): who is signed in, what the app holds, and two places to open
     client: () => client, content: async () => { if (!C) await (contentLoading || loadContent()).catch(() => {}); return C; },
     openBook: () => { go("profile"); setTimeout(() => $("#p-book-open") && $("#p-book-open").click(), 60); },

@@ -18,15 +18,18 @@
   const card = (t) => `<button type="button" class="track-card" data-track="${t.id}">
       <img src="${img(t.img[0], 240)}" alt="" loading="lazy" referrerpolicy="no-referrer"><span><b>${esc(t.title)}</b><small>${t.levels.length} level${t.levels.length > 1 ? "s" : ""} · ${steps(t).length} videos</small></span></button>`;
 
-  function render(t, { startLabel } = {}) {
+  // lead: html shown under the header (the app says what the pattern is and takes a check-in there);
+  // extra: html for one more button beside Start (the app's "Add to my road")
+  function render(t, { startLabel, lead, extra } = {}) {
     let n = 0;
     return `
       <header class="tk-head">
         ${window.MDFitPatterns && window.MDFitPatterns.has(t.id) ? `<div class="tk-pp">${window.MDFitPatterns.html(t.id, t.title)}</div>`
           : `<div class="tk-imgs">${t.img.map((i) => `<img src="${img(i)}" alt="${esc(t.title)} referred pain pattern" referrerpolicy="no-referrer">`).join("")}</div>`}
         <div><p class="tk-eyebrow">Pain track · ${esc(t.region)}</p><h2>${esc(t.title)}</h2><p class="tk-note">${esc(t.note)}</p>
-          <div class="tk-actions">${startLabel ? `<button type="button" class="tk-start" data-track-start="${t.id}">${esc(startLabel)}</button>` : ""}<button type="button" class="tk-guide" data-tguide="${t.id}">Read the full guide</button></div></div>
+          <div class="tk-actions">${startLabel ? `<button type="button" class="tk-start" data-track-start="${t.id}">${esc(startLabel)}</button>` : ""}${extra || ""}<button type="button" class="tk-guide" data-tguide="${t.id}">Read the full guide</button></div></div>
       </header>
+      ${lead || ""}
       <div class="tk-frame" hidden><div class="tk-screen"></div>
         <div class="tk-ctrl"><p class="tk-now"></p><label class="tk-auto"><input type="checkbox" checked> Play the whole track</label></div></div>
       ${t.levels.map((l) => `<section class="tk-level"><h3>${esc(l.title)}</h3><ol>${l.videos.map((v) => {

@@ -1315,6 +1315,17 @@ html[data-theme="black"] {
 :where(html[data-theme=black]) .pm-mus dt { color: #95bcda; }
 :where(html[data-theme=black]) .pm-mus-links a, :where(html[data-theme=black]) .pm-mus-links .link { color: #95bcda; background: none; border: 0; }
 :where(html[data-theme=black]) .pm-thumb { border: 1px solid var(--line); background: var(--card); }
+:where(html[data-theme=black]) .tk-what { background: var(--card); border: 1px solid var(--line); }
+:where(html[data-theme=black]) .tk-what .tk-eyebrow { color: #95bcda; }
+:where(html[data-theme=black]) .tk-what p { color: var(--text); }
+:where(html[data-theme=black]) .tk-what .tk-prog { color: #91deb8; }
+:where(html[data-theme=black]) .tk-pain { border-top: 1px solid var(--line); }
+:where(html[data-theme=black]) .tk-pain p { color: var(--navy); }
+:where(html[data-theme=black]) .tk-pain .muted { color: var(--muted); }
+:where(html[data-theme=black]) .tk-nums button { border: 1.5px solid var(--line); background: var(--card); color: var(--navy); }
+:where(html[data-theme=black]) .tk-pain .tk-logged { color: #91deb8; }
+:where(html[data-theme=black]) .tk-add { background: var(--card); color: var(--navy); border: 1.5px solid #C8A763; }
+:where(html[data-theme=black]) .tk-add.on { background: #362d17; color: #e7cd88; }
 
 /* ---- 3. Corrections */
 /* Primary buttons: navy on a light card in white; here the light ink on a dark card, so they stay the loudest thing */
@@ -2758,6 +2769,18 @@ html[data-theme="black"] { --aff-earned: #4a94dc; --aff-pend: #b98522; }
 :where(html[data-layout=compact]) .pm-sheet-head.pm-sheet-head--minimal { padding: 0 50px; }
 @media (max-width: 640px) {
 :where(html[data-layout=compact]) .pm-sheet-body { padding-top: calc(20px + env(safe-area-inset-top, 0px)); padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px)); }
+}
+:where(html[data-layout=compact]) .tk-what { margin: 10px 13px 4px; padding: 10px 11.5px; }
+:where(html[data-layout=compact]) .tk-what .tk-eyebrow { margin: 0 0 6px; font-size: 11px; }
+:where(html[data-layout=compact]) .tk-what p { margin: 0 0 8px; font-size: 14px; }
+:where(html[data-layout=compact]) .tk-pain { padding-top: 8.5px; }
+:where(html[data-layout=compact]) .tk-pain p { margin: 0 0 6px; }
+:where(html[data-layout=compact]) .tk-nums { gap: 4px; }
+:where(html[data-layout=compact]) .tk-nums button { padding: 0; font-size: 14px; }
+:where(html[data-layout=compact]) .tk-pain .tk-logged { margin: 0; }
+:where(html[data-layout=compact]) .tk-add { padding: 8px 10px; }
+@media (max-width: 480px) {
+:where(html[data-layout=compact]) .tk-what { margin: 8.5px 8.5px 2px; }
 }
 
 /* ---- Compact: corrections */
