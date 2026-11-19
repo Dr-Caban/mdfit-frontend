@@ -65,12 +65,14 @@
 
   // ---- shell
   let state = { tab: "share", month: thisMonth(), share: null, me: null };
-  // To the client management portal with the same sign-in (same tab, same token: no second password)
-  const PORTALS = [[["admin"], "/workspace", "mdfit_ws_token", "Admin"], [["manager"], "/manager", "mdfit_manager", "Manager"], [["manager", "developer"], "/dev", "mdfit_dev", "Developer"], [null, "/workspace#clients", "mdfit_ws_token", "Client portal"]];
+  // The switch in the header: everywhere this sign-in can go, with the same sign-in carried across (same tab, same
+  // token, no second password). The list itself is MDFitPlatform.consoles, shared with the other two consoles.
+  // Nothing to switch to means no switch at all.
   function drawSwitch(me) {
-    const roles = (me && (me.roles || [me.role])) || [], owner = !!(me && (me.isOwner || me.role === "owner"));
-    $("#switch").innerHTML = PORTALS.filter(([need, , key]) => key === KEY || !need || owner || need.some((r) => roles.includes(r)))
-      .map(([, href, key, label]) => `<a href="${href}" data-key="${key}"${key === KEY ? ' aria-current="page"' : ""}>${label}</a>`).join("");
+    const places = window.MDFitPlatform ? MDFitPlatform.consoles(me) : [];
+    const seg = $("#switch");
+    seg.innerHTML = places.map((x) => `<a href="${x.href}" data-key="${x.key}"${x.key === KEY ? ' aria-current="page"' : ""}>${esc(x.label)}</a>`).join("");
+    seg.dataset.count = String(places.length);
   }
   document.addEventListener("click", (e) => {
     const p = e.target.closest("[data-plat]");
@@ -83,7 +85,7 @@
     } catch {}
   });
   function show(signedIn) {
-    $("#signin").hidden = signedIn; $("#app").hidden = !signedIn; $("#signOut").hidden = !signedIn; $("#who").hidden = !signedIn; $("#switch").hidden = !signedIn;
+    $("#signin").hidden = signedIn; $("#app").hidden = !signedIn; $("#signOut").hidden = !signedIn; $("#who").hidden = !signedIn; $("#switch").hidden = !signedIn || Number($("#switch").dataset.count || 0) < 2;
   }
   async function boot() {
     if (!session.get()) return show(false);

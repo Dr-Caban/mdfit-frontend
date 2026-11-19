@@ -88,6 +88,31 @@
     ["Other staff", "Only the screens the owner turns on, one permission at a time (Workspace → Team & roles)", ""]
   ];
 
+  // ---------------------------------------------------------------- where this sign-in can go
+  // One list for all three consoles, so the switch in every header says the same thing. Two rules:
+  // every entry has to lead somewhere this person can actually open, and the workspace is called by what they
+  // hold of it — the whole thing is "Admin", the client-management screens are the "Client portal", and content
+  // work on its own is the "Workspace". A manager or a developer never holds client screens (Section 11.2), so
+  // they are not offered them: before this, that entry led to "not open to your sign-in".
+  function consoles(me) {
+    const owner = !!(me && (me.isOwner || me.role === "owner"));
+    const roles = (me && (me.roles || [me.role])) || [];
+    const perms = (me && me.permissions) || [];
+    // an older API answers /me without `permissions`; then only the owner and an administrator are placed by role
+    const knows = Array.isArray(me && me.permissions);
+    const has = (p) => owner || !knows || perms.includes(p);
+    const isRole = (r) => owner || roles.includes(r);
+    const whole = owner || roles.includes("admin");
+    const out = [];
+    if (whole) out.push({ key: "mdfit_ws_token", href: "/workspace", side: "admin", label: "Admin" });
+    else if (has("clients")) out.push({ key: "mdfit_ws_token", href: "/workspace#clients", side: "cmp", label: "Client portal" });
+    else if (has("content")) out.push({ key: "mdfit_ws_token", href: "/workspace#programs", side: "cmp", label: "Workspace" });
+    if (isRole("manager")) out.push({ key: "mdfit_manager", href: "/manager", label: "Manager" });
+    if (isRole("manager") || isRole("developer")) out.push({ key: "mdfit_dev", href: "/dev", label: "Developer" });
+    if (whole && has("clients")) out.push({ key: "mdfit_ws_token", href: "/workspace#clients", side: "cmp", label: "Client portal" });
+    return out;
+  }
+
   // ---------------------------------------------------------------- growth, worked out from the daily visits
   function growth(visits) {
     if (!Array.isArray(visits) || !visits.length) return null;
@@ -230,5 +255,5 @@
     return null;
   }
 
-  window.MDFitPlatform = { overview, bundle, faults, onClick, growth, PARTS, esc, RAILWAY, VERCEL };
+  window.MDFitPlatform = { overview, bundle, faults, onClick, growth, consoles, PARTS, esc, RAILWAY, VERCEL };
 })();

@@ -68,6 +68,21 @@ of the platform and where each one's log lives, and who can see what.
 | Manager | `/manager` | The named manager: revenue share, statements, payouts | Platform tab |
 | Developer | `/developer` (`/dev`) | The owner and the Developer role: usage, costs, **logs** | Platform tab |
 
+**The switch in the header** is `MDFitPlatform.consoles(me)`, one list used by all three consoles, so the same
+sign-in sees the same places everywhere and the same sign-in is carried across (no second password). What each sees:
+
+| Sign-in | Switch |
+|---|---|
+| Owner | Admin · Manager · Developer · Client portal |
+| Administrator | Admin · Client portal |
+| Manager | Workspace · Manager · Developer |
+| Developer | Workspace · Developer |
+| Clinician, Front desk | none — the workspace is the only place they can go |
+
+The workspace is named by what the person holds of it: **Admin** (the whole thing), **Client portal** (the
+client-management screens) or **Workspace** (content work only). A manager or a developer never holds client
+screens, so they are not offered them.
+
 **The logs.** The API writes one JSON line per request, warning, error and restart. Railway keeps those 7 days;
 the backend also tees them to the data volume for 90 days (`lib/activity-log.js`, encrypted at rest), which is what
 the developer console's **Logs** tab reads: pick a day, filter by level or text, then copy the lines or download

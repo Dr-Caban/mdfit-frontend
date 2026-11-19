@@ -2950,12 +2950,19 @@
     try { cache.me = await get("/me"); } catch { cache.me = null; }
     if (!token || tk !== token) return;
     if (cache.me) $("#whoami").textContent = cache.me.email;
-    { // Manager and Developer staff (and the owner) can step across to their console without signing in again
-      const roles = (cache.me && (cache.me.roles || [cache.me.role])) || [], owner = !!(cache.me && cache.me.isOwner);
-      const links = [[["manager"], "/manager", "mdfit_manager", "Manager"], [["manager", "developer"], "/dev", "mdfit_dev", "Developer"]].filter(([need]) => owner || need.some((r) => roles.includes(r)));
-      const full = owner || roles.includes("admin");   // Admin is the whole workspace; Client portal is its client-management screens
+    { // Everywhere this sign-in can go, drawn from the one list the three consoles share (platform.js). An
+      // administrator sees Admin and Client portal even with no second console to step across to; a manager or a
+      // developer is not offered client screens they could never open.
+      const places = window.MDFitPlatform ? MDFitPlatform.consoles(cache.me) : [];
       const box = $("#portals");
-      if (box) { box.innerHTML = links.length ? `<nav class="pseg" aria-label="Switch console">${full ? `<a href="#dashboard" data-side="admin">Admin</a>` : ""}${links.map(([, href, key, label]) => `<a href="${href}" data-portal="${key}">${label}</a>`).join("")}<a href="#clients" data-side="cmp"${full ? "" : " data-only"}>Client portal</a></nav>` : ""; box.hidden = !links.length; markSide(); }
+      if (box) {
+        const whole = places.some((x) => x.side === "admin");
+        box.innerHTML = places.length > 1 ? `<nav class="pseg" aria-label="Switch console">${places.map((x) => (x.key === "mdfit_ws_token"
+          ? `<a href="${x.side === "cmp" ? "#clients" : "#dashboard"}" data-side="${x.side}"${x.side === "cmp" && !whole ? " data-only" : ""}>${esc(x.label)}</a>`
+          : `<a href="${x.href}" data-portal="${x.key}">${esc(x.label)}</a>`)).join("")}</nav>` : "";
+        box.hidden = places.length < 2;
+        markSide();
+      }
     }
     mustChange = !!(cache.me && cache.me.mustChangePassword);
     if (mustChange) { renderGate(); return; }
