@@ -10,7 +10,9 @@
     stripePromise = new Promise((resolve, reject) => {
       if (window.Stripe) return resolve(window.Stripe);
       const s = document.createElement("script"); s.src = STRIPE_JS; s.async = true;
-      s.onload = () => resolve(window.Stripe); s.onerror = () => reject(new Error("Couldn't load Stripe."));
+      s.onload = () => resolve(window.Stripe);
+      // A failed load is forgotten (and its tag removed), so "try again" really loads Stripe again
+      s.onerror = () => { stripePromise = null; s.remove(); reject(new Error("Couldn't load Stripe.")); };
       document.head.appendChild(s);
     });
     return stripePromise;

@@ -849,6 +849,9 @@
         : `<b>Weak match.</b> Another muscle may be the source. Try the pain map, or book an evaluation.`;
     });
     body.addEventListener("click", (e) => {
+      // "Full … report →" goes to the report: the guide must not stay on top of it (in the app the link only changes
+      // the hash, and not even that when the report underneath is already this muscle's)
+      if (e.target.closest("a.tg-mlink")) dlg.close();
       const b = e.target.closest("[data-gvid]");
       if (b) {
         const pl = body.querySelector(".tg-player"), sc = pl.querySelector(".tg-screen"), id = b.dataset.gvid;
