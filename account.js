@@ -3246,15 +3246,22 @@
   function nextUp() {
     const t = todayInTz(), dues = calMoney.filter((x) => x.k === "bill" && /^Unpaid/.test(x.s || "")), owed = dues[0];
     const cash = (x) => Number(((String(x.t).match(/\$([\d,]+(?:\.\d+)?)/) || [])[1] || "").replace(/,/g, "")) || 0;
-    const v = nextVisit(), p = patientDocs, docsDue = !!(p && !p.done && v), j = journey(), now = j && j.program && j.stops.find((x) => x.state === "now");
+    const v = nextVisit(), p = patientDocs, docsDue = !!(p && !p.done && v), j = journey(), day = j && j.days ? j.today : null;
+    // today's program session, while it is still to do
+    const now = day && day.session && j.hasProgram && !j.rested ? day.session : null;
     const brief = (s) => String(s).split(/\s+[—–-]\s+|\s*\(/)[0].trim() || String(s);
     if (docsDue) return { kind: "docs", title: "Intake documents", sub: "Due before your visit", due: true, go: "plus" };
     if (dues.length > 1) { const sum = dues.reduce((n, x) => n + cash(x), 0); return { kind: "invoice", count: dues.length, title: sum ? `$${sum.toFixed(2)} due` : `${dues.length} invoices`, sub: `${dues.length} invoices · tap to pay`, due: true, go: owed.path || "#progress" }; }
     if (owed) return { kind: "invoice", count: 1, title: (String(owed.t).match(/\$[\d,.]+/) || ["Invoice"])[0] + " invoice", sub: "Tap to pay", due: true, go: owed.path || "#progress" };
     if (j && j.intro) { const s = j.stops.find((x) => x.state === "now"); return { kind: "intro", ref: s ? s.ref : "", title: s ? s.label : "First descent", sub: "+10 XP · your first descent", go: "mine" }; }
     if (v && v.date <= addDays(t, 1)) return { kind: "visit", title: v.typeName || "Visit", sub: whenOf(v), go: "plus" };
-    if (now && !j.today.workout) return { kind: "session", title: brief(now.label), sub: "Today's session", go: "mine" };
+    // (today's program stop is still open, whatever else they trained today; once it is done the mine holds the next one for tomorrow)
+    if (now) return { kind: "session", title: brief(now.label), sub: "Today's session", go: "mine" };
+    // the day's other lights, once the training is done
+    if (day && day.workout && day.lit < day.of) { const [title, go3] = !day.pain ? ["Pain check-in", "#pain"] : !day.acts ? ["Daily activities", "today"] : ["Daily goal", "today"];
+      return { kind: "lights", title, sub: `${day.lit} of ${day.of} lit today`, go: go3, today: day }; }
     if (v) return { kind: "later", title: v.typeName || "Visit", sub: whenOf(v), go: "plus" };
+    if (day && day.lit === day.of) return { kind: "done", title: "Every lamp lit", sub: "Nice work today", go: "#progress", today: day };
     if (j && j.today.workout) return { kind: "done", title: "Workout done", sub: "Nice work today", go: "#progress", today: j.today };
     return { kind: "ask", title: "Ask Solomon", sub: "for today's workout", go: "solomon" }; // nothing is made ahead of time: Solomon builds it when asked
   }
@@ -3264,6 +3271,7 @@
     else if (go2 === "refer") { go("profile"); setTimeout(() => { const c = $("#referral-card"); if (!c) return; if (c.classList.contains("lay-fold") && !c.classList.contains("open")) layToggle(c); c.scrollIntoView({ block: "start" }); }, 120); }
     else if (go2 === "mine") { if ($("#view-home").hidden) go("home"); setTimeout(() => { const c = $("#cave-card"); if (c) c.scrollIntoView({ behavior: "smooth", block: "start" }); }, 60); }
     else if (go2 === "solomon") { if (window.MDFitGuide && window.MDFitGuide.open) window.MDFitGuide.open(); else go("generate"); }
+    else if (go2 === "today") journeyToday();
     else if (go2.startsWith("#")) go(go2.slice(1));
     else if (go2) location.href = go2;
   }
@@ -3942,22 +3950,62 @@
       const stops = INTRO_STEPS.map(([ref, label, sub], n) => { const st = intro.steps[ref], state = st === true ? "done" : st === "skipped" ? "passed" : lead ? "now" : "open"; if (state === "now") lead = false; return { n, ref, label, sub, state }; });
       return { ...base, intro: true, hasProgram: !!p, program: { id: "intro", title: "Your first descent" }, grid: false, chamber: 1, chambers: 1, unit: "Stage", left: stops.filter((s) => s.state === "now" || s.state === "open").length, stops };
     }
-    if (!p) return { ...base, program: null, finished: mine.length > 0 };
-    const st = progStats(p), grid = !st.isProto && !perWeekTotal(p) && p.days.length > 0, total = st.sessions, per = grid ? p.days.length : Math.min(6, total);
-    const isDone = (n) => (grid ? doneCount(p, n % per) > Math.floor(n / per) : n < st.done);
-    let cur = 0; while (cur < total && isDone(cur)) cur++;
-    const chambers = Math.ceil(total / per), chamber = Math.min(Math.floor(cur / per), chambers - 1), from = chamber * per, stops = [];
-    for (let n = from; n < Math.min(total, from + per); n++) {
-      const d = grid ? p.days[n % per] : null;
-      stops.push({ n, label: d ? d.name : `${st.isProto ? "Part" : "Session"} ${n + 1}`, sub: d && d.length ? `${d.length} min` : "", state: isDone(n) ? "done" : n === cur ? "now" : "locked" });
+    // The road is the week, one stop a day, lit by everything done that day (owner, Nov 2026: "it's check-ins, daily
+    // activities, everything", not only program sessions). Four lights a day: a workout, a pain check-in, a daily
+    // activity, and the daily goal. With a program, each day carries its session, in the program's own order: the
+    // next unfinished one today, the ones after it on the days ahead, and one a day (a session done today is today's).
+    const WD = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"], dow = (new Date(t + "T12:00:00Z").getUTCDay() + 6) % 7, monday = addDays(t, -dow);
+    const hT = habitToday && habitToday.date === t ? habitToday : null;
+    const lightsOf = (d) => { const h = weekHabit.get(d) || {}, worked = allWorkouts.some((w) => w.date === d);
+      const acts = d === t && hT ? (hT.habits || []).some((x) => x.done) : h.activities !== undefined ? h.activities > 0 : !!h.qualifying && !worked;
+      const goal = d === t ? (hT ? !!hT.qualifying : base.today.goal) : !!h.qualifying;
+      return { workout: worked, pain: painLog.some((x) => x.date === d), acts, goal }; };
+    const lit = (L) => (L.workout ? 1 : 0) + (L.pain ? 1 : 0) + (L.acts ? 1 : 0) + (L.goal ? 1 : 0);
+    let sessionOn = () => null, plan = null;
+    if (p) {
+      const st = progStats(p), grid = !st.isProto && !perWeekTotal(p) && p.days.length > 0, total = st.sessions, per = grid ? p.days.length : Math.min(6, total);
+      const isDone = (n) => (grid ? doneCount(p, n % per) > Math.floor(n / per) : n < st.done);
+      let cur = 0; while (cur < total && isDone(cur)) cur++;
+      const mark = new RegExp("^prog-" + String(p.id).replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "-[dw]\\d");
+      const nameOf = (n) => { const d = grid ? p.days[n % per] : null; return { label: d ? d.name : `${st.isProto ? "Part" : "Session"} ${n + 1}`, sub: d && d.length ? `${d.length} min` : "" }; };
+      const didOn = (d) => { const w = allWorkouts.find((x) => x.date === d && mark.test(String(x.key || ""))); if (!w) return null; const m = String(w.key).match(/-d(\d+)$/); return grid && m ? nameOf(Number(m[1])) : { label: p.title, sub: "" }; };
+      const rested = !!didOn(t);
+      // today: what was done, else the next session; the days ahead: the ones after it
+      sessionOn = (d, ahead) => (d < t ? didOn(d) : d === t ? (rested ? didOn(t) : cur < total ? { ...nameOf(cur), start: grid ? cur : -1 } : null) : cur + ahead - (rested ? 1 : 0) < total ? nameOf(cur + ahead - (rested ? 1 : 0)) : null);
+      const per2 = Math.max(1, per), chambers = Math.ceil(total / per2);
+      plan = { id: p.id, title: p.title, grid, rested, left: Math.max(0, total - Math.min(total, st.done)), chamber: Math.min(Math.floor(cur / per2), chambers - 1) + 1, chambers, unit: grid ? "Week" : "Stage" };
     }
-    return { ...base, introAlt: introOn, program: { id: p.id, title: p.title }, grid, chamber: chamber + 1, chambers, unit: grid ? "Week" : "Stage", left: Math.max(0, total - Math.min(total, st.done)), stops };
+    const stops = WD.map((wd, n) => { const date = addDays(monday, n), L = lightsOf(date), k = lit(L), ses = sessionOn(date, n - dow);
+      const state = date > t ? "locked" : k === 4 ? "done" : date === t ? "now" : k ? "part" : "missed";
+      return { n, date, wd, label: ses ? ses.label : wd, sub: ses ? ses.sub : "", session: !!ses, start: ses && ses.start !== undefined ? ses.start : null, state, today: date === t, lit: k, of: 4, lights: L }; });
+    const now = stops[dow];
+    return { ...base, today: { ...now.lights, lit: now.lit, of: 4, start: now.start, session: now.session ? { label: now.label, sub: now.sub } : null }, days: true, key: "week-" + monday, introAlt: introOn,
+      hasProgram: !!p, program: plan ? { id: plan.id, title: plan.title } : null, title: plan ? plan.title : "Your week", grid: !!(plan && plan.grid), rested: !!(plan && plan.rested),
+      chamber: plan ? plan.chamber : 0, chambers: plan ? plan.chambers : 0, unit: plan ? plan.unit : "", left: plan ? plan.left : 0, stops };
+  }
+  // What a tap on today's stop does: the first thing today still asks for
+  function journeyToday() {
+    const j = journey(); if (!j || !j.days) return;
+    const d = j.today;
+    if (!d.workout || (j.hasProgram && !j.rested)) { if (d.start !== null && d.start >= 0) return journeyStart(d.start); if (j.program && !j.rested) return go("programs/" + j.program.id); if (!d.workout) return goNext("solomon"); }
+    if (!d.pain) return go("pain");
+    if (!d.acts || !d.goal) { if ($("#view-home").hidden) go("home"); document.dispatchEvent(new CustomEvent("mdfit:habits-open")); return setTimeout(() => { const c = $("#habits-card"); if (c) c.scrollIntoView({ behavior: "smooth", block: "start" }); }, 80); }
+    toast("Every lamp is lit today.");
   }
   const journeyStart = (n) => { const j = journey(), p = j && j.program && (C.programs || []).find((x) => x.id === j.program.id); if (p && j.grid) startPlayer(progDayWorkout(p, n % p.days.length)); };
   // ---- The first descent: a new member's tutorial as the first road in the mine. Five stops, each a real action in the
   // app, 10 XP each, once ever (the server checks the ones it can see: lib/clients.js). Any order. Skip ends it; Replay
   // (Profile) brings it back. "Meet Solomon" and "Bring a friend" are noted on the device when they happen.
   let intro = null, introBusy = false;
+  let weekHabit = new Map(), habitToday = null; // date -> { qualifying, activities } this week; and today's own card
+  async function loadWeekHabit() {
+    try { const t = todayInTz(), dow = (new Date(t + "T12:00:00Z").getUTCDay() + 6) % 7, months = [...new Set([addDays(t, -dow).slice(0, 7), t.slice(0, 7)])];
+      const got = await Promise.all(months.map((m) => apiAuth("GET", `/api/me/habits/history?month=${m}`)));
+      weekHabit = new Map(got.flatMap((r) => (r && r.days) || []).map((d) => [d.date, { qualifying: !!d.qualifying, activities: d.activities }]));
+      document.dispatchEvent(new CustomEvent("mdfit:journey")); } catch { /* the road still draws from workouts and check-ins */ }
+  }
+  document.addEventListener("mdfit:habits", (e) => { habitToday = e.detail || null; document.dispatchEvent(new CustomEvent("mdfit:journey")); });
+  if (client) loadWeekHabit();
   const mineView = () => { try { return localStorage.getItem("mdfit-mine-view") === "program" ? "program" : "intro"; } catch { return "intro"; } };
   const setMineView = (v) => { try { localStorage.setItem("mdfit-mine-view", v === "program" ? "program" : "intro"); } catch {} document.dispatchEvent(new CustomEvent("mdfit:journey")); };
   // Pass over one stop they can't do right now: no XP for it, the road can still finish, and doing it later still pays
@@ -4033,7 +4081,7 @@
     const visitAhead = (appts.upcoming || []).some((a) => a.date === d && a.status === "booked" && (d > t || (d === t && String(a.time || "") > now)));
     return { workout, open: unpaid || visitAhead };
   };
-  window.MDFitApp = { nextUp, goNext, guideFacts, view: () => show.at || "home", journey, journeyStart, introGo, introSkip, introPass, setMineView, dayStatus, startPlayer, go, loadRewards, toast, celebrateToast, exMeta, byId, gemIcon: GEM_ICON, rewards: () => reward, isPaid, showPaywall,
+  window.MDFitApp = { journeyToday, nextUp, goNext, guideFacts, view: () => show.at || "home", journey, journeyStart, introGo, introSkip, introPass, setMineView, dayStatus, startPlayer, go, loadRewards, toast, celebrateToast, exMeta, byId, gemIcon: GEM_ICON, rewards: () => reward, isPaid, showPaywall,
     // For the guide (mdfit-guide.js) and the theme switch (app-theme.js): who is signed in, what the app holds, and two places to open
     client: () => client, content: async () => { if (!C) await (contentLoading || loadContent()).catch(() => {}); return C; },
     openBook: () => { go("profile"); setTimeout(() => $("#p-book-open") && $("#p-book-open").click(), 60); },
