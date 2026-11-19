@@ -1,0 +1,33 @@
+/* The first-open tour (account-tour.js). One look in every theme: it sits over the app, it is not part of it.
+   Not in the theme builder, like account-cave.css. */
+#gt { position: fixed; inset: 0; z-index: 300; pointer-events: none; font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif; }
+#gt > * { pointer-events: auto; }
+#gt .gt-hole { position: fixed; left: 50%; top: 50%; width: 0; height: 0; pointer-events: none; border-radius: 16px;
+  box-shadow: 0 0 0 200vmax rgba(5, 13, 27, .86), 0 0 0 2px #c9a45c, 0 0 22px 4px rgba(201, 164, 92, .55);
+  transition: left .34s cubic-bezier(.2, .8, .2, 1), top .34s cubic-bezier(.2, .8, .2, 1), width .34s cubic-bezier(.2, .8, .2, 1), height .34s cubic-bezier(.2, .8, .2, 1), border-radius .3s ease; }
+#gt .gt-hole::after { content: ""; position: absolute; inset: -6px; border-radius: inherit; border: 2px solid rgba(201, 164, 92, .7); animation: gtBreathe 1.6s ease-in-out infinite; }
+#gt.gt-wait .gt-hole { box-shadow: 0 0 0 200vmax rgba(5, 13, 27, .86); }
+#gt.gt-wait .gt-hole::after { display: none; }
+#gt.gt-nudge .gt-hole::after { animation: gtNudge .45s ease-out; }
+@keyframes gtBreathe { 0%, 100% { transform: scale(1); opacity: .75; } 50% { transform: scale(1.05); opacity: 0; } }
+@keyframes gtNudge { 0% { transform: scale(1.18); opacity: 1; border-color: #fff; } 100% { transform: scale(1); opacity: .75; } }
+#gt .gt-b { position: fixed; background: transparent; touch-action: none; }
+#gt .gt-bar { position: fixed; left: 14px; right: 112px; top: calc(18px + env(safe-area-inset-top, 0px)); height: 4px; border-radius: 4px; background: rgba(223, 231, 242, .22); overflow: hidden; pointer-events: none; }
+#gt .gt-bar i { display: block; width: 0; height: 100%; border-radius: 4px; background: #c9a45c; transition: width .45s ease; }
+#gt .gt-skip { position: fixed; right: 12px; top: calc(8px + env(safe-area-inset-top, 0px)); min-height: 32px; padding: 6px 14px; border-radius: 999px; border: 1px solid rgba(223, 231, 242, .4); background: rgba(8, 22, 41, .82); color: #e6edf6; font: 600 13px/1 inherit; cursor: pointer; }
+#gt .gt-say { position: fixed; left: 14px; right: 14px; max-width: 420px; margin: 0 auto; top: 40%; padding: 12px 14px 12px 50px; border-radius: 16px; background: #f4f1ea; color: #0c1b30; box-shadow: 0 10px 28px rgba(0, 0, 0, .5);
+  opacity: 0; transform: translateY(6px); transition: opacity .25s ease, transform .25s ease, top .34s cubic-bezier(.2, .8, .2, 1); }
+#gt .gt-say.on { opacity: 1; transform: none; }
+#gt .gt-say svg { position: absolute; left: 11px; top: 11px; width: 30px; height: 24px; }
+#gt .gt-say p { margin: 0; font: 600 15px/1.38 inherit; min-height: 21px; }
+#gt .gt-acts { display: flex; justify-content: flex-end; margin-top: 8px; }
+#gt .gt-acts button { border: 0; border-radius: 10px; cursor: pointer; font: 600 14px/1 inherit; }
+#gt .gt-next { display: none; padding: 9px 18px; background: #0c1b30; color: #fff; }
+#gt .gt-pass { padding: 6px 2px; background: none; color: #5a6b80; font-weight: 500; font-size: 13px; text-decoration: underline; text-underline-offset: 3px; }
+#gt.gt-read .gt-next { display: inline-block; }
+#gt.gt-read .gt-pass { display: none; }
+#gt button:focus-visible { outline: 2px solid #c9a45c; outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { #gt .gt-hole, #gt .gt-say { transition: none; } #gt .gt-hole::after { animation: none; } }
+/* While the tour runs there is one Solomon talking: his everyday bubble is quiet, and after the first beat the cloud steps aside */
+body.gt-on #mg-tag { display: none !important; }
+body.gt-on.gt-nocloud #mg-btn { opacity: 0; pointer-events: none; }
