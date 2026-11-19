@@ -16,7 +16,7 @@ const ALLOWED = new Set(["US", "PR", "GU", "VI", "AS", "MP", "UM"]);
 // Claude-SearchBot, Claude-User) are allowed on public pages so MD Fit can be cited in AI search answers (owner, Nov 2026).
 const BAD_UA = /(curl|wget|python-requests|python-urllib|aiohttp|httpx|go-http-client|java\/|okhttp|libwww|scrapy|httpclient|node-fetch|axios|postman|insomnia|headless|phantomjs|selenium|puppeteer|playwright|crawler|spider|scraper|gptbot|ccbot|claudebot|claude-web|anthropic-ai|bytespider|petalbot|semrushbot|ahrefsbot|mj12bot|dotbot|dataforseo|amazonbot|youbot|diffbot|imagesiftbot|omgili|zgrab|masscan|nmap|nikto|sqlmap|wpscan)/i;
 const SEARCH = /(googlebot|bingbot|duckduckbot|applebot|oai-searchbot|chatgpt-user|perplexitybot|perplexity-user|claude-searchbot|claude-user)/i;
-const PRIVATE = /^\/(account|admin|workspace|visit|chat|shared|api|login|cancel|intake|invoice)/;
+const PRIVATE = /^\/(account|admin|workspace|visit|chat|shared|api|login|cancel|intake|invoice|manager|developer|dev(?![\w-])|valuation)/;
 // Public, read-only API calls the homepage makes while it renders (business info, Google rating, published reviews,
 // video catalog). Search engines that render JavaScript (Googlebot, Bingbot) may GET these so they index the real
 // page instead of placeholders. Everything else under /api stays closed to bots.
@@ -41,8 +41,11 @@ export default async function middleware(request) {
   // outside the United States, and answering them by country stopped the site being crawled at all. The owner's aim
   // here is to keep AI training crawlers out, and that is step 2's job, by name, from every country. A search engine
   // never reaches a private page: step 2 closes those to it wherever it comes from.
+  // A public page is drawn from the public, read-only API calls, so a search engine that may read the page may GET
+  // those from wherever it crawls too (those paths only): otherwise it indexes the placeholders.
+  const publicRead = request.method === "GET" && PUBLIC_API.test(url.pathname);
   const OPEN_TO_ALL = url.pathname === "/sitemap.xml" || url.pathname === "/robots.txt"
-    || (SEARCH.test(ua) && !PRIVATE.test(url.pathname));
+    || (SEARCH.test(ua) && (!PRIVATE.test(url.pathname) || publicRead));
 
   // The iOS app is used wherever the member happens to be, and App Review tests it from outside the United States:
   // a country refusal there reads as an app that doesn't start, which is a rejection for something that works.
@@ -56,7 +59,6 @@ export default async function middleware(request) {
 
   // 2. Bots and scrapers. Search engines may read the public homepage only.
   if (!ua || BAD_UA.test(ua)) return page(403, "Automated access isn't allowed", "This site can only be used in a web browser or the MD Fit app.");
-  const publicRead = request.method === "GET" && PUBLIC_API.test(url.pathname);
   if (SEARCH.test(ua) && PRIVATE.test(url.pathname) && !publicRead) return page(403, "Private", "This page is private.");
 
   // 3. API proxy with the edge secret and the visitor's real IP (for rate limiting)

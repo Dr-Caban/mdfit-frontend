@@ -16,8 +16,16 @@
   // so the member does not have to type a password to use their camera here.
   const hand = new URLSearchParams(location.search).get("h");
   if (hand) {
+    // A member already signed in on this device is never swapped for a different one without being asked: a link
+    // like this can be sent by anyone. Saying no changes nothing and the visit opens as the member already here.
+    const cur = (() => { try { const s = JSON.parse(localStorage.getItem("mdfit_client") || "null"); return s && Date.parse(s.expiresAt) > Date.now() ? s : null; } catch { return null; } })();
+    const same = (s) => !!(cur.client && s.client && cur.client.id && cur.client.id === s.client.id);
     fetch(API + "/api/clients/handoff/exchange", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code: hand }) })
-      .then((r) => (r.ok ? r.json() : null)).then((s) => { if (s && s.token) { try { localStorage.setItem("mdfit_client", JSON.stringify(s)); } catch {} } })
+      .then((r) => (r.ok ? r.json() : null)).then((s) => {
+        if (!s || !s.token) return;
+        if (cur && !same(s) && !confirm(`You're signed in as ${(cur.client && (cur.client.name || cur.client.email)) || "another member"}. Switch to join this visit?`)) return;
+        try { localStorage.setItem("mdfit_client", JSON.stringify(s)); } catch {}
+      })
       .catch(() => {}).then(() => location.replace("/visit"));
     return;
   }

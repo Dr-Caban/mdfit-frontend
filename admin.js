@@ -63,9 +63,9 @@
     const bc = $("#bc-recent"); if (bc) bc.innerHTML = "";
     $$("#client-search, #emr-search").forEach((el) => { el.value = ""; });
     // cached patient data goes too, so nothing is shown again before the next sign-in reloads it
-    clientList = []; calAppts = []; notes = []; contentCache = null; homeThread = null; drafts.clear(); emrRows = { patients: [], waiting: [] };
+    clientList = []; memberList = []; calAppts = []; notes = []; contentCache = null; homeThread = null; drafts.clear(); emrRows = { patients: [], waiting: [] };
     // /workspace shares this tab: signing out here signs out there as well
-    try { sessionStorage.removeItem("mdfit_ws_token"); sessionStorage.removeItem(ACTIVE_KEY); } catch {}
+    try { for (const k of ["mdfit_ws_token", "mdfit_manager", "mdfit_dev", ACTIVE_KEY]) sessionStorage.removeItem(k); } catch {}
     clearTimeout(idleT);
   }
   $("#logout").addEventListener("click", logout);
@@ -130,6 +130,12 @@
     suggestion: ["💡", "Suggestion", "feedback"], feedback: ["⭐", "New review", "reviews"], client_signup: ["👤", "New client account", "clients"],
     meeting_request: ["🗓️", "1-on-1 request", "members"], membership_request: ["💳", "Membership request", "members"]
   };
+  // A visit someone paid for after the time they were holding had gone to someone else: the server keeps the payment as
+  // a visit credit and marks the visit cancelled with slotLost. It needs a new time until that person has a later visit.
+  const WARN_SVG = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-3px"><path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17v.5"/></svg>';
+  const LOST = "Paid, time was taken: reschedule";
+  const paidNoTime = (list) => list.filter((a) => a.slotLost && a.payment === "paid" && !list.some((b) => b.id !== a.id && b.email === a.email && b.status !== "cancelled" && b.status !== "hold" && (b.createdAt || "") > (a.updatedAt || a.createdAt || "")));
+  NOTE.visit_paid_time_taken = [WARN_SVG, LOST, "appts"];
   let notes = [];
   const SEEN_KEY = "mdfit_admin_seen";
   const seenAt = () => { try { return localStorage.getItem(SEEN_KEY) || ""; } catch { return ""; } };
@@ -221,7 +227,8 @@
       MDFitRT.on("activity", (ev) => {
         notes.unshift({ time: new Date().toISOString(), ...ev }); renderNotes();
         if (current === "dash") run(loadDash)();
-        if (ev.type === "appointment" || ev.type === "appointment_cancelled" || ev.type === "intake") { if (current === "appts") run(loadAppts)(); }
+        if (ev.type === "appointment" || ev.type === "appointment_cancelled" || ev.type === "intake" || ev.type === "visit_paid_time_taken") { if (current === "appts") run(loadAppts)(); }
+        if (ev.type === "visit_paid_time_taken") rtToast(`${LOST}${ev.when ? " (" + ev.when + ")" : ""}`, WARN_SVG);
         if (ev.type === "booking" || ev.type === "booking_cancelled") { if (current === "bookings") run(loadBookings)(); }
         if (ev.type === "lead") { if (current === "leads") run(loadLeads)(); }
         if (ev.type === "subscribe") { if (current === "subs") run(loadSubs)(); }
@@ -234,6 +241,7 @@
       });
       MDFitRT.on("message_reaction", (ev) => { if (openThread && ev.clientId === openThread) showThread(openThread); });
       MDFitRT.on("toast", (ev) => { rtToast(ev.text, TOAST_ICONS[ev.type]); });
+      MDFitRT.on("signed_out", () => { if (!token) return; logout(); $("#login .form-msg").textContent = "You were signed out: this sign-in ended, or what it may do was changed. Log in again."; });
       // Google Calendar / SimplePractice changed (the server checks every minute): refresh what's on screen
       MDFitRT.on("calendar_changed", (ev) => { busyFrom = "";
         const n = (ev && ev.dates && ev.dates.length) || 0;
@@ -252,6 +260,22 @@
     }
   }
 
+  // What was typed or picked in a card but not saved yet is carried across a redraw of its list (a save in another
+  // card, or a live update arriving), with the cursor where it was.
+  const EDITS = "[data-notes], [data-status], [data-meet]";
+  function keepEdits(box) {
+    const kept = [], a = document.activeElement;
+    const at = a && box.contains(a) && a.matches(EDITS) && a.closest("[data-id]") ? [a.closest("[data-id]").dataset.id, Object.keys(a.dataset)[0], a.selectionStart, a.selectionEnd] : null;
+    $$("[data-id]", box).forEach((card) => $$(EDITS, card).forEach((el) => {
+      const dirty = el.tagName === "SELECT" ? ![...el.options].some((o) => o.selected && o.defaultSelected) : el.value !== el.defaultValue;
+      if (dirty) kept.push([card.dataset.id, Object.keys(el.dataset)[0], el.value]);
+    }));
+    return () => {
+      const find = (id, k) => { const card = $$("[data-id]", box).find((c) => c.dataset.id === id); return card && $(`[data-${k}]`, card); };
+      kept.forEach(([id, k, v]) => { const el = find(id, k); if (el) el.value = v; });
+      if (at) { const el = find(at[0], at[1]); if (el) { el.focus(); try { el.setSelectionRange(at[2], at[3]); } catch {} } }
+    };
+  }
   const table = (el, head, rows, empty) => {
     el.innerHTML = `<thead><tr>${head.map((h) => `<th>${h}</th>`).join("")}</tr></thead><tbody>${
       rows.length ? rows.join("") : `<tr><td class="empty" colspan="${head.length}">${empty}</td></tr>`}</tbody>`;
@@ -433,7 +457,11 @@
   const VIDEO_TYPES = ["eval-remote", "followup-remote", "session-remote"];
   const isVideo = (a) => VIDEO_TYPES.includes(a.typeId) || !!a.meetingLink;
   async function loadAppts() {
-    const list = await api("GET", "/api/admin/appointments" + ($("#appts-all").checked ? "?all=1" : ""));
+    const all = $("#appts-all").checked;
+    const [shown, full] = await Promise.all([api("GET", "/api/admin/appointments" + (all ? "?all=1" : "")), all ? null : api("GET", "/api/admin/appointments?all=1")]);
+    // the upcoming list leaves cancelled visits out, so the ones that were paid and need a new time are put at its top
+    const lost = paidNoTime(full || shown), lostIds = new Set(lost.map((a) => a.id)), list = all ? shown : [...lost, ...shown];
+    const put = keepEdits($("#appts-list"));
     $("#appts-list").innerHTML = list.length ? list.map((a) => `
       <article class="lead appt ${a.status}" data-id="${a.id}">
         <header>
@@ -441,6 +469,7 @@
             <div class="meta">${esc(a.typeName)} · ${a.minutes} min</div></div>
           <div class="meta">Booked ${when(a.createdAt)}</div>
         </header>
+        ${a.slotLost && a.payment === "paid" ? `<p class="banner" data-lost style="margin:0 0 8px">${WARN_SVG} <b>${lostIds.has(a.id) ? LOST : "Paid, time was taken"}.</b> ${lostIds.has(a.id) ? "The payment arrived after this time had gone to another visit. Nothing was refunded: it is kept as a visit credit, so book them a new time." : "They have a later visit booked."}</p>` : ""}
         <div><strong>${esc(a.name)}</strong> · <a href="tel:${esc(a.phone)}">${esc(a.phone)}</a> · <a href="mailto:${esc(a.email)}">${esc(a.email)}</a></div>
         <div class="intake">${[...(a.areas || []), a.painLevel != null && `Pain ${a.painLevel}/10`].filter(Boolean).map((x) => `<span>${esc(x)}</span>`).join("")}</div>
         ${a.notes ? `<p class="msg">${esc(a.notes)}</p>` : ""}
@@ -453,6 +482,7 @@
           <button class="mini" data-save>Save</button>
         </div>
       </article>`).join("") : `<p class="muted">No upcoming appointments.</p>`;
+    put();
   }
   $("#appts-all").addEventListener("change", run(loadAppts));
   // Intake documents viewer (appointment cards and client profiles): one section per completed document;
@@ -679,6 +709,7 @@
   $("#clients-table").addEventListener("change", run(async (e) => {
     const sel = e.target.closest("[data-sub]"); if (!sel) return;
     const c = clientList.find((x) => x.id === sel.dataset.sub); if (!c) return;
+    if (c.membership && c.membership.stripeSubscriptionId && !confirm(cardWarn(c.name))) { renderClients(); return; }
     sel.disabled = true;
     try {
       const r = await api("PUT", `/api/admin/clients/${c.id}/membership`, { tier: sel.value, until: (c.membership && c.membership.until) || "" });
@@ -688,6 +719,7 @@
   }));
 
   // Client type: inpatients (in-clinic) never pay for video calls or consultations; everyone else is an outpatient
+  const cardWarn = (name) => `${name} pays for this membership by card each month. Changing it here changes what they can use, not what their card is charged. Continue?`;
   const typeBadge = (t) => t === "inpatient" ? `<span class="badge ctype in">Subscription exempt</span>` : `<span class="badge ctype out">Standard</span>`;
   // ---- Programs Dr. Jared assigns to a client: grouped by category (sports by sport), each with its level and length,
   // a search box, an optional note per program, and progress on the ones assigned (from the sessions the app logs)
@@ -1206,6 +1238,7 @@
   async function loadLeads() {
     const status = $("#lead-filter").value;
     const list = await api("GET", "/api/admin/leads" + (status ? "?status=" + status : ""));
+    const put = keepEdits($("#leads-list"));
     $("#leads-list").innerHTML = list.length ? list.map((l) => `
       <article class="lead" data-id="${l.id}">
         <header>
@@ -1224,6 +1257,7 @@
           <button class="mini danger" data-del>Delete</button>
         </div>
       </article>`).join("") : `<p class="muted">No leads yet.</p>`;
+    put();
   }
   $("#lead-filter").addEventListener("change", run(loadLeads));
   // Picking a status saves it right away (with the notes as typed); it used to wait for the Save button and was lost on reload
@@ -1544,10 +1578,10 @@
   // Feedback badge polling now handled by pollBadges()
 
   // ---- Members: requests, tiers, 1-on-1 scheduling
-  let contentCache = null;
+  let contentCache = null, memberList = [];
   async function loadMembers() {
     const [list, c] = await Promise.all([api("GET", "/api/admin/members"), api("GET", "/api/admin/content")]);
-    contentCache = c;
+    contentCache = c; memberList = list;
     const opts = (sel) => `<option value="">No membership</option>` + c.tiers.map((t) => `<option value="${t.id}"${t.id === sel ? " selected" : ""}>${esc(t.name)} ($${t.price}/mo)</option>`).join("");
     $("#members-list").innerHTML = list.length ? list.map((m) => `
       <article class="item" data-id="${m.id}">
@@ -1564,6 +1598,8 @@
   $("#members-list").addEventListener("click", run(async (e) => {
     const card = e.target.closest("[data-id]"); if (!card) return;
     if (e.target.matches("[data-save-mem]")) {
+      const m = memberList.find((x) => x.id === card.dataset.id);
+      if (m && m.membership && m.membership.stripeSubscriptionId && !confirm(cardWarn(m.name))) return;
       await api("PUT", `/api/admin/clients/${card.dataset.id}/membership`, { tier: $("[data-tier]", card).value || null, until: $("[data-until]", card).value });
       toast("Membership saved."); loadMembers();
     }
