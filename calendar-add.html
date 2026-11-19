@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+  <title>Add to your calendar | MD Fit</title>
+  <meta name="description" content="Adds your MD Fit visits, classes, billing and subscription dates to your phone's calendar.">
+  <style>
+    html, body { margin: 0; min-height: 100%; background: #0A1A2E; color: #fff; font-family: Montserrat, system-ui, -apple-system, "Segoe UI", sans-serif; }
+    main { min-height: 100vh; display: grid; place-items: center; padding: 24px max(20px, env(safe-area-inset-left, 0px)); box-sizing: border-box; text-align: center; }
+    .box { max-width: 380px; }
+    svg { width: 56px; height: 56px; color: #C8A763; }
+    h1 { font: 700 24px/1.25 "Libre Baskerville", Georgia, serif; margin: 16px 0 8px; }
+    p { color: #b9c3d3; margin: 0 0 20px; line-height: 1.5; }
+    .btn { display: inline-block; background: #C8A763; color: #0A1A2E; font-weight: 700; font-size: 16px; padding: 14px 26px; border-radius: 999px; text-decoration: none; border: 0; cursor: pointer; }
+    .alt { display: inline-block; margin-top: 16px; color: #8EC0E6; background: none; border: 0; font: inherit; font-size: 15px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+    .steps { margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(255, 255, 255, .14); color: #b9c3d3; font-size: 14px; line-height: 1.55; }
+    .steps b { color: #fff; }
+    #msg { min-height: 1.4em; margin-top: 10px; color: #8EC0E6; font-size: 14px; }
+    a:focus-visible, button:focus-visible { outline: 2px solid #8EC0E6; outline-offset: 3px; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="box" id="ok" hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 16H5V9h14zm-8-9h2v3h3v2h-3v3h-2v-3H8v-2h3z"/></svg>
+      <h1>Add MD Fit to your calendar</h1>
+      <p>Your visits, classes, billing and subscription dates, kept up to date. Titles only, nothing about your care.</p>
+      <a class="btn" id="sub" href="#">Subscribe in Calendar</a>
+      <div><button type="button" class="alt" id="copy">Copy the link instead</button></div>
+      <div id="msg" role="status" aria-live="polite"></div>
+      <div class="steps">If nothing opened: tap <b>Copy the link instead</b>, then on iPhone go to <b>Settings → Calendar → Accounts → Add Account → Other → Add Subscribed Calendar</b> and paste it.<br><br>When you're done, go back to the MD Fit app.</div>
+    </div>
+    <div class="box" id="bad" hidden>
+      <h1>This link isn't complete</h1>
+      <p>Go back to the MD Fit app, open Progress, and tap <b>Add to iPhone Calendar</b> again.</p>
+    </div>
+  </main>
+  <script>
+  // Opened in Safari by the MD Fit phone app (its own window cannot open calendar links). The private feed link
+  // arrives after the #, so it is never sent to any server, and only a feed of this site is accepted.
+  (function () {
+    var raw = ""; try { raw = decodeURIComponent(location.hash.slice(1)); } catch (e) {}
+    var host = location.host.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    var ok = new RegExp("^webcal://" + host + "/api/calendar-feed/[a-f0-9]{48}\\.ics$").test(raw);
+    if (!ok) { document.getElementById("bad").hidden = false; return; }
+    try { history.replaceState(null, "", location.pathname); } catch (e) {} // the link does not stay in the address bar
+    var https = raw.replace(/^webcal:/, location.protocol);
+    var sub = document.getElementById("sub"), msg = document.getElementById("msg");
+    sub.href = raw; document.getElementById("ok").hidden = false;
+    setTimeout(function () { location.href = raw; }, 400); // straight to iPhone's "Subscribe" prompt; the button is there if it doesn't show
+    document.getElementById("copy").addEventListener("click", function () {
+      var done = function () { msg.textContent = "Link copied. Paste it in Settings as described below."; };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(https).then(done, function () { window.prompt("Copy your calendar link:", https); });
+      else window.prompt("Copy your calendar link:", https);
+    });
+  })();
+  </script>
+</body>
+</html>
