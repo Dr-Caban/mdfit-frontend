@@ -19,7 +19,8 @@
   const saying = (k = 0) => SAYINGS[(Math.floor(Date.now() / 864e5) + k) % SAYINGS.length];
   const INTRO = { solomon: "I'm Solomon. Tap me and ask anything: that's your first stop.", know: "Next stop: let me get to know you. A few taps.", pain: "Next stop: tell me what hurts, or that nothing does.", program: "Pick a road. I'll walk it with you.",
     session: "One session. That's all today asks.", friend: "Bring a friend down here and you both gain." };
-  const open = () => G.open(), to = (go) => () => A.goNext(go);
+  const stopsWord = () => { let n = 0; try { n = (A.journey().stops || []).length; } catch {} const w = n && A.numWord ? A.numWord(n) : "A few"; return w.charAt(0).toUpperCase() + w.slice(1); };
+  const open = () => G.open(), to = (go) => () => A.goNext(go, true);
   // ---- The hype man, and a just one (owner, Nov 2026): he praises what was actually done, the moment it is done, and
   // makes it personal from what the member told him about themselves ("as I'd expect from an ex-tennis player").
   // Never for nothing, never a rank they did not claim: "ex-tennis player", not "pro".
@@ -75,14 +76,14 @@
     const refer = () => { if (f.refer && f.refer.pct) out.push({ t: `Bring a friend: ${f.refer.pct}% of their subscription comes to you, in cash.`, act: to("refer") }); };
     if (view === "home") {
       urgent();
-      if (n.kind === "intro") out.push({ t: INTRO[n.ref] || "Five stops, and your first new gem is yours.", act: n.ref === "solomon" || !n.ref ? open : () => A.introGo(n.ref) });
+      if (n.kind === "intro") out.push({ t: INTRO[n.ref] || `${stopsWord()} stops, and your first new gem is yours.`, act: n.ref === "solomon" || !n.ref ? open : () => A.introGo(n.ref) });
       if (n.kind === "visit") out.push({ t: `${n.title}: ${n.sub}. Tap here to get ready.`, act: to("plus") });
       if (n.kind === "session") out.push({ t: `${n.title} today. ${saying()}`, act: to("mine") });
       if (n.kind === "later") out.push({ t: `${n.title} is booked: ${n.sub}.`, act: to("plus") });
       if (n.kind === "lights") { const d = n.today || {};
         out.push(!d.pain ? { t: "Good work. Tell me how you feel, and another light wakes.", act: () => A.go("pain") }
           : !d.acts ? { t: `${d.lit} of ${d.of} lit today. One daily activity lights the next.`, act: to("today") } : { t: "One more light to kindle: reach your daily goal.", act: to("today") }); }
-      if (n.kind === "done") out.push({ t: hype("alllit") }, { t: "Rest now; the road will keep." });
+      if (n.kind === "done") out.push(n.skipped ? { t: "Session skipped, and the other lamps are lit. It waits for your next training day." } : { t: hype("alllit") }, { t: "Rest now; the road will keep." });
       const AIM = { pain: "get out of pain", stronger: "get stronger", weight: "lose weight", move: "move better", sport: "get better at your sport" }, ab = f.about || {};
       if (n.kind === "ask") out.push({ t: ab.aim ? `You're here to ${AIM[ab.aim]}. Tell me how long you have today and I'll build toward it.` : `${f.first ? f.first + ", tell" : "Tell"} me what you want to train today and I'll build it.`, act: open });
       if (ab.competitive >= 8 && f.toNext && f.toNext.xp > 0) out.push({ t: `You said you hate to lose. ${f.toNext.xp} XP and ${f.toNext.name} is yours.`, act: () => A.go("leaders") });
