@@ -4011,7 +4011,14 @@
     try {
       if (reset && !confirm("Make a new calendar link? The old one stops working, and a calendar already subscribed to it needs the new one.")) return;
       const f = await calFeed(!!reset);
-      if (sub) { location.href = f.webcal; $("#cal-sync-note").textContent = "If nothing opened: Copy link, then on iPhone go to Settings → Calendar → Accounts → Add Account → Other → Add Subscribed Calendar and paste it."; }
+      if (sub) {
+        const how = "If nothing opened: Copy link, then on iPhone go to Settings → Calendar → Accounts → Add Account → Other → Add Subscribed Calendar and paste it.";
+        // Inside the phone app its own window cannot open calendar links (it showed "Can't reach MD Fit"): Safari can,
+        // so the app hands it a small page that asks iPhone to subscribe. The private link travels after the #.
+        if (window.MDFitNative && typeof window.MDFitNative.open === "function") { window.MDFitNative.open(location.origin + "/calendar-add#" + encodeURIComponent(f.webcal)); $("#cal-sync-note").textContent = "Safari opened to add the calendar. When it's done, come back here."; }
+        else if (window.MDFitNative || /; wv\)/.test(navigator.userAgent)) { try { await navigator.clipboard.writeText(f.url); toast("Calendar link copied."); } catch { prompt("Copy your calendar link:", f.url); } $("#cal-sync-note").textContent = "Your link is copied. On iPhone go to Settings → Calendar → Accounts → Add Account → Other → Add Subscribed Calendar and paste it."; }
+        else { location.href = f.webcal; $("#cal-sync-note").textContent = how; }
+      }
       else { try { await navigator.clipboard.writeText(f.url); toast(reset ? "New link copied. The old one no longer works." : "Calendar link copied. Paste it into your calendar app's \"Add from URL\"."); } catch { prompt("Copy your calendar link:", f.url); } }
     } catch (err) { toast(err.message || "Couldn't get your calendar link. Try again."); }
   });
