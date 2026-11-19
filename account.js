@@ -164,9 +164,9 @@
     if (["programs", "learn", "premium", "tips"].includes(tab)) renderContent(tab, tab === "programs" ? String(hash).split("/").slice(1).join("/") : sub);
     if (tab === "messages") openMessages(); else clearInterval(msgPoll);
     $("#more-btn").classList.toggle("on", $$(".tabbar .ov").some((b) => b.dataset.tab === tab));
-    const ms = $("#more-sheet"); if (ms.open) ms.close();
-    // Back/forward or a link away from the Pain Tool must not leave its pattern sheet open over the next screen
-    if (tab !== "pain") $$("dialog.pm-sheet[open]").forEach((d) => d.close());
+    // Back/forward or a link to another screen must not leave a sheet or dialog of the screen being left open over
+    // the next one: the More sheet, a pain pattern or track, a guide whose link was just followed, a booking
+    $$("dialog[open]").forEach((d) => { try { d.close(); } catch {} });
     window.scrollTo(0, 0);
     show.at = tab; try { document.dispatchEvent(new CustomEvent("mdfit:view", { detail: tab })); } catch {}
   }
@@ -276,6 +276,9 @@
   }
   const exMeta = (e) => [e.region, e.cat, e.level && `Level ${e.level}`, e.loc && e.loc !== "any" && e.loc[0].toUpperCase() + e.loc.slice(1)].filter(Boolean).join(" · ");
   const byId = new Map(EX.map((e) => [e.id, e]));
+  // Every word typed is in the exercise's own title: the match for exercises the search index does not hold
+  const titleHit = (e, q) => { const n = e.name.toLowerCase(); return q.split(/\s+/).filter(Boolean).every((w) => n.includes(w)); };
+  const inIndex = (e) => !!(window.MDFitSearch && MDFitSearch.has && MDFitSearch.has("ex:" + e.id));
   document.addEventListener("click", (e) => {
     const v = e.target.closest("[data-video]");
     if (v) { const x = byId.get(v.dataset.video); if (x) playVideo(x.id, x.name, exMeta(x)); return; }
@@ -391,7 +394,8 @@
     };
     const ago = (iso) => {
       // A timestamp is UTC: convert it to the clinic's date, or a 9 PM workout shows as tomorrow
-      const d = String(iso).length > 10 ? todayInTz(new Date(iso)) : String(iso), t = todayInTz();
+      // (only a real timestamp: a clinic date, or a clinic date and time with no zone, already is the clinic's day)
+      const d = /Z$|[+-]\d\d:?\d\d$/.test(String(iso)) ? todayInTz(new Date(iso)) : String(iso).slice(0, 10), t = todayInTz();
       return d === t ? "Today" : d === addDays(t, -1) ? "Yesterday" : shortDate(d);
     };
     const html = items.map((x) => `<li class="act"><span class="check"><svg viewBox="0 0 24 24">${ICON[x.icon]}</svg></span>
@@ -429,7 +433,14 @@
     clearTimeout(qsT); clearTimeout(qsLogT);
     qsT = setTimeout(async () => {
       if (q.length < 2) { qsOut.hidden = true; return; }
-      const r = await (window.MDFitSearch ? window.MDFitSearch.search(q, { limit: 12, personal: personal() }) : Promise.resolve({ hits: [] }));
+      const r = await (window.MDFitSearch ? window.MDFitSearch.search(q, { limit: 12, personal: personal() }).catch(() => ({ hits: [] })) : Promise.resolve({ hits: [] }));
+      // Exercises the index does not hold (all of them, if it could not load) are found by their own titles. They lead
+      // when the index's best hit lacks a word that was typed, and follow it otherwise.
+      if (window.MDFitSearch) {
+        const ql = q.toLowerCase(), own = EX.filter((e) => offered(e.id) && !inIndex(e) && titleHit(e, ql)).slice(0, 4)
+          .map((e) => ({ id: "ex:" + e.id, kind: "exercise", title: e.name, url: "/account#videos", snippet: exMeta(e) }));
+        r.hits = own.length && !(r.hits[0] && titleHit({ name: r.hits[0].title || "" }, ql)) ? [...own, ...r.hits] : [...r.hits, ...own];
+      }
       qsLastQ = q; qsLastHits = r.hits; qsClicked = false;
       qsRender(r.hits, q);
       qsLogT = setTimeout(qsLog, 1500);
@@ -645,7 +656,8 @@
   renderChoices();
 
   // ---- My programs: saved workouts, kept on the account
-  const compact = (arr) => arr.map((e) => ({ id: e.id, sets: e.sets }));
+  // A prescription goes up whole; with a max (a server that caps set text) it loses its bracketed cue and is cut to fit
+  const compact = (arr, max) => arr.map((e) => ({ id: e.id, sets: max && String(e.sets).length > max ? String(e.sets).replace(/\s*\(.*$/, "").slice(0, max) : e.sets }));
   const expand = (arr, block) => arr.map((x) => byId.get(x.id) && { ...byId.get(x.id), sets: x.sets, block }).filter(Boolean);
   const REHAB_CATS = new Set(["Rehabilitation", "Mobility"]);
   function programWorkout(p) {
@@ -685,11 +697,13 @@
     if (!name || !name.trim()) return;
     const w = current;
     try {
-      earn("program"); lib = await apiAuth("POST", "/api/me/programs", { name: name.trim().slice(0, 60), workout: {
+      const send = (max) => apiAuth("POST", "/api/me/programs", { name: name.trim().slice(0, 60), workout: {
         title: w.title, goal: w.goal, goalId: w.goalId, location: w.location, level: w.level, levelLabel: w.levelLabel,
         rounds: w.rounds, restEx: w.restEx, restRound: w.restRound, minutes: w.minutes,
-        warmup: compact(w.warmup), circuit: compact(w.circuit), cooldown: compact(w.cooldown) } });
-      renderPrograms(); toast(`Saved "${name.trim()}" to My Programs.`);
+        warmup: compact(w.warmup, max), circuit: compact(w.circuit, max), cooldown: compact(w.cooldown, max) } });
+      // A server that caps set text at 30 characters refuses the longest prescriptions: those go again, shortened
+      lib = await send().catch((err) => { if (!/too long/i.test(err.message)) throw err; return send(30); });
+      renderPrograms(); toast(`Saved "${name.trim()}" to My Programs.`); earn("program"); // XP only once it is saved
     } catch (err) { toast(err.message); }
   });
 
@@ -766,8 +780,9 @@
       // Rank by relevance only when the query has 2+ characters; otherwise just filter+sort as before.
       vqRank = null;
       if (q.length > 1 && window.MDFitSearch) {
-        const { hits } = await MDFitSearch.search(q, { kinds: ["exercise"], limit: 200, personal: personal() });
-        vqRank = new Map(hits.map((h, i) => [h.id.slice(3), i])); // id -> rank order
+        // (if the index cannot load, vqRank stays null and the plain filter in renderVideos does the search)
+        const r = await MDFitSearch.search(q, { kinds: ["exercise"], limit: 200, personal: personal() }).catch(() => null);
+        if (r) vqRank = new Map(r.hits.map((h, i) => [h.id.slice(3), i])); // id -> rank order
       }
       renderVideos();
     }, 60);
@@ -790,7 +805,7 @@
     const key = vf.by;
     let list = liveEX().filter((e) => (vf.kind === "All" || e.kind === vf.kind) && (vf.cat === "All" || (vf.cat === "♥ Favorites" ? isFav(e.id) : e.libCat === vf.cat)) && (!vf.region || e[key] === vf.region)
       && (!vf.loc || locIds[vf.loc].has(e.id))
-      && (!vf.q || (vqRank ? vqRank.has(e.id) : [e.name, e.region, e.cat, e.libCat, e.joint, e.muscle].join(" ").toLowerCase().includes(vf.q))));
+      && (!vf.q || (vqRank ? vqRank.has(e.id) || (!inIndex(e) && titleHit(e, vf.q)) : [e.name, e.region, e.cat, e.libCat, e.joint, e.muscle].join(" ").toLowerCase().includes(vf.q))));
     // Ranked results come back ordered by relevance; otherwise sort by level then name as before.
     list.sort(vqRank ? (a, b) => (vqRank.get(a.id) ?? 999) - (vqRank.get(b.id) ?? 999) : (a, b) => a.level - b.level || a.name.localeCompare(b.name));
     $("#vgrid").innerHTML = groupsFor().map((g) => {
@@ -1020,6 +1035,7 @@
     const _ma = $("#mode-area"); if (_ma) _ma.hidden = mode !== "area";
     const _mm = $("#mode-muscle"); if (_mm) _mm.hidden = mode !== "muscle";
     $("#muscle-report").hidden = true;
+    { const pm = $("[data-painmap='app']"); if (pm) pm.hidden = false; }
     if (mode === "muscle" && _mm) { renderMap(); renderMuscleList(); }
   }
   $$(".mode-seg [data-mode]").forEach((b) => b.addEventListener("click", () => setMode(b.dataset.mode)));
@@ -1072,6 +1088,7 @@
     const _oma = $("#mode-area"); if (_oma) _oma.hidden = true;
     const _omm = $("#mode-muscle"); if (_omm) _omm.hidden = true;
     $("#muscle-report").hidden = false;
+    { const pm = $("[data-painmap='app']"); if (pm) pm.hidden = true; } // the report takes the body map's place, so it opens at the top
     renderReport();
     window.scrollTo(0, 0);
   }
@@ -1164,8 +1181,8 @@
       const w = protocolWorkout(["calm", "restore", "strengthen"]);
       if (!w.circuit.length) return toast("No video steps to save for this protocol.");
       try {
-        earn("program"); lib = await apiAuth("POST", "/api/me/programs", { name: w.title.slice(0, 60), workout: { ...w, warmup: [], cooldown: [], circuit: w.circuit.slice(0, 20).map((x) => ({ id: x.id, sets: String(x.sets).slice(0, 30) })) } });
-        renderPrograms(); toast(`Saved "${w.title}" to My Programs.`);
+        lib = await apiAuth("POST", "/api/me/programs", { name: w.title.slice(0, 60), workout: { ...w, warmup: [], cooldown: [], circuit: w.circuit.slice(0, 20).map((x) => ({ id: x.id, sets: String(x.sets).slice(0, 30) })) } });
+        renderPrograms(); toast(`Saved "${w.title}" to My Programs.`); earn("program");
       } catch (err) { toast(err.message); }
       return;
     }
@@ -1245,6 +1262,8 @@
     if (d.code) body.code = d.code; else body.current = d.current;
     const r = await apiAuth("PUT", "/api/me/password", body);
     auth.set(r); client = r.client || { ...client, hasPassword: true }; renderPasswordCard.codeSent = false; renderPasswordCard();
+    // The old sign-in is no longer good for the live connection either: connect again with the new one
+    if (window.MDFitRT && r.token) MDFitRT.connect({ namespace: "/member", token: r.token });
     $("#pw-code-msg").textContent = "";
     return { message: "Password saved. You can now log in with your email and password. Other devices were signed out." };
   });
@@ -1626,14 +1645,15 @@
   // In-app booking: pick type → pick day → pick time → confirm. Hits the same APIs as /book, so nothing new on the server.
   const bookDlg = $("#book-dialog");
   const bookState = { type: null, date: "", time: "", availability: null, types: null };
-  const fmtDay = (d) => new Date(d + "T12:00:00Z").toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+  const fmtDay = (d) => new Date(d + "T12:00:00Z").toLocaleDateString("en-US", { timeZone: "UTC", weekday: "short", month: "short", day: "numeric" });
   const fmtMoney = ($$$) => $$$ ? "$" + $$$ : "";
+  const bookWhenMsg = (t) => { const m = $("#book-when-msg"); if (m) { m.textContent = t; m.hidden = !t; } }; // a line above the times (a toast is hidden behind the sheet)
   async function openBook() {
     bookState.type = null; bookState.date = ""; bookState.time = "";
-    $("#book-msg").textContent = ""; $("#book-note").value = "";
+    $("#book-msg").textContent = ""; $("#book-note").value = ""; bookWhenMsg("");
     $("#book-confirm").disabled = false; // a finished booking left it disabled; the next booking needs it again
     $$("#book-flow .book-step").forEach((s) => { s.hidden = s.dataset.step !== "type"; });
-    if (!bookState.types) {
+    if (!bookState.types || !bookState.types.length) { // (an empty list is a load that failed: ask again)
       const site = await window.MDFit.loadSite().catch(() => null);
       // The bookable types are the scheduler's appointment types (the same list as the /book page).
       bookState.types = ((site && site.settings && site.settings.appointmentTypes) || []).filter((t) => t.id && t.name);
@@ -1661,7 +1681,7 @@
   }
   $("#book-types").addEventListener("click", async (e) => {
     const b = e.target.closest("[data-type]"); if (!b) return;
-    bookState.type = bookState.types.find((t) => t.id === b.dataset.type);
+    bookState.type = bookState.types.find((t) => t.id === b.dataset.type); bookWhenMsg("");
     $("#book-type-label").textContent = `${bookState.type.name}${bookState.type.minutes ? " · " + bookState.type.minutes + " min" : ""}`;
     $$("#book-flow .book-step").forEach((s) => { s.hidden = s.dataset.step !== "when"; });
     $("#book-dates").innerHTML = `<p class="muted small">Loading times…</p>`;
@@ -1676,14 +1696,14 @@
     if (picked && !(day && day.slots.includes(picked)) && !$("#book-flow [data-step=confirm]").hidden) {
       bookState.time = "";
       $$("#book-flow .book-step").forEach((s) => { s.hidden = s.dataset.step !== "when"; });
-      toast("That time was just taken. Please pick another.");
+      toast("That time was just taken. Please pick another."); bookWhenMsg("That time was just taken. Please pick another.");
     }
   });
   $("#book-back").addEventListener("click", () => { $$("#book-flow .book-step").forEach((s) => { s.hidden = s.dataset.step !== "type"; }); });
   $("#book-dates").addEventListener("click", (e) => { const b = e.target.closest("[data-date]"); if (!b) return; bookState.date = b.dataset.date; bookState.time = ""; renderTimes(); });
   $("#book-times").addEventListener("click", (e) => {
     const b = e.target.closest("[data-time]"); if (!b) return;
-    bookState.time = b.dataset.time;
+    bookState.time = b.dataset.time; bookWhenMsg("");
     $("#book-summary").textContent = `${bookState.type.name} · ${fmtDay(bookState.date)} at ${fmtTime(bookState.time)}`;
     $$("#book-flow .book-step").forEach((s) => { s.hidden = s.dataset.step !== "confirm"; });
     // A phone number is required to book; Google sign-in accounts may not have one yet
@@ -1701,7 +1721,12 @@
       earn("booking");
       await loadAppointments(); renderEvents(); renderNotes();
       toast(r.appointment && r.appointment.intakeDone ? "Booked. Your intake documents are already on file." : "Check your email for your intake documents link.");
-    } catch (err) { msg.textContent = err.message; btn.disabled = false; }
+    } catch (err) {
+      btn.disabled = false;
+      // The time went to someone else: back to that day's times with the reason in view, the note kept as typed
+      if (err.status === 409) { bookState.time = ""; $$("#book-flow .book-step").forEach((s) => { s.hidden = s.dataset.step !== "when"; }); bookWhenMsg(err.message); loadSlots().catch(() => {}); return; }
+      msg.textContent = err.message;
+    }
   });
   $("#book-close-done").addEventListener("click", () => bookDlg.close());
 
@@ -1865,10 +1890,26 @@
   window.addEventListener("appinstalled", hideCards);
   $("#a2hs").addEventListener("click", (e) => { if (e.target.id === "a2hs" || e.target.closest(".a2hs-x")) $("#a2hs").hidden = true; });
   // New deploy => new service worker => old file cache cleared and the page reloads once. Logins are kept.
+  // Never under the member's hands: not while the workout player or any dialog is open (a booking, a checkout, a
+  // guide, a chat sheet), nor while a box holds text they typed and have not sent. The reload waits for the next
+  // safe moment: the player or dialog closed, another screen opened, or the app put in the background.
+  let reloadDue = false;
+  const typedIn = new Set(); // text boxes the member has typed in (a field the app filled in itself is not a draft)
+  document.addEventListener("input", (e) => { const t = e.target; if (t && t.matches && t.matches("textarea, input:not([type=range]):not([type=checkbox]):not([type=radio]):not([type=file])")) typedIn.add(t); }, true);
+  const midTask = () => {
+    typedIn.forEach((el) => { if (!el.isConnected) typedIn.delete(el); });
+    // A draft in a multi-line box counts wherever it is; a one-line box (a search, a name) only while it is on screen
+    return !$("#player").hidden || !!document.querySelector("dialog[open]")
+      || [...typedIn].some((el) => String(el.value || "").trim() && (el.tagName === "TEXTAREA" || el.getClientRects().length > 0));
+  };
+  function reloadIfSafe() { if (reloadDue && !midTask()) { reloadDue = false; location.reload(); } }
   if ("serviceWorker" in navigator) {
     const hadController = !!navigator.serviceWorker.controller;
     let reloaded = false;
-    navigator.serviceWorker.addEventListener("controllerchange", () => { if (hadController && !reloaded) { reloaded = true; location.reload(); } });
+    navigator.serviceWorker.addEventListener("controllerchange", () => { if (hadController && !reloaded) { reloaded = true; reloadDue = true; reloadIfSafe(); } });
+    window.addEventListener("hashchange", () => setTimeout(reloadIfSafe, 0));
+    document.addEventListener("visibilitychange", reloadIfSafe);
+    document.addEventListener("close", () => setTimeout(reloadIfSafe, 0), true); // a dialog closed (the event does not bubble: capture)
     navigator.serviceWorker.register("/sw.js", { updateViaCache: "none" }).then((reg) => {
       document.addEventListener("visibilitychange", () => { if (!document.hidden) reg.update().catch(() => {}); });
     }).catch(() => {});
@@ -1897,6 +1938,9 @@
   }
   const saveOpt = () => store.set(PLAY_KEY, P.opt);
   const soundBlocked = (on) => { const b = $('#p-opts [data-opt="sound"]'); if (!b) return; b.classList.toggle("blocked", on); b.title = on ? "Tap for sound" : ""; };
+  // Only an exercise step that is showing its clip may be (re)started: never a rest (the clip in the element is the
+  // previous move's), a paused step or the finish screen
+  const clipLive = () => !P.done && !P.paused && !!(P.steps[P.i] && P.steps[P.i].e) && !$("#p-vwrap").hidden;
   function renderOpts() {
     $$("#p-opts [data-opt]").forEach((b) => { const on = !!P.opt[b.dataset.opt]; b.classList.toggle("on", on); b.setAttribute("aria-pressed", on); });
   }
@@ -1916,7 +1960,7 @@
     document.querySelectorAll("dialog[open]").forEach((d) => { try { d.close(); } catch {} });
     enterPlayerFs();
     if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
-    P.w = w; P.steps = buildSteps(w); P.i = 0; P.start = Date.now(); P.done = false; P.paused = false; P.log = {};
+    P.w = w; P.steps = buildSteps(w); P.i = 0; P.start = Date.now(); P.done = false; P.paused = false; P.log = {}; P.fin = null;
     const pl = $("#player");
     pl.hidden = false;
     document.body.style.overflow = "hidden";
@@ -1954,6 +1998,11 @@
   }
   function exitFs() { const d = document; if (d.fullscreenElement || d.webkitFullscreenElement) (d.exitFullscreen || d.webkitExitFullscreen || d.msExitFullscreen || (() => {})).call(d); }
   function closePlayer() {
+    // A double tap on "Finish" lands its second tap on "Done": the finish screen stays up long enough to be seen
+    if (P.done && Date.now() - (P.doneAt || 0) < 500) return;
+    // A finished session that could not be saved is only thrown away knowingly
+    if (P.fin && P.fin.failed && !confirm("This workout isn't saved yet. Close and lose it?")) return;
+    const saving = !!(P.fin && P.fin.saving); if (!saving) P.fin = null;
     // Clear "#pain/track/<id>" so picking the same track again changes the hash and starts it
     if (/^#pain\/track\//.test(location.hash)) history.replaceState(null, "", "#pain");
     exitPlayerFs();
@@ -1966,9 +2015,11 @@
     $("#p-body").innerHTML = "";
     document.body.style.overflow = "";
     // The road is home base: a session that was finished and saved brings the member back to it
-    if (P.backToRoad) { P.backToRoad = false; setTimeout(() => { try { goNext("mine"); } catch {} }, 180); }
+    // (closed while it was still saving counts: the save lands a moment later)
+    if (P.backToRoad || saving) { P.backToRoad = false; setTimeout(() => { try { goNext("mine"); } catch {} }, 180); }
+    reloadIfSafe(); // an app update that waited for the workout to end
   }
-  document.addEventListener("mdfit:workout", () => { P.backToRoad = true; });
+  document.addEventListener("mdfit:workout", () => { P.backToRoad = !$("#player").hidden; });
   // One clock drives everything: the session timer, the rest countdown and the per-move countdown
   function onTick() {
     if (P.done) return;
@@ -1983,8 +2034,9 @@
     } else if (st.e) {
       P.left++;
       const c = $("#p-count"); if (c) c.textContent = fmtClock(P.left);
-      // No "ended" signal for follow-along steps or Drive's fallback player: move on after the set time
-      const blind = !st.e.id || $("#p-vwrap .p-fallback-iframe");
+      // No "ended" signal for follow-along steps, a clip that is not published or would not load (its frame is
+      // hidden), or Drive's fallback player: move on after the set time
+      const blind = !st.e.id || $("#p-vwrap").hidden || $("#p-vwrap .p-fallback-iframe");
       if (blind && P.left >= Math.max(P.total || 0, 20)) advance();
     }
   }
@@ -2029,9 +2081,11 @@
           <div class="p-ring" id="p-ring" style="--pct:0%"><span id="p-count">0:00</span></div>
           <div><p class="p-sets">${esc(e.sets)}</p><p class="p-meta">${notReady ? "This video isn't available yet. Use the timer and go at your own pace." : noVid ? "Follow along: no video for this one. Use the timer and go at your own pace." : esc(exMeta(e))}</p></div>
         </div>
-        ${st.label.startsWith("Round") || st.label === "Circuit" ? `<label class="p-load">Weight used <input id="p-weight" inputmode="decimal" placeholder="lb" value="${esc((P.log[e.id] || {}).weight || "")}"></label>` : ""}
+        ${st.label.startsWith("Round") || st.label === "Circuit" ? `<label class="p-load">Weight used <input id="p-weight" inputmode="decimal" placeholder="lb" value="${esc((P.log[e.id || e.name] || {}).weight || "")}"></label>` : ""}
         ${upNext}
       </div>`;
+    const wt = $("#p-weight"); // (wired before the no-video return below, so a step without a clip keeps its weight too)
+    if (wt) wt.addEventListener("input", () => { P.log[e.id || e.name] = { name: e.name, weight: wt.value.trim().slice(0, 12) }; });
     if (noVid) return;
     v.loop = false;
     v.src = driveMp4(e.id);
@@ -2044,53 +2098,79 @@
     // A browser that blocks sound until a tap: play muted and ask for one tap on Sound
     const pr = v.play(); if (pr) pr.catch((err) => { if (err && err.name === "NotAllowedError" && !v.muted) { P.forcedMute = true; v.muted = true; soundBlocked(true); v.play().catch(() => {}); } });
     if (!v.muted) soundBlocked(false);
-    const wt = $("#p-weight");
-    if (wt) wt.addEventListener("input", () => { P.log[e.id] = { name: e.name, weight: wt.value.trim().slice(0, 12) }; });
   }
   $("#p-pause").addEventListener("click", () => {
     if (P.done) return;
     P.paused = !P.paused;
     $("#p-pause").textContent = P.paused ? "Resume" : "Pause";
-    const v = $("#p-video"); if (v) P.paused ? v.pause() : v.play().catch(() => {});
+    const v = $("#p-video"); if (v) P.paused ? v.pause() : clipLive() && v.play().catch(() => {});
   });
   $("#p-opts").addEventListener("click", (ev) => {
     const b = ev.target.closest("[data-opt]"); if (!b) return;
     const k = b.dataset.opt, v = $("#p-video");
     // Sound is on but the browser held it back: this tap turns it on instead of switching it off
-    if (k === "sound" && P.opt.sound && v && v.muted && b.classList.contains("blocked")) { v.muted = false; v.play().catch(() => {}); soundBlocked(false); return; }
+    if (k === "sound" && P.opt.sound && v && v.muted && b.classList.contains("blocked")) { v.muted = false; if (clipLive()) v.play().catch(() => {}); soundBlocked(false); return; }
     P.opt[k] = !P.opt[k]; if (k === "sound") P.opt.soundSet = true; saveOpt(); renderOpts();
-    if (k === "sound") { soundBlocked(false); if (v) { v.muted = !P.opt.sound; v.play().catch(() => {}); } }
+    if (k === "sound") { soundBlocked(false); if (v) { v.muted = !P.opt.sound; if (clipLive()) v.play().catch(() => {}); } }
     if (k === "breaks" && !P.opt.breaks && P.steps[P.i] && P.steps[P.i].rest) { skipRests(); renderStep(); }
   });
   const workoutKey = (w) => w.key || w.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 80);
-  async function finish() {
-    clearInterval(P.tick);
-    const pv = $("#p-video"); if (pv) pv.pause();
+  // The finish screen. Also brought back when a save fails after the player was closed, so the session is not lost.
+  function doneScreen(f) {
+    $("#player").hidden = false; document.body.style.overflow = "hidden";
     $("#p-vwrap").hidden = true;
-    P.done = true;
-    const secsUsed = Math.floor((Date.now() - P.start) / 1000), minutes = Math.min(300, Math.max(1, Math.round(secsUsed / 60)));
     $("#p-bar").style.width = "100%";
     $("#p-step").textContent = "Complete";
     $("#p-prev").disabled = true;
     $("#p-next").textContent = "Done";
     $("#p-body").innerHTML = `<div class="p-done"><div class="big-check"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg></div>
-      <h2>Workout complete</h2><p class="muted">${esc(P.w.title)}</p><p class="muted small" id="done-msg">Saving…</p><div id="done-form"></div></div>`;
+      <h2>Workout complete</h2><p class="muted">${esc(f.body.title)}</p><p class="muted small" id="done-msg">Saving…</p><div id="done-form"></div></div>`;
+  }
+  function finish() {
+    if (P.done) return;
+    clearInterval(P.tick);
+    const pv = $("#p-video"); if (pv) pv.pause();
+    P.done = true; P.doneAt = Date.now();
+    const secsUsed = Math.floor((Date.now() - P.start) / 1000), minutes = Math.min(300, Math.max(1, Math.round(secsUsed / 60)));
     const hr = HR.summary(P.start);
     const lifts = Object.values(P.log || {}).filter((l) => l.weight && !isNaN(Number(l.weight))).map((l) => ({ name: l.name, weight: Number(l.weight) }));
-    try {
-      const r = await apiAuth("POST", "/api/me/workouts", { title: P.w.title.slice(0, 80), goal: P.w.goal, minutes, exercises: Math.min(50, P.w.exercises.length),
-        key: workoutKey(P.w), seconds: Math.max(1, Math.min(18000, secsUsed)), lifts, ...(hr ? { hrAvg: hr.avg, hrMax: hr.max, source: HR.name || "Heart-rate strap" } : {}) });
-      stats = { ...r.stats, recent: [r.workout, ...((stats && stats.recent) || [])].slice(0, 10) };
+    // The finished session, kept until the server has it
+    const f = P.fin = { minutes, hr, body: { title: P.w.title.slice(0, 80), goal: P.w.goal, minutes, exercises: Math.min(50, P.w.exercises.length),
+      key: workoutKey(P.w), seconds: Math.max(1, Math.min(18000, secsUsed)), lifts, ...(hr ? { hrAvg: hr.avg, hrMax: hr.max, source: HR.name || "Heart-rate strap" } : {}) } };
+    doneScreen(f);
+    saveFinished(f);
+  }
+  // One save at a time; "Try again" when it fails; and the result reaches Home, the stats, the calendar and the
+  // rewards even when the player was closed while it was saving (the screen parts are only touched if still there).
+  async function saveFinished(f) {
+    if (!f || f.saving) return;
+    f.saving = true; f.failed = false;
+    if (P.fin === f && $("#done-msg")) $("#done-msg").textContent = "Saving…";
+    let r;
+    try { r = await apiAuth("POST", "/api/me/workouts", f.body); }
+    catch (err) {
+      f.saving = false; f.failed = true;
+      if (P.fin !== f) return toast("Couldn't save your last workout: " + err.message); // another workout was started since
+      if (!$("#done-msg")) doneScreen(f); // closed while it was saving: the finished session comes back
+      $("#done-msg").innerHTML = `Couldn't save this workout: ${esc(err.message)}<br><button type="button" class="btn-gold sm" id="done-retry" style="margin-top:12px">Try again</button>`;
+      return;
+    }
+    f.saving = false;
+    const here = P.fin === f && !!$("#done-msg"), { minutes, hr } = f;
+    if (P.fin === f) P.fin = null;
+    stats = { ...r.stats, recent: [r.workout, ...((stats && stats.recent) || [])].slice(0, 10) };
+    allWorkouts.push(r.workout);
+    if (here) {
       // Heart-rate numbers only appear when a device recorded them; nobody is expected to type them in.
       $("#done-msg").outerHTML = `<div class="stats3"><div><b>${r.stats.streak}</b><span>Day streak</span></div><div><b>${minutes}</b><span>Minutes</span></div><div><b>${r.stats.workouts}</b><span>Workouts</span></div></div>
         ${hr ? `<div class="stats3 dev-stats"><div><b>${hr.avg}</b><span>Avg heart rate</span></div><div><b>${hr.max}</b><span>Max heart rate</span></div><div><b>${esc(HR.name || "Device")}</b><span>Source</span></div></div>` : ""}`;
-      allWorkouts.push(r.workout);
       numbersForm($("#done-form"), r.workout, "How hard was that?");
-      renderStats(); renderActivity(); renderNotes(); renderCalendar(); renderPerf(); renderMyPlans();
-      loadRewards(true);
-      document.dispatchEvent(new CustomEvent("mdfit:workout", { detail: r.workout }));
-    } catch (err) { $("#done-msg").textContent = "Couldn't save this workout: " + err.message; }
+    }
+    renderStats(); renderActivity(); renderNotes(); renderCalendar(); renderPerf(); renderMyPlans();
+    loadRewards(true);
+    document.dispatchEvent(new CustomEvent("mdfit:workout", { detail: r.workout }));
   }
+  $("#p-body").addEventListener("click", (e) => { if (e.target.closest("#done-retry")) saveFinished(P.fin); });
 
   // ---- Performance: daily vitals + side-by-side comparison of saved workouts
   let vitals = [];

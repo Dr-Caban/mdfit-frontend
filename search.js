@@ -21,9 +21,10 @@
       // Title n-grams for fast phrase match
       idx.phrase = Object.create(null);
       for (const d of idx.items) { const t = (d.title || "").toLowerCase(); if (!idx.phrase[t]) idx.phrase[t] = []; idx.phrase[t].push(d.id); }
+      idx.ids = new Set(idx.items.map((d) => d.id));
       IDX = idx; SIGNALS = sig || { boost: {} };
       return idx;
-    });
+    }, (e) => { loading = null; throw e; }); // a failed load is tried again on the next search
     return loading;
   }
 
@@ -146,5 +147,7 @@
   const click = (q, id, position) => { logQuery(q, undefined); logEvent({ type: "click", q, id, position, src: "quick" }); lastLogged = ""; };
   const noClick = (q, resultCount) => { logQuery(q, resultCount); logEvent({ type: "noclick", q, resultCount, src: "quick" }); lastLogged = ""; };
 
-  window.MDFitSearch = { load, search, highlight, logQuery, click, noClick };
+  // has(id): is this doc in the index? False while no index is loaded, so callers fall back to their own matching.
+  const has = (id) => !!(IDX && IDX.ids.has(id));
+  window.MDFitSearch = { load, search, has, highlight, logQuery, click, noClick };
 })();
