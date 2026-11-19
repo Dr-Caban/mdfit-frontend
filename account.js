@@ -1674,7 +1674,7 @@
   async function logPain(area, level) {
     await apiAuth("POST", "/api/me/pain", { area: AREAS.includes(area) ? area : "Other", level: Math.max(0, Math.min(10, Math.round(Number(level) || 0))), note: "" });
     await loadPain(); loadRewards(true);
-    try { await introSync(); } catch {} // the first descent's check-in stop is credited before the chat says what is next
+    try { await introSettled(); } catch {} // the first descent's check-in stop is credited before the chat says what is next
     try { document.dispatchEvent(new CustomEvent("mdfit:journey")); } catch {}
   }
 
@@ -2602,8 +2602,12 @@
     + `<span class="pp-brand"><i>MD</i> FIT${p.category ? " · " + esc(p.category) : ""}</span>`
     + `<span class="pp-title">${esc(String(p.title || "").replace(/^\s*\d+\s*-?\s*weeks?\s*/i, "") || p.title)}</span>`
     + (p.weeks ? `<span class="pp-badge">${esc(p.weeks)}-week program</span>` : "") + `</span>`) + `</span>`;
+  // "Not sure where to start?" is for someone who has not started. Once they have a program (given by Dr. Jared, picked
+  // by them, or a session of one logged) it steps aside: their program is on the road, and Programs still has them all.
+  const hasProgram = () => !!(client && ((client.assignedPrograms || []).length || (client.pinnedPrograms || []).length)) || allWorkouts.some((w) => /^prog-/.test(String(w.key || "")));
+  document.addEventListener("mdfit:journey", () => { try { renderFeaturedPrograms(); } catch {} });
   function renderFeaturedPrograms() {
-    if (!C || !C.programs || !C.programs.length) {
+    if (!C || !C.programs || !C.programs.length || hasProgram()) {
       ["#featured-progs", "#hero-progs"].forEach((s) => { const el = $(s); if (el) el.hidden = true; });
       return;
     }
@@ -3942,6 +3946,12 @@
     el.scrollIntoView({ behavior: "smooth", block: "center" });
   }
   const isSaved = (pid) => (client && client.pinnedPrograms || []).includes(pid);
+  async function saveProgram(pid) {
+    if (!isSaved(pid)) { const r = await apiAuth("PUT", `/api/me/pinned/${encodeURIComponent(pid)}`); client.pinnedPrograms = r.pinnedPrograms; auth.set({ ...auth.get(), client }); }
+    try { renderMyPlans(); } catch {}
+    try { await introSettled(); } catch {} // the first descent's "pick your road" stop is credited before Solomon names the next
+    try { document.dispatchEvent(new CustomEvent("mdfit:journey")); } catch {}
+  }
   document.addEventListener("click", async (e) => {
     const b = e.target.closest("[data-save-plan]"); if (!b) return;
     const pid = b.dataset.savePlan, on = isSaved(pid);
@@ -4015,7 +4025,7 @@
     const j = journey(); if (!j || !j.days) return;
     const d = j.today;
     if (!d.workout || (j.hasProgram && !j.rested)) { if (d.start !== null && d.start >= 0) return journeyStart(d.start); if (j.program && !j.rested) return go("programs/" + j.program.id); if (!d.workout) return goNext("solomon"); }
-    if (!d.pain) return go("pain");
+    if (!d.pain) { if (!lesson("pain")) go("pain"); return; }
     if (!d.acts || !d.goal) { if ($("#view-home").hidden) go("home"); document.dispatchEvent(new CustomEvent("mdfit:habits-open")); return setTimeout(() => { const c = $("#habits-card"); if (c) c.scrollIntoView({ behavior: "smooth", block: "start" }); }, 80); }
     toast("Every lamp is lit today.");
   }
@@ -4060,11 +4070,14 @@
     document.dispatchEvent(new CustomEvent("mdfit:journey"));
   }
   const openRefer = () => { go("profile"); setTimeout(() => { const c = $("#referral-card"); if (!c) return; if (c.classList.contains("lay-fold") && !c.classList.contains("open")) layToggle(c); c.scrollIntoView({ block: "start" }); }, 120); };
+  // Credit whatever has just been done, and wait out a sync that was already running (a redraw may have started one)
+  async function introSettled() { await introSync(); for (let i = 0; i < 60 && introBusy; i++) await new Promise((r) => setTimeout(r, 50)); await introSync(); for (let i = 0; i < 60 && introBusy; i++) await new Promise((r) => setTimeout(r, 50)); }
+  const lesson = (ref) => { const G = window.MDFitGuide; if (!G || !G.lesson) return false; G.lesson(ref); return true; };
   function introGo(ref) {
     const prog = ((client.assignedPrograms || [])[0] || {}).id || (client.pinnedPrograms || [])[0];
     if (ref === "solomon") { if (window.MDFitGuide && window.MDFitGuide.open) window.MDFitGuide.open(); }
-    else if (ref === "pain") go("pain");
-    else if (ref === "program") go("programs");
+    else if (ref === "pain") { if (!lesson("pain")) go("pain"); }
+    else if (ref === "program") { if (!lesson("program")) go("programs"); }
     else if (ref === "session") go(prog ? "programs/" + prog : "generate");
     else if (ref === "friend") { introMark("friend"); openRefer(); }
   }
@@ -4108,7 +4121,7 @@
     const visitAhead = (appts.upcoming || []).some((a) => a.date === d && a.status === "booked" && (d > t || (d === t && String(a.time || "") > now)));
     return { workout, open: unpaid || visitAhead };
   };
-  window.MDFitApp = { logPain, painAreas: () => AREAS.slice(), showCard, customize, journeyToday, nextUp, goNext, guideFacts, view: () => show.at || "home", journey, journeyStart, introGo, introSkip, introPass, setMineView, dayStatus, startPlayer, go, loadRewards, toast, celebrateToast, exMeta, byId, gemIcon: GEM_ICON, rewards: () => reward, isPaid, showPaywall,
+  window.MDFitApp = { saveProgram, logPain, painAreas: () => AREAS.slice(), showCard, customize, journeyToday, nextUp, goNext, guideFacts, view: () => show.at || "home", journey, journeyStart, introGo, introSkip, introPass, setMineView, dayStatus, startPlayer, go, loadRewards, toast, celebrateToast, exMeta, byId, gemIcon: GEM_ICON, rewards: () => reward, isPaid, showPaywall,
     // For the guide (mdfit-guide.js) and the theme switch (app-theme.js): who is signed in, what the app holds, and two places to open
     client: () => client, content: async () => { if (!C) await (contentLoading || loadContent()).catch(() => {}); return C; },
     openBook: () => { go("profile"); setTimeout(() => $("#p-book-open") && $("#p-book-open").click(), 60); },

@@ -315,7 +315,7 @@
     const R = (text, label, how, name) => ({ sig, kind: n.kind, ref: n.ref || "", say: text, opt: label ? { label, gold: true, name: name || "it", ...how } : null });
     if (n.kind === "intro") {
       if (n.ref === "pain") return R("You're on your first descent, and this stop is the check-in: tell me what hurts, or that nothing does. We can do it right here.", "Do my check-in here", { more: () => beat(() => checkin()) });
-      if (n.ref === "program") return R("You're on your first descent. This stop: pick a program that fits you.", "Pick a program", { hash: "programs" }, "Programs");
+      if (n.ref === "program") return R("You're on your first descent. This stop: pick a program that fits you.", "Help me pick one", { more: () => beat(() => pickRoad()) });
       if (n.ref === "session") return R("You're on your first descent. This stop: finish one workout. Tell me how long you have, or start one now.", "Build a workout", { hash: "generate" }, "the workout builder");
       if (n.ref === "friend") return R("Last stop of your first descent: see your referral link.", "Open Refer a friend", { run: () => App.goNext("refer") }, "Refer a friend");
       return R("You're on your first descent. Ask me anything and the first stop is yours.");
@@ -331,6 +331,30 @@
     return R("Nothing is on your road yet today. Tell me what you want to train and I'll build it.", "Build a workout", { hash: "generate" }, "the workout builder");
   }
   let lastRoad = "";
+  const backToRoad = () => ({ label: "Back to my road", gold: true, run: () => App.goNext("mine"), name: "your road" });
+  const plain = (o) => (o ? [{ ...o, gold: false, label: o.label.replace(/^Do my check-in here$/, "Do my check-in now") }] : []);
+  // ---------- "Pick your road": a program chosen by what the member is here for, without leaving the chat ----------
+  const AIMS = [["Get out of pain", ["Rehabilitation", "Anti-inflammatory", "Desk & posture"]], ["Get stronger", ["Hypertrophy", "Strength"]], ["Lose weight", ["Weight loss"]],
+    ["Move better", ["Mobility"]], ["Get better at my sport", ["Sport Performance", "Performance"]]];
+  async function pickRoad(opener) {
+    let C = null; try { C = await App.content(); } catch {}
+    const all = ((C && C.programs) || []).filter((x) => !(App.lockedFor && App.lockedFor(x)));
+    if (!all.length || !App.saveProgram) { say("The programs are one tap away."); return offer([{ ...opt("programs"), gold: true }]); }
+    const choose = async (pr) => { const d = thinking();
+      try { await App.saveProgram(pr.id); d.remove(); const rd = road(); lastRoad = rd ? rd.sig : "";
+        say(`Done. ${pr.title} is your road now: each session is a stop.${rd && rd.kind === "intro" ? " " + rd.say.replace(/^You're on your first descent[.,] ?(This stop: )?/, "Next: ") : ""}`);
+        offer([backToRoad(), ...plain(rd && rd.opt)]);
+      } catch { d.remove(); say("I couldn't save that just now. You can save it from the program's page."); offer([{ label: `Open ${pr.title}`, hash: "programs/" + pr.id, name: pr.title, gold: true }]); } end(); };
+    const show = (pr) => { say(`${pr.title}. ${String(pr.summary || "").split(/(?<=[.!?])\s/)[0] || `${pr.weeks} weeks, ${pr.level || "all levels"}.`}`);
+      offer([{ label: "Make this my road", gold: true, more: () => choose(pr) }, { label: "See it first", hash: "programs/" + pr.id, name: pr.title }, { label: "Show me others", more: () => beat(() => pickRoad("What are you here for?")) }]); };
+    say(opener || "What are you here for? I'll point to the road that fits.");
+    offer(AIMS.filter(([, cats]) => all.some((x) => cats.includes(x.category))).map(([label, cats]) => ({ label, more: () => beat(() => {
+      try { localStorage.setItem("mdfit-aim", label); } catch {}
+      const fit = all.filter((x) => cats.includes(x.category)).slice(0, 4);
+      say(fit.length === 1 ? "This is the one for that:" : "These fit that. Pick one:");
+      offer(fit.map((pr) => ({ label: pr.title, sub: `${pr.weeks} weeks · ${pr.level || "all levels"}`, more: () => beat(() => show(pr)) })));
+    }) })));
+  }
   // ---------- a pain check-in, done in the chat: where, how strong, saved ----------
   // The words the app's own check-in uses for each area a member might name
   const LOG_AREA = { knee: "Knee", back: "Lower back", shoulder: "Shoulder", hip: "Hip", neck: "Neck", ankle: "Ankle / foot", foot: "Ankle / foot", elbow: "Elbow / wrist / hand", wrist: "Elbow / wrist / hand" };
@@ -344,14 +368,14 @@
         say(n === 0 ? "Logged: no pain today. Good." : `Logged: ${area.toLowerCase()}, ${n} out of 10.${n >= 7 ? " That is a lot to carry. It's worth having Dr. Jared look at it." : ""}`);
         const key = Object.keys(LOG_AREA).find((k) => LOG_AREA[k] === area), rd = road(); lastRoad = rd ? rd.sig : "";
         if (rd && rd.kind !== "done") say(rd.say.replace(/^You're on your first descent[.,] ?(This stop: )?/, "That stop is done. Next: "));
-        offer([...(rd && rd.opt ? [rd.opt] : []), ...(key && n > 0 ? [{ label: `Programs for your ${key}`, more: () => beat(() => showArea(key)) }] : []), ...(n > 0 ? [{ label: "See what is likely behind it", hash: "pain", name: "the pain tool" }] : []), ...(n >= 5 ? [opt("book")] : [])]);
+        offer([backToRoad(), ...plain(rd && rd.opt), ...(key && n > 0 ? [{ label: `Programs for your ${key}`, more: () => beat(() => showArea(key)) }] : []), ...(n > 0 ? [{ label: "See what is likely behind it", hash: "pain", name: "the pain tool" }] : []), ...(n >= 5 ? [opt("book")] : [])]);
       } catch (e) { d.remove(); say("I couldn't save that just now. You can log it in the pain tool."); offer([{ ...opt("pain"), gold: true }]); } end(); };
     const known = LOG_AREA[areaKey];
     if (known) return strong(known);
     say(opener || "Let's log it right here. Where does it bother you most?");
     offer([...areas.filter((a) => a !== "Other").map((a) => ({ label: a, more: () => beat(() => strong(a)) })), { label: "Somewhere else", more: () => beat(() => strong("Other")) }, { label: "Nothing hurts today", more: () => save("Other", 0) }]);
   }
-  checkin.none = async () => { const d = thinking(); try { await App.logPain("Other", 0); d.remove(); const rd = road(); lastRoad = rd ? rd.sig : ""; say(rd && rd.kind !== "done" ? `Logged. ${rd.say.replace(/^You're on your first descent[.,] ?(This stop: )?/, "Next: ")}` : "Logged."); offer(rd && rd.opt ? [rd.opt] : [opt("generate")]); } catch { d.remove(); say("I couldn't save that just now."); offer([opt("pain")]); } end(); };
+  checkin.none = async () => { const d = thinking(); try { await App.logPain("Other", 0); d.remove(); const rd = road(); lastRoad = rd ? rd.sig : ""; say(rd && rd.kind !== "done" ? `Logged. ${rd.say.replace(/^You're on your first descent[.,] ?(This stop: )?/, "Next: ")}` : "Logged."); offer([backToRoad(), ...plain(rd && rd.opt)]); } catch { d.remove(); say("I couldn't save that just now."); offer([opt("pain")]); } end(); };
   function hurting(area, extra) {
     if (area) ctx.area = area;
     say(`Okay, I understand how frustrating that can be${area ? `, especially with your ${area}` : ""}. Here's what I can take you to:`);
@@ -673,11 +697,16 @@
     const under = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
     box.style.bottom = under ? under + "px" : ""; box.style.height = under ? Math.round(vv.height * 0.94) + "px" : "";
   }
-  function open(byHand) {
+  // A stop on the road, done with Solomon: the chat opens over the road and goes straight to the lesson
+  function lesson(ref) {
+    open(false, true);
+    beat(() => (ref === "pain" ? checkin("", "This stop is your check-in. Where does it bother you most? Or tell me nothing hurts.") : pickRoad("This stop: pick your road. What are you here for?")));
+  }
+  function open(byHand, quiet) {
     if (!box.hidden) return;
     hush(); box.hidden = false; scrim.hidden = !phone(); dot.hidden = true; btn.setAttribute("aria-expanded", "true"); document.documentElement.classList.add("mg-open");
     try { localStorage.setItem("mdfit-guide-met", "1"); } catch {}
-    if (!greeted) greet(); else news();
+    if (quiet) greeted = true; else if (!greeted) greet(); else news();
     if (!saidOpen) { saidOpen = true; tell("open"); }
     load(); end(); fitKeyboard();
     if (byHand && !phone()) setTimeout(() => input.focus({ preventScroll: true }), 60); // on a phone the keyboard waits for a tap on the box
@@ -711,5 +740,5 @@
   lift();
 
   load();
-  window.MDFitGuide = { day: dayRows, understand, open: () => open(false), shut, say: speak, hush, speaking: () => !tag.hidden, greeting: (t) => { dayHello = String(t || "").trim(); }, reminders: () => G.reminders.slice() };
+  window.MDFitGuide = { day: dayRows, understand, open: () => open(false), lesson, shut, say: speak, hush, speaking: () => !tag.hidden, greeting: (t) => { dayHello = String(t || "").trim(); }, reminders: () => G.reminders.slice() };
 })();
