@@ -14,6 +14,7 @@
   const CLOUD = '<svg viewBox="0 0 56 44" aria-hidden="true"><path d="M14 38h30a10 10 0 0 0 1.5-19.9A14 14 0 0 0 18.5 14 12 12 0 0 0 14 38z" fill="#fffdf7" stroke="#c9a45c" stroke-width="3"/><circle cx="22" cy="28" r="2.2" fill="#c9a45c"/><circle cx="29" cy="28" r="2.2" fill="#c9a45c"/><circle cx="36" cy="28" r="2.2" fill="#c9a45c"/></svg>';
 
   // snd: the line spoken aloud (the first beat has none: a browser plays no sound before the first tap).
+  // free: the member may use the lit thing (type in it) or tap Next. when: a beat shown only if that holds.
   // One beat each. tap: the member taps the lit thing and `until` says when that has happened (a tap inside it when
   // there is no `until`). read: nothing to tap, Next moves on. A beat whose target is not on the screen is passed over.
   function beats(name) {
@@ -21,7 +22,9 @@
       { say: `Hi${name ? " " + name : ""}, I’m Solomon. Tap me to start.`, find: () => $("#mg-btn"), pad: 10, round: 40,
         before: () => { if (guide().hush) guide().hush(); if (guide().shut && open("mg")) guide().shut(); }, until: () => open("mg"),
         after: () => { try { document.dispatchEvent(new CustomEvent("mdfit:guide-asked")); } catch {} } }, // meeting him is the first stop on the road
-      { snd: "02", read: true, say: "I’m with you on every screen. Any question, type it here.", find: () => { const i = $("#mg-in"); return i && (i.closest("form") || i.parentElement); }, pad: 4, round: 16 },
+      { snd: "02", free: true, say: "I’m with you on every screen. Any question, type it here. Try one now, or tap Next.", find: () => { const i = $("#mg-in"); return i && (i.closest("form") || i.parentElement); }, pad: 4, round: 16,
+        until: (t) => t.asked },
+      { snd: "02b", read: true, when: (t) => t.asked, say: "That’s all it takes. Ask me like that from any screen.", find: () => $("#mg-log"), pad: 2, round: 16 },
       { snd: "03", read: true, say: "Or tap one of these and I’ll take you there.", find: () => [...document.querySelectorAll("#mg-log .mg-opts")].filter(seen).pop(), pad: 6, round: 16,
         after: () => { if (guide().shut) guide().shut(); } },
       { snd: "04", say: "First, where it hurts. The Pain Tool lives under Train. Tap Train.", find: () => first('.tabbar [data-tab="generate"]'), pad: 2, round: 14,
@@ -60,6 +63,8 @@
       + '<div class="gt-bar"><i></i></div><button type="button" class="gt-snd" aria-label="Solomon\'s voice"></button><button type="button" class="gt-skip">Skip tour</button>'
       + '<div class="gt-say" aria-live="polite">' + CLOUD + '<p></p><div class="gt-acts"><button type="button" class="gt-pass">Skip this step</button><button type="button" class="gt-next">Next</button></div></div>';
     const hole = $(".gt-hole", root), blocks = [...root.querySelectorAll(".gt-b")], sayBox = $(".gt-say", root), sayP = $("p", sayBox), bar = $(".gt-bar i", root);
+    const told = { asked: false }; // what the member has done during the tour (a question sent to Solomon)
+    const onAsked = () => { if (at >= 1) told.asked = true; };
     let at = -1, step = null, tick = null, typing = null, missing = 0, tapped = false, moving = false, lifted = false, ended = false, audio = null, primed = "";
     const sndBtn = $(".gt-snd", root), paintSnd = () => { sndBtn.innerHTML = soundOn() ? ICON.on : ICON.off; sndBtn.setAttribute("aria-pressed", String(soundOn())); sndBtn.title = soundOn() ? "Voice on" : "Voice off"; };
     const quietNow = () => { if (audio) { try { audio.pause(); } catch {} } };
@@ -72,7 +77,7 @@
 
     function end(done) {
       if (ended) return; ended = true; run = null;
-      quietNow(); clearInterval(tick); clearInterval(typing); document.removeEventListener("click", onTap, true); document.removeEventListener("keydown", onKey, true);
+      quietNow(); clearInterval(tick); clearInterval(typing); document.removeEventListener("click", onTap, true); document.removeEventListener("keydown", onKey, true); document.removeEventListener("mdfit:guide-asked", onAsked);
       root.remove(); document.body.classList.remove("gt-on", "gt-nocloud");
       if (typeof o.onEnd === "function") { try { o.onEnd(!!done); } catch {} }
     }
@@ -94,7 +99,7 @@
       let l = 1e9, t = 1e9, r = -1e9, b = -1e9; els.forEach((e) => { const x = e.getBoundingClientRect(); l = Math.min(l, x.left); t = Math.min(t, x.top); r = Math.max(r, x.right); b = Math.max(b, x.bottom); });
       const p = step.pad || 0, W = innerWidth, H = innerHeight;
       l = Math.max(6, l - p); t = Math.max(52, t - p); r = Math.min(W - 6, r + p); b = Math.min(H - 6, b + p);
-      const bar2 = first(".tabbar"); if (bar2 && root.parentNode === document.body && !els.some((e) => bar2.contains(e))) b = Math.min(b, bar2.getBoundingClientRect().top - 6);
+      const bar2 = first(".tabbar"); if (bar2 && root.parentNode === document.body && !els.some((e) => bar2.contains(e) || e.closest("#mg"))) b = Math.min(b, bar2.getBoundingClientRect().top - 6); // (Solomon's chat sits over the tab bar)
       if (r - l < 8 || b - t < 8) return;
       hole.style.cssText = `left:${l}px;top:${t}px;width:${r - l}px;height:${b - t}px;border-radius:${step.round || 16}px;opacity:1`;
       blocks[0].style.cssText = `left:0;top:0;right:0;height:${t}px`; blocks[1].style.cssText = `left:0;top:${b}px;right:0;bottom:0`;
@@ -105,7 +110,7 @@
       if (top + h > H - 10) top = t - h - 14;
       if (top < 52) top = H - h - 12;
       sayBox.style.top = Math.round(top) + "px"; sayBox.classList.add("on");
-      if (!step.read && !moving && (step.until ? step.until() : tapped)) advance();
+      if (!step.read && !moving && (step.until ? step.until(told) : !step.free && tapped)) advance();
     }
     function advance() { if (moving) return; moving = true; if (step.last) return end(true); setTimeout(next, step.settle || 380); }
     function type(text) {
@@ -115,10 +120,11 @@
     function next() {
       if (ended) return;
       if (step && step.after) { try { step.after(); } catch {} }
-      at++; step = steps[at]; if (!step) return end(true);
+      do { at++; step = steps[at]; } while (step && step.when && !step.when(told)); // a beat that does not apply is passed over
+      if (!step) return end(true);
       missing = 0; tapped = false; moving = false; lifted = false;
       if (step.before) { try { step.before(); } catch {} }
-      root.classList.toggle("gt-read", !!step.read); sayBox.classList.remove("on"); document.body.classList.toggle("gt-nocloud", at > 0);
+      root.classList.toggle("gt-read", !!step.read || !!step.free); sayBox.classList.remove("on"); document.body.classList.toggle("gt-nocloud", at > 0);
       bar.style.width = Math.round(((at + 1) / steps.length) * 100) + "%";
       type(step.say); place();
       if (primed && primed === step.snd) primed = ""; else speakLine(step.snd); // (already speaking when the tap that led here started it)
@@ -129,16 +135,16 @@
       if (e.target.closest && e.target.closest("#gt")) {
         if (e.target.closest(".gt-skip")) { e.preventDefault(); end(false); }
         else if (e.target.closest(".gt-snd")) { try { localStorage.setItem(SOUND, soundOn() ? "off" : "on"); } catch {} paintSnd(); if (!audio) { try { audio = new Audio(); audio.addEventListener("error", noVoice); } catch {} } if (soundOn()) speakLine(step.snd); else quietNow(); }
-        else if (e.target.closest(".gt-next") && step.read) next();
-        else if (e.target.closest(".gt-pass") && !step.read) next();
+        else if (e.target.closest(".gt-next") && (step.read || step.free)) next();
+        else if (e.target.closest(".gt-pass") && !step.read && !step.free) next();
         else if (e.target.closest(".gt-b")) { root.classList.remove("gt-nudge"); void root.offsetWidth; root.classList.add("gt-nudge"); }
         return; }
-      if (!step.read && targets().some((t) => t.contains(e.target))) { tapped = true; unlock(); if (step.last) setTimeout(() => end(true), 0); }
+      if (!step.read && targets().some((t) => t.contains(e.target))) { if (!step.free) tapped = true; unlock(); if (step.last) setTimeout(() => end(true), 0); }
     }
     function onKey(e) { if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); end(false); } }
 
     run = { end }; document.body.appendChild(root); document.body.classList.add("gt-on");
-    document.addEventListener("click", onTap, true); document.addEventListener("keydown", onKey, true);
+    document.addEventListener("click", onTap, true); document.addEventListener("keydown", onKey, true); document.addEventListener("mdfit:guide-asked", onAsked);
     tick = setInterval(place, 110); next();
     return true;
   }
