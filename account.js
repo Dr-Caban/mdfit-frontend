@@ -1670,6 +1670,13 @@
     return { message: "Logged." };
   }, { reset: false });
   $("#chart-area").addEventListener("change", renderChart);
+  // The same check-in, saved from Solomon's chat: the log, the chart, the XP and the road all follow
+  async function logPain(area, level) {
+    await apiAuth("POST", "/api/me/pain", { area: AREAS.includes(area) ? area : "Other", level: Math.max(0, Math.min(10, Math.round(Number(level) || 0))), note: "" });
+    await loadPain(); loadRewards(true);
+    try { await introSettled(); } catch {} // the first descent's check-in stop is credited before the chat says what is next
+    try { document.dispatchEvent(new CustomEvent("mdfit:journey")); } catch {}
+  }
 
   async function loadPain() {
     painLog = await apiAuth("GET", "/api/me/pain");
@@ -2595,8 +2602,12 @@
     + `<span class="pp-brand"><i>MD</i> FIT${p.category ? " · " + esc(p.category) : ""}</span>`
     + `<span class="pp-title">${esc(String(p.title || "").replace(/^\s*\d+\s*-?\s*weeks?\s*/i, "") || p.title)}</span>`
     + (p.weeks ? `<span class="pp-badge">${esc(p.weeks)}-week program</span>` : "") + `</span>`) + `</span>`;
+  // "Not sure where to start?" is for someone who has not started. Once they have a program (given by Dr. Jared, picked
+  // by them, or a session of one logged) it steps aside: their program is on the road, and Programs still has them all.
+  const hasProgram = () => !!(client && ((client.assignedPrograms || []).length || (client.pinnedPrograms || []).length)) || allWorkouts.some((w) => /^prog-/.test(String(w.key || "")));
+  document.addEventListener("mdfit:journey", () => { try { renderFeaturedPrograms(); } catch {} });
   function renderFeaturedPrograms() {
-    if (!C || !C.programs || !C.programs.length) {
+    if (!C || !C.programs || !C.programs.length || hasProgram()) {
       ["#featured-progs", "#hero-progs"].forEach((s) => { const el = $(s); if (el) el.hidden = true; });
       return;
     }
@@ -2637,7 +2648,12 @@
   });
 
   // ---- Programs: each day is a generator session with a fixed seed, so the same session repeats each week and can be compared
-  let progCat = "All";
+  let progCat = "All", progQ = "";
+  // Everything a member might search a program by: its name, type, level, what it says about itself, and its sessions
+  const progText = (p) => [p.title, p.category, p.level, p.location, p.summary, p.notes, ...(p.days || []).flatMap((d) => [d.name, d.goal])].filter(Boolean).join(" ").toLowerCase();
+  const progFind = (q) => { const words = q.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean); if (!words.length) return null;
+    return C.programs.filter((p) => { const t = progText(p); return words.every((w) => t.includes(w)); })
+      .sort((a, b) => words.filter((w) => b.title.toLowerCase().includes(w)).length - words.filter((w) => a.title.toLowerCase().includes(w)).length); };
   // Program exercises named differently from the library -> the library video that shows the same move
   const VIDEO_ALIAS = {
     "Overhead Press (DB)": "Strict Press", "Dumbbell Bench Press": "Bench Press", "Lat Pull-Down": "Lat Pulldown", "Lat Pulldowns": "Lat Pulldown",
@@ -2737,7 +2753,7 @@
   function renderSportFolder(sp, level) {
     const ps = sportPrograms(sp);
     if (!ps.length) { go("programs"); return; }
-    $("#prog-grid").hidden = true; $("#prog-cats").hidden = true; $("#prog-detail").hidden = false;
+    $("#prog-grid").hidden = true; $("#prog-cats").hidden = true; $("#prog-search").hidden = true; $("#prog-detail").hidden = false;
     const box = $("#prog-detail"); box.dataset.id = "";
     const levels = LEVEL_ORDER.filter((l) => ps.some((p) => p.level === l)).concat([...new Set(ps.map((p) => p.level))].filter((l) => !LEVEL_ORDER.includes(l)));
     if (level) {
@@ -2762,11 +2778,15 @@
     if (seg[0] === "sport" && seg[1]) return renderSportFolder(seg[1], seg[2]);
     const cats = ["All", ...C.categories.filter((c) => C.programs.some((p) => p.category === c))];
     $("#prog-cats").innerHTML = cats.map((c) => `<button type="button" class="chip" data-pcat="${esc(c)}" aria-selected="${c === progCat}">${esc(c)}</button>`).join("");
-    const list = C.programs.filter((p) => progCat === "All" || p.category === progCat);
-    const sports = [...new Set(list.filter(isSport).map(sportOf))].sort();
-    $("#prog-grid").innerHTML = list.filter((p) => !isSport(p)).map((p) => programCard(p)).join("") + sports.map(sportCard).join("");
+    const found = progFind(progQ);
+    const list = (found || C.programs).filter((p) => progCat === "All" || p.category === progCat);
+    const sports = found ? [] : [...new Set(list.filter(isSport).map(sportOf))].sort();
+    // a search shows every match as its own card (a sport's levels are not tucked into a folder)
+    $("#prog-grid").innerHTML = found && !list.length
+      ? `<div class="card" style="grid-column:1/-1"><p class="muted" style="margin:0 0 10px">No program matches \u201c${esc(progQ.trim())}\u201d${progCat === "All" ? "" : ` in ${esc(progCat)}`}. Try one word, like the body part or the sport.</p><button type="button" class="btn-ghost sm" data-prog-clear>Clear search</button></div>`
+      : list.filter((p) => found || !isSport(p)).map((p) => programCard(p)).join("") + sports.map(sportCard).join("");
     const open = seg[0] && C.programs.find((p) => p.id === seg[0]);
-    $("#prog-grid").hidden = !!open; $("#prog-cats").hidden = !!open; $("#prog-detail").hidden = !open;
+    $("#prog-grid").hidden = !!open; $("#prog-cats").hidden = !!open; $("#prog-search").hidden = !!open; $("#prog-detail").hidden = !open;
     if (open) renderProgram(open, seg[1]);
   }
   // ---- Week-by-week protocols (Dr. Jared's weekly sheets, written out in full): /data/protocols/<program id>.json
@@ -2965,6 +2985,8 @@
       ${p.locked ? `<div class="locked-note">${unlockBtn("this program")}</div>` : ""}`;
   }
   $("#sheet-img").addEventListener("click", (e) => e.target.classList.toggle("zoomed"));
+  $("#prog-search").addEventListener("input", (e) => { progQ = e.target.value; renderProgramsView(); });
+  $("#prog-grid").addEventListener("click", (e) => { if (e.target.closest("[data-prog-clear]")) { progQ = ""; $("#prog-search").value = ""; progCat = "All"; renderProgramsView(); } });
   $("#prog-cats").addEventListener("click", (e) => {
     const b = e.target.closest("[data-pcat]"); if (!b) return;
     progCat = b.dataset.pcat;
@@ -3275,6 +3297,15 @@
     else if (go2.startsWith("#")) go(go2.slice(1));
     else if (go2) location.href = go2;
   }
+  // Take the member to one card on Home or Profile, opened and in view (Solomon's "how do I get there")
+  function showCard(w, id) {
+    const sel = (LAYOUT[w] || {})[id]; if (!sel) return false;
+    go(w === "home" ? "home" : "profile");
+    setTimeout(() => { const c = $(sel.split(",")[0].trim()); if (!c) return; if (c.classList.contains("lay-fold") && !c.classList.contains("open")) layToggle(c);
+      if (id === "habits") document.dispatchEvent(new CustomEvent("mdfit:habits-open")); c.scrollIntoView({ block: "start" }); }, 140);
+    return true;
+  }
+  const customize = (w) => { go(w === "home" ? "home" : "profile"); setTimeout(() => { const b = $(`[data-lay-custom="${w === "home" ? "home" : "profile"}"]`); if (b) b.click(); }, 140); };
   // What Solomon may mention without being asked: all of it is already on the member's own screens
   function guideFacts() {
     const t = todayInTz(), from = addDays(t, -6), r = reward, a = aff;
@@ -3915,6 +3946,12 @@
     el.scrollIntoView({ behavior: "smooth", block: "center" });
   }
   const isSaved = (pid) => (client && client.pinnedPrograms || []).includes(pid);
+  async function saveProgram(pid) {
+    if (!isSaved(pid)) { const r = await apiAuth("PUT", `/api/me/pinned/${encodeURIComponent(pid)}`); client.pinnedPrograms = r.pinnedPrograms; auth.set({ ...auth.get(), client }); }
+    try { renderMyPlans(); } catch {}
+    try { await introSettled(); } catch {} // the first descent's "pick your road" stop is credited before Solomon names the next
+    try { document.dispatchEvent(new CustomEvent("mdfit:journey")); } catch {}
+  }
   document.addEventListener("click", async (e) => {
     const b = e.target.closest("[data-save-plan]"); if (!b) return;
     const pid = b.dataset.savePlan, on = isSaved(pid);
@@ -3988,7 +4025,7 @@
     const j = journey(); if (!j || !j.days) return;
     const d = j.today;
     if (!d.workout || (j.hasProgram && !j.rested)) { if (d.start !== null && d.start >= 0) return journeyStart(d.start); if (j.program && !j.rested) return go("programs/" + j.program.id); if (!d.workout) return goNext("solomon"); }
-    if (!d.pain) return go("pain");
+    if (!d.pain) { if (!lesson("pain")) go("pain"); return; }
     if (!d.acts || !d.goal) { if ($("#view-home").hidden) go("home"); document.dispatchEvent(new CustomEvent("mdfit:habits-open")); return setTimeout(() => { const c = $("#habits-card"); if (c) c.scrollIntoView({ behavior: "smooth", block: "start" }); }, 80); }
     toast("Every lamp is lit today.");
   }
@@ -4033,11 +4070,14 @@
     document.dispatchEvent(new CustomEvent("mdfit:journey"));
   }
   const openRefer = () => { go("profile"); setTimeout(() => { const c = $("#referral-card"); if (!c) return; if (c.classList.contains("lay-fold") && !c.classList.contains("open")) layToggle(c); c.scrollIntoView({ block: "start" }); }, 120); };
+  // Credit whatever has just been done, and wait out a sync that was already running (a redraw may have started one)
+  async function introSettled() { await introSync(); for (let i = 0; i < 60 && introBusy; i++) await new Promise((r) => setTimeout(r, 50)); await introSync(); for (let i = 0; i < 60 && introBusy; i++) await new Promise((r) => setTimeout(r, 50)); }
+  const lesson = (ref) => { const G = window.MDFitGuide; if (!G || !G.lesson) return false; G.lesson(ref); return true; };
   function introGo(ref) {
     const prog = ((client.assignedPrograms || [])[0] || {}).id || (client.pinnedPrograms || [])[0];
     if (ref === "solomon") { if (window.MDFitGuide && window.MDFitGuide.open) window.MDFitGuide.open(); }
-    else if (ref === "pain") go("pain");
-    else if (ref === "program") go("programs");
+    else if (ref === "pain") { if (!lesson("pain")) go("pain"); }
+    else if (ref === "program") { if (!lesson("program")) go("programs"); }
     else if (ref === "session") go(prog ? "programs/" + prog : "generate");
     else if (ref === "friend") { introMark("friend"); openRefer(); }
   }
@@ -4081,7 +4121,7 @@
     const visitAhead = (appts.upcoming || []).some((a) => a.date === d && a.status === "booked" && (d > t || (d === t && String(a.time || "") > now)));
     return { workout, open: unpaid || visitAhead };
   };
-  window.MDFitApp = { journeyToday, nextUp, goNext, guideFacts, view: () => show.at || "home", journey, journeyStart, introGo, introSkip, introPass, setMineView, dayStatus, startPlayer, go, loadRewards, toast, celebrateToast, exMeta, byId, gemIcon: GEM_ICON, rewards: () => reward, isPaid, showPaywall,
+  window.MDFitApp = { saveProgram, logPain, painAreas: () => AREAS.slice(), showCard, customize, journeyToday, nextUp, goNext, guideFacts, view: () => show.at || "home", journey, journeyStart, introGo, introSkip, introPass, setMineView, dayStatus, startPlayer, go, loadRewards, toast, celebrateToast, exMeta, byId, gemIcon: GEM_ICON, rewards: () => reward, isPaid, showPaywall,
     // For the guide (mdfit-guide.js) and the theme switch (app-theme.js): who is signed in, what the app holds, and two places to open
     client: () => client, content: async () => { if (!C) await (contentLoading || loadContent()).catch(() => {}); return C; },
     openBook: () => { go("profile"); setTimeout(() => $("#p-book-open") && $("#p-book-open").click(), 60); },
