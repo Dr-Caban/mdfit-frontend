@@ -63,6 +63,8 @@
 .mg-opt { font: 600 13.5px/1.25 var(--body, system-ui, sans-serif); min-height: 40px; padding: 9px 13px; border-radius: 12px; border: 1.5px solid var(--mg-gold); background: var(--card, #fff); color: var(--heading, #0A1A2E); cursor: pointer; text-align: left; text-decoration: none; display: inline-flex; flex-direction: column; justify-content: center; transition: background-color .12s; -webkit-tap-highlight-color: transparent; }
 .mg-opt:hover { background: var(--gold-soft, #f6efdf); }
 /* a members-only suggestion: a lock, and it opens the membership page */
+.mg-opt:disabled { opacity: .42; cursor: default; background: var(--card, #fff); }
+.mg-opt.mg-picked:disabled { opacity: .8; box-shadow: inset 0 0 0 1.5px var(--mg-gold); }
 .mg-opt.mg-lock { position: relative; padding-left: 34px; border-style: dashed; }
 .mg-lock-ic { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; fill: currentColor; }
 /* the small "Suggested" tag on a tip from Solomon */

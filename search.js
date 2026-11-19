@@ -21,9 +21,10 @@
       // Title n-grams for fast phrase match
       idx.phrase = Object.create(null);
       for (const d of idx.items) { const t = (d.title || "").toLowerCase(); if (!idx.phrase[t]) idx.phrase[t] = []; idx.phrase[t].push(d.id); }
+      idx.ids = new Set(idx.items.map((d) => d.id));
       IDX = idx; SIGNALS = sig || { boost: {} };
       return idx;
-    });
+    }, (e) => { loading = null; throw e; }); // a failed load is tried again on the next search
     return loading;
   }
 
@@ -99,16 +100,28 @@
       }
     }
     // Server-measured CTR feedback: queries that routinely click this doc float it up
-    const sig = SIGNALS && SIGNALS.boost && SIGNALS.boost[`${A.qLow}|${doc.id}`];
+    // The server keys these by a short hash of the query (it no longer hands out what other visitors typed)
+    const sig = SIGNALS && SIGNALS.boost && SIGNALS.boost[`${SIGNALS.keys === "sha256-10" ? A.qKey : A.qLow}|${doc.id}`];
     if (sig) s *= (1 + sig * 2); // sig in [0,1] → up to 3× lift
     return s;
   }
 
+  // The query the way the server normalises it, then the first 10 hex characters of its SHA-256
+  const keyMemo = new Map();
+  async function qKey(q) {
+    const n = String(q || "").toLowerCase().replace(/[^a-z0-9 '\-]+/g, " ").replace(/\s+/g, " ").trim().slice(0, 400);
+    if (keyMemo.has(n)) return keyMemo.get(n);
+    let k = "";
+    try { const h = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(n)); k = [...new Uint8Array(h)].map((b) => b.toString(16).padStart(2, "0")).join("").slice(0, 10); } catch {}
+    if (keyMemo.size > 200) keyMemo.clear();
+    keyMemo.set(n, k); return k;
+  }
   async function search(q, opts = {}) {
     const I = await load();
     if (!q || q.trim().length < 2) return { query: q, hits: [], analysis: null };
     const A = analyze(q.trim(), I);
     if (!A.tokens.length) return { query: q, hits: [], analysis: A };
+    A.qKey = SIGNALS && SIGNALS.keys === "sha256-10" ? await qKey(q) : "";
     const kinds = opts.kinds ? new Set(opts.kinds) : null;
     const limit = opts.limit || 20;
     const personal = opts.personal || null;
@@ -146,5 +159,7 @@
   const click = (q, id, position) => { logQuery(q, undefined); logEvent({ type: "click", q, id, position, src: "quick" }); lastLogged = ""; };
   const noClick = (q, resultCount) => { logQuery(q, resultCount); logEvent({ type: "noclick", q, resultCount, src: "quick" }); lastLogged = ""; };
 
-  window.MDFitSearch = { load, search, highlight, logQuery, click, noClick };
+  // has(id): is this doc in the index? False while no index is loaded, so callers fall back to their own matching.
+  const has = (id) => !!(IDX && IDX.ids.has(id));
+  window.MDFitSearch = { load, search, has, highlight, logQuery, click, noClick };
 })();

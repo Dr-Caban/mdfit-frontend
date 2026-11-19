@@ -20,7 +20,21 @@
 
   // ---- session (this tab only)
   const session = { get() { try { const s = JSON.parse(sessionStorage.getItem(KEY) || "null"); return s && Date.parse(s.expiresAt) > Date.now() ? s : null; } catch { return null; } },
-    set(s) { try { sessionStorage.setItem(KEY, JSON.stringify(s)); } catch {} }, clear() { try { sessionStorage.removeItem(KEY); } catch {} } };
+    set(s) { try { sessionStorage.setItem(KEY, JSON.stringify(s)); } catch {} idleStamp(); }, clear() { try { sessionStorage.removeItem(KEY); } catch {} } };
+  // One staff sign-in is carried between the workspace, /admin-classic and the consoles in this tab, so signing out
+  // of any of them removes every copy, and the 15 idle minutes (kept in the tab, shared by all of them) count here too.
+  const STAFF_KEYS = ["mdfit_ws_token", "mdfit_token", "mdfit_manager", "mdfit_dev", "mdfit_staff_active"];
+  const IDLE_MS = 15 * 60 * 1000, ACTIVE_KEY = "mdfit_staff_active"; let idleT = 0, lastStamp = 0;
+  const idleStamp = () => { lastStamp = Date.now(); try { sessionStorage.setItem(ACTIVE_KEY, String(lastStamp)); } catch {} };
+  const idleFor = () => { try { const t = Number(sessionStorage.getItem(ACTIVE_KEY)); return t ? Date.now() - t : 0; } catch { return 0; } };
+  const idleOut = () => { signOut(); $("#siMsg").className = "msg"; $("#siMsg").textContent = "Signed out after 15 minutes without activity."; };
+  function idleArm() { clearTimeout(idleT); if (session.get()) idleT = setTimeout(() => (idleFor() >= IDLE_MS ? idleOut() : idleArm()), Math.max(1000, IDLE_MS - idleFor())); }
+  const idleBump = () => { if (!session.get()) return; if (idleFor() >= IDLE_MS) return idleOut(); if (Date.now() - lastStamp > 5000) idleStamp(); idleArm(); };
+  // Signed out in the workspace (or idle too long) while this page was put aside: it must not come back still open
+  const idleCheck = () => { if ($("#app").hidden) return; if (!session.get()) signOut(); else if (idleFor() >= IDLE_MS) idleOut(); };
+  ["pointerdown", "keydown", "scroll"].forEach((ev) => window.addEventListener(ev, idleBump, { passive: true, capture: true }));
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) idleCheck(); });
+  window.addEventListener("pageshow", idleCheck); window.addEventListener("focus", idleCheck);
   async function api(method, path, body) {
     const s = session.get();
     const res = await fetch(API + path, { method, headers: { "Content-Type": "application/json", ...(s ? { Authorization: "Bearer " + s.token } : {}) }, body: body === undefined ? undefined : JSON.stringify(body) });
@@ -36,7 +50,7 @@
   const beat = () => { const s = session.get(); if (!s || Date.now() - beatAt < 4 * 60 * 1000) return; beatAt = Date.now(); fetch(API + "/api/admin/me", { headers: { Authorization: "Bearer " + s.token } }).then((r) => { if (r.status === 401) signOut(); }).catch(() => {}); };
   ["pointerdown", "keydown", "scroll"].forEach((ev) => window.addEventListener(ev, beat, { passive: true, capture: true }));
   const endSession = () => { const s = session.get(); if (s) { try { fetch(API + "/api/admin/logout", { method: "POST", keepalive: true, headers: { "Content-Type": "application/json", Authorization: "Bearer " + s.token }, body: "{}" }).catch(() => {}); } catch {} } };
-  function signOut() { session.clear(); connectP = null; show(false); }
+  function signOut() { clearTimeout(idleT); session.clear(); try { STAFF_KEYS.forEach((k) => sessionStorage.removeItem(k)); } catch {} connectP = null; show(false); }
   $("#signOut").addEventListener("click", () => { endSession(); signOut(); });
 
   // ---- sign in: password, or Google (the address must be the Manager account's; the emailed code still applies)
@@ -76,12 +90,13 @@
   const PORTALS = [[["admin"], "/workspace", "mdfit_ws_token", "Admin"], [["manager"], "/manager", "mdfit_manager", "Manager"], [["manager", "developer"], "/dev", "mdfit_dev", "Developer"], [null, "/workspace#clients", "mdfit_ws_token", "Client portal"]];
   function drawSwitch(me) {
     const roles = (me && (me.roles || [me.role])) || [], owner = !!(me && (me.isOwner || me.role === "owner"));
-    $("#switch").innerHTML = PORTALS.filter(([need, , key]) => key === KEY || !need || owner || need.some((r) => roles.includes(r)))
+    const partner = owner || ((me && me.permissions) || []).includes("partner"); // /manager also needs the Partner console permission
+    $("#switch").innerHTML = PORTALS.filter(([need, , key]) => key === KEY || !need || owner || (need.some((r) => roles.includes(r)) && (key !== "mdfit_manager" || partner)))
       .map(([, href, key, label]) => `<a href="${href}" data-key="${key}"${key === KEY ? ' aria-current="page"' : ""}>${label}</a>`).join("");
   }
   $("#switch").addEventListener("click", (e) => {
-    const a = e.target.closest("a[data-key]"), s = session.get(); if (!a || !s) return;
-    if (a.dataset.key === KEY) { e.preventDefault(); return; }
+    const a = e.target.closest("a[data-key]"), s = session.get(); if (!a) return;
+    if (!s || a.dataset.key === KEY) { e.preventDefault(); if (!s) signOut(); return; } // signed out meanwhile: nothing is handed across
     try {
       if (a.dataset.key === "mdfit_ws_token") { sessionStorage.setItem("mdfit_ws_token", s.token); sessionStorage.setItem("mdfit_staff_active", String(Date.now())); }
       else sessionStorage.setItem(a.dataset.key, JSON.stringify({ token: s.token, expiresAt: s.expiresAt }));
@@ -92,6 +107,8 @@
   }
   async function boot() {
     if (!session.get()) return show(false);
+    if (idleFor() >= IDLE_MS) return idleOut();
+    if (!idleFor()) idleStamp(); idleArm();
     try {
       const me = await api("GET", "/api/admin/me").catch(() => null);
       state.share = await api("GET", "/api/admin/partner/share");
