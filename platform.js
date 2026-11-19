@@ -89,27 +89,30 @@
   ];
 
   // ---------------------------------------------------------------- where this sign-in can go
-  // One list for all three consoles, so the switch in every header says the same thing. Two rules:
-  // every entry has to lead somewhere this person can actually open, and the workspace is called by what they
-  // hold of it — the whole thing is "Admin", the client-management screens are the "Client portal", and content
-  // work on its own is the "Workspace". A manager or a developer never holds client screens (Section 11.2), so
-  // they are not offered them: before this, that entry led to "not open to your sign-in".
+  // One list for all three consoles, so the switch in every header says the same thing and cannot drift apart:
+  //   Owner          Admin | Manager | Developer | Client portal
+  //   Administrator  Admin | Client portal
+  //   Manager        Manager | Developer | Client portal
+  //   Developer      Developer | Client portal
+  //
+  // What lights each one up is the permission the console behind it actually needs, not the name of a role: roles
+  // are only presets over those permissions, so someone given "Partner console" on its own gets the Manager chip
+  // without being called a Manager. The one exception is the developer console, which the server itself gates by
+  // role (lib/dev-console.js) because no permission stands for it. Client portal is listed for everyone, as it
+  // was: in the workspace it is inert for anyone who does not hold the whole thing, which is how it says which
+  // side you are on. A header with nothing to switch to shows no switch.
   function consoles(me) {
     const owner = !!(me && (me.isOwner || me.role === "owner"));
     const roles = (me && (me.roles || [me.role])) || [];
     const perms = (me && me.permissions) || [];
-    // an older API answers /me without `permissions`; then only the owner and an administrator are placed by role
+    // an older API answers /me without `permissions` at all; then the roles it does send are all there is to go on
     const knows = Array.isArray(me && me.permissions);
-    const has = (p) => owner || !knows || perms.includes(p);
-    const isRole = (r) => owner || roles.includes(r);
-    const whole = owner || roles.includes("admin");
+    const has = (p) => owner || (knows ? perms.includes(p) : false);
     const out = [];
-    if (whole) out.push({ key: "mdfit_ws_token", href: "/workspace", side: "admin", label: "Admin" });
-    else if (has("clients")) out.push({ key: "mdfit_ws_token", href: "/workspace#clients", side: "cmp", label: "Client portal" });
-    else if (has("content")) out.push({ key: "mdfit_ws_token", href: "/workspace#programs", side: "cmp", label: "Workspace" });
-    if (isRole("manager")) out.push({ key: "mdfit_manager", href: "/manager", label: "Manager" });
-    if (isRole("manager") || isRole("developer")) out.push({ key: "mdfit_dev", href: "/dev", label: "Developer" });
-    if (whole && has("clients")) out.push({ key: "mdfit_ws_token", href: "/workspace#clients", side: "cmp", label: "Client portal" });
+    if (has("settings") || (!knows && roles.includes("admin"))) out.push({ key: "mdfit_ws_token", href: "/workspace", side: "admin", label: "Admin" });
+    if (has("partner") || (!knows && roles.includes("manager"))) out.push({ key: "mdfit_manager", href: "/manager", label: "Manager" });
+    if (owner || roles.includes("manager") || roles.includes("developer")) out.push({ key: "mdfit_dev", href: "/dev", label: "Developer" });
+    out.push({ key: "mdfit_ws_token", href: "/workspace#clients", side: "cmp", label: "Client portal" });
     return out;
   }
 

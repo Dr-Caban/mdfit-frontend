@@ -69,19 +69,22 @@ of the platform and where each one's log lives, and who can see what.
 | Developer | `/developer` (`/dev`) | The owner and the Developer role: usage, costs, **logs** | Platform tab |
 
 **The switch in the header** is `MDFitPlatform.consoles(me)`, one list used by all three consoles, so the same
-sign-in sees the same places everywhere and the same sign-in is carried across (no second password). What each sees:
+sign-in sees the same places everywhere and the same sign-in is carried across (no second password).
 
 | Sign-in | Switch |
 |---|---|
 | Owner | Admin · Manager · Developer · Client portal |
 | Administrator | Admin · Client portal |
-| Manager | Workspace · Manager · Developer |
-| Developer | Workspace · Developer |
-| Clinician, Front desk | none — the workspace is the only place they can go |
+| Manager | Manager · Developer · Client portal |
+| Developer | Developer · Client portal |
+| Clinician, Front desk | none — nowhere else to switch to, so no switch is drawn |
 
-The workspace is named by what the person holds of it: **Admin** (the whole thing), **Client portal** (the
-client-management screens) or **Workspace** (content work only). A manager or a developer never holds client
-screens, so they are not offered them.
+A chip is lit by the **permission** its console needs, not by the name of a role — roles are only presets over
+permissions, so a staff account given "Partner console" on its own gets the Manager chip without being called a
+Manager. `settings` lights Admin, `partner` lights Manager, and Client portal is listed for everyone (in the
+workspace it is inert for anyone who does not hold the whole thing, which is how it marks which side you are on).
+The developer console is the exception: no permission stands for it, so the server gates it by role
+(`lib/dev-console.js`: the owner, Developer or Manager).
 
 **The logs.** The API writes one JSON line per request, warning, error and restart. Railway keeps those 7 days;
 the backend also tees them to the data volume for 90 days (`lib/activity-log.js`, encrypted at rest), which is what

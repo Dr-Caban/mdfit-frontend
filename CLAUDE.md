@@ -28,9 +28,10 @@
   day. Those routes are owner-only on the server — a Manager or Developer sign-in gets the counts, not the lines,
   because a logged path can name a client's record. The panel also keeps a per-browser fault recorder
   (`mdfit_faults` in localStorage); nothing is sent anywhere. **The console switch in every header** also comes
-  from this file — `MDFitPlatform.consoles(me)`: one list, so all three headers agree, every entry leads somewhere
-  that sign-in can actually open, and the workspace is labelled by what they hold of it (Admin / Client portal /
-  Workspace). See `docs/SYSTEM-INDEX.md`.
+  from this file — `MDFitPlatform.consoles(me)`: one list, so all three headers agree. Each chip is lit by the
+  permission its console needs (`settings` → Admin, `partner` → Manager), not by a role name, since roles are only
+  presets over permissions; Client portal is listed for everyone, and the developer console is the exception the
+  server gates by role. See `docs/SYSTEM-INDEX.md`.
 - **Video uploads — `/video-upload`.** When asked to `/video-upload`, to upload or migrate videos, to get footage
   from Drive onto Bunny, or to publish video for the web/Android/Apple apps: **read `docs/VIDEO-UPLOAD.md` first
   and follow its phases in order.** Treat that file as the command; do not improvise a run, and do not start at the
