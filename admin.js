@@ -130,6 +130,12 @@
     suggestion: ["💡", "Suggestion", "feedback"], feedback: ["⭐", "New review", "reviews"], client_signup: ["👤", "New client account", "clients"],
     meeting_request: ["🗓️", "1-on-1 request", "members"], membership_request: ["💳", "Membership request", "members"]
   };
+  // A visit someone paid for after the time they were holding had gone to someone else: the server keeps the payment as
+  // a visit credit and marks the visit cancelled with slotLost. It needs a new time until that person has a later visit.
+  const WARN_SVG = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-3px"><path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17v.5"/></svg>';
+  const LOST = "Paid, time was taken: reschedule";
+  const paidNoTime = (list) => list.filter((a) => a.slotLost && a.payment === "paid" && !list.some((b) => b.id !== a.id && b.email === a.email && b.status !== "cancelled" && b.status !== "hold" && (b.createdAt || "") > (a.updatedAt || a.createdAt || "")));
+  NOTE.visit_paid_time_taken = [WARN_SVG, LOST, "appts"];
   let notes = [];
   const SEEN_KEY = "mdfit_admin_seen";
   const seenAt = () => { try { return localStorage.getItem(SEEN_KEY) || ""; } catch { return ""; } };
@@ -221,7 +227,8 @@
       MDFitRT.on("activity", (ev) => {
         notes.unshift({ time: new Date().toISOString(), ...ev }); renderNotes();
         if (current === "dash") run(loadDash)();
-        if (ev.type === "appointment" || ev.type === "appointment_cancelled" || ev.type === "intake") { if (current === "appts") run(loadAppts)(); }
+        if (ev.type === "appointment" || ev.type === "appointment_cancelled" || ev.type === "intake" || ev.type === "visit_paid_time_taken") { if (current === "appts") run(loadAppts)(); }
+        if (ev.type === "visit_paid_time_taken") rtToast(`${LOST}${ev.when ? " (" + ev.when + ")" : ""}`, WARN_SVG);
         if (ev.type === "booking" || ev.type === "booking_cancelled") { if (current === "bookings") run(loadBookings)(); }
         if (ev.type === "lead") { if (current === "leads") run(loadLeads)(); }
         if (ev.type === "subscribe") { if (current === "subs") run(loadSubs)(); }
@@ -234,6 +241,7 @@
       });
       MDFitRT.on("message_reaction", (ev) => { if (openThread && ev.clientId === openThread) showThread(openThread); });
       MDFitRT.on("toast", (ev) => { rtToast(ev.text, TOAST_ICONS[ev.type]); });
+      MDFitRT.on("signed_out", () => { if (!token) return; logout(); $("#login .form-msg").textContent = "You were signed out: this sign-in ended, or what it may do was changed. Log in again."; });
       // Google Calendar / SimplePractice changed (the server checks every minute): refresh what's on screen
       MDFitRT.on("calendar_changed", (ev) => { busyFrom = "";
         const n = (ev && ev.dates && ev.dates.length) || 0;
@@ -449,7 +457,10 @@
   const VIDEO_TYPES = ["eval-remote", "followup-remote", "session-remote"];
   const isVideo = (a) => VIDEO_TYPES.includes(a.typeId) || !!a.meetingLink;
   async function loadAppts() {
-    const list = await api("GET", "/api/admin/appointments" + ($("#appts-all").checked ? "?all=1" : ""));
+    const all = $("#appts-all").checked;
+    const [shown, full] = await Promise.all([api("GET", "/api/admin/appointments" + (all ? "?all=1" : "")), all ? null : api("GET", "/api/admin/appointments?all=1")]);
+    // the upcoming list leaves cancelled visits out, so the ones that were paid and need a new time are put at its top
+    const lost = paidNoTime(full || shown), lostIds = new Set(lost.map((a) => a.id)), list = all ? shown : [...lost, ...shown];
     const put = keepEdits($("#appts-list"));
     $("#appts-list").innerHTML = list.length ? list.map((a) => `
       <article class="lead appt ${a.status}" data-id="${a.id}">
@@ -458,6 +469,7 @@
             <div class="meta">${esc(a.typeName)} · ${a.minutes} min</div></div>
           <div class="meta">Booked ${when(a.createdAt)}</div>
         </header>
+        ${a.slotLost && a.payment === "paid" ? `<p class="banner" data-lost style="margin:0 0 8px">${WARN_SVG} <b>${lostIds.has(a.id) ? LOST : "Paid, time was taken"}.</b> ${lostIds.has(a.id) ? "The payment arrived after this time had gone to another visit. Nothing was refunded: it is kept as a visit credit, so book them a new time." : "They have a later visit booked."}</p>` : ""}
         <div><strong>${esc(a.name)}</strong> · <a href="tel:${esc(a.phone)}">${esc(a.phone)}</a> · <a href="mailto:${esc(a.email)}">${esc(a.email)}</a></div>
         <div class="intake">${[...(a.areas || []), a.painLevel != null && `Pain ${a.painLevel}/10`].filter(Boolean).map((x) => `<span>${esc(x)}</span>`).join("")}</div>
         ${a.notes ? `<p class="msg">${esc(a.notes)}</p>` : ""}

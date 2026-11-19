@@ -107,6 +107,17 @@
     // /admin shares this tab: signing out here signs out there as well
     try { for (const k of ["mdfit_token", "mdfit_manager", "mdfit_dev", ACTIVE_KEY]) sessionStorage.removeItem(k); } catch {}
   }
+  // A new sign-in for the same person (the server gives one when they change their own password, and refuses the
+  // old one from then on) takes the old one's place everywhere this tab keeps it: here, for /admin-classic and in the
+  // copies the consoles hold. The live connection signs in again with it.
+  function carryToken(t, expiresAt) {
+    token = t; store.set(t);
+    try {
+      if (sessionStorage.getItem("mdfit_token")) sessionStorage.setItem("mdfit_token", t);
+      for (const k of ["mdfit_manager", "mdfit_dev"]) if (sessionStorage.getItem(k)) sessionStorage.setItem(k, JSON.stringify({ token: t, expiresAt: expiresAt || new Date(Date.now() + 11 * 3600e3).toISOString() }));
+    } catch {}
+    if (window.MDFitRT) { MDFitRT.disconnect(); goLive(); }
+  }
   // The time of the last input is kept in the tab's session storage and shared with /admin, so the 15 minutes
   // follow the person across both pages and are not restarted by a reload, Back, or a sleeping laptop.
   let idleTimer, lastStamp = 0;
@@ -301,6 +312,14 @@
   // ---------------------------------------------------------------- screens
   const V = {};
   const kpi = (label, val, sub, kind) => `<div class="card kpi"><span class="muted">${label}</span><b class="num">${val}</b><small class="${kind ? "pill " + kind : "muted"}">${sub}</small></div>`;
+  // A visit someone paid for after the time they were holding had gone to someone else. The server keeps the payment
+  // as a visit credit and marks the visit cancelled with slotLost, so it needs a new time. It stops being listed once
+  // that person has a visit booked after it.
+  const paidNoTime = (list) => (list || []).filter((a) => a.slotLost && a.payment === "paid" && !list.some((b) => b.id !== a.id && b.email === a.email && b.status !== "cancelled" && b.status !== "hold" && (b.createdAt || "") > (a.updatedAt || a.createdAt || "")));
+  const LOST = "Paid, time was taken: reschedule";
+  const lostPill = () => `<span class="pill warn" style="display:inline-flex;align-items:center;gap:4px">${ui("alert", 12)}${LOST}</span>`;
+  const lostRow = (a, list) => { const c = byEmail(list || [], a.email);
+    return `<div class="list-item" data-lost="${esc(a.id)}"><span style="color:var(--warn);display:inline-flex">${ui("alert", 16)}</span><span style="flex:1;min-width:0"><b>${LOST}</b><div class="muted" style="font-size:12px">${esc(a.name)} paid for ${esc(a.typeName || "a visit")} on ${fmtDate(a.date)} at ${fmtTime(a.time)}. The payment is kept as a visit credit.</div></span><button class="btn sm" data-act="appt" data-id="${esc(a.id)}">Details</button>${c && navOk("chart") ? `<button class="btn sm primary" data-act="chart" data-id="${esc(c.id)}">Chart</button>` : ""}</div>`; };
   const statusPill = (s) => `<span class="pill ${s === "completed" ? "ok" : s === "cancelled" || s === "no-show" ? "bad" : ""}">${esc(s || "booked")}</span>`;
   function apptRow(a, list) {
     const c = byEmail(list, a.email);
@@ -311,9 +330,9 @@
 
   V.dashboard = async () => {
     const todayIso = isoDay(new Date()), weekEnd = isoDay(new Date(Date.now() + 6 * 864e5));
-    const [st0, msgs, emr, list0] = await Promise.all([part("/stats", "insights"), part("/messages", "messages"), part("/emr", PHI), partClients()]);
+    const [st0, msgs, emr, list0, diaryAll] = await Promise.all([part("/stats", "insights"), part("/messages", "messages"), part("/emr", PHI), partClients(), part("/appointments?all=1", "scheduling")]);
     // Without the practice's numbers (Insights), whoever keeps the diary still gets their day from the diary itself
-    const diary = st0 ? null : await part("/appointments?all=1", "scheduling");
+    const diary = st0 ? null : diaryAll;
     const live = (diary || []).filter((a) => a.status === "booked" && a.date >= todayIso).sort((a, b) => (a.date + a.time < b.date + b.time ? -1 : 1));
     const st = st0 || { appointmentsToday: live.filter((a) => a.date === todayIso).length, appointmentsWeek: live.filter((a) => a.date <= weekEnd).length, today: live.filter((a) => a.date === todayIso), nextAppointments: live.slice(0, 8) };
     const list = list0 || [], diaryOk = !!(st0 || diary) || can("scheduling");
@@ -348,7 +367,7 @@
       </div>
       <div class="stack">
         <div class="card"><div class="card-head"><h2>Needs attention</h2></div>
-          ${attention.map(([t, to]) => `<div class="list-item"><span class="dot" style="background:var(--warn)"></span><span style="flex:1">${t}</span>${navOk(to) ? `<a class="btn sm" href="#${to}">Open</a>` : ""}</div>`).join("") || none("Nothing needs attention.")}</div>${!st0 ? "" : `
+          ${paidNoTime(diaryAll).map((a) => lostRow(a, list)).join("") + attention.map(([t, to]) => `<div class="list-item"><span class="dot" style="background:var(--warn)"></span><span style="flex:1">${t}</span>${navOk(to) ? `<a class="btn sm" href="#${to}">Open</a>` : ""}</div>`).join("") || none("Nothing needs attention.")}</div>${!st0 ? "" : `
         <div class="card"><div class="card-head"><h2>Classes this week</h2></div>
           ${(st.upcoming || []).map((c) => `<div class="list-item"><span style="flex:1"><b>${esc(c.title)}</b><div class="muted" style="font-size:12px">${esc(c.dayName)} ${fmtTime(c.time)} · ${esc(c.coach || "")}</div></span><span class="pill">${c.capacity - c.spotsLeft}/${c.capacity} booked</span></div>`).join("") || none("No classes scheduled.")}</div>`}
       </div>
@@ -364,6 +383,7 @@
     const [appts, classes, bookings, sync] = await Promise.all([load("/appointments?all=1"), load("/classes"), load("/bookings"),
       Promise.resolve(soft(`/busy?from=${isoDay(mon)}&days=7`))]);
     cache.appts = appts; cache.classes = classes;
+    const lost = paidNoTime(appts);
     const busy = (sync && sync.busy) || [], srcName = (x) => (x === "simplepractice" ? "SimplePractice" : "Google Calendar");
     const START = 6, END = 20, top = (t) => { const [h, m] = t.split(":").map(Number); return (h + m / 60 - START) * 56; };
     const hhmm = (min) => `${Math.floor(min / 60)}:${String(min % 60).padStart(2, "0")}`;
@@ -384,6 +404,7 @@
     <button type="button" class="btn sm primary" data-act="calAdd" aria-label="Add an event to your calendar">${ui("plus", 14)} Add</button></div></div>
     <div class="row" style="margin-bottom:12px"><span class="pill"><span class="dot" style="background:var(--body)"></span>Booked</span><span class="pill"><span class="dot" style="background:var(--ok)"></span>Completed</span><span class="pill"><span class="dot" style="background:var(--fit)"></span>Class</span><span class="pill"><span class="dot" style="background:var(--muted)"></span>Your other calendars</span>
     <span class="muted" style="font-size:12.5px">${sync === undefined ? "Reading your Google Calendar…" : !sync ? "Your other calendars could not be read just now." : sync.simplepractice === "off" && sync.google === "off" ? "No outside calendar is connected, so only MD Fit bookings show." : `Showing ${[sync.simplepractice !== "off" && "SimplePractice", sync.google !== "off" && "Google Calendar"].filter(Boolean).join(" and ")}${sync.titles ? " events, shown only on this screen" : " busy times (times only)"}${sync.lastError ? ". Last sync reported a problem" : ""}.`}</span></div>
+    ${lost.length ? `<div class="card" id="calLost" style="margin-bottom:12px"><div class="card-head"><h2>Needs a new time</h2><span class="muted" style="font-size:12px">paid, but the time went to someone else before the payment arrived</span></div>${lost.map((a) => lostRow(a, cache.clients)).join("")}</div>` : ""}
     <div class="table-wrap"><div class="cal">
       <div style="border-bottom:1px solid var(--line)"></div>${days.map((d) => `<div class="cal-h ${isoDay(d) === today ? "today" : ""}">${d.toLocaleDateString("en-US", { weekday: "short" })} ${d.getDate()}${((all) => all.slice(0, 1).map((b) => ` <span class="pill" style="font-weight:500;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:bottom" title="${esc(all.map((x) => x.title || "Busy").join(", "))} · all day on ${srcName(b.source)}">${esc(b.title || "Busy all day")}${all.length > 1 ? ` +${all.length - 1}` : ""}</span>`).join(""))(busy.filter((b) => b.allDay && b.date === isoDay(d)))}</div>`).join("")}
       <div class="cal-times" style="grid-row:2">${Array.from({ length: 28 }, (_, i) => `<div>${i % 2 === 0 ? fmtTime(`${START + i / 2}:00`).replace(":00", "") : ""}</div>`).join("")}</div>
@@ -893,8 +914,8 @@
     const genRow = (x) => `<tr><td><b>${esc(x.number)}</b><div class="muted" style="font-size:12px">${when(x.createdAt)}</div></td>
       <td><b>${esc(x.name)}</b><div class="muted" style="font-size:12px;overflow-wrap:anywhere">${esc(x.email)}${x.clientId ? "" : " · no account"}</div></td>
       <td style="max-width:260px;overflow-wrap:anywhere">${esc(x.description)}</td><td class="num" style="text-align:right"><b>${usd(x.amount)}</b></td>
-      <td>${stPill(x)}${x.afterVoid ? ` <span class="pill bad">paid after void</span>` : ""}<div class="muted" style="font-size:12px;margin-top:3px">${x.status === "paid" && x.paidAt ? "paid " + when(x.paidAt) : x.emailedAt ? "emailed " + when(x.emailedAt) : "not emailed"}</div></td>
-      <td><div class="row" style="gap:6px;justify-content:flex-end">${x.status === "unpaid" ? `<button type="button" class="btn sm primary" data-act="igSend" data-id="${esc(x.id)}">${x.emailedAt ? "Send again" : "Send"}</button><button type="button" class="btn sm" data-act="igCopy" data-id="${esc(x.id)}">${ui("copy", 13)}Link</button><button type="button" class="btn sm" data-act="igPaid" data-id="${esc(x.id)}">Mark paid</button><button type="button" class="btn sm ghost" data-act="igVoid" data-id="${esc(x.id)}" aria-label="Void invoice ${esc(x.number)}">${ui("x", 13)}</button>` : ""}${refundBtn(x, "link")}${x.clientId ? `<button type="button" class="btn sm" data-act="chartBilling" data-id="${esc(x.clientId)}">Billing</button>` : ""}</div></td></tr>`;
+      <td>${stPill(x)}${x.afterVoid ? ` <span class="pill bad">paid after void</span>` : ""}${(x.extra || []).map((e) => (e.refunded >= e.amount ? ` <span class="pill">Second payment refunded</span>` : ` <span class="pill bad">Paid twice</span> <span class="muted" style="font-size:12px">${usd(e.amount - (e.refunded || 0))} extra</span>`)).join("")}<div class="muted" style="font-size:12px;margin-top:3px">${x.status === "paid" && x.paidAt ? "paid " + when(x.paidAt) : x.emailedAt ? "emailed " + when(x.emailedAt) : "not emailed"}</div></td>
+      <td><div class="row" style="gap:6px;justify-content:flex-end">${x.status === "unpaid" ? `<button type="button" class="btn sm primary" data-act="igSend" data-id="${esc(x.id)}">${x.emailedAt ? "Send again" : "Send"}</button><button type="button" class="btn sm" data-act="igCopy" data-id="${esc(x.id)}">${ui("copy", 13)}Link</button><button type="button" class="btn sm" data-act="igPaid" data-id="${esc(x.id)}">Mark paid</button><button type="button" class="btn sm ghost" data-act="igVoid" data-id="${esc(x.id)}" aria-label="Void invoice ${esc(x.number)}">${ui("x", 13)}</button>` : ""}${refundBtn(x, "link")}${(x.extra || []).filter((e) => e.amount > (e.refunded || 0)).map((e) => `<button type="button" class="btn sm danger" data-act="refundAsk" data-kind="extra" data-id="${esc(x.id)}" data-session="${esc(e.sessionId)}" data-left="${e.amount - (e.refunded || 0)}" data-what="the second payment on ${esc(x.number)}">Refund the second payment</button>`).join("")}${x.clientId ? `<button type="button" class="btn sm" data-act="chartBilling" data-id="${esc(x.clientId)}">Billing</button>` : ""}</div></td></tr>`;
     return `<div class="view-head"><div><h1>Payments</h1><p class="muted">Self-pay only · card payments through Stripe · send an invoice from here, or write one on a client's chart</p></div>${navOk("settings") ? `<a class="btn" href="#settings">Services &amp; fees</a>` : ""}</div>
     <div class="grid g3" style="margin-bottom:16px">${kpi("Card payments", p.enabled ? "On" : "Off", p.enabled ? "Stripe connected" : "Stripe not set up", p.enabled ? "ok" : "warn")}${kpi("Payment confirmations", p.webhook ? "On" : "Off", "from Stripe", p.webhook ? "ok" : "warn")}${members ? kpi("Members and requests", members.length, "people") : ""}</div>
     <div class="card" style="margin-bottom:16px" id="genCard"><div class="card-head"><div><h2>Invoices</h2><p class="muted" style="margin:2px 0 0;font-size:12.5px">Draft one invoice, send it to one person or many. Each gets their own, with a link to pay by card.${unpaid.length ? ` <b>${plural(unpaid.length, "invoice")} unpaid: ${usd(unpaid.reduce((n, x) => n + x.amount, 0))}.</b>` : ""}</p></div>
@@ -1517,10 +1538,11 @@
     const tab = (v, l) => `<button type="button" class="btn sm${w === v ? " primary" : ""}" data-act="layTab" data-v="${v}" aria-pressed="${w === v}">${l}</button>`;
     return `<div class="card" style="margin-bottom:16px" id="homeCard"><div class="card-head"><div><h2>Home and Profile pages</h2><p class="muted" style="margin:2px 0 0;font-size:12.5px">What members see, top to bottom by priority. ${n("open")} open, ${n("folded")} folded to one line on a phone, ${n("hidden")} hidden. Members can rearrange their own, but never see a card hidden here.</p></div><div class="row" style="gap:6px">${tab("home", "Home")}${tab("profile", "Profile")}</div></div>
       ${d.sections.map(row).join("")}
-      <form class="row" data-form="homeSave" style="margin-top:14px;gap:10px;align-items:flex-end;flex-wrap:wrap">
+      <form class="row" data-form="homeSave" novalidate style="margin-top:14px;gap:10px;align-items:flex-end;flex-wrap:wrap">
         ${w === "home" ? fld("homeSug", "suggestions", "Solomon's suggestions shown before \u201cShow more\u201d (0 hides them)", d.suggestions, { type: "number", attrs: 'min="0" max="20" required style="max-width:110px"' }) : ""}
         <button class="btn primary">Save ${w === "home" ? "Home" : "Profile"}</button>
         <button type="button" class="btn" data-act="homeReset"${dirty ? "" : " disabled"}>Undo changes</button>
+        <p role="alert" data-msg style="margin:0;color:var(--bad);flex-basis:100%;min-height:1.2em"></p>
       </form></div>`;
   }
 
@@ -1684,7 +1706,7 @@
     appt: async (el) => {
       const list = cache.appts || (cache.appts = await get("/appointments?all=1")), a = list.find((x) => x.id === el.dataset.id) || (await get("/appointments?all=1")).find((x) => x.id === el.dataset.id);
       if (!a) return toast("That appointment is no longer there.");
-      modal(`<div class="card-head"><h2>${esc(a.name)}</h2>${statusPill(a.status)}</div>
+      modal(`<div class="card-head"><h2>${esc(a.name)}</h2><span class="row" style="gap:6px">${a.slotLost && a.payment === "paid" ? lostPill() : ""}${statusPill(a.status)}</span></div>
         <p class="muted">${fmtDate(a.date)} · ${fmtTime(a.time)} · ${esc(a.typeName || a.typeId)} · ${a.minutes || "—"} min<br>${esc(a.email)}${a.phone ? " · " + esc(a.phone) : ""}</p>
         ${a.notes ? `<p class="note-text"><b>From the client:</b> ${esc(a.notes)}</p>` : ""}
         <form class="stack" data-form="apptSave" data-id="${esc(a.id)}" style="margin-top:12px"><div class="field"><label for="apSt">Status</label><select id="apSt" name="status" class="input">${["booked", "completed", "no-show", "cancelled"].map((s) => `<option${s === a.status ? " selected" : ""}>${s}</option>`).join("")}</select></div>
@@ -1800,7 +1822,8 @@
     note: async (f) => { const text = f.text.value.trim(); if (!text) return; await api("POST", `/api/admin/emr/${state.chartClient}/notes`, { text }); toast("Note added. The patient can see it now."); await reChart(); },
     noteFor: async (f) => { const text = f.text.value.trim(); if (!f.id.value || !text) return; await api("POST", `/api/admin/emr/${f.id.value}/notes`, { text }); f.text.value = ""; toast("Note added. The patient can see it now."); },
     movement: async (f) => { await api("POST", `/api/admin/emr/${state.chartClient}/movements`, { videoId: f.videoId.value, name: f.name.value, dose: f.dose.value.trim(), cue: f.cue.value.trim() }); toast("Added to the plan."); await reChart(); loadPool(); },
-    consult: async (f) => { const a = await api("POST", `/api/admin/clients/${state.chartClient}/consult`, { date: f.date.value, time: f.time.value, minutes: Number(f.minutes.value), title: f.title.value.trim(), meetingLink: f.meetingLink.value.trim(), message: "" }); closeModal(); toast(`Scheduled ${fmtDate(a.date)} at ${fmtTime(a.time)}.`); render(); },
+    consult: async (f) => { formMsg(f, ""); let a; try { a = await api("POST", `/api/admin/clients/${state.chartClient}/consult`, { date: f.date.value, time: f.time.value, minutes: Number(f.minutes.value), title: f.title.value.trim(), meetingLink: f.meetingLink.value.trim(), message: "" }); } catch (err) { formMsg(f, err.message); return; } // the server's own words stay next to the form (a time someone is paying for, a clash)
+      closeModal(); toast(`Scheduled ${fmtDate(a.date)} at ${fmtTime(a.time)}.`); render(); },
     // The message shows at once as "Sending…" and the box clears, so typing the next one never waits on the server
     message: async (f) => {
       const body = f.body.value.trim(); if (!body) return;
@@ -1847,8 +1870,9 @@
       if (pw.length < 10) return formMsg(f, "Your new password needs at least 10 characters.");
       if (pw !== again) return formMsg(f, "The two new passwords are not the same.");
       formMsg(f, "");
-      try { await api("POST", "/api/admin/me/password", { current, password: pw }); }
+      let fresh; try { fresh = await api("POST", "/api/admin/me/password", { current, password: pw }); }
       catch (err) { f.elements.current.value = f.elements.password.value = f.elements.confirm.value = ""; formMsg(f, errText(err)); return; }
+      if (fresh && fresh.token) carryToken(fresh.token, fresh.expiresAt);
       f.elements.current.value = f.elements.password.value = f.elements.confirm.value = "";
       try { cache.me = await get("/me"); } catch {}
       mustChange = !!(cache.me && cache.me.mustChangePassword);
@@ -1949,11 +1973,11 @@
     rowsMore: () => rowsMoreNow(),
     formsShow: (el) => { state.formsShow = el.dataset.show; for (const b of el.parentElement.querySelectorAll("button")) b.setAttribute("aria-pressed", String(b === el)); formsFilter(); },
     // Refund: asks how much and for the owner's password; the server checks the password and sends the money back
-    refundAsk: (el) => { const left = Number(el.dataset.left) || 0;
+    refundAsk: (el) => { const left = Number(el.dataset.left) || 0, extra = el.dataset.kind === "extra"; // a second payment goes back whole
       modal(`<div class="card-head"><h2>Refund ${esc(el.dataset.what)}</h2>${xBtn}</div>
-        <form class="stack" data-form="refund" data-kind="${esc(el.dataset.kind)}" data-id="${esc(el.dataset.id)}" data-left="${left}" autocomplete="off">
-          <p class="muted" style="margin:0">The money goes back to the card it was paid with, through Stripe. This cannot be undone. Up to ${usd(left)} can be refunded.</p>
-          ${fld("rfAmt", "amount", "Amount to refund ($)", (left / 100).toFixed(2), { type: "number", attrs: `required min="0.01" max="${(left / 100).toFixed(2)}" step="0.01"` })}
+        <form class="stack" data-form="refund" data-kind="${esc(el.dataset.kind)}" data-id="${esc(el.dataset.id)}" data-session="${esc(el.dataset.session || "")}" data-left="${left}" autocomplete="off">
+          <p class="muted" style="margin:0">The money goes back to the card it was paid with, through Stripe. This cannot be undone. ${extra ? `This invoice was paid twice: the second payment, ${usd(left)}, goes back and the invoice stays paid.` : `Up to ${usd(left)} can be refunded.`}</p>
+          ${extra ? "" : fld("rfAmt", "amount", "Amount to refund ($)", (left / 100).toFixed(2), { type: "number", attrs: `required min="0.01" max="${(left / 100).toFixed(2)}" step="0.01"` })}
           <div class="field"><label for="rfPass">Owner password</label><input id="rfPass" name="password" class="input" type="password" required autocomplete="current-password"><p class="muted" style="margin:4px 0 0;font-size:12.5px">Asked for every refund, even though you are signed in.</p></div>
           <div class="row"><button class="btn primary">Refund to the card</button><span class="muted" id="rfMsg" role="status" style="font-size:12.5px"></span></div></form>`); },
     // ---- Solomon (Insights): the range, chart or table, and the AI switch
@@ -2086,7 +2110,7 @@
       const n = state.picked.size, all = !n, total = (await clients()).length;
       modal(`<div class="card-head"><h2>Export ${all ? `all ${total} clients` : plural(n, "selected client")}</h2>${xBtn}</div>
         <div class="stack"><button type="button" class="btn primary" data-act="exportGo" data-kind="csv">Spreadsheet (CSV)</button><p class="muted" style="margin:0;font-size:12.5px">One row per client: name, email, phone, status, membership, visit dates, tags, alerts and what is owed. Opens in Excel, Numbers or Google Sheets.</p>
-        <button type="button" class="btn" data-act="exportGo" data-kind="records">Full records (JSON)</button><p class="muted" style="margin:0;font-size:12.5px">Everything in each chart: plan and protocols, measures, medications, alerts, consents, invoices, notes to the patient, new patient documents, visits and clinical notes. Restricted notes are listed without their text. For a patient's request for their record, or for moving to another system.</p>
+        ${can(PHI) ? `<button type="button" class="btn" data-act="exportGo" data-kind="records">Full records (JSON)</button><p class="muted" style="margin:0;font-size:12.5px">Everything in each chart: plan and protocols, measures, medications, alerts, consents, invoices, notes to the patient, new patient documents, visits and clinical notes. Restricted notes are listed without their text. For a patient's request for their record, or for moving to another system.</p>` : `<p class="muted" id="exportNoRecords" style="margin:0;font-size:12.5px;display:flex;gap:6px;align-items:flex-start">${ui("lock", 14)}<span>Full records (everything in each chart) are not offered to your sign-in: they hold the charts, and reading charts needs the patient records permission, which you do not have. Ask the practice owner if you need a full record.</span></p>`}
         <p class="muted" style="margin:0;font-size:12.5px">The file holds patient information: keep it only where patient records may be kept. Every export is recorded in the audit ledger.</p></div>`);
     },
     exportGo: async (el) => {
@@ -2113,7 +2137,7 @@
         <form class="stack" data-form="consult"><b>Schedule a video visit yourself</b><div class="grid g2"><div class="field"><label for="cvDate">Date</label><input id="cvDate" name="date" type="date" class="input" min="${today}" required></div><div class="field"><label for="cvTime">Time</label><input id="cvTime" name="time" type="time" step="900" class="input" required></div></div>
         <div class="grid g2"><div class="field"><label for="cvMin">Length</label><select id="cvMin" name="minutes" class="input"><option value="30">30 min</option><option value="45">45 min</option><option value="60" selected>60 min</option><option value="90">90 min</option></select></div><div class="field"><label for="cvTitle">Title</label><input id="cvTitle" name="title" class="input" maxlength="80" value="Video visit"></div></div>
         <div class="field"><label for="cvLink">Video link (blank uses the built-in room)</label><input id="cvLink" name="meetingLink" type="url" class="input" placeholder="https://"></div>
-        <div class="row"><button class="btn primary">Schedule</button></div></form>
+        <p role="alert" data-msg style="margin:0;color:var(--bad)"></p><div class="row"><button class="btn primary">Schedule</button></div></form>
         <form class="stack" data-form="bookLink" style="border-top:1px solid var(--line);margin-top:14px;padding-top:14px"><b>Or email ${esc(firstOf())} a link to pick a time</b>
         <div class="field"><label for="blType">Visit type</label><select id="blType" name="typeId" class="input" required>${(s.appointmentTypes || []).map((t) => `<option value="${esc(t.id)}">${esc(t.name)}</option>`).join("")}</select></div>
         <div class="field"><label for="blMsg">A line from you (optional)</label><input id="blMsg" name="message" class="input" maxlength="500"></div>
@@ -2162,13 +2186,13 @@
   Object.assign(FORMS, {
     scribeModel: async (f) => { const r = await api("PUT", "/api/admin/scribe/model", { model: f.model.value }); closeModal(); await render(); toast(`AI scribe now uses ${r.model}.`); },
     refund: async (f) => {
-      const dollars = Number(f.amount.value), left = Number(f.dataset.left) / 100, msg = $("#rfMsg");
+      const kind = f.dataset.kind, left = Number(f.dataset.left) / 100, dollars = kind === "extra" ? left : Number(f.amount.value), msg = $("#rfMsg");
       if (!(dollars > 0) || dollars > left + 0.001) { msg.textContent = `Enter an amount up to $${left.toFixed(2)}.`; return; }
       if (!confirm(`Refund $${dollars.toFixed(2)} to the card? This cannot be undone.`)) return;
-      const kind = f.dataset.kind, body = { password: f.password.value, amount: dollars, ...(kind === "link" ? { linkId: f.dataset.id } : { clientId: cid(), ...(kind === "invoice" ? { invoiceId: f.dataset.id } : { chargeId: f.dataset.id }) }) };
+      const body = kind === "extra" ? { linkId: f.dataset.id, sessionId: f.dataset.session, password: f.password.value } : { password: f.password.value, amount: dollars, ...(kind === "link" ? { linkId: f.dataset.id } : { clientId: cid(), ...(kind === "invoice" ? { invoiceId: f.dataset.id } : { chargeId: f.dataset.id }) }) };
       msg.textContent = "Sending the refund…";
       let r; try { r = await api("POST", "/api/admin/refunds", body); } catch (err) { msg.textContent = err.message; f.password.value = ""; f.password.focus(); return; }
-      closeModal(); if (kind === "link") await render(); else await loadBilling();
+      closeModal(); if (kind === "link" || kind === "extra") await render(); else await loadBilling();
       toast(`${usd(r.amount)} refunded to the card.${r.left ? ` ${usd(r.left)} of the payment remains.` : ""}`);
     },
     guideLimit: async (f) => {
@@ -2297,8 +2321,14 @@
     setIcs: async (f) => { const v = f.icsUrl.value.trim(); if (!v && !confirm("Disconnect the SimplePractice calendar? Its busy times will stop blocking bookings.")) return; await api("PUT", "/api/admin/calsync", { icsUrl: v }); await render(); toast(v ? "Calendar link saved." : "SimplePractice calendar disconnected."); },
     homeSave: async (f) => {
       const w = layTab(), d = layDraft(w), body = { sections: d.sections.map((x) => ({ id: x.id, state: layState(x) })) };
-      if (w === "home") body.suggestions = Number(f.suggestions.value);
-      delete state.layDraft[w]; await putContent({ [w]: body }, `${w === "home" ? "Home" : "Profile"} saved. Members see it the next time the app loads.`);
+      if (w === "home") {
+        const raw = f.suggestions.value.trim(), shown = Number(raw);
+        if (raw === "" || !Number.isInteger(shown) || shown < 0 || shown > 20) { formMsg(f, "Suggestions shown: 0 to 20."); f.suggestions.focus(); return; }
+        body.suggestions = shown;
+      }
+      formMsg(f, "");
+      let c; try { c = await api("PUT", "/api/admin/content", { [w]: body }); } catch (err) { formMsg(f, err.message); return; } // the draft stays as arranged
+      cache.content = c; delete state.layDraft[w]; await render(); toast(`${w === "home" ? "Home" : "Profile"} saved. Members see it the next time the app loads.`);
     },
     setTiers: (f) => putContent({ tiers: (cache.content.tiers || []).map((t, i) => ({ ...t, name: f["name" + i].value.trim(), price: Number(f["price" + i].value), meetings: Number(f["meetings" + i].value), meetingMinutes: Number(f["minutes" + i].value), directMessages: !!f["direct" + i].checked, perks: f["perks" + i].value.split("\n").map((x) => x.trim()).filter(Boolean) })) }, "Membership types saved."),
     progSave: (f) => {
@@ -2937,6 +2967,14 @@
       // The owner's sign-in is always accepted, so a refusal means it has gone stale. For staff it can mean live updates are not open to staff sign-ins on this server.
       load("/me").catch(() => null).then((me) => { if (token) toast(me && me.isOwner ? "The live connection was refused. Sign out and in again to restore live updates." : "Live updates are not running for this sign-in. The screens still load: press Refresh to see what is new."); }); });
     MDFitRT.on("tele_invited", (ev) => { if (ev) toast(`${firstName(ev.name || "They")} was invited: ${ev.emailed ? "emailed and " : ""}notified in the app. They are let in when they arrive.`); });
+    // A patient paid after the time they were holding went to someone else (the owner is told; nothing is booked over)
+    MDFitRT.on("activity", (ev) => {
+      if (!token || !ev || ev.type !== "visit_paid_time_taken") return;
+      forget(); toast(`${LOST}${ev.when ? " (" + ev.when + ")" : ""}. It is on the dashboard.`);
+      if (["dashboard", "calendar"].includes(route()) && !$("#modalBack").classList.contains("open")) render();
+    });
+    // The server ended this sign-in (the account was switched off, what it may do was changed, or it ran out)
+    MDFitRT.on("signed_out", () => { if (!token) return; signOut(); $("#siMsg").textContent = "You were signed out: this sign-in ended, or what it may do was changed. Sign in again."; });
     MDFitRT.on("calendar_changed", () => { forget(); if (token && route() === "calendar" && !$("#modalBack").classList.contains("open")) render(); });
     setInterval(() => { if (token && route() === "messages" && !document.hidden && !MDFitRT.connected() && !$("#modalBack").classList.contains("open")) { forget(); refreshMessages(); } }, 15000);
   }
