@@ -17,6 +17,7 @@
   const initials = (n) => String(n || "?").replace(/<[^>]*>/g, "").split(/\s+/).filter(Boolean).map((w) => w[0]).slice(0, 2).join("").toUpperCase() || "?";
   const avatar = (name, size = 32) => `<span class="avatar" style="background:#8FA3B8;width:${size}px;height:${size}px">${esc(initials(name))}</span>`;
   const isoDay = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  const notYours = (what) => `<div class="card">${none(`${what} is not available for your role.`)}</div>`;
   const notBuilt = (what) => `<div class="card">${none(`${what} is not connected yet: the server has nothing for it.`)}</div>`;
 
   // ---------------------------------------------------------------- session
@@ -98,12 +99,13 @@
     token = ""; store.set(""); if (window.MDFitRT) { if (teleIn()) MDFitRT.emit("tele_end"); MDFitRT.disconnect(); } teleDrop(); stopDictation();
     for (const k of Object.keys(cache)) cache[k] = (k === "unread" || k === "waiting") ? 0 : null; // every cached list, the open chart included
     mem.clear(); forget(); freshAsk = null; shown = ""; shownHtml = ""; visited.length = 0; clearTimeout(warmT); clearTimeout(repaintT); warmRun++;
-    qaClose(); state.guideAiErr = ""; state.chartClient = null; state.thread = null; state.clientQ = ""; state.formsQ = ""; state.formsShow = ""; state.scribeText = ""; tele.transcript = ""; noteReset(null);
+    qaClose(); gClose(); state.picked.clear(); state.igPeople = []; state.insList = ""; state.ecoOpen = ""; state.genAll = false; state.layDraft = null;
+    state.guideAiErr = ""; state.chartClient = null; state.thread = null; state.clientQ = ""; state.formsQ = ""; state.formsShow = ""; state.scribeText = ""; tele.transcript = ""; noteReset(null);
     mustChange = false; $("#qa").hidden = false; $("#globalSearch").disabled = false;
     $("#view").innerHTML = ""; $("#nav").innerHTML = ""; $("#nav").dataset.sig = ""; $("#whoami").textContent = ""; $("#globalSearch").value = ""; closeModal();
     $("#app").hidden = true; $("#signin").hidden = false; clearTimeout(idleTimer);
     // /admin shares this tab: signing out here signs out there as well
-    try { sessionStorage.removeItem("mdfit_token"); sessionStorage.removeItem(ACTIVE_KEY); } catch {}
+    try { for (const k of ["mdfit_token", "mdfit_manager", "mdfit_dev", ACTIVE_KEY]) sessionStorage.removeItem(k); } catch {}
   }
   // The time of the last input is kept in the tab's session storage and shared with /admin, so the 15 minutes
   // follow the person across both pages and are not restarted by a reload, Back, or a sleeping laptop.
@@ -235,16 +237,23 @@
   // boundary either way, so the worst case is a menu entry that answers 403 -- never a workspace with no menu.
   const knowsPerms = () => Array.isArray(cache.me && cache.me.permissions);
   const can = (key) => !key || !knowsPerms() || iAmOwner() || myPerms().has(key);
+  // One part of a screen. A part this sign-in may not read is not asked for and comes back as null, so the screen is
+  // drawn from the parts it may read instead of failing as a whole (a refusal that was not foreseen counts the same).
+  const refused = (err) => { if (err && err.need) return null; throw err; };
+  const part = (p, key) => (can(key) ? load(p).catch(refused) : Promise.resolve(null));
+  const partClients = () => (can("clients") ? clients().catch(refused) : Promise.resolve(null));
   // Which permission each screen in the menu belongs to. Empty means everyone who can sign in sees it.
   // Where a screen could belong to more than one, the stricter one is used: a screen that puts a patient's record
   // on the glass (the chart, notes, intake forms, a video visit) sits behind patient-record access.
+  // A screen that cannot be drawn without a second permission lists both, and "owner" is the owner alone: the menu
+  // only ever shows a screen this sign-in can load (the server's map is lib/staff.js ROUTE_PERMISSIONS).
   const NAV_PERM = {
-    dashboard: "", calendar: "scheduling", clients: "clients", chart: PHI, leads: "clients", messages: "messages",
-    telehealth: PHI, notes: PHI, forms: PHI, programs: "content", nutrition: "content", fitness: "content",
-    payments: "billing", newsletter: "content", team: "staff", feedback: "reviews", security: "security",
-    settings: "settings", insights: "insights", economics: "insights", guide: "insights", portal: "", booking: "scheduling"
+    dashboard: "", calendar: "scheduling", clients: "clients", chart: [PHI, "clients"], leads: "clients", messages: "messages",
+    telehealth: [PHI, "scheduling"], notes: [PHI, "clients"], forms: [PHI, "clients"], programs: "content", nutrition: "content", fitness: "content",
+    payments: "billing", affiliates: "payouts", revshare: "owner", newsletter: "messages", team: "staff", feedback: "reviews", security: "security",
+    settings: "settings", insights: "insights", economics: ["insights", "billing"], guide: ["insights", "content"], portal: "", booking: "scheduling"
   };
-  const navOk = (id) => can(NAV_PERM[id]);
+  const navOk = (id) => [].concat(NAV_PERM[id]).every(can);
   const navSig = () => (cache.me ? `${iAmOwner()}|${[...myPerms()].sort().join(",")}` : "unknown");
   const navLabel = (id) => { for (const g of NAV) for (const [k, l] of g.items) if (k === id) return l; return id; };
   const NAV = [
@@ -301,9 +310,14 @@
   }
 
   V.dashboard = async () => {
-    const todayIso = isoDay(new Date());
-    const [st, msgs, emr, list] = await Promise.all([load("/stats"), load("/messages"), load("/emr"), clients()]);
-    const sync = soft(`/busy?from=${todayIso}&days=7`); // the screen does not wait for Google
+    const todayIso = isoDay(new Date()), weekEnd = isoDay(new Date(Date.now() + 6 * 864e5));
+    const [st0, msgs, emr, list0] = await Promise.all([part("/stats", "insights"), part("/messages", "messages"), part("/emr", PHI), partClients()]);
+    // Without the practice's numbers (Insights), whoever keeps the diary still gets their day from the diary itself
+    const diary = st0 ? null : await part("/appointments?all=1", "scheduling");
+    const live = (diary || []).filter((a) => a.status === "booked" && a.date >= todayIso).sort((a, b) => (a.date + a.time < b.date + b.time ? -1 : 1));
+    const st = st0 || { appointmentsToday: live.filter((a) => a.date === todayIso).length, appointmentsWeek: live.filter((a) => a.date <= weekEnd).length, today: live.filter((a) => a.date === todayIso), nextAppointments: live.slice(0, 8) };
+    const list = list0 || [], diaryOk = !!(st0 || diary) || can("scheduling");
+    const sync = can("scheduling") ? soft(`/busy?from=${todayIso}&days=7`) : null; // the screen does not wait for Google
     // Your day is what is on your calendar, not only what was booked through MD Fit: the events on the connected
     // calendars are counted and listed here too (MD Fit's own bookings are not counted twice).
     const outside = ((sync && sync.busy) || []).filter((b) => !b.allDay).sort((a, b) => (a.date + String(a.start).padStart(5, "0") < b.date + String(b.start).padStart(5, "0") ? -1 : 1));
@@ -311,32 +325,32 @@
     const clock = (min) => fmtTime(`${String(Math.floor(min / 60)).padStart(2, "0")}:${String(min % 60).padStart(2, "0")}`);
     const outRow = (b, day) => `<div class="list-item"><span class="muted num" style="flex:0 0 ${day ? 150 : 84}px;font-size:12.5px">${day ? fmtDate(b.date) + " · " : ""}${clock(b.start)}</span><span style="flex:1;min-width:0"><b>${esc(b.title || "Busy")}</b><div class="muted" style="font-size:12px">until ${clock(b.end)} · ${b.source === "simplepractice" ? "SimplePractice" : "Google Calendar"}</div></span></div>`;
     const nToday = st.appointmentsToday + outToday.length, nWeek = st.appointmentsWeek + outside.length;
-    cache.unread = msgs.unread || 0; cache.waiting = emr.waiting.length; renderNav();
+    cache.unread = (msgs && msgs.unread) || 0; cache.waiting = emr ? emr.waiting.length : 0; renderNav();
     const h = new Date().getHours(), hello = h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening";
-    const paidWaiting = emr.patients.concat(emr.waiting).reduce((n, p) => n + (p.paidVisits || 0), 0);
+    const paidWaiting = emr ? emr.patients.concat(emr.waiting).reduce((n, p) => n + (p.paidVisits || 0), 0) : 0;
     const attention = [
-      emr.waiting.length ? [`${plural(emr.waiting.length, "member")} finished documents and can be made a patient`, "clients"] : null,
+      emr && emr.waiting.length ? [`${plural(emr.waiting.length, "member")} finished documents and can be made a patient`, "clients"] : null,
       st.leadsNew ? [`${plural(st.leadsNew, "new request")} from the website`, "leads"] : null,
       cache.unread ? [`${plural(cache.unread, "unread message")}`, "messages"] : null,
       paidWaiting ? [`${plural(paidWaiting, "paid video visit")} still need a time`, "clients"] : null
     ].filter(Boolean);
     return `
-    <div class="view-head"><div><h1>${hello}</h1><p class="muted">${new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })} · ${nToday} on your calendar today</p></div>
-    <div class="row"><a class="btn" href="#calendar">Open calendar</a><a class="btn primary" href="#clients">Clients</a></div></div>
+    <div class="view-head"><div><h1>${hello}</h1><p class="muted">${new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}${diaryOk ? ` · ${nToday} on your calendar today` : ""}</p></div>
+    <div class="row">${navOk("calendar") ? `<a class="btn" href="#calendar">Open calendar</a>` : ""}${navOk("clients") ? `<a class="btn primary" href="#clients">Clients</a>` : ""}</div></div>
     <div class="grid g4" style="margin-bottom:16px">
-      ${kpi("Today", nToday, sync ? `${st.appointmentsToday} booked here · ${outToday.length} on your calendar` : sync === undefined ? "booked here · reading your calendar…" : "booked here (your other calendar could not be read)")}${kpi("Next 7 days", nWeek, sync ? `${st.appointmentsWeek} booked here · ${outside.length} on your calendar` : "booked here")}
-      ${kpi("New requests", st.leadsNew, `${st.leads30d} in the last 30 days`, st.leadsNew ? "warn" : "")}${kpi("Unread messages", cache.unread, "from members", cache.unread ? "warn" : "")}
+      ${diaryOk ? kpi("Today", nToday, sync ? `${st.appointmentsToday} booked here · ${outToday.length} on your calendar` : sync === undefined ? "booked here · reading your calendar…" : can("scheduling") ? "booked here (your other calendar could not be read)" : "booked here") + kpi("Next 7 days", nWeek, sync ? `${st.appointmentsWeek} booked here · ${outside.length} on your calendar` : "booked here") : ""}
+      ${st0 ? kpi("New requests", st.leadsNew, `${st.leads30d} in the last 30 days`, st.leadsNew ? "warn" : "") : ""}${msgs ? kpi("Unread messages", cache.unread, "from members", cache.unread ? "warn" : "") : ""}
     </div>
     <div class="grid g-side">
-      <div class="stack">
+      <div class="stack">${!diaryOk ? notYours("Your schedule") : `
         <div class="card"><div class="card-head"><h2>Today's schedule</h2><span class="muted" style="font-size:12px">${nToday ? plural(nToday, "item") : ""}</span></div>${(st.today || []).map((a) => apptRow(a, list)).join("") + outToday.map((b) => outRow(b, false)).join("") || none("Nothing on your calendar today.")}</div>
-        <div class="card"><div class="card-head"><h2>Coming up</h2><span class="muted" style="font-size:12px">Next 7 days</span></div>${(st.nextAppointments || []).map((a) => apptRow(a, list)).join("") + outLater.slice(0, 12).map((b) => outRow(b, true)).join("") || none("Nothing in the next week.")}${outLater.length > 12 ? `<p class="muted" style="margin:8px 0 0;font-size:12.5px">${outLater.length - 12} more on the <a href="#calendar">calendar</a>.</p>` : ""}</div>
+        <div class="card"><div class="card-head"><h2>Coming up</h2><span class="muted" style="font-size:12px">Next 7 days</span></div>${(st.nextAppointments || []).map((a) => apptRow(a, list)).join("") + outLater.slice(0, 12).map((b) => outRow(b, true)).join("") || none("Nothing in the next week.")}${outLater.length > 12 ? `<p class="muted" style="margin:8px 0 0;font-size:12.5px">${outLater.length - 12} more on the <a href="#calendar">calendar</a>.</p>` : ""}</div>`}
       </div>
       <div class="stack">
         <div class="card"><div class="card-head"><h2>Needs attention</h2></div>
-          ${attention.map(([t, to]) => `<div class="list-item"><span class="dot" style="background:var(--warn)"></span><span style="flex:1">${t}</span><a class="btn sm" href="#${to}">Open</a></div>`).join("") || none("Nothing needs attention.")}</div>
+          ${attention.map(([t, to]) => `<div class="list-item"><span class="dot" style="background:var(--warn)"></span><span style="flex:1">${t}</span>${navOk(to) ? `<a class="btn sm" href="#${to}">Open</a>` : ""}</div>`).join("") || none("Nothing needs attention.")}</div>${!st0 ? "" : `
         <div class="card"><div class="card-head"><h2>Classes this week</h2></div>
-          ${(st.upcoming || []).map((c) => `<div class="list-item"><span style="flex:1"><b>${esc(c.title)}</b><div class="muted" style="font-size:12px">${esc(c.dayName)} ${fmtTime(c.time)} · ${esc(c.coach || "")}</div></span><span class="pill">${c.capacity - c.spotsLeft}/${c.capacity} booked</span></div>`).join("") || none("No classes scheduled.")}</div>
+          ${(st.upcoming || []).map((c) => `<div class="list-item"><span style="flex:1"><b>${esc(c.title)}</b><div class="muted" style="font-size:12px">${esc(c.dayName)} ${fmtTime(c.time)} · ${esc(c.coach || "")}</div></span><span class="pill">${c.capacity - c.spotsLeft}/${c.capacity} booked</span></div>`).join("") || none("No classes scheduled.")}</div>`}
       </div>
     </div>`;
   };
@@ -385,15 +399,15 @@
 
   V.clients = async () => {
     const drawn = seq; // only the pass that reaches the page keeps its list for "show more" (a background load must not replace it)
-    const [list, emr] = await Promise.all([clients(), load("/emr"), content()]);
-    cache.waiting = emr.waiting.length; renderNav();
-    const patients = new Set(emr.patients.map((p) => p.id)), waiting = new Set(emr.waiting.map((p) => p.id));
+    const [list, emr] = await Promise.all([clients(), part("/emr", PHI), content()]);
+    cache.waiting = emr ? emr.waiting.length : 0; renderNav();
+    const patients = emr ? new Set(emr.patients.map((p) => p.id)) : null, waiting = emr ? new Set(emr.waiting.map((p) => p.id)) : null;
     const q = state.clientQ.toLowerCase().split(/\s+/).filter(Boolean);
     const shown = list.filter((c) => q.every((w) => `${c.name} ${c.email} ${c.phone}`.toLowerCase().includes(w)));
     if (drawn === seq || !cache.clientView) cache.clientView = { rows: shown, patients, waiting };
     return `
-    <div class="view-head"><div><h1>Clients</h1><p class="muted">${plural(list.length, "account")} · ${plural(patients.size, "active patient")} · ${waiting.size} waiting to be converted</p></div>
-    <div class="row"><input class="input" id="clientQ" style="width:240px" placeholder="Filter by name, email or phone" value="${esc(state.clientQ)}" aria-label="Filter clients"><button class="btn" data-act="exportAsk" id="exportBtn">${ui("download", 14)} <span id="exportLabel">${state.picked.size ? `Export ${state.picked.size} selected` : "Export all"}</span></button><button class="btn danger" data-act="trashPicked" id="trashPicked"${state.picked.size ? "" : " hidden"}>${ui("trash", 14)} <span id="trashPickedLabel">Delete ${state.picked.size} selected</span></button><button class="btn" data-act="trashOpen">${ui("restore", 14)} View trash</button></div></div>
+    <div class="view-head"><div><h1>Clients</h1><p class="muted">${plural(list.length, "account")}${emr ? ` · ${plural(patients.size, "active patient")} · ${waiting.size} waiting to be converted` : ""}</p></div>
+    <div class="row"><input class="input" id="clientQ" style="width:240px" placeholder="Filter by name, email or phone" value="${esc(state.clientQ)}" aria-label="Filter clients">${can("security") ? `<button class="btn" data-act="exportAsk" id="exportBtn">${ui("download", 14)} <span id="exportLabel">${state.picked.size ? `Export ${state.picked.size} selected` : "Export all"}</span></button>` : ""}<button class="btn danger" data-act="trashPicked" id="trashPicked"${state.picked.size ? "" : " hidden"}>${ui("trash", 14)} <span id="trashPickedLabel">Delete ${state.picked.size} selected</span></button><button class="btn" data-act="trashOpen">${ui("restore", 14)} View trash</button></div></div>
     <div class="card" style="padding:0"><div class="table-wrap"><table>
       <thead><tr><th style="width:34px"><input type="checkbox" data-change="pickAll" aria-label="Select everyone shown"${shown.length && shown.every((c) => state.picked.has(c.id)) ? " checked" : ""}></th><th>Client</th><th>Status</th><th>Documents</th><th>Next visit</th><th>Membership</th><th>Last sign-in</th></tr></thead>
       <tbody id="clientRows">${clientRows(shown.slice(0, ROWS_FIRST), patients, waiting) || noneRow(7, list.length ? "No one matches." : "No clients yet.")}</tbody>
@@ -422,7 +436,7 @@
       <td data-act="stop"><input type="checkbox" data-change="pickOne" data-id="${esc(c.id)}" aria-label="Select ${esc(c.name)}"${state.picked.has(c.id) ? " checked" : ""}></td>
       <td><div class="row" style="flex-wrap:nowrap">${avatar(c.name)}<div style="min-width:0"><b>${esc(c.name)}</b><div class="muted" style="font-size:12px;overflow-wrap:anywhere">${esc(c.email)}${c.phone ? " · " + esc(c.phone) : ""}</div></div></div></td>
       <td data-act="stop"><div class="seg" role="group" aria-label="Client type for ${esc(c.name)}" title="Subscription exempt clients get the full MD Fit app free, and their visits are not charged."><button type="button" data-act="typeSet" data-type="inpatient" data-id="${esc(c.id)}" data-name="${esc(c.name)}" aria-pressed="${c.clientType === "inpatient"}">Exempt</button><button type="button" data-act="typeSet" data-type="outpatient" data-id="${esc(c.id)}" data-name="${esc(c.name)}" aria-pressed="${c.clientType !== "inpatient"}">Standard</button></div>
-        <div class="muted" style="font-size:12px;margin-top:4px">${patients.has(c.id) ? "Active patient" : waiting.has(c.id) ? "Documents done, not yet converted" : "Member"}</div></td>
+        <div class="muted" style="font-size:12px;margin-top:4px">${!patients ? "" : patients.has(c.id) ? "Active patient" : waiting.has(c.id) ? "Documents done, not yet converted" : "Member"}</div></td>
       <td>${c.documents ? (c.documents.complete ? `<span class="pill ok">Complete</span>` : `${c.documents.done} of ${c.documents.total}`) : "—"}</td>
       <td class="num">${c.next ? `${fmtDate(c.next.date)} · ${fmtTime(c.next.time)}` : `<span class="muted">Not booked</span>`}</td>
       <td data-act="stop"><select class="input tier-pick${c.membership ? " on" : ""}" data-change="rowTier" data-id="${esc(c.id)}" data-name="${esc(c.name)}" aria-label="Membership type for ${esc(c.name)}">${tierOptions((c.membership && c.membership.tier) || "")}</select></td>
@@ -653,9 +667,9 @@
   };
 
   V.telehealth = async () => {
-    const [appts, settings, devices] = await Promise.all([load("/appointments?all=1"), load("/settings"), load("/telehealth/devices").catch(() => ({}))]); cache.devices = devices || {};
+    const [appts, settings, devices] = await Promise.all([load("/appointments?all=1"), part("/settings", "settings"), load("/telehealth/devices").catch(() => ({}))]); cache.devices = devices || {};
     const today = isoDay(new Date());
-    const room = (settings.booking && settings.booking.telehealthUrl) || "", own = location.origin + "/visit", usingOwn = room === own;
+    const room = (settings && settings.booking && settings.booking.telehealthUrl) || "", own = location.origin + "/visit", usingOwn = room === own;
     const video = appts.filter((a) => a.date >= today && a.status === "booked" && (a.meetingLink || /remote|video|online|call/i.test(`${a.typeId} ${a.typeName}`)));
     const vb = (id, act, icon, label, on) => `<button type="button" class="vbtn${on ? " on" : ""}" id="${id}" data-act="${act}" aria-pressed="${on ? "true" : "false"}" aria-label="${label}" title="${label}">${ui(icon, 18)}</button>`;
     return `<div class="view-head"><div><h1>Telehealth</h1><p class="muted">Built-in video · encrypted browser to browser · never recorded · nothing to install</p></div>
@@ -693,12 +707,12 @@
           <div class="list-item"><span style="flex:1;min-width:0">Pain check-in<div class="muted" style="font-size:12px" id="telePain"></div></span><button type="button" class="btn sm" id="telePainBtn" data-act="telePain" disabled>Send</button></div>
           <div class="list-item"><span style="flex:1">Encryption</span><span class="pill ok">DTLS-SRTP</span></div>
           <div class="list-item"><span style="flex:1">Recording</span><span class="pill">Never recorded</span></div></div>
-        <div class="card stack"><div class="card-head"><h2>Session link</h2><span class="pill ${usingOwn ? "ok" : "warn"}">${usingOwn ? "Sent with video bookings" : room ? "Another link is in use" : "Not sent yet"}</span></div>
+        <div class="card stack"><div class="card-head"><h2>Session link</h2>${settings ? `<span class="pill ${usingOwn ? "ok" : "warn"}">${usingOwn ? "Sent with video bookings" : room ? "Another link is in use" : "Not sent yet"}</span>` : ""}</div>
           <p class="muted" style="margin:0;font-size:13px;overflow-wrap:anywhere">${esc(own)}</p>
-          <p class="muted" style="margin:0;font-size:12px">Patients sign in, check their camera and wait here until you admit them. ${usingOwn ? "Every video booking is sent this link." : room ? `Video bookings are currently sent ${esc(room)}.` : "Video bookings are not sent a link yet."}</p>
-          ${usingOwn ? "" : `<div class="row"><button type="button" class="btn sm primary" data-act="useOwnRoom">Send this link with every video booking</button></div>`}
-          <details><summary class="muted" style="font-size:12px;cursor:pointer">Use a different video service instead</summary>
-            <form class="row" data-form="roomLink" style="align-items:flex-end;margin-top:8px"><div class="field" style="flex:1;min-width:200px;margin:0"><label for="roomUrl">Room link</label><input id="roomUrl" name="url" class="input" type="url" inputmode="url" placeholder="https://" value="${esc(usingOwn ? "" : room)}" maxlength="500"></div><button class="btn sm">Save</button></form></details></div>
+          <p class="muted" style="margin:0;font-size:12px">Patients sign in, check their camera and wait here until you admit them. ${!settings ? "Which link video bookings are sent is not available for your role: it is kept in Settings." : usingOwn ? "Every video booking is sent this link." : room ? `Video bookings are currently sent ${esc(room)}.` : "Video bookings are not sent a link yet."}</p>
+          ${usingOwn || !settings ? "" : `<div class="row"><button type="button" class="btn sm primary" data-act="useOwnRoom">Send this link with every video booking</button></div>`}
+          ${!settings ? "" : `<details><summary class="muted" style="font-size:12px;cursor:pointer">Use a different video service instead</summary>
+            <form class="row" data-form="roomLink" style="align-items:flex-end;margin-top:8px"><div class="field" style="flex:1;min-width:200px;margin:0"><label for="roomUrl">Room link</label><input id="roomUrl" name="url" class="input" type="url" inputmode="url" placeholder="https://" value="${esc(usingOwn ? "" : room)}" maxlength="500"></div><button class="btn sm">Save</button></form></details>`}</div>
       </div>
     </div>
     <div class="card" style="margin-top:16px"><div class="card-head"><h2>Upcoming video visits</h2></div>
@@ -864,16 +878,16 @@
   };
 
   V.fitness = async () => {
-    const pool = (await load("/emr/pool")).pool || [], by = {};
+    const got = await part("/emr/pool", PHI), pool = (got && got.pool) || [], by = {};
     EXERCISES.forEach((e) => { by[e.region] = (by[e.region] || 0) + 1; });
     return `<div class="view-head"><div><h1>Fitness</h1><p class="muted">${plural(EXERCISES.length, "video")} in the movement library</p></div></div>
-    <div class="grid g2"><div class="card"><div class="card-head"><h2>Movements you prescribe most</h2></div>${pool.map((m) => `<div class="list-item"><span style="flex:1"><b>${esc(m.name)}</b>${m.dose ? ` <span class="pill">${esc(m.dose)}</span>` : ""}</span><span class="muted">${plural(m.uses, "time")}</span></div>`).join("") || none("Nothing prescribed yet. Add movements from a client's chart, under Plans.")}</div>
+    <div class="grid g2"><div class="card"><div class="card-head"><h2>Movements you prescribe most</h2></div>${pool.map((m) => `<div class="list-item"><span style="flex:1"><b>${esc(m.name)}</b>${m.dose ? ` <span class="pill">${esc(m.dose)}</span>` : ""}</span><span class="muted">${plural(m.uses, "time")}</span></div>`).join("") || none(got ? "Nothing prescribed yet. Add movements from a client's chart, under Plans." : "What is prescribed is part of the patient records, so it is not available for your role.")}</div>
     <div class="card"><div class="card-head"><h2>Library by body region</h2></div>${Object.entries(by).sort((a, b) => b[1] - a[1]).map(([r, n]) => `<div class="list-item"><span style="flex:1">${esc(r)}</span><b class="num">${n}</b></div>`).join("") || none("No videos.")}</div></div>`;
   };
 
   V.payments = async () => {
-    const [p, members, s, c, list, gen] = await Promise.all([load("/payments"), load("/members"), load("/settings"), load("/content"), clients(), load("/invoices").catch(() => null)]);
-    cache.content = c; cache.settings = s; cache.gen = gen;
+    const [p, members, s, c, , gen] = await Promise.all([load("/payments"), part("/members", "clients"), part("/settings", "settings"), part("/content", "content"), partClients(), load("/invoices").catch(() => null)]);
+    if (c) cache.content = c; if (s) cache.settings = s; cache.gen = gen;
     const sent = (gen && gen.invoices) || [], unpaid = sent.filter((x) => x.status === "unpaid");
     const stPill = (x) => (x.status === "paid" ? `<span class="pill ok">Paid${x.method ? " · " + esc(x.method) : ""}</span>` : x.status === "refunded" ? `<span class="pill">Refunded</span>` : x.status === "void" ? `<span class="pill">Void</span>` : `<span class="pill warn">Unpaid</span>`) + (x.refunded && x.status === "paid" ? ` <span class="muted" style="font-size:12px">${usd(x.refunded)} refunded</span>` : "");
     const genRow = (x) => `<tr><td><b>${esc(x.number)}</b><div class="muted" style="font-size:12px">${when(x.createdAt)}</div></td>
@@ -881,19 +895,19 @@
       <td style="max-width:260px;overflow-wrap:anywhere">${esc(x.description)}</td><td class="num" style="text-align:right"><b>${usd(x.amount)}</b></td>
       <td>${stPill(x)}${x.afterVoid ? ` <span class="pill bad">paid after void</span>` : ""}<div class="muted" style="font-size:12px;margin-top:3px">${x.status === "paid" && x.paidAt ? "paid " + when(x.paidAt) : x.emailedAt ? "emailed " + when(x.emailedAt) : "not emailed"}</div></td>
       <td><div class="row" style="gap:6px;justify-content:flex-end">${x.status === "unpaid" ? `<button type="button" class="btn sm primary" data-act="igSend" data-id="${esc(x.id)}">${x.emailedAt ? "Send again" : "Send"}</button><button type="button" class="btn sm" data-act="igCopy" data-id="${esc(x.id)}">${ui("copy", 13)}Link</button><button type="button" class="btn sm" data-act="igPaid" data-id="${esc(x.id)}">Mark paid</button><button type="button" class="btn sm ghost" data-act="igVoid" data-id="${esc(x.id)}" aria-label="Void invoice ${esc(x.number)}">${ui("x", 13)}</button>` : ""}${refundBtn(x, "link")}${x.clientId ? `<button type="button" class="btn sm" data-act="chartBilling" data-id="${esc(x.clientId)}">Billing</button>` : ""}</div></td></tr>`;
-    return `<div class="view-head"><div><h1>Payments</h1><p class="muted">Self-pay only · card payments through Stripe · send an invoice from here, or write one on a client's chart</p></div><a class="btn" href="#settings">Services &amp; fees</a></div>
-    <div class="grid g3" style="margin-bottom:16px">${kpi("Card payments", p.enabled ? "On" : "Off", p.enabled ? "Stripe connected" : "Stripe not set up", p.enabled ? "ok" : "warn")}${kpi("Payment confirmations", p.webhook ? "On" : "Off", "from Stripe", p.webhook ? "ok" : "warn")}${kpi("Members and requests", members.length, "people")}</div>
+    return `<div class="view-head"><div><h1>Payments</h1><p class="muted">Self-pay only · card payments through Stripe · send an invoice from here, or write one on a client's chart</p></div>${navOk("settings") ? `<a class="btn" href="#settings">Services &amp; fees</a>` : ""}</div>
+    <div class="grid g3" style="margin-bottom:16px">${kpi("Card payments", p.enabled ? "On" : "Off", p.enabled ? "Stripe connected" : "Stripe not set up", p.enabled ? "ok" : "warn")}${kpi("Payment confirmations", p.webhook ? "On" : "Off", "from Stripe", p.webhook ? "ok" : "warn")}${members ? kpi("Members and requests", members.length, "people") : ""}</div>
     <div class="card" style="margin-bottom:16px" id="genCard"><div class="card-head"><div><h2>Invoices</h2><p class="muted" style="margin:2px 0 0;font-size:12.5px">Draft one invoice, send it to one person or many. Each gets their own, with a link to pay by card.${unpaid.length ? ` <b>${plural(unpaid.length, "invoice")} unpaid: ${usd(unpaid.reduce((n, x) => n + x.amount, 0))}.</b>` : ""}</p></div>
         <button type="button" class="btn primary" data-act="igNew">${ui("plus", 14)} New invoice</button></div>
       ${!gen ? none("Invoices could not be loaded.") : sent.length ? `<div class="table-wrap"><table><thead><tr><th>Invoice</th><th>To</th><th>For</th><th style="text-align:right">Amount</th><th>Status</th><th></th></tr></thead><tbody>${sent.slice(0, state.genAll ? 300 : 12).map(genRow).join("")}</tbody></table></div>${sent.length > 12 && !state.genAll ? `<p style="margin:10px 0 0"><button type="button" class="btn sm" data-act="igAll">Show all ${sent.length}</button></p>` : ""}` : none("No invoices sent from here yet.")}
       ${gen && !gen.payments ? `<p class="muted" style="margin:10px 0 0;font-size:12.5px">Card payments are not switched on, so invoices can be written and marked paid by hand but not emailed with a payment link.</p>` : gen && !gen.email ? `<p class="muted" style="margin:10px 0 0;font-size:12.5px">Email is not switched on for the server: create invoices and copy their links.</p>` : ""}</div>
-    <div class="grid g2"><div class="card"><div class="card-head"><h2>Members and requests</h2><span class="muted" style="font-size:12px">Change a membership type here</span></div>${members.map((m) => `<div class="list-item member-row"><span class="who"><b>${esc(m.name)}</b><div class="muted" style="font-size:12px;overflow-wrap:anywhere">${esc(m.email)}</div>${m.request && !m.membership ? `<div class="muted" style="font-size:12px">Asked for ${esc(tierName(m.request.tier))}</div>` : ""}</span><select class="input tier-pick${m.membership ? " on" : ""}" data-change="rowTier" data-id="${esc(m.id)}" data-name="${esc(m.name)}" aria-label="Membership type for ${esc(m.name)}">${tierOptions((m.membership && m.membership.tier) || "")}</select><button class="btn sm" data-act="chart" data-id="${esc(m.id)}">Chart</button></div>`).join("") || none("No members or requests yet.")}</div>
+    <div class="grid g2"><div class="card"><div class="card-head"><h2>Members and requests</h2><span class="muted" style="font-size:12px">Change a membership type here</span></div>${!members ? none("The member list is not available for your role.") : members.map((m) => `<div class="list-item member-row"><span class="who"><b>${esc(m.name)}</b><div class="muted" style="font-size:12px;overflow-wrap:anywhere">${esc(m.email)}</div>${m.request && !m.membership ? `<div class="muted" style="font-size:12px">Asked for ${esc(tierName(m.request.tier))}</div>` : ""}</span><select class="input tier-pick${m.membership ? " on" : ""}" data-change="rowTier" data-id="${esc(m.id)}" data-name="${esc(m.name)}" aria-label="Membership type for ${esc(m.name)}">${tierOptions((m.membership && m.membership.tier) || "")}</select><button class="btn sm" data-act="chart" data-id="${esc(m.id)}">Chart</button></div>`).join("") || none("No members or requests yet.")}</div>
     <div class="card stack"><div class="card-head"><h2>Membership types</h2><span class="muted" style="font-size:12px">What members can sign up for</span></div>
-      <form class="stack" data-form="setTiers">${(c.tiers || []).map((t, i) => `<div class="stack" style="border-bottom:1px solid var(--line);padding-bottom:12px"><div class="grid g2">${fld("tn" + i, "name" + i, "Name", t.name, { max: 60 })}${fld("tp" + i, "price" + i, "Price per month ($)", t.price, { type: "number", attrs: 'min="0" step="0.01"' })}</div>
+      ${!c ? none("Membership types are not available for your role.") : `<form class="stack" data-form="setTiers">${(c.tiers || []).map((t, i) => `<div class="stack" style="border-bottom:1px solid var(--line);padding-bottom:12px"><div class="grid g2">${fld("tn" + i, "name" + i, "Name", t.name, { max: 60 })}${fld("tp" + i, "price" + i, "Price per month ($)", t.price, { type: "number", attrs: 'min="0" step="0.01"' })}</div>
         <div class="grid g2">${fld("tm" + i, "meetings" + i, "1-on-1 calls per month", t.meetings || 0, { type: "number", attrs: 'min="0" max="31"' })}${fld("tl" + i, "minutes" + i, "Minutes per call", t.meetingMinutes || 0, { type: "number", attrs: 'min="0" max="180"' })}</div>
         ${fld("tk" + i, "perks" + i, "What it includes (one per line)", (t.perks || []).join("\n"), { area: true, rows: 3, max: 1300 })}
         <label class="row" for="td${i}" style="gap:8px;flex-wrap:nowrap"><input type="checkbox" id="td${i}" name="direct${i}"${t.directMessages ? " checked" : ""}><span>Can message Dr. Jared directly</span></label></div>`).join("")}
-      <div class="row"><button class="btn primary">Save membership types</button></div><p class="muted" style="margin:0;font-size:12.5px">A price change applies to people who join from now on. Current members keep what their card is already charged.</p></form></div></div>
+      <div class="row"><button class="btn primary">Save membership types</button></div><p class="muted" style="margin:0;font-size:12.5px">A price change applies to people who join from now on. Current members keep what their card is already charged.</p></form>`}</div></div>
     <div class="card" style="margin-top:16px"><div class="card-head"><h2>Clients with payments</h2></div>${(p.clients || []).map((x) => `<div class="list-item"><span style="flex:1"><b>${esc(x.name || x.email || "")}</b></span><button class="btn sm" data-act="chartBilling" data-id="${esc(x.id)}">Billing</button></div>`).join("") || none("No payments recorded.")}</div>`;
   };
 
@@ -917,18 +931,18 @@
       <div style="max-height:440px;overflow:auto">${rows.map((c) => `<div class="list-item">${avatar(c.name, 28)}<span style="flex:1;min-width:0"><b>${esc(c.name)}</b><div class="muted" style="font-size:12px;overflow-wrap:anywhere">${esc(c.email)} · joined ${when(c.createdAt)}${c.membership ? ` · ${esc(tierName(c.membership.tier))}${c.membership.until ? ", paid through " + esc(c.membership.until) : ""}` : ""}</div></span><button type="button" class="btn sm" data-act="chart" data-id="${esc(c.id)}">Chart</button></div>`).join("") || none("Nobody in this group.")}</div></div>`;
   }
   V.insights = async () => {
-    const tabs = `<div class="tabs" role="tablist">${[["analytics", "Analytics"], ["audit", "Audit"]].map(([t, l]) => `<button class="tab ${state.insTab === t ? "active" : ""}" role="tab" data-act="insTab" data-tab="${t}">${l}</button>`).join("")}</div>`;
-    if (state.insTab === "audit") {
+    const tabs = `<div class="tabs" role="tablist">${[["analytics", "Analytics"], ["audit", "Audit"]].filter(([t]) => t !== "audit" || can("security")).map(([t, l]) => `<button class="tab ${(state.insTab === "audit" && can("security") ? "audit" : "analytics") === t ? "active" : ""}" role="tab" data-act="insTab" data-tab="${t}">${l}</button>`).join("")}</div>`;
+    if (state.insTab === "audit" && can("security")) {
       const a = await load("/audit");
       return `<div class="view-head"><div><h1>Insights</h1><p class="muted">Every sign-in, every look at a record and every change</p></div><button class="btn primary" data-act="auditVerify">Verify the ledger</button></div>${tabs}
       <div class="card" style="margin-bottom:16px"><h2 style="margin-bottom:10px">Ledger check</h2><div id="auditResult">${none("Not checked in this session. Press Verify.")}</div></div>${ledgerTable(a)}`;
     }
     const days = state.insDays;
-    const [d, sa, mail, people, , rf, lg] = await Promise.all([load(`/analytics?days=${days}`), load(`/search-analytics?days=${days}`).catch(() => null), load("/email-log").catch(() => null), clients(), content(),
+    const [d, sa, mail, people0, , rf, lg] = await Promise.all([load(`/analytics?days=${days}`), load(`/search-analytics?days=${days}`).catch(() => null), load("/email-log").catch(() => null), partClients(), content(),
       load(`/referrals?days=${days}`).catch(() => null), load(`/logs/summary?days=${Math.min(days, 90)}`).catch(() => null)]);
     // Sign-ups and members, counted from the accounts themselves. "Paying" means a card subscription is running;
     // a membership set by hand (no card on a schedule) is counted separately so the two are never confused.
-    const since = Date.now() - days * 864e5, fresh = people.filter((c) => c.createdAt && Date.parse(c.createdAt) >= since).length;
+    const people = people0 || [], since = Date.now() - days * 864e5, fresh = people.filter((c) => c.createdAt && Date.parse(c.createdAt) >= since).length;
     const paying = people.filter((c) => c.membership && c.membership.stripeSubscriptionId), byHand = people.filter((c) => c.membership && !c.membership.stripeSubscriptionId);
     const tierRows = tiers().map((t) => ({ id: t.id, name: t.name, price: t.price, pay: paying.filter((c) => c.membership.tier === t.id).length, hand: byHand.filter((c) => c.membership.tier === t.id).length })).filter((r) => r.pay || r.hand);
     const monthly = tierRows.reduce((n, r) => n + r.pay * (Number(r.price) || 0), 0);
@@ -941,10 +955,10 @@
     const qRows = (list) => (list || []).slice(0, 10).map((r) => `<tr><td>${esc(r.q)}</td><td class="num">${esc(r.impressions)}</td><td class="num">${esc(r.clicks)}</td><td class="num">${esc(r.ctr)}%</td></tr>`).join("") || noneRow(4, "No data yet.");
     return `<div class="view-head"><div><h1>Insights</h1><p class="muted">Sign-ups, members, website traffic, search and alerts</p></div>
       <select class="input" style="width:auto" data-change="insDays" aria-label="Period">${[7, 30, 90].map((n) => `<option value="${n}"${n === days ? " selected" : ""}>Last ${n} days</option>`).join("")}</select></div>${tabs}
-    <div class="grid g4" style="margin-bottom:16px">${tile("all", "Total sign-ups", people.length, "accounts, all time")}${tile("fresh", `New sign-ups (${days}d)`, fresh, "accounts created")}${tile("paying", "Paying members", paying.length, "card subscription running", paying.length ? "ok" : "")}${tile("hand", "Members set by hand", byHand.length, "no card subscription")}</div>
+    ${!people0 ? `<div style="margin-bottom:16px">${notYours("Sign-ups and members")}</div>` : `<div class="grid g4" style="margin-bottom:16px">${tile("all", "Total sign-ups", people.length, "accounts, all time")}${tile("fresh", `New sign-ups (${days}d)`, fresh, "accounts created")}${tile("paying", "Paying members", paying.length, "card subscription running", paying.length ? "ok" : "")}${tile("hand", "Members set by hand", byHand.length, "no card subscription")}</div>
     <div id="insPeople">${insPeople()}</div>
     <div class="card" style="margin-bottom:16px"><div class="card-head"><h2>Members by type</h2><span class="muted" style="font-size:12px">${paying.length ? `About ${money(Math.round(monthly))} a month from card subscriptions, before discounts` : "No card subscriptions running"}</span></div>
-      ${tierRows.map((r) => `<div class="list-item"><span style="flex:1"><b>${esc(r.name)}</b></span><button type="button" class="pill pill-btn ${r.pay ? "ok" : ""}" data-act="insList" data-key="paying:${esc(r.id)}"${r.pay ? "" : " disabled"}>${r.pay} paying</button>${r.hand ? `<button type="button" class="pill pill-btn" data-act="insList" data-key="hand:${esc(r.id)}">${r.hand} set by hand</button>` : ""}</div>`).join("") || none("Nobody has a membership yet.")}</div>
+      ${tierRows.map((r) => `<div class="list-item"><span style="flex:1"><b>${esc(r.name)}</b></span><button type="button" class="pill pill-btn ${r.pay ? "ok" : ""}" data-act="insList" data-key="paying:${esc(r.id)}"${r.pay ? "" : " disabled"}>${r.pay} paying</button>${r.hand ? `<button type="button" class="pill pill-btn" data-act="insList" data-key="hand:${esc(r.id)}">${r.hand} set by hand</button>` : ""}</div>`).join("") || none("Nobody has a membership yet.")}</div>`}
     <div class="grid g4" style="margin-bottom:16px">${kpi("Views today", s.todayViews, "page views")}${kpi("Visitors today", s.todayUnique, "people")}${kpi(`Views (${d.rangeDays || days}d)`, s.totalViews, "page views")}${kpi(`Visitors (${d.rangeDays || days}d)`, s.totalUnique, "people")}</div>
     <div class="grid g2">
       <div class="card" style="padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>By day</h2></div><div class="table-wrap"><table><thead><tr><th>Date</th><th class="num">Views</th><th class="num">Visitors</th></tr></thead><tbody>${(d.days || []).slice().reverse().slice(0, 31).map((r) => `<tr><td>${fmtDate(r.date)}</td><td class="num">${r.views}</td><td class="num">${r.unique}</td></tr>`).join("") || noneRow(3, "No data yet.")}</tbody></table></div></div>
@@ -1418,12 +1432,12 @@
   };
 
   V.security = async () => {
-    const [a, mfa] = await Promise.all([load("/audit"), load("/mfa")]);
+    const [a, mfa] = await Promise.all([load("/audit"), part("/mfa", "owner")]);
     return `<div class="view-head"><div><h1>Security & audit</h1><p class="muted">Every sign-in, every look at a record and every change, in a ledger that detects tampering</p></div><button class="btn primary" data-act="auditVerify">Verify the ledger</button></div>
     <div class="grid g2" style="margin-bottom:16px">
       <div class="card"><h2 style="margin-bottom:10px">Ledger check</h2><div id="auditResult">${none("Not checked in this session. Press Verify.")}</div></div>
       <div class="card"><h2 style="margin-bottom:10px">Sign-in</h2>
-        <div class="list-item"><span style="flex:1">Two-step sign-in by email code<div class="muted" style="font-size:12px">${mfa.forcedOff ? "Switched off by a server setting." : mfa.emailReady ? `The code goes to ${esc(mfa.sendsTo || "your email")}.` : "Email is not connected on the server, so codes cannot be sent."}</div></span><span class="pill ${mfa.enabled ? "ok" : "warn"}">${mfa.enabled ? "On" : "Off"}</span>${mfa.forcedOff ? "" : `<button class="btn sm ${mfa.enabled ? "" : "primary"}" data-act="${mfa.enabled ? "mfaOff" : "mfaOn"}">${mfa.enabled ? "Turn off" : "Turn on"}</button>`}</div>
+        ${!mfa ? `<div class="list-item"><span style="flex:1">Two-step sign-in by email code<div class="muted" style="font-size:12px">Switched on and off by the practice owner.</div></span></div>` : `<div class="list-item"><span style="flex:1">Two-step sign-in by email code<div class="muted" style="font-size:12px">${mfa.forcedOff ? "Switched off by a server setting." : mfa.emailReady ? `The code goes to ${esc(mfa.sendsTo || "your email")}.` : "Email is not connected on the server, so codes cannot be sent."}</div></span><span class="pill ${mfa.enabled ? "ok" : "warn"}">${mfa.enabled ? "On" : "Off"}</span>${mfa.forcedOff ? "" : `<button class="btn sm ${mfa.enabled ? "" : "primary"}" data-act="${mfa.enabled ? "mfaOff" : "mfaOn"}">${mfa.enabled ? "Turn off" : "Turn on"}</button>`}</div>`}
         <div class="list-item"><span style="flex:1">Signs out when idle</span><span class="pill ok">15 minutes</span></div></div>
     </div>
     ${ledgerTable(a)}`;
@@ -1432,7 +1446,7 @@
   // Hours are typed the way they are said: "09:00-12:00, 13:00-17:00". Blank means closed that day.
   const hoursText = (day) => (day || []).map((w) => `${w[0]}-${w[1]}`).join(", ");
   V.settings = async () => {
-    const [s, cal, me] = await Promise.all([load("/settings"), load("/calsync"), load("/me")]);
+    const [s, cal, me] = await Promise.all([load("/settings"), part("/calsync", "scheduling"), load("/me")]);
     cache.settings = s;
     const b = s.business || {}, sc = s.scheduling || {}, pl = s.plans || {}, bk = s.booking || {};
     return `<div class="view-head"><div><h1>Settings</h1><p class="muted">Practice details, booking hours, visit types, fees and connections</p></div><a class="btn" href="#security">Sign-in security</a></div>
@@ -1463,12 +1477,12 @@
         <div class="grid g2">${fld("plE12", "ext12", "Spread over 12 months: % added", pl.ext12, { type: "number", attrs: 'min="0" max="50"' })}${fld("plE24", "ext24", "Spread over 24 months: % added", pl.ext24, { type: "number", attrs: 'min="0" max="50"' })}</div>
         <div class="row"><button class="btn primary">Save pricing</button></div></form></div>
       <div class="card stack"><h2>Calendars and video</h2>
-        <div class="list-item"><span style="flex:1">Google Calendar${cal.serviceAccountEmail && cal.google !== "off" ? `<div class="muted" style="font-size:12px;overflow-wrap:anywhere">Shared with ${esc(cal.serviceAccountEmail)}${cal.calendars > 1 ? ` · ${cal.calendars} calendars` : ""}</div>` : ""}</span><span class="pill ${cal.google !== "off" ? "ok" : ""}">${cal.google !== "off" ? "Connected" : "Off"}</span></div>
-        <div class="list-item"><span style="flex:1">SimplePractice calendar${cal.simplePracticeUrl ? `<div class="muted" style="font-size:12px;overflow-wrap:anywhere">${esc(cal.simplePracticeUrl)}</div>` : ""}</span><span class="pill ${cal.simplepractice !== "off" ? "ok" : ""}">${cal.simplepractice !== "off" ? "Connected" : "Off"}</span></div>
+        ${!cal ? `<p class="muted" style="margin:0">The calendar connections are not available for your role.</p>` : `<div class="list-item"><span style="flex:1">Google Calendar${cal.serviceAccountEmail && cal.google !== "off" ? `<div class="muted" style="font-size:12px;overflow-wrap:anywhere">Shared with ${esc(cal.serviceAccountEmail)}${cal.calendars > 1 ? ` · ${cal.calendars} calendars` : ""}</div>` : ""}</span><span class="pill ${cal.google !== "off" ? "ok" : ""}">${cal.google !== "off" ? "Connected" : "Off"}</span></div>
+        <div class="list-item"><span style="flex:1">SimplePractice calendar${cal.simplePracticeUrl ? `<div class="muted" style="font-size:12px;overflow-wrap:anywhere">${esc(cal.simplePracticeUrl)}</div>` : ""}</span><span class="pill ${cal.simplepractice !== "off" ? "ok" : ""}">${cal.simplepractice !== "off" ? "Connected" : "Off"}</span></div>`}
         <div class="list-item"><span style="flex:1">Email alerts to you</span><span class="pill ${me.emailNotifications ? "ok" : ""}">${me.emailNotifications ? "On" : "Off"}</span></div>
-        ${cal.lastError ? `<p class="muted" style="margin:0">Last calendar problem: ${esc(cal.lastError)}</p>` : ""}
-        <form class="stack" data-form="setIcs">${fld("icsUrl", "icsUrl", "SimplePractice calendar link (paste a new one to change it; blank disconnects)", "", { type: "url", max: 500, attrs: 'placeholder="https://… or webcal://…" autocomplete="off"' })}
-          <div class="row"><button class="btn">Save calendar link</button><button type="button" class="btn" data-act="calTest">Check the calendars now</button></div><div id="calTestOut" class="muted" style="font-size:12.5px"></div></form>
+        ${cal && cal.lastError ? `<p class="muted" style="margin:0">Last calendar problem: ${esc(cal.lastError)}</p>` : ""}
+        ${!cal ? "" : `<form class="stack" data-form="setIcs">${fld("icsUrl", "icsUrl", "SimplePractice calendar link (paste a new one to change it; blank disconnects)", "", { type: "url", max: 500, attrs: 'placeholder="https://… or webcal://…" autocomplete="off"' })}
+          <div class="row"><button class="btn">Save calendar link</button><button type="button" class="btn" data-act="calTest">Check the calendars now</button></div><div id="calTestOut" class="muted" style="font-size:12.5px"></div></form>`}
         <form class="stack" data-form="setVideo" style="border-top:1px solid var(--line);padding-top:12px">${fld("tvUrl", "telehealthUrl", "Outside video room link (optional; the built-in Telehealth room needs none)", bk.telehealthUrl, { type: "url", max: 300, attrs: 'placeholder="https://"' })}
           <div class="row"><button class="btn">Save video link</button></div></form></div>
     </div>`;
@@ -1511,12 +1525,12 @@
   }
 
   V.booking = async () => {
-    const s = await load("/settings"), url = location.origin + "/book";
+    const s = await part("/settings", "settings"), url = location.origin + "/book";
     return `<div class="view-head"><div><h1>Booking page</h1><p class="muted">The public page where people book with you</p></div><a class="btn primary" href="/book" target="_blank" rel="noopener">Open booking page</a></div>
     <div class="grid g2"><div class="card"><h2 style="margin-bottom:10px">Booking link</h2><div class="row"><input class="input" id="bookUrl" readonly value="${esc(url)}" aria-label="Booking link" style="flex:1"><button class="btn" data-act="copyBook">Copy</button></div>${b_note(s)}</div>
-    <div class="card"><div class="card-head"><h2>What people can book</h2><a class="btn sm" href="#settings">Hours and fees</a></div>${(s.services || []).map((x) => `<div class="list-item"><span style="flex:1"><b>${esc(x.name)}</b><div class="muted" style="font-size:12px">${esc(x.unit || "")}</div></span><b class="num">${money(x.rate)}</b></div>`).join("") || none("No services.")}</div></div>`;
+    <div class="card"><div class="card-head"><h2>What people can book</h2>${navOk("settings") ? `<a class="btn sm" href="#settings">Hours and fees</a>` : ""}</div>${!s ? none("The list of services is not available for your role.") : (s.services || []).map((x) => `<div class="list-item"><span style="flex:1"><b>${esc(x.name)}</b><div class="muted" style="font-size:12px">${esc(x.unit || "")}</div></span><b class="num">${money(x.rate)}</b></div>`).join("") || none("No services.")}</div></div>`;
   };
-  const b_note = (s) => s.business && s.business.bookingNote ? `<p class="muted" style="margin:10px 0 0">${esc(s.business.bookingNote)}</p>` : "";
+  const b_note = (s) => s && s.business && s.business.bookingNote ? `<p class="muted" style="margin:10px 0 0">${esc(s.business.bookingNote)}</p>` : "";
 
   // ---------------------------------------------------------------- actions
   const reChart = async () => { const id = state.chartClient; const [d, c] = await Promise.all([get(`/emr/${id}`), get(`/clients/${id}`)]); cache.chart = { ...cache.chart, d, c }; const box = $("#chartBody"); if (box) box.innerHTML = chartTab(); };
@@ -1838,7 +1852,7 @@
       f.elements.current.value = f.elements.password.value = f.elements.confirm.value = "";
       try { cache.me = await get("/me"); } catch {}
       mustChange = !!(cache.me && cache.me.mustChangePassword);
-      if (!mustChange) { $("#qa").hidden = false; $("#globalSearch").disabled = false; closeModal(); toast("Password changed."); await render(); }
+      if (!mustChange) { $("#qa").hidden = !qaMine().length; $("#globalSearch").disabled = !can("clients"); closeModal(); toast("Password changed."); await render(); }
     },
     apptSave: async (f) => { await api("PATCH", `/api/admin/appointments/${f.dataset.id}`, { status: f.status.value, adminNotes: f.adminNotes.value }); cache.appts = null; closeModal(); toast("Appointment updated."); render(); }
   };
@@ -1858,7 +1872,7 @@
   // After a change: fresh data, the same tab, and the alerts and tags in the header
   const chartRedo = async () => { await reChart(); const p = $("#chartPills"); if (p) p.innerHTML = chartPills(); chartAfter(); };
   async function setMembership(id, tier, until, name) {
-    const cur = (cache.clients || []).find((x) => x.id === id), was = cur && cur.membership;
+    const cur = (cache.clients || await clients()).find((x) => x.id === id), was = cur && cur.membership;
     if (was && was.stripeSubscriptionId && !confirm(`${name} pays for this membership by card each month. Changing it here changes what they can use, not what their card is charged. Continue?`)) return false;
     await api("PUT", `/api/admin/clients/${id}/membership`, tier ? { tier, until: until || "" } : { tier: "" });
     cache.clients = null; return tier ? `${name}: ${tierName(tier)}.` : `${name}: membership ended.`;
@@ -2021,7 +2035,7 @@
       pair.forEach((b) => b.setAttribute("aria-pressed", String(b === el)));
       // one person's changes go to the server in the order they were pressed
       const turn = typeTurn[id] = (typeTurn[id] || Promise.resolve()).catch(() => {}).then(() => api("PUT", `/api/admin/clients/${id}/type`, { type }));
-      try { await turn; cache.clients = null; toast(`${String(el.dataset.name).split(" ")[0]} is now ${type === "inpatient" ? "subscription exempt: visits are not charged" : "standard"}.`); }
+      try { await turn; const c = (cache.clients || []).find((x) => x.id === id); if (c) c.clientType = type; toast(`${String(el.dataset.name).split(" ")[0]} is now ${type === "inpatient" ? "subscription exempt: visits are not charged" : "standard"}.`); }
       catch (err) { if (typeTurn[id] === turn) pair.forEach((b, i) => b.setAttribute("aria-pressed", before[i])); throw err; }
     },
     // Forms & intake: ask someone to finish and sign their new patient documents (app notice, push and email)
@@ -2359,7 +2373,7 @@
       const l = $("#exportLabel"); if (l) l.textContent = state.picked.size ? `Export ${state.picked.size} selected` : "Export all";
       const tp = $("#trashPicked"), tl = $("#trashPickedLabel"); if (tp) { tp.hidden = !state.picked.size; if (tl) tl.textContent = `Delete ${state.picked.size} selected`; }
     }
-    if (e.target.matches("[data-change=rowTier]")) guard(async (el) => { const was = ((cache.clients || []).find((x) => x.id === el.dataset.id) || {}).membership; const said = await setMembership(el.dataset.id, el.value, was && was.tier === el.value ? was.until : "", el.dataset.name); if (said) { await clients(true); toast(said); } else el.value = (was && was.tier) || ""; el.classList.toggle("on", !!el.value); })(e.target);
+    if (e.target.matches("[data-change=rowTier]")) guard(async (el) => { const was = ((cache.clients || await clients()).find((x) => x.id === el.dataset.id) || {}).membership; const said = await setMembership(el.dataset.id, el.value, was && was.tier === el.value ? was.until : "", el.dataset.name); if (said) { await clients(true); toast(said); } else el.value = (was && was.tier) || ""; el.classList.toggle("on", !!el.value); })(e.target);
     if (e.target.matches("[data-change=chartTier]")) guard(async (el) => { const was = cache.chart.c.membership, said = await setMembership(cid(), el.value, "", firstOf()); if (said) { await render(); toast(said); } else el.value = (was && was.tier) || ""; })(e.target);
     if (e.target.matches("[data-change=chartType]")) guard(async (el) => { await api("PUT", `/api/admin/clients/${cid()}/type`, { type: el.value }); cache.clients = null; const type = el.value; await render(); toast(`${firstOf()} is now ${type === "inpatient" ? "subscription exempt: visits are not charged" : "standard"}.`); })(e.target);
     if (e.target.matches("[data-change=teleScribe]")) teleScribe(e.target.checked);
@@ -2916,10 +2930,12 @@
     // The dot on the refresh button: green while the live connection is up, amber while it is not. When it comes
     // back after being down, anything that happened meanwhile was missed, so what is in memory is thrown away and
     // the screen is redrawn from the server (never underneath something being typed).
-    let wasDown = false;
+    let wasDown = false, liveSaid = "";
     document.addEventListener("mdfit:disconnected", () => { wasDown = true; liveDot(); });
     document.addEventListener("mdfit:connected", () => { liveDot(); if (wasDown && token) { wasDown = false; forget(); changed(); MDFitRT.emit("tele_list"); } });
-    document.addEventListener("mdfit:rt-error", (e) => { liveDot(); if (token && /token|admin|log in/i.test((e.detail && e.detail.message) || "")) toast("The live connection was refused. Sign out and in again to restore live updates."); });
+    document.addEventListener("mdfit:rt-error", (e) => { liveDot(); if (!token || liveSaid === token || !/token|admin|log in/i.test((e.detail && e.detail.message) || "")) return; liveSaid = token;
+      // The owner's sign-in is always accepted, so a refusal means it has gone stale. For staff it can mean live updates are not open to staff sign-ins on this server.
+      load("/me").catch(() => null).then((me) => { if (token) toast(me && me.isOwner ? "The live connection was refused. Sign out and in again to restore live updates." : "Live updates are not running for this sign-in. The screens still load: press Refresh to see what is new."); }); });
     MDFitRT.on("tele_invited", (ev) => { if (ev) toast(`${firstName(ev.name || "They")} was invited: ${ev.emailed ? "emailed and " : ""}notified in the app. They are let in when they arrive.`); });
     MDFitRT.on("calendar_changed", () => { forget(); if (token && route() === "calendar" && !$("#modalBack").classList.contains("open")) render(); });
     setInterval(() => { if (token && route() === "messages" && !document.hidden && !MDFitRT.connected() && !$("#modalBack").classList.contains("open")) { forget(); refreshMessages(); } }, 15000);
@@ -2937,14 +2953,14 @@
     if (cache.me) $("#whoami").textContent = cache.me.email;
     { // Manager and Developer staff (and the owner) can step across to their console without signing in again
       const roles = (cache.me && (cache.me.roles || [cache.me.role])) || [], owner = !!(cache.me && cache.me.isOwner);
-      const links = [[["manager"], "/manager", "mdfit_manager", "Manager"], [["manager", "developer"], "/dev", "mdfit_dev", "Developer"]].filter(([need]) => owner || need.some((r) => roles.includes(r)));
+      const links = [[["manager"], "/manager", "mdfit_manager", "Manager"], [["manager", "developer"], "/dev", "mdfit_dev", "Developer"]].filter(([need, , key]) => owner || (need.some((r) => roles.includes(r)) && (key !== "mdfit_manager" || can("partner"))));
       const full = owner || roles.includes("admin");   // Admin is the whole workspace; Client portal is its client-management screens
       const box = $("#portals");
       if (box) { box.innerHTML = links.length ? `<nav class="pseg" aria-label="Switch console">${full ? `<a href="#dashboard" data-side="admin">Admin</a>` : ""}${links.map(([, href, key, label]) => `<a href="${href}" data-portal="${key}">${label}</a>`).join("")}<a href="#clients" data-side="cmp"${full ? "" : " data-only"}>Client portal</a></nav>` : ""; box.hidden = !links.length; markSide(); }
     }
     mustChange = !!(cache.me && cache.me.mustChangePassword);
     if (mustChange) { renderGate(); return; }
-    $("#qa").hidden = false; $("#globalSearch").disabled = false;
+    $("#qa").hidden = !qaMine().length; $("#globalSearch").disabled = !can("clients");
     render().then(() => setTimeout(() => { if (token && tk === token) { warmedAt = Date.now(); warm(["clients", "calendar", "dashboard", "messages", "chart", "telehealth", "notes", "leads", "forms", "payments", ...WARM.filter((r) => !["clients", "calendar", "dashboard", "leads", "forms", "payments"].includes(r)), "economics", "guide"]); } }, 600));
   }
   window.addEventListener("pointerdown", () => { lastTouch = Date.now(); }, true);
@@ -3095,6 +3111,8 @@
     ["program", "Program", "programs", "Add one on their chart. They are notified in the app and by email"],
     ["message", "Message", "messages", "Opens your conversation. They are notified when you send"]
   ];
+  const QA_NEED = { invoice: "payments", tele: "telehealth", book: "chart", note: "notes", forms: "forms", program: "chart", message: "messages" }; // the screen each one lands in
+  const qaMine = () => QA.filter(([k]) => navOk(QA_NEED[k]) && can("clients"));
   const QA_DOCK = new Set(["messages", "telehealth"]); // where a button in the corner would sit on the box to write in or the visit's controls
   const qa = { open: false, act: "", other: false, list: [], at: 0 };
   const qaHas = (words) => (c) => words.every((w) => `${c.name} ${c.email} ${c.phone || ""}`.toLowerCase().includes(w));
@@ -3147,7 +3165,7 @@
     } else {
       const who = qaWho();
       m.innerHTML = `<div class="qa-head" id="qaFor">${who ? `<span class="who">For <b>${esc(who.name)}</b></span><button type="button" class="btn sm" data-act="qaOther">Someone else</button>` : `<b>Quick actions</b><span class="muted" style="font-size:12px">Pick one, then the client</span>`}</div>
-        ${QA.map(([k, label, icon, sub]) => `<button type="button" class="qa-row" data-act="qaDo" data-k="${k}"><svg viewBox="0 0 24 24" aria-hidden="true">${ICON[icon]}</svg><span><b>${label}</b><small>${sub}</small></span></button>`).join("")}`;
+        ${qaMine().map(([k, label, icon, sub]) => `<button type="button" class="qa-row" data-act="qaDo" data-k="${k}"><svg viewBox="0 0 24 24" aria-hidden="true">${ICON[icon]}</svg><span><b>${label}</b><small>${sub}</small></span></button>`).join("")}`;
       if (focus !== false) { const first = m.querySelector(".qa-row"); if (first) first.focus(); }
     }
     qaPlace();

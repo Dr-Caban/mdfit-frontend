@@ -354,6 +354,9 @@ footer{font-size:12.5px;color:var(--muted);text-align:center;margin-top:18px}
   // Who this copy is for, from the link. Plain text only, never stored.
   const Q = new URLSearchParams(location.search);
   const clean = (v, n) => String(v || "").replace(/[^\p{L}\p{N} .,&'\u2019-]/gu, "").replace(/\s+/g, " ").trim().slice(0, n);
+  // The names are text wherever they are shown: where one sits inside markup it is written out as text first, so
+  // "&copy" or "&lt" from a link stays those letters and is never read as an entity.
+  const asText = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
   const FOR = window.MDFIT_PROPOSAL || {}; // set only in a copy prepared for one partner (scripts/referral-for.js)
   const PARTNER = clean(Q.get("partner") || FOR.partner, 48), CONTACT = clean(Q.get("contact") || FOR.contact, 32);
   const num = (k, lo, hi) => { const v = Number(Q.get(k)); return Q.get(k) !== null && Number.isFinite(v) && v >= lo && v <= hi ? v : null; };
@@ -428,7 +431,7 @@ footer{font-size:12.5px;color:var(--muted);text-align:center;margin-top:18px}
     $("#terms").innerHTML = [
       ["Your share", `${rate}% of each subscription payment made by a member you referred, on the plans listed above as earning.`],
       ["It recurs", "You are paid on every monthly payment for as long as that member stays subscribed. There is no cut-off after the first month or the first year."],
-      ...(CONTACT ? [["Account holder", `${CONTACT} holds the partner account${PARTNER ? " for " + PARTNER : ""}: the link, the code and the ledger sit under that sign-in. Payouts go to the bank account the partner connects in Stripe. The partner can name someone else in writing.`]] : []),
+      ...(CONTACT ? [["Account holder", `${asText(CONTACT)} holds the partner account${PARTNER ? " for " + asText(PARTNER) : ""}: the link, the code and the ledger sit under that sign-in. Payouts go to the bank account the partner connects in Stripe. The partner can name someone else in writing.`]] : []),
       ["How a referral is counted", "A person is yours when they sign up with your link or your code. The first partner whose link they used keeps them."],
       ["What you are paid on", "The amount the member actually paid. Discounts, free months and Accountability's daily credits reduce it; sales tax is not part of it."],
       ["Refunds", `A payment is held for ${TERMS.holdDays} days before it counts. If it is refunded or disputed, the share for that payment is taken back.`],
