@@ -34,3 +34,7 @@
 /* While the tour runs there is one Solomon talking: his everyday bubble is quiet, and after the first beat the cloud steps aside */
 body.gt-on #mg-tag { display: none !important; }
 body.gt-on.gt-nocloud #mg-btn { opacity: 0; pointer-events: none; }
+/* Stepped aside: the member is using something they chose; only the way back to the tour (and out of it) is shown */
+#gt .gt-resume { display: none; position: fixed; left: 12px; top: calc(8px + env(safe-area-inset-top, 0px)); min-height: 32px; padding: 6px 14px; border-radius: 999px; border: 1px solid #c9a45c; background: #c9a45c; color: #0c1b30; font: 700 13px/1 inherit; cursor: pointer; box-shadow: 0 6px 18px rgba(0, 0, 0, .35); }
+#gt.gt-paused .gt-resume { display: inline-block; }
+#gt.gt-paused .gt-hole, #gt.gt-paused .gt-b, #gt.gt-paused .gt-say, #gt.gt-paused .gt-bar, #gt.gt-paused .gt-snd { display: none !important; }

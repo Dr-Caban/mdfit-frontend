@@ -13,10 +13,14 @@
   const reduce = () => { try { return matchMedia("(prefers-reduced-motion: reduce)").matches; } catch { return false; } };
   const CLOUD = '<svg viewBox="0 0 56 44" aria-hidden="true"><path d="M14 38h30a10 10 0 0 0 1.5-19.9A14 14 0 0 0 18.5 14 12 12 0 0 0 14 38z" fill="#fffdf7" stroke="#c9a45c" stroke-width="3"/><circle cx="22" cy="28" r="2.2" fill="#c9a45c"/><circle cx="29" cy="28" r="2.2" fill="#c9a45c"/><circle cx="36" cy="28" r="2.2" fill="#c9a45c"/></svg>';
 
+  // Everything that is lit can be used: nothing on the screen is ever shown bright and then refused.
   // snd: the line spoken aloud (the first beat has none: a browser plays no sound before the first tap).
-  // free: the member may use the lit thing (type in it) or tap Next. when: a beat shown only if that holds.
-  // One beat each. tap: the member taps the lit thing and `until` says when that has happened (a tap inside it when
-  // there is no `until`). read: nothing to tap, Next moves on. A beat whose target is not on the screen is passed over.
+  // A plain beat is done when `until` says so (a tap inside the lit thing when there is no `until`).
+  // free: the member may use the lit thing or tap Next; `used` says which taps inside it take them somewhere of their
+  // own choosing. The tour then steps aside (no dim, nothing blocked) and leaves one button, "Continue the tour",
+  // for when they are done there. when: a beat shown only if that holds.
+  // A beat whose target is not on the screen is passed over.
+  const optTap = (e) => !!(e.target.closest && e.target.closest(".mg-opt"));
   function beats(name) {
     return [
       { say: `Hi${name ? " " + name : ""}, I’m Solomon. Tap me to start.`, find: () => $("#mg-btn"), pad: 10, round: 40,
@@ -24,24 +28,24 @@
         after: () => { try { document.dispatchEvent(new CustomEvent("mdfit:guide-asked")); } catch {} } }, // meeting him is the first stop on the road
       { snd: "02", free: true, say: "I’m with you on every screen. Any question, type it here. Try one now, or tap Next.", find: () => { const i = $("#mg-in"); return i && (i.closest("form") || i.parentElement); }, pad: 4, round: 16,
         until: (t) => t.asked },
-      { snd: "02b", read: true, when: (t) => t.asked, say: "That’s all it takes. Ask me like that from any screen.", find: () => $("#mg-log"), pad: 2, round: 16 },
-      { snd: "03", read: true, say: "Or tap one of these and I’ll take you there.", find: () => [...document.querySelectorAll("#mg-log .mg-opts")].filter(seen).pop(), pad: 6, round: 16,
-        after: () => { if (guide().shut) guide().shut(); } },
-      { snd: "04", say: "First, where it hurts. The Pain Tool lives under Train. Tap Train.", find: () => first('.tabbar [data-tab="generate"]'), pad: 2, round: 14,
+      { snd: "02b", free: true, when: (t) => t.asked, say: "That’s all it takes. Ask me like that from any screen.", find: () => $("#mg-log"), pad: 2, round: 16, used: optTap },
+      { snd: "03", free: true, say: "Or tap one of these and I’ll take you there. Try one, or tap Next.", find: () => [...document.querySelectorAll("#mg-log .mg-opts")].filter(seen).pop(), pad: 6, round: 16,
+        used: optTap, after: () => { if (guide().shut) guide().shut(); } },
+      { snd: "04", say: "First, where it hurts. The Pain Tool lives under Train. Tap Train.", before: shutDialogs, find: () => first('.tabbar [data-tab="generate"]'), pad: 2, round: 14,
         until: () => ["view-generate", "view-videos", "view-pain", "view-programs"].some(open) },
       { snd: "05", say: "This is the Pain Tool. Tap it.", find: () => first('.view:not([hidden]) [data-goto="pain"]'), pad: 4, round: 22, until: () => open("view-pain") },
       { snd: "06", say: "Tap the body where it hurts.", find: () => first("#view-pain .pm-regions") && (first("#view-pain .pm-regions").closest("svg") || first("#view-pain .pm-regions")), lift: 210, pad: 4, round: 22,
         until: () => !!$("dialog.pm-sheet[open]") },
       { snd: "07", say: "Pick the picture that looks like your pain.", find: () => first("dialog.pm-sheet[open] .pm-choices"), pad: 2, round: 18, until: () => !!$("dialog.tk-dialog[open]") },
-      { snd: "08", read: true, say: "These are your movements. Start plays the videos. Add puts them on your road. They’ll be here when you want them.",
-        find: () => [first("dialog.tk-dialog[open] .tk-start"), first("dialog.tk-dialog[open] .tk-add")], pad: 7, round: 16, after: shutDialogs },
+      { snd: "08", say: "These are your movements. If this is your pain, tap Add to my road and they’ll be waiting for you. If not, skip this step.",
+        find: () => first("dialog.tk-dialog[open] .tk-add"), pad: 7, round: 16, until: () => { const b = $("dialog.tk-dialog[open] .tk-add"); return !!b && b.classList.contains("on"); }, settle: 1500, after: shutDialogs },
       { snd: "09", say: "This builds a workout for you in a few taps. Tap Build a workout.", before: () => { shutDialogs(); location.hash = "#generate"; setTimeout(() => window.scrollTo(0, 0), 60); },
         find: () => first("#view-generate [data-build-workout]"), pad: 6, round: 16, settle: 900 },
       { snd: "10", say: "One more place, then your road. Tap Profile.", before: shutDialogs, find: () => first('.tabbar [data-tab="profile"]'), pad: 2, round: 14, until: () => open("view-profile") },
-      { snd: "11", read: true, say: "Becoming a patient? Your documents live here.", find: () => first("#view-profile #p-patient"), pad: 4, round: 18 },
-      { snd: "12", read: true, say: "Change how the app looks here. Refer a friend is right below it.",
+      { snd: "11", free: true, say: "Becoming a patient? Your documents live here. Start them now, or tap Next.", find: () => first("#view-profile #p-patient"), pad: 4, round: 18, used: () => true },
+      { snd: "12", free: true, before: shutDialogs, say: "Change how the app looks here. Open it to see, or tap Next. Refer a friend is right below it.",
         find: () => { const h = [...document.querySelectorAll("#view-profile .card-head")].find((x) => seen(x) && /^make it yours/i.test(x.textContent.trim())); return h && (h.closest(".card") || h); }, pad: 2, round: 16 },
-      { snd: "13", say: "This is your road. One stone a day. Tap the stone and we begin.", before: () => { location.hash = "#home"; },
+      { snd: "13", say: "This is your road. One stone a day. Tap the stone and we begin.", before: () => { shutDialogs(); location.hash = "#home"; },
         find: () => first("#cave-card .cv-stop.now .cv-ore") || first("#cave-card .cv-stop.today .cv-ore"), pad: 12, round: 60, last: true },
     ];
   }
@@ -60,12 +64,12 @@
     const steps = beats(String(o.name || "").split(" ")[0].slice(0, 20));
     const root = document.createElement("div"); root.id = "gt"; root.setAttribute("role", "dialog"); root.setAttribute("aria-label", "A quick tour with Solomon");
     root.innerHTML = '<i class="gt-hole"></i><i class="gt-b"></i><i class="gt-b"></i><i class="gt-b"></i><i class="gt-b"></i><i class="gt-b gt-mid"></i>'
-      + '<div class="gt-bar"><i></i></div><button type="button" class="gt-snd" aria-label="Solomon\'s voice"></button><button type="button" class="gt-skip">Skip tour</button>'
+      + '<button type="button" class="gt-resume">Continue the tour</button><div class="gt-bar"><i></i></div><button type="button" class="gt-snd" aria-label="Solomon\'s voice"></button><button type="button" class="gt-skip">Skip tour</button>'
       + '<div class="gt-say" aria-live="polite">' + CLOUD + '<p></p><div class="gt-acts"><button type="button" class="gt-pass">Skip this step</button><button type="button" class="gt-next">Next</button></div></div>';
     const hole = $(".gt-hole", root), blocks = [...root.querySelectorAll(".gt-b")], sayBox = $(".gt-say", root), sayP = $("p", sayBox), bar = $(".gt-bar i", root);
     const told = { asked: false }; // what the member has done during the tour (a question sent to Solomon)
     const onAsked = () => { if (at >= 1) told.asked = true; };
-    let at = -1, step = null, tick = null, typing = null, missing = 0, tapped = false, moving = false, lifted = false, ended = false, audio = null, primed = "";
+    let at = -1, step = null, tick = null, typing = null, missing = 0, tapped = false, moving = false, lifted = false, ended = false, paused = false, audio = null, primed = "";
     const sndBtn = $(".gt-snd", root), paintSnd = () => { sndBtn.innerHTML = soundOn() ? ICON.on : ICON.off; sndBtn.setAttribute("aria-pressed", String(soundOn())); sndBtn.title = soundOn() ? "Voice on" : "Voice off"; };
     const quietNow = () => { if (audio) { try { audio.pause(); } catch {} } };
     function speakLine(id) { quietNow(); if (!audio || audio.dead || !id || !soundOn()) return; try { audio.src = `/assets/tour/${id}.mp3`; const pr = audio.play(); if (pr && pr.catch) pr.catch(() => {}); } catch {} }
@@ -87,8 +91,12 @@
       const inDlg = els[0] && els[0].closest("dialog[open]"), anyDlg = [...document.querySelectorAll("dialog[open]")].pop();
       const want = inDlg || anyDlg || document.body; if (root.parentNode !== want) want.appendChild(root);
     }
+    // The member used a lit thing that takes them somewhere: the tour gets out of the way until they call it back
+    function pause() { paused = true; quietNow(); clearInterval(typing); root.classList.add("gt-paused"); document.body.classList.remove("gt-nocloud"); }
+    function resume() { paused = false; root.classList.remove("gt-paused"); next(); }
     function place() {
       if (ended || !step) return;
+      if (paused) return host([]);
       const els = targets(); host(els);
       if (!els.length) { // nothing to light yet: the whole screen is dimmed; a beat that never shows up is passed over
         hole.style.cssText = "left:50%;top:50%;width:0;height:0;opacity:0"; root.classList.add("gt-wait"); blocks[0].style.cssText = "left:0;top:0;right:0;bottom:0"; for (let i = 1; i < 5; i++) blocks[i].style.cssText = "display:none";
@@ -104,13 +112,13 @@
       hole.style.cssText = `left:${l}px;top:${t}px;width:${r - l}px;height:${b - t}px;border-radius:${step.round || 16}px;opacity:1`;
       blocks[0].style.cssText = `left:0;top:0;right:0;height:${t}px`; blocks[1].style.cssText = `left:0;top:${b}px;right:0;bottom:0`;
       blocks[2].style.cssText = `left:0;top:${t}px;width:${l}px;height:${b - t}px`; blocks[3].style.cssText = `left:${r}px;top:${t}px;right:0;height:${b - t}px`;
-      blocks[4].style.cssText = step.read ? `left:${l}px;top:${t}px;width:${r - l}px;height:${b - t}px` : "display:none";
+      blocks[4].style.cssText = "display:none"; // the lit area is never covered
       // Solomon speaks beside it: under it when there is room, over it when not, at the foot of the screen when it fills the screen
       const h = sayBox.offsetHeight || 90; let top = b + 14;
       if (top + h > H - 10) top = t - h - 14;
       if (top < 52) top = H - h - 12;
       sayBox.style.top = Math.round(top) + "px"; sayBox.classList.add("on");
-      if (!step.read && !moving && (step.until ? step.until(told) : !step.free && tapped)) advance();
+      if (!moving && (step.until ? step.until(told) : tapped)) advance();
     }
     function advance() { if (moving) return; moving = true; if (step.last) return end(true); setTimeout(next, step.settle || 380); }
     function type(text) {
@@ -124,7 +132,7 @@
       if (!step) return end(true);
       missing = 0; tapped = false; moving = false; lifted = false;
       if (step.before) { try { step.before(); } catch {} }
-      root.classList.toggle("gt-read", !!step.read || !!step.free); sayBox.classList.remove("on"); document.body.classList.toggle("gt-nocloud", at > 0);
+      root.classList.toggle("gt-read", !!step.free); sayBox.classList.remove("on"); document.body.classList.toggle("gt-nocloud", at > 0);
       bar.style.width = Math.round(((at + 1) / steps.length) * 100) + "%";
       type(step.say); place();
       if (primed && primed === step.snd) primed = ""; else speakLine(step.snd); // (already speaking when the tap that led here started it)
@@ -134,12 +142,14 @@
       if (ended || !step) return;
       if (e.target.closest && e.target.closest("#gt")) {
         if (e.target.closest(".gt-skip")) { e.preventDefault(); end(false); }
+        else if (e.target.closest(".gt-resume")) { if (paused) resume(); }
         else if (e.target.closest(".gt-snd")) { try { localStorage.setItem(SOUND, soundOn() ? "off" : "on"); } catch {} paintSnd(); if (!audio) { try { audio = new Audio(); audio.addEventListener("error", noVoice); } catch {} } if (soundOn()) speakLine(step.snd); else quietNow(); }
-        else if (e.target.closest(".gt-next") && (step.read || step.free)) next();
-        else if (e.target.closest(".gt-pass") && !step.read && !step.free) next();
+        else if (e.target.closest(".gt-next") && step.free) next();
+        else if (e.target.closest(".gt-pass") && !step.free) next();
         else if (e.target.closest(".gt-b")) { root.classList.remove("gt-nudge"); void root.offsetWidth; root.classList.add("gt-nudge"); }
         return; }
-      if (!step.read && targets().some((t) => t.contains(e.target))) { if (!step.free) tapped = true; unlock(); if (step.last) setTimeout(() => end(true), 0); }
+      if (paused) return;
+      if (targets().some((t) => t.contains(e.target))) { unlock(); if (step.free) { if (step.used && step.used(e)) pause(); return; } tapped = true; if (step.last) setTimeout(() => end(true), 0); }
     }
     function onKey(e) { if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); end(false); } }
 
