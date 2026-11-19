@@ -3331,7 +3331,7 @@
     // (today's program stop is still open, whatever else they trained today; once it is done the mine holds the next one for tomorrow)
     if (now) return { kind: "session", title: brief(now.label), sub: "Today's session", go: "mine" };
     // the day's other lights, once the training is done
-    if (day && day.skipped && day.lit >= day.of - 1) return { kind: "done", title: "Session skipped", sub: `${day.lit} of ${day.of} lit today`, go: "#progress", today: day };
+    if (day && day.skipped && day.lit >= day.of - 1) return { kind: "done", skipped: true, title: "Session skipped", sub: `${day.lit} of ${day.of} lit today`, go: "#progress", today: day };
     if (day && (day.workout || day.skipped) && day.lit < day.of) { const [title, go3] = !day.pain ? ["Pain check-in", "#pain"] : !day.acts ? ["Daily activities", "today"] : ["Daily goal", "today"];
       return { kind: "lights", title, sub: `${day.lit} of ${day.of} lit today`, go: go3, today: day }; }
     if (v) return { kind: "later", title: v.typeName || "Visit", sub: whenOf(v), go: "plus" };
@@ -3346,11 +3346,11 @@
   let trip = null;
   const nextSig = () => { try { const n = nextUp(); return [n.kind, n.ref || "", n.title || ""].join("|"); } catch { return ""; } };
   const tripPill = () => { let b = document.getElementById("road-back"); if (!b) { b = document.createElement("button"); b.id = "road-back"; b.type = "button"; b.hidden = true;
-      b.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>Back to my road</span>`; b.addEventListener("click", () => backToRoad()); document.body.appendChild(b); } return b; };
+      b.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>Back to my road</span>`; b.addEventListener("click", () => backToRoad(true)); document.body.appendChild(b); } return b; };
   const tripPaint = () => { const pl = $("#player"); tripPill().hidden = !(trip && show.at !== "home" && !(pl && !pl.hidden)); };
   function tripStart() { setTimeout(() => { if (show.at && show.at !== "home") { trip = { view: show.at, sig: nextSig() }; tripPaint(); } }, 220); }
   function tripEnd() { trip = null; tripPaint(); }
-  function backToRoad() { tripEnd(); goNext("mine"); }
+  function backToRoad(tap) { tripEnd(); goNext("mine", tap === true); }
   document.addEventListener("mdfit:view", (e) => { if (trip && e.detail !== trip.view) trip = null; tripPaint(); }); // home, or off on their own
   // what they went for is done (the next thing on the road has changed): back to the road, once nothing is open over the page
   ["mdfit:journey", "mdfit:rewards"].forEach((ev) => document.addEventListener(ev, () => {
@@ -3359,10 +3359,13 @@
     const was = trip; setTimeout(() => { if (trip === was) { toast("Done. Back to your road."); backToRoad(); } }, 1100);
   }));
   // Where a "next" leads: the + sheet, the referral card, the mine, Solomon, a tab, or a page
-  function goNext(go2) {
+  function goNext(go2, tap) {
     if (go2 === "plus") { renderPlus(); $("#plus-sheet").showModal(); }
     else if (go2 === "refer") { go("profile"); setTimeout(() => { const c = $("#referral-card"); if (!c) return; if (c.classList.contains("lay-fold") && !c.classList.contains("open")) layToggle(c); c.scrollIntoView({ block: "start" }); }, 120); tripStart(); }
-    else if (go2 === "mine") { if ($("#view-home").hidden) go("home"); setTimeout(() => { const c = $("#cave-card"); if (c) c.scrollIntoView({ behavior: "smooth", block: "start" }); }, 60); }
+    else if (go2 === "mine") { const c = $("#cave-card");
+      // (a tap with the mine hidden by "Customize this page" does what the mine would: the tutorial's stop, or today's next thing)
+      if (tap && c && c.classList.contains("lay-off")) { const j = journey(), s = j && j.intro ? j.stops.find((x) => x.state === "now") : null; if ($("#view-home").hidden) go("home"); return s ? introGo(s.ref) : j && j.days ? journeyToday() : undefined; }
+      if ($("#view-home").hidden) go("home"); setTimeout(() => { if (!c) return; if (tap && c.classList.contains("lay-fold") && !c.classList.contains("open")) layToggle(c); c.scrollIntoView({ behavior: "smooth", block: "start" }); }, 60); }
     else if (go2 === "solomon") { if (window.MDFitGuide && window.MDFitGuide.open) window.MDFitGuide.open(); else go("generate"); }
     else if (go2 === "today") journeyToday();
     else if (go2.startsWith("#")) { go(go2.slice(1)); tripStart(); }
@@ -3372,10 +3375,12 @@
   function showCard(w, id) {
     const sel = (LAYOUT[w] || {})[id]; if (!sel) return false;
     go(w === "home" ? "home" : "profile");
-    setTimeout(() => { const c = $(sel.split(",")[0].trim()); if (!c) return; if (c.classList.contains("lay-fold") && !c.classList.contains("open")) layToggle(c);
+    setTimeout(() => { const c = $(sel.split(",")[0].trim()); if (!c) return; layShow(c, LAYOUT_LABEL[w][id]); if (c.classList.contains("lay-fold") && !c.classList.contains("open")) layToggle(c);
       if (id === "habits") document.dispatchEvent(new CustomEvent("mdfit:habits-open")); c.scrollIntoView({ block: "start" }); }, 140);
     return true;
   }
+  // A card the member (or the owner) hid, when a tap leads to it: there for this visit, so the tap is never a dead end
+  function layShow(c, name) { if (!c || !c.classList.contains("lay-off")) return; c.classList.remove("lay-off"); toast(`${name || "That card"} is hidden on this page. Here it is for now.`); }
   const customize = (w) => { go(w === "home" ? "home" : "profile"); setTimeout(() => { const b = $(`[data-lay-custom="${w === "home" ? "home" : "profile"}"]`); if (b) b.click(); }, 140); };
   // After a program is picked: the member watches its sessions land on the calendar, then is taken back to the road
   function showPlanOnCalendar() {
@@ -3383,12 +3388,16 @@
     calMonth = plan[0].date.slice(0, 7); calPick = plan[0].date;
     go("progress");
     setTimeout(() => {
+      if (show.at !== "progress") return; // already off somewhere else
       const cal = $("#cal"); if (!cal) return backToRoad();
       cal.scrollIntoView({ block: "center" });
       const dots = [...cal.querySelectorAll(".k-prog")]; dots.forEach((el, i) => { el.style.animationDelay = `${i * 110}ms`; el.classList.add("pop"); el.closest(".cal-d").style.setProperty("--pop", `${i * 110}ms`); el.closest(".cal-d").classList.add("popping"); });
       const inMonth = plan.filter((x) => x.date.slice(0, 7) === calMonth).length;
       toast(`${plan.length} session${plan.length === 1 ? "" : "s"} on your calendar, starting ${fmtDate(plan[0].date, { weekday: "long", month: "short", day: "numeric" })}.`);
-      setTimeout(() => { toast("Back to your road."); backToRoad(); }, Math.min(5200, 2600 + inMonth * 110));
+      // (the way back is theirs once they tap anything or go anywhere: nothing pulls them off another screen)
+      const off = () => { clearTimeout(back); document.removeEventListener("pointerdown", off, true); document.removeEventListener("mdfit:view", off); };
+      const back = setTimeout(() => { off(); toast("Back to your road."); backToRoad(); }, Math.min(5200, 2600 + inMonth * 110));
+      document.addEventListener("pointerdown", off, true); document.addEventListener("mdfit:view", off);
     }, 260);
   }
   // What Solomon may mention without being asked: all of it is already on the member's own screens
@@ -3430,7 +3439,7 @@
   document.addEventListener("click", (e) => {
     const b = e.target.closest(".t3"); if (!b) return;
     if (b.id === "t3-rank") { const open = $("#view-home").classList.toggle("gem-open"); b.setAttribute("aria-expanded", String(open)); return; }
-    goNext(b.dataset.go || "");
+    goNext(b.dataset.go || "", true);
   });
   ["mdfit:rewards", "mdfit:journey"].forEach((ev) => document.addEventListener(ev, () => { try { renderTop(); } catch {} }));
   // Home's "+" (quick actions): join the video visit, intake documents, book a visit. The same facts make the one line
@@ -3847,7 +3856,7 @@
     calSyncing = Promise.allSettled([
       apiAuth("GET", "/api/me/workouts").then((w) => { allWorkouts = w; }),
       loadAppointments(), loadPain(), loadClasses(), loadCarePlan(), loadCalMoney()
-    ]).then(() => { renderCalendar(); renderStats(); renderActivity(); }).finally(() => { calSyncing = null; });
+    ]).then(() => { renderCalendar(); renderStats(); renderActivity(); try { document.dispatchEvent(new CustomEvent("mdfit:journey")); } catch {} }).finally(() => { calSyncing = null; }); // (the road and the Next tile read the same lists)
     return calSyncing;
   }
   if (window.MDFitRT) MDFitRT.on("calendar_changed", () => { syncCalendar(true); loadRewards(); });
@@ -4035,7 +4044,7 @@
   }
   const isSaved = (pid) => (client && client.pinnedPrograms || []).includes(pid);
   async function saveProgram(pid, start) {
-    if (start) { try { roadPlan = (await apiAuth("PUT", "/api/me/about/plan", { program: pid, start })).plan || roadPlan; } catch {} }
+    if (start) { try { roadPlan = (await apiAuth("PUT", "/api/me/about/plan", { program: pid, start })).plan || roadPlan; } catch { roadPlan = { program: pid, start }; } keepStart(roadPlan); planMemo = { key: "", v: null }; } // (a failed save: remembered until the app reloads)
     if (!isSaved(pid)) { const r = await apiAuth("PUT", `/api/me/pinned/${encodeURIComponent(pid)}`); client.pinnedPrograms = r.pinnedPrograms; auth.set({ ...auth.get(), client }); }
     try { renderMyPlans(); } catch {}
     try { await introSettled(); } catch {} // the first descent's "pick your road" stop is credited before Solomon names the next
@@ -4067,6 +4076,13 @@
     const pById = new Map((C.programs || []).map((p) => [p.id, p]));
     return [...(client.assignedPrograms || []).map((x) => x.id), ...(client.pinnedPrograms || [])].filter((id, i, a) => pById.has(id) && a.indexOf(id) === i).map((id) => pById.get(id)).filter((p) => !lockedFor(p));
   }
+  // The one the road follows: the program the member last picked a start date for (their own choice), else the first not finished
+  function roadProgram() { const un = roadPrograms().filter((x) => { const st = progStats(x); return st.done < st.sessions; }); return un.find((x) => roadPlan && roadPlan.program === x.id) || un[0] || null; }
+  // What is true after "Add to my road": a program comes first, then the track last begun, else the one last added
+  function trackAddedSay(id) { const p = roadProgram(), at = activeTrack(), t = todayInTz();
+    if (p) return `Added. Your road follows ${p.title} first; this track is here whenever you want it.`;
+    if (!at || at.id !== id) return "Added. Your road stays on the track you've already begun; this one is here whenever you want it.";
+    return allWorkouts.some((w) => w.date === t) ? "Added. It's on your road from tomorrow." : "Added. It's today's stop on your road."; }
   // A program is not every day (owner, Nov 2026). Its sessions a week are spread over the week from the day the member
   // chose to start (kept on the account), with rest days between; a missed day does not skip a session, the next one
   // simply moves to the next training day. The road and the Progress calendar both read this.
@@ -4078,7 +4094,7 @@
     let cur = 0; while (cur < total && isDone(cur)) cur++;
     const mark = new RegExp("^prog-" + String(p.id).replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "-[dw]\\d");
     const mineW = allWorkouts.filter((w) => mark.test(String(w.key || "")));
-    const start = roadPlan && roadPlan.program === p.id ? roadPlan.start : mineW.reduce((a, w) => (w.date < a ? w.date : a), t);
+    const start = roadPlan && roadPlan.program === p.id ? roadPlan.start : roadStarts[p.id] || mineW.reduce((a, w) => (w.date < a ? w.date : a), t);
     const key = [p.id, cur, total, start, t, mineW.length, mineW.some((w) => w.date === t), roadSkips.includes(t)].join("|"); if (planMemo.key === key) return planMemo.v;
     const nameOf = (n) => { const d = grid ? p.days[n % per] : null; return { label: d ? d.name : `${st.isProto ? "Part" : "Session"} ${n + 1}`, sub: d && d.length ? `${d.length} min` : "" }; };
     const didOn = (d) => { const w = mineW.find((x) => x.date === d); if (!w) return null; const m = String(w.key).match(/-d(\d+)$/); return grid && m ? nameOf(Number(m[1])) : { label: p.title, sub: "" }; };
@@ -4091,7 +4107,8 @@
     const isDay = (d) => { const g = gap(d); return g >= 0 && SPREAD[weekly(Math.floor(g / 7))].includes(g % 7); };
     // from today on: each training day carries the next session not yet done
     const map = new Map(); let n = cur;
-    if (protoDays) { for (let i = 0, d = t > start ? t : start; i < 420; i++, d = addDays(d, 1)) { const g = gap(d), w = Math.floor(g / 7); if (w >= st.nWeeks) break; if (!isDay(d) || (d === t && (rested || skipped))) continue;
+    if (protoDays) { const wEnd = Math.max(st.nWeeks, Math.floor(Math.max(0, gap(t)) / 7) + Math.max(1, total - cur)); // (behind, or past its weeks: the weeks still to do run on from today)
+      for (let i = 0, d = t > start ? t : start; i < 420; i++, d = addDays(d, 1)) { const g = gap(d), w = Math.floor(g / 7); if (w >= wEnd) break; if (!isDay(d) || (d === t && (rested || skipped))) continue;
         const dd = p.days[SPREAD[protoDays].indexOf(g % 7) % Math.max(1, p.days.length)]; map.set(d, { label: dd && dd.name ? dd.name : `Week ${w + 1}`, sub: dd && dd.length ? `${dd.length} min` : "", n: -1 }); } }
     else for (let i = 0, d = t > start ? t : start; i < 420 && n < total; i++, d = addDays(d, 1)) { if (!isDay(d) || (d === t && (rested || skipped))) continue; map.set(d, { ...nameOf(n), n }); n++; }
     const last = [...map.keys()].pop() || t, per2 = Math.max(1, per), chambers = Math.ceil(total / per2);
@@ -4100,16 +4117,15 @@
     planMemo = { key, v }; return v;
   }
   // The sessions still ahead, for the calendar: [{ date, label, sub }]
-  function plannedSessions() { const p = roadPrograms().find((x) => { const st = progStats(x); return st.done < st.sessions; }); if (!p) return []; return [...progPlan(p).map].map(([date, x]) => ({ date, label: x.label, sub: x.sub, title: p.title })); }
+  function plannedSessions() { const p = roadProgram(); if (!p) return []; return [...progPlan(p).map].map(([date, x]) => ({ date, label: x.label, sub: x.sub, title: p.title })); }
   function journey() {
     if (!C || !client) return null;
-    const mine = roadPrograms();
     const t = todayInTz(), r = reward;
     const base = { today: { workout: allWorkouts.some((w) => w.date === t), pain: painLog.some((x) => x.date === t), goal: !!(r && r.dailyGoal && r.todayXp >= r.dailyGoal) },
       next: r && r.rank && r.rank.next ? { name: r.rank.next.name, color: r.rank.next.color, xp: r.rank.xpToNext } : null, movements: ((carePlan && carePlan.movements) || []).length };
     // The first descent comes before any program: five stops, any order, the first one not yet done is "now"
     // It never hides a program they already have: one tap switches the mine between the two (remembered on the device).
-    const p = mine.find((x) => { const s = progStats(x); return s.done < s.sessions; }), introOn = !!(intro && intro.offered);
+    const p = roadProgram(), introOn = !!(intro && intro.offered);
     if (introOn && !(p && mineView() === "program")) {
       let lead = true;
       const stops = INTRO_STEPS.map(([ref, label, sub], n) => { const st = intro.steps[ref], state = st === true ? "done" : st === "skipped" ? "passed" : lead ? "now" : "open"; if (state === "now") lead = false; return { n, ref, label, sub, state }; });
@@ -4170,18 +4186,21 @@
   function journeyToday(onlyTraining) {
     const j = journey(); if (!j || !j.days) return;
     const d = j.today;
-    if (d.skipped && !onlyTraining) { if (!d.pain) { if (!lesson("pain")) go("pain"); return; } return showCard("home", "habits"); }
+    if (d.skipped && !onlyTraining) { if (!d.pain) { if (!lesson("pain")) go("pain"); return; } if (d.acts && d.goal) return toast("Session skipped. Every other lamp is lit today."); return showCard("home", "habits"); }
     if (d.track && !d.workout) return openTrack(d.track, true);
-    if (!d.workout || (j.hasProgram && !j.rested)) { if (d.start !== null && d.start >= 0) return journeyStart(d.start); if (j.program && !j.rested) return go("programs/" + j.program.id); if (!d.workout) return goNext("solomon"); }
+    // today's session while there is one to do; a rest day, or a day the program has no session, goes on to the next unlit light
+    if (d.session && (!d.workout || (j.hasProgram && !j.rested))) { if (d.start !== null && d.start >= 0) return journeyStart(d.start); if (j.program && !j.rested) return go("programs/" + j.program.id); }
+    if (!d.workout && (onlyTraining || !j.hasProgram)) return j.program ? go("programs/" + j.program.id) : goNext("solomon");
     if (!d.pain) { if (!lesson("pain")) go("pain"); return; }
-    if (!d.acts || !d.goal) { if ($("#view-home").hidden) go("home"); document.dispatchEvent(new CustomEvent("mdfit:habits-open")); return setTimeout(() => { const c = $("#habits-card"); if (c) c.scrollIntoView({ behavior: "smooth", block: "start" }); }, 80); }
+    if (!d.acts || !d.goal) { if ($("#view-home").hidden) go("home"); document.dispatchEvent(new CustomEvent("mdfit:habits-open")); return setTimeout(() => { const c = $("#habits-card"); if (c) { layShow(c, "Daily activities"); c.scrollIntoView({ behavior: "smooth", block: "start" }); } }, 80); }
+    if (!d.workout) return goNext("solomon"); // (a program day with no session, the other three lit: the workout lamp is the one left)
     toast("Every lamp is lit today.");
   }
   const journeyStart = (n) => { const j = journey(), p = j && j.program && (C.programs || []).find((x) => x.id === j.program.id); if (p && j.grid) startPlayer(progDayWorkout(p, n % p.days.length)); };
   // ---- The first descent: a new member's tutorial as the first road in the mine. Five stops, each a real action in the
   // app, 10 XP each, once ever (the server checks the ones it can see: lib/clients.js). Any order. Skip ends it; Replay
   // (Profile) brings it back. "Meet Solomon" and "Bring a friend" are noted on the device when they happen.
-  let intro = null, introBusy = false;
+  let intro = null, introBusy = false, introFails = 0, introWait = 0; // (a credit call that failed is tried again on a later event, never before introWait)
   let roadSkips = []; // days the member skipped the session (kept on the account)
   async function skipToday(on) {
     const t = todayInTz();
@@ -4192,9 +4211,16 @@
     if (on !== false) toast("Skipped for today. No XP, and it's waiting on your next training day.");
   }
   let roadPlan = null; // { program, start }: the program on the road and the day the member chose to start it
+  // The account holds one plan. A start chosen earlier for another program is kept on this device, so picking a second
+  // program never moves the first one's days.
+  let roadStarts = {};
+  const startsKey = () => `mdfit-road-starts-${client ? client.id : ""}`;
+  const keepStart = (pl) => { if (!pl || !pl.program || !/^\d{4}-\d\d-\d\d$/.test(String(pl.start))) return; roadStarts[pl.program] = pl.start; try { localStorage.setItem(startsKey(), JSON.stringify(roadStarts)); } catch {} };
   let aboutMe = null, roadTracks = []; // "Let me get to know you" answers, and the pain tracks put on the road (GET /api/me/about)
   async function loadAbout() {
     try { const r = await apiAuth("GET", "/api/me/about"); aboutMe = r.about || null; roadTracks = r.tracks || []; roadPlan = r.plan || null; roadSkips = r.skips || [];
+      try { const kept = JSON.parse(localStorage.getItem(startsKey()) || "{}") || {}; roadStarts = Object.fromEntries(Object.entries(kept).filter(([, v]) => /^\d{4}-\d\d-\d\d$/.test(String(v)))); } catch {}
+      keepStart(roadPlan);
       // tracks added on this device before they were kept on the account move up once
       let old = []; try { old = JSON.parse(localStorage.getItem(`mdfit-my-tracks-${client.id}`) || "[]"); } catch {}
       for (const id of Array.isArray(old) ? old : []) if (!roadTracks.includes(id)) { try { roadTracks = (await apiAuth("PUT", `/api/me/about/tracks/${encodeURIComponent(id)}`)).tracks || roadTracks; } catch {} }
@@ -4209,12 +4235,18 @@
   }
   if (client) loadAbout();
   let weekHabit = new Map(), habitToday = null; // date -> { qualifying, activities } this week; and today's own card
+  let weekHabitDay = "", weekHabitBusy = false;
   async function loadWeekHabit() {
+    if (weekHabitBusy) return; weekHabitBusy = true;
     try { const t = todayInTz(), dow = (new Date(t + "T12:00:00Z").getUTCDay() + 6) % 7, months = [...new Set([addDays(t, -dow).slice(0, 7), t.slice(0, 7)])];
       const got = await Promise.all(months.map((m) => apiAuth("GET", `/api/me/habits/history?month=${m}`)));
-      weekHabit = new Map(got.flatMap((r) => (r && r.days) || []).map((d) => [d.date, { qualifying: !!d.qualifying, activities: d.activities }]));
-      document.dispatchEvent(new CustomEvent("mdfit:journey")); } catch { /* the road still draws from workouts and check-ins */ }
+      weekHabit = new Map(got.flatMap((r) => (r && r.days) || []).map((d) => [d.date, { qualifying: !!d.qualifying, activities: d.activities }])); weekHabitDay = t;
+      document.dispatchEvent(new CustomEvent("mdfit:journey")); } catch { /* the road still draws from workouts and check-ins */ } finally { weekHabitBusy = false; }
   }
+  // The earlier days' lights are read again when the app comes back to the front and when the clinic's day turns over
+  // while it is open (an app left open overnight showed yesterday as it stood at breakfast)
+  document.addEventListener("visibilitychange", () => { if (!document.hidden && client) loadWeekHabit(); });
+  setInterval(() => { if (client && !document.hidden && weekHabitDay && todayInTz() !== weekHabitDay) loadWeekHabit(); }, 30000);
   document.addEventListener("mdfit:habits", (e) => { habitToday = e.detail || null; document.dispatchEvent(new CustomEvent("mdfit:journey")); });
   if (client) loadWeekHabit();
   const mineView = () => { try { return localStorage.getItem("mdfit-mine-view") === "program" ? "program" : "intro"; } catch { return "intro"; } };
@@ -4223,32 +4255,39 @@
   async function introPass(ref) { try { intro = await apiAuth("POST", "/api/me/intro/skip", { ref }); } catch {} document.dispatchEvent(new CustomEvent("mdfit:journey")); }
   const INTRO_STEPS = [["solomon", "Meet Solomon", "Ask him anything"], ["know", "Let me get to know you", "A few taps"], ["pain", "Tell us what hurts", "One check-in"], ["program", "Pick your road", "Choose a program"],
     ["session", "First session", "Finish one workout"], ["friend", "Bring a friend", "See your link"]];
+  const numWord = (n) => ["no", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"][n] || String(n);
   const introKey = (k) => `mdfit-intro-${client ? client.id : ""}-${k}`;
   const introFlag = (k) => { try { return localStorage.getItem(introKey(k)) === "1"; } catch { return false; } };
   const introMark = (k) => { try { localStorage.setItem(introKey(k), "1"); } catch {} introSync(); };
   const introMet = () => ({ solomon: introFlag("solomon"), know: !!(aboutMe && aboutMe.known), pain: painLog.length > 0, program: (client.pinnedPrograms || []).length + (client.assignedPrograms || []).length > 0, session: allWorkouts.length > 0, friend: introFlag("friend") });
   function loadIntro() { return apiAuth("GET", "/api/me/intro").then((r) => { intro = r; document.dispatchEvent(new CustomEvent("mdfit:journey")); setTimeout(introTour, 900); }).catch(() => {}); }
   async function introSync() {
-    if (!intro || !intro.offered || introBusy || !client) return;
+    if (!intro || !intro.offered || introBusy || !client || Date.now() < introWait) return;
     const met = introMet(), todo = INTRO_STEPS.map((s) => s[0]).filter((k) => met[k] && intro.steps[k] !== true);
     if (!todo.length) return;
-    introBusy = true;
+    introBusy = true; let got = 0;
     try {
       for (const k of todo) {
         const r = await apiAuth("POST", "/api/me/xp", { kind: "intro", ref: k });
         if (r && r.intro) intro = r.intro;
+        // (credited means the server now says so: anything else would be asked for again on the next redraw)
+        if (!r || !r.intro || r.intro.steps[k] !== true) throw new Error("not credited");
+        got++;
         if (r && r.first) { celebrateToast([`+${r.xp} XP`, intro.done ? "First descent complete!" : INTRO_STEPS.find((x) => x[0] === k)[1]]); ding(); }
       }
+      introFails = 0;
       await loadRewards(false);
-    } catch {} finally { introBusy = false; }
-    document.dispatchEvent(new CustomEvent("mdfit:journey"));
+    } catch { introWait = Date.now() + Math.min(120000, 4000 * 2 ** introFails++); } // offline, a server error, a limit: 4 s, 8 s, ... 2 min, and only when something else redraws
+    finally { introBusy = false; }
+    // The redraw comes back here (the listener below): only after something was credited, so a failure can never feed itself
+    if (got) document.dispatchEvent(new CustomEvent("mdfit:journey"));
   }
   const openRefer = () => { go("profile"); setTimeout(() => { const c = $("#referral-card"); if (!c) return; if (c.classList.contains("lay-fold") && !c.classList.contains("open")) layToggle(c); c.scrollIntoView({ block: "start" }); }, 120); };
   // Credit whatever has just been done, and wait out a sync that was already running (a redraw may have started one)
   async function introSettled() { await introSync(); for (let i = 0; i < 60 && introBusy; i++) await new Promise((r) => setTimeout(r, 50)); await introSync(); for (let i = 0; i < 60 && introBusy; i++) await new Promise((r) => setTimeout(r, 50)); }
   const lesson = (ref) => { const G = window.MDFitGuide; if (!G || !G.lesson) return false; G.lesson(ref); return true; };
   function introGo(ref) {
-    const prog = ((client.assignedPrograms || [])[0] || {}).id || (client.pinnedPrograms || [])[0];
+    const prog = (roadProgram() || {}).id || ((client.assignedPrograms || [])[0] || {}).id || (client.pinnedPrograms || [])[0];
     if (ref === "solomon") { if (window.MDFitGuide && window.MDFitGuide.open) window.MDFitGuide.open(); }
     else if (ref === "know") { if (!lesson("know") && window.MDFitGuide && window.MDFitGuide.open) window.MDFitGuide.open(); }
     else if (ref === "pain") { if (!lesson("pain")) go("pain"); }
@@ -4268,7 +4307,7 @@
       const key = `mdfit-tour-${client.id}`; if (localStorage.getItem(key)) return; localStorage.setItem(key, "1");
     } catch { return; }
     const steps = [["#top3", "What you can earn, the gem you hold, and what to do next. Tap any of them."], ["#home-plus", "Your shortcuts: join a video visit, your documents, book a visit."],
-      ["#mg-btn", "This is Solomon. He speaks up on every screen. Tap him and ask anything."], ["#cave-card .cv-road", "Your first descent: five stops, 10 XP each. Finish them all for your first new gem."]];
+      ["#mg-btn", "This is Solomon. He speaks up on every screen. Tap him and ask anything."], ["#cave-card .cv-road", `Your first descent: ${numWord(INTRO_STEPS.length)} stops, 10 XP each. Finish them all for your first new gem.`]];
     const wrap = document.createElement("div"); wrap.className = "tour"; wrap.innerHTML = `<i class="tour-hole"></i><div class="tour-tip" role="dialog" aria-live="polite"><p></p><div><button type="button" class="link-sm" data-tour-skip>Skip</button><button type="button" class="btn-blue sm" data-tour-next>Next</button></div></div>`;
     document.body.appendChild(wrap);
     let at = -1;
@@ -4296,7 +4335,7 @@
     const visitAhead = (appts.upcoming || []).some((a) => a.date === d && a.status === "booked" && (d > t || (d === t && String(a.time || "") > now)));
     return { workout, open: unpaid || visitAhead };
   };
-  window.MDFitApp = { journeyMeter, skipToday, showPlanOnCalendar, today: () => todayInTz(), about: () => aboutMe, saveAbout, tripStart, backToRoad, openTrack, saveProgram, logPain, painAreas: () => AREAS.slice(), showCard, customize, journeyToday, nextUp, goNext, guideFacts, view: () => show.at || "home", journey, journeyStart, introGo, introSkip, introPass, setMineView, dayStatus, startPlayer, go, loadRewards, toast, celebrateToast, exMeta, byId, gemIcon: GEM_ICON, rewards: () => reward, isPaid, showPaywall,
+  window.MDFitApp = { numWord, journeyMeter, skipToday, showPlanOnCalendar, today: () => todayInTz(), about: () => aboutMe, saveAbout, tripStart, backToRoad, openTrack, saveProgram, logPain, painAreas: () => AREAS.slice(), showCard, customize, journeyToday, nextUp, goNext, guideFacts, view: () => show.at || "home", journey, journeyStart, introGo, introSkip, introPass, setMineView, dayStatus, startPlayer, go, loadRewards, toast, celebrateToast, exMeta, byId, gemIcon: GEM_ICON, rewards: () => reward, isPaid, showPaywall,
     // For the guide (mdfit-guide.js) and the theme switch (app-theme.js): who is signed in, what the app holds, and two places to open
     client: () => client, content: async () => { if (!C) await (contentLoading || loadContent()).catch(() => {}); return C; },
     openBook: () => { go("profile"); setTimeout(() => $("#p-book-open") && $("#p-book-open").click(), 60); },
