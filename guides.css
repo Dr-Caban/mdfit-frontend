@@ -241,3 +241,20 @@
   .pm-sheet-close { top: calc(12px + env(safe-area-inset-top, 0px)); }
   .pm-sheet-body { padding-top: calc(20px + env(safe-area-inset-top, 0px)); padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px)); }
 }
+
+/* The app's "what this is" under a pain track's header: the pattern in words, a check-in, and Add to my road */
+.tk-what { margin: 14px 18px 4px; padding: 14px 16px; border-radius: 14px; background: #fff; border: 1px solid #e3ddd0; }
+.tk-what .tk-eyebrow { display: block; margin: 0 0 6px; font: 700 11px Montserrat, system-ui, sans-serif; letter-spacing: 1.4px; text-transform: uppercase; color: #2F6E9E; }
+.tk-what p { margin: 0 0 10px; font-size: 15px; line-height: 1.5; color: #424244; }
+.tk-what .tk-prog { color: #1F7A4D; font-weight: 600; }
+.tk-pain { border-top: 1px solid #ece7dc; padding-top: 12px; }
+.tk-pain p { margin: 0 0 8px; font-weight: 600; color: #0A1A2E; }
+.tk-pain .muted { font-weight: 500; color: #6b6a6e; }
+.tk-nums { display: grid; grid-template-columns: repeat(11, minmax(0, 1fr)); gap: 4px; }
+.tk-nums button { min-height: 40px; padding: 0; border: 1.5px solid #cfd9e2; border-radius: 9px; background: #fff; color: #0A1A2E; font: 700 14px Montserrat, system-ui, sans-serif; cursor: pointer; }
+.tk-nums button:disabled { opacity: .5; }
+.tk-pain .tk-logged { margin: 0; color: #1F7A4D; }
+.tk-add { background: #fff; color: #0A1A2E; border: 1.5px solid #C8A763; border-radius: 10px; padding: 10px 14px; font-weight: 700; cursor: pointer; font-family: inherit; }
+.tk-add.on { background: #FBF4E2; color: #6b5210; }
+.tk-add:disabled { cursor: default; }
+@media (max-width: 480px) { .tk-what { margin: 12px 12px 2px; } .tk-nums { grid-template-columns: repeat(6, minmax(0, 1fr)); } }

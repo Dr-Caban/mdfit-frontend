@@ -62,13 +62,16 @@
           : !d.acts ? { t: `${d.lit} of ${d.of} lit today. One daily activity lights the next.`, act: to("today") } : { t: "One more light to kindle: reach your daily goal.", act: to("today") }); }
       if (n.kind === "done") out.push({ t: "Every lamp is lit. Rest now; the road will keep." });
       if (n.kind === "ask") out.push({ t: `${f.first ? f.first + ", tell" : "Tell"} me what you want to train today and I'll build it.`, act: open });
+      if (f.track && f.track.sessions) out.push({ t: `You've done ${f.track.sessions} session${s(f.track.sessions)} of your ${f.track.source.toLowerCase()} track. ${saying(2)}`, act: () => A.openTrack(f.track.id) });
+      else if (f.track) out.push({ t: `Your ${f.track.source.toLowerCase()} track is on your road. Start it when you're ready.`, act: () => A.openTrack(f.track.id) });
       rank(); refer();
     } else if (view === "generate") {
       out.push({ t: "Tell me what you want to train and I'll build it for you.", act: open }, { t: "Short on time? Tell me how many minutes you have.", act: open });
     } else if (view === "videos") {
       out.push({ t: "Looking for a movement? Tell me its name and I'll find it.", act: open });
     } else if (view === "pain") {
-      out.push({ t: "Tap where it hurts. I'll show you what is likely behind it." }, { t: "Not sure where it starts? Describe it to me in your own words.", act: open });
+      if (f.track) out.push({ t: `You started the ${f.track.source.toLowerCase()} track${f.track.sessions ? `: ${f.track.sessions} session${s(f.track.sessions)} so far` : ""}. Tap here to open it.`, act: () => A.openTrack(f.track.id) });
+      out.push({ t: "Tap where it hurts. I'll show you what is likely behind it, then what to do about it." }, { t: "Not sure where it starts? Describe it to me in your own words.", act: open });
     } else if (view === "programs") {
       out.push({ t: "Pick a road. I'll walk it with you." }, { t: "Not sure which? Tell me your goal and I'll point to one.", act: open });
     } else if (view === "progress") {
