@@ -88,7 +88,7 @@
     try {
       const me = await api("GET", "/api/admin/me").catch(() => null);
       state.share = await api("GET", "/api/admin/partner/share");
-      $("#whoName").textContent = me ? `${me.name || me.email}${me.isOwner || me.role === "owner" ? " · Owner, view only" : me.role ? " · " + (me.role === "manager" ? "Manager" : me.role) : ""}` : "";
+      $("#whoName").textContent = me ? `${me.name || me.email}${me.isOwner || me.role === "owner" ? " · Owner, view only" : (me.roles || [me.role]).includes("manager") ? " · Manager" + (state.share && state.share.viewOnly ? ", view only" : "") : me.role ? " · " + me.role : ""}` : "";
       drawSwitch(me); show(true);
       const h = (location.hash || "").slice(1);
       if (["share", "statement", "partners", "payouts"].includes(h)) state.tab = h;
