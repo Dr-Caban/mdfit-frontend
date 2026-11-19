@@ -81,7 +81,9 @@
     // (a long name wraps the Start bubble to three lines; it must stay clear of the label of the stop above)
     const tall = (s) => (short(s.label) + (s.sub ? " · " + s.sub : "")).length + (j.intro ? 0 : 8) > 19;
     const here = (s) => (j.intro ? s.state === "now" : !!s.today); // the stop that carries the bubble
-    j.stops.forEach((s, i) => { if (here(s)) y += i ? (tall(s) ? 82 : 66) : 70; pts.push([X[i % X.length], y]); y += rowH; });
+    const minis = !j.intro && Array.isArray(j.meters) && j.meters.length ? j.meters : null; let minisAt = 0;
+    j.stops.forEach((s, i) => { if (here(s)) y += i ? (tall(s) ? 82 : 66) : 70; pts.push([X[i % X.length], y]); y += rowH;
+      if (here(s)) { if (minis) { minisAt = y - 46; y += 150; } else if (j.intro) y += 34; } });
     const H = y + 96, end = [50, H - 62], all = [...pts, end];
     // (with the gate photo above it, the road starts out of sight under the gate rather than as a loose stub on the wall)
     const from = [50, ART.road ? -40 : 30], d = pathOf([from, ...all], rowH);
@@ -97,19 +99,28 @@
           ${s.state === "now" ? `<span class="cv-bubble">Start here<small>${esc(short(s.label))}${s.sub ? " · " + esc(s.sub) : ""}</small></span>` : ""}
           <button type="button" class="cv-ore${s.state === "done" && fresh.has(s.n) ? " mining" : ""}" ${s.state === "done" && fresh.has(s.n) ? `style="--el:-${((Date.now() - fresh.get(s.n)) / 1000).toFixed(2)}s"` : ""} ${act} aria-label="${esc(s.label)}${s.sub ? ", " + esc(s.sub) : ""}: ${s.state === "done" ? "mined" : s.state === "now" ? "start here" : s.state === "passed" ? "skipped, tap to do it" : "open, 10 XP"}">${s.state === "done" && fresh.has(s.n) ? sequence(color) : s.state === "passed" ? ore("locked", color, true) : ore(s.state === "open" ? "now" : s.state, color)}</button>
           ${s.state === "done" ? `<i class="cv-tw t1"></i><i class="cv-tw t2"></i>` : ""}
-          ${s.state === "now" ? "" : `<span class="cv-cap">${esc(short(s.label))}${s.state === "passed" ? " · skipped" : s.state !== "done" ? " · +10 XP" : ""}</span>`}
+          ${s.state === "now" ? `<button type="button" class="cv-skipnow" data-intro-pass="${esc(s.ref)}" aria-label="Skip ${esc(s.label)}, no XP">Skip · no XP</button>` : `<span class="cv-cap">${esc(short(s.label))}${s.state === "passed" ? " · skipped" : s.state !== "done" ? " · +10 XP" : ""}</span>`}
         </div>`; }
       // a day: its weekday, its session if the program has one, and how many of its four lights are lit
       const name = s.session ? `${s.wd} · ${short(s.label)}` : s.rest ? `${s.wd} · Rest` : s.wd, count = `<i class="cv-badge count">${s.lit}/${s.of}</i>`;
       const said = s.today ? (s.state === "done" ? "today, every light lit" : `today, ${s.lit} of ${s.of} lit`) : s.state === "done" ? "every light lit" : s.state === "part" ? `${s.lit} of ${s.of} lit` : s.state === "missed" ? "nothing logged" : "not yet";
       const first = !j.today.workout || (j.hasProgram && !j.rested) ? (s.session ? "Start" : "Today") : "Today";
       return `<div class="cv-stop ${s.state}${s.today ? " today" : ""}" style="left:${x}%;top:${y}px;--gem:${color}">
-          ${s.today ? `<span class="cv-bubble">${s.state === "done" ? "Done today" : first}<small>${first === "Start" ? esc(short(s.label)) + (s.sub ? " · " + esc(s.sub) : "") : `${s.lit} of ${s.of} lit${s.session ? " · " + esc(short(s.label)) : s.rest ? " · rest day" : ""}`}</small></span>` : ""}
+          ${s.today ? `<span class="cv-bubble">${s.state === "done" ? "Done today" : first}<small>${first === "Start" ? esc(short(s.label)) + (s.sub ? " · " + esc(s.sub) : "") : `${s.lit} of ${s.of} lit${s.session ? " · " + esc(short(s.label)) : s.rest ? " · rest day" : s.skipped ? " · session skipped" : ""}`}</small></span>` : ""}
           <button type="button" class="cv-ore${s.state === "done" && fresh.has(s.n) ? " mining" : ""}" ${s.state === "done" && fresh.has(s.n) ? `style="--el:-${((Date.now() - fresh.get(s.n)) / 1000).toFixed(2)}s"` : ""} ${s.today ? "data-cave-today" : "disabled"} aria-label="${esc(name)}: ${said}">${s.state === "done" && fresh.has(s.n) ? sequence(color) : s.state === "missed" ? ore("locked", color, true) : s.state === "part" || s.state === "now" ? ore("now", color, true) + (s.lit ? count : "") : ore(s.state, color)}</button>
           ${s.state === "done" ? `<i class="cv-tw t1"></i><i class="cv-tw t2"></i>` : ""}
           ${s.today ? "" : `<span class="cv-cap">${esc(name)}</span>`}
         </div>`;
     }).join("");
+    const C2 = 2 * Math.PI * 19;
+    const mini = (m) => { const lit = m.lit !== undefined ? m.lit : m.p >= 1, pct = Math.round(m.p * 100);
+      return `<button type="button" class="cv-mini${m.p >= 1 ? " full" : lit ? " lit" : ""}" data-cave-meter="${esc(m.id)}"${m.color ? ` style="--gem:${esc(m.color)}"` : ""} aria-label="${esc(m.label)}: ${esc(m.text)}${m.p > 0 && m.p < 1 ? `, ${pct} percent` : ""}">
+          <span class="cv-ring"><svg viewBox="0 0 44 44" aria-hidden="true"><circle class="bg" cx="22" cy="22" r="19"/><circle class="fg" cx="22" cy="22" r="19" stroke-dasharray="${C2.toFixed(1)}" stroke-dashoffset="${(C2 * (1 - Math.max(0, Math.min(1, m.p)))).toFixed(1)}"/></svg>${m.id === "gem" ? `<i class="cv-mini-gem"></i>` : crystal(lit)}</span>
+          <b>${esc(m.label)}</b><small>${esc(m.text)}</small></button>`; };
+    const waiting = !!(minis && j.today.session && !j.today.workout && !j.today.skipped);
+    const minisHtml = minis ? `<div class="cv-minis" style="top:${minisAt}px" aria-label="Today's stones">
+        <div class="cv-minis-head"><span>Today's stones</span>${waiting ? `<button type="button" class="cv-skipnow in" data-cave-skip>Skip today's session · no XP</button>` : j.today.skipped ? `<button type="button" class="cv-skipnow in" data-cave-unskip>Skipped · do it after all</button>` : ""}</div>
+        <div class="cv-minis-row n${minis.length}">${minis.map(mini).join("")}</div></div>` : "";
     const chip = (lit, label, attrs = "") => `<button type="button" class="cv-chip${lit ? " lit" : ""}" ${attrs}>${crystal(lit)}<span>${label}</span></button>`;
     card.innerHTML = `
       <div class="cv-mouth${ART.mouth ? " art" : ""}"${ART.mouth ? ` style="${shade(ART.mouth, 0, 0.92)}"` : ""}>
@@ -124,12 +135,13 @@
         <svg class="cv-gate" viewBox="0 0 390 52" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0h390v52H272c0-40-154-40-154 0H0z" fill="#3b3024"/><path d="M0 17h130M260 17h130M0 35h118M272 35h118M40 0v17M96 17v18M300 0v17M344 17v18M70 35v17M330 35v17" stroke="#261e15" stroke-width="2"/><path d="M118 52c0-40 154-40 154 0" fill="none" stroke="#c8a763" stroke-width="2.5"/></svg>
         ${lamps}
         ${stopHtml}
+        ${minisHtml}
         <div class="cv-end${cleared ? " lit" : ""}" style="top:${end[1]}px">${ART.geode ? `<img src="${esc(ART.geode)}" alt="" width="64" height="64">` : `<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M8 38a24 22 0 0 1 48 0c0 10-10 18-24 18S8 48 8 38z" fill="#2b313d" stroke="#3b4352" stroke-width="2"/><path d="M18 38l6-10 8 6 8-8 6 12-8 10H24z" fill="${cleared ? "#b58cff" : "#3a4252"}"/><path d="M24 28l8 6 8-8" fill="none" stroke="#fff" stroke-opacity="${cleared ? ".5" : ".12"}" stroke-width="2"/></svg>`}
           <span>${j.intro ? (cleared ? "First descent complete" : j.next && j.next.name === "Amber" ? "Your first new gem: Amber" : "The end of your first descent") : cleared ? "A whole week, every lamp lit" : "Steps down to next week"}</span></div>
       </div>
       <div class="cv-seam" aria-label="Today's seam">
-        <span class="cv-kicker">Today's seam</span>
-        <div class="cv-chips four">${chip(j.today.workout, j.today.rest ? "Rest day" : "Workout", "data-cave-today")}${chip(j.today.pain, "Check-in", `data-goto="pain"`)}${chip(j.today.acts, "Activities", "data-cave-acts")}${chip(j.today.goal, "Daily goal", "data-cave-acts")}</div>
+        ${minis ? "" : `<span class="cv-kicker">Today's seam</span>
+        <div class="cv-chips four">${chip(j.today.workout, j.today.rest ? "Rest day" : "Workout", "data-cave-today")}${chip(j.today.pain, "Check-in", `data-goto="pain"`)}${chip(j.today.acts, "Activities", "data-cave-acts")}${chip(j.today.goal, "Daily goal", "data-cave-acts")}</div>`}
         ${j.movements ? `<button type="button" class="cv-moves" data-goto="profile">${j.movements} movement${j.movements === 1 ? "" : "s"} from Dr. Jared to do today</button>` : ""}
       </div>
       <div class="cv-vault${ART.vault ? " art" : ""}"${ART.vault ? ` style="${shade(ART.vault, 0.86, 0.3)}"` : ""}>
@@ -147,6 +159,9 @@
   }
   card.addEventListener("click", (e) => {
     const b = e.target.closest("[data-cave-start]"); if (b) return A.journeyStart(Number(b.dataset.caveStart));
+    const mt = e.target.closest("[data-cave-meter]"); if (mt) return A.journeyMeter(mt.dataset.caveMeter);
+    if (e.target.closest("[data-cave-skip]")) return A.skipToday();
+    if (e.target.closest("[data-cave-unskip]")) return A.skipToday(false);
     if (e.target.closest("[data-cave-today]")) return A.journeyToday();
     if (e.target.closest("[data-cave-acts]")) { document.dispatchEvent(new CustomEvent("mdfit:habits-open")); const c = document.getElementById("habits-card"); if (c) c.scrollIntoView({ behavior: "smooth", block: "start" }); return; }
     const g = e.target.closest("[data-intro-go]"); if (g) return A.introGo(g.dataset.introGo);
