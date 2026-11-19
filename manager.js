@@ -66,17 +66,30 @@
   // ---- shell
   let state = { tab: "share", month: thisMonth(), share: null };
   // To the client management portal with the same sign-in (same tab, same token: no second password)
-  $("#toPortal").addEventListener("click", () => { const s = session.get(); if (!s) return; try { sessionStorage.setItem("mdfit_ws_token", s.token); sessionStorage.setItem("mdfit_staff_active", String(Date.now())); } catch {} });
+  const PORTALS = [[["admin"], "/workspace", "mdfit_ws_token", "Admin"], [["manager"], "/manager", "mdfit_manager", "Manager"], [["manager", "developer"], "/dev", "mdfit_dev", "Developer"], [null, "/workspace#clients", "mdfit_ws_token", "Client portal"]];
+  function drawSwitch(me) {
+    const roles = (me && (me.roles || [me.role])) || [], owner = !!(me && (me.isOwner || me.role === "owner"));
+    $("#switch").innerHTML = PORTALS.filter(([need, , key]) => key === KEY || !need || owner || need.some((r) => roles.includes(r)))
+      .map(([, href, key, label]) => `<a href="${href}" data-key="${key}"${key === KEY ? ' aria-current="page"' : ""}>${label}</a>`).join("");
+  }
+  $("#switch").addEventListener("click", (e) => {
+    const a = e.target.closest("a[data-key]"), s = session.get(); if (!a || !s) return;
+    if (a.dataset.key === KEY) { e.preventDefault(); return; }
+    try {
+      if (a.dataset.key === "mdfit_ws_token") { sessionStorage.setItem("mdfit_ws_token", s.token); sessionStorage.setItem("mdfit_staff_active", String(Date.now())); }
+      else sessionStorage.setItem(a.dataset.key, JSON.stringify({ token: s.token, expiresAt: s.expiresAt }));
+    } catch {}
+  });
   function show(signedIn) {
-    $("#signin").hidden = signedIn; $("#app").hidden = !signedIn; $("#signOut").hidden = !signedIn; $("#who").hidden = !signedIn; $("#toPortal").hidden = !signedIn;
+    $("#signin").hidden = signedIn; $("#app").hidden = !signedIn; $("#signOut").hidden = !signedIn; $("#who").hidden = !signedIn; $("#switch").hidden = !signedIn;
   }
   async function boot() {
     if (!session.get()) return show(false);
     try {
       const me = await api("GET", "/api/admin/me").catch(() => null);
-      $("#whoName").textContent = me ? `${me.name || me.email}${me.role ? " · " + (me.role === "owner" ? "Owner" : me.role === "manager" ? "Manager" : me.role) : ""}` : "";
       state.share = await api("GET", "/api/admin/partner/share");
-      show(true);
+      $("#whoName").textContent = me ? `${me.name || me.email}${me.isOwner || me.role === "owner" ? " · Owner, view only" : me.role ? " · " + (me.role === "manager" ? "Manager" : me.role) : ""}` : "";
+      drawSwitch(me); show(true);
       const h = (location.hash || "").slice(1);
       if (["share", "statement", "partners", "payouts"].includes(h)) state.tab = h;
       render();
