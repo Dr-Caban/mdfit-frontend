@@ -725,7 +725,7 @@ Sizes: 76 HTML files; 155 unique API method+path pairs across the site (68 membe
 | Item | Value |
 | --- | --- |
 | Production domain | `https://www.mymdfit.com` (canonical links, sitemap, `check-live-build.js` uses `https://mymdfit.com`) |
-| Vercel project name | `mdfit-srq` (named in `admin.html` analytics note: "Vercel Dashboard → mdfit-srq → Analytics"); `mdfit-srq.vercel.app` also named in `privacy-policy.html`. The www/apex redirect is Vercel-side configuration, not in the repo **(verify)** |
+| Vercel project name | `mdfit-frontend`, team `md-fit` (https://vercel.com/md-fit/mdfit-frontend) — verified against the Vercel API, Nov 19 2026. `mdfit-srq` appears in an older `admin.html` analytics note and `mdfit-srq.vercel.app` in `privacy-policy.html`; that hostname is still an allowed origin on the API, but the project is `mdfit-frontend`. The plan keeps runtime logs about an hour, so the API's own 90-day log (Developer console → Logs) is the record. The www/apex redirect is Vercel-side configuration, not in the repo |
 | Build | None. `vercel.json` has no `builds`/`framework`; files are served as-is with `cleanUrls: true` (so `/account` serves `account.html`) |
 | Deploy ignore | `.vercelignore`: `scripts`, `.github` |
 | Env vars read by the edge | `API_ORIGIN` (optional, overrides the Railway origin), `EDGE_SECRET` (value sent as the `x-mdfit-edge` header), `VERCEL_GIT_COMMIT_SHA` (first 12 chars returned as `x-mdfit-build`) |

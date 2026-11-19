@@ -144,8 +144,8 @@
       const shut = !!(LG.days && (LG.days.denied || LG.days.error));
       const notes = card("Railway, Vercel and this browser", `
         <p class="muted" style="margin:0 0 8px">${shut ? "For the container's own messages and the site's builds, and for the same lines over the last 7 days:" : "The lines above are the server's own, kept here for 90 days — longer than Railway keeps them. For the container's own messages and the site's builds:"}</p>
-        <div class="row"><a class="btn" href="https://railway.com/dashboard" target="_blank" rel="noopener">Railway → Deployments → Logs</a>
-          <a class="btn" href="https://vercel.com/dashboard" target="_blank" rel="noopener">Vercel → Deployments</a>
+        <div class="row"><a class="btn" href="${MDFitPlatform.RAILWAY}" target="_blank" rel="noopener">Railway → Deployments → Logs</a>
+          <a class="btn" href="${MDFitPlatform.VERCEL}" target="_blank" rel="noopener">Vercel → Deployments</a>
           <button class="btn" type="button" data-plat="copy">Copy a platform summary</button></div>
         <p class="muted" style="margin:10px 0 0;font-size:12px">Faults in a member's own browser are not collected here: only what happens in the browser you are reading this in.</p>`);
 
@@ -157,6 +157,7 @@
       const p = LG.page || { entries: [], total: 0, matched: 0, unreadable: 0 };
       const sum = LG.summary && LG.summary.totals ? LG.summary : null;
       const faults = sum ? (sum.totals.s5xx || 0) + (sum.totals.error || 0) : null;
+      const warns = sum ? sum.totals.warn || 0 : 0;
 
       let failing = "";
       if (sum) {
@@ -166,15 +167,19 @@
         const where = (sum.totals.errorPaths || []).length
           ? `<p class="muted small" style="margin:12px 0 4px">Where it failed</p>` + table(["Request", "Faults"], sum.totals.errorPaths.map((x) => [esc(x.key), num(x.count)]))
           : "";
-        failing = card("Faults by day", byDay + where,
-          `<span class="pill ${faults ? "bad" : "ok"}">${faults ? `${num(faults)} in ${num(sum.days)} days` : `none in ${num(sum.days)} days`}</span>`);
+        // The warnings are where the real trouble usually shows: a media upload that would not go up, a key refused
+        const events = (sum.totals.events || []).length
+          ? `<p class="muted small" style="margin:12px 0 4px">What the server reported, besides requests</p>` + table(["Event", "Times"], sum.totals.events.slice(0, 12).map((x) => [esc(x.key), num(x.count)]))
+          : "";
+        failing = card("Faults by day", byDay + where + events,
+          `<span class="pill ${faults ? "bad" : warns ? "warn" : "ok"}">${faults ? `${num(faults)} in ${num(sum.days)} days` : warns ? `none, ${num(warns)} warnings in ${num(sum.days)} days` : `none in ${num(sum.days)} days`}</span>`);
       }
 
       const controls = `<div class="row" style="margin-bottom:10px">
         <label class="muted small" for="logDate">Day</label>
         <select class="input" id="logDate" data-log="date" style="width:auto">${(kept.length ? kept : [{ date: LG.date, bytes: 0 }]).slice().reverse().map((x) => `<option value="${esc(x.date)}"${x.date === LG.date ? " selected" : ""}>${esc(x.date)}${x.bytes ? ` · ${esc(bytes(x.bytes))}` : ""}</option>`).join("")}</select>
         ${[["", "Everything"], ["error", "Errors"], ["warn", "Warnings"], ["info", "Requests"]].map(([v, l]) => `<button class="btn sm" type="button" data-log="level" data-v="${v}" aria-pressed="${LG.level === v}"${LG.level === v ? ' style="font-weight:700"' : ""}>${l}</button>`).join("")}
-        <input class="input" id="logQ" data-log="qbox" value="${esc(LG.qDraft)}" placeholder="Find in the lines: a path, a status, a word" style="flex:1;min-width:180px">
+        <input class="input" id="logQ" data-log="qbox" value="${esc(LG.qDraft)}" placeholder="Find in the lines: a path like /presence, a status, a word" style="flex:1;min-width:180px">
         <button class="btn sm" type="button" data-log="search">Search</button>${LG.q ? `<button class="btn sm" type="button" data-log="clearq">Clear</button>` : ""}
       </div>`;
 

@@ -60,10 +60,14 @@
   };
   faults.install();
 
+  // Straight to this platform's own pages, so nobody has to hunt for the right project first.
+  const RAILWAY = "https://railway.com/project/a5871163-a3f5-423a-ba07-124fcb4bc2d7";
+  const VERCEL = "https://vercel.com/md-fit/mdfit-frontend";
+
   // ---------------------------------------------------------------- what the platform is made of
   // Each part: what it is, where it runs, and where to look when it misbehaves.
   const PARTS = [
-    ["Website", "The public pages, the condition and muscle pages, the booking page", "Vercel", "Vercel → Deployments → Build logs; Web Analytics for traffic"],
+    ["Website", "The public pages, the condition and muscle pages, the booking page", "Vercel (project mdfit-frontend)", "Vercel → Deployments → Build logs; Web Analytics for traffic"],
     ["Member app", "/account: the road, workouts, programs, videos, pain tool, messages — and Solomon", "Vercel pages over the Railway API", "Server log below; the browser's own faults in Logs → This browser"],
     ["Practice workspace", "/admin: the diary, clients, charts, notes, payments, settings", "Vercel pages over the Railway API", "Server log below"],
     ["Manager console", "/manager: the revenue share, payment notices, statements, PATF partners, payouts", "Vercel pages over the Railway API and Stripe", "Server log below; Stripe dashboard for a payout"],
@@ -116,6 +120,11 @@
     const sys = (d && d.system) || {};
     const t = logs && logs.totals;
     const faultCount = t ? (t.s5xx || 0) + (t.error || 0) : null;
+    // Nothing failing outright, but something the server was unhappy about (a media upload, a Google key) still has
+    // to say so: "No faults" on its own over a pile of warnings is the wrong headline.
+    const warnCount = t ? t.warn || 0 : 0;
+    const headPill = faultCount ? "bad" : warnCount ? "warn" : "ok";
+    const headText = faultCount ? `${num(faultCount)} ${faultCount === 1 ? "fault" : "faults"}` : warnCount ? `No faults, ${num(warnCount)} ${warnCount === 1 ? "warning" : "warnings"}` : "No faults";
     const trendLine = !g ? "no visits recorded yet" : g.pct == null ? `${num(g.now.views)} in the last 7 days` : `${g.pct >= 0 ? "up" : "down"} ${Math.abs(g.pct)}% on the 7 days before`;
 
     // The link that opens the server log: in the developer console it is the next tab along; from the workspace or
@@ -138,7 +147,7 @@
         if (logs && logs.denied) return `<p class="muted" style="margin:0">The server log is open to the practice owner's sign-in. Railway and Vercel show the same thing in their own dashboards.</p>`;
         if (logs && logs.error) return `<p class="muted" style="margin:0">The server log could not be read: ${esc(logs.error)}</p>`;
         if (!t) return `<p class="muted" style="margin:0">Checking the server log…</p>`;
-        return `<p style="margin:0 0 10px"><span class="pill ${faultCount ? "bad" : "ok"}">${faultCount ? `${num(faultCount)} ${faultCount === 1 ? "fault" : "faults"}` : "No faults"}</span>
+        return `<p style="margin:0 0 10px"><span class="pill ${headPill}">${esc(headText)}</span>
           <span class="muted"> in the last ${num(logs.days)} days, over ${num(t.requests)} requests</span></p>
           ${rows(["", ""], body([
             ["Requests that failed on the server (5xx)", `<b>${num(t.s5xx)}</b>`],
@@ -147,7 +156,8 @@
             ["Warnings", num(t.warn)],
             ["Times the server restarted", num(t.restarts)]
           ], false))}
-          ${(t.errorPaths || []).length ? `<p class="muted" style="margin:12px 0 4px;font-size:12px">Where it failed</p>${rows(["Request", "Faults"], body(t.errorPaths.slice(0, 6).map((p) => [esc(p.key), num(p.count)])))}` : ""}`;
+          ${(t.errorPaths || []).length ? `<p class="muted" style="margin:12px 0 4px;font-size:12px">Where it failed</p>${rows(["Request", "Faults"], body(t.errorPaths.slice(0, 6).map((p) => [esc(p.key), num(p.count)])))}` : ""}
+          ${(t.events || []).length ? `<p class="muted" style="margin:12px 0 4px;font-size:12px">What the server reported</p>${rows(["Event", "Times"], body(t.events.slice(0, 6).map((x) => [esc(x.key), num(x.count)])))}` : ""}`;
       })(), owner ? "the server's own log, kept 90 days" : "")}
 
       ${card("What is running", rows(["", ""], body([
@@ -164,16 +174,17 @@
       <p class="muted" style="margin:0 0 10px">Each of these can be read, copied and handed to whoever is fixing something. Railway and Vercel need their own sign-ins.</p>
       ${rows(["Where", "What is there", "How long it is kept"], body([
         ["The server log, here", "Every request, warning, error and restart the API wrote — as lines you can filter, copy or download", logs && logs.denied ? "90 days, for the owner's sign-in" : "90 days"],
-        ["Railway → Deployments → Logs", "The same lines as the server writes them, plus the build and the container's own messages", "7 days"],
+        ["Railway → Deployments → Logs", "The same lines as the server writes them, plus the build and the container's own messages, which never reach the copy here", "7 days"],
         ["Vercel → Deployments", "The build log for the site, and which commit is live", "kept with the deployment"],
+        ["Vercel → Logs", "Requests the site's own edge handled on their way to the API", "about an hour on the current plan"],
         ["Vercel → Web Analytics", "Visits to the public site as Vercel counts them", "per the plan"],
         ["This browser", "What the JavaScript console would have shown on these console pages", "until cleared"]
       ], false), false, 620)}
       <div class="row" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px">
         ${logLink}${analytics}
         <button class="btn" type="button" data-plat="copy">Copy a platform summary</button>
-        <a class="btn" href="https://railway.com/dashboard" target="_blank" rel="noopener">Railway</a>
-        <a class="btn" href="https://vercel.com/dashboard" target="_blank" rel="noopener">Vercel</a>
+        <a class="btn" href="${RAILWAY}" target="_blank" rel="noopener">Railway</a>
+        <a class="btn" href="${VERCEL}" target="_blank" rel="noopener">Vercel</a>
       </div>`)}
 
     ${card("The parts of the platform", rows(["Part", "What it does", "Where it runs", "Where to look"],
@@ -219,5 +230,5 @@
     return null;
   }
 
-  window.MDFitPlatform = { overview, bundle, faults, onClick, growth, PARTS, esc };
+  window.MDFitPlatform = { overview, bundle, faults, onClick, growth, PARTS, esc, RAILWAY, VERCEL };
 })();
