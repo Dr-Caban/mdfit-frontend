@@ -646,6 +646,7 @@
   function route(u, raw) {
     const t = u.text;
     if (HELLO.test(String(raw || "")) && !u.pained && !u.area) return { kind: "other", local: true, free: true, run: hello };
+    if (!u.pained && !u.area && /\b(recap|my results|weekly (summary|report|recap|review)|how (was|is|did) my (last )?week( go| going)?|how did i do (this|last) week|how am i doing)\b/.test(t)) return { kind: "other", local: true, free: true, run: () => recap(/last week/.test(t) ? "last" : "") };
     const way = !u.pained && !u.area ? wayFor(t) : null;
     if (lookCmd(t, "dark|black|night") && !u.pained) return { kind: "looks", run: () => look({ theme: "black" }, "Done. Black it is. Anything else you'd like to change about how the app looks?") };
     if (lookCmd(t, "white|light|bright")) return { kind: "looks", run: () => look({ theme: "white" }, "Done. White it is. Anything else you'd like to change?") };
@@ -785,6 +786,34 @@
     box.style.bottom = under ? under + "px" : ""; box.style.height = under ? Math.round(vv.height * 0.94) + "px" : "";
   }
   // A stop on the road, done with Solomon: the chat opens over the road and goes straight to the lesson
+  // ---------- "How was my week?" The same numbers as the Results card on Progress (account.js weekFacts), read out
+  // by Solomon: what was done, how it compares, what moved toward their goal, and what is next. No advice. ----------
+  function recap(which) {
+    let f = null; try { f = App.weekFacts ? App.weekFacts() : null; } catch {}
+    if (!f) { say("I can't see your numbers just now. Ask me again in a moment."); return offer([backToRoad()]); }
+    const name = f.first ? `, ${f.first}` : "", s = (n, one) => `${n} ${one}${n === 1 ? "" : "s"}`;
+    if (!f.any) { say(`Nothing on the books yet${name}. One session or one check-in, and I'll have something to read you.`); return offer([backToRoad()]); }
+    const cur = f.weeks[3], last = f.weeks[2], before = f.weeks[1], quietWeek = (w) => !w.sessions && !w.checkins && !w.activeDays;
+    const useLast = which === "last" || (which !== "this" && quietWeek(cur) && !quietWeek(last)), w = useLast ? last : cur;
+    if (quietWeek(w)) say(useLast ? `Last week was quiet${name}: nothing logged. No lecture from a cloud. One stone today and we're moving again.` : `Nothing logged yet this week${name}. The week is young. So is one of us.`);
+    else {
+      const did = [w.sessions ? s(w.sessions, "session") + (w.minutes ? ` and ${w.minutes} minutes` : "") : "no sessions", ...(w.checkins ? [s(w.checkins, "check-in")] : [])].join(", ");
+      say(`${useLast ? "Last week" : "This week so far"}${name}: ${did}. You showed up on ${w.activeDays} of ${useLast ? 7 : f.dayOfWeek} day${(useLast ? 7 : f.dayOfWeek) === 1 ? "" : "s"}.`);
+      if (useLast) { const d = last.sessions - before.sessions;
+        if (d > 0) say(`${s(d, "session")} more than the week before. Noted, and earned.`); else if (d < 0) say(`${s(-d, "session")} fewer than the week before. It happens. This week is a fresh page.`); else if (last.sessions) say("Level with the week before. Steady is a skill."); }
+      else if (last.sessions) say(`Last week ended on ${s(last.sessions, "session")}. ${cur.sessions >= last.sessions ? "You're already there." : `${s(last.sessions - cur.sessions, "session")} to match it.`}`);
+    }
+    const p = f.pain, over = (d) => (d >= 14 ? `${Math.round(d / 7)} weeks` : `${d} day${d === 1 ? "" : "s"}`);
+    if (p && p.to < p.from) say(`${p.area}: ${p.from} down to ${p.to} over ${over(p.days)}. That's the direction we want.`);
+    else if (p && p.to > p.from) say(`${p.area}: ${p.from} up to ${p.to} over ${over(p.days)}. Worth a word with Dr. Jared if it keeps climbing.`);
+    else if (p) say(`${p.area} is holding at ${p.to}.`);
+    if (f.lift) say(`${f.lift.name}: ${f.lift.from} to ${f.lift.to} lb. Stronger, and it's on the record.`);
+    let nx = null; try { nx = App.nextUp ? App.nextUp() : null; } catch {}
+    // what is next on their road; when nothing is lined up, he offers to build today's session himself
+    if (nx && nx.kind === "ask") say("Nothing is lined up for today. Say the word and I'll build you a session.");
+    else if (nx && nx.title) say(`Next up: ${nx.title}.`);
+    offer([backToRoad(), { label: "See my results", hash: "progress", name: "your results" }]);
+  }
   function lesson(ref) {
     open(false, true);
     beat(() => (ref === "know" ? knowYou() : ref === "pain" ? checkin("", "This stop is your check-in. Where does it bother you most? Or tell me nothing hurts.") : pickRoad("This stop: pick your road. What are you here for?")));
@@ -827,5 +856,5 @@
   lift();
 
   load();
-  window.MDFitGuide = { day: dayRows, understand, open: () => open(false), lesson, shut, say: speak, hush, speaking: () => !tag.hidden, greeting: (t) => { dayHello = String(t || "").trim(); }, reminders: () => G.reminders.slice() };
+  window.MDFitGuide = { day: dayRows, understand, open: () => open(false), lesson, shut, say: speak, hush, recap: (which) => { open(false, true); beat(() => recap(which)); }, speaking: () => !tag.hidden, greeting: (t) => { dayHello = String(t || "").trim(); }, reminders: () => G.reminders.slice() };
 })();

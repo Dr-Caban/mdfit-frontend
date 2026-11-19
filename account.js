@@ -3493,6 +3493,61 @@
       track: (() => { try { return activeTrack(); } catch { return null; } })(), about: aboutMe,
       refer: a && a.enabled ? { pct: Number(a.ratePct) || 0 } : null };
   }
+  // ---------- Results: what the member's own entries add up to. One source for the card on Progress and for
+  // Solomon's weekly recap, so the two can never disagree. Weeks run Monday to Sunday, in the clinic's time. ----------
+  const mondayOf = (d) => addDays(d, -((new Date(d + "T12:00:00Z").getUTCDay() + 6) % 7));
+  function weekFacts() {
+    const t = todayInTz(), mon = mondayOf(t), within = (d, a, b) => d >= a && d <= b;
+    const week = (a) => { const b = addDays(a, 6), w = allWorkouts.filter((x) => within(x.date, a, b)), p = painLog.filter((x) => within(x.date, a, b));
+      const days = new Set([...w.map((x) => x.date), ...p.map((x) => x.date)]); weekHabit.forEach((v, d) => { if (within(d, a, b) && Number(v.activities) > 0) days.add(d); });
+      return { from: a, to: b, sessions: w.length, minutes: Math.round(w.reduce((n, x) => n + (Number(x.minutes) || 0), 0)), checkins: new Set(p.map((x) => x.date)).size, activeDays: days.size }; };
+    const weeks = [3, 2, 1, 0].map((k) => week(addDays(mon, -7 * k))); // oldest first; the last one is this week
+    const span = (a, b) => Math.round((Date.parse(b + "T12:00:00Z") - Date.parse(a + "T12:00:00Z")) / 864e5);
+    // Pain: the area checked on most in the last 30 days, its first entry against its latest (two different days at least)
+    const pains = painLog.filter((x) => x.area && x.date >= addDays(t, -30) && x.date <= t).slice().sort((a, b) => (a.date + (a.createdAt || "") < b.date + (b.createdAt || "") ? -1 : 1));
+    const byArea = new Map(); pains.forEach((x) => byArea.set(x.area, [...(byArea.get(x.area) || []), x]));
+    const top = [...byArea.values()].filter((l) => l[0].date !== l[l.length - 1].date).sort((a, b) => b.length - a.length)[0];
+    const pain = top ? { area: top[0].area, from: Number(top[0].level), to: Number(top[top.length - 1].level), days: span(top[0].date, top[top.length - 1].date) } : null;
+    // Strength: the lift that has gone up the most in the last 60 days (two different days at least)
+    const lifts = new Map(); allWorkouts.filter((w) => w.date >= addDays(t, -60) && w.date <= t).slice().sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0))
+      .forEach((w) => (w.lifts || []).forEach((l) => { const n = String(l.name || "").trim(), kg = Number(l.weight); if (!n || !(kg > 0)) return; const k = n.toLowerCase(); lifts.set(k, [...(lifts.get(k) || []), { name: n, date: w.date, weight: kg }]); }));
+    const up = [...lifts.values()].filter((l) => l[0].date !== l[l.length - 1].date && l[l.length - 1].weight > l[0].weight).sort((a, b) => (b[b.length - 1].weight - b[0].weight) - (a[a.length - 1].weight - a[0].weight))[0];
+    const lift = up ? { name: up[0].name, from: up[0].weight, to: up[up.length - 1].weight, days: span(up[0].date, up[up.length - 1].date) } : null;
+    // Body weight, when it has been entered on two different days in the last 60
+    const ws = vitals.filter((v) => Number(v.weight) > 0 && v.date >= addDays(t, -60) && v.date <= t).slice().sort((a, b) => (a.date < b.date ? -1 : 1));
+    const weight = ws.length > 1 && ws[0].date !== ws[ws.length - 1].date ? { from: Number(ws[0].weight), to: Number(ws[ws.length - 1].weight), days: span(ws[0].date, ws[ws.length - 1].date) } : null;
+    return { today: t, dayOfWeek: span(mon, t) + 1, first: String((client && client.name) || "").trim().split(/\s+/)[0] || "", aim: (aboutMe && aboutMe.aim) || "",
+      weeks, pain, lift, weight, any: allWorkouts.length + painLog.length > 0 };
+  }
+  const AIM_SAYS = { pain: "get out of pain", stronger: "get stronger", weight: "lose weight", move: "move better", sport: "get better at your sport" };
+  const overTime = (d) => (d >= 14 ? `${Math.round(d / 7)} weeks` : `${d} day${d === 1 ? "" : "s"}`);
+  function renderResults() {
+    const box = $("#results-card"); if (!box || !client) return;
+    let f; try { f = weekFacts(); } catch { return; }
+    const cur = f.weeks[3], last = f.weeks[2];
+    const head = `<div class="card-head"><span class="label accent">Your results</span>${f.any ? `<button type="button" class="link-sm" data-recap>Hear it from Solomon</button>` : ""}</div>`;
+    const goal = f.aim && AIM_SAYS[f.aim] ? `<p class="rs-goal">You’re here to <b>${AIM_SAYS[f.aim]}</b>.</p>` : `<p class="rs-goal"><button type="button" class="link-sm" data-results-know>Tell Solomon what you’re here for</button></p>`;
+    if (!f.any) { box.innerHTML = `${head}${goal}<p class="rs-none">Nothing to show yet. Finish one session or one check-in and your results start here.</p>`; box.hidden = false; return; }
+    const num = (v, label, was) => `<div><b>${v}</b><span>${label}</span><small>${was} last week</small></div>`;
+    const trend = (name, a, b, word) => `<div class="rs-trend"><span>${esc(name)}</span><b>${a} → ${b}</b><small>${word}</small></div>`;
+    const rows = [];
+    if (f.pain) rows.push(trend(f.pain.area, f.pain.from, f.pain.to, f.pain.to < f.pain.from ? `pain down ${f.pain.from - f.pain.to} in ${overTime(f.pain.days)}` : f.pain.to > f.pain.from ? `pain up ${f.pain.to - f.pain.from} in ${overTime(f.pain.days)}` : `holding steady over ${overTime(f.pain.days)}`));
+    if (f.lift) rows.push(trend(f.lift.name, f.lift.from, f.lift.to, `lb, up ${Math.round((f.lift.to - f.lift.from) * 10) / 10} in ${overTime(f.lift.days)}`));
+    if (f.weight && f.aim === "weight") rows.push(trend("Body weight", f.weight.from, f.weight.to, `lb over ${overTime(f.weight.days)}`));
+    const most = Math.max(1, ...f.weeks.map((w) => w.sessions));
+    const bars = f.weeks.map((w, i) => `<div class="rs-wk${i === 3 ? " now" : ""}"><b>${w.sessions}</b><i style="height:${Math.max(3, Math.round((w.sessions / most) * 44))}px"></i><span>${i === 3 ? "This week" : i === 2 ? "Last week" : fmtDate(w.from, { month: "short", day: "numeric" })}</span></div>`).join("");
+    box.innerHTML = `${head}${goal}
+      <div class="rs-nums">${num(cur.sessions, cur.sessions === 1 ? "session" : "sessions", last.sessions)}${num(cur.activeDays, cur.activeDays === 1 ? "active day" : "active days", last.activeDays)}${num(cur.minutes, "minutes", last.minutes)}</div>
+      ${rows.join("")}
+      <div class="rs-weeks" role="img" aria-label="Sessions a week: ${f.weeks.map((w) => w.sessions).join(", ")}, oldest first">${bars}</div>
+      <p class="rs-cap">Sessions a week. This week so far, Monday to today.</p>`;
+    box.hidden = false;
+  }
+  ["mdfit:journey", "mdfit:workout", "mdfit:view"].forEach((ev) => document.addEventListener(ev, () => { if (!$("#view-progress").hidden) renderResults(); }));
+  document.addEventListener("click", (e) => {
+    if (e.target.closest("[data-recap]")) { if (window.MDFitGuide && window.MDFitGuide.recap) window.MDFitGuide.recap(""); }
+    else if (e.target.closest("[data-results-know]")) { if (!lesson("know") && window.MDFitGuide && window.MDFitGuide.open) window.MDFitGuide.open(); }
+  });
   function renderTop() {
     const box = $("#top3"); if (!box || !client) return;
     const set = (id, v, s, due) => { $(`#t3-${id}-v`).textContent = v; $(`#t3-${id}-s`).textContent = s; $(`#t3-${id}`).classList.toggle("due", !!due); };
@@ -4322,7 +4377,7 @@
   let weekHabitDay = "", weekHabitBusy = false;
   async function loadWeekHabit() {
     if (weekHabitBusy) return; weekHabitBusy = true;
-    try { const t = todayInTz(), dow = (new Date(t + "T12:00:00Z").getUTCDay() + 6) % 7, months = [...new Set([addDays(t, -dow).slice(0, 7), t.slice(0, 7)])];
+    try { const t = todayInTz(), dow = (new Date(t + "T12:00:00Z").getUTCDay() + 6) % 7, months = [...new Set([addDays(t, -dow - 7).slice(0, 7), addDays(t, -dow).slice(0, 7), t.slice(0, 7)])];
       const got = await Promise.all(months.map((m) => apiAuth("GET", `/api/me/habits/history?month=${m}`)));
       weekHabit = new Map(got.flatMap((r) => (r && r.days) || []).map((d) => [d.date, { qualifying: !!d.qualifying, activities: d.activities }])); weekHabitDay = t;
       document.dispatchEvent(new CustomEvent("mdfit:journey")); } catch { /* the road still draws from workouts and check-ins */ } finally { weekHabitBusy = false; }
@@ -4403,7 +4458,7 @@
     const visitAhead = (appts.upcoming || []).some((a) => a.date === d && a.status === "booked" && (d > t || (d === t && String(a.time || "") > now)));
     return { workout, open: unpaid || visitAhead };
   };
-  window.MDFitApp = { numWord, journeyMeter, skipToday, showPlanOnCalendar, today: () => todayInTz(), about: () => aboutMe, saveAbout, tripStart, backToRoad, openTrack, saveProgram, logPain, painAreas: () => AREAS.slice(), showCard, customize, journeyToday, nextUp, goNext, guideFacts, view: () => show.at || "home", journey, journeyStart, introGo, introSkip, introPass, setMineView, dayStatus, startPlayer, go, loadRewards, toast, celebrateToast, exMeta, byId, gemIcon: GEM_ICON, rewards: () => reward, isPaid, showPaywall,
+  window.MDFitApp = { weekFacts, numWord, journeyMeter, skipToday, showPlanOnCalendar, today: () => todayInTz(), about: () => aboutMe, saveAbout, tripStart, backToRoad, openTrack, saveProgram, logPain, painAreas: () => AREAS.slice(), showCard, customize, journeyToday, nextUp, goNext, guideFacts, view: () => show.at || "home", journey, journeyStart, introGo, introSkip, introPass, setMineView, dayStatus, startPlayer, go, loadRewards, toast, celebrateToast, exMeta, byId, gemIcon: GEM_ICON, rewards: () => reward, isPaid, showPaywall,
     // For the guide (mdfit-guide.js) and the theme switch (app-theme.js): who is signed in, what the app holds, and two places to open
     client: () => client, content: async () => { if (!C) await (contentLoading || loadContent()).catch(() => {}); return C; },
     openBook: () => { go("profile"); setTimeout(() => $("#p-book-open") && $("#p-book-open").click(), 60); },
