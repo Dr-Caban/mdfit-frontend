@@ -100,11 +100,11 @@
           ${s.state === "now" ? "" : `<span class="cv-cap">${esc(short(s.label))}${s.state === "passed" ? " · skipped" : s.state !== "done" ? " · +10 XP" : ""}</span>`}
         </div>`; }
       // a day: its weekday, its session if the program has one, and how many of its four lights are lit
-      const name = s.session ? `${s.wd} · ${short(s.label)}` : s.wd, count = `<i class="cv-badge count">${s.lit}/${s.of}</i>`;
+      const name = s.session ? `${s.wd} · ${short(s.label)}` : s.rest ? `${s.wd} · Rest` : s.wd, count = `<i class="cv-badge count">${s.lit}/${s.of}</i>`;
       const said = s.today ? (s.state === "done" ? "today, every light lit" : `today, ${s.lit} of ${s.of} lit`) : s.state === "done" ? "every light lit" : s.state === "part" ? `${s.lit} of ${s.of} lit` : s.state === "missed" ? "nothing logged" : "not yet";
       const first = !j.today.workout || (j.hasProgram && !j.rested) ? (s.session ? "Start" : "Today") : "Today";
       return `<div class="cv-stop ${s.state}${s.today ? " today" : ""}" style="left:${x}%;top:${y}px;--gem:${color}">
-          ${s.today ? `<span class="cv-bubble">${s.state === "done" ? "Done today" : first}<small>${first === "Start" ? esc(short(s.label)) + (s.sub ? " · " + esc(s.sub) : "") : `${s.lit} of ${s.of} lit${s.session ? " · " + esc(short(s.label)) : ""}`}</small></span>` : ""}
+          ${s.today ? `<span class="cv-bubble">${s.state === "done" ? "Done today" : first}<small>${first === "Start" ? esc(short(s.label)) + (s.sub ? " · " + esc(s.sub) : "") : `${s.lit} of ${s.of} lit${s.session ? " · " + esc(short(s.label)) : s.rest ? " · rest day" : ""}`}</small></span>` : ""}
           <button type="button" class="cv-ore${s.state === "done" && fresh.has(s.n) ? " mining" : ""}" ${s.state === "done" && fresh.has(s.n) ? `style="--el:-${((Date.now() - fresh.get(s.n)) / 1000).toFixed(2)}s"` : ""} ${s.today ? "data-cave-today" : "disabled"} aria-label="${esc(name)}: ${said}">${s.state === "done" && fresh.has(s.n) ? sequence(color) : s.state === "missed" ? ore("locked", color, true) : s.state === "part" || s.state === "now" ? ore("now", color, true) + (s.lit ? count : "") : ore(s.state, color)}</button>
           ${s.state === "done" ? `<i class="cv-tw t1"></i><i class="cv-tw t2"></i>` : ""}
           ${s.today ? "" : `<span class="cv-cap">${esc(name)}</span>`}
@@ -113,7 +113,7 @@
     const chip = (lit, label, attrs = "") => `<button type="button" class="cv-chip${lit ? " lit" : ""}" ${attrs}>${crystal(lit)}<span>${label}</span></button>`;
     card.innerHTML = `
       <div class="cv-mouth${ART.mouth ? " art" : ""}"${ART.mouth ? ` style="${shade(ART.mouth, 0, 0.92)}"` : ""}>
-        <span class="cv-kicker">${j.intro ? "The gem mine · start here" : j.program ? `The gem mine · ${esc(j.unit)} ${j.chamber} of ${j.chambers}` : "The gem mine · this week"}</span>
+        <span class="cv-kicker">${j.intro ? "The gem mine · start here" : j.startsOn ? `The gem mine · starts ${esc(j.startsOn)}` : j.program ? `The gem mine · ${esc(j.unit)} ${j.chamber} of ${j.chambers}` : "The gem mine · this week"}</span>
         <b class="cv-title">${esc(j.intro ? j.program.title : j.title)}</b>
         ${j.intro ? `<button type="button" class="cv-guidebook" data-intro-skip aria-label="Skip the intro">Skip</button>` : j.program ? `<button type="button" class="cv-guidebook" data-fp="${esc(j.program.id)}" aria-label="Open the program">Program</button>` : `<button type="button" class="cv-guidebook" data-goto="programs">Pick a program</button>`}
         ${j.intro && j.hasProgram ? `<button type="button" class="cv-guidebook cv-alt" data-mine-view="program">My program</button>` : j.introAlt ? `<button type="button" class="cv-guidebook cv-alt" data-mine-view="intro">First descent</button>` : ""}
@@ -129,7 +129,7 @@
       </div>
       <div class="cv-seam" aria-label="Today's seam">
         <span class="cv-kicker">Today's seam</span>
-        <div class="cv-chips four">${chip(j.today.workout, "Workout", "data-cave-today")}${chip(j.today.pain, "Check-in", `data-goto="pain"`)}${chip(j.today.acts, "Activities", "data-cave-acts")}${chip(j.today.goal, "Daily goal", "data-cave-acts")}</div>
+        <div class="cv-chips four">${chip(j.today.workout, j.today.rest ? "Rest day" : "Workout", "data-cave-today")}${chip(j.today.pain, "Check-in", `data-goto="pain"`)}${chip(j.today.acts, "Activities", "data-cave-acts")}${chip(j.today.goal, "Daily goal", "data-cave-acts")}</div>
         ${j.movements ? `<button type="button" class="cv-moves" data-goto="profile">${j.movements} movement${j.movements === 1 ? "" : "s"} from Dr. Jared to do today</button>` : ""}
       </div>
       <div class="cv-vault${ART.vault ? " art" : ""}"${ART.vault ? ` style="${shade(ART.vault, 0.86, 0.3)}"` : ""}>
