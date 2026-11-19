@@ -2644,7 +2644,12 @@
   });
 
   // ---- Programs: each day is a generator session with a fixed seed, so the same session repeats each week and can be compared
-  let progCat = "All";
+  let progCat = "All", progQ = "";
+  // Everything a member might search a program by: its name, type, level, what it says about itself, and its sessions
+  const progText = (p) => [p.title, p.category, p.level, p.location, p.summary, p.notes, ...(p.days || []).flatMap((d) => [d.name, d.goal])].filter(Boolean).join(" ").toLowerCase();
+  const progFind = (q) => { const words = q.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean); if (!words.length) return null;
+    return C.programs.filter((p) => { const t = progText(p); return words.every((w) => t.includes(w)); })
+      .sort((a, b) => words.filter((w) => b.title.toLowerCase().includes(w)).length - words.filter((w) => a.title.toLowerCase().includes(w)).length); };
   // Program exercises named differently from the library -> the library video that shows the same move
   const VIDEO_ALIAS = {
     "Overhead Press (DB)": "Strict Press", "Dumbbell Bench Press": "Bench Press", "Lat Pull-Down": "Lat Pulldown", "Lat Pulldowns": "Lat Pulldown",
@@ -2744,7 +2749,7 @@
   function renderSportFolder(sp, level) {
     const ps = sportPrograms(sp);
     if (!ps.length) { go("programs"); return; }
-    $("#prog-grid").hidden = true; $("#prog-cats").hidden = true; $("#prog-detail").hidden = false;
+    $("#prog-grid").hidden = true; $("#prog-cats").hidden = true; $("#prog-search").hidden = true; $("#prog-detail").hidden = false;
     const box = $("#prog-detail"); box.dataset.id = "";
     const levels = LEVEL_ORDER.filter((l) => ps.some((p) => p.level === l)).concat([...new Set(ps.map((p) => p.level))].filter((l) => !LEVEL_ORDER.includes(l)));
     if (level) {
@@ -2769,11 +2774,15 @@
     if (seg[0] === "sport" && seg[1]) return renderSportFolder(seg[1], seg[2]);
     const cats = ["All", ...C.categories.filter((c) => C.programs.some((p) => p.category === c))];
     $("#prog-cats").innerHTML = cats.map((c) => `<button type="button" class="chip" data-pcat="${esc(c)}" aria-selected="${c === progCat}">${esc(c)}</button>`).join("");
-    const list = C.programs.filter((p) => progCat === "All" || p.category === progCat);
-    const sports = [...new Set(list.filter(isSport).map(sportOf))].sort();
-    $("#prog-grid").innerHTML = list.filter((p) => !isSport(p)).map((p) => programCard(p)).join("") + sports.map(sportCard).join("");
+    const found = progFind(progQ);
+    const list = (found || C.programs).filter((p) => progCat === "All" || p.category === progCat);
+    const sports = found ? [] : [...new Set(list.filter(isSport).map(sportOf))].sort();
+    // a search shows every match as its own card (a sport's levels are not tucked into a folder)
+    $("#prog-grid").innerHTML = found && !list.length
+      ? `<div class="card" style="grid-column:1/-1"><p class="muted" style="margin:0 0 10px">No program matches \u201c${esc(progQ.trim())}\u201d${progCat === "All" ? "" : ` in ${esc(progCat)}`}. Try one word, like the body part or the sport.</p><button type="button" class="btn-ghost sm" data-prog-clear>Clear search</button></div>`
+      : list.filter((p) => found || !isSport(p)).map((p) => programCard(p)).join("") + sports.map(sportCard).join("");
     const open = seg[0] && C.programs.find((p) => p.id === seg[0]);
-    $("#prog-grid").hidden = !!open; $("#prog-cats").hidden = !!open; $("#prog-detail").hidden = !open;
+    $("#prog-grid").hidden = !!open; $("#prog-cats").hidden = !!open; $("#prog-search").hidden = !!open; $("#prog-detail").hidden = !open;
     if (open) renderProgram(open, seg[1]);
   }
   // ---- Week-by-week protocols (Dr. Jared's weekly sheets, written out in full): /data/protocols/<program id>.json
@@ -2972,6 +2981,8 @@
       ${p.locked ? `<div class="locked-note">${unlockBtn("this program")}</div>` : ""}`;
   }
   $("#sheet-img").addEventListener("click", (e) => e.target.classList.toggle("zoomed"));
+  $("#prog-search").addEventListener("input", (e) => { progQ = e.target.value; renderProgramsView(); });
+  $("#prog-grid").addEventListener("click", (e) => { if (e.target.closest("[data-prog-clear]")) { progQ = ""; $("#prog-search").value = ""; progCat = "All"; renderProgramsView(); } });
   $("#prog-cats").addEventListener("click", (e) => {
     const b = e.target.closest("[data-pcat]"); if (!b) return;
     progCat = b.dataset.pcat;
