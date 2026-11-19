@@ -17,9 +17,31 @@
   const SAYINGS = ["The patient miner finds the brighter stone.", "Small steps, well kept, move mountains.", "What you build daily, no one can take.",
     "Strength is gathered, not found.", "A steady hand outlasts a strong one.", "The lamp you tend lights the whole road.", "Dig a little each day and the mountain yields."];
   const saying = (k = 0) => SAYINGS[(Math.floor(Date.now() / 864e5) + k) % SAYINGS.length];
-  const INTRO = { solomon: "I'm Solomon. Tap me and ask anything: that's your first stop.", pain: "Next stop: tell me what hurts, or that nothing does.", program: "Pick a road. I'll walk it with you.",
+  const INTRO = { solomon: "I'm Solomon. Tap me and ask anything: that's your first stop.", know: "Next stop: let me get to know you. A few taps.", pain: "Next stop: tell me what hurts, or that nothing does.", program: "Pick a road. I'll walk it with you.",
     session: "One session. That's all today asks.", friend: "Bring a friend down here and you both gain." };
   const open = () => G.open(), to = (go) => () => A.goNext(go);
+  // ---- The hype man, and a just one (owner, Nov 2026): he praises what was actually done, the moment it is done, and
+  // makes it personal from what the member told him about themselves ("as I'd expect from an ex-tennis player").
+  // Never for nothing, never a rank they did not claim: "ex-tennis player", not "pro".
+  const NOUN = { football: "football player", basketball: "basketball player", baseball: "ballplayer", soccer: "soccer player", tennis: "tennis player", pickleball: "pickleball player", golf: "golfer", running: "runner",
+    swimming: "swimmer", volleyball: "volleyball player", wrestling: "wrestler", martial: "fighter", gymnastics: "gymnast", cheer: "cheerleader", dance: "dancer", hockey: "hockey player", lacrosse: "lacrosse player",
+    cycling: "cyclist", rowing: "rower", lifting: "lifter", skiing: "skier", surfing: "surfer", climbing: "climber", chess: "chess player" };
+  function hype(kind) {
+    const ab = (A.about && A.about()) || {}, sport = (ab.sports || []).find((x) => NOUN[x]), noun = sport ? NOUN[sport] : "", n = Number(ab.competitive) || 0, day = Math.floor(Date.now() / 864e5);
+    const pick = (list) => list[day % list.length];
+    if (kind === "workout") {
+      if (ab.athlete === "comp" && noun) return pick([`That was brilliant. Exactly what I'd expect from an ex-${noun}.`, `Done, and done properly. The ${noun} in you never left.`]);
+      if (ab.athlete === "fun" && noun) return pick([`That was brilliant. The ${noun} in you still shows up.`, `Session done. You can take the ${noun} off the field, but there they are.`]);
+      if (n >= 8) return `Session done. A ${n} out of 10 competitor doesn't leave it for tomorrow.`;
+      if (ab.athlete === "no") return "That was brilliant. Not bad for someone who says sport wasn't their thing.";
+      return pick(["That was brilliant. You said you would, and you did.", "Session done. That one counts."]);
+    }
+    if (kind === "checkin") return ab.athlete === "comp" ? "An honest number. Athletes know the scoreboard doesn't lie." : "An honest number. That's how we beat it.";
+    if (kind === "program") return n >= 8 ? "Good pick. Now there's something to win." : "Good pick.";
+    if (kind === "alllit") return noun ? `Every lamp lit. A full day's work, ${ab.athlete === "comp" ? `ex-${noun}` : noun}. You earned each one.` : "Every lamp lit. A full day's work, and you earned each one.";
+    return "";
+  }
+  window.MDFitHype = hype;
   // His welcome on the first opening of a day. The joke is always on him (a cloud who cannot lift anything), never on
   // the member, and a long absence gets one dry line or none: nobody is teased for having been away.
   // {first} = their first name, {n} = days since they were last here.
@@ -60,8 +82,10 @@
       if (n.kind === "lights") { const d = n.today || {};
         out.push(!d.pain ? { t: "Good work. Tell me how you feel, and another light wakes.", act: () => A.go("pain") }
           : !d.acts ? { t: `${d.lit} of ${d.of} lit today. One daily activity lights the next.`, act: to("today") } : { t: "One more light to kindle: reach your daily goal.", act: to("today") }); }
-      if (n.kind === "done") out.push({ t: "Every lamp is lit. Rest now; the road will keep." });
-      if (n.kind === "ask") out.push({ t: `${f.first ? f.first + ", tell" : "Tell"} me what you want to train today and I'll build it.`, act: open });
+      if (n.kind === "done") out.push({ t: hype("alllit") }, { t: "Rest now; the road will keep." });
+      const AIM = { pain: "get out of pain", stronger: "get stronger", weight: "lose weight", move: "move better", sport: "get better at your sport" }, ab = f.about || {};
+      if (n.kind === "ask") out.push({ t: ab.aim ? `You're here to ${AIM[ab.aim]}. Tell me how long you have today and I'll build toward it.` : `${f.first ? f.first + ", tell" : "Tell"} me what you want to train today and I'll build it.`, act: open });
+      if (ab.competitive >= 8 && f.toNext && f.toNext.xp > 0) out.push({ t: `You said you hate to lose. ${f.toNext.xp} XP and ${f.toNext.name} is yours.`, act: () => A.go("leaders") });
       if (f.track && f.track.sessions) out.push({ t: `You've done ${f.track.sessions} session${s(f.track.sessions)} of your ${f.track.source.toLowerCase()} track. ${saying(2)}`, act: () => A.openTrack(f.track.id) });
       else if (f.track) out.push({ t: `Your ${f.track.source.toLowerCase()} track is on your road. Start it when you're ready.`, act: () => A.openTrack(f.track.id) });
       rank(); refer();
@@ -94,12 +118,14 @@
   }
 
   const said = new Map(); // line -> when he last said it
-  let timer = 0, turns = 0, lastKind = "", hello = "";
+  let timer = 0, turns = 0, lastKind = "", hello = "", cheer = "";
   const busy = () => !!document.querySelector(".tour, dialog[open]") || document.hidden;
   function speakFor(view) {
     clearTimeout(timer);
     if (quiet() || view !== A.view()) return;
     if (busy() || G.speaking()) { timer = setTimeout(() => speakFor(view), 4000); return; } // wait for a sheet or a pointer to close
+    // Praise that was earned comes before anything else
+    if (cheer) { const c = cheer; cheer = ""; if (G.say(c, { ms: 7000 })) { timer = setTimeout(() => speakFor(view), 9500); return; } }
     // The day's welcome comes first, then what this screen has to say
     if (hello) { const h = hello; hello = ""; if (G.say(h, { ms: 8000 })) { timer = setTimeout(() => speakFor(view), 10500); return; } }
     let list = []; try { list = lines(view); } catch { return; }
@@ -113,6 +139,8 @@
   document.addEventListener("mdfit:view", (e) => arrive(e.detail, 700));
   // What is next has changed while they are on Home (a session finished, an invoice paid): he says the new thing
   document.addEventListener("mdfit:journey", () => { let k = ""; try { k = A.nextUp().kind; } catch {} if (lastKind && k !== lastKind && A.view() === "home") arrive("home", 1800); lastKind = k; });
+  // A session was finished and saved: he says so when they are back on the road (the player closes onto it)
+  document.addEventListener("mdfit:workout", () => { cheer = hype("workout"); });
   // The first opening of the day (account.js welcomeBack): he greets them above the cloud, and the chat opens with the same words
   document.addEventListener("mdfit:arrive", (e) => { try { hello = greetingFor(e.detail || {}); } catch { hello = ""; } if (G.greeting) G.greeting(hello); arrive(A.view(), 4000); });
   // First words: once the app has its data and the welcome toast has had its moment
