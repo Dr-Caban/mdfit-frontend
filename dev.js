@@ -63,11 +63,24 @@
   });
 
   // ---- to the client management portal with the same sign-in (same tab, same token: no second password)
-  $("#toPortal").addEventListener("click", () => { const s = session.get(); if (!s) return; try { sessionStorage.setItem("mdfit_ws_token", s.token); sessionStorage.setItem("mdfit_staff_active", String(Date.now())); } catch {} });
+  const PORTALS = [[["admin"], "/workspace", "mdfit_ws_token", "Admin"], [["manager"], "/manager", "mdfit_manager", "Manager"], [["manager", "developer"], "/dev", "mdfit_dev", "Developer"], [null, "/workspace#clients", "mdfit_ws_token", "Client portal"]];
+  function drawSwitch(me) {
+    const roles = (me && (me.roles || [me.role])) || [], owner = !!(me && (me.isOwner || me.role === "owner"));
+    $("#switch").innerHTML = PORTALS.filter(([need, , key]) => key === KEY || !need || owner || need.some((r) => roles.includes(r)))
+      .map(([, href, key, label]) => `<a href="${href}" data-key="${key}"${key === KEY ? ' aria-current="page"' : ""}>${label}</a>`).join("");
+  }
+  $("#switch").addEventListener("click", (e) => {
+    const a = e.target.closest("a[data-key]"), s = session.get(); if (!a || !s) return;
+    if (a.dataset.key === KEY) { e.preventDefault(); return; }
+    try {
+      if (a.dataset.key === "mdfit_ws_token") { sessionStorage.setItem("mdfit_ws_token", s.token); sessionStorage.setItem("mdfit_staff_active", String(Date.now())); }
+      else sessionStorage.setItem(a.dataset.key, JSON.stringify({ token: s.token, expiresAt: s.expiresAt }));
+    } catch {}
+  });
 
   // ---- shell
   let state = { tab: "overview", days: 30, data: null };
-  function show(signedIn) { $("#signin").hidden = signedIn; $("#app").hidden = !signedIn; $("#signOut").hidden = !signedIn; $("#who").hidden = !signedIn; $("#toPortal").hidden = !signedIn; }
+  function show(signedIn) { $("#signin").hidden = signedIn; $("#app").hidden = !signedIn; $("#signOut").hidden = !signedIn; $("#who").hidden = !signedIn; $("#switch").hidden = !signedIn; }
   const none = (t) => `<p class="muted" style="margin:0">${esc(t)}</p>`;
   const num = (n) => Number(n || 0).toLocaleString("en-US");
   const bars = (rows, key, label) => { const max = Math.max(1, ...rows.map((r) => r[key])); return rows.length ? `<div style="display:flex;align-items:flex-end;gap:2px;height:120px" role="img" aria-label="${esc(label)}: ${esc(rows.map((r) => `${r.date} ${r[key]}`).join(", "))}">${rows.map((r) => `<div title="${esc(r.date)}: ${num(r[key])}" style="flex:1;min-width:2px;background:var(--accent,#7AAFD7);border-radius:2px 2px 0 0;height:${Math.max(2, Math.round((r[key] / max) * 100))}%"></div>`).join("")}</div>` : none("Nothing in this period."); };
@@ -110,7 +123,7 @@
     try {
       const me = await api("GET", "/api/admin/me");
       $("#whoName").textContent = `${me.name || me.email} · ${me.isOwner ? "Owner" : "Developer"}`;
-      show(true);
+      drawSwitch(me); show(true);
       const h = location.hash.slice(1); if (VIEWS[h]) state.tab = h;
       await render();
     } catch { show(false); }

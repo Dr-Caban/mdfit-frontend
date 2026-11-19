@@ -39,6 +39,8 @@ a{color:var(--accent-text)}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:9px 14px;font:600 14px var(--font-body);cursor:pointer;text-decoration:none}
 .btn:hover{border-color:var(--accent)}
 .btn.primary{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;flex:none}.seg a{padding:6px 11px;font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;white-space:nowrap}.seg a+a{border-left:1px solid var(--line)}.seg a:hover{color:var(--ink)}.seg a[aria-current]{background:var(--accent-soft);color:var(--accent-text)}
+@media (max-width:760px){.top{flex-wrap:wrap}.seg{order:9;display:flex;width:100%}.seg a{flex:1;text-align:center;padding:7px 4px}}
 .btn.sm{padding:6px 10px;font-size:13px}
 .btn:disabled{opacity:.5;cursor:default}
 .btn svg{width:16px;height:16px}
@@ -100,7 +102,7 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:now
   <div class="brand"><img src="assets/app-icon-192.png" alt=""><div><b>MD Fit Manager</b><small>MD Fit Online LLC</small></div></div>
   <div class="who" id="who" hidden><span id="whoName"></span></div>
   <button class="btn icon" id="themeBtn" type="button" aria-label="Switch light or dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
-  <a class="btn sm" id="toPortal" href="/workspace" hidden>Client portal</a>
+  <nav class="seg" id="switch" aria-label="Switch console" hidden></nav>
   <button class="btn sm" id="signOut" type="button" hidden>Sign out</button>
 </header>
 <main>
@@ -128,6 +130,6 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:now
 </main>
 <div class="toast" id="toast" role="status"></div>
 <script src="config.js?v=aac711e3"></script>
-<script src="manager.js?v=9405abb8"></script>
+<script src="manager.js?v=9042ed0f"></script>
 </body>
 </html>

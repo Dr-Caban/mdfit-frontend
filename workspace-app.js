@@ -2317,7 +2317,15 @@
   const going = new WeakSet(), RESEND = new Set(["message", "teleChat"]);
   const press = (el, run) => { going.add(el); el.setAttribute("aria-busy", "true"); const off = () => { going.delete(el); el.removeAttribute("aria-busy"); }; run.then(off, off); };
   // Carry this tab's sign-in across to a console (same token; the server still decides what it may open)
-  document.addEventListener("click", (e) => { const a = e.target.closest("[data-portal]"); if (!a || !token) return; try { sessionStorage.setItem(a.dataset.portal, JSON.stringify({ token, expiresAt: new Date(Date.now() + 11 * 3600e3).toISOString() })); } catch {} });
+  // Which half of the workspace is showing: the client-management screens, or the rest of it (Admin)
+  const CMP_SCREENS = ["clients", "leads", "messages"];
+  function markSide() {
+    const r = (location.hash || "#dashboard").slice(1), only = document.querySelector("#portals [data-only]");
+    const here = only || CMP_SCREENS.includes(r) ? "cmp" : "admin";
+    document.querySelectorAll("#portals [data-side]").forEach((a) => { if (a.dataset.side === here) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
+  }
+  window.addEventListener("hashchange", markSide);
+  document.addEventListener("click", (e) => { if (e.target.closest("#portals [data-only]")) { e.preventDefault(); return; } const a = e.target.closest("[data-portal]"); if (!a || !token) return; try { sessionStorage.setItem(a.dataset.portal, JSON.stringify({ token, expiresAt: new Date(Date.now() + 11 * 3600e3).toISOString() })); } catch {} });
   document.addEventListener("click", (e) => { const el = e.target.closest("[data-act]"); if (!el || !token) return; const fn = ACT[el.dataset.act]; if (fn) press(el, guard(fn)(el, e)); });
   document.addEventListener("submit", (e) => { const f = e.target.closest("[data-form]"); if (!f) return; e.preventDefault(); const fn = FORMS[f.dataset.form]; if (!fn || !token) return; if (going.has(f) && !RESEND.has(f.dataset.form)) return; press(f, guard(fn)(f, e)); });
   // Things that act as buttons without being one (a month in the graph, a row in a table) answer Enter and Space too
@@ -2929,9 +2937,10 @@
     if (cache.me) $("#whoami").textContent = cache.me.email;
     { // Manager and Developer staff (and the owner) can step across to their console without signing in again
       const roles = (cache.me && (cache.me.roles || [cache.me.role])) || [], owner = !!(cache.me && cache.me.isOwner);
-      const links = [["manager", "/manager", "mdfit_manager", "Manager console"], ["developer", "/dev", "mdfit_dev", "Developer console"]].filter(([r]) => owner || roles.includes(r));
+      const links = [[["manager"], "/manager", "mdfit_manager", "Manager"], [["manager", "developer"], "/dev", "mdfit_dev", "Developer"]].filter(([need]) => owner || need.some((r) => roles.includes(r)));
+      const full = owner || roles.includes("admin");   // Admin is the whole workspace; Client portal is its client-management screens
       const box = $("#portals");
-      if (box) { box.innerHTML = links.map(([, href, key, label]) => `<a class="btn ghost sm" href="${href}" data-portal="${key}">${label}</a>`).join(""); box.hidden = !links.length; }
+      if (box) { box.innerHTML = links.length ? `<nav class="pseg" aria-label="Switch console">${full ? `<a href="#dashboard" data-side="admin">Admin</a>` : ""}${links.map(([, href, key, label]) => `<a href="${href}" data-portal="${key}">${label}</a>`).join("")}<a href="#clients" data-side="cmp"${full ? "" : " data-only"}>Client portal</a></nav>` : ""; box.hidden = !links.length; markSide(); }
     }
     mustChange = !!(cache.me && cache.me.mustChangePassword);
     if (mustChange) { renderGate(); return; }
@@ -3027,7 +3036,8 @@
   ACT.affEnabled = async (el) => {
     const on = el.getAttribute("aria-checked") !== "true";
     if (on && !confirm("Open the affiliate programme? Members will be able to earn commission on referrals. Do this only after your attorney has reviewed the programme and the affiliate terms.")) return;
-    await api("PUT", "/api/admin/affiliates/settings", { enabled: on });
+    const password = await askOwnerPassword(on ? "Switch the affiliate programme on." : "Switch the affiliate programme off."); if (!password) { toast("Nothing was changed."); return; }
+    await api("PUT", "/api/admin/affiliates/settings", { enabled: on, password });
     await render(); toast(on ? "The affiliate programme is open." : "The affiliate programme is closed. Nothing new is earned; what's owed is still paid.");
   };
   ACT.affStatus = async (el) => {
@@ -3062,7 +3072,8 @@
   FORMS.affSettings = async (f) => {
     const body = { ratePct: Number(f.ratePct.value), holdDays: Number(f.holdDays.value), minPayoutCents: Math.round(Number(f.minPayout.value) * 100), durationMonths: Number(f.durationMonths.value),
       eligibleTiers: [...f.querySelectorAll("[name=tier]:checked")].map((x) => x.value), eligibleAddOns: f.addOns.value.split(",").map((x) => x.trim()).filter(Boolean), freeMonthReward: f.freeMonth.checked };
-    await api("PUT", "/api/admin/affiliates/settings", body);
+    const password = await askOwnerPassword("Change the commission settings."); if (!password) { toast("Nothing was changed."); return; }
+    await api("PUT", "/api/admin/affiliates/settings", { ...body, password });
     await render(); toast("Commission settings saved.");
   };
   FORMS.affAdjust = async (f) => {
