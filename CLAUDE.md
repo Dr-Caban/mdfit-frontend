@@ -21,6 +21,13 @@
   change in the session: set exactly what was asked, never print, copy or log a key's value, take a secret's value only
   from the user (never invent or reuse one), and say afterwards which names changed. Never change GitHub, Railway,
   Vercel or Stripe account permissions or API-key scopes from here.
+- **Platform overview and the logs.** `platform.js` draws one panel shown in all three consoles — the workspace
+  (Admin → Platform), `/manager` and `/dev`: growth, faults, what is running, the parts of the platform, where each
+  log lives, and who can see what. The developer console's **Logs** tab reads the server's own log
+  (`/api/admin/logs*`, 90 days on the Railway volume): day, level and text filters, copy the lines, download the
+  day. Those routes are owner-only on the server — a Manager or Developer sign-in gets the counts, not the lines,
+  because a logged path can name a client's record. The panel also keeps a per-browser fault recorder
+  (`mdfit_faults` in localStorage); nothing is sent anywhere. See `docs/SYSTEM-INDEX.md`.
 - **Video uploads — `/video-upload`.** When asked to `/video-upload`, to upload or migrate videos, to get footage
   from Drive onto Bunny, or to publish video for the web/Android/Apple apps: **read `docs/VIDEO-UPLOAD.md` first
   and follow its phases in order.** Treat that file as the command; do not improvise a run, and do not start at the

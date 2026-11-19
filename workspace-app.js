@@ -222,7 +222,8 @@
     portal: '<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>',
     economics: '<circle cx="12" cy="12" r="9"/><path d="M15 9.5c-.5-1-1.6-1.5-3-1.5-1.700 0-3 .8-3 2s1.300 1.800 3 2 3 .8 3 2-1.300 2-3 2c-1.400 0-2.500-.5-3-1.500M12 6v2M12 16v2"/>',
     booking: '<path d="M3 9h18M7 3v4M17 3v4"/><rect x="3" y="5" width="18" height="16" rx="2"/><path d="m9 15 2 2 4-4"/>',
-    guide: '<path d="M7 18.500a4.500 4.500 0 0 1-.700-8.950A6 6 0 0 1 17.900 10.600 4 4 0 0 1 17.500 18.500z"/><path d="M9 14.500h.01M12 14.500h.01M15 14.500h.01"/>'
+    guide: '<path d="M7 18.500a4.500 4.500 0 0 1-.700-8.950A6 6 0 0 1 17.900 10.600 4 4 0 0 1 17.500 18.500z"/><path d="M9 14.500h.01M12 14.500h.01M15 14.500h.01"/>',
+    platform: '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4M7 9h4M7 12h7"/>'
   };
   // The one permission this file knows by name: patient records, marked out wherever it appears.
   const PHI = "charts";
@@ -242,7 +243,7 @@
     dashboard: "", calendar: "scheduling", clients: "clients", chart: PHI, leads: "clients", messages: "messages",
     telehealth: PHI, notes: PHI, forms: PHI, programs: "content", nutrition: "content", fitness: "content",
     payments: "billing", newsletter: "content", team: "staff", feedback: "reviews", security: "security",
-    settings: "settings", insights: "insights", economics: "insights", guide: "insights", portal: "", booking: "scheduling"
+    settings: "settings", insights: "insights", economics: "insights", guide: "insights", platform: "insights", portal: "", booking: "scheduling"
   };
   const navOk = (id) => can(NAV_PERM[id]);
   const navSig = () => (cache.me ? `${iAmOwner()}|${[...myPerms()].sort().join(",")}` : "unknown");
@@ -251,7 +252,7 @@
     { g: "Practice", items: [["dashboard", "Dashboard"], ["calendar", "Calendar"], ["clients", "Clients"], ["chart", "Client chart"], ["leads", "Leads"], ["messages", "Messages"], ["telehealth", "Telehealth"]] },
     { g: "Clinical", items: [["notes", "Notes & AI scribe"], ["forms", "Forms & intake"], ["programs", "Programs"], ["nutrition", "Nutrition"], ["fitness", "Fitness"]] },
     { g: "Business", items: [["payments", "Payments"], ["affiliates", "Affiliates"], ["revshare", "Revenue share"], ["newsletter", "Newsletter"]] },
-    { g: "Admin", items: [["team", "Team & roles"], ["feedback", "Reviews & feedback"], ["security", "Security & audit"], ["settings", "Modules & settings"], ["insights", "Insights"], ["economics", "System economics"], ["guide", "Solomon"]] },
+    { g: "Admin", items: [["team", "Team & roles"], ["feedback", "Reviews & feedback"], ["security", "Security & audit"], ["settings", "Modules & settings"], ["insights", "Insights"], ["economics", "System economics"], ["guide", "Solomon"], ["platform", "Platform"]] },
     { g: "Client-facing", items: [["portal", "Client app"], ["booking", "Booking page"]] }
   ];
   function renderNav(active) {
@@ -1429,6 +1430,18 @@
     ${ledgerTable(a)}`;
   };
 
+  // The platform overview: what MD Fit is made of, how it is being used, whether anything is failing, and where the
+  // logs and the numbers are kept so they can be copied out. The panel itself is shared with /manager and /dev
+  // (platform.js); this screen only fetches what it reads. Totals: no client's record is in any of it.
+  V.platform = async () => {
+    const head = `<div class="view-head"><div><h1>Platform</h1><p class="muted">What MD Fit is made of, how much it is being used, and where the logs and the numbers are kept</p></div><button class="btn" data-plat="copy">Copy a platform summary</button></div>`;
+    if (!window.MDFitPlatform) return head + `<div class="card"><b>The overview could not be loaded.</b><p class="muted" style="margin:6px 0 0">Reload the page.</p></div>`;
+    const d = await get("/dev/overview?days=30").catch((e) => ({ failed: e.message }));
+    if (d.failed) return head + `<div class="card"><b>The platform figures could not be read.</b><p class="muted" style="margin:6px 0 0">${esc(d.failed)}</p></div>`;
+    const logs = await get("/logs/summary?days=21").catch((e) => (e.need || /owner/i.test(e.message) ? { denied: true } : { error: e.message }));
+    return head + MDFitPlatform.overview({ d, me: cache.me, logs, where: "workspace" });
+  };
+
   // Hours are typed the way they are said: "09:00-12:00, 13:00-17:00". Blank means closed that day.
   const hoursText = (day) => (day || []).map((w) => `${w[0]}-${w[1]}`).join(", ");
   V.settings = async () => {
@@ -2325,7 +2338,9 @@
     document.querySelectorAll("#portals [data-side]").forEach((a) => { if (a.dataset.side === here) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
   }
   window.addEventListener("hashchange", markSide);
-  document.addEventListener("click", (e) => { if (e.target.closest("#portals [data-only]")) { e.preventDefault(); return; } const a = e.target.closest("[data-portal]"); if (!a || !token) return; try { sessionStorage.setItem(a.dataset.portal, JSON.stringify({ token, expiresAt: new Date(Date.now() + 11 * 3600e3).toISOString() })); } catch {} });
+  document.addEventListener("click", (e) => {
+    if (e.target.closest("[data-plat]") && window.MDFitPlatform) { MDFitPlatform.onClick(e).then((m) => m && toast(m)); return; }
+    if (e.target.closest("#portals [data-only]")) { e.preventDefault(); return; } const a = e.target.closest("[data-portal]"); if (!a || !token) return; try { sessionStorage.setItem(a.dataset.portal, JSON.stringify({ token, expiresAt: new Date(Date.now() + 11 * 3600e3).toISOString() })); } catch {} });
   document.addEventListener("click", (e) => { const el = e.target.closest("[data-act]"); if (!el || !token) return; const fn = ACT[el.dataset.act]; if (fn) press(el, guard(fn)(el, e)); });
   document.addEventListener("submit", (e) => { const f = e.target.closest("[data-form]"); if (!f) return; e.preventDefault(); const fn = FORMS[f.dataset.form]; if (!fn || !token) return; if (going.has(f) && !RESEND.has(f.dataset.form)) return; press(f, guard(fn)(f, e)); });
   // Things that act as buttons without being one (a month in the graph, a row in a table) answer Enter and Space too

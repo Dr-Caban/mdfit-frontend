@@ -64,7 +64,7 @@
   });
 
   // ---- shell
-  let state = { tab: "share", month: thisMonth(), share: null };
+  let state = { tab: "share", month: thisMonth(), share: null, me: null };
   // To the client management portal with the same sign-in (same tab, same token: no second password)
   const PORTALS = [[["admin"], "/workspace", "mdfit_ws_token", "Admin"], [["manager"], "/manager", "mdfit_manager", "Manager"], [["manager", "developer"], "/dev", "mdfit_dev", "Developer"], [null, "/workspace#clients", "mdfit_ws_token", "Client portal"]];
   function drawSwitch(me) {
@@ -72,7 +72,9 @@
     $("#switch").innerHTML = PORTALS.filter(([need, , key]) => key === KEY || !need || owner || need.some((r) => roles.includes(r)))
       .map(([, href, key, label]) => `<a href="${href}" data-key="${key}"${key === KEY ? ' aria-current="page"' : ""}>${label}</a>`).join("");
   }
-  $("#switch").addEventListener("click", (e) => {
+  document.addEventListener("click", (e) => {
+    const p = e.target.closest("[data-plat]");
+    if (p) { MDFitPlatform.onClick(e).then((m) => m && toast(m)); return; }
     const a = e.target.closest("a[data-key]"), s = session.get(); if (!a || !s) return;
     if (a.dataset.key === KEY) { e.preventDefault(); return; }
     try {
@@ -86,12 +88,12 @@
   async function boot() {
     if (!session.get()) return show(false);
     try {
-      const me = await api("GET", "/api/admin/me").catch(() => null);
+      const me = state.me = await api("GET", "/api/admin/me").catch(() => null);
       state.share = await api("GET", "/api/admin/partner/share");
       $("#whoName").textContent = me ? `${me.name || me.email}${me.isOwner || me.role === "owner" ? " · Owner, view only" : (me.roles || [me.role]).includes("manager") ? " · Manager" + (state.share && state.share.viewOnly ? ", view only" : "") : me.role ? " · " + me.role : ""}` : "";
       drawSwitch(me); show(true);
       const h = (location.hash || "").slice(1);
-      if (["share", "statement", "partners", "payouts"].includes(h)) state.tab = h;
+      if (["share", "statement", "partners", "payouts", "platform"].includes(h)) state.tab = h;
       render();
     } catch (e) {
       show(false);
@@ -165,6 +167,15 @@
           <div id="stripeBanner"></div><div id="stripeMount" class="stripe-mount"><p class="muted">Loading Stripe…</p></div>
           ${st.payoutsEnabled ? '<details id="stripeMore"><summary class="small" style="cursor:pointer;color:var(--accent-text);font-weight:700">Bank account and details</summary><div id="stripeAccount"></div></details>' : ""}
           <p class="msg" id="stripeMsg" role="status"></p></div>`;
+    },
+    // ---------- Platform: the same overview panel the owner and the developer see (platform.js). Totals only:
+    // the API sends counts and sums here, never anyone's name or record. The server log itself stays with the owner.
+    async platform() {
+      const d = await api("GET", "/api/admin/dev/overview?days=30").catch((e) => { if (e.status === 403) return null; throw e; });
+      if (!d) return `<h1>Platform</h1><div class="card"><b>Not open to this sign-in.</b><p class="muted" style="margin:6px 0 0">The platform overview is for the owner and for staff holding the Manager or Developer role.</p></div>`;
+      const logs = await api("GET", "/api/admin/logs/summary?days=21").catch((e) => (e.status === 403 ? { denied: true } : { error: e.message }));
+      return `<h1>Platform</h1><p class="muted">What MD Fit is made of, how much it is being used, and where the logs and the numbers are kept.</p>`
+        + MDFitPlatform.overview({ d, me: state.me, logs, where: "manager" });
     }
   };
 

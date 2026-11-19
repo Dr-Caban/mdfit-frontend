@@ -56,6 +56,34 @@ movement spoken at the start of each clip. The player falls back to a Drive prev
 stalls, so Drive file sharing has to stay intact. Renaming and moving files in Drive is safe — the app
 keys off Drive file IDs, which never change.
 
+## Consoles, and where the logs are
+
+Three sign-ins, one platform. Every one of them opens the same **Platform** panel (`platform.js`): how much the
+site and app are being used and whether that is growing, whether anything is failing, what is running, the parts
+of the platform and where each one's log lives, and who can see what.
+
+| Console | Address | For | Platform panel |
+|---|---|---|---|
+| Practice workspace | `/admin` (`/workspace`) | The owner and staff, by permission | Admin → Platform |
+| Manager | `/manager` | The named manager: revenue share, statements, payouts | Platform tab |
+| Developer | `/developer` (`/dev`) | The owner and the Developer role: usage, costs, **logs** | Platform tab |
+
+**The logs.** The API writes one JSON line per request, warning, error and restart. Railway keeps those 7 days;
+the backend also tees them to the data volume for 90 days (`lib/activity-log.js`, encrypted at rest), which is what
+the developer console's **Logs** tab reads: pick a day, filter by level or text, then copy the lines or download
+the day as `.jsonl`. `GET /api/admin/logs`, `/logs/days`, `/logs/summary`, `/logs/download`.
+
+Those routes are **owner-only** on the server, because a line carries the request path and a path can name a
+client's record. A Manager or Developer sign-in sees the fault counts and the paths that failed (ids removed) on
+the Platform panel, and Railway's own dashboard for the last 7 days.
+
+**Faults in the browser** are recorded per device by `platform.js` (`mdfit_faults` in localStorage, last 60) and
+shown under Logs → This browser, to be copied out. Nothing is sent anywhere; a member's own browser is not
+collected.
+
+**Site analytics** are the server's own (`POST /api/hit` → Workspace → Insights, or the developer console's Usage
+tab); Vercel's Web Analytics counts the public site separately.
+
 ## Payments — Stripe
 
 `lib/payments.js` builds checkout sessions via `serviceCheckout()`, carrying metadata
