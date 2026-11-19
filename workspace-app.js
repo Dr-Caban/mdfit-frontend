@@ -23,7 +23,7 @@
   const KEY = "mdfit_ws_token";
   const store = { get: () => { try { return sessionStorage.getItem(KEY) || ""; } catch { return ""; } }, set: (t) => { try { t ? sessionStorage.setItem(KEY, t) : sessionStorage.removeItem(KEY); } catch {} } };
   let token = store.get();
-  const state = { chartClient: null, chartTab: "overview", thread: null, calWeek: 0, clientQ: "", insTab: "analytics", insDays: 30, picked: new Set() };
+  const state = { chartClient: null, chartTab: "overview", thread: null, calWeek: 0, clientQ: "", insTab: "analytics", cpTab: "checklist", insDays: 30, picked: new Set() };
   const cache = { clients: null, unread: 0, waiting: 0, me: null };
 
   // ---- What the screens have loaded is kept in this page's memory (never in browser storage), so a screen that has
@@ -48,7 +48,7 @@
     const seen = method !== "GET" || seq !== done;
     pending++; if (seen) netBar(1);
     try {
-      const res = await fetch(API + path, { method, headers: { "Content-Type": "application/json", ...(token ? { Authorization: "Bearer " + token } : {}) }, body: body === undefined ? undefined : JSON.stringify(body) });
+      const res = await fetch(API + path, { method, headers: { "Content-Type": "application/json", ...(token ? { Authorization: "Bearer " + token, "X-Idle-Seconds": String(Math.round(idleFor() / 1000)) } : {}) }, body: body === undefined ? undefined : JSON.stringify(body) });
       if (res.status === 401 && path !== "/api/admin/login") { signOut(); throw new Error("Session expired. Sign in again."); }
       const data = res.headers.get("content-type")?.includes("json") ? await res.json() : null;
       if (!res.ok) { const err = new Error((data && data.error) || "Request failed."); if (data && data.need) err.need = data.need; throw err; }
@@ -95,6 +95,7 @@
 
   // Signing out empties everything that was drawn, so names and notes do not stay on a shared screen.
   function signOut() {
+    if (token) { try { fetch(API + "/api/admin/logout", { method: "POST", keepalive: true, headers: { "Content-Type": "application/json", Authorization: "Bearer " + token }, body: "{}" }).catch(() => {}); } catch {} } // the session ends on the server too
     token = ""; store.set(""); if (window.MDFitRT) { if (teleIn()) MDFitRT.emit("tele_end"); MDFitRT.disconnect(); } teleDrop(); stopDictation();
     for (const k of Object.keys(cache)) cache[k] = (k === "unread" || k === "waiting") ? 0 : null; // every cached list, the open chart included
     mem.clear(); forget(); freshAsk = null; shown = ""; shownHtml = ""; visited.length = 0; clearTimeout(warmT); clearTimeout(repaintT); warmRun++;
@@ -116,6 +117,9 @@
   function idleBump() { if (!token) return; if (Date.now() - lastStamp > 5000) idleStamp(); idleArm(); }
   const idleCheck = () => { if (token && (!store.get() || idleFor() >= IDLE_MS)) idleOut(); };
   ["pointerdown", "keydown", "scroll"].forEach((ev) => window.addEventListener(ev, idleBump, { passive: true, capture: true }));
+  // The server ends a session that goes 15 minutes without a request. Someone reading a chart or on a video visit is
+  // working without making one, so while there has been input in the last few minutes the page says so.
+  setInterval(() => { if (token && idleFor() < 4 * 60 * 1000) fetch(API + "/api/admin/me", { headers: { Authorization: "Bearer " + token, "X-Idle-Seconds": String(Math.round(idleFor() / 1000)) } }).then((r) => { if (r.status === 401 && token) idleOut(); }).catch(() => {}); }, 4 * 60 * 1000);
   document.addEventListener("visibilitychange", () => { if (!document.hidden) idleCheck(); });
   window.addEventListener("pageshow", idleCheck); window.addEventListener("focus", idleCheck);
 
@@ -218,6 +222,7 @@
     team: '<circle cx="12" cy="7" r="4"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/>',
     feedback: '<path d="M12 2l3 6 6 .9-4.5 4.3 1 6.3L12 16.8 6.5 19.5l1-6.3L3 8.9 9 8z"/>',
     security: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
+    compliance: '<path d="M9 5h6a1 1 0 0 1 1 1v1H8V6a1 1 0 0 1 1-1z"/><path d="M8 6H6a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-2"/><path d="M9 14l2 2 4-4"/>',
     settings: '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/>',
     portal: '<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>',
     economics: '<circle cx="12" cy="12" r="9"/><path d="M15 9.5c-.5-1-1.6-1.5-3-1.5-1.700 0-3 .8-3 2s1.300 1.800 3 2 3 .8 3 2-1.300 2-3 2c-1.400 0-2.500-.5-3-1.500M12 6v2M12 16v2"/>',
@@ -241,7 +246,7 @@
   const NAV_PERM = {
     dashboard: "", calendar: "scheduling", clients: "clients", chart: PHI, leads: "clients", messages: "messages",
     telehealth: PHI, notes: PHI, forms: PHI, programs: "content", nutrition: "content", fitness: "content",
-    payments: "billing", newsletter: "content", team: "staff", feedback: "reviews", security: "security",
+    payments: "billing", newsletter: "content", team: "staff", feedback: "reviews", security: "security", compliance: "security",
     settings: "settings", insights: "insights", economics: "insights", guide: "insights", portal: "", booking: "scheduling"
   };
   const navOk = (id) => can(NAV_PERM[id]);
@@ -251,7 +256,7 @@
     { g: "Practice", items: [["dashboard", "Dashboard"], ["calendar", "Calendar"], ["clients", "Clients"], ["chart", "Client chart"], ["leads", "Leads"], ["messages", "Messages"], ["telehealth", "Telehealth"]] },
     { g: "Clinical", items: [["notes", "Notes & AI scribe"], ["forms", "Forms & intake"], ["programs", "Programs"], ["nutrition", "Nutrition"], ["fitness", "Fitness"]] },
     { g: "Business", items: [["payments", "Payments"], ["affiliates", "Affiliates"], ["revshare", "Revenue share"], ["newsletter", "Newsletter"]] },
-    { g: "Admin", items: [["team", "Team & roles"], ["feedback", "Reviews & feedback"], ["security", "Security & audit"], ["settings", "Modules & settings"], ["insights", "Insights"], ["economics", "System economics"], ["guide", "Solomon"]] },
+    { g: "Admin", items: [["team", "Team & roles"], ["feedback", "Reviews & feedback"], ["security", "Security & audit"], ["compliance", "Compliance"], ["settings", "Modules & settings"], ["insights", "Insights"], ["economics", "System economics"], ["guide", "Solomon"]] },
     { g: "Client-facing", items: [["portal", "Client app"], ["booking", "Booking page"]] }
   ];
   function renderNav(active) {
@@ -583,6 +588,7 @@
         ${d.documents.done ? `<button class="btn sm" data-act="docsModal" data-id="${esc(d.id)}">View what was signed</button>` : none(`${first} has not filled these out yet.`)}</div>
       <div class="card stack" style="margin-top:16px"><div class="card-head"><h2>Consents on file</h2><span class="muted" style="font-size:12px">Releases and permissions ${first} has signed</span></div>
         ${(d.consents || []).map((x) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(x.title)}</b><div class="muted" style="font-size:12px">${x.detail ? esc(x.detail) + " · " : ""}signed ${fmtDate(x.signedOn)} (${esc(x.how)})${x.expires ? " · expires " + fmtDate(x.expires) : ""}${x.removedAt ? " · revoked " + when(x.removedAt) : ""}</div></span><span class="pill ${live(x) ? "ok" : ""}">${x.removedAt ? "Revoked" : live(x) ? "Active" : "Expired"}</span>${x.removedAt ? "" : `<button class="btn sm danger" data-act="rmItem" data-kind="consents" data-id="${esc(x.id)}" data-word="Revoke this consent? It stays on the record as revoked.">Revoke</button>`}</div>`).join("") || none("None recorded yet.")}
+        <div class="row" style="margin-bottom:4px"><button type="button" class="btn" data-act="privacyOpen" data-id="${esc(d.id)}">Privacy, record copy and corrections</button></div>
         <form class="stack" data-form="consent"><div class="grid g2"><div class="field"><label for="csTitle">Consent</label><input id="csTitle" name="title" class="input" maxlength="120" required list="csTitles" placeholder="Release of records" autocomplete="off"><datalist id="csTitles">${["Release of records to another provider", "Telehealth consent", "Photo and video consent", "Email and text message consent", "Sharing with a family member or caregiver"].map((n) => `<option value="${n}">`).join("")}</datalist></div>
           <div class="field"><label for="csDetail">Who or what it covers</label><input id="csDetail" name="detail" class="input" maxlength="500" placeholder="Dr. Lee, orthopedics: visit notes"></div></div>
           <div class="grid g3"><div class="field"><label for="csOn">Signed on</label><input id="csOn" name="signedOn" type="date" class="input" value="${today}" max="${today}"></div><div class="field"><label for="csExp">Expires (optional)</label><input id="csExp" name="expires" type="date" class="input" min="${today}"></div>
@@ -3011,6 +3017,151 @@
     await api("PUT", "/api/admin/partner-share/settings", { ...body, password });
     return true;
   }
+  // ===================== Compliance (45 CFR Part 164 and Florida): DO NOT TOUCH after compliancy is set =====================
+  // The checklist is worked out by the server from what the system is doing right now (lib/compliance.js); this
+  // screen shows it and holds the records behind it. See README.md before changing anything here.
+  const CP_TABS = [["checklist", "Checklist"], ["requests", "Patient requests"], ["incidents", "Incidents"], ["registers", "Registers"], ["review", "Audit review"], ["settings", "Settings"]];
+  const cpPill = (s) => (s === "met" ? `<span class="pill ok">Met</span>` : s === "action" ? `<span class="pill warn">Needs you</span>` : `<span class="pill bad">Not met</span>`);
+  const cpDate = (d) => (d ? esc(String(d).slice(0, 10)) : "—");
+  const cpTable = (head, rows, empty) => (rows.length ? `<div class="table-wrap"><table><thead><tr>${head.map((h) => `<th>${h}</th>`).join("")}</tr></thead><tbody>${rows.join("")}</tbody></table></div>` : `<div style="padding:14px 16px">${none(empty)}</div>`);
+  const cpCard = (title, inner, side = "") => `<div class="card" style="padding:0;margin-bottom:16px"><div class="card-head" style="padding:14px 16px 0"><h2>${title}</h2>${side}</div>${inner}</div>`;
+  V.compliance = async () => {
+    const tab = CP_TABS.some(([t]) => t === state.cpTab) ? state.cpTab : "checklist";
+    const tabs = `<div class="tabs" role="tablist">${CP_TABS.map(([t, l]) => `<button class="tab ${tab === t ? "active" : ""}" role="tab" data-act="cpTab" data-tab="${t}">${l}</button>`).join("")}</div>`;
+    const head = `<div class="view-head"><div><h1>Compliance</h1><p class="muted">HIPAA and Florida requirements, each checked against what the system is doing right now</p></div></div>${tabs}`;
+    if (tab === "checklist") {
+      const c = await load("/compliance/checklist"), s = c.summary;
+      const tile = (n, label, cls) => `<div class="card"><div class="muted" style="font-size:12px">${label}</div><div style="font-size:26px;font-weight:700" class="${cls}">${n}</div></div>`;
+      return `${head}<div class="grid g3" style="margin-bottom:16px">${tile(`${s.met} of ${s.total}`, "Met", "")}${tile(s.action, "Need you", "")}${tile(s.notmet, "Not met", "")}</div>
+        ${cpCard("Requirements", cpTable(["Status", "Requirement", "Where it stands", ""], c.rows.map((r) => `<tr data-cp-row="${esc(r.id)}"><td>${cpPill(r.status)}</td><td><b>${esc(r.title)}</b><div class="muted" style="font-size:12px">${esc(r.rule)}</div></td>
+          <td>${esc(r.detail)}${r.todo ? `<div style="margin-top:4px"><b>To do:</b> ${esc(r.todo)}</div>` : ""}</td><td>${r.go && r.status !== "met" ? `<button class="btn sm" data-act="cpGo" data-go="${esc(r.go)}">Open</button>` : ""}</td></tr>`), "Nothing to show."),
+          `<span class="muted" style="font-size:12px">Checked ${esc(new Date(c.generatedAt).toLocaleString())}</span>`)}
+        <p class="muted" style="font-size:12.5px">This list covers what the software can check or hold a record of. It is not legal advice, and it does not replace your own written policies or your attorney's review.</p>`;
+    }
+    if (tab === "requests") {
+      const [am, dis, npp] = await Promise.all([load("/amendments"), load("/disclosures"), load("/compliance/npp")]);
+      const amRow = (a) => `<tr><td><b>${esc(a.clientName)}</b><div class="muted" style="font-size:12px">${cpDate(a.createdAt)}</div></td><td>${esc(a.record)}<div class="muted" style="font-size:12px">${esc(a.request)}</div></td>
+        <td>${a.status === "pending" ? (a.overdue ? `<span class="pill bad">Overdue since ${cpDate(a.dueAt)}</span>` : `<span class="pill warn">Due ${cpDate(a.dueAt)} (${a.daysLeft} days)</span>`) : `<span class="pill ${a.status === "accepted" ? "ok" : ""}">${a.status === "accepted" ? "Accepted" : "Denied"} ${cpDate(a.decidedAt)}</span>`}</td>
+        <td>${a.status === "pending" ? `<div class="row" style="gap:6px;flex-wrap:wrap"><button class="btn sm" data-act="cpAmend" data-id="${esc(a.id)}" data-s="accepted">Accept</button><button class="btn sm" data-act="cpAmend" data-id="${esc(a.id)}" data-s="denied">Deny</button>${a.extendedAt ? "" : `<button class="btn sm" data-act="cpAmendExtend" data-id="${esc(a.id)}">30 more days</button>`}</div>` : esc(a.decisionReason || "")}</td></tr>`;
+      return `${head}${cpCard("Requests to correct a record", cpTable(["Patient", "Record and request", "Deadline", ""], am.map(amRow), "No correction requests. A patient can ask from the app, or you can log one from their chart (Consent tab)."), `<span class="muted" style="font-size:12px">60 days to answer, one 30-day extension</span>`)}
+        ${cpCard("Accounting of disclosures", cpTable(["Date", "Patient", "Who received it", "Purpose", "Recorded by"], dis.map((d) => `<tr><td>${cpDate(d.date)}</td><td>${esc(d.clientName)}</td><td>${esc(d.recipient)}</td><td>${esc(d.purpose)}</td><td>${esc(d.recordedBy || "")}</td></tr>`), "No disclosures recorded. Record one from the patient's chart (Consent tab) whenever records go to someone outside treatment, payment or running the practice."))}
+        ${cpCard("Notice of Privacy Practices", `<div style="padding:14px 16px">${npp.acknowledged} of ${npp.total} accounts have acknowledged the notice.${npp.missing.length ? `<div class="muted" style="font-size:12.5px;margin-top:6px">Not yet: ${npp.missing.slice(0, 40).map((m) => `<button class="btn ghost sm" data-act="chart" data-id="${esc(m.id)}">${esc(m.name)}</button>`).join(" ")}${npp.missing.length > 40 ? ` and ${npp.missing.length - 40} more` : ""}</div>` : ""}</div>`)}`;
+    }
+    if (tab === "incidents") {
+      const list = await load("/incidents");
+      const dl = (i) => { const d = i.deadlines || {}, n = i.notifications || {}; const line = (label, x, done) => (x && x.required !== false ? `<div>${label}: ${done ? `<span class="pill ok">Sent ${cpDate(done)}</span>` : `by <b>${cpDate(x.by)}</b>`}</div>` : ""); return `${line("Patients", d.individuals, n.individualsAt)}${line("HHS", d.hhs, n.hhsAt)}${line("Florida residents (30 days)", d.floridaIndividuals, n.floridaAt)}${line("Florida Attorney General", d.floridaAttorneyGeneral, n.floridaAttorneyGeneralAt)}${line("Media", d.media, n.mediaAt)}`; };
+      return `${head}${cpCard("Security incidents and breaches", cpTable(["Discovered", "What happened", "People", "Deadlines", ""], list.map((i) => `<tr><td>${cpDate(i.discoveredAt)}<div>${i.status === "closed" ? `<span class="pill">Closed</span>` : `<span class="pill warn">Open</span>`}</div></td><td><b>${esc(i.title)}</b><div class="muted" style="font-size:12px">${esc(i.description || "")}</div><div class="muted" style="font-size:12px">Conclusion: ${esc((i.riskAssessment && i.riskAssessment.conclusion) || "pending")}</div></td><td>${i.affectedCount}</td><td style="font-size:12.5px">${dl(i)}</td><td><button class="btn sm" data-act="cpIncidentEdit" data-id="${esc(i.id)}">Update</button></td></tr>`), "No incidents logged. Log anything that might have exposed patient information, even if it turns out not to be a breach."),
+        `<button class="btn primary sm" data-act="cpIncidentNew">Log an incident</button>`)}
+        <p class="muted" style="font-size:12.5px">Deadlines run from the day of discovery: HIPAA allows up to 60 days, Florida 30 days. Notify without unreasonable delay; the dates here are the outer limits.</p>`;
+    }
+    if (tab === "registers") {
+      const r = await load("/compliance/registers");
+      const hint = { baa: `Expected when in use: ${r.vendors.map((v) => esc(v.name)).join("; ")}.`, policy: `Expected: ${r.policies.map(esc).join("; ")}.`, training: "One entry per person per year, with their sign-in email as the staff member.", device: "Every computer, tablet and phone that opens the EMR: disk encryption on, screen lock on.",
+        risk: "A written risk analysis, yearly and after any big change.", restore: "Open a weekly backup file with the passphrase and confirm the records are there.", review: "Added when you sign off the Audit review tab." };
+      return `${head}${Object.keys(r.types).map((t) => cpCard(esc(r.types[t].label), `<div class="muted" style="font-size:12.5px;padding:0 16px 8px">${hint[t] || ""}</div>` + cpTable(["Date", "Title", esc(r.types[t].party), "Status", ""], r.registers[t].map((e) => `<tr${e.retiredAt ? ' style="opacity:.55"' : ""}><td>${cpDate(e.date)}</td><td><b>${esc(e.title)}</b>${e.notes ? `<div class="muted" style="font-size:12px">${esc(e.notes)}</div>` : ""}</td><td>${esc(e.party || "")}</td>
+        <td>${e.retiredAt ? `<span class="pill">Retired</span>` : e.status ? `<span class="pill ${["signed", "secured", "adopted", "not-needed"].includes(e.status) ? "ok" : "warn"}">${esc(e.status)}</span>` : ""}${e.reviewBy ? `<div class="muted" style="font-size:12px">Review by ${cpDate(e.reviewBy)}</div>` : ""}</td>
+        <td>${t === "review" ? "" : `<button class="btn sm" data-act="cpRegEdit" data-type="${t}" data-id="${esc(e.id)}">Edit</button>`}</td></tr>`), "Nothing recorded yet."),
+        t === "review" ? "" : `<button class="btn sm" data-act="cpRegNew" data-type="${t}">Add</button>`)).join("")}
+        <p class="muted" style="font-size:12.5px">Entries are retired, never deleted: compliance records are kept six years.</p>`;
+    }
+    if (tab === "review") {
+      const a = await load("/compliance/audit-review");
+      return `${head}<div class="grid g3" style="margin-bottom:16px"><div class="card"><div class="muted" style="font-size:12px">Ledger</div><div>${a.chainOk ? `<span class="pill ok">Intact</span>` : `<span class="pill bad">Failed verification</span>`}</div><div class="muted" style="font-size:12px;margin-top:4px">${a.total} entries in ${a.days} days</div></div>
+        <div class="card"><div class="muted" style="font-size:12px">Refused attempts</div><div style="font-size:22px;font-weight:700">${a.denied}</div><div class="muted" style="font-size:12px">wrong owner password on locked settings</div></div>
+        <div class="card"><div class="muted" style="font-size:12px">Changes</div><div style="font-size:13.5px">${a.staffChanges} to staff accounts<br>${a.settingsChanges} to settings<br>${a.exports} record exports</div></div></div>
+        ${cpCard("Who did what", cpTable(["Person", "Actions", "Chart activity", "Patients", "Exports", "Outside 6am–10pm", "Last active"], a.people.map((p) => `<tr><td>${esc(p.who)}</td><td>${p.total}</td><td>${p.chartViews}</td><td>${p.patients}</td><td>${p.exports}</td><td>${p.afterHours ? `<span class="pill warn">${p.afterHours}</span>` : "0"}</td><td>${p.last ? esc(new Date(p.last).toLocaleString()) : "—"}</td></tr>`), "No staff activity in this period."))}
+        <div class="card"><h2 style="margin-bottom:8px">Sign off this review</h2><p class="muted" style="margin:0 0 10px;font-size:13px">${a.lastReview ? `Last signed off ${cpDate(a.lastReview.date)} by ${esc(a.lastReview.party)}.` : "Never signed off."} Do this monthly. Look for people opening more charts than their work needs, activity at odd hours, and exports you did not expect. The full ledger is under Security & audit.</p>
+          <form class="stack" data-form="cpReview">${fld("cpRvNotes", "notes", "What you found (optional)", "", { area: true, max: 2000 })}<div class="row"><button class="btn primary">I have reviewed this</button></div></form></div>`;
+    }
+    const [c, ret] = await Promise.all([load("/compliance"), load("/compliance/retention")]), S = c.settings;
+    return `${head}<div class="card" style="margin-bottom:16px"><h2 style="margin-bottom:10px">Officers, notice and retention</h2>
+      <form class="stack" data-form="cpSettings"><div class="grid g2">${fld("cpPO", "privacyOfficer", "Privacy officer", S.privacyOfficer, { max: 120 })}${fld("cpSO", "securityOfficer", "Security officer (can be the same person)", S.securityOfficer, { max: 120 })}
+        ${fld("cpNV", "nppVersion", "Notice of Privacy Practices: version", S.nppVersion, { max: 40 })}${fld("cpND", "nppUpdatedAt", "Notice last updated", S.nppUpdatedAt, { type: "date" })}
+        ${fld("cpRY", "retentionYears", "Keep clinical records (years)", S.retentionYears, { type: "number", attrs: 'min="1" max="50"' })}${fld("cpAY", "auditRetentionYears", "Keep the audit log (years)", S.auditRetentionYears, { type: "number", attrs: 'min="6" max="50"' })}</div>
+        <label class="row" style="gap:8px"><input type="checkbox" name="includeVisitNotesInMemberExport"${S.includeVisitNotesInMemberExport ? " checked" : ""}> Include visit notes in the copy a patient downloads themselves</label>
+        <div class="row"><button class="btn primary">Save</button></div></form></div>
+      ${cpCard("Retention report", cpTable(["Records", "Total", `Older than ${ret.retentionYears} years`], ret.groups.map((g) => `<tr><td>${esc(g.name)}</td><td>${g.total}</td><td>${g.eligible}</td></tr>`), "Nothing stored."), `<span class="muted" style="font-size:12px">Report only: nothing is deleted</span>`)}`;
+  };
+  ACT.cpTab = (el) => { state.cpTab = el.dataset.tab; render(); };
+  ACT.cpGo = (el) => { const [where] = String(el.dataset.go || "").split(":"); if (where === "team" || where === "security") { location.hash = where; return; } state.cpTab = where; render(); };
+  const cpSaved = async (msg) => { closeModal(); await render(); toast(msg); };
+  // ---- registers
+  const cpRegForm = (types, statuses, type, e = {}) => `<div class="card-head"><h2>${e.id ? "Edit" : "Add"}: ${esc(types[type].label)}</h2><button type="button" class="btn sm" data-act="closeModal">Close</button></div>
+    <form class="stack" data-form="cpReg" data-type="${type}" data-id="${esc(e.id || "")}">${fld("cpRT", "title", "Title", e.title, { max: 160, attrs: "required" })}${fld("cpRP", "party", esc(types[type].party), e.party, { max: 160 })}
+      <div class="grid g2">${fld("cpRD", "date", type === "device" ? "Date checked" : "Date", e.date || new Date().toISOString().slice(0, 10), { type: "date" })}${fld("cpRB", "reviewBy", "Review by (optional)", e.reviewBy, { type: "date" })}</div>
+      ${statuses[type] ? sel("cpRS", "status", "Status", statuses[type], e.status || statuses[type][0]) : ""}${fld("cpRN", "notes", "Notes (where the document is kept, what was covered)", e.notes, { area: true, max: 2000 })}
+      ${e.id ? `<label class="row" style="gap:8px"><input type="checkbox" name="retired"${e.retiredAt ? " checked" : ""}> Retired (kept on the register, no longer counted)</label>` : ""}
+      <p class="muted" data-msg style="margin:0;font-size:12.5px"></p><div class="row"><button class="btn primary">Save</button></div></form>`;
+  ACT.cpRegNew = async (el) => { const r = await load("/compliance/registers"); modal(cpRegForm(r.types, r.statuses, el.dataset.type)); };
+  ACT.cpRegEdit = async (el) => { const r = await load("/compliance/registers"), e = (r.registers[el.dataset.type] || []).find((x) => x.id === el.dataset.id); if (e) modal(cpRegForm(r.types, r.statuses, el.dataset.type, e)); };
+  FORMS.cpReg = async (f) => {
+    const b = { title: f.title.value.trim(), party: f.party.value.trim(), date: f.date.value, reviewBy: f.reviewBy.value, notes: f.notes.value.trim(), ...(f.status ? { status: f.status.value } : {}), ...(f.retired ? { retired: f.retired.checked } : {}) };
+    try { await api(f.dataset.id ? "PATCH" : "POST", `/api/admin/compliance/registers/${f.dataset.type}${f.dataset.id ? "/" + encodeURIComponent(f.dataset.id) : ""}`, b); } catch (err) { return formMsg(f, err.message); }
+    await cpSaved("Saved to the register.");
+  };
+  FORMS.cpReview = async (f) => { await api("POST", "/api/admin/compliance/audit-review", { notes: f.notes.value.trim() }); await render(); toast("Review signed off and recorded."); };
+  FORMS.cpSettings = async (f) => {
+    await api("PUT", "/api/admin/compliance/settings", { privacyOfficer: f.privacyOfficer.value.trim(), securityOfficer: f.securityOfficer.value.trim(), nppVersion: f.nppVersion.value.trim(), nppUpdatedAt: f.nppUpdatedAt.value,
+      retentionYears: Number(f.retentionYears.value), auditRetentionYears: Number(f.auditRetentionYears.value), includeVisitNotesInMemberExport: f.includeVisitNotesInMemberExport.checked });
+    await render(); toast("Compliance settings saved.");
+  };
+  // ---- correction requests
+  ACT.cpAmend = (el) => { const deny = el.dataset.s === "denied";
+    modal(`<div class="card-head"><h2>${deny ? "Deny" : "Accept"} this correction</h2><button type="button" class="btn sm" data-act="closeModal">Close</button></div>
+      <form class="stack" data-form="cpAmendSave" data-id="${esc(el.dataset.id)}" data-s="${deny ? "denied" : "accepted"}">${fld("cpAR", "reason", deny ? "Reason, in plain language (the patient reads this)" : "Note to the patient (optional)", "", { area: true, max: 2000, attrs: deny ? "required" : "" })}
+      <p class="muted" data-msg style="margin:0;font-size:12.5px">${deny ? "A denial must say why, and the patient may file a statement of disagreement." : "Make the correction in the chart as well; this records your answer."}</p><div class="row"><button class="btn primary">${deny ? "Deny" : "Accept"}</button></div></form>`); };
+  FORMS.cpAmendSave = async (f) => { try { await api("PATCH", `/api/admin/amendments/${encodeURIComponent(f.dataset.id)}`, { status: f.dataset.s, reason: f.reason.value.trim() }); } catch (err) { return formMsg(f, err.message); } await cpSaved("Answer recorded. The patient is told to sign in to read it."); };
+  ACT.cpAmendExtend = async (el) => { if (!confirm("Take 30 more days to answer? HIPAA allows this once, and the patient is told.")) return; await api("POST", `/api/admin/amendments/${encodeURIComponent(el.dataset.id)}/extend`, {}); await render(); toast("Extended by 30 days."); };
+  // ---- incidents
+  const cpIncForm = (i = {}) => { const n = i.notifications || {}, fl = ((i.states || []).find((s) => s.state === "FL") || {}).count || 0;
+    return `<div class="card-head"><h2>${i.id ? "Update incident" : "Log an incident"}</h2><button type="button" class="btn sm" data-act="closeModal">Close</button></div>
+    <form class="stack" data-form="cpIncident" data-id="${esc(i.id || "")}">${fld("cpIT", "title", "What happened, in a few words", i.title, { max: 200, attrs: "required" })}${fld("cpIX", "description", "Details", i.description, { area: true, max: 4000, rows: 4 })}
+      <div class="grid g2">${fld("cpID", "discoveredAt", "Date discovered", i.discoveredAt || new Date().toISOString().slice(0, 10), { type: "date", attrs: "required" })}${fld("cpIO", "occurredAt", "Date it happened (if known)", i.occurredAt, { type: "date" })}
+        ${fld("cpIA", "affectedCount", "People affected", i.affectedCount || 0, { type: "number", attrs: 'min="0"' })}${fld("cpIF", "fl", "Of those, Florida residents", fl, { type: "number", attrs: 'min="0"' })}</div>
+      ${i.id ? `${sel("cpIC", "conclusion", "Risk assessment conclusion", [["pending", "Still assessing"], ["breach", "Breach: notify"], ["not-a-breach", "Low probability of compromise: not a breach"]], (i.riskAssessment && i.riskAssessment.conclusion) || "pending")}
+        ${fld("cpIM", "mitigation", "What was done to limit the harm", i.riskAssessment && i.riskAssessment.mitigation, { area: true, max: 1000 })}
+        <div class="grid g2">${fld("cpN1", "individualsAt", "Patients notified on", n.individualsAt, { type: "date" })}${fld("cpN2", "hhsAt", "HHS notified on", n.hhsAt, { type: "date" })}${fld("cpN3", "floridaAt", "Florida residents notified on", n.floridaAt, { type: "date" })}${sel("cpIS", "status", "Status", [["open", "Open"], ["closed", "Closed"]], i.status || "open")}</div>` : ""}
+      <p class="muted" data-msg style="margin:0;font-size:12.5px"></p><div class="row"><button class="btn primary">Save</button></div></form>`; };
+  ACT.cpIncidentNew = () => modal(cpIncForm());
+  ACT.cpIncidentEdit = async (el) => { const i = (await load("/incidents")).find((x) => x.id === el.dataset.id); if (i) modal(cpIncForm(i)); };
+  FORMS.cpIncident = async (f) => {
+    const b = { title: f.title.value.trim(), description: f.description.value.trim(), discoveredAt: f.discoveredAt.value, occurredAt: f.occurredAt.value, affectedCount: Number(f.affectedCount.value || 0), states: Number(f.fl.value || 0) > 0 ? [{ state: "FL", count: Number(f.fl.value) }] : [] };
+    if (f.dataset.id) Object.assign(b, { status: f.status.value, riskAssessment: { conclusion: f.conclusion.value, mitigation: f.mitigation.value.trim() }, notifications: { individualsAt: f.individualsAt.value, hhsAt: f.hhsAt.value, floridaAt: f.floridaAt.value } });
+    try { await api(f.dataset.id ? "PATCH" : "POST", `/api/admin/incidents${f.dataset.id ? "/" + encodeURIComponent(f.dataset.id) : ""}`, b); } catch (err) { return formMsg(f, err.message); }
+    await cpSaved(f.dataset.id ? "Incident updated." : "Incident logged. The deadlines are on the list.");
+  };
+  // ---- one patient: how to reach them, the privacy notice, a copy of the record, corrections, disclosures (chart, Consent tab)
+  ACT.privacyOpen = async (el) => {
+    const id = el.dataset.id, p = await get(`/clients/${encodeURIComponent(id)}/privacy`), pr = p.preferences, charts = can("charts");
+    const d = charts ? await get(`/clients/${encodeURIComponent(id)}/disclosures`) : { disclosures: [] };
+    modal(`<div class="card-head"><h2>Privacy and records</h2><button type="button" class="btn sm" data-act="closeModal">Close</button></div>
+      <div class="list-item"><span style="flex:1">Notice of Privacy Practices</span>${p.npp.acknowledged ? `<span class="pill ok">Acknowledged ${cpDate(p.npp.at)}</span>` : `<button class="btn sm" data-act="privacyAck" data-id="${esc(id)}">Record a signed paper copy</button>`}</div>
+      <form class="stack" data-form="privacySave" data-id="${esc(id)}" style="margin-top:12px"><h3 style="margin:0">How they asked to be contacted</h3>
+        ${sel("pvBy", "contactBy", "Reach them by", [["", "No preference"], ["email", "Email only"], ["text", "Text"], ["phone", "Phone"]], pr.contactBy)}
+        <label class="row" style="gap:8px"><input type="checkbox" name="noVoicemail"${pr.noVoicemail ? " checked" : ""}> Do not leave voicemail</label><label class="row" style="gap:8px"><input type="checkbox" name="noText"${pr.noText ? " checked" : ""}> Do not text</label>
+        ${fld("pvR", "restrictions", "Other restriction they asked for", pr.restrictions, { area: true, max: 1000 })}<p class="muted" data-msg style="margin:0;font-size:12.5px"></p><div class="row"><button class="btn primary">Save preferences</button></div></form>
+      ${charts ? `<h3 style="margin:16px 0 8px">Their record</h3><div class="row" style="gap:8px;flex-wrap:wrap"><button class="btn" data-act="privacyRecord" data-id="${esc(id)}">Download the full record</button><button class="btn" data-act="privacyAmendNew" data-id="${esc(id)}">Log a correction request</button><button class="btn" data-act="privacyDiscNew" data-id="${esc(id)}">Record a disclosure</button></div>
+        <div class="muted" style="font-size:12.5px;margin-top:8px">${d.disclosures.length ? `${plural(d.disclosures.length, "disclosure")} on their accounting; the latest was ${cpDate(d.disclosures[0].date)} to ${esc(d.disclosures[0].recipient)}.` : "No disclosures on their accounting."} A patient is owed a copy within 30 days of asking.</div>` : ""}`);
+  };
+  ACT.privacyAck = async (el) => { await api("POST", `/api/admin/clients/${encodeURIComponent(el.dataset.id)}/privacy/acknowledge`, {}); closeModal(); toast("Acknowledgment recorded."); };
+  FORMS.privacySave = async (f) => { try { await api("PUT", `/api/admin/clients/${encodeURIComponent(f.dataset.id)}/privacy`, { contactBy: f.contactBy.value, noVoicemail: f.noVoicemail.checked, noText: f.noText.checked, restrictions: f.restrictions.value.trim() }); } catch (err) { return formMsg(f, err.message); } closeModal(); toast("Contact preferences saved."); };
+  ACT.privacyRecord = async (el) => {
+    const rec = await api("GET", `/api/admin/clients/${encodeURIComponent(el.dataset.id)}/records`);
+    const a = document.createElement("a"), url = URL.createObjectURL(new Blob([JSON.stringify(rec, null, 2)], { type: "application/json" }));
+    a.href = url; a.download = `mdfit-record-${String(rec.exportedAt || "").slice(0, 10)}.json`; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 4000);
+    toast("Record downloaded. This export is in the audit ledger.");
+  };
+  ACT.privacyAmendNew = (el) => modal(`<div class="card-head"><h2>Log a correction request</h2><button type="button" class="btn sm" data-act="closeModal">Close</button></div>
+    <form class="stack" data-form="privacyAmend" data-id="${esc(el.dataset.id)}">${fld("paR", "record", "Which record", "", { max: 200, attrs: "required" })}${fld("paQ", "request", "What they want changed", "", { area: true, max: 2000, attrs: "required" })}${fld("paW", "reason", "Why (optional)", "", { area: true, max: 1000 })}
+    <p class="muted" data-msg style="margin:0;font-size:12.5px">The 60-day clock starts today. Answer it under Compliance, Patient requests.</p><div class="row"><button class="btn primary">Log the request</button></div></form>`);
+  FORMS.privacyAmend = async (f) => { try { await api("POST", `/api/admin/clients/${encodeURIComponent(f.dataset.id)}/amendments`, { record: f.record.value.trim(), request: f.request.value.trim(), reason: f.reason.value.trim() }); } catch (err) { return formMsg(f, err.message); } closeModal(); toast("Correction request logged. It is due in 60 days."); };
+  ACT.privacyDiscNew = (el) => modal(`<div class="card-head"><h2>Record a disclosure</h2><button type="button" class="btn sm" data-act="closeModal">Close</button></div>
+    <form class="stack" data-form="privacyDisc" data-id="${esc(el.dataset.id)}"><div class="grid g2">${fld("pdD", "date", "Date", new Date().toISOString().slice(0, 10), { type: "date" })}${fld("pdB", "basis", "Legal basis (optional)", "", { max: 100, attrs: 'placeholder="Authorization, subpoena, public health"' })}</div>
+    ${fld("pdW", "recipient", "Who received it", "", { max: 200, attrs: "required" })}${fld("pdP", "purpose", "Purpose", "", { max: 300, attrs: "required" })}${fld("pdX", "description", "What was disclosed", "", { area: true, max: 2000, attrs: "required" })}
+    <p class="muted" data-msg style="margin:0;font-size:12.5px">For records sent to anyone outside treatment, payment or running the practice. Kept six years; it cannot be edited afterwards.</p><div class="row"><button class="btn primary">Record it</button></div></form>`);
+  FORMS.privacyDisc = async (f) => { try { await api("POST", `/api/admin/clients/${encodeURIComponent(f.dataset.id)}/disclosures`, { date: f.date.value, basis: f.basis.value.trim(), recipient: f.recipient.value.trim(), purpose: f.purpose.value.trim(), description: f.description.value.trim() }); } catch (err) { return formMsg(f, err.message); } closeModal(); toast("Disclosure recorded on their accounting."); };
+  // ===================== end of Compliance =====================
+
   ACT.rsEnabled = async (el) => { const on = el.getAttribute("aria-checked") !== "true"; if (!(await rsChange(on ? "Switch the revenue share on." : "Switch the revenue share off.", { enabled: on }))) return; await render(); toast(on ? "The revenue share is on." : "The revenue share is off. Nothing new is earned."); };
   ACT.rsAutoPay = async (el) => {
     const on = el.getAttribute("aria-checked") !== "true";
