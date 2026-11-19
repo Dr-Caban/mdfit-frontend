@@ -3516,7 +3516,7 @@
     // Body weight, when it has been entered on two different days in the last 60
     const ws = vitals.filter((v) => Number(v.weight) > 0 && v.date >= addDays(t, -60) && v.date <= t).slice().sort((a, b) => (a.date < b.date ? -1 : 1));
     const weight = ws.length > 1 && ws[0].date !== ws[ws.length - 1].date ? { from: Number(ws[0].weight), to: Number(ws[ws.length - 1].weight), days: span(ws[0].date, ws[ws.length - 1].date) } : null;
-    return { today: t, dayOfWeek: span(mon, t) + 1, first: String((client && client.name) || "").trim().split(/\s+/)[0] || "", aim: (aboutMe && aboutMe.aim) || "",
+    return { me: (client && client.id) || "", today: t, dayOfWeek: span(mon, t) + 1, first: String((client && client.name) || "").trim().split(/\s+/)[0] || "", aim: (aboutMe && aboutMe.aim) || "",
       weeks, pain, lift, weight, any: allWorkouts.length + painLog.length > 0 };
   }
   const AIM_SAYS = { pain: "get out of pain", stronger: "get stronger", weight: "lose weight", move: "move better", sport: "get better at your sport" };
@@ -4443,11 +4443,14 @@
   function introTour(again) {
     try {
       // (shown once even when a stop is already credited: someone given a program starts with one)
-      if (!window.MDFitTour || window.MDFitTour.running() || $("#view-home").hidden || !matchMedia("(max-width: 700px)").matches) return;
-      if (!again && (!intro || !intro.offered)) return;
+      if (!window.MDFitTour || window.MDFitTour.running() || !matchMedia("(max-width: 700px)").matches) return;
+      const at = `mdfit-tour-at-${client.id}`, left = sessionStorage.getItem(at);
+      // (back in the app after a lit thing took them out of it, the documents say: the tour is waiting where they left it)
+      if (left !== null && !again) return void window.MDFitTour.start({ name: client.firstName || String(client.name || "").split(" ")[0], key: at, from: Number(left), onEnd: (done) => { if (!done) window.scrollTo({ top: 0 }); } });
+      if ($("#view-home").hidden || (!again && (!intro || !intro.offered))) return;
       const key = `mdfit-tour-${client.id}`; if (!again && localStorage.getItem(key)) return; localStorage.setItem(key, "1");
     } catch { return; }
-    window.MDFitTour.start({ name: client.firstName || String(client.name || "").split(" ")[0], onEnd: (done) => { if (!done) { go("home"); window.scrollTo({ top: 0 }); } } });
+    window.MDFitTour.start({ name: client.firstName || String(client.name || "").split(" ")[0], key: `mdfit-tour-at-${client.id}`, onEnd: (done) => { if (!done) { go("home"); window.scrollTo({ top: 0 }); } } });
   }
   // One day on the Progress calendar: was a workout logged, and is anything on it still open (an unpaid invoice dated
   // that day, a visit later that day or ahead). account-habits.js puts a check on goal days with a workout and nothing open.

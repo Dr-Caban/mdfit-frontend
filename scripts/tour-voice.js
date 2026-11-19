@@ -19,7 +19,8 @@ const win = {}; vm.runInNewContext(fs.readFileSync(path.join(root, "account-tour
 const lines = win.MDFitTour.beats("").filter((b) => b.snd).map((b) => ({ id: b.snd, text: b.say }));
 fs.mkdirSync(out, { recursive: true });
 const book = path.join(out, "lines.json"); let made = {}; try { made = JSON.parse(fs.readFileSync(book, "utf8")); } catch {}
-if (made.voice !== voice) made = { voice, lines: {} };
+const mark = require("crypto").createHash("sha256").update(voice).digest("hex").slice(0, 10); // which voice the files were made with, without naming it in a served file
+if (made.voice !== mark) made = { voice: mark, lines: {} };
 
 (async () => {
   let n = 0;

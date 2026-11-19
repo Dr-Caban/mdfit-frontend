@@ -64,7 +64,7 @@
     const steps = beats(String(o.name || "").split(" ")[0].slice(0, 20));
     const root = document.createElement("div"); root.id = "gt"; root.setAttribute("role", "dialog"); root.setAttribute("aria-label", "A quick tour with Solomon");
     root.innerHTML = '<i class="gt-hole"></i><i class="gt-b"></i><i class="gt-b"></i><i class="gt-b"></i><i class="gt-b"></i><i class="gt-b gt-mid"></i>'
-      + '<button type="button" class="gt-resume">Continue the tour</button><div class="gt-bar"><i></i></div><button type="button" class="gt-snd" aria-label="Solomon\'s voice"></button><button type="button" class="gt-skip">Skip tour</button>'
+      + '<div class="gt-back"><button type="button" class="gt-resume">Continue the tour</button><button type="button" class="gt-end" aria-label="End the tour">×</button></div><div class="gt-bar"><i></i></div><button type="button" class="gt-snd" aria-label="Solomon\'s voice"></button><button type="button" class="gt-skip">Skip tour</button>'
       + '<div class="gt-say" aria-live="polite">' + CLOUD + '<p></p><div class="gt-acts"><button type="button" class="gt-pass">Skip this step</button><button type="button" class="gt-next">Next</button></div></div>';
     const hole = $(".gt-hole", root), blocks = [...root.querySelectorAll(".gt-b")], sayBox = $(".gt-say", root), sayP = $("p", sayBox), bar = $(".gt-bar i", root);
     const told = { asked: false }; // what the member has done during the tour (a question sent to Solomon)
@@ -82,7 +82,7 @@
     function end(done) {
       if (ended) return; ended = true; run = null;
       quietNow(); clearInterval(tick); clearInterval(typing); document.removeEventListener("click", onTap, true); document.removeEventListener("keydown", onKey, true); document.removeEventListener("mdfit:guide-asked", onAsked);
-      root.remove(); document.body.classList.remove("gt-on", "gt-nocloud");
+      root.remove(); document.body.classList.remove("gt-on", "gt-nocloud"); keep(null);
       if (typeof o.onEnd === "function") { try { o.onEnd(!!done); } catch {} }
     }
     const targets = () => { let t = null; try { t = step.find(); } catch {} return (Array.isArray(t) ? t : [t]).filter(seen); };
@@ -92,23 +92,26 @@
       const want = inDlg || anyDlg || document.body; if (root.parentNode !== want) want.appendChild(root);
     }
     // The member used a lit thing that takes them somewhere: the tour gets out of the way until they call it back
-    function pause() { paused = true; quietNow(); clearInterval(typing); root.classList.add("gt-paused"); document.body.classList.remove("gt-nocloud"); }
-    function resume() { paused = false; root.classList.remove("gt-paused"); next(); }
+    const keep = (v) => { if (!o.key) return; try { if (v === null) sessionStorage.removeItem(o.key); else sessionStorage.setItem(o.key, String(v)); } catch {} };
+    function pause() { paused = true; quietNow(); clearInterval(typing); clearTimeout(advT); root.classList.add("gt-paused"); document.body.classList.remove("gt-nocloud"); keep(at); }
+    function resume() { paused = false; root.classList.remove("gt-paused"); keep(null); next(); }
     function place() {
       if (ended || !step) return;
       if (paused) return host([]);
       const els = targets(); host(els);
       if (!els.length) { // nothing to light yet: the whole screen is dimmed; a beat that never shows up is passed over
         hole.style.cssText = "left:50%;top:50%;width:0;height:0;opacity:0"; root.classList.add("gt-wait"); blocks[0].style.cssText = "left:0;top:0;right:0;bottom:0"; for (let i = 1; i < 5; i++) blocks[i].style.cssText = "display:none";
+        if (!moving && (step.until ? step.until(told) : tapped)) return advance(); // done, and what was lit has gone with it
         if (++missing > 28) next(); return; }
-      missing = 0; root.classList.remove("gt-wait");
+      root.classList.remove("gt-wait");
       if (!lifted) { lifted = true; const r0 = els[0].getBoundingClientRect();
         if (step.lift) window.scrollTo(0, Math.max(0, r0.top + window.scrollY - step.lift)); else if (r0.top < 90 || r0.bottom > innerHeight - 90) els[0].scrollIntoView({ block: "center" }); }
       let l = 1e9, t = 1e9, r = -1e9, b = -1e9; els.forEach((e) => { const x = e.getBoundingClientRect(); l = Math.min(l, x.left); t = Math.min(t, x.top); r = Math.max(r, x.right); b = Math.max(b, x.bottom); });
       const p = step.pad || 0, W = innerWidth, H = innerHeight;
       l = Math.max(6, l - p); t = Math.max(52, t - p); r = Math.min(W - 6, r + p); b = Math.min(H - 6, b + p);
       const bar2 = first(".tabbar"); if (bar2 && root.parentNode === document.body && !els.some((e) => bar2.contains(e) || e.closest("#mg"))) b = Math.min(b, bar2.getBoundingClientRect().top - 6); // (Solomon's chat sits over the tab bar)
-      if (r - l < 8 || b - t < 8) return;
+      if (r - l < 8 || b - t < 8) { if (++missing > 28) next(); else if (missing % 6 === 0) lifted = false; return; } // off the screen: bring it back, then give up on it
+      missing = 0;
       hole.style.cssText = `left:${l}px;top:${t}px;width:${r - l}px;height:${b - t}px;border-radius:${step.round || 16}px;opacity:1`;
       blocks[0].style.cssText = `left:0;top:0;right:0;height:${t}px`; blocks[1].style.cssText = `left:0;top:${b}px;right:0;bottom:0`;
       blocks[2].style.cssText = `left:0;top:${t}px;width:${l}px;height:${b - t}px`; blocks[3].style.cssText = `left:${r}px;top:${t}px;right:0;height:${b - t}px`;
@@ -120,13 +123,14 @@
       sayBox.style.top = Math.round(top) + "px"; sayBox.classList.add("on");
       if (!moving && (step.until ? step.until(told) : tapped)) advance();
     }
-    function advance() { if (moving) return; moving = true; if (step.last) return end(true); setTimeout(next, step.settle || 380); }
+    let advT = 0;
+    function advance() { if (moving) return; moving = true; if (step.last) return end(true); advT = setTimeout(next, step.settle || 380); }
     function type(text) {
       clearInterval(typing); if (reduce()) { sayP.textContent = text; return; }
       let n = 0; sayP.textContent = ""; typing = setInterval(() => { n += 2; sayP.textContent = text.slice(0, n); if (n >= text.length) clearInterval(typing); }, 20);
     }
     function next() {
-      if (ended) return;
+      if (ended) return; clearTimeout(advT);
       if (step && step.after) { try { step.after(); } catch {} }
       do { at++; step = steps[at]; } while (step && step.when && !step.when(told)); // a beat that does not apply is passed over
       if (!step) return end(true);
@@ -143,6 +147,7 @@
       if (e.target.closest && e.target.closest("#gt")) {
         if (e.target.closest(".gt-skip")) { e.preventDefault(); end(false); }
         else if (e.target.closest(".gt-resume")) { if (paused) resume(); }
+        else if (e.target.closest(".gt-end")) { e.preventDefault(); end(false); }
         else if (e.target.closest(".gt-snd")) { try { localStorage.setItem(SOUND, soundOn() ? "off" : "on"); } catch {} paintSnd(); if (!audio) { try { audio = new Audio(); audio.addEventListener("error", noVoice); } catch {} } if (soundOn()) speakLine(step.snd); else quietNow(); }
         else if (e.target.closest(".gt-next") && step.free) next();
         else if (e.target.closest(".gt-pass") && !step.free) next();
@@ -155,7 +160,9 @@
 
     run = { end }; document.body.appendChild(root); document.body.classList.add("gt-on");
     document.addEventListener("click", onTap, true); document.addEventListener("keydown", onKey, true); document.addEventListener("mdfit:guide-asked", onAsked);
-    tick = setInterval(place, 110); next();
+    tick = setInterval(place, 110);
+    // Coming back to the app after a lit thing took them out of it: the tour waits, stepped aside, where they left it
+    const from = Number(o.from); if (Number.isInteger(from) && from >= 0 && from < steps.length - 1) { at = from; step = steps[at]; pause(); } else next();
     return true;
   }
 

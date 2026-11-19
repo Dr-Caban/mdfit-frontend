@@ -646,7 +646,7 @@
   function route(u, raw) {
     const t = u.text;
     if (HELLO.test(String(raw || "")) && !u.pained && !u.area) return { kind: "other", local: true, free: true, run: hello };
-    if (!u.pained && !u.area && /\b(recap|my results|weekly (summary|report|recap|review)|how (was|is|did) my (last )?week( go| going)?|how did i do (this|last) week|how am i doing)\b/.test(t)) return { kind: "other", local: true, free: true, run: () => recap(/last week/.test(t) ? "last" : "") };
+    if (!u.pained && !u.area && /^(please |can you |could you )?((show|give|read|tell) me |what'?s |whats |what is )?(my |the |a )?((weekly|week'?s|last week'?s|this week'?s) )?(recap|results|summary|report)( of| for)?( my| the| this| last)?( week)?( please)?[\s?.!]*$|^how (was|is|did) my (last )?week( go| going)?[\s?.!]*$|^how did i do (this|last) week[\s?.!]*$/.test(String(t).trim())) return { kind: "other", local: true, free: true, run: () => recap(/last week/.test(t) ? "last" : "") };
     const way = !u.pained && !u.area ? wayFor(t) : null;
     if (lookCmd(t, "dark|black|night") && !u.pained) return { kind: "looks", run: () => look({ theme: "black" }, "Done. Black it is. Anything else you'd like to change about how the app looks?") };
     if (lookCmd(t, "white|light|bright")) return { kind: "looks", run: () => look({ theme: "white" }, "Done. White it is. Anything else you'd like to change?") };

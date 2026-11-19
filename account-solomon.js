@@ -133,7 +133,7 @@
     // The first opening of a new week: last week's numbers are ready, once, for anyone who has a week to hear about
     if (weekDue && view === "home") { weekDue = false;
       try { const f = A.weekFacts(), mon = f.weeks[3].from, worth = f.any && (f.weeks[2].sessions || f.weeks[2].checkins || f.weeks[1].sessions);
-        if (worth && localStorage.getItem(WEEK) !== mon && G.recap && G.say(`Your week is in${f.first ? ", " + f.first : ""}. Tap me and I’ll read it to you.`, { act: () => G.recap("last"), ms: 12000 })) { localStorage.setItem(WEEK, mon); timer = setTimeout(() => speakFor(view), 13500); return; }
+        if (worth && localStorage.getItem(`${WEEK}-${f.me}`) !== mon && G.recap && G.say(`Your week is in${f.first ? ", " + f.first : ""}. Tap here and I’ll read it to you.`, { act: () => G.recap("last"), ms: 12000 })) { localStorage.setItem(`${WEEK}-${f.me}`, mon); timer = setTimeout(() => speakFor(view), 13500); return; }
       } catch {} }
     let list = []; try { list = lines(view); } catch { return; }
     const now = Date.now(), c = list.find((x) => !said.has(x.t) || now - said.get(x.t) > AGAIN);
