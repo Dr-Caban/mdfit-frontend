@@ -16,7 +16,7 @@ if (!key) { console.error("ELEVENLABS_API_KEY is not set."); process.exit(1); }
 
 // The lines come from the tour itself, so the voice can never say something the bubble does not
 const win = {}; vm.runInNewContext(fs.readFileSync(path.join(root, "account-tour.js"), "utf8"), { window: win, document: { querySelector: () => null, querySelectorAll: () => [] }, console });
-const lines = win.MDFitTour.beats("").filter((b) => b.snd).map((b) => ({ id: b.snd, text: b.say }));
+const lines = win.MDFitTour.script(); // every beat, and every other moment the tour speaks
 fs.mkdirSync(out, { recursive: true });
 const book = path.join(out, "lines.json"); let made = {}; try { made = JSON.parse(fs.readFileSync(book, "utf8")); } catch {}
 const mark = require("crypto").createHash("sha256").update(voice).digest("hex").slice(0, 10); // which voice the files were made with, without naming it in a served file

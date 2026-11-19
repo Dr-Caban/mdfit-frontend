@@ -23,7 +23,7 @@
   const optTap = (e) => !!(e.target.closest && e.target.closest(".mg-opt"));
   function beats(name) {
     return [
-      { say: `Hi${name ? " " + name : ""}, I’m Solomon. Tap me to start.`, find: () => $("#mg-btn"), pad: 10, round: 40,
+      { say: `Hi${name ? " " + name : ""}, I’m Solomon, your guide. Tap me to start.`, find: () => $("#mg-btn"), pad: 10, round: 40,
         before: () => { if (guide().hush) guide().hush(); if (guide().shut && open("mg")) guide().shut(); }, until: () => open("mg"),
         after: () => { try { document.dispatchEvent(new CustomEvent("mdfit:guide-asked")); } catch {} } }, // meeting him is the first stop on the road
       { snd: "02", free: true, say: "I’m with you on every screen. Any question, type it here. Try one now, or tap Next.", find: () => { const i = $("#mg-in"); return i && (i.closest("form") || i.parentElement); }, pad: 4, round: 16,
@@ -31,7 +31,7 @@
       { snd: "02b", free: true, when: (t) => t.asked, say: "That’s all it takes. Ask me like that from any screen.", find: () => $("#mg-log"), pad: 2, round: 16, used: optTap },
       { snd: "03", free: true, say: "Or tap one of these and I’ll take you there. Try one, or tap Next.", find: () => [...document.querySelectorAll("#mg-log .mg-opts")].filter(seen).pop(), pad: 6, round: 16,
         used: optTap, after: () => { if (guide().shut) guide().shut(); } },
-      { snd: "04", say: "First, where it hurts. The Pain Tool lives under Train. Tap Train.", before: shutDialogs, find: () => first('.tabbar [data-tab="generate"]'), pad: 2, round: 14,
+      { snd: "04", say: "My job is to get you training without pain. Let’s start with what hurts: tap Train.", before: shutDialogs, find: () => first('.tabbar [data-tab="generate"]'), pad: 2, round: 14,
         until: () => ["view-generate", "view-videos", "view-pain", "view-programs"].some(open) },
       { snd: "05", say: "This is the Pain Tool. Tap it.", find: () => first('.view:not([hidden]) [data-goto="pain"]'), pad: 4, round: 22, until: () => open("view-pain") },
       { snd: "06", say: "Tap the body where it hurts.", find: () => first("#view-pain .pm-regions") && (first("#view-pain .pm-regions").closest("svg") || first("#view-pain .pm-regions")), lift: 210, pad: 4, round: 22,
@@ -43,7 +43,7 @@
         find: () => first("#view-generate [data-build-workout]"), pad: 6, round: 16, settle: 900 },
       { snd: "10", say: "One more place, then your road. Tap Profile.", before: shutDialogs, find: () => first('.tabbar [data-tab="profile"]'), pad: 2, round: 14, until: () => open("view-profile") },
       { snd: "11", free: true, say: "Becoming a patient? Your documents live here. Start them now, or tap Next.", find: () => first("#view-profile #p-patient"), pad: 4, round: 18, used: () => true },
-      { snd: "12", free: true, before: shutDialogs, say: "Change how the app looks here. Open it to see, or tap Next. Refer a friend is right below it.",
+      { snd: "12", free: true, before: shutDialogs, say: "Make the app yours here: light or dark, roomy or compact. Tap it to look, or tap Next. Refer a friend sits just below.",
         find: () => { const h = [...document.querySelectorAll("#view-profile .card-head")].find((x) => seen(x) && /^make it yours/i.test(x.textContent.trim())); return h && (h.closest(".card") || h); }, pad: 2, round: 16 },
       { snd: "13", say: "This is your road. One stone a day. Tap the stone and we begin.", before: () => { shutDialogs(); location.hash = "#home"; },
         find: () => first("#cave-card .cv-stop.now .cv-ore") || first("#cave-card .cv-stop.today .cv-ore"), pad: 12, round: 60, last: true },
@@ -56,6 +56,17 @@
   const soundOn = () => { try { return localStorage.getItem(SOUND) !== "off"; } catch { return true; } };
   const ICON = { on: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
     off: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z" fill="currentColor"/><path d="m16.5 9.5 5 5m0-5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>' };
+
+  // Every other moment of the tour that has something to say, each pre-recorded like the beats (assets/tour/<id>.mp3)
+  const LINES = {
+    aside: { snd: "p1", say: "Take your time. Tap Continue the tour when you’re ready." },
+    nudgeTap: { snd: "n1", say: "Tap the spot that’s lit, or skip this step." },
+    nudgeNext: { snd: "n2", say: "Tap the spot that’s lit, or tap Next." },
+    skipped: { snd: "x1", say: "No problem. I’m on every screen whenever you need me." },
+    done: { snd: "z1", say: "That’s the tour. I’m on every screen whenever you need me." },
+  };
+  // Everything the tour can say, for scripts/tour-voice.js to record
+  const script = () => [...beats("").filter((b) => b.snd).map((b) => ({ id: b.snd, text: b.say })), ...Object.values(LINES).map((l) => ({ id: l.snd, text: l.say }))];
 
   let run = null;
   function start(o) {
@@ -75,12 +86,16 @@
     function speakLine(id) { quietNow(); if (!audio || audio.dead || !id || !soundOn()) return; try { audio.src = `/assets/tour/${id}.mp3`; const pr = audio.play(); if (pr && pr.catch) pr.catch(() => {}); } catch {} }
     // Called inside a tap: makes the player, and starts the coming beat's line there and then so the browser allows it
     // No recording to play (not made yet, or it cannot be fetched): the tour is simply silent and the button goes away
+    const nudged = new Set();
+    // A player made inside this tap, when none was made yet (coming back to the app mid-tour, or skipping at once)
+    const ensure = () => { if (audio) return; try { audio = new Audio(); audio.preload = "auto"; audio.addEventListener("error", noVoice); } catch { audio = null; } };
     const noVoice = () => { quietNow(); audio = { play() {}, pause() {}, dead: true }; sndBtn.hidden = true; };
     function unlock() { if (audio) return; try { audio = new Audio(); audio.preload = "auto"; audio.addEventListener("error", noVoice); } catch { audio = null; return; } const nx = steps[at + 1]; if (nx && nx.snd && soundOn()) { primed = nx.snd; speakLine(nx.snd); } }
     paintSnd();
 
-    function end(done) {
+    function end(done, say) {
       if (ended) return; ended = true; run = null;
+      if (say) setTimeout(() => speakLine(say.snd), 0); // after quietNow below; the player outlives the overlay
       quietNow(); clearInterval(tick); clearInterval(typing); document.removeEventListener("click", onTap, true); document.removeEventListener("keydown", onKey, true); document.removeEventListener("mdfit:guide-asked", onAsked);
       root.remove(); document.body.classList.remove("gt-on", "gt-nocloud"); keep(null);
       if (typeof o.onEnd === "function") { try { o.onEnd(!!done); } catch {} }
@@ -93,7 +108,7 @@
     }
     // The member used a lit thing that takes them somewhere: the tour gets out of the way until they call it back
     const keep = (v) => { if (!o.key) return; try { if (v === null) sessionStorage.removeItem(o.key); else sessionStorage.setItem(o.key, String(v)); } catch {} };
-    function pause() { paused = true; quietNow(); clearInterval(typing); clearTimeout(advT); root.classList.add("gt-paused"); document.body.classList.remove("gt-nocloud"); keep(at); }
+    function pause(quiet) { paused = true; quietNow(); clearInterval(typing); clearTimeout(advT); root.classList.add("gt-paused"); document.body.classList.remove("gt-nocloud"); keep(at); if (!quiet) speakLine(LINES.aside.snd); }
     function resume() { paused = false; root.classList.remove("gt-paused"); keep(null); next(); }
     function place() {
       if (ended || !step) return;
@@ -124,7 +139,7 @@
       if (!moving && (step.until ? step.until(told) : tapped)) advance();
     }
     let advT = 0;
-    function advance() { if (moving) return; moving = true; if (step.last) return end(true); advT = setTimeout(next, step.settle || 380); }
+    function advance() { if (moving) return; moving = true; if (step.last) return end(true, LINES.done); advT = setTimeout(next, step.settle || 380); }
     function type(text) {
       clearInterval(typing); if (reduce()) { sayP.textContent = text; return; }
       let n = 0; sayP.textContent = ""; typing = setInterval(() => { n += 2; sayP.textContent = text.slice(0, n); if (n >= text.length) clearInterval(typing); }, 20);
@@ -145,16 +160,18 @@
     function onTap(e) {
       if (ended || !step) return;
       if (e.target.closest && e.target.closest("#gt")) {
-        if (e.target.closest(".gt-skip")) { e.preventDefault(); end(false); }
-        else if (e.target.closest(".gt-resume")) { if (paused) resume(); }
-        else if (e.target.closest(".gt-end")) { e.preventDefault(); end(false); }
+        if (e.target.closest(".gt-skip")) { e.preventDefault(); ensure(); end(false, LINES.skipped); }
+        else if (e.target.closest(".gt-resume")) { if (paused) { ensure(); resume(); } }
+        else if (e.target.closest(".gt-end")) { e.preventDefault(); ensure(); end(false, LINES.skipped); }
         else if (e.target.closest(".gt-snd")) { try { localStorage.setItem(SOUND, soundOn() ? "off" : "on"); } catch {} paintSnd(); if (!audio) { try { audio = new Audio(); audio.addEventListener("error", noVoice); } catch {} } if (soundOn()) speakLine(step.snd); else quietNow(); }
         else if (e.target.closest(".gt-next") && step.free) next();
         else if (e.target.closest(".gt-pass") && !step.free) next();
-        else if (e.target.closest(".gt-b")) { root.classList.remove("gt-nudge"); void root.offsetWidth; root.classList.add("gt-nudge"); }
+        else if (e.target.closest(".gt-b")) { root.classList.remove("gt-nudge"); void root.offsetWidth; root.classList.add("gt-nudge");
+          // once a step, and never over a line that is still being spoken
+          if (!nudged.has(at) && audio && !audio.dead && (audio.paused || audio.ended)) { nudged.add(at); speakLine((step.free ? LINES.nudgeNext : LINES.nudgeTap).snd); } }
         return; }
       if (paused) return;
-      if (targets().some((t) => t.contains(e.target))) { unlock(); if (step.free) { if (step.used && step.used(e)) pause(); return; } tapped = true; if (step.last) setTimeout(() => end(true), 0); }
+      if (targets().some((t) => t.contains(e.target))) { unlock(); if (step.free) { if (step.used && step.used(e)) pause(); return; } tapped = true; if (step.last) setTimeout(() => end(true, LINES.done), 0); }
     }
     function onKey(e) { if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); end(false); } }
 
@@ -162,9 +179,9 @@
     document.addEventListener("click", onTap, true); document.addEventListener("keydown", onKey, true); document.addEventListener("mdfit:guide-asked", onAsked);
     tick = setInterval(place, 110);
     // Coming back to the app after a lit thing took them out of it: the tour waits, stepped aside, where they left it
-    const from = Number(o.from); if (Number.isInteger(from) && from >= 0 && from < steps.length - 1) { at = from; step = steps[at]; pause(); } else next();
+    const from = Number(o.from); if (Number.isInteger(from) && from >= 0 && from < steps.length - 1) { at = from; step = steps[at]; pause(true); } else next();
     return true;
   }
 
-  window.MDFitTour = { start, running: () => !!run, stop: () => { if (run) run.end(false); }, beats };
+  window.MDFitTour = { start, running: () => !!run, stop: () => { if (run) run.end(false); }, beats, script };
 })();
