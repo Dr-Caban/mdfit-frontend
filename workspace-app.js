@@ -95,8 +95,10 @@
   const guard = (fn) => async (...a) => { try { return await fn(...a); } catch (e) { toast(e.message); } };
 
   // Signing out empties everything that was drawn, so names and notes do not stay on a shared screen.
+  // Signing out ends this sign-in on the server too, so a copy of it kept anywhere stops working at once
+  const endSignIn = (t) => { if (!t) return; try { fetch(API + "/api/admin/me/logout", { method: "POST", headers: { Authorization: "Bearer " + t }, keepalive: true }).catch(() => {}); } catch {} };
   function signOut() {
-    token = ""; store.set(""); if (window.MDFitRT) { if (teleIn()) MDFitRT.emit("tele_end"); MDFitRT.disconnect(); } teleDrop(); stopDictation();
+    endSignIn(token); token = ""; store.set(""); if (window.MDFitRT) { if (teleIn()) MDFitRT.emit("tele_end"); MDFitRT.disconnect(); } teleDrop(); stopDictation();
     for (const k of Object.keys(cache)) cache[k] = (k === "unread" || k === "waiting") ? 0 : null; // every cached list, the open chart included
     mem.clear(); forget(); freshAsk = null; shown = ""; shownHtml = ""; visited.length = 0; clearTimeout(warmT); clearTimeout(repaintT); warmRun++;
     qaClose(); gClose(); state.picked.clear(); state.igPeople = []; state.insList = ""; state.ecoOpen = ""; state.genAll = false; state.layDraft = null;

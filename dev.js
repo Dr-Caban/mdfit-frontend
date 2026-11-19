@@ -42,7 +42,9 @@
     if (!res.ok) { const e = new Error((data && data.error) || "Request failed."); e.status = res.status; e.data = data; throw e; }
     return data;
   }
-  function signOut() { clearTimeout(idleT); try { STAFF_KEYS.forEach((k) => sessionStorage.removeItem(k)); } catch {} show(false); }
+  // Signing out ends this sign-in on the server too, so a copy of it kept anywhere stops working at once
+  const endSignIn = (t) => { if (!t) return; try { fetch(API + "/api/admin/me/logout", { method: "POST", headers: { Authorization: "Bearer " + t }, keepalive: true }).catch(() => {}); } catch {} };
+  function signOut() { endSignIn((session.get() || {}).token); clearTimeout(idleT); try { STAFF_KEYS.forEach((k) => sessionStorage.removeItem(k)); } catch {} show(false); }
   $("#signOut").addEventListener("click", signOut);
 
   // ---- sign in: password, or Google (the address must be the Manager account's; the emailed code still applies)

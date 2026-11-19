@@ -54,8 +54,10 @@
   });
   // Logging out also empties every rendered list: client names, messages and documents must not stay in the DOM
   // on a shared screen (HIPAA automatic logoff). The idle timer signs out after 15 minutes without input.
+  // Signing out ends this sign-in on the server too, so a copy of it kept anywhere stops working at once
+  const endSignIn = (t) => { if (!t) return; try { fetch(API + "/api/admin/me/logout", { method: "POST", headers: { Authorization: "Bearer " + t }, keepalive: true }).catch(() => {}); } catch {} };
   function logout() {
-    token = ""; session.set(""); $("#app").hidden = true; $("#login").hidden = false; if (window.MDFitRT) MDFitRT.disconnect();
+    endSignIn(token); token = ""; session.set(""); $("#app").hidden = true; $("#login").hidden = false; if (window.MDFitRT) MDFitRT.disconnect();
     $$("#appts-list, #clients-list, #client-totals, #client-detail, #emr-list .table-wrap, #emr-detail, #leads-list, #members-list, #msg-thread, #msg-threads, #bc-list, #feedback-list, #reviews-list, #cal-grid, #cal-pop-body, #notif-list, #home-inbox, #app table tbody").forEach((el) => { el.innerHTML = ""; });
     const pop = $("#cal-pop"); if (pop && pop.open) pop.close();
     // the client overview pop-up sits outside #app: close it and empty it too
