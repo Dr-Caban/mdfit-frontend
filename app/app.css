@@ -339,6 +339,10 @@ svg { fill: currentColor; }
 .p-name { font: 700 24px/1.2 var(--display); margin: 0 0 6px; }
 .p-sets { font-size: 22px; font-weight: 700; color: var(--accent-bright); margin: 0 0 4px; }
 .p-meta { color: var(--on-navy); font-size: 14px; margin: 0 0 14px; }
+/* A step with no video: the how-to from Dr. Jared's sheet, and the sheet itself */
+.p-how { margin: 2px 0 14px; padding: 12px 14px; border: 1px solid rgba(255, 255, 255, .14); border-radius: 14px; background: rgba(255, 255, 255, .05); }
+.p-how ol { margin: 0; padding-left: 20px; display: grid; gap: 6px; color: #fff; font-size: 15px; line-height: 1.45; }
+.p-how-sheet { margin-top: 12px; min-height: 40px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--gold); background: none; color: var(--gold); font: 700 14px var(--body); cursor: pointer; }
 .p-next { background: var(--navy-2); border: 1px solid var(--navy-3); border-radius: 12px; padding: 12px 14px; color: var(--on-navy); font-size: 14px; }
 .p-next b { color: #fff; }
 .p-rest { text-align: center; padding: 40px 6px 20px; }
