@@ -690,7 +690,7 @@
       </div>
       </div>
 
-      <p class="lay-custom-row"><button type="button" class="link-sm" data-lay-custom="profile">Customize this page</button> · <button type="button" class="link-sm" data-intro-replay>Replay the intro</button></p>
+      <p class="lay-custom-row"><button type="button" class="link-sm" data-lay-custom="profile">Customize this page</button> · <button type="button" class="link-sm" data-intro-replay>Replay the intro</button> · <button type="button" class="link-sm" id="start-over">Start over</button></p>
       <div class="profile-links">
         <a href="/?site=1">mymdfit.com</a><a href="tel:+19413130562">Call 941-313-0562</a><a href="/privacy-policy">Privacy</a><a href="/terms">Terms</a>
         <button type="button" class="link" id="logout">Log out</button>
@@ -752,6 +752,17 @@
     <p class="form-msg" id="ca-msg"></p>
     <button type="button" class="btn-danger" id="ca-go">Close my account</button>
     <button type="button" class="link" data-close>Keep my account</button>
+  </dialog>
+
+  <dialog class="sheet" id="start-over-sheet" aria-label="Start over">
+    <div class="sheet-head"><b>Start over from the intro</b><button type="button" class="icon-btn" data-close aria-label="Close"><svg viewBox="0 0 24 24"><path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/></svg></button></div>
+    <p class="small">Back to the beginning: Solomon's tour, your first descent, the get-to-know-you questions, and your road (the program you picked, its start date, and pain tracks you added).</p>
+    <p class="muted small">Kept: your workout and pain history, XP, gems, streaks, badges and membership, and anything Dr. Jared set up for you.</p>
+    <label class="small ca-field" id="so-pw-row"><span>Your password</span><input type="password" id="so-password" autocomplete="current-password"></label>
+    <label class="small ca-field" id="so-word-row" hidden><span>Type <b>RESET</b> to confirm</span><input type="text" id="so-confirm" autocomplete="off" spellcheck="false" autocapitalize="characters"></label>
+    <p class="form-msg" id="so-msg" role="alert"></p>
+    <button type="button" class="btn-blue" id="so-go">Start over</button>
+    <button type="button" class="link" data-close>Keep my progress</button>
   </dialog>
 
   <dialog class="sheet paywall" id="paywall" aria-label="Become a member">
@@ -898,7 +909,7 @@
   <script src="guides.js?v=3918e89c"></script>
   <script src="stripe-checkout.js?v=fa90d042"></script>
   <script src="progress-charts.js?v=df3a2256"></script>
-  <script src="account.js?v=fa7f9b4f"></script>
+  <script src="account.js?v=bfe55799"></script>
   <script src="account-xp.js?v=97c923ce"></script>
   <script src="account-share.js?v=763ef457"></script>
   <script src="account-habits.js?v=8bebfbfe"></script>
