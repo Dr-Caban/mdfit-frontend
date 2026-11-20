@@ -45,6 +45,7 @@ already agreed earlier in a session.
 | Footage | Google Drive, `MDFIT media` — Drive file IDs are the catalog keys |
 | Backend | `/home/user/dr-caban/mdfit-backend` — `lib/videos.js` (sync), `lib/bunny.js` (client) |
 | Frontend | `/home/user/mdfit-frontend` — `common.js` (`MDFitVideo`), `app/exercises.js` (catalog) |
+| Intake | `scripts/video-intake.js` — Drive vs catalog vs manifest vs Bunny; proposes, never places |
 | Bunny library | `805934`, pull zone `vz-03938ec5-16f.b-cdn.net`, collection **"In app"** |
 | Railway | project `a5871163-a3f5-423a-ba07-124fcb4bc2d7`, service `bf11cde9-e643-4dd4-85e2-544978b7f7f0` |
 | Env vars | `BUNNY_STREAM_API_KEY`, `_LIBRARY_ID`, `_HOSTNAME`, `_COLLECTION` (defaults to `In app`) |
@@ -56,14 +57,86 @@ partially. Never edit permissions or secrets from a session.
 command — and the iOS app is not to be touched from these sessions at all. What a run owes them is a correct
 record in the backend, which they already consume. See *Phase 5*.
 
-## Phase 0 — viewing from Drive
+## Phase 0 — intake: what is in Drive, and what the catalog already has
 
 Drive is the source of truth for footage, and reorganizing it is safe: **file IDs never change on rename or
 move, and sharing is per file**, so folders can be restructured without breaking playback.
 
-- Find footage with `mcp__Google_Drive__search_files` (`mimeType:"video/mp4"`); results page, so page them.
-- Check `size` on anything you intend to upload. Three plantar-fascia clips are **0 bytes** — they upload
-  "successfully" and are useless.
+**There is no "already uploaded" folder, and there should not be one.** Drive says what a clip *is*; whether
+it has been published is a fact about the manifest and Bunny, not about Drive, and `/api/videos` already
+knows it. Moving files to record upload state would be a second copy of that fact, kept by hand, free to
+drift. `scripts/video-intake.js` joins the two instead.
+
+### How `MDFIT media / MD Fit Library` is organized
+
+The numbered top-level folders are the organization, and the number carries the usage:
+
+| Folder | What is in it | Published? |
+|---|---|---|
+| `1 Exercise Library` | library movements, in region subfolders (`Knees`, `Hips & Glutes`, …) | yes |
+| `2 Pain Tool – Tracks by Body Region` | `<Region> — Referred Pain` tracks | yes |
+| `3 Programs` | `Dream Lean 12` (per-day folders), `PSG Hypertrophy Program` | yes |
+| `4 Intros, Testimonials & Lectures` | app intros, lectures, `Video Testimonials` | yes |
+| `5 New Footage – Needs Names` | the inbox: nothing here can be placed until it is named | no |
+| `6 Protocols – by Condition` | `Plantar Fasciitis — 4 Week`, `12 Week Full Mobility System / Track A`,… | yes |
+| `7 Full Session Recordings` | long-form sessions, not library clips | no |
+| `8 Reference Images and Design Files` | stills and design files | no |
+| `9 Unused Empty Folders` | kept for reference | no |
+| `99 Duplicates` | second takes, set aside on purpose | **never** |
+
+### Running the intake
+
+The session writes a listing of the Drive tree, then the script joins it to the catalog, the manifest and
+Bunny's published map. It writes nothing on its own.
+
+```
+node scripts/video-intake.js --drive drive.json --api videos.json
+```
+
+- `--drive` is `{folders:[{id,title,parentId}], files:[{id,title,parentId,mod,size}]}`, built from
+  `mcp__Google_Drive__search_files` (page it — `'<folder id>' in ancestors and mimeType contains 'video/'`)
+  plus `get_file_metadata` for the folder names. Include `size` (`fileSize`) when you have it.
+- `--api` is the body of `GET /api/videos`, so the report can tell *published* from *still encoding*.
+
+What the report tells you, and why each line is there:
+
+- **In the manifest, not yet published** — normally just encoding. If a clip is also over the API's
+  500 MB cap (`MEDIA_MAX_MB`) or zero bytes, it is not encoding and no number of runs will change that.
+- **Not for publishing** — counted by folder, so you can see nothing is being quietly dropped.
+- **Cannot be proposed until renamed** — unnamed camera files (`20261111_132836.mp4`) and `(take 2)` clips.
+  A file named like that has no placement anyone can confirm, so it is not offered as a candidate at all.
+- **Waiting on a decision** — grouped by Drive folder, with `+` for a name the library has never had and
+  `~` for one it already plays under a different Drive id. `~` matters: a movement filmed again for a
+  program or a track is **one movement and two files**, and publishing the second gives the app two videos
+  for one name. Leave it in Drive, add it as its own entry, or replace the existing entry's id — but decide,
+  do not let it ride.
+
+The same name on several candidate files is the same story one level down: `Standing Hip Abduction and
+Adduction` filmed for three tracks is three Drive files and one movement.
+
+### Placing a confirmed clip
+
+Only the owner's confirmation puts a clip in the catalog (see *Ask before you commit*):
+
+```
+node scripts/video-intake.js --drive drive.json --confirm ok.json --write
+```
+
+`ok.json` is a list of complete decisions, and *complete* is enforced — a missing field, a region or
+category the app does not already file, a level outside 1–9, a Drive id that is not in the listing or is
+already in the catalog: each is refused by name and nothing is written.
+
+```json
+[{"id":"<drive id>","name":"Pike Bear Walk","region":"Core","cat":"Activation","level":3,
+  "loc":"any","seated":false}]
+```
+
+Regions and categories are read back out of `app/exercises.js`, so a new entry can only use ones the app
+already knows how to file. Run it without `--write` first: it prints what it would add and changes nothing.
+Afterwards: `node scripts/build-media-manifest.js`, then `node scripts/version-assets.js`, then commit.
+
+Still true, and still worth checking:
+
 - A movement with `id: null` in the catalog is a deliberate "coming soon" marker for footage not yet filmed.
   It is not a missing upload.
 - A large unshared file returns an **HTML warning page** instead of bytes; the sync falls back to the Drive
@@ -168,6 +241,18 @@ Do not report success off the job counters alone.
 - **Assets with no source.** `Eccentric Dumbbell Shrug Drop` has no `drive_id` and no `url`; it fails every
   run. That is data, not a bug in the sync.
 - **Slashes in display names** were rejected by the upload API and looked exactly like a quota error.
+- **The pull zone refuses a request with no `Referer`.** Allowed-referrer protection is on, so a playback URL
+  fetched with no referrer gets a Bunny **403** while the same URL from `https://www.mymdfit.com/` returns 200
+  (checked 20 Nov 2026). Web is fine. A native player sends no `Referer`, so this — not Token Authentication —
+  is what would break the iOS and Android apps, and it is one decision for all three platforms. Verifying a
+  guid by hand from a session means sending the referrer, or a 403 reads as a broken upload.
+- **A clip can be too big to ever upload.** The API downloads each file before sending it on and refuses
+  anything over `MEDIA_MAX_MB` (500 by default). `Hormones, Cortisol and Longevity Lecture.mp4` is 5.04 GB and
+  `Cortisol and Progesterone Lecture (take 2).mp4` is 3.69 GB: both sit in the manifest unpublished and will
+  stay there. A lecture that size wants compressing, or uploading to Bunny directly, not another sync run.
+- **The automatic sync never retries a clip that failed.** A failed asset keeps its strike and `autoSync`
+  skips it for good; only "retry failed" in the workspace (`{retryFailed: true}`) tries again. A clip that is
+  small, named and still unpublished is usually this, not a slow encode.
 - **Do not read a quota wall into a failure.** The believed Cloudinary cap was three ordinary bugs and zero
   quota errors in the logs. Check `mcp__Railway__get-logs` before blaming a plan limit.
 
