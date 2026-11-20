@@ -1283,6 +1283,26 @@
 
   // Close my account. The server decides between erasing the account outright and keeping the clinical record
   // (a practice may not destroy a chart on request), and we say which one applies before anything is confirmed.
+  // Start over from the intro (Profile): the tutorial and the road begin again; history, XP and membership stay.
+  // Confirmed with the member's password, or RESET for an account that has none (Google, Apple).
+  const soSheet = $("#start-over-sheet");
+  $("#start-over").addEventListener("click", () => {
+    const pw = !!(client && client.hasPassword), msg = $("#so-msg"); msg.textContent = ""; msg.className = "form-msg";
+    $("#so-password").value = ""; $("#so-confirm").value = ""; $("#so-pw-row").hidden = !pw; $("#so-word-row").hidden = pw;
+    soSheet.showModal(); setTimeout(() => (pw ? $("#so-password") : $("#so-confirm")).focus(), 50);
+  });
+  const soGo = async () => {
+    const b = $("#so-go"), msg = $("#so-msg"); if (b.disabled) return; b.disabled = true; msg.textContent = ""; msg.className = "form-msg";
+    try {
+      await apiAuth("POST", "/api/me/start-over", client && client.hasPassword ? { password: $("#so-password").value } : { confirm: $("#so-confirm").value });
+      // what this device remembers about the tutorial and the road goes too, so the tour and the first descent start fresh
+      try { [`mdfit-tour-${client.id}`, introKey("solomon"), introKey("friend"), startsKey()].forEach((k) => localStorage.removeItem(k)); sessionStorage.removeItem(`mdfit-tour-at-${client.id}`); } catch {}
+      msg.textContent = "Starting over…"; msg.className = "form-msg ok";
+      setTimeout(() => { location.hash = "#home"; location.reload(); }, 600);
+    } catch (e) { msg.textContent = e.message; msg.className = "form-msg err"; b.disabled = false; }
+  };
+  $("#so-go").addEventListener("click", soGo);
+  ["#so-password", "#so-confirm"].forEach((id) => $(id).addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); soGo(); } }));
   const caSheet = $("#close-account-sheet");
   $("#close-account").addEventListener("click", async () => {
     const msg = $("#ca-msg"); msg.textContent = ""; msg.className = "form-msg";
@@ -4415,7 +4435,9 @@
   const introKey = (k) => `mdfit-intro-${client ? client.id : ""}-${k}`;
   const introFlag = (k) => { try { return localStorage.getItem(introKey(k)) === "1"; } catch { return false; } };
   const introMark = (k) => { try { localStorage.setItem(introKey(k), "1"); } catch {} introSync(); };
-  const introMet = () => ({ solomon: introFlag("solomon"), know: !!(aboutMe && aboutMe.known), pain: painLog.length > 0, program: (client.pinnedPrograms || []).length + (client.assignedPrograms || []).length > 0, session: allWorkouts.length > 0, friend: introFlag("friend") });
+  const introNew = (t) => !intro || !intro.since || String(t || "") > intro.since; // after a start over, only what was done since counts
+  const introMet = () => ({ solomon: introFlag("solomon"), know: !!(aboutMe && aboutMe.known), pain: painLog.some((x) => introNew(x.createdAt)),
+    program: (client.assignedPrograms || []).length > 0 || (intro && intro.since ? !!roadPlan : (client.pinnedPrograms || []).length > 0), session: allWorkouts.some((w) => introNew(w.completedAt || w.date)), friend: introFlag("friend") });
   function loadIntro() { return apiAuth("GET", "/api/me/intro").then((r) => { intro = r; document.dispatchEvent(new CustomEvent("mdfit:journey")); setTimeout(introTour, 900); }).catch(() => {}); }
   async function introSync() {
     if (!intro || !intro.offered || introBusy || !client || Date.now() < introWait) return;
@@ -4429,7 +4451,7 @@
         // (credited means the server now says so: anything else would be asked for again on the next redraw)
         if (!r || !r.intro || r.intro.steps[k] !== true) throw new Error("not credited");
         got++;
-        if (r && r.first) { celebrateToast([`+${r.xp} XP`, intro.done ? "First descent complete!" : INTRO_STEPS.find((x) => x[0] === k)[1]]); ding(); }
+        if (r && r.first) { celebrateToast([r.xp ? `+${r.xp} XP` : "Done", intro.done ? "First descent complete!" : INTRO_STEPS.find((x) => x[0] === k)[1]]); ding(); }
       }
       introFails = 0;
       await loadRewards(false);
