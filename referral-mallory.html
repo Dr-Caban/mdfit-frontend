@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Back to Body Basics: your own practice system (proposal)</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0A1A2E">
+<meta name="description" content="A proposal for Back to Body Basics: a website, client portal and patient records built around your brand, owned by your practice.">
+<!-- Proposal page for Mallory Rickloff, Back to Body Basics. Not linked from anywhere and not indexed.
+     Opens as a short animation that plays by itself (made to be viewed on a phone or screen-recorded),
+     then shows the full details underneath. ?full=1 skips the animation; ?rec=1 hides the buttons on the
+     last scene for a clean recording. Nothing on this page sends or stores any data. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400..800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F5F9FC;--surface:#FFFFFF;--sunk:#EEF4F9;--ink:#0A1A2E;--muted:#5B6B7C;--line:#DCE8F2;--accent:#2F6E9E;--gold:#8A6A1F;--gold-bg:#FBF4E2;--good:#1F7A4D;
+  --display:"Libre Baskerville",Georgia,"Times New Roman",serif;--body:"Montserrat",system-ui,-apple-system,"Segoe UI",sans-serif;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#0A1A2E;--surface:#10233B;--sunk:#0D1F35;--ink:#E8F0F7;--muted:#9BB0C4;--line:#1D3352;--accent:#8EC0E6;--gold:#E2C98C;--gold-bg:#2A2414;--good:#6FCB9B;color-scheme:dark}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 var(--body)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+
+/* ---------- the animation: always dark, portrait-first ---------- */
+#stage{position:relative;min-height:100vh;min-height:100svh;display:grid;grid-template-rows:auto 1fr auto;background:radial-gradient(120% 70% at 50% -10%,#1B3556 0%,#0A1A2E 55%,#06101D 100%);color:#F2F6FA;overflow:hidden;--g:#E2C98C;--sky:#8EC0E6;--dim:#A9BACB}
+#stage::before{content:"";position:absolute;inset:-20%;background:radial-gradient(40% 30% at 80% 20%,rgba(226,201,140,.10),transparent 70%),radial-gradient(45% 35% at 15% 85%,rgba(142,192,230,.10),transparent 70%);animation:drift 14s ease-in-out infinite alternate;pointer-events:none}
+@keyframes drift{to{transform:translate(3%,-2%) scale(1.06)}}
+.st-top{position:relative;display:flex;align-items:center;justify-content:center;gap:10px;padding:20px 16px 0;font:700 13px var(--body);letter-spacing:.3px;color:#D5E0EA}
+.st-top i{font-style:normal;color:var(--g)}
+.st-mid{position:relative}
+.sc{position:absolute;inset:0;max-width:520px;margin:0 auto;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:20px 22px;opacity:0;visibility:hidden;transform:translateY(18px) scale(.985);transition:opacity .45s ease,transform .6s cubic-bezier(.2,.8,.2,1),visibility 0s .45s}
+.sc.on{opacity:1;visibility:visible;transform:none;transition:opacity .5s ease,transform .6s cubic-bezier(.2,.8,.2,1)}
+#stage [data-step]{opacity:0;transform:translateY(14px);transition:opacity .45s ease,transform .5s cubic-bezier(.2,.8,.2,1)}
+#stage [data-step].in{opacity:1;transform:none}
+.eyebrow{font:700 12px var(--body);letter-spacing:2px;text-transform:uppercase;color:var(--g);margin:0 0 12px}
+#stage h1{font:700 34px/1.15 var(--display);margin:0;color:#fff;letter-spacing:-.2px}
+#stage h2{font:700 27px/1.2 var(--display);margin:0 0 18px;color:#fff}
+#stage p{margin:12px 0 0;color:var(--dim);font-size:16px}
+#stage p b{color:#fff}
+.pop{list-style:none;margin:0;padding:0;display:grid;gap:10px;width:100%}
+.pop li{display:flex;align-items:center;gap:12px;text-align:left;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);border-radius:14px;padding:13px 14px;font:600 16px/1.3 var(--body);color:#fff}
+.pop li small{display:block;font-weight:500;font-size:13px;color:var(--dim);margin-top:2px}
+.pop svg{flex:none;width:26px;height:26px;fill:none;stroke:var(--g);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.phone{width:150px;height:270px;border-radius:26px;border:2px solid rgba(255,255,255,.35);background:linear-gradient(180deg,#14304F,#0B1D33);position:relative;margin:4px auto 0;box-shadow:0 20px 50px rgba(0,0,0,.4);overflow:hidden}
+.phone::before{content:"";position:absolute;top:9px;left:50%;width:46px;height:6px;border-radius:6px;background:rgba(255,255,255,.25);transform:translateX(-50%)}
+.phone .bar{position:absolute;left:14px;right:14px;height:12px;border-radius:6px;background:rgba(255,255,255,.12)}
+.phone .bar.g{background:rgba(226,201,140,.65)}
+.phone .card{position:absolute;left:14px;right:14px;height:46px;border-radius:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)}
+.url{display:inline-block;margin-top:16px;border:1px solid rgba(226,201,140,.5);color:var(--g);border-radius:999px;padding:8px 16px;font:700 15px var(--body)}
+.huge{display:block;font:700 128px/1 var(--display);color:var(--g);letter-spacing:-3px;text-shadow:0 0 40px rgba(226,201,140,.35)}
+.chips{list-style:none;margin:18px 0 0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.chips li{border:1px solid rgba(226,201,140,.5);color:var(--g);border-radius:999px;padding:7px 13px;font:700 13px var(--body)}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;margin-top:4px}
+.vs div{border-radius:14px;padding:14px 10px;text-align:left}
+.vs .rent{background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.18);color:var(--dim)}
+.vs .own{background:rgba(226,201,140,.10);border:1px solid rgba(226,201,140,.5);color:#fff}
+.vs b{display:block;font:700 15px var(--body);margin-bottom:6px}
+.vs .own b{color:var(--g)}
+.vs ul{margin:0;padding-left:16px;font-size:13.5px;line-height:1.5}
+.flow{list-style:none;margin:0;padding:0;width:100%;text-align:left}
+.flow li{position:relative;display:flex;gap:14px;padding:0 0 16px}
+.flow li:last-child{padding-bottom:0}
+.flow i{flex:none;width:16px;height:16px;border-radius:50%;margin-top:3px;background:var(--sky);box-shadow:0 0 0 4px rgba(142,192,230,.2);position:relative;z-index:1}
+.flow li:last-child i{background:var(--g);box-shadow:0 0 0 4px rgba(226,201,140,.25)}
+.flow li::before{content:"";position:absolute;left:7px;top:10px;bottom:-10px;width:2px;background:rgba(255,255,255,.16)}
+.flow li:last-child::before{display:none}
+.flow b{display:block;font:700 16px/1.3 var(--body);color:#fff}
+.flow small{display:block;color:var(--dim);font-size:13.5px;margin-top:2px}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:100%}
+.stats div{background:rgba(255,255,255,.06);border-radius:12px;padding:12px 6px}
+.stats b{display:block;font:700 30px/1.1 var(--display);color:var(--g);font-variant-numeric:tabular-nums}
+.stats span{display:block;font:600 11.5px/1.3 var(--body);color:var(--dim);margin-top:4px}
+.checks{list-style:none;margin:0;padding:0;display:grid;gap:12px;width:100%;text-align:left}
+.checks li{display:flex;gap:12px;align-items:flex-start;font:600 16px/1.35 var(--body);color:#fff}
+.checks li small{display:block;font-weight:500;color:var(--dim);font-size:13.5px}
+.checks svg{flex:none;width:24px;height:24px;margin-top:1px;fill:none;stroke:#7FD6A6;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.st-acts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+.st-acts button,.st-acts a{min-height:46px;display:inline-flex;align-items:center;padding:0 18px;border-radius:999px;border:1.5px solid rgba(255,255,255,.3);background:none;color:#fff;font:700 14px var(--body);cursor:pointer;text-decoration:none}
+.st-acts .main{background:var(--g);border-color:var(--g);color:#0A1A2E}
+.st-foot{position:relative;padding:0 16px 14px;text-align:center;font:500 11px var(--body);color:#7F93A8}
+.st-bar{height:3px;border-radius:3px;background:rgba(255,255,255,.12);margin:0 0 10px;overflow:hidden}
+.st-bar i{display:block;height:100%;width:0;background:var(--g);border-radius:3px}
+.st-ctrl{display:flex;justify-content:center;gap:8px;margin:0 0 10px}
+.st-ctrl button{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#D5E0EA;border-radius:999px;font:600 12px var(--body);padding:6px 11px;cursor:pointer}
+/* reference demo: the workspace flow on a phone, sample data only */
+.ref{display:inline-block;font:700 11px var(--body);letter-spacing:.6px;color:#0A1A2E;background:var(--g);border-radius:999px;padding:5px 11px;margin:0 0 12px}
+.dev{position:relative;width:236px;height:430px;border-radius:30px;border:2px solid rgba(255,255,255,.35);background:#F5F9FC;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.45);color:#0A1A2E;text-align:left;font-family:var(--body)}
+.dev .scr{position:absolute;inset:0;padding:14px 12px;background:#F5F9FC;transition:opacity .45s ease,transform .5s cubic-bezier(.2,.8,.2,1)}
+.dev .s-portal{opacity:0;transform:translateX(30px)}
+.dev .s-portal.in{opacity:1;transform:none}
+.dev .s-chart.gone{opacity:0;transform:translateX(-30px)}
+.d-top{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:6px 2px 10px;border-bottom:1px solid #DCE8F2}
+.d-top b{font-family:var(--display)}
+.qa{width:28px;height:28px;border-radius:50%;background:#0A1A2E;color:#fff;display:grid;place-items:center;font:700 18px/1 var(--body);transition:transform .25s ease,background-color .25s ease}
+.qa.in{background:#2F6E9E;transform:scale(1.12)}
+.d-who{display:flex;gap:10px;align-items:center;padding:12px 2px}
+.d-who .av{width:36px;height:36px;border-radius:50%;background:#E2C98C;display:grid;place-items:center;font:700 13px var(--body)}
+.d-who b{display:block;font-size:14px}.d-who small{color:#5B6B7C;font-size:11px}
+.d-tabs{display:flex;gap:6px;margin-bottom:10px}
+.d-tabs span{font:600 11px var(--body);padding:5px 9px;border-radius:999px;background:#EEF4F9;color:#5B6B7C}
+.d-tabs .on{background:#0A1A2E;color:#fff}
+.d-row{font-size:12px;background:#fff;border:1px solid #DCE8F2;border-radius:10px;padding:10px;margin-bottom:7px}
+.d-row.add{opacity:0;transform:translateY(8px);border-color:#2F6E9E;background:#EAF3FA;font-weight:600;transition:all .4s ease}
+.d-row.add.in{opacity:1;transform:none}
+.toast{position:absolute;left:12px;right:12px;bottom:14px;background:#0A1A2E;color:#fff;font:600 11.5px var(--body);border-radius:10px;padding:10px;opacity:0;transform:translateY(10px);transition:all .35s ease}
+.toast.in{opacity:1;transform:none}.toast.gone{opacity:0}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:18px 18px 0 0;padding:12px 12px 14px;box-shadow:0 -10px 30px rgba(10,26,46,.18);transform:translateY(100%);transition:transform .45s cubic-bezier(.2,.8,.2,1);z-index:2}
+.sheet.in{transform:none}.sheet.gone{transform:translateY(100%)}
+.sh-head{font-size:12px;color:#5B6B7C;padding:2px 2px 8px}
+.sh-row{font:600 12.5px var(--body);padding:8px 10px;border-radius:9px;transition:background-color .25s ease,color .25s ease}
+.sh-row.pick.in{background:#2F6E9E;color:#fff}
+.notif{opacity:0;transform:translateY(-12px);background:#0A1A2E;color:#fff;font:600 11.5px var(--body);border-radius:12px;padding:10px;margin:10px 0;transition:all .4s ease}
+.notif.in{opacity:1;transform:none}
+.hi{font:700 18px var(--display);margin:6px 2px 10px}
+.d-card{opacity:0;transform:translateY(8px);background:#0A1A2E;color:#fff;border-radius:14px;padding:12px;transition:all .4s ease}
+.d-card.in{opacity:1;transform:none}
+.d-card small{display:block;color:#E2C98C;font-size:10.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase}
+.d-card b{display:block;font-size:14px;margin:4px 0 8px}
+.pill{font-size:10.5px;background:rgba(255,255,255,.14);border-radius:999px;padding:4px 8px}
+.d-ex{opacity:0;transform:translateX(10px);font-size:12px;background:#fff;border:1px solid #DCE8F2;border-radius:10px;padding:9px 10px;margin-top:7px;transition:all .35s ease}
+.d-ex.in{opacity:1;transform:none}
+.d-done{opacity:0;margin-top:12px;text-align:center;font:700 12px var(--body);color:#1F7A4D;transition:opacity .4s ease}
+.d-done.in{opacity:1}
+.tap{position:absolute;width:26px;height:26px;border-radius:50%;background:rgba(226,201,140,.55);box-shadow:0 0 0 0 rgba(226,201,140,.6);opacity:0;z-index:3;pointer-events:none}
+.tap.in{opacity:1;animation:tap .6s ease-out}
+.tap.gone{opacity:0}
+@keyframes tap{from{box-shadow:0 0 0 0 rgba(226,201,140,.7);transform:scale(.7)}to{box-shadow:0 0 0 16px rgba(226,201,140,0);transform:scale(1)}}
+.says{position:relative;width:100%;height:3.2em;margin-top:14px}
+#stage p.say{position:absolute;left:0;right:0;top:0;margin:0;min-height:2.8em;font:600 15px/1.4 var(--body);color:#fff;opacity:0;transition:opacity .3s ease}
+#stage p.say.in{opacity:1}#stage p.say.gone{opacity:0}
+.demo{padding-top:8px;padding-bottom:8px}
+@media (max-height:720px){.dev{transform:scale(.86);transform-origin:top center;margin-bottom:-60px}}
+@media (min-width:640px){#stage h1{font-size:44px}.huge{font-size:160px}.phone{width:170px;height:300px}}
+
+/* ---------- the details, below the animation ---------- */
+.wrap{max-width:760px;margin:0 auto;padding:28px 16px 56px}
+.tag{display:inline-block;font:700 11px var(--body);letter-spacing:1.4px;text-transform:uppercase;color:var(--gold);background:var(--gold-bg);border-radius:999px;padding:6px 12px}
+.wrap h1{font:700 30px/1.18 var(--display);margin:12px 0 10px;letter-spacing:-.2px}
+.wrap h2{font:700 21px/1.25 var(--display);margin:0 0 6px}
+.lede{font-size:17px;color:var(--muted);margin:0 0 22px;max-width:60ch}
+.lede b{color:var(--ink)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 18px;margin:0 0 16px}
+.sub{color:var(--muted);font-size:14.5px;margin:0 0 14px}
+.feat{display:grid;grid-template-columns:1fr;gap:10px;margin:0;padding:0;list-style:none}
+.feat li{border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.feat b{display:block;font-size:15px}
+.feat small{display:block;color:var(--muted);font-size:13.5px;margin-top:2px}
+ol.steps{margin:0;padding-left:22px;display:grid;gap:10px;font-size:15px}
+ol.steps b{display:block}
+ol.steps small{color:var(--muted);font-size:13.5px}
+.note{border-left:3px solid var(--gold);background:var(--gold-bg);border-radius:0 10px 10px 0;padding:10px 12px;font-size:14px;margin:14px 0 0}
+.open{color:var(--gold);font-weight:700}
+.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.cta a,.cta button{min-height:46px;display:inline-flex;align-items:center;padding:0 18px;border-radius:999px;font:700 14px var(--body);text-decoration:none;cursor:pointer;border:1.5px solid var(--line);background:var(--surface);color:var(--ink)}
+.cta .main{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+footer{font-size:12.5px;color:var(--muted);text-align:center;margin-top:18px}
+@media (min-width:640px){.wrap h1{font-size:38px}.wrap{padding:40px 24px 72px}.card{padding:24px}.feat{grid-template-columns:1fr 1fr}}
+@media (prefers-reduced-motion:reduce){#stage::before{animation:none}.sc,#stage [data-step]{transition:none}html{scroll-behavior:auto}}
+@media print{#stage{display:none}body{background:#fff}.card{break-inside:avoid;border-color:#ccc}.cta{display:none}}
+</style>
+</head>
+<body>
+
+<main id="stage" aria-label="Proposal for Back to Body Basics: a short animation">
+  <div class="st-top"><span>Josh Lerner</span><i>×</i><span>Back to Body Basics</span></div>
+  <div class="st-mid">
+
+    <section class="sc" data-ms="3600">
+      <span class="eyebrow" data-step>A proposal for Mallory</span>
+      <h1 data-step>Your practice.<br>Your system.</h1>
+      <p data-step>Built around <b>Back to Body Basics</b>, and owned by you.</p>
+    </section>
+
+    <section class="sc" data-ms="5600">
+      <h2 data-step>Start with what I built</h2>
+      <div class="phone" data-step aria-hidden="true">
+        <span class="bar g" style="top:30px;width:60%"></span>
+        <span class="bar" style="top:50px;width:80%"></span>
+        <span class="card" style="top:74px"></span>
+        <span class="card" style="top:128px"></span>
+        <span class="card" style="top:182px"></span>
+        <span class="bar g" style="top:238px;width:45%"></span>
+      </div>
+      <span class="url" data-step>mymdfit.com</span>
+      <p data-step>Open it <b>on your phone</b>: website, client portal, patient records and booking, all in one place.</p>
+    </section>
+
+    <section class="sc demo" data-ms="16500">
+      <span class="ref" data-step>Reference demo · sample data, not real clients</span>
+      <div class="dev" data-step aria-hidden="true">
+        <!-- 1: practitioner workspace, a client's chart -->
+        <div class="scr s-chart" data-off="7600">
+          <div class="d-top"><b>Workspace</b><span class="qa" data-at="900">+</span></div>
+          <div class="d-who"><span class="av">AS</span><div><b>Alex Sample</b><small>Sample client · Active</small></div></div>
+          <div class="d-tabs"><span class="on">Chart</span><span>Notes</span><span>Plan</span></div>
+          <div class="d-row">Last visit · Pelvic floor eval</div>
+          <div class="d-row">Intake forms · Signed</div>
+          <div class="d-row add" data-at="5200">New program · Core &amp; breath, week 1</div>
+          <div class="toast" data-at="5600" data-off="7400">Program added · Alex is notified</div>
+        </div>
+        <!-- 2: the quick button's menu (labels as in the real workspace) -->
+        <div class="sheet" data-at="1700" data-off="4800">
+          <div class="sh-head">For <b>Alex Sample</b></div>
+          <div class="sh-row">Invoice</div>
+          <div class="sh-row">Telehealth invite</div>
+          <div class="sh-row">Booking link</div>
+          <div class="sh-row">Note</div>
+          <div class="sh-row">Forms to sign</div>
+          <div class="sh-row pick" data-at="3300">Program</div>
+          <div class="sh-row">Message</div>
+        </div>
+        <!-- 3: the client's own portal -->
+        <div class="scr s-portal" data-at="7800">
+          <div class="d-top"><b>Back to Body Basics</b></div>
+          <div class="notif" data-at="8400">New program from Mallory</div>
+          <div class="hi">Hi Alex</div>
+          <div class="d-card" data-at="9600"><small>What to do next</small><b>Core &amp; breath, week 1</b><span class="pill">3 exercises · 12 min</span></div>
+          <div class="d-ex" data-at="10600">Diaphragmatic breathing</div>
+          <div class="d-ex" data-at="11000">Pelvic floor activation</div>
+          <div class="d-ex" data-at="11400">Supported bridge</div>
+          <div class="d-done" data-at="13200">Done · 1-day streak</div>
+        </div>
+        <span class="tap" data-at="900" data-off="1500" style="top:22px;right:18px"></span>
+        <span class="tap" data-at="3200" data-off="3800" style="top:356px;left:46%"></span>
+        <span class="tap" data-at="12600" data-off="13200" style="top:384px;left:44%"></span>
+      </div>
+      <div class="says">
+      <p class="say" data-at="300" data-off="1700">On the practitioner side, open a client's chart.</p>
+      <p class="say" data-at="1700" data-off="4800">Tap the quick button. Invoice, telehealth, booking, note, forms, program, message.</p>
+      <p class="say" data-at="4800" data-off="7600">Add a program. It lands on their chart, and they're notified.</p>
+      <p class="say" data-at="7600" data-off="12400">On the client's phone, it's waiting in their portal.</p>
+      <p class="say" data-at="12400">They follow along, and you see their progress.</p>
+      </div>
+    </section>
+
+    <section class="sc" data-ms="6400">
+      <h2 data-step>Now picture it as yours</h2>
+      <ul class="pop">
+        <li data-step><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/></svg><div>Designed around your brand<small>Your look, your voice, your story</small></div></li>
+        <li data-step><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg><div>Your podcast built right in<small>Back to Body Basics episodes on your own site</small></div></li>
+        <li data-step><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><div>A site built so people can find you<small>On Google, and in AI search</small></div></li>
+        <li data-step><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><div>A more personal experience<small>Your clients' portal, booking and records in one place</small></div></li>
+      </ul>
+    </section>
+
+    <section class="sc" data-ms="5800">
+      <span class="eyebrow" data-step>Upfront cost</span>
+      <b class="huge" data-step>$0</b>
+      <p data-step>You <b>own it</b> instead of renting it.</p>
+      <ul class="chips"><li data-step>your software</li><li data-step>your data</li><li data-step>your control</li></ul>
+    </section>
+
+    <section class="sc" data-ms="6200">
+      <h2 data-step>Renting vs. owning</h2>
+      <div class="vs" data-step>
+        <div class="rent"><b>Rented software</b><ul><li>Template website</li><li>Features you can't change</li><li>Pay every month, own nothing</li></ul></div>
+        <div class="own"><b>Your own system</b><ul><li>Site built for your brand</li><li>Features shaped around you</li><li>An asset of your practice</li></ul></div>
+      </div>
+    </section>
+
+    <section class="sc" data-ms="8400">
+      <h2 data-step>Moving from Jane, step by step</h2>
+      <ol class="flow">
+        <li data-step><i></i><div><b>You request your Jane export</b><small>Patients, charts and files: Jane releases them to the account owner</small></div></li>
+        <li data-step><i></i><div><b>We bring everything in</b><small>Every client, chart and file, matched to the right profile</small></div></li>
+        <li data-step><i></i><div><b>Both run side by side</b><small>Nothing switches off until you're ready</small></div></li>
+        <li data-step><i></i><div><b>Weekly encrypted exports for 3 months</b><small>A full copy of your records, sent to you every week</small></div></li>
+        <li data-step><i></i><div><b>You switch over</b><small>On your timeline</small></div></li>
+      </ol>
+    </section>
+
+    <section class="sc" data-ms="5600">
+      <h2 data-step>Built to be found</h2>
+      <div class="stats" data-step>
+        <div><b>403</b><span>pages on mymdfit.com built for search</span></div>
+        <div><b>115</b><span>condition pages answering real questions</span></div>
+        <div><b>6</b><span>local area pages across the Suncoast</span></div>
+      </div>
+      <p data-step>The same approach, written for <b>pelvic floor and whole-body health</b>.</p>
+    </section>
+
+    <section class="sc" data-ms="6400">
+      <h2 data-step>Safe, simple, yours</h2>
+      <ul class="checks">
+        <li data-step><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><div>A HIPAA business associate agreement first<small>Signed before any patient data moves</small></div></li>
+        <li data-step><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><div>Encrypted records and a full audit trail<small>Every view, edit and export is logged</small></div></li>
+        <li data-step><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><div>Export everything, any time<small>Your records are never locked in</small></div></li>
+        <li data-step><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><div>Nothing upfront<small>One small monthly share, agreed together</small></div></li>
+      </ul>
+    </section>
+
+    <section class="sc" data-ms="0">
+      <span class="eyebrow" data-step>Let's build it together</span>
+      <h1 data-step>Back to Body Basics,<br>on your own system.</h1>
+      <p data-step>Josh Lerner · built mymdfit.com</p>
+      <div class="st-acts" data-step id="acts">
+        <a class="main" href="#details">See the details</a>
+        <button type="button" id="replay">Replay</button>
+      </div>
+    </section>
+
+  </div>
+  <div class="st-foot"><div class="st-ctrl"><button type="button" id="pause" aria-pressed="false">Pause</button><button type="button" id="skip">Skip</button></div><div class="st-bar"><i id="bar"></i></div>A proposal for discussion, not an offer until signed by both parties.</div>
+</main>
+
+<div class="wrap" id="details">
+  <span class="tag">Proposal · for discussion</span>
+  <h1>Your own practice system, built around Back to Body Basics</h1>
+  <p class="lede">A website, client portal and patient records designed for your brand, with <b>your podcast built in</b> and a site <b>built so people can find you</b>. You own it. Nothing upfront.</p>
+
+  <section class="card">
+    <h2>See it first</h2>
+    <p class="sub">Open <b>mymdfit.com</b> on your phone. It's the system I built for MD Fit here in Sarasota: the public site, the member app, client management and patient records, all running on one platform. Yours would follow the same approach, designed from the ground up for your practice.</p>
+    <p class="note">The walkthrough in the overview above (quick button → program → client portal) is a <b>reference demo with sample data</b>. No real client or patient information is shown anywhere on this page.</p>
+    <div class="cta"><a class="main" href="https://www.mymdfit.com" target="_blank" rel="noopener">Open mymdfit.com</a></div>
+  </section>
+
+  <section class="card">
+    <h2>What you'd get</h2>
+    <p class="sub">Shaped around how you work. Anything you don't need, we leave out.</p>
+    <ul class="feat">
+      <li><b>Your website, your brand</b><small>Designed for Back to Body Basics, not a template</small></li>
+      <li><b>Your podcast, built in</b><small>Every episode on your own site, searchable and shareable</small></li>
+      <li><b>Built for search</b><small>Structured pages that help people find you on Google and in AI search</small></li>
+      <li><b>Online booking</b><small>With your availability and calendar sync</small></li>
+      <li><b>Client portal</b><small>Plans, exercises, messages and progress in one place</small></li>
+      <li><b>Intake forms and e-signatures</b><small>Health history and consent, completed before the first visit</small></li>
+      <li><b>Charting</b><small>Notes lock when signed; later changes are dated addenda</small></li>
+      <li><b>Secure messaging</b><small>Encrypted, with reminders that never include health details</small></li>
+      <li><b>Payments and invoices</b><small>Card payments, packages and receipts through Stripe</small></li>
+      <li><b>Records export and backups</b><small>Full exports any time, plus encrypted weekly backups</small></li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>Moving from Jane</h2>
+    <p class="sub">A slow, safe migration. Nothing is switched off until you're ready.</p>
+    <ol class="steps">
+      <li><b>You request your Jane export</b><small>Jane releases bulk exports to the account owner. Chart exports can take 1–2 weeks, so we start early.</small></li>
+      <li><b>We import your clients, charts and files</b><small>Each matched to the right client profile, then checked with you.</small></li>
+      <li><b>Both systems run side by side</b><small>You keep Jane until you're confident everything is in place.</small></li>
+      <li><b>Weekly encrypted exports for the first 3 months</b><small>A complete copy of your records sent to you every week, so your data is always in your hands.</small></li>
+      <li><b>You switch over</b><small>On your timeline. Jane exports stay with you for your records.</small></li>
+    </ol>
+  </section>
+
+  <section class="card">
+    <h2>What owning it means</h2>
+    <ol class="steps">
+      <li><b>Nothing upfront</b><small>No build fee.</small></li>
+      <li><b>One small monthly share</b><small>A percentage of monthly net revenue covering hosting, security, maintenance and updates. <span class="open">Rate and definitions to agree.</span></small></li>
+      <li><b>Your data is always yours</b><small>Export everything at any time, in standard formats.</small></li>
+      <li><b>If you ever leave, you take it with you</b><small>Your site, your records and your content are handed over. <span class="open">Handover terms to agree.</span></small></li>
+    </ol>
+    <p class="note">Before any patient data moves, we sign a HIPAA business associate agreement, and your records are hosted only with providers that sign one too.</p>
+  </section>
+
+  <section class="card">
+    <h2>Next step</h2>
+    <p class="sub">Coffee and a 20-minute walkthrough. I'll show you the system on your phone and we'll sketch what yours should look like.</p>
+    <div class="cta">
+      <a class="main" href="mailto:digitalappleco@gmail.com?subject=Back%20to%20Body%20Basics%20%E2%80%94%20let%27s%20talk">Email Josh</a>
+      <button type="button" id="replay2">Replay the overview</button>
+    </div>
+  </section>
+
+  <footer>A proposal for discussion from Josh Lerner. Not an offer until both parties sign a written agreement.</footer>
+</div>
+
+<script>
+(function(){
+  var params = new URLSearchParams(location.search);
+  var stage = document.getElementById('stage');
+  var scenes = Array.prototype.slice.call(stage.querySelectorAll('.sc'));
+  var bar = document.getElementById('bar');
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var total = scenes.reduce(function(s, el){ return s + (+el.dataset.ms || 0); }, 0);
+  var timers = [], idx = -1, paused = false, elapsedBefore = 0, sceneStart = 0, remaining = 0, raf = 0;
+
+  if (params.get('rec') === '1') document.getElementById('acts').hidden = true;
+
+  function clear(){ timers.forEach(clearTimeout); timers = []; cancelAnimationFrame(raf); }
+  function revealSteps(sc, instant, from){
+    from = from || 0;
+    var steps = sc.querySelectorAll('[data-step]');
+    Array.prototype.forEach.call(steps, function(el, i){
+      if (instant) { el.classList.add('in'); return; }
+      var at = 150 + i * 380 - from;
+      if (at <= 0) el.classList.add('in'); else timers.push(setTimeout(function(){ el.classList.add('in'); }, at));
+    });
+    // timed cues inside a scene (the reference demo): data-at shows, data-off hides
+    Array.prototype.forEach.call(sc.querySelectorAll('[data-at],[data-off]'), function(el){
+      var on = el.hasAttribute('data-at') ? +el.dataset.at : -1, off = el.hasAttribute('data-off') ? +el.dataset.off : -1;
+      if (instant) { // reduced motion: show the end state of the demo
+        var endOn = on >= 0, endOff = off >= 0;
+        el.classList.toggle('in', endOn && !endOff); el.classList.toggle('gone', endOff);
+        if (el.classList.contains('sheet') || el.classList.contains('toast') || el.classList.contains('tap')) el.classList.remove('in');
+        return;
+      }
+      if (on >= 0) { if (on - from <= 0) el.classList.add('in'); else timers.push(setTimeout(function(){ el.classList.add('in'); }, on - from)); }
+      if (off >= 0) { if (off - from <= 0) { el.classList.add('gone'); el.classList.remove('in'); } else timers.push(setTimeout(function(){ el.classList.add('gone'); el.classList.remove('in'); }, off - from)); }
+    });
+  }
+  function resetCues(sc){
+    Array.prototype.forEach.call(sc.querySelectorAll('[data-step],[data-at],[data-off]'), function(el){ el.classList.remove('in'); el.classList.remove('gone'); });
+  }
+  function show(i){
+    clear();
+    scenes.forEach(function(sc, j){
+      sc.classList.toggle('on', j === i);
+      resetCues(sc);
+    });
+    idx = i;
+    var sc = scenes[i];
+    revealSteps(sc, reduce);
+    elapsedBefore = scenes.slice(0, i).reduce(function(s, el){ return s + (+el.dataset.ms || 0); }, 0);
+    var ms = +sc.dataset.ms || 0;
+    remaining = ms; sceneStart = performance.now();
+    if (ms > 0) { timers.push(setTimeout(next, ms)); tick(); }
+    else bar.style.width = '100%';
+  }
+  function tick(){
+    var done = elapsedBefore + (performance.now() - sceneStart) + ((+scenes[idx].dataset.ms || 0) - remaining);
+    bar.style.width = Math.min(100, done / total * 100) + '%';
+    raf = requestAnimationFrame(tick);
+  }
+  function next(){ if (idx < scenes.length - 1) show(idx + 1); }
+  function last(){ show(scenes.length - 1); }
+  function replay(){ paused = false; setPauseLabel(); stage.scrollIntoView({behavior: reduce ? 'auto' : 'smooth'}); show(0); }
+  function setPauseLabel(){ var b = document.getElementById('pause'); b.textContent = paused ? 'Play' : 'Pause'; b.setAttribute('aria-pressed', String(paused)); }
+
+  document.getElementById('pause').addEventListener('click', function(){
+    if (idx === scenes.length - 1) return;
+    if (!paused) {
+      paused = true; clear();
+      remaining = Math.max(0, remaining - (performance.now() - sceneStart));
+      Array.prototype.forEach.call(scenes[idx].querySelectorAll('[data-step]'), function(el){ el.classList.add('in'); });
+    } else {
+      paused = false; sceneStart = performance.now();
+      var ms = +scenes[idx].dataset.ms || 0, from = ms - remaining;
+      revealSteps(scenes[idx], false, from); // pick the demo cues back up where they stopped
+      timers.push(setTimeout(next, remaining)); tick();
+    }
+    setPauseLabel();
+  });
+  document.getElementById('skip').addEventListener('click', function(){ paused = false; setPauseLabel(); last(); });
+  document.getElementById('replay').addEventListener('click', replay);
+  document.getElementById('replay2').addEventListener('click', replay);
+
+  if (params.get('full') === '1') { stage.style.display = 'none'; return; }
+  show(0);
+})();
+</script>
+</body>
+</html>
