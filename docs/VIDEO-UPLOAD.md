@@ -4,10 +4,11 @@ argument-hint: "[status | upload | verify | all]  (default: status)"
 allowed-tools: Bash, Read, Grep, Glob, Edit, Write, mcp__Google_Drive__search_files, mcp__Google_Drive__get_file_metadata, mcp__Railway__get-logs, mcp__Railway__list-variables, mcp__Railway__describe-service, mcp__Railway__connect-service-source
 ---
 
-<!-- This file IS the /video-upload slash command. It lives in docs/ only because this session was not
-     permitted to write under .claude/. To switch it on:
-         mkdir -p .claude/commands && cp docs/VIDEO-UPLOAD.md .claude/commands/video-upload.md
-     After that `/video-upload` appears in the slash-command menu in any session on this repo. -->
+<!-- The commands are switched on and live in .claude/commands/ :
+         /video-check   read-only: search Drive, report, write nothing
+         /video-place   writing: place confirmed clips, rebuild the manifest, commit, ask before the deploy
+         /video-upload  the whole run, this file
+     This file stays the authority for all three. -->
 
 # Video upload run
 
@@ -38,6 +39,11 @@ already agreed earlier in a session.
 5. **When in doubt, ask once, plainly, with the list.** One question naming every clip and what is missing
    for each beats a run that guesses and a run that stalls silently.
 
+6. **Say which of the two workflows you are in, every time.** `/video-check` reads and reports and writes
+   nothing; `/video-place` writes, commits and asks before the deploy. State which one in the first line of
+   every reply during a run, and never cross from reading into writing without a confirmation in hand. Mixing
+   them up is how an unconfirmed clip gets committed by accident.
+
 ## Where things are
 
 | | |
@@ -46,6 +52,8 @@ already agreed earlier in a session.
 | Backend | `/home/user/dr-caban/mdfit-backend` — `lib/videos.js` (sync), `lib/bunny.js` (client) |
 | Frontend | `/home/user/mdfit-frontend` — `common.js` (`MDFitVideo`), `app/exercises.js` (catalog) |
 | Intake | `scripts/video-intake.js` — Drive vs catalog vs manifest vs Bunny; proposes, never places |
+| Folder ids | `data/drive-folders.json` — the Drive tree; ids never change, so a run searches only for files |
+| Decisions | `data/video-placements.json` — placements already taken, so no session re-asks |
 | Bunny library | `805934`, pull zone `vz-03938ec5-16f.b-cdn.net`, collection **"In app"** |
 | Railway | project `a5871163-a3f5-423a-ba07-124fcb4bc2d7`, service `bf11cde9-e643-4dd4-85e2-544978b7f7f0` |
 | Env vars | `BUNNY_STREAM_API_KEY`, `_LIBRARY_ID`, `_HOSTNAME`, `_COLLECTION` (defaults to `In app`) |

@@ -1,0 +1,207 @@
+{
+ "note": "Folder ids of MDFIT media / MD Fit Library. Drive ids never change on rename or move, so this map stays true; re-run the folder search only if a folder is added. Built by a video session, 20 Nov 2026.",
+ "root": "1WFdWQyD1_EbmTQYEHwZHibOor1ouGyua",
+ "library": "1RUFBgRzVg_06Z0_IsWxOoCWMYz9CeKe7",
+ "folders": [
+  {
+   "id": "1WFdWQyD1_EbmTQYEHwZHibOor1ouGyua",
+   "title": "MDFIT media",
+   "parentId": null
+  },
+  {
+   "id": "1RUFBgRzVg_06Z0_IsWxOoCWMYz9CeKe7",
+   "title": "MD Fit Library",
+   "parentId": "1WFdWQyD1_EbmTQYEHwZHibOor1ouGyua"
+  },
+  {
+   "id": "1ORb_5tcqioWbXvDGvwXK5btCzTffQPFY",
+   "title": "1 Exercise Library",
+   "parentId": "1RUFBgRzVg_06Z0_IsWxOoCWMYz9CeKe7"
+  },
+  {
+   "id": "170lRuTrP-B7XMJSEwNhwn0cuXAWxYoxb",
+   "title": "2 Pain Tool - Tracks by Body Region",
+   "parentId": "1RUFBgRzVg_06Z0_IsWxOoCWMYz9CeKe7"
+  },
+  {
+   "id": "1QMTEeKP1zxBKSEqTo2TWdQx06B7aGo2x",
+   "title": "3 Programs",
+   "parentId": "1RUFBgRzVg_06Z0_IsWxOoCWMYz9CeKe7"
+  },
+  {
+   "id": "1V3ZC8i8lTt56qz1wr2NEZcgfZMADMHGP",
+   "title": "4 Intros, Testimonials & Lectures",
+   "parentId": "1RUFBgRzVg_06Z0_IsWxOoCWMYz9CeKe7"
+  },
+  {
+   "id": "1i5G66PKpEWEWgc1Ax7RzWq5UzI7jM6LC",
+   "title": "5 New Footage - Needs Names",
+   "parentId": "1RUFBgRzVg_06Z0_IsWxOoCWMYz9CeKe7"
+  },
+  {
+   "id": "1Pj8po7MtbxNB3oecsTV8N3rqM9XshcJh",
+   "title": "6 Protocols - by Condition",
+   "parentId": "1RUFBgRzVg_06Z0_IsWxOoCWMYz9CeKe7"
+  },
+  {
+   "id": "12q4enS_lnKwyQMnfObCVCUTYUSZUR0h5",
+   "title": "7 Full Session Recordings",
+   "parentId": "1RUFBgRzVg_06Z0_IsWxOoCWMYz9CeKe7"
+  },
+  {
+   "id": "1Y50OwgbxIhUMpDBtUo9KKDGRUow7X8Ei",
+   "title": "8 Reference Images and Design Files",
+   "parentId": "1RUFBgRzVg_06Z0_IsWxOoCWMYz9CeKe7"
+  },
+  {
+   "id": "1UMLx7LLQER0ZhYSniY4rnHggl28hDzrn",
+   "title": "9 Unused Empty Folders",
+   "parentId": "1RUFBgRzVg_06Z0_IsWxOoCWMYz9CeKe7"
+  },
+  {
+   "id": "1geVnXQdsDwNH7jGuGpnDOFQ0eVZcuEWR",
+   "title": "99 Duplicates",
+   "parentId": "1RUFBgRzVg_06Z0_IsWxOoCWMYz9CeKe7"
+  },
+  {
+   "id": "1I6glc-hlXlejP5smHp4eisxziR0tqKwn",
+   "title": "Knees",
+   "parentId": "1ORb_5tcqioWbXvDGvwXK5btCzTffQPFY"
+  },
+  {
+   "id": "1ItTMDLHByOijI7jxIQIbMNyc2TfqV4ms",
+   "title": "Hips & Glutes",
+   "parentId": "1ORb_5tcqioWbXvDGvwXK5btCzTffQPFY"
+  },
+  {
+   "id": "1x0gEvgxfKjYN2-Jv-JPkvJ8AgDHGxK2J",
+   "title": "Dream Lean 12",
+   "parentId": "1QMTEeKP1zxBKSEqTo2TWdQx06B7aGo2x"
+  },
+  {
+   "id": "1IEThw0rIGis2QGdtt4Xa7EePzcs8TMai",
+   "title": "PSG Hypertrophy Program",
+   "parentId": "1QMTEeKP1zxBKSEqTo2TWdQx06B7aGo2x"
+  },
+  {
+   "id": "1xKLWCcoJVd9hbmqHvCNrASsgKaR03xzD",
+   "title": "Daily Movement Reset",
+   "parentId": "1x0gEvgxfKjYN2-Jv-JPkvJ8AgDHGxK2J"
+  },
+  {
+   "id": "1vpbdhx7bsyqaDcTYelsWScSmAt2WiLOt",
+   "title": "Day 1 (Wednesday)",
+   "parentId": "1x0gEvgxfKjYN2-Jv-JPkvJ8AgDHGxK2J"
+  },
+  {
+   "id": "18j3gBoIYXvm4zBiHlPTNn-uMnIy50RhM",
+   "title": "Day 2 (Thursday)",
+   "parentId": "1x0gEvgxfKjYN2-Jv-JPkvJ8AgDHGxK2J"
+  },
+  {
+   "id": "1iTBgmzRu4fW3e33H4tO64f-4lIB9X0b-",
+   "title": "Day 3 (Friday) - Recovery & Mobility",
+   "parentId": "1x0gEvgxfKjYN2-Jv-JPkvJ8AgDHGxK2J"
+  },
+  {
+   "id": "1uNttsZv_3wN7pNT4uzPowxlnZor530tD",
+   "title": "Day 5 (Sunday)",
+   "parentId": "1x0gEvgxfKjYN2-Jv-JPkvJ8AgDHGxK2J"
+  },
+  {
+   "id": "1_77X_bOxMNoyLiJOczcQxJtzoEpLBtm7",
+   "title": "Day 6 (Monday)",
+   "parentId": "1x0gEvgxfKjYN2-Jv-JPkvJ8AgDHGxK2J"
+  },
+  {
+   "id": "1bXrFnJkk0MfuMD_Ez8cGJ6DUbqAT3klz",
+   "title": "Plantar Fasciitis - 4 Week Protocol",
+   "parentId": "1Pj8po7MtbxNB3oecsTV8N3rqM9XshcJh"
+  },
+  {
+   "id": "11yJbj5A_KZubZAD6uS6vDaPoLVMCY9Im",
+   "title": "12 Week Full Mobility System",
+   "parentId": "1Pj8po7MtbxNB3oecsTV8N3rqM9XshcJh"
+  },
+  {
+   "id": "1tUzXEEvKw9XZDzI605rOQ3EZIHZYfKX9",
+   "title": "Track A",
+   "parentId": "11yJbj5A_KZubZAD6uS6vDaPoLVMCY9Im"
+  },
+  {
+   "id": "15hbHD_ZgYCwvcjb-nfXa501qzdjYPvAi",
+   "title": "Track B",
+   "parentId": "11yJbj5A_KZubZAD6uS6vDaPoLVMCY9Im"
+  },
+  {
+   "id": "1u9LeWMocbSRd6qdK4g60e3lJ8AgqxbD4",
+   "title": "Video Testimonials",
+   "parentId": "1V3ZC8i8lTt56qz1wr2NEZcgfZMADMHGP"
+  },
+  {
+   "id": "1cHhVA7Br0NqyZsg2fsC6W8NT_Cxv_TxZ",
+   "title": "Shoulder - Referred Pain",
+   "parentId": "170lRuTrP-B7XMJSEwNhwn0cuXAWxYoxb"
+  },
+  {
+   "id": "1IAfqL6ysF_ej3r1e4F4PMysWipLxjGqC",
+   "title": "Knee - Referred Pain",
+   "parentId": "170lRuTrP-B7XMJSEwNhwn0cuXAWxYoxb"
+  },
+  {
+   "id": "1L94FEZ-00mgsodvCuQYzBAIcmivLFVjf",
+   "title": "Glute - Referred Pain",
+   "parentId": "170lRuTrP-B7XMJSEwNhwn0cuXAWxYoxb"
+  },
+  {
+   "id": "1pjzOPPrV3DonUIIJmodhAk20Nw5bGGDW",
+   "title": "Upper Thigh - Referred Pain",
+   "parentId": "170lRuTrP-B7XMJSEwNhwn0cuXAWxYoxb"
+  },
+  {
+   "id": "1_czgW3z0mpAv-c_C7rkxkfZlo1dJy3_o",
+   "title": "Hip - Referred Pain",
+   "parentId": "170lRuTrP-B7XMJSEwNhwn0cuXAWxYoxb"
+  },
+  {
+   "id": "10r5jFDzN2CMaGx42ka9sop7J8n-hVeGE",
+   "title": "Foot - Referred Pain",
+   "parentId": "170lRuTrP-B7XMJSEwNhwn0cuXAWxYoxb"
+  },
+  {
+   "id": "17jK1h-5hKds5JYCv1xW-eiJZ_STjzfgI",
+   "title": "Groin - Referred Pain",
+   "parentId": "170lRuTrP-B7XMJSEwNhwn0cuXAWxYoxb"
+  },
+  {
+   "id": "1cv43V1kozjgSzQn1iu-erJlxkVijQs52",
+   "title": "Forearm & Wrist - Referred Pain",
+   "parentId": "170lRuTrP-B7XMJSEwNhwn0cuXAWxYoxb"
+  },
+  {
+   "id": "12W2h8EWemetBg3aACJgByNJBCzGRWeSp",
+   "title": "Abdominal - Referred Pain",
+   "parentId": "170lRuTrP-B7XMJSEwNhwn0cuXAWxYoxb"
+  },
+  {
+   "id": "1-DZzoE1MzpClOvIF_V_8basyB4n_mdEg",
+   "title": "Chest - Referred Pain",
+   "parentId": "170lRuTrP-B7XMJSEwNhwn0cuXAWxYoxb"
+  },
+  {
+   "id": "1xyugq9EjMUNMwtGrr4oSx6lMaXfr4oPd",
+   "title": "Hamstring - Referred Pain",
+   "parentId": "170lRuTrP-B7XMJSEwNhwn0cuXAWxYoxb"
+  },
+  {
+   "id": "1dlmpTVPr_6IgMmnKhnR5IYcfkNCp1S8u",
+   "title": "Low Back - Referred Pain",
+   "parentId": "170lRuTrP-B7XMJSEwNhwn0cuXAWxYoxb"
+  },
+  {
+   "id": "1Fk2Fm_JiRaaGRuiFifjlMfQURqijpKsG",
+   "title": "Upper Arm - Referred Pain",
+   "parentId": "170lRuTrP-B7XMJSEwNhwn0cuXAWxYoxb"
+  }
+ ]
+}

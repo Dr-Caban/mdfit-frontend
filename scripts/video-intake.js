@@ -26,6 +26,8 @@ const vm = require("vm");
 
 const ROOT = path.join(__dirname, "..");
 const CATALOG = path.join(ROOT, "app", "exercises.js");
+const FOLDERS = path.join(ROOT, "data", "drive-folders.json");       // folder ids, which never change
+const PLACEMENTS = path.join(ROOT, "data", "video-placements.json"); // decisions already taken
 
 // ---------------------------------------------------------------- arguments
 const argv = process.argv.slice(2);
@@ -74,7 +76,11 @@ const TAKE = /\((?:take|t)\s*\d+\)\s*$/i;      // "Pallof Press (take 2)"
 const MAX_MB = Number(flag("max-mb")) || 500;
 
 function tree(listing) {
-  const folders = new Map((listing.folders || []).map((f) => [f.id, f]));
+  // A listing need only carry the files. Folder ids never change on rename or move, so the map is a committed
+  // fixture: a run searches Drive for videos and takes the folder names from here.
+  const known = (listing.folders && listing.folders.length) ? listing.folders
+    : fs.existsSync(FOLDERS) ? readJson(FOLDERS).folders : [];
+  const folders = new Map(known.map((f) => [f.id, f]));
   const pathOf = (file) => {
     const out = [];
     let p = file.parentId, guard = 0;
@@ -106,6 +112,11 @@ function classify(listing, cat, api) {
   const byName = new Map();
   for (const e of cat.ex) if (!byName.has(norm(e.name))) byName.set(norm(e.name), e);
 
+  // Decisions already taken are not open work. Without this ledger every run re-asks about the same clips, and the
+  // owner answers the same question for ever.
+  const settledBy = new Map();
+  if (fs.existsSync(PLACEMENTS)) for (const s of readJson(PLACEMENTS).settled || []) settledBy.set(s.id, s);
+
   const rows = [];
   const seen = new Set();
   for (const f of listing.files || []) {
@@ -123,7 +134,8 @@ function classify(listing, cat, api) {
     const already = byName.get(norm(name)) || null;
     rows.push({
       id: f.id, title: f.title, name, mod: f.mod || "",
-      segs, bucket, blocked, already: already ? { id: already.id, region: already.region, cat: already.cat, level: already.level } : null,
+      segs, bucket, blocked, settled: settledBy.get(f.id) || null,
+      already: already ? { id: already.id, region: already.region, cat: already.cat, level: already.level } : null,
       region: bucket && bucket.n === 1 && cat.rc[segs[segs.indexOf(bucket.label) + 1]] ? segs[segs.indexOf(bucket.label) + 1] : null,
       state: published.has(f.id) ? "published" : inManifest.has(f.id) ? "awaiting-bunny" : inCatalog.has(f.id) ? "in-catalog" : "unplaced"
     });
@@ -151,9 +163,18 @@ function report(rows) {
 
   const unplaced = rows.filter((r) => r.state === "unplaced");
   const skip = unplaced.filter((r) => r.bucket && !r.bucket.publish);
-  const noName = unplaced.filter((r) => r.bucket && r.bucket.publish && r.blocked);
-  const noBucket = unplaced.filter((r) => !r.bucket);
-  const cand = unplaced.filter((r) => r.bucket && r.bucket.publish && !r.blocked);
+  const done = unplaced.filter((r) => r.settled && r.bucket && r.bucket.publish);
+  const noName = unplaced.filter((r) => !r.settled && r.bucket && r.bucket.publish && r.blocked);
+  const noBucket = unplaced.filter((r) => !r.settled && !r.bucket);
+  const cand = unplaced.filter((r) => !r.settled && r.bucket && r.bucket.publish && !r.blocked);
+
+  if (done.length) {
+    const by = {};
+    for (const r of done) (by[r.settled.decision] = by[r.settled.decision] || []).push(r);
+    L("");
+    L(`Already decided, so not open work (${done.length}) — from data/video-placements.json:`);
+    for (const [k, v] of Object.entries(by)) L(`  ${String(v.length).padStart(4)}  ${k}`);
+  }
 
   if (skip.length) {
     L("");

@@ -21,7 +21,10 @@
   change in the session: set exactly what was asked, never print, copy or log a key's value, take a secret's value only
   from the user (never invent or reuse one), and say afterwards which names changed. Never change GitHub, Railway,
   Vercel or Stripe account permissions or API-key scopes from here.
-- **Video uploads — `/video-upload`.** When asked to `/video-upload`, to upload or migrate videos, to get footage
+- **Video uploads — `/video-check` (reads) and `/video-place` (writes).** Two commands, and which one you are in
+  is stated in every reply during a run: `/video-check` searches Drive and reports, writing nothing; `/video-place`
+  places clips the owner has confirmed, commits, and asks before the deploy. `/video-upload` is the whole run.
+  When asked for any of them, to upload or migrate videos, to get footage
   from Drive onto Bunny, or to publish video for the web/Android/Apple apps: **read `docs/VIDEO-UPLOAD.md` first
   and follow its phases in order.** Treat that file as the command; do not improvise a run, and do not start at the
   upload step — every failed run so far failed at preflight or on a known trap, not in the upload.
