@@ -18,6 +18,15 @@
  ],
  "settled": [
   {
+   "id": "1BWGsE8Yi24WsKkdgJdg0F4-KW20mYxcS",
+   "name": "Intro - Video Library",
+   "folder": "4 Intros, Testimonials & Lectures",
+   "decision": "replaces-app-intro-library",
+   "why": "a newer take of the Library intro. MDFIT_INTROS.library and the app-intro manifest asset (public_id mdfit/videos/app-intros/library-intro) now carry this id instead of 1vqoCi5UQg6i_uYbV6GbVZXs6_Nzxcr4I. The old file stays in Drive and its Bunny copy keeps playing for anything that still names it.",
+   "on": "2026-11-20",
+   "by": "owner"
+  },
+  {
    "id": "1xMCGxf7hv6_6b_00jwNxd2waOMCePWCQ",
    "name": "Bear Crawl",
    "folder": "3 Programs / PSG Hypertrophy Program",
@@ -394,6 +403,91 @@
    "why": "a second take of a movement the library already plays as 1uJGcsQRsgn3wnDX2AZJ5CXGxUVRPhmyr (Hips / Mobility / level 2)",
    "on": "2026-11-20",
    "by": "owner"
+  },
+  {
+   "id": "16kjrvS8LJBYlGu_RpfX9srhDzTrLHAzs",
+   "name": "GOSD Restrained",
+   "folder": "4 Intros, Testimonials & Lectures",
+   "decision": "parked",
+   "why": "the owner expressed no preference on where it belongs, so it is parked rather than placed on a guess. Not open work; raise it only if the owner asks.",
+   "on": "2026-11-20",
+   "by": "claude (no preference given)"
+  },
+  {
+   "id": "1-3H0fcFOFpn3QbwUhYyqDESymwoRrDix",
+   "name": "GOSD Animated",
+   "folder": "4 Intros, Testimonials & Lectures",
+   "decision": "parked",
+   "why": "the owner expressed no preference on where it belongs, so it is parked rather than placed on a guess. Not open work; raise it only if the owner asks.",
+   "on": "2026-11-20",
+   "by": "claude (no preference given)"
+  },
+  {
+   "id": "1fsAZCT7UsdsenoCpIT9C-Ut-KP7GgNqD",
+   "name": "Progression vs Pain",
+   "folder": "4 Intros, Testimonials & Lectures",
+   "decision": "parked",
+   "why": "the owner expressed no preference on where it belongs, so it is parked rather than placed on a guess. Not open work; raise it only if the owner asks.",
+   "on": "2026-11-20",
+   "by": "claude (no preference given)"
+  },
+  {
+   "id": "1dUk4ZADvhX4k2Nm57LAyT4Fgky-nA8wZ",
+   "name": "Me MD Fit (intro)",
+   "folder": "4 Intros, Testimonials & Lectures",
+   "decision": "parked",
+   "why": "the owner expressed no preference on where it belongs, so it is parked rather than placed on a guess. Not open work; raise it only if the owner asks.",
+   "on": "2026-11-20",
+   "by": "claude (no preference given)"
+  },
+  {
+   "id": "1A0GspefQGiD74q99gnNuNLUi_On9NZwi",
+   "name": "Shelly Testimonial",
+   "folder": "4 Intros, Testimonials & Lectures / Video Testimonials",
+   "decision": "parked",
+   "why": "the owner expressed no preference on where it belongs, so it is parked rather than placed on a guess. Not open work; raise it only if the owner asks.",
+   "on": "2026-11-20",
+   "by": "claude (no preference given)"
+  },
+  {
+   "id": "1N_kkvSv_hgAeekjsCCUSDFecnHmmD6Ip",
+   "name": "Anna Testimonial",
+   "folder": "4 Intros, Testimonials & Lectures / Video Testimonials",
+   "decision": "parked",
+   "why": "the owner expressed no preference on where it belongs, so it is parked rather than placed on a guess. Not open work; raise it only if the owner asks.",
+   "on": "2026-11-20",
+   "by": "claude (no preference given)"
+  },
+  {
+   "id": "1SyxkTHgKIzEAJTTYR_EMeBeeudY8N34S",
+   "name": "James Testimonial",
+   "folder": "4 Intros, Testimonials & Lectures / Video Testimonials",
+   "decision": "parked",
+   "why": "the owner expressed no preference on where it belongs, so it is parked rather than placed on a guess. Not open work; raise it only if the owner asks.",
+   "on": "2026-11-20",
+   "by": "claude (no preference given)"
+  }
+ ],
+ "open": [
+  {
+   "note": "Still waiting on the owner: these two need region, category, level, location and seated, plus which of the duplicate Drive files to use. The others stay in Drive.",
+   "clips": [
+    {
+     "name": "Seated Plantar Fascia Stretch",
+     "files": [
+      "1Qp71sob8QYxlSol8tT_dhQYBrgg2NGaX (Foot - Referred Pain)",
+      "13F4xML5kvfC-SeXumGUWhV_FzIOD_646 (1 Exercise Library)"
+     ]
+    },
+    {
+     "name": "Standing Hip Abduction and Adduction",
+     "files": [
+      "1OnM1d2NP8OibYI7EopbC0TuBSh_s4OA- (Upper Thigh - Referred Pain)",
+      "1YMMJXf04zGbNOL5m6XPEaX-rzD1p1wvJ (Glute - Referred Pain)",
+      "1xtIPf3r0PExfK_ME6wKt8qmErwZn-WaR (Hip - Referred Pain)"
+     ]
+    }
+   ]
   }
  ]
 }
