@@ -32,7 +32,9 @@
   and never change on rename or move, so reorganizing Drive cannot break playback. Start at
   `GET /api/admin/videos/status` and read its `mirror` block. Before blaming a quota, check the logs: the believed
   Cloudinary cap was three ordinary bugs and zero quota errors. MP4 Fallback must be ON in the Bunny library or
-  nothing ever publishes; keep Token Authentication OFF until a client signs URLs. Never print or copy a key.
+  nothing ever publishes; keep Token Authentication OFF until a client signs URLs. Never print or copy a key. Its **"Ask before you
+  commit"** section is the owner's standing rule: never guess a clip's placement or usage, and never commit, push
+  or deploy on one that is unconfirmed — ask.
 - **DO NOT TOUCH after compliancy is set.** This is a live patient EMR. The compliance safeguards are locked: read the
   "DO NOT TOUCH" section of `README.md` here and in `mdfit-backend` before editing anything near sign-in, sessions,
   roles and permissions, the audit ledger, encryption, the chart, patient-rights records, the Compliance screen, or the

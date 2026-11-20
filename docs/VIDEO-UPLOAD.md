@@ -17,6 +17,27 @@ platforms. Run `$ARGUMENTS` (default `status`).
 **Never start at the upload step.** Every failed run in this project's history failed at preflight or on a
 known trap, not in the upload itself. Work the phases in order and report what each one found.
 
+## Ask before you commit (owner, Nov 2026)
+
+These are the owner's standing rules for every video run. They outrank convenience and they outrank a plan
+already agreed earlier in a session.
+
+1. **No guessing where a video goes or what it is for.** A new clip needs its placement (region, category,
+   level, location, seated or not — or, for a protocol clip, which protocol and which week) and its usage
+   (exercise library, pain track, protocol sheet, lecture, app intro). If any of that is not confirmed by the
+   owner, **stop and ask**. Do not infer it from the file name, the Drive folder, a sibling clip, or what
+   looks obvious.
+2. **Nothing is committed or pushed on an unconfirmed placement.** No commit, no push, no pull request, no
+   manifest rebuild — the work waits in the session until the owner answers. A session may read Drive, Bunny,
+   Railway and the catalog freely while it waits; reading is never the thing to ask about.
+3. **Confirm before deployment.** Say what will go live, for which videos, and on which branch, and get a
+   yes. That covers merging a pull request, and it covers anything that makes the backend pick the change up
+   (`connect-service-source`, "sync now" in the workspace).
+4. **A partial answer is not a full one.** If the owner confirms some clips and not others, ship the
+   confirmed ones and leave the rest uncommitted, named, in the session's report.
+5. **When in doubt, ask once, plainly, with the list.** One question naming every clip and what is missing
+   for each beats a run that guesses and a run that stalls silently.
+
 ## Where things are
 
 | | |
