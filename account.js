@@ -2083,8 +2083,9 @@
         <h2 class="p-name">${esc(e.name)}</h2>
         <div class="p-setrow">
           <div class="p-ring" id="p-ring" style="--pct:0%"><span id="p-count">0:00</span></div>
-          <div><p class="p-sets">${esc(e.sets)}</p><p class="p-meta">${notReady ? "This video isn't available yet. Use the timer and go at your own pace." : noVid ? "Follow along: no video for this one. Use the timer and go at your own pace." : esc(exMeta(e))}</p></div>
+          <div><p class="p-sets">${esc(e.sets)}</p><p class="p-meta">${noVid && (e.how || []).length ? "No video for this one yet. Here's how to do it, from Dr. Jared's sheet." : notReady ? "This video isn't available yet. Use the timer and go at your own pace." : noVid ? "Follow along: no video for this one. Use the timer and go at your own pace." : esc(exMeta(e))}</p></div>
         </div>
+        ${noVid && ((e.how || []).length || e.sheet) ? `<div class="p-how">${(e.how || []).length ? `<ol>${e.how.map((t) => `<li>${esc(t)}</li>`).join("")}</ol>` : ""}${e.sheet ? `<button type="button" class="p-how-sheet" data-p-sheet="${esc(e.sheet)}" data-p-sheet-title="${esc(e.sheetTitle || "")}">See Dr. Jared's sheet, with pictures</button>` : ""}</div>` : ""}
         ${st.label.startsWith("Round") || st.label === "Circuit" ? `<label class="p-load">Weight used <input id="p-weight" inputmode="decimal" placeholder="lb" value="${esc((P.log[e.id || e.name] || {}).weight || "")}"></label>` : ""}
         ${upNext}
       </div>`;
@@ -2981,11 +2982,20 @@
   function protoWorkout(p, pr, wk, group) {
     const g = group != null && group !== "" ? weekGroups(wk)[Number(group)] : null;
     const list = g ? g.items : wk.exercises, label = g && g.name ? titleCase(g.name) : wk.label;
-    const circuit = list.map((x) => { const m = libMatch(x.name); return m ? { ...m, name: x.name, sets: doseText(x.dosage), block: label } : { id: "", name: x.name, sets: doseText(x.dosage), block: label }; });
+    const sheet = wk.driveId || wk.sheet ? sheetSrc(pr, wk, 1600) : "", sheetTitle = `${pr.title} · ${wk.label}`;
+    const how = (x) => ({ how: (Array.isArray(x.howTo) ? x.howTo : []).filter((t) => typeof t === "string" && t.trim()).slice(0, 8), sheet, sheetTitle }); // shown when a step has no video
+    const circuit = list.map((x) => { const m = libMatch(x.name); return m ? { ...m, name: x.name, sets: doseText(x.dosage), block: label, ...how(x) } : { id: "", name: x.name, sets: doseText(x.dosage), block: label, ...how(x) }; });
     return { title: `${pr.title}: ${wk.label}${g ? ` · ${label}` : ""}`, goal: "Rehab", goalId: "mobility", location: p.location, level: p.level, levelLabel: wk.label, rounds: 1, restEx: 20, restRound: 0,
       minutes: Math.max(10, list.length * 5), warmup: [], cooldown: [], circuit, exercises: circuit, perRound: circuit.length, key: protoKey(p, wk.key), noRest: true };
   }
   const sheetSrc = (pr, wk, w) => `assets/protocols/${pr.id}/${encodeURIComponent(wk.key)}-${w}.webp`;
+  // From the player: a step with no video offers the week's sheet, shown in the same viewer as on the program page
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-p-sheet]"); if (!b) return;
+    const dlg = $("#sheet-dialog"); if (!dlg) return;
+    $("#sheet-title").textContent = b.dataset.pSheetTitle || "Dr. Jared's sheet"; $("#sheet-img").src = b.dataset.pSheet; $("#sheet-img").alt = b.dataset.pSheetTitle || ""; $("#sheet-img").classList.remove("zoomed");
+    if (!dlg.open) dlg.showModal();
+  });
   // Sections the sheets have beyond the standard ones (e.g. "why", "key points") are shown too, so nothing transcribed is hidden
   const STD_EX = new Set(["n", "name", "isNew", "whenToUse", "howTo", "focus", "dosage", "steps", "proTip", "printedNumber", "video"]);
   const STD_WK = new Set(["key", "label", "driveId", "focus", "notes", "exercises", "goal", "principles", "editorNotes"]); // editorNotes: transcription remarks for staff, not shown
