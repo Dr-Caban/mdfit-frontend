@@ -100,7 +100,7 @@
     token = ""; store.set(""); if (window.MDFitRT) { if (teleIn()) MDFitRT.emit("tele_end"); MDFitRT.disconnect(); } teleDrop(); stopDictation();
     for (const k of Object.keys(cache)) cache[k] = (k === "unread" || k === "waiting") ? 0 : null; // every cached list, the open chart included
     mem.clear(); forget(); freshAsk = null; shown = ""; shownHtml = ""; visited.length = 0; clearTimeout(warmT); clearTimeout(repaintT); warmRun++;
-    qaClose(); gClose(); state.picked.clear(); state.igPeople = []; state.insList = ""; state.ecoOpen = ""; state.genAll = false; state.layDraft = null;
+    qaClose(); gClose(); try { impReset(); } catch {} state.picked.clear(); state.igPeople = []; state.insList = ""; state.ecoOpen = ""; state.genAll = false; state.layDraft = null;
     state.guideAiErr = ""; state.chartClient = null; state.thread = null; state.clientQ = ""; state.formsQ = ""; state.formsShow = ""; state.scribeText = ""; tele.transcript = ""; noteReset(null);
     mustChange = false; $("#qa").hidden = false; $("#globalSearch").disabled = false;
     $("#view").innerHTML = ""; $("#nav").innerHTML = ""; $("#nav").dataset.sig = ""; $("#whoami").textContent = ""; $("#globalSearch").value = ""; closeModal();
@@ -236,6 +236,7 @@
     feedback: '<path d="M12 2l3 6 6 .9-4.5 4.3 1 6.3L12 16.8 6.5 19.5l1-6.3L3 8.9 9 8z"/>',
     security: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
     compliance: '<path d="M9 5h6a1 1 0 0 1 1 1v1H8V6a1 1 0 0 1 1-1z"/><path d="M8 6H6a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-2"/><path d="M9 14l2 2 4-4"/>',
+    import: '<path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/>',
     settings: '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/>',
     portal: '<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>',
     economics: '<circle cx="12" cy="12" r="9"/><path d="M15 9.5c-.5-1-1.6-1.5-3-1.5-1.700 0-3 .8-3 2s1.300 1.800 3 2 3 .8 3 2-1.300 2-3 2c-1.400 0-2.500-.5-3-1.500M12 6v2M12 16v2"/>',
@@ -266,7 +267,7 @@
   const NAV_PERM = {
     dashboard: "", calendar: "scheduling", clients: "clients", chart: [PHI, "clients"], leads: "clients", messages: "messages",
     telehealth: [PHI, "scheduling"], notes: [PHI, "clients"], forms: [PHI, "clients"], programs: "content", nutrition: "content", fitness: "content",
-    payments: "billing", affiliates: "payouts", revshare: "owner", newsletter: "messages", team: "staff", feedback: "reviews", security: "security", compliance: "security",
+    payments: "billing", affiliates: "payouts", revshare: "owner", newsletter: "messages", team: "staff", feedback: "reviews", security: "security", compliance: "security", import: "owner",
     settings: "settings", insights: "insights", economics: ["insights", "billing"], guide: ["insights", "content"], portal: "", booking: "scheduling"
   };
   const navOk = (id) => [].concat(NAV_PERM[id]).every(can);
@@ -276,7 +277,7 @@
     { g: "Practice", items: [["dashboard", "Dashboard"], ["calendar", "Calendar"], ["clients", "Clients"], ["chart", "Client chart"], ["leads", "Leads"], ["messages", "Messages"], ["telehealth", "Telehealth"]] },
     { g: "Clinical", items: [["notes", "Notes & AI scribe"], ["forms", "Forms & intake"], ["programs", "Programs"], ["nutrition", "Nutrition"], ["fitness", "Fitness"]] },
     { g: "Business", items: [["payments", "Payments"], ["affiliates", "Affiliates"], ["revshare", "Revenue share"], ["newsletter", "Newsletter"]] },
-    { g: "Admin", items: [["team", "Team & roles"], ["feedback", "Reviews & feedback"], ["security", "Security & audit"], ["compliance", "Compliance"], ["settings", "Modules & settings"], ["insights", "Insights"], ["economics", "System economics"], ["guide", "Solomon"]] },
+    { g: "Admin", items: [["team", "Team & roles"], ["feedback", "Reviews & feedback"], ["security", "Security & audit"], ["compliance", "Compliance"], ["import", "Import records"], ["settings", "Modules & settings"], ["insights", "Insights"], ["economics", "System economics"], ["guide", "Solomon"]] },
     { g: "Client-facing", items: [["portal", "Client app"], ["booking", "Booking page"]] }
   ];
   function renderNav(active) {
@@ -2401,6 +2402,8 @@
     if (e.target.matches("[data-change=staffRole]")) { const f = e.target.closest("form"); load("/staff").then((d) => permRoleSync(f, d, true)).catch(() => {}); }
     if (e.target.matches("[data-change=leadStatus]")) guard(ACT.leadSave)(e.target);
     if (e.target.matches("[data-change=chartFile]")) guard(chartUpload)(e.target);
+    if (e.target.matches("[data-change=impChoice]")) ACT.impChoice(e.target);
+    if (e.target.matches("[data-change=impPick]")) ACT.impPick(e.target);
     if (e.target.matches("[data-change=pickOne], [data-change=pickAll]")) {
       // "everyone shown" is everyone the filter matches, including rows not drawn yet
       if (e.target.matches("[data-change=pickAll]")) for (const c of ((cache.clientView || {}).rows || [])) { if (e.target.checked) state.picked.add(c.id); else state.picked.delete(c.id); }
@@ -3237,6 +3240,164 @@
     catch (err) { m.textContent = err.message; }
   };
   ACT.clientLoginLink = async (el) => { if (!confirm("Email this client the sign-in link (mymdfit.com/login)?")) return; const r = await api("POST", `/api/admin/clients/${encodeURIComponent(el.dataset.id)}/login-link`, {}); toast(r.temporaryPassword ? `Sent to ${r.to}, with a new temporary password (they have not signed in yet).` : `Sign-in link sent to ${r.to}.`); };
+
+  // ===================== Import from SimplePractice (owner only) =====================
+  // The owner picks the zip files SimplePractice exports (Contacts, Medical Records, Billing Documents, Administrative,
+  // Secure messages). They are unpacked here in the browser: nothing is uploaded until the owner has seen the plan and
+  // pressed Import. Then each person's account is made or matched, and each document goes onto their chart one by one.
+  // What is read stays in this tab's memory only, and is dropped when the import ends or the person signs out.
+  const impPick = {}; // shared name -> the contact card the owner chose for those records
+  const imp = { stage: "pick", contacts: [], items: [], rows: [], plan: {}, choice: {}, progress: { done: 0, total: 0, errors: [] }, result: null, batches: null, msg: "" };
+  const impReset = () => { for (const k of Object.keys(impPick)) impPick[k] = undefined; Object.assign(imp, { stage: "pick", contacts: [], items: [], rows: [], plan: {}, choice: {}, progress: { done: 0, total: 0, errors: [] }, result: null, msg: "" }); };
+  const impNorm = (s) => String(s || "").toLowerCase().replace(/[^a-z ]/g, " ").replace(/\s+/g, " ").trim();
+  async function unzip(file) {
+    const buf = new Uint8Array(await file.arrayBuffer()), dv = new DataView(buf.buffer), td = new TextDecoder();
+    let e = buf.length - 22; while (e >= 0 && dv.getUint32(e, true) !== 0x06054b50) e--;
+    if (e < 0) throw new Error(`${file.name} is not a zip file.`);
+    const n = dv.getUint16(e + 10, true); let p = dv.getUint32(e + 16, true); const out = [];
+    for (let i = 0; i < n; i++) {
+      if (dv.getUint32(p, true) !== 0x02014b50) throw new Error(`${file.name} could not be read.`);
+      const method = dv.getUint16(p + 10, true), csize = dv.getUint32(p + 20, true), nlen = dv.getUint16(p + 28, true), elen = dv.getUint16(p + 30, true), clen = dv.getUint16(p + 32, true), lho = dv.getUint32(p + 42, true);
+      const name = td.decode(buf.subarray(p + 46, p + 46 + nlen)); p += 46 + nlen + elen + clen;
+      if (name.endsWith("/") || name.split("/").includes("..") || name.startsWith("/") || /(^|\/)(__MACOSX|\.DS_Store)/.test(name)) continue;
+      const start = lho + 30 + dv.getUint16(lho + 26, true) + dv.getUint16(lho + 28, true), raw = buf.subarray(start, start + csize);
+      out.push({ name, read: async () => method === 0 ? raw.slice() : method === 8 ? new Uint8Array(await new Response(new Blob([raw]).stream().pipeThrough(new DecompressionStream("deflate-raw"))).arrayBuffer()) : (() => { throw new Error(`${name}: unsupported compression.`); })() });
+    }
+    return out;
+  }
+  function vcards(text) {
+    const t = text.replace(/\r?\n[ \t]/g, ""), cards = [];
+    for (const block of t.split(/BEGIN:VCARD/i).slice(1)) {
+      const d = {};
+      for (const line of block.split(/\r?\n/)) { const i = line.indexOf(":"); if (i < 1) continue; const k = line.slice(0, i).split(";")[0].toUpperCase().replace(/^ITEM\d+\./, ""); if (!(k in d)) d[k] = line.slice(i + 1).replace(/\\([,;\\])/g, "$1").replace(/\\n/gi, " ").trim(); }
+      const [last = "", first = ""] = (d.N || "").split(";"), b = (d.BDAY || "").replace(/-/g, "");
+      cards.push({ name: d.FN || `${first} ${last}`.trim(), first, last, email: (d.EMAIL || "").toLowerCase(), phone: d.TEL || "", dob: /^\d{8}$/.test(b) ? `${b.slice(0, 4)}-${b.slice(4, 6)}-${b.slice(6, 8)}` : "", address: (d.ADR || "").split(";").filter(Boolean).join(", ") });
+    }
+    return cards;
+  }
+  const IMP_KIND = { "medical records": "record", "billing documents": "invoice", "administrative": "admin", "secure messages": "message" };
+  async function impRead(files) {
+    const contacts = [], items = [];
+    for (const f of files) for (const e of await unzip(f)) {
+      const parts = e.name.split("/"), top = impNorm(parts[0]), base = parts[parts.length - 1];
+      if (/\.vcf$/i.test(base)) { for (const c of vcards(new TextDecoder().decode(await e.read()))) if (c.name) contacts.push({ ...c, key: `c${contacts.length}` }); continue; }
+      const kind = IMP_KIND[top]; if (!kind) continue;
+      const holder = kind === "message" ? base.replace(/-Jared-Caban-CONV.*$/i, "").replace(/-/g, " ") : parts.length >= 3 ? parts[1] : "";
+      const type = /\.pdf$/i.test(base) ? "application/pdf" : /\.txt$/i.test(base) ? "text/plain" : /\.png$/i.test(base) ? "image/png" : /\.jpe?g$/i.test(base) ? "image/jpeg" : "";
+      if (!holder || !type) continue;
+      items.push({ kind, holder, name: base, type, date: (base.match(/(\d{4}-\d{2}-\d{2})/) || [])[1] || "", read: e.read });
+    }
+    return { contacts, items };
+  }
+  // Who each document belongs to: the contact card with that exact name; a name on two cards is left for the owner
+  function impHolders() {
+    const byName = new Map(); for (const c of imp.contacts) byName.set(impNorm(c.name), (byName.get(impNorm(c.name)) || []).concat([c]));
+    const holders = new Map();
+    for (const it of imp.items) { const k = impNorm(it.holder); if (!holders.has(k)) holders.set(k, { name: it.holder, items: [], cards: byName.get(k) || [] }); holders.get(k).items.push(it); }
+    for (const [k, h] of holders) if (h.cards.length > 1) { const pick = h.cards.find((c) => c.key === impPick[k]); if (pick) h.cards = [pick, ...h.cards.filter((c) => c !== pick)]; }
+    for (const h of holders.values()) if (!h.cards.length) { const c = { key: `h${imp.contacts.length}`, name: h.name, first: "", last: "", email: "", phone: "", dob: "", address: "", fromRecords: true }; imp.contacts.push(c); h.cards = [c]; }
+    return holders;
+  }
+  // Per contact: how many documents and invoices, and the earliest record date (when they became a patient)
+  function impRows() {
+    const holders = impHolders(), stats = new Map(imp.contacts.map((c) => [c.key, { records: 0, invoices: 0, first: "", shared: "" }]));
+    for (const [k, h] of holders) { const s = stats.get(h.cards[0].key); for (const it of h.items) { if (it.kind === "invoice") s.invoices++; else s.records++; if (it.kind === "record" && it.date && (!s.first || it.date < s.first)) s.first = it.date; } if (h.cards.length > 1) for (const x of h.cards) stats.get(x.key).shared = k; }
+    imp.rows = imp.contacts.map((c) => ({ ...c, ...stats.get(c.key) })).sort((a, b) => (b.records + b.invoices) - (a.records + a.invoices) || a.name.localeCompare(b.name));
+  }
+  V.import = async () => {
+    const head = `<div class="view-head"><div><h1>Import from SimplePractice</h1><p class="muted">Bring the old EMR's clients, records and invoices into MD Fit</p></div></div>`;
+    if (imp.batches === null) { try { imp.batches = await get("/import/sp/batches"); } catch { imp.batches = []; } }
+    const past = imp.batches.length ? `<div class="card" style="padding:0;margin-top:16px"><div class="card-head" style="padding:14px 16px 0"><h2>Earlier imports</h2></div><div class="table-wrap"><table><thead><tr><th>When</th><th>New clients</th><th>Matched</th><th>Documents</th><th>Invoices</th><th></th></tr></thead><tbody>${imp.batches.map((b) => `<tr><td>${esc(new Date(b.at).toLocaleString())}</td><td>${b.created}</td><td>${b.linked}</td><td>${b.files}</td><td>${b.invoices}</td><td>${b.undoneAt ? `<span class="pill">Undone</span>` : `<button class="btn sm" data-act="impUndo" data-id="${esc(b.id)}">Undo</button>`}</td></tr>`).join("")}</tbody></table></div></div>` : "";
+    if (imp.stage === "pick") return `${head}<div class="card"><h2 style="margin-bottom:6px">1. Choose the export files</h2>
+      <p class="muted" style="margin:0 0 12px">Pick every zip file SimplePractice gave you (Contacts, Medical Records, Billing Documents, Administrative, Secure messages). They are read here on this computer; nothing is sent until you have checked the plan and pressed Import.</p>
+      <form class="stack" data-form="impPick"><input class="input" type="file" name="files" accept=".zip,application/zip" multiple required><p class="muted" data-msg style="margin:0;font-size:12.5px">${esc(imp.msg)}</p><div class="row"><button class="btn primary">Read the files</button></div></form></div>${past}`;
+    if (imp.stage === "preview") {
+      const withRec = imp.rows.filter((r) => r.records), noEmail = imp.rows.filter((r) => !r.email && imp.choice[r.key] === "new").length;
+      const opt = (r) => { const p = imp.plan[r.key] || {}, cur = imp.choice[r.key]; const o = [["new", "New client"], ...(p.match ? [[`link:${p.match.id}`, `Same as ${p.match.name}${p.match.email ? ` (${p.match.email})` : ""}`]] : []), ...((p.candidates || []).map((m) => [`link:${m.id}`, `Same as ${m.name}${m.email ? ` (${m.email})` : ""}`])), ["skip", "Leave out"]];
+        return `<select class="input" data-change="impChoice" data-key="${esc(r.key)}" aria-label="What to do with ${esc(r.name)}">${o.map(([v, l]) => `<option value="${esc(v)}"${v === cur ? " selected" : ""}>${esc(l)}</option>`).join("")}</select>${p.how === "ambiguous" ? `<div class="muted" style="font-size:12px;color:var(--warn)">Two accounts have this name: pick one</div>` : ""}${r.shared ? `<label class="row muted" style="gap:6px;font-size:12px;margin-top:4px"><input type="radio" name="pick-${esc(r.shared)}" data-change="impPick" data-name="${esc(r.shared)}" data-key="${esc(r.key)}"${r.records + r.invoices ? " checked" : ""}> Two contact cards have this name: the records belong to this one</label>` : ""}`; };
+      const count = (k) => imp.rows.filter((r) => imp.choice[r.key] === k || (k === "link" && String(imp.choice[r.key]).startsWith("link:"))).length;
+      const files = imp.rows.filter((r) => imp.choice[r.key] !== "skip").reduce((n, r) => n + r.records + r.invoices, 0);
+      return `${head}<div class="grid g3" style="margin-bottom:16px"><div class="card"><div class="muted" style="font-size:12px">New clients</div><div style="font-size:24px;font-weight:700">${count("new")}</div><div class="muted" style="font-size:12px">${noEmail} without an email address</div></div>
+        <div class="card"><div class="muted" style="font-size:12px">Matched to an MD Fit account</div><div style="font-size:24px;font-weight:700">${count("link")}</div><div class="muted" style="font-size:12px">only empty details are filled in</div></div>
+        <div class="card"><div class="muted" style="font-size:12px">Documents to file</div><div style="font-size:24px;font-weight:700">${files}</div><div class="muted" style="font-size:12px">${withRec.length} people with records become patients</div></div></div>
+        <div class="card" style="padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>2. Check the plan</h2><div class="row" style="gap:8px"><button class="btn" data-act="impBack">Start over</button><button class="btn primary" data-act="impGo">Import ${count("new") + count("link")} clients and ${files} documents</button></div></div>
+        <p class="muted" style="margin:0;padding:6px 16px 10px;font-size:12.5px">Nobody is emailed and no passwords are made. Clients without an email can't sign in until one is added. Paid invoices are added to revenue in the month they were issued; they are clinic revenue and never part of the revenue share.</p>
+        <div class="table-wrap" style="max-height:60vh;overflow:auto"><table><thead><tr><th>Name</th><th>Email</th><th>Records</th><th>Invoices</th><th>In MD Fit</th></tr></thead><tbody>
+        ${imp.rows.map((r) => `<tr><td><b>${esc(r.name)}</b>${r.dob ? `<div class="muted" style="font-size:12px">Born ${esc(r.dob)}</div>` : ""}</td><td>${r.email ? esc(r.email) : `<span class="muted">none</span>`}</td><td>${r.records || ""}</td><td>${r.invoices || ""}</td><td>${opt(r)}</td></tr>`).join("")}</tbody></table></div></div>`;
+    }
+    if (imp.stage === "running") { const p = imp.progress; return `${head}<div class="card"><h2 style="margin-bottom:8px">Importing…</h2><p style="margin:0 0 8px">${esc(imp.msg)}</p><div style="height:10px;border-radius:6px;background:var(--line);overflow:hidden"><div style="height:100%;width:${p.total ? Math.round((p.done / p.total) * 100) : 0}%;background:var(--accent)"></div></div><p class="muted" style="margin:8px 0 0;font-size:12.5px">${p.done} of ${p.total} documents. Keep this tab open.</p></div>`; }
+    const r = imp.result || {};
+    return `${head}<div class="card"><h2 style="margin-bottom:8px">Import finished</h2>
+      <div class="list-item"><span style="flex:1">New clients</span><b>${r.created || 0}</b></div><div class="list-item"><span style="flex:1">Matched to existing accounts</span><b>${r.linked || 0}</b></div>
+      <div class="list-item"><span style="flex:1">Made active patients</span><b>${r.patients || 0}</b></div><div class="list-item"><span style="flex:1">Documents filed on charts</span><b>${r.files || 0}</b>${r.dupes ? `<span class="muted" style="font-size:12px;margin-left:6px">(${r.dupes} already there)</span>` : ""}</div>
+      <div class="list-item"><span style="flex:1">Invoices entered in billing</span><b>${r.invoices || 0}</b><span class="muted" style="font-size:12px;margin-left:6px">${impMoney(r.paidCents || 0)} paid${r.owedCents ? `, ${impMoney(r.owedCents)} still owed` : ""}</span></div>
+      ${(r.notes || []).length ? `<p class="muted" style="font-size:12.5px;margin:10px 0 0">${r.notes.map(esc).join("<br>")}</p>` : ""}
+      ${imp.progress.errors.length ? `<p style="color:var(--bad);font-size:13px;margin:10px 0 0">${imp.progress.errors.length} document(s) could not be filed:<br>${imp.progress.errors.slice(0, 20).map(esc).join("<br>")}</p>` : ""}
+      <div class="row" style="gap:8px;margin-top:14px"><a class="btn primary" href="#clients">Open Clients</a><a class="btn" href="#economics">See revenue</a><button class="btn" data-act="impBack">Import more</button></div></div>${past}`;
+  };
+  const impMoney = (c) => `$${(c / 100).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  FORMS.impPick = async (f) => {
+    const files = [...f.files.files]; if (!files.length) return formMsg(f, "Pick the zip files first.");
+    formMsg(f, "Reading the files…");
+    try {
+      if (typeof DecompressionStream === "undefined") throw new Error("This browser can't open zip files. Use a current Chrome, Safari, Edge or Firefox.");
+      const { contacts, items } = await impRead(files);
+      if (!contacts.length && !items.length) throw new Error("No SimplePractice contacts or records were found in those files.");
+      Object.assign(imp, { contacts, items });
+      impRows();
+      const plan = await api("POST", "/api/admin/import/sp/plan", { contacts: imp.contacts.map(({ key, name, first, last, email, phone, dob, address }) => ({ key, name, first, last, email, phone, dob, address })) });
+      imp.plan = Object.fromEntries(plan.rows.map((x) => [x.key, x])); imp.batches = plan.batches;
+      for (const r of imp.rows) { const p = imp.plan[r.key] || {}; imp.choice[r.key] = p.action === "link" ? `link:${p.clientId}` : "new"; }
+      imp.stage = "preview"; imp.msg = ""; await render();
+    } catch (err) { formMsg(f, err.message); }
+  };
+  ACT.impChoice = (el) => { imp.choice[el.dataset.key] = el.value; render(); };
+  ACT.impPick = (el) => { impPick[el.dataset.name] = el.dataset.key; impRows(); render(); };
+  ACT.impBack = () => { impReset(); imp.batches = null; render(); };
+  ACT.impGo = async () => {
+    const rows = imp.rows.filter((r) => imp.choice[r.key] !== "skip");
+    const unsure = rows.filter((r) => (imp.plan[r.key] || {}).how === "ambiguous" && imp.choice[r.key] === "new");
+    if (!confirm(`Import ${rows.length} clients and their documents into MD Fit?${unsure.length ? `\n\n${unsure.length} name(s) match two accounts and will come in as new clients unless you pick one.` : ""}\n\nNobody is emailed. You can undo the whole import afterwards.`)) return;
+    imp.stage = "running"; imp.msg = "Creating and matching client accounts…"; await render();
+    const out = { created: 0, linked: 0, patients: 0, files: 0, dupes: 0, invoices: 0, paidCents: 0, owedCents: 0, notes: [] };
+    try {
+      const body = rows.map((r) => { const ch = String(imp.choice[r.key]); return { key: r.key, name: r.name, first: r.first, last: r.last, email: r.email, phone: r.phone, dob: r.dob, address: r.address, action: ch.startsWith("link:") ? "link" : "new", clientId: ch.startsWith("link:") ? ch.slice(5) : "", patientSince: r.records ? (r.first || new Date().toISOString().slice(0, 10)) : "" }; });
+      const made = await api("POST", "/api/admin/import/sp/clients", { rows: body });
+      Object.assign(out, { created: made.created, linked: made.linked, patients: made.patients });
+      const keyOf = new Map(); for (const h of impHolders().values()) keyOf.set(impNorm(h.name), h.cards[0].key);
+      const todo = imp.items.filter((it) => made.map[keyOf.get(impNorm(it.holder))]);
+      imp.progress = { done: 0, total: todo.length, errors: [] };
+      for (const it of todo) {
+        imp.msg = `Filing ${it.kind === "invoice" ? "invoices" : "records"}…`;
+        const q = new URLSearchParams({ batch: made.batch, client: made.map[keyOf.get(impNorm(it.holder))], kind: it.kind, date: it.date });
+        let ok = false;
+        for (let attempt = 0; attempt < 3 && !ok; attempt++) {
+          try {
+            const res = await fetch(`${API}/api/admin/import/sp/file?${q}`, { method: "POST", headers: { Authorization: "Bearer " + token, "Content-Type": it.type, "X-File-Name": encodeURIComponent(it.name), "X-Idle-Seconds": "0" }, body: new Blob([await it.read()], { type: it.type }) });
+            if (res.status === 401) { signOut(); return; }
+            const data = await res.json().catch(() => ({}));
+            if (res.status === 429) { await new Promise((go) => setTimeout(go, 3000 * (attempt + 1))); continue; }
+            if (!res.ok) { imp.progress.errors.push(`${it.holder}: ${it.name}: ${data.error || "could not be filed"}`); break; }
+            ok = true; data.duplicate ? out.dupes++ : out.files++;
+            if (data.invoice && !data.invoice.duplicate) { out.invoices++; if (data.invoice.status === "paid") out.paidCents += data.invoice.amount; else out.owedCents += data.invoice.amount; }
+            if (data.note) out.notes.push(`${it.holder}: ${data.note}`);
+          } catch (err) { if (attempt === 2) imp.progress.errors.push(`${it.holder}: ${it.name}: ${err.message}`); else await new Promise((go) => setTimeout(go, 1500)); }
+        }
+        imp.progress.done++;
+        if (imp.progress.done % 5 === 0 || imp.progress.done === imp.progress.total) { const bar = document.querySelector("#view"); if (bar && routeNow() === "import") await render(); }
+        await new Promise((go) => setTimeout(go, 120)); // gentle on the server's rate limits
+      }
+    } catch (err) { imp.progress.errors.push(err.message); }
+    const keep = { result: out, progress: imp.progress };
+    impReset(); Object.assign(imp, keep, { stage: "done", batches: null }); forget();
+    await render(); toast("Import finished.");
+  };
+  ACT.impUndo = async (el) => {
+    if (!confirm("Undo this import? The client accounts it created (unless they have signed in since), the documents it filed and the invoices it entered are removed. Anything written in MD Fit since is kept.")) return;
+    const r = await api("POST", `/api/admin/import/sp/batches/${encodeURIComponent(el.dataset.id)}/undo`, {});
+    imp.batches = null; forget(); await render(); toast(`Import undone. ${r.removedAccounts} account(s) removed.`);
+  };
+  // ===================== end of Import =====================
 
   ACT.rsEnabled = async (el) => { const on = el.getAttribute("aria-checked") !== "true"; if (!(await rsChange(on ? "Switch the revenue share on." : "Switch the revenue share off.", { enabled: on }))) return; await render(); toast(on ? "The revenue share is on." : "The revenue share is off. Nothing new is earned."); };
   ACT.rsAutoPay = async (el) => {
