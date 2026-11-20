@@ -109,8 +109,17 @@ function classify(listing, cat, api) {
   // Publishing the new file would give the app two videos for one movement, so the report says so and lets the owner
   // decide: a second entry, a replacement, or nothing at all.
   const norm = (s) => String(s || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
-  const byName = new Map();
-  for (const e of cat.ex) if (!byName.has(norm(e.name))) byName.set(norm(e.name), e);
+  // "Standing Hip Abduction/Adduction" in the catalog and "Standing Hip Abduction and Adduction" in Drive are one
+  // movement, and an exact comparison calls the second one new. So compare a looser key too, with the joining words
+  // dropped. Only joiners: "with", "to" and "drop" change which movement it is ("Eccentric Toe Reach" is not
+  // "Eccentric Toe Reach With Rotation"), so they stay. A loose hit is reported as a likeness to confirm, never as
+  // a settled fact.
+  const loose = (s) => norm(s).split(" ").filter((w) => w !== "and" && w !== "the" && w !== "a").join(" ");
+  const byName = new Map(), byLoose = new Map();
+  for (const e of cat.ex) {
+    if (!byName.has(norm(e.name))) byName.set(norm(e.name), e);
+    if (!byLoose.has(loose(e.name))) byLoose.set(loose(e.name), e);
+  }
 
   // Decisions already taken are not open work. Without this ledger every run re-asks about the same clips, and the
   // owner answers the same question for ever.
@@ -131,11 +140,13 @@ function classify(listing, cat, api) {
       : RAW_NAME.test(base) ? "unnamed camera file"
       : TAKE.test(base) ? "an alternate take" : null;
     const name = base.replace(TAKE, "").trim();
-    const already = byName.get(norm(name)) || null;
+    const exact = byName.get(norm(name)) || null;
+    const already = exact || byLoose.get(loose(name)) || null;
+    const near = !!already && !exact;
     rows.push({
       id: f.id, title: f.title, name, mod: f.mod || "",
       segs, bucket, blocked, settled: settledBy.get(f.id) || null,
-      already: already ? { id: already.id, region: already.region, cat: already.cat, level: already.level } : null,
+      already: already ? { id: already.id, name: already.name, region: already.region, cat: already.cat, level: already.level, near } : null,
       region: bucket && bucket.n === 1 && cat.rc[segs[segs.indexOf(bucket.label) + 1]] ? segs[segs.indexOf(bucket.label) + 1] : null,
       state: published.has(f.id) ? "published" : inManifest.has(f.id) ? "awaiting-bunny" : inCatalog.has(f.id) ? "in-catalog" : "unplaced"
     });
@@ -212,7 +223,7 @@ function report(rows) {
     for (const [k, v] of Object.entries(by).sort((a, b) => b[1].length - a[1].length)) {
       L(`  ${k}   [${v[0].bucket.usage}]`);
       for (const r of v) L(`      ${r.already ? "~" : "+"} ${r.name}${r.region ? "  (region: " + r.region + ")" : ""}   ${r.id}` +
-        (r.already ? `\n          already in the library as ${r.already.region} / ${r.already.cat} / level ${r.already.level}  (${r.already.id})` : "") +
+        (r.already ? `\n          ${r.already.near ? `looks like the library's "${r.already.name}"` : "already in the library"} as ${r.already.region} / ${r.already.cat} / level ${r.already.level}  (${r.already.id})${r.already.near ? " — confirm before treating this file as new" : ""}` : "") +
         (twice.get(nm(r.name)) > 1 ? `\n          this name is on ${twice.get(nm(r.name))} of the files below — one movement, filmed for more than one place` : ""));
     }
     L("");
