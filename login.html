@@ -115,7 +115,7 @@
 
   <script src="config.js?v=aac711e3"></script>
   <script src="analytics.js?v=f3f61f9e" defer></script>
-  <script src="common.js?v=14f907fc"></script>
+  <script src="common.js?v=d06cd7da"></script>
   <script>
     (() => {
       const { $, $$, api, auth, wire, API } = window.MDFit;
@@ -140,7 +140,13 @@
       // The link's own code first; otherwise one kept on this device from a referral link opened earlier (common.js)
       const urlRef = q.get("ref") || "";
       const ref = urlRef || (window.MDFit.refCode ? window.MDFit.refCode() : "");
-      wire($("#login-form"), async (d) => done(await api("/api/clients/login", d)), { reset: false });
+      wire($("#login-form"), async (d) => {
+        try { return done(await api("/api/clients/login", d)); }
+        catch (err) { // a temporary password from the office: it is not a way in, it leads to choosing your own
+          if (err.data && err.data.mustChangePassword && err.data.resetToken) { resetToken = err.data.resetToken; mode("reset"); const m = $("#reset-form .form-msg"); if (m) { m.className = "form-msg"; m.textContent = "That was your temporary password. Choose your own to finish signing in."; } return { message: "" }; }
+          throw err;
+        }
+      }, { reset: false });
       wire($("#signup-form"), async (d) => done(await api("/api/clients/signup", { ...d, referralCode: (d.referralCode || "").trim() || ref || undefined })), { reset: false });
       wire($("#forgot-form"), async (d) => {
         resetEmail = d.identifier;

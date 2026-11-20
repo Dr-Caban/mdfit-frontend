@@ -433,7 +433,7 @@
     if (drawn === seq || !cache.clientView) cache.clientView = { rows: shown, patients, waiting };
     return `
     <div class="view-head"><div><h1>Clients</h1><p class="muted">${plural(list.length, "account")}${emr ? ` · ${plural(patients.size, "active patient")} · ${waiting.size} waiting to be converted` : ""}</p></div>
-    <div class="row"><input class="input" id="clientQ" style="width:240px" placeholder="Filter by name, email or phone" value="${esc(state.clientQ)}" aria-label="Filter clients">${can("security") ? `<button class="btn" data-act="exportAsk" id="exportBtn">${ui("download", 14)} <span id="exportLabel">${state.picked.size ? `Export ${state.picked.size} selected` : "Export all"}</span></button>` : ""}<button class="btn danger" data-act="trashPicked" id="trashPicked"${state.picked.size ? "" : " hidden"}>${ui("trash", 14)} <span id="trashPickedLabel">Delete ${state.picked.size} selected</span></button><button class="btn" data-act="trashOpen">${ui("restore", 14)} View trash</button></div></div>
+    <div class="row"><input class="input" id="clientQ" style="width:240px" placeholder="Filter by name, email or phone" value="${esc(state.clientQ)}" aria-label="Filter clients">${can("security") ? `<button class="btn" data-act="exportAsk" id="exportBtn">${ui("download", 14)} <span id="exportLabel">${state.picked.size ? `Export ${state.picked.size} selected` : "Export all"}</span></button>` : ""}<button class="btn danger" data-act="trashPicked" id="trashPicked"${state.picked.size ? "" : " hidden"}>${ui("trash", 14)} <span id="trashPickedLabel">Delete ${state.picked.size} selected</span></button><button class="btn" data-act="trashOpen">${ui("restore", 14)} View trash</button><button class="btn primary" data-act="clientAdd">${ui("plus", 14)} Add client</button></div></div>
     <div class="card" style="padding:0"><div class="table-wrap"><table>
       <thead><tr><th style="width:34px"><input type="checkbox" data-change="pickAll" aria-label="Select everyone shown"${shown.length && shown.every((c) => state.picked.has(c.id)) ? " checked" : ""}></th><th>Client</th><th>Status</th><th>Documents</th><th>Next visit</th><th>Membership</th><th>Last sign-in</th></tr></thead>
       <tbody id="clientRows">${clientRows(shown.slice(0, ROWS_FIRST), patients, waiting) || noneRow(7, list.length ? "No one matches." : "No clients yet.")}</tbody>
@@ -504,7 +504,7 @@
       <p class="muted">${esc(d.email)}${d.phone ? " · " + esc(d.phone) : ""} · Next: ${d.nextVisit ? `${fmtDate(d.nextVisit.date)} ${fmtTime(d.nextVisit.time)}` : "nothing booked"}</p>
       <div class="row" style="margin-top:6px" id="chartPills">${chartPills()}</div></div></div>
       <div class="row"><button class="btn ${d.patient ? "" : "primary"}" data-act="convert" data-on="${d.patient ? "0" : "1"}">${d.patient ? "Mark as not a patient" : "Convert to active patient"}</button>
-      <button class="btn" data-act="thread" data-id="${esc(id)}">Message</button><button class="btn" data-act="book">Book</button><button class="btn ${d.patient ? "primary" : ""}" data-act="chartNewNote">${ui("plus", 14)} Note</button><a class="btn" href="#chart" data-act="chartClose">Other client</a><button class="btn danger" data-act="clientTrash" data-id="${esc(id)}" data-name="${esc(d.name)}">${ui("trash", 14)} Delete</button></div></div>
+      <button class="btn" data-act="thread" data-id="${esc(id)}">Message</button><button class="btn" data-act="clientLoginLink" data-id="${esc(id)}" title="Email them the sign-in address">Email sign-in link</button><button class="btn" data-act="book">Book</button><button class="btn ${d.patient ? "primary" : ""}" data-act="chartNewNote">${ui("plus", 14)} Note</button><a class="btn" href="#chart" data-act="chartClose">Other client</a><button class="btn danger" data-act="clientTrash" data-id="${esc(id)}" data-name="${esc(d.name)}">${ui("trash", 14)} Delete</button></div></div>
     <div class="row chart-types"><label for="chTier">Membership</label><select id="chTier" class="input" data-change="chartTier">${tierOptions(tier)}</select>
       <label for="chType">Client type</label><select id="chType" class="input" data-change="chartType"><option value="outpatient"${d.clientType !== "inpatient" ? " selected" : ""}>Standard</option><option value="inpatient"${d.clientType === "inpatient" ? " selected" : ""}>Subscription exempt (visits not charged)</option></select>
       <span class="muted" style="font-size:12px">Subscription exempt clients get the full MD Fit app free.</span></div>
@@ -3216,6 +3216,28 @@
   FORMS.privacyDisc = async (f) => { try { await api("POST", `/api/admin/clients/${encodeURIComponent(f.dataset.id)}/disclosures`, { date: f.date.value, basis: f.basis.value.trim(), recipient: f.recipient.value.trim(), purpose: f.purpose.value.trim(), description: f.description.value.trim() }); } catch (err) { return formMsg(f, err.message); } closeModal(); toast("Disclosure recorded on their accounting."); };
   // ===================== end of Compliance =====================
 
+  // ---- Add a client by hand, and email a client the sign-in address (mymdfit.com/login)
+  ACT.clientAdd = () => modal(`<div class="card-head"><h2>Add a client</h2><button type="button" class="btn sm" data-act="closeModal">Close</button></div>
+    <form class="stack" data-form="clientAdd">${fld("caName", "name", "Full name", "", { max: 100, attrs: 'required minlength="2" autocomplete="off"' })}
+      ${fld("caEmail", "email", "Email (required: it is how they sign in)", "", { type: "email", max: 200, attrs: 'required autocomplete="off"' })}${fld("caPhone", "phone", "Phone (optional)", "", { type: "tel", max: 30, attrs: 'autocomplete="off"' })}
+      <p class="muted" data-msg style="margin:0;font-size:12.5px">When you save, they are emailed that the account was created, with the sign-in link (mymdfit.com/login) and a temporary password. It lasts 3 days and they must choose their own the first time they sign in.</p><div class="row"><button class="btn primary">Add client</button></div></form>
+    <div style="border-top:1px solid var(--line);margin-top:16px;padding-top:14px"><h3 style="margin:0 0 4px">Or just send the sign-up link</h3><p class="muted" style="margin:0 0 10px;font-size:12.5px">Emails mymdfit.com/login so they create their own account. Nothing is added to your client list until they do.</p>
+      <form class="row" data-form="clientInvite" style="gap:8px;align-items:flex-end;flex-wrap:wrap"><div class="field" style="flex:1 1 220px;margin:0"><label for="ciEmail">Their email</label><input id="ciEmail" name="email" class="input" type="email" maxlength="200" required autocomplete="off"></div><button class="btn">Send sign-up link</button></form>
+      <p class="muted" id="ciMsg" role="status" style="margin:8px 0 0;font-size:12.5px"></p></div>`);
+  FORMS.clientAdd = async (f) => {
+    const email = f.email.value.trim();
+    if (!email) return formMsg(f, "An email address is required.");
+    let r; try { r = await api("POST", "/api/admin/clients", { name: f.name.value.trim(), email, phone: f.phone.value.trim() }); } catch (err) { return formMsg(f, err.message); }
+    closeModal(); await render();
+    toast(`${r.client.name} added. ${r.emailed ? "Their account email, with a temporary password, is on its way." : "The email could not be sent, so no temporary password was made. They can set one with Forgot password? on the sign-in page."}`);
+  };
+  FORMS.clientInvite = async (f) => {
+    const m = $("#ciMsg"); m.textContent = "Sending…";
+    try { const r = await api("POST", "/api/admin/clients/invite", { email: f.email.value.trim() }); m.textContent = r.existing ? `${r.to} already has an account, so the sign-in link was sent instead.` : `Sign-up link sent to ${r.to}.`; f.reset(); }
+    catch (err) { m.textContent = err.message; }
+  };
+  ACT.clientLoginLink = async (el) => { if (!confirm("Email this client the sign-in link (mymdfit.com/login)?")) return; const r = await api("POST", `/api/admin/clients/${encodeURIComponent(el.dataset.id)}/login-link`, {}); toast(r.temporaryPassword ? `Sent to ${r.to}, with a new temporary password (they have not signed in yet).` : `Sign-in link sent to ${r.to}.`); };
+
   ACT.rsEnabled = async (el) => { const on = el.getAttribute("aria-checked") !== "true"; if (!(await rsChange(on ? "Switch the revenue share on." : "Switch the revenue share off.", { enabled: on }))) return; await render(); toast(on ? "The revenue share is on." : "The revenue share is off. Nothing new is earned."); };
   ACT.rsAutoPay = async (el) => {
     const on = el.getAttribute("aria-checked") !== "true";
@@ -3292,6 +3314,7 @@
   // client is offered first), and it lands in the screen or form that already does that job. Nothing here talks to
   // the server by a route of its own, so what the client is sent is exactly what those screens send.
   const QA = [
+    ["newclient", "New client", "clients", "Add a client, or email someone the sign-up link"],
     ["invoice", "Invoice", "payments", "Emails a pay link and notifies their app"],
     ["tele", "Telehealth invite", "telehealth", "Emails the join link and notifies their app"],
     ["book", "Booking link", "booking", "Emails a link to pick a time and notifies their app"],
@@ -3300,7 +3323,7 @@
     ["program", "Program", "programs", "Add one on their chart. They are notified in the app and by email"],
     ["message", "Message", "messages", "Opens your conversation. They are notified when you send"]
   ];
-  const QA_NEED = { invoice: "payments", tele: "telehealth", book: "chart", note: "notes", forms: "forms", program: "chart", message: "messages" }; // the screen each one lands in
+  const QA_NEED = { newclient: "clients", invoice: "payments", tele: "telehealth", book: "chart", note: "notes", forms: "forms", program: "chart", message: "messages" }; // the screen each one lands in
   const qaMine = () => QA.filter(([k]) => navOk(QA_NEED[k]) && can("clients"));
   const QA_DOCK = new Set(["messages", "telehealth"]); // where a button in the corner would sit on the box to write in or the visit's controls
   const qa = { open: false, act: "", other: false, list: [], at: 0 };
@@ -3391,7 +3414,7 @@
     qaToggle: () => (qa.open ? qaClose() : qaOpen()),
     qaOther: () => { qa.other = true; qaDraw(); },
     qaBack: () => { qa.act = ""; qaDraw(); },
-    qaDo: (el) => { const who = qaWho(); if (who) return qaRun(el.dataset.k, who); qa.act = el.dataset.k; qaDraw(); },
+    qaDo: (el) => { if (el.dataset.k === "newclient") { qaClose(); return ACT.clientAdd(); } const who = qaWho(); if (who) return qaRun(el.dataset.k, who); qa.act = el.dataset.k; qaDraw(); },
     qaPick: (el) => { const c = qa.list.find((x) => x.id === el.dataset.id) || (cache.clients || []).find((x) => x.id === el.dataset.id); if (c) return qaRun(qa.act, c); }
   });
   document.addEventListener("input", (e) => { if (e.target.id === "qaFind") qaFill(); });
