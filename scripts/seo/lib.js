@@ -84,8 +84,12 @@ const pageExists = (u) => { const rel = String(u).split(/[?#]/)[0].replace(/^\/+
   if (fs.existsSync(path.join(root, f))) return true;
   const m = rel.match(/^(conditions|activities|blog)\/([a-z0-9-]+)$/) || (/^[a-z0-9-]+$/.test(rel) ? [0, "landing", rel] : null);
   return !!m && fs.existsSync(path.join(root, "data/seo/pages", m[1], m[2] + ".json")); };
+// An entry is a URL, or [url, "link text"] where the target page's own <h1> is not the right label in this list
+// (a hub's h1 reads "Pain & Rehabilitation", which says nothing useful at the end of a list of conditions).
 const linkList = (urls, title) => {
-  const items = urls.filter((u) => (data.titles[u] || /^\/(muscles|pain|activities|conditions|blog)\//.test(u)) && pageExists(u)).map((u) => `<li><a href="${attr(u)}">${esc(data.titles[u] || u)}</a></li>`);
+  const items = urls.map((e) => (Array.isArray(e) ? { u: e[0], t: e[1] } : { u: e, t: null }))
+    .filter(({ u }) => (data.titles[u] || /^\/(muscles|pain|activities|conditions|blog)\//.test(u)) && pageExists(u))
+    .map(({ u, t }) => `<li><a href="${attr(u)}">${esc(t || data.titles[u] || u)}</a></li>`);
   return items.length ? `<h2>${esc(title)}</h2>\n    <ul class="cd-links">${items.join("")}</ul>` : "";
 };
 // MD Fit does not bill insurance. Said the same way everywhere (FAQ + CTA line) so no page implies otherwise.
@@ -157,9 +161,13 @@ ${body}
 // "lastReviewed" and "reviewedBy" say a named clinician checked this page. They go in ONLY when Dr. Jared has
 // actually signed the page off (`reviewed: true`, from the page's own reviewStatus or data/seo/approved.json).
 // A draft page is still a real page; it just does not carry his name. Never default this to true.
+// "lastReviewed" is a claim about the day a named clinician signed the page off, so it is published ONLY when the
+// data records that date. It must never fall back to the build date: that re-dated every approved page on every
+// build and told Google a clinician had re-reviewed it that day. With no recorded date the page carries reviewedBy
+// and no lastReviewed, which is valid schema.org, and the build stays idempotent.
 const webPage = ({ url, title, description, about, lastReviewed, reviewed = false }) => ({
   "@type": "MedicalWebPage", url: SITE + url, name: title, description,
-  ...(reviewed ? { lastReviewed: lastReviewed || TODAY, reviewedBy: { "@id": `${SITE}/#dr-jared` } } : {}),
+  ...(reviewed ? { ...(lastReviewed ? { lastReviewed } : {}), reviewedBy: { "@id": `${SITE}/#dr-jared` } } : {}),
   provider: { "@id": `${SITE}/#clinic` }, relatedLink: `${SITE}/mdfit-app`, ...(about ? { about } : {})
 });
 

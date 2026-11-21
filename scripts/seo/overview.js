@@ -15,6 +15,10 @@ const text = (h) => h.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>
 const body = (s) => { const m = s.match(/<main[\s\S]*?<\/main>/) || s.match(/<body[\s\S]*?<\/body>/); return m ? text(m[0].replace(/<header[\s\S]*?<\/header>|<footer[\s\S]*?<\/footer>|<nav[\s\S]*?<\/nav>/g, " ")) : ""; };
 const words = (t) => (t.match(/[A-Za-z0-9][A-Za-z0-9'’-]*/g) || []).length;
 const sitemap = new Set([...fs.readFileSync(path.join(root, "sitemap.xml"), "utf8").matchAll(/<loc>https:\/\/www\.mymdfit\.com([^<]*)<\/loc>/g)].map((m) => m[1]));
+// Which generated groups Dr. Jared has signed off. Without this, muscles and pain (160 pages) were reported as
+// "awaiting clinical review" on every run although approved.json had signed them off and they carry reviewedBy.
+const APPROVED = JSON.parse(fs.readFileSync(path.join(root, "data/seo/approved.json"), "utf8"));
+const approvedFlag = (v) => v === true || (!!v && typeof v === "object" && v.approved !== false);
 const review = {}; // url -> reviewStatus from the JSON data
 const pd = path.join(root, "data/seo/pages");
 if (fs.existsSync(pd)) for (const g of fs.readdirSync(pd)) for (const f of fs.readdirSync(path.join(pd, g))) { const p = JSON.parse(fs.readFileSync(path.join(pd, g, f), "utf8")); review[g === "landing" ? `/${p.slug}` : `/${g}/${p.slug}`] = p.reviewStatus; }
@@ -23,6 +27,9 @@ const GEN = new Set(["muscles", "pain", "activities"]);
 const rows = [], inbound = {};
 for (const rel of pages) {
   const s = fs.readFileSync(path.join(root, rel), "utf8"), url = urlOf(rel);
+  // The app, workspace, visit, referral and valuation pages are deliberately noindex. They are not public pages, so
+  // they are left out of the report entirely rather than counted and then flagged for the things noindex implies.
+  if (/noindex/.test(s)) continue;
   for (const [, href] of s.matchAll(/href="(\/[^"#?]*)[^"]*"/g)) { const u = href.replace(/\/$/, "") || "/"; if (u !== url.replace(/\/$/, "")) inbound[u] = (inbound[u] || 0) + 1; }
   const title = ((s.match(/<title>([^<]*)<\/title>/) || [])[1] || "").replace(/&amp;/g, "&");
   const desc = ((s.match(/<meta name="description" content="([^"]*)"/) || [])[1] || "").replace(/&amp;/g, "&");
@@ -30,7 +37,7 @@ for (const rel of pages) {
   for (const [, ld] of s.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) { try { const j = JSON.parse(ld); for (const n of j["@graph"] || [j]) if (n && n["@type"]) types.add([].concat(n["@type"])[0]); } catch {} }
   const h1 = ((s.match(/<h1[^>]*>([\s\S]*?)<\/h1>/) || [])[1] || "").replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").trim();
   const g = groupOf(url);
-  rows.push({ url, group: g, title, tlen: title.length, dlen: desc.length, words: words(body(s)), types: [...types].filter((t) => !/MedicalClinic|Person/.test(t)).join(", "), sitemap: sitemap.has(url) || sitemap.has(url + "/"), noindex: /noindex/.test(s), review: review[url] || (GEN.has(g) ? "draft" : "live"), h1, generated: GEN.has(g) || !!review[url] });
+  rows.push({ url, group: g, title, tlen: title.length, dlen: desc.length, words: words(body(s)), types: [...types].filter((t) => !/MedicalClinic|Person/.test(t)).join(", "), sitemap: sitemap.has(url) || sitemap.has(url + "/"), noindex: /noindex/.test(s), review: review[url] || (url.endsWith("/") || !GEN.has(g) ? "live" : approvedFlag(APPROVED[g]) ? "live" : "draft"), h1, generated: GEN.has(g) || !!review[url] });
 }
 for (const r of rows) r.inbound = inbound[r.url.replace(/\/$/, "") || "/"] || 0;
 const ORDER = ["Home", "conditions", "treatments", "areas", "landing", "activities", "muscles", "pain", "guides", "blog", "other"];

@@ -8,6 +8,10 @@
 const fs = require("fs"), path = require("path"), { execFileSync } = require("child_process");
 const L = require("./lib");
 const APPROVED = L.readJson("data/seo/approved.json", {});
+// approved.json marks a generated group as signed off by Dr. Jared: `true`, or { "approved": true, "on": "2026-11-13" }
+// once the date of that sign-off is on record. Only a recorded date is published as lastReviewed (see lib.js webPage).
+const approvedFlag = (v) => v === true || (!!v && typeof v === "object" && v.approved !== false);
+const approvedOn = (v) => (!!v && typeof v === "object" && typeof v.on === "string" ? v.on : null);
 // A hand-written link may use a muscle's short data id ("/muscles/ql") instead of its page ("/muscles/quadratus-lumborum").
 // 37 of the ids differ from their page, and writers keep reaching for the id, so links are corrected here at build time.
 const MUSCLE_PAGE = L.readJson("data/seo/muscle-slugs.json", {});
@@ -27,6 +31,25 @@ const painForMuscle = (id) => { // pain-location pages this muscle refers to, mo
   for (const area in SPOTS) for (const [label, ids] of SPOTS[area]) { const i = ids.indexOf(id); if (i >= 0) { const p = painBySpot.get(spotKey(area, label)); if (p) hits.push({ p, i }); } }
   return [...new Map(hits.sort((a, b) => a.i - b.i).map((h) => [h.p.slug, h.p])).values()];
 };
+// The muscle library is the biggest group on the site (101 pages) and used to link almost nothing back to the
+// condition pages: 33 links across all of them, against 5.8 per page in the other direction. Condition pages already
+// name the muscles behind them, so that map is inverted here and each muscle page links the conditions it drives.
+// Read straight from the JSON so it works when only the `muscles` or `pain` phase is built.
+const CONDITIONS_BY_MUSCLE = (() => {
+  const map = {}, dir = path.join(L.root, "data/seo/pages/conditions");
+  if (!fs.existsSync(dir)) return map;
+  for (const f of fs.readdirSync(dir).filter((x) => x.endsWith(".json"))) {
+    const p = JSON.parse(fs.readFileSync(path.join(dir, f), "utf8"));
+    if (!p.slug || p.reviewStatus !== "approved") continue;
+    (p.muscles || []).forEach((id, i) => (map[id] = map[id] || []).push({ u: `/conditions/${p.slug}`, i }));
+  }
+  // A condition names its muscles most-central first, so that position is how central this muscle is to it. Ranking
+  // by it keeps the link list the conditions a muscle actually drives: 44 conditions mention the gluteus medius, and
+  // sorting them by name instead put "bone density testing" on the page and left "hip bursitis" off it.
+  for (const id in map) map[id] = [...new Map(map[id].sort((a, b) => a.i - b.i || a.u.localeCompare(b.u)).map((x) => [x.u, x])).values()].map((x) => x.u);
+  return map;
+})();
+const conditionsForMuscle = (id, max = 6) => (CONDITIONS_BY_MUSCLE[id] || []).slice(0, max);
 const foldedForMuscle = (id) => { const out = []; for (const k in pain.folded) { const [a, l] = k.split("|"); const s = (SPOTS[a] || []).find((x) => x[0] === l); if (s && s[1].includes(id)) out.push(pain.folded[k]); } return [...new Set(out)]; };
 const tracksForMuscle = (id) => tracks.filter((t) => t.pts.includes(id));
 const regionOf = (id) => { const t = tracksForMuscle(id)[0]; return t ? t.region : (painForMuscle(id)[0] || { region: "Body" }).region; };
@@ -197,9 +220,10 @@ function buildMuscle(id) {
     ${ABOUT_DR}
     ${faqHtml(faq)}
     ${CTA}
+    ${linkList(conditionsForMuscle(id), `Conditions the ${short.toLowerCase()} is involved in`)}
     ${linkList(siblings.map(muscleUrl), "Nearby muscles")}
     ${linkList([...locs.slice(0, 6).map((p) => painUrl(p.slug)), ...folded], "Where this muscle hurts")}`;
-  const graph = [webPage({ url, title, description, reviewed: APPROVED.muscles === true, about: { "@type": "Muscle", name, ...(r.action ? { muscleAction: r.action } : {}), ...(r.origin ? { origin: r.origin } : {}), ...(r.insertion ? { insertion: r.insertion } : {}), ...(r.nerve ? { nerve: r.nerve } : {}) } }), faqLd(faq), breadcrumbLd(trail)];
+  const graph = [webPage({ url, title, description, reviewed: approvedFlag(APPROVED.muscles), lastReviewed: approvedOn(APPROVED.muscles), about: { "@type": "Muscle", name, ...(r.action ? { muscleAction: r.action } : {}), ...(r.origin ? { origin: r.origin } : {}), ...(r.insertion ? { insertion: r.insertion } : {}), ...(r.nerve ? { nerve: r.nerve } : {}) } }), faqLd(faq), breadcrumbLd(trail)];
   L.write(`muscles/${slug}.html`, page({ url, title, description, body, graph, section: "muscles" }));
   generated.push({ url, title: `${short} pain`, kind: "muscle", snippet: m.refers.slice(0, 150), kw: [name, ...locs.map((p) => p.name), ...r.mimics.slice(0, 3)], priority: 0.7, file: `muscles/${slug}.html`, region: regionOf(id), short });
 }
@@ -302,7 +326,8 @@ function buildPain(p) {
   const description = painDescription(p, at, descNames, aggr);
   const flags = FLAGS[p.flags] || FLAGS.default;
   const nearby = pain.pages.filter((x) => x.region === p.region && x.slug !== p.slug).map((x) => painUrl(x.slug));
-  const related = [...new Set(ranked.flatMap((m) => foldedForMuscle(m.id)))].slice(0, 4);
+  // Folded spots first, then the conditions those muscles drive: pain pages averaged about one condition link each.
+  const related = [...new Set([...ranked.flatMap((m) => foldedForMuscle(m.id)), ...ranked.flatMap((m) => conditionsForMuscle(m.id, 3))])].slice(0, 6);
   // detail comes from the muscles this page "owns"; if it owns none, from its top muscle only (short form)
   const detail = owned.length ? owned.slice(0, 2) : [ranked[0]];
   const top = detail[0], second = detail[1], rep = reports[top.id], rep2 = second ? reports[second.id] : null;
@@ -356,7 +381,7 @@ function buildPain(p) {
     ${CTA}
     ${linkList(nearby, `Other places it hurts: ${p.region}`)}
     ${linkList(related, "Related conditions")}`;
-  const graph = [webPage({ url, title: t2, description, reviewed: APPROVED.pain === true, about: { "@type": "MedicalSymptom", name: `Pain ${at}` } }), faqLd(faq), breadcrumbLd(trail)];
+  const graph = [webPage({ url, title: t2, description, reviewed: approvedFlag(APPROVED.pain), lastReviewed: approvedOn(APPROVED.pain), about: { "@type": "MedicalSymptom", name: `Pain ${at}` } }), faqLd(faq), breadcrumbLd(trail)];
   L.write(`pain/${p.slug}.html`, page({ url, title: t2, description, body, graph, section: "pain" }));
   generated.push({ url, title: `Pain ${at}`, kind: "pain", snippet: `Muscles that refer pain ${at}: ${ranked.slice(0, 3).map((m) => shortName(m.name)).join(", ")}`, kw: [p.name, p.region, ...ranked.slice(0, 4).map((m) => m.name)], priority: 0.7, file: `pain/${p.slug}.html` });
 }
@@ -400,6 +425,22 @@ const LANDING = ["/best-rehab-near-me-sarasota", "/golf-performance-sarasota", "
 const AREAS = ["/areas/sarasota", "/areas/bradenton", "/areas/lakewood-ranch", "/areas/venice", "/areas/osprey"];
 const allConditionUrls = () => fs.readdirSync(path.join(L.root, "conditions")).filter((f) => f.endsWith(".html") && f !== "index.html").map((f) => `/conditions/${f.replace(".html", "")}`).sort();
 let allContent = [];
+// Each condition page used to list all 113 of its siblings, and each activity page all 77 of its own: about 19,000
+// internal links carrying no signal about what is actually related, burying the curated "Related" block above them.
+// A page now links the siblings it genuinely shares muscles or pain locations with, then its hub, which indexes every
+// one of them, so nothing is harder to reach than before and the curated links are no longer drowned.
+const SIBLING_MAX = 8;
+const shared = (a, b) => (a || []).filter((x) => (b || []).includes(x)).length;
+const nearestSiblings = (p, url) => {
+  const skip = new Set([url, ...(p.related || [])]);
+  return allContent
+    .filter((c) => c.group === p.group && c.slug !== p.slug)
+    .map((c) => ({ u: `/${GROUP[c.group].dir}/${c.slug}`, s: shared(p.muscles, c.muscles) * 2 + shared(p.pain, c.pain) }))
+    .filter((c) => c.s > 0 && !skip.has(c.u))
+    .sort((a, b) => b.s - a.s || a.u.localeCompare(b.u))
+    .slice(0, SIBLING_MAX)
+    .map((c) => c.u);
+};
 function buildContent(p) {
   const g = GROUP[p.group], url = g.dir ? `/${g.dir}/${p.slug}` : `/${p.slug}`;
   const trail = [{ name: "Home", href: "/" }, ...(g.crumb ? [{ name: g.crumb[0], href: g.crumb[1] }] : []), { name: p.h1.replace(/ in Sarasota, FL$/, ""), href: url }];
@@ -424,14 +465,14 @@ function buildContent(p) {
     ${isBlog ? CTA.replace("Ready to get out of pain?", "Want this handled in person?") : L.cta(p.group === "activities" ? "train" : "pain")}
     ${linkList(locs.map(painUrl), "Where it hurts")}
     ${linkList(p.related, isBlog ? "Read next" : "Related")}
-    ${p.group === "conditions" ? linkList(allConditionUrls().filter((u) => u !== url), "Other conditions we treat") : ""}
-    ${p.group === "activities" ? linkList([...LEGACY_SPORTS.map((x) => x[0]), ...allContent.filter((c) => c.group === "activities" && c.slug !== p.slug).map((c) => `/activities/${c.slug}`)], "Other sports and lifestyles") : ""}
+    ${p.group === "conditions" ? linkList([...nearestSiblings(p, url), ["/conditions/", "All conditions we treat"]], "Other conditions we treat") : ""}
+    ${p.group === "activities" ? linkList([...LEGACY_SPORTS.map((x) => x[0]), ...nearestSiblings(p, url), ["/activities/", "All sports and lifestyles"]], "Other sports and lifestyles") : ""}
     ${isBlog ? linkList([...allContent.filter((c) => c.group === "blog" && c.slug !== p.slug).map((c) => `/blog/${c.slug}`), "/blog/what-is-a-cep"], "More from the blog") : ""}`;
   const about = p.about ? { "@type": p.about.type, name: p.about.name } : null;
   const graph = isBlog
     ? [{ "@type": "BlogPosting", "@id": SITE + url, url: SITE + url, headline: p.h1, description: p.description, datePublished: p.datePublished, dateModified: p.dateModified || p.datePublished,
       author: { "@id": `${SITE}/#dr-jared` }, publisher: { "@id": `${SITE}/#clinic` }, mainEntityOfPage: SITE + url, image: `${SITE}/assets/logo.webp` }, faqLd(p.faq), breadcrumbLd(trail)]
-    : [webPage({ url, title: p.title, description: p.description, about, reviewed: p.reviewStatus === "approved" }), faqLd(withInsuranceFaq(p.faq)), breadcrumbLd(trail)];
+    : [webPage({ url, title: p.title, description: p.description, about, reviewed: p.reviewStatus === "approved", lastReviewed: p.reviewedOn || p.dateModified || null }), faqLd(withInsuranceFaq(p.faq)), breadcrumbLd(trail)];
   const file = `${g.dir ? g.dir + "/" : ""}${p.slug}.html`;
   L.write(file, page({ url, title: p.title, description: p.description, body, graph, section: g.section }));
   generated.push({ url, title: p.h1.replace(/ in Sarasota, FL$/, ""), kind: p.group === "conditions" ? "condition" : p.group === "activities" ? "activity" : p.group, snippet: p.lead.slice(0, 150), kw: [...(p.sections || []).slice(0, 4).map((s) => s.h2), ...(p.about ? [p.about.name] : [])], priority: p.group === "blog" ? 0.6 : 0.8, file, date: p.datePublished });

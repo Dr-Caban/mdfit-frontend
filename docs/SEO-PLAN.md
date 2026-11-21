@@ -17,17 +17,26 @@
    every pain page; nothing clinical goes live without Dr. Jared's OK; work on a branch, open a PR, verify the Vercel
    preview, then merge; one Claude session merges at a time.
 5. Review count: change `data/google-reviews.json`, then `node scripts/seo/sync-review-count.js` (rewrites all pages).
+6. **The build must be idempotent.** Running `node scripts/seo/build.js` with no data change must produce no diff.
+   Nothing in a page may be derived from the date the build ran. In particular `lastReviewed` is published only when
+   the data records a real sign-off date (`reviewedOn` on a page's JSON, or `{"approved":true,"on":"YYYY-MM-DD"}` in
+   `data/seo/approved.json`); with no date on record a page carries `reviewedBy` and no `lastReviewed`. It previously
+   defaulted to the build date, which re-dated 352 pages on every run and claimed a clinician had re-reviewed them.
+7. **A page links its siblings selectively, never all of them.** Each condition page once listed all 113 others and
+   each activity page all 77, about 19,000 links that said nothing about what was related and buried the curated
+   "Related" block. `nearestSiblings()` in `scripts/seo/build.js` now picks up to 8 siblings that share muscles or
+   pain locations and then links the hub, which indexes every page in the group. Keep that shape.
 
 ## Status
 
 | Phase | What | State | Notes |
 |---|---|---|---|
 | 0 | Technical fixes (Google sees real data, 4 duplicate pages → 301, 37 titles, zoom, AI search bots) | **Live** | Merged to `main` 2026-11-09 (commit 2b001c1). |
-| 1 | Muscle library: `/muscles/` + 67 pages | **Built, awaiting clinical review** | Generated from `painmuscles.js` + `musclereports.js` (drafted for Dr. Jared's review). |
-| 2 | Pain locations: `/pain/` + 58 pages | **Built, awaiting clinical review** | 8 spots folded into existing condition pages (those pages gained a "Muscles that commonly cause pain here" section). Chest, abdomen and head pages carry 911 language; owner to review those first. |
-| 3 | 30 new condition pages + 6 landing-page upgrades | **Built, awaiting owner approval of the list** | Owner confirms each condition is one Dr. Jared actually treats; delete any JSON that isn't and rebuild. |
-| 4 | `/activities/` hub + 8 activity/audience pages | **Built, awaiting clinical review** | Golf, pickleball and running stay at their existing URLs and are linked from the hub. |
-| 5 | Blog: 4 new posts; cadence 2–4 a month | **First batch built** | Process below. |
+| 1 | Muscle library: `/muscles/` + 100 pages | **Live, signed off** | Generated from `painmuscles.js` + `musclereports.js`. `data/seo/approved.json` records the sign-off; pages carry `reviewedBy`. |
+| 2 | Pain locations: `/pain/` + 58 pages | **Live, signed off** | 8 spots folded into existing condition pages (those pages gained a "Muscles that commonly cause pain here" section). Sign-off in `data/seo/approved.json`. |
+| 3 | 111 condition pages + 6 landing-page upgrades | **Live, signed off** | Every `data/seo/pages/{conditions,landing}/*.json` reads `reviewStatus: "approved"`. 3 condition pages are still hand-written HTML (`achilles-tendon-pain`, `pelvic-floor-rehab`, `piriformis-syndrome`) and are the thinnest in the group at ~500 words; convert them to JSON when they are next touched. |
+| 4 | `/activities/` hub + 77 activity/audience pages | **Live, signed off** | Golf, pickleball and running stay at their existing URLs and are linked from the hub. |
+| 5 | Blog: 15 posts; cadence 2–4 a month | **Partly migrated** | The 4 JSON posts average ~1,480 words and link muscles, pain and conditions as the process below requires. The 10 hand-written posts are 396–555 words and link none of them; migrate or merge them. |
 | 6 | Off-site (Google Business Profile, Search Console, citations, backlinks, reviews, social) | **Owner checklist below** | Nothing here is code. |
 | 7 | Measure and prune | **Process below** | Needs Search Console verified first. |
 
@@ -80,14 +89,20 @@ scaled-content penalty can hit the whole domain.
 
 ## Page inventory
 
+Counts come from `node scripts/seo/overview.js`, which writes `docs/SEO-OVERVIEW.md`. Re-run it after any build;
+the numbers below are from 2026-11-21 and the generated doc is the source of truth.
+
 | Group | Pages | Source |
 |---|---|---|
-| Public pages before this plan (after Phase 0) | 67 | hand-written |
-| Muscles | 68 | generated |
-| Pain locations | 59 | generated |
-| New conditions | 30 | JSON |
-| Activities | 9 | JSON + hub |
-| Blog (new) | 4 | JSON |
-| **Total** | **237** | |
+| Homepage, treatments, service areas, guides, other | 29 | hand-written |
+| Conditions (hub + 114) | 115 | 111 JSON + 3 hand-written |
+| Muscles (hub + 100) | 101 | generated |
+| Pain locations (hub + 58) | 59 | generated |
+| Activities & audiences (hub + 77) | 78 | JSON + hub |
+| Local landing pages | 6 | JSON |
+| Blog (hub + 14) | 15 | 4 JSON + 10 hand-written |
+| **Total public pages** | **403** | all 403 in the sitemap |
+
+The app, workspace, visit, referral, valuation, login and intake pages are `noindex` and are not counted here.
 
 Appendices (muscle and pain-location URL lists) are the data files: `data/seo/muscle-slugs.json`, `data/seo/pain-locations.json`.
