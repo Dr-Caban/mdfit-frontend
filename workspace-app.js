@@ -3248,7 +3248,7 @@
   // What is read stays in this tab's memory only, and is dropped when the import ends or the person signs out.
   const impPick = {}; // shared name -> the contact card the owner chose for those records
   const imp = { stage: "pick", contacts: [], items: [], rows: [], plan: {}, choice: {}, progress: { done: 0, total: 0, errors: [] }, result: null, batches: null, msg: "" };
-  const impReset = () => { for (const k of Object.keys(impPick)) impPick[k] = undefined; Object.assign(imp, { stage: "pick", contacts: [], items: [], rows: [], plan: {}, choice: {}, progress: { done: 0, total: 0, errors: [] }, result: null, msg: "" }); };
+  const impReset = () => { for (const k of Object.keys(impPick)) delete impPick[k]; imp.dupes = new Map(); Object.assign(imp, { stage: "pick", contacts: [], items: [], rows: [], plan: {}, choice: {}, progress: { done: 0, total: 0, errors: [] }, result: null, msg: "" }); };
   const impNorm = (s) => String(s || "").toLowerCase().replace(/[^a-z ]/g, " ").replace(/\s+/g, " ").trim();
   async function unzip(file) {
     const buf = new Uint8Array(await file.arrayBuffer()), dv = new DataView(buf.buffer), td = new TextDecoder();
@@ -3298,6 +3298,22 @@
     for (const h of holders.values()) if (!h.cards.length) { const c = { key: `h${imp.contacts.length}`, name: h.name, first: "", last: "", email: "", phone: "", dob: "", address: "", fromRecords: true }; imp.contacts.push(c); h.cards = [c]; }
     return holders;
   }
+  // Duplicate contact cards: SimplePractice often holds the same person twice (same name and phone, the birth date the
+  // same or missing on one). The fuller card is kept and gets the records; the other is left out by default and marked.
+  const impDigits = (p) => String(p || "").replace(/\D/g, "").slice(-10);
+  function impDupes() {
+    const groups = new Map();
+    for (const c of imp.contacts) { const k = impNorm(c.name); if (!c.fromRecords) groups.set(k, (groups.get(k) || []).concat([c])); }
+    const dupes = new Map(); // key of a left-out card -> key of the card kept
+    for (const [name, cards] of groups) {
+      if (cards.length < 2) continue;
+      const score = (c) => (c.email ? 2 : 0) + (c.dob ? 2 : 0) + (c.phone ? 1 : 0) + (c.address ? 1 : 0);
+      const kept = [...cards].sort((a, b) => score(b) - score(a))[0];
+      for (const c of cards) if (c !== kept && impDigits(c.phone) && impDigits(c.phone) === impDigits(kept.phone) && (!c.dob || !kept.dob || c.dob === kept.dob)) dupes.set(c.key, kept.key);
+      if (cards.some((c) => dupes.has(c.key)) && impPick[name] === undefined) impPick[name] = kept.key;
+    }
+    return dupes;
+  }
   // Per contact: how many documents and invoices, and the earliest record date (when they became a patient)
   function impRows() {
     const holders = impHolders(), stats = new Map(imp.contacts.map((c) => [c.key, { records: 0, invoices: 0, first: "", shared: "" }]));
@@ -3314,7 +3330,7 @@
     if (imp.stage === "preview") {
       const withRec = imp.rows.filter((r) => r.records), noEmail = imp.rows.filter((r) => !r.email && imp.choice[r.key] === "new").length;
       const opt = (r) => { const p = imp.plan[r.key] || {}, cur = imp.choice[r.key]; const o = [["new", "New client"], ...(p.match ? [[`link:${p.match.id}`, `Same as ${p.match.name}${p.match.email ? ` (${p.match.email})` : ""}`]] : []), ...((p.candidates || []).map((m) => [`link:${m.id}`, `Same as ${m.name}${m.email ? ` (${m.email})` : ""}`])), ["skip", "Leave out"]];
-        return `<select class="input" data-change="impChoice" data-key="${esc(r.key)}" aria-label="What to do with ${esc(r.name)}">${o.map(([v, l]) => `<option value="${esc(v)}"${v === cur ? " selected" : ""}>${esc(l)}</option>`).join("")}</select>${p.how === "ambiguous" ? `<div class="muted" style="font-size:12px;color:var(--warn)">Two accounts have this name: pick one</div>` : ""}${r.shared ? `<label class="row muted" style="gap:6px;font-size:12px;margin-top:4px"><input type="radio" name="pick-${esc(r.shared)}" data-change="impPick" data-name="${esc(r.shared)}" data-key="${esc(r.key)}"${r.records + r.invoices ? " checked" : ""}> Two contact cards have this name: the records belong to this one</label>` : ""}`; };
+        return `<select class="input" data-change="impChoice" data-key="${esc(r.key)}" aria-label="What to do with ${esc(r.name)}">${o.map(([v, l]) => `<option value="${esc(v)}"${v === cur ? " selected" : ""}>${esc(l)}</option>`).join("")}</select>${p.how === "ambiguous" ? `<div class="muted" style="font-size:12px;color:var(--warn)">Two accounts have this name: pick one</div>` : ""}${imp.dupes && imp.dupes.has(r.key) ? `<div class="muted" style="font-size:12px;margin-top:4px">Duplicate card in SimplePractice (same name and phone): left out, the other card is kept</div>` : ""}${r.shared ? `<label class="row muted" style="gap:6px;font-size:12px;margin-top:4px"><input type="radio" name="pick-${esc(r.shared)}" data-change="impPick" data-name="${esc(r.shared)}" data-key="${esc(r.key)}"${r.records + r.invoices ? " checked" : ""}> Two contact cards have this name: the records belong to this one</label>` : ""}`; };
       const count = (k) => imp.rows.filter((r) => imp.choice[r.key] === k || (k === "link" && String(imp.choice[r.key]).startsWith("link:"))).length;
       const files = imp.rows.filter((r) => imp.choice[r.key] !== "skip").reduce((n, r) => n + r.records + r.invoices, 0);
       return `${head}<div class="grid g3" style="margin-bottom:16px"><div class="card"><div class="muted" style="font-size:12px">New clients</div><div style="font-size:24px;font-weight:700">${count("new")}</div><div class="muted" style="font-size:12px">${noEmail} without an email address</div></div>
@@ -3344,10 +3360,11 @@
       const { contacts, items } = await impRead(files);
       if (!contacts.length && !items.length) throw new Error("No SimplePractice contacts or records were found in those files.");
       Object.assign(imp, { contacts, items });
+      imp.dupes = impDupes();
       impRows();
       const plan = await api("POST", "/api/admin/import/sp/plan", { contacts: imp.contacts.map(({ key, name, first, last, email, phone, dob, address }) => ({ key, name, first, last, email, phone, dob, address })) });
       imp.plan = Object.fromEntries(plan.rows.map((x) => [x.key, x])); imp.batches = plan.batches;
-      for (const r of imp.rows) { const p = imp.plan[r.key] || {}; imp.choice[r.key] = p.action === "link" ? `link:${p.clientId}` : "new"; }
+      for (const r of imp.rows) { const p = imp.plan[r.key] || {}; imp.choice[r.key] = imp.dupes.has(r.key) ? "skip" : p.action === "link" ? `link:${p.clientId}` : "new"; }
       imp.stage = "preview"; imp.msg = ""; await render();
     } catch (err) { formMsg(f, err.message); }
   };
