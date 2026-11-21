@@ -1,5 +1,5 @@
 // Minimal service worker so MD Fit installs as an app. Caches the app shell; API calls always go to the network.
-const CACHE = "mdfit-766b807deb";
+const CACHE = "mdfit-19431458c5";
 const SHELL = ["/account","/nozoom.js","/app/app.css","/account.css","/guides.css","/app-theme.css","/mdfit-guide.css","/account-cave.css","/account-tour.css","/progress-charts.css","/app-theme.js","/config.js","/analytics.js","/realtime.js","/common.js","/search.js","/app/exercises.js","/app/library.js","/app/generator.js","/painmuscles.js","/painpatterns.js","/paintracks.js","/painmap.js","/musclereports.js","/guides.js","/stripe-checkout.js","/progress-charts.js","/account.js","/account-xp.js","/account-share.js","/account-habits.js","/account-cave.js","/mdfit-guide.js","/account-solomon.js","/account-tour.js","/assets/logo.webp"];
 
 self.addEventListener("install", (e) => {
@@ -20,6 +20,8 @@ const clean = (res) => {
 self.addEventListener("fetch", (e) => {
   const url = new URL(e.request.url);
   if (e.request.method !== "GET" || url.origin !== location.origin) return;
+  // The practice workspace is never handled or stored here: the browser fetches it itself (see middleware.js)
+  if (/^\/(admin|workspace|admin-classic)(\.html)?\/?$|^\/(workspace-app|admin|admin-habits)\.js$|^\/admin\.css$/.test(url.pathname)) return;
   e.respondWith(fetch(e.request, { cache: "no-cache" }).then((res) => {
     res = clean(res);
     if (res.ok && SHELL.includes(url.pathname)) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(e.request, copy)); }

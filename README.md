@@ -18,6 +18,8 @@ Locked in this repo:
 - The role-based switch and menu gating (who sees Admin, Manager, Developer, Client portal).
 - The owner-password prompts on revenue share and commission settings.
 - The patient chart (EMR) screens and the intake documents.
+- The /admin lock in `middleware.js` (`STAFF_PAGE`, `STAFF_FILE`, `staffRefused`): only a real browser opening the
+  workspace gets it; scrapers get "not found". `sw.js` must keep leaving those paths alone.
 
 Locked in `mdfit-backend`: see the same section in that repo's `README.md`.
 

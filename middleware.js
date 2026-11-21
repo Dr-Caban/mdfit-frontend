@@ -21,6 +21,29 @@ const PRIVATE = /^\/(account|admin|workspace|visit|chat|shared|api|login|cancel|
 // video catalog). Search engines that render JavaScript (Googlebot, Bingbot) may GET these so they index the real
 // page instead of placeholders. Everything else under /api stays closed to bots.
 const PUBLIC_API = /^\/api\/(site|reviews|feedback|videos)$/;
+// The practice workspace (/admin, /workspace, /admin-classic) and the files only it loads. Locked tighter than any
+// other page (owner, Nov 2026: "max security - no scrapers"): only a real browser opening the page, or loading it as a
+// script or stylesheet of the page, gets it. Anything else (a scraper with a browser's name, a preview bot, a link
+// unfurler, a cache) is told the page does not exist. The page holds no patient data either way: that only comes
+// from the API after sign-in. Every other page is unchanged. See README: DO NOT TOUCH.
+const STAFF_PAGE = /^\/(admin|workspace|admin-classic)(\.html)?\/?$/;
+const STAFF_FILE = /^\/(workspace-app\.js|admin\.js|admin-habits\.js|admin\.css)$/;
+function staffRefused(request, url, ua) {
+  const page = STAFF_PAGE.test(url.pathname), file = STAFF_FILE.test(url.pathname);
+  if (!page && !file) return false;
+  const h = (k) => (request.headers.get(k) || "").toLowerCase();
+  if (!["GET", "HEAD"].includes(request.method)) return true;
+  if (!/mozilla\/5\.0/i.test(ua) || SEARCH.test(ua) || !h("accept-language")) return true;
+  // Browsers say what they are fetching and from where (Fetch Metadata). Tools and scrapers mostly send nothing.
+  // The site's service worker (sw.js) re-fetches what it handles, which reaches here as "empty" from the same origin:
+  // a browser that installed it before it learned to leave the workspace alone still gets in.
+  const dest = h("sec-fetch-dest"), site = h("sec-fetch-site"), mode = h("sec-fetch-mode");
+  const viaWorker = dest === "empty" && site === "same-origin" && ["same-origin", "no-cors"].includes(mode);
+  if (page) return !(dest === "document" ? ["none", "same-origin", "same-site"].includes(site) : viaWorker) || h("sec-purpose").includes("prefetch") || h("purpose") === "prefetch";
+  return !(["script", "style"].includes(dest) ? site === "same-origin" : viaWorker);
+}
+const notFound = () => new Response("<!doctype html><meta charset=\"utf-8\"><meta name=\"robots\" content=\"noindex\"><title>Not found</title><p>Not found.</p>",
+  { status: 404, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store", "x-robots-tag": "noindex, nofollow, noarchive, nosnippet", "x-mdfit-build": build() } });
 
 const page = (status, title, text) => new Response(
   `<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>${title}</title>` +
@@ -59,6 +82,7 @@ export default async function middleware(request) {
 
   // 2. Bots and scrapers. Search engines may read the public homepage only.
   if (!ua || BAD_UA.test(ua)) return page(403, "Automated access isn't allowed", "This site can only be used in a web browser or the MD Fit app.");
+  if (staffRefused(request, url, ua)) return notFound();
   if (SEARCH.test(ua) && PRIVATE.test(url.pathname) && !publicRead) return page(403, "Private", "This page is private.");
 
   // 3. API proxy with the edge secret and the visitor's real IP (for rate limiting)
@@ -75,6 +99,8 @@ export default async function middleware(request) {
     return new Response(r.body, { status: r.status, headers: out });
   }
 
-  // Continue to the page
+  // Continue to the page. The workspace is never stored by a browser, proxy or cache, and never shown in a frame.
+  if (STAFF_PAGE.test(url.pathname) || STAFF_FILE.test(url.pathname)) return new Response(null, { headers: { "x-middleware-next": "1", "x-mdfit-build": build(),
+    "cache-control": "no-store", "x-robots-tag": "noindex, nofollow, noarchive, nosnippet, noimageindex, notranslate", "cross-origin-resource-policy": "same-origin" } });
   return new Response(null, { headers: { "x-middleware-next": "1", "x-mdfit-build": build() } });
 }
