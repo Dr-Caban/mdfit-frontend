@@ -18,9 +18,12 @@
   const plural = (n, w) => `${n} ${w}${n === 1 ? "" : "s"}`;
   // Owner: every movement is a rep count, never a time (older saved rows with seconds are shown as reps)
   const repsOf = (x) => x.reps || Math.max(5, Math.min(100, Math.round((x.seconds || 30) / 3)));
-  const rx = (x) => `${x.sets} × ${repsOf(x)} reps`;
+  // Owner: each set may have its own rep count (repsBySet, e.g. 12, 10, 8, 6); otherwise every set is "reps"
+  const perSet = (x) => (Array.isArray(x.repsBySet) && x.repsBySet.length === x.sets ? x.repsBySet : null);
+  const rx = (x) => (perSet(x) ? `${x.sets} sets: ${perSet(x).join(", ")} reps` : `${x.sets} × ${repsOf(x)} reps`);
+  const repTotal = (x) => (perSet(x) ? perSet(x).reduce((a, b) => a + b, 0) : x.sets * repsOf(x));
   // About 3 s a rep or the set time, plus 30 s between sets
-  const minutesOf = (w) => Math.max(1, Math.round(w.exercises.reduce((n, x) => n + x.sets * (repsOf(x) * 3 + 30), 0) / 60));
+  const minutesOf = (w) => Math.max(1, Math.round(w.exercises.reduce((n, x) => n + repTotal(x) * 3 + x.sets * 30, 0) / 60));
   // A saved workout (or a challenge's copy) as the player expects it
   function playerWorkout(w, key) {
     const list = w.exercises.map((x) => { const e = byId.get(x.id); return e ? { ...e, sets: rx(x), block: "Circuit" } : null; }).filter(Boolean);
@@ -188,7 +191,9 @@
       <div class="bw-row1"><b>${i + 1}. ${esc(e.name)}</b>
         <span class="bw-move"><button type="button" class="bw-ib" data-up aria-label="Move ${esc(e.name)} up"${i ? "" : " disabled"}>↑</button><button type="button" class="bw-ib" data-down aria-label="Move ${esc(e.name)} down"${i < B.items.length - 1 ? "" : " disabled"}>↓</button><button type="button" class="bw-ib" data-rm aria-label="Remove ${esc(e.name)}">×</button></span></div>
       <div class="bw-row2"><label>Sets<input type="number" inputmode="numeric" min="1" max="10" data-f="sets" value="${x.sets}"></label>
-        <label>Reps<input type="number" inputmode="numeric" min="1" max="100" data-f="reps" value="${repsOf(x)}"></label></div></li>`; }).join("")
+        ${perSet(x) ? "" : `<label>Reps<input type="number" inputmode="numeric" min="1" max="100" data-f="reps" value="${repsOf(x)}"></label>`}
+        <button type="button" class="bw-each" data-each aria-pressed="${!!perSet(x)}">${perSet(x) ? "Same reps every set" : "Reps for each set"}</button></div>
+      ${perSet(x) ? `<div class="bw-sets">${perSet(x).map((r, k) => `<label>Set ${k + 1}<input type="number" inputmode="numeric" min="1" max="100" data-set="${k}" value="${r}" aria-label="${esc(e.name)}, set ${k + 1} reps"></label>`).join("")}</div>` : ""}</li>`; }).join("")
       : `<li class="bw-empty muted small">Nothing yet. Add exercises from the library${matchMedia("(min-width: 900px)").matches ? " on the left" : " above"}.</li>`;
     $("#bw-est").textContent = B.items.length ? `About ${minutesOf({ exercises: B.items })} minutes · worth 35 XP when you finish it` : "";
   }
@@ -216,14 +221,32 @@
     if (e.target.closest("[data-up]") && i > 0) [B.items[i - 1], B.items[i]] = [B.items[i], B.items[i - 1]];
     else if (e.target.closest("[data-down]") && i < B.items.length - 1) [B.items[i + 1], B.items[i]] = [B.items[i], B.items[i + 1]];
     else if (e.target.closest("[data-rm]")) B.items.splice(i, 1);
+    else if (e.target.closest("[data-each]")) {
+      const x = B.items[i];
+      if (perSet(x)) { x.reps = x.repsBySet[0]; delete x.repsBySet; }
+      else { x.repsBySet = Array.from({ length: x.sets }, () => repsOf(x)); delete x.seconds; }
+    }
     else return;
     renderList(); renderResults();
   });
   $("#bw-list").addEventListener("change", (e) => {
-    const li = e.target.closest("[data-i]"), f = e.target.dataset.f; if (!li || !f) return;
+    const li = e.target.closest("[data-i]"), f = e.target.dataset.f;
+    if (li && e.target.dataset.set !== undefined) {
+      const x = B.items[Number(li.dataset.i)], k = Number(e.target.dataset.set), v = Math.round(Number(e.target.value));
+      x.repsBySet[k] = Number.isFinite(v) ? Math.max(1, Math.min(100, v)) : x.repsBySet[k] || 10; x.reps = x.repsBySet[0];
+      e.target.value = x.repsBySet[k];
+      $("#bw-est").textContent = `About ${minutesOf({ exercises: B.items })} minutes · worth 35 XP when you finish it`;
+      return;
+    }
+    if (!li || !f) return;
     const x = B.items[Number(li.dataset.i)], n = Math.round(Number(e.target.value));
     const clamp = (v, lo, hi, d) => (Number.isFinite(v) ? Math.max(lo, Math.min(hi, v)) : d);
-    if (f === "sets") x.sets = clamp(n, 1, 10, 3);
+    if (f === "sets") {
+      x.sets = clamp(n, 1, 10, 3);
+      if (Array.isArray(x.repsBySet)) { const last = x.repsBySet[x.repsBySet.length - 1] || repsOf(x); x.repsBySet = Array.from({ length: x.sets }, (_, k) => x.repsBySet[k] || last); }
+      // Redrawn after this event: the list is rebuilt, and doing it while the box is still losing focus throws
+      e.target.value = x.sets; setTimeout(renderList); return;
+    }
     if (f === "reps") { x.reps = clamp(n, 1, 100, 10); delete x.seconds; }
     e.target.value = x[f];
     $("#bw-est").textContent = `About ${minutesOf({ exercises: B.items })} minutes · worth 35 XP when you finish it`;

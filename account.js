@@ -2812,6 +2812,7 @@
       .sort((a, b) => words.filter((w) => b.title.toLowerCase().includes(w)).length - words.filter((w) => a.title.toLowerCase().includes(w)).length); };
   // Program exercises named differently from the library -> the library video that shows the same move
   const VIDEO_ALIAS = {
+    "Ankle Circles (Dynamic)": "Ankle Circles", "Knee Circles (Dynamic)": "Knee Circles",
     "Overhead Press (DB)": "Strict Press", "Dumbbell Bench Press": "Bench Press", "Lat Pull-Down": "Lat Pulldown", "Lat Pulldowns": "Lat Pulldown",
     "GHD or BOSU Sit-Ups": "GHD Sit Up", "TRX Body Squat": "TRX Squat", "Hip Thrusts": "Hip Thrust", "RDLs": "Romanian Deadlift",
     "Bulgarian Split Squats": "Bulgarian Split Squat", "Split Squat": "Bulgarian Split Squat", "Walking Lunges": "Walking Lunge", "Forward/Backward Lunge": "Lunges",
@@ -2836,10 +2837,11 @@
     const w = Gen.generate({ fixed: true, goal: d.goal, location: p.location, level: p.level, length: d.length, ...Gen.presetFor(d.length),
       ...(d.rounds ? { rounds: d.rounds } : {}), ...(d.restEx !== undefined ? { restEx: d.restEx } : {}), ...(d.restRound !== undefined ? { restRound: d.restRound } : {}),
       addons: { warmup: !hasCircuit, cooldown: !hasCircuit }, seed: p.seed + (d.seedOffset || 0) + i * 101 });
-    // Fixed circuit: use exactly the exercises Dr. Jared specified (looked up by name)
+    // Fixed circuit: use exactly the exercises Dr. Jared specified (looked up by name). Each shows under its library
+    // name (owner: program exercises carry the same names as the library), so it can be found in Videos as well.
     if (Array.isArray(d.circuit) && d.circuit.length) {
       const byName = Object.fromEntries(EX.map((e) => [e.name, e]));
-      const chosen = d.circuit.map((x) => { const m = byName[x.ex] || byName[VIDEO_ALIAS[x.ex]]; return m ? { ...m, name: x.ex, sets: x.sets || "" } : { id: "", name: x.ex, sets: x.sets || "" }; }).filter((x) => x.name);
+      const chosen = d.circuit.map((x) => { const m = byName[x.ex] || byName[VIDEO_ALIAS[x.ex]]; return m ? { ...m, sets: x.sets || "" } : { id: "", name: x.ex, sets: x.sets || "" }; }).filter((x) => x.name);
       if (chosen.length) w.circuit = chosen;
     }
     return { ...w, title: `${p.title}: ${d.name}`, levelLabel: lvlName(p.level), key: `prog-${p.id}-d${i}`, noRest: REHAB_CATS.has(p.category) };
