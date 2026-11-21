@@ -3329,12 +3329,17 @@
       <form class="stack" data-form="impPick"><input class="input" type="file" name="files" accept=".zip,application/zip" multiple required><p class="muted" data-msg style="margin:0;font-size:12.5px">${esc(imp.msg)}</p><div class="row"><button class="btn primary">Read the files</button></div></form></div>${past}`;
     if (imp.stage === "preview") {
       const withRec = imp.rows.filter((r) => r.records), noEmail = imp.rows.filter((r) => !r.email && imp.choice[r.key] === "new").length;
-      const opt = (r) => { const p = imp.plan[r.key] || {}, cur = imp.choice[r.key]; const o = [["new", "New client"], ...(p.match ? [[`link:${p.match.id}`, `Same as ${p.match.name}${p.match.email ? ` (${p.match.email})` : ""}`]] : []), ...((p.candidates || []).map((m) => [`link:${m.id}`, `Same as ${m.name}${m.email ? ` (${m.email})` : ""}`])), ["skip", "Leave out"]];
-        return `<select class="input" data-change="impChoice" data-key="${esc(r.key)}" aria-label="What to do with ${esc(r.name)}">${o.map(([v, l]) => `<option value="${esc(v)}"${v === cur ? " selected" : ""}>${esc(l)}</option>`).join("")}</select>${p.how === "ambiguous" ? `<div class="muted" style="font-size:12px;color:var(--warn)">Two accounts have this name: pick one</div>` : ""}${imp.dupes && imp.dupes.has(r.key) ? `<div class="muted" style="font-size:12px;margin-top:4px">Duplicate card in SimplePractice (same name and phone): left out, the other card is kept</div>` : ""}${r.shared ? `<label class="row muted" style="gap:6px;font-size:12px;margin-top:4px"><input type="radio" name="pick-${esc(r.shared)}" data-change="impPick" data-name="${esc(r.shared)}" data-key="${esc(r.key)}"${r.records + r.invoices ? " checked" : ""}> Two contact cards have this name: the records belong to this one</label>` : ""}`; };
+      const toConfirm = imp.rows.filter((r) => (imp.plan[r.key] || {}).action === "confirm" && imp.choice[r.key] === "skip").length;
+      const lbl = (m) => `Same as ${m.name}${m.email ? ` (${m.email})` : m.phone ? ` (${m.phone})` : ""}`;
+      const opt = (r) => { const p = imp.plan[r.key] || {}, cur = imp.choice[r.key], confirm = p.action === "confirm";
+        const cands = p.match ? [[`link:${p.match.id}`, lbl(p.match)]] : (p.candidates || []).map((m) => [`link:${m.id}`, lbl(m)]);
+        const o = confirm ? [["skip", "Leave out for now"], ...cands, ["new", "New client (not the same person)"]] : [["new", "New client"], ...cands, ["skip", "Leave out"]];
+        const why = confirm ? (p.candidates || []).map((m) => m.why).filter(Boolean)[0] : "";
+        return `<select class="input${confirm ? " tier-pick on" : ""}" data-change="impChoice" data-key="${esc(r.key)}" aria-label="What to do with ${esc(r.name)}">${o.map(([v, l]) => `<option value="${esc(v)}"${v === cur ? " selected" : ""}>${esc(l)}</option>`).join("")}</select>${confirm ? `<div class="muted" style="font-size:12px;color:var(--warn)">Possible match — confirm${why ? ": " + esc(why) : ""}. Left out until you choose.</div>` : ""}${p.how === "ambiguous" ? `<div class="muted" style="font-size:12px;color:var(--warn)">Two accounts have this name: pick one</div>` : ""}${imp.dupes && imp.dupes.has(r.key) ? `<div class="muted" style="font-size:12px;margin-top:4px">Duplicate card in SimplePractice (same name and phone): left out, the other card is kept</div>` : ""}${r.shared ? `<label class="row muted" style="gap:6px;font-size:12px;margin-top:4px"><input type="radio" name="pick-${esc(r.shared)}" data-change="impPick" data-name="${esc(r.shared)}" data-key="${esc(r.key)}"${r.records + r.invoices ? " checked" : ""}> Two contact cards have this name: the records belong to this one</label>` : ""}`; };
       const count = (k) => imp.rows.filter((r) => imp.choice[r.key] === k || (k === "link" && String(imp.choice[r.key]).startsWith("link:"))).length;
       const files = imp.rows.filter((r) => imp.choice[r.key] !== "skip").reduce((n, r) => n + r.records + r.invoices, 0);
       return `${head}<div class="grid g3" style="margin-bottom:16px"><div class="card"><div class="muted" style="font-size:12px">New clients</div><div style="font-size:24px;font-weight:700">${count("new")}</div><div class="muted" style="font-size:12px">${noEmail} without an email address</div></div>
-        <div class="card"><div class="muted" style="font-size:12px">Matched to an MD Fit account</div><div style="font-size:24px;font-weight:700">${count("link")}</div><div class="muted" style="font-size:12px">only empty details are filled in</div></div>
+        <div class="card"${toConfirm ? ' style="border-color:var(--warn)"' : ""}><div class="muted" style="font-size:12px">Matched to an MD Fit account</div><div style="font-size:24px;font-weight:700">${count("link")}</div><div class="muted" style="font-size:12px">${toConfirm ? `<b style="color:var(--warn)">${toConfirm} possible match${toConfirm === 1 ? "" : "es"} to confirm</b>` : "only empty details are filled in"}</div></div>
         <div class="card"><div class="muted" style="font-size:12px">Documents to file</div><div style="font-size:24px;font-weight:700">${files}</div><div class="muted" style="font-size:12px">${withRec.length} people with records become patients</div></div></div>
         <div class="card" style="padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>2. Check the plan</h2><div class="row" style="gap:8px"><button class="btn" data-act="impBack">Start over</button><button class="btn primary" data-act="impGo">Import ${count("new") + count("link")} clients and ${files} documents</button></div></div>
         <p class="muted" style="margin:0;padding:6px 16px 10px;font-size:12.5px">Nobody is emailed and no passwords are made. Clients without an email can't sign in until one is added. Paid invoices are added to revenue in the month they were issued; they are clinic revenue and never part of the revenue share.</p>
@@ -3364,7 +3369,7 @@
       impRows();
       const plan = await api("POST", "/api/admin/import/sp/plan", { contacts: imp.contacts.map(({ key, name, first, last, email, phone, dob, address }) => ({ key, name, first, last, email, phone, dob, address })) });
       imp.plan = Object.fromEntries(plan.rows.map((x) => [x.key, x])); imp.batches = plan.batches;
-      for (const r of imp.rows) { const p = imp.plan[r.key] || {}; imp.choice[r.key] = imp.dupes.has(r.key) ? "skip" : p.action === "link" ? `link:${p.clientId}` : "new"; }
+      for (const r of imp.rows) { const p = imp.plan[r.key] || {}; imp.choice[r.key] = (imp.dupes.has(r.key) || p.action === "confirm") ? "skip" : p.action === "link" ? `link:${p.clientId}` : "new"; }
       imp.stage = "preview"; imp.msg = ""; await render();
     } catch (err) { formMsg(f, err.message); }
   };
@@ -3373,8 +3378,8 @@
   ACT.impBack = () => { impReset(); imp.batches = null; render(); };
   ACT.impGo = async () => {
     const rows = imp.rows.filter((r) => imp.choice[r.key] !== "skip");
-    const unsure = rows.filter((r) => (imp.plan[r.key] || {}).how === "ambiguous" && imp.choice[r.key] === "new");
-    if (!confirm(`Import ${rows.length} clients and their documents into MD Fit?${unsure.length ? `\n\n${unsure.length} name(s) match two accounts and will come in as new clients unless you pick one.` : ""}\n\nNobody is emailed. You can undo the whole import afterwards.`)) return;
+    const unsure = imp.rows.filter((r) => (imp.plan[r.key] || {}).action === "confirm" && imp.choice[r.key] === "skip").length;
+    if (!confirm(`Import ${rows.length} clients and their documents into MD Fit?${unsure ? `\n\n${unsure} possible match${unsure === 1 ? " is" : "es are"} left out because you have not confirmed ${unsure === 1 ? "it" : "them"}. Those people are not imported.` : ""}\n\nNobody is emailed. You can undo the whole import afterwards.`)) return;
     imp.stage = "running"; imp.msg = "Creating and matching client accounts…"; await render();
     const out = { created: 0, linked: 0, patients: 0, files: 0, dupes: 0, invoices: 0, paidCents: 0, owedCents: 0, notes: [] };
     try {
