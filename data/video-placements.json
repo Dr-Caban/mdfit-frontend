@@ -18,6 +18,51 @@
  ],
  "settled": [
   {
+   "id": "1yIWx9INL_jean04x-IK2M4REgxlF_myy",
+   "name": "Long Lunge (take 2)",
+   "folder": "MDFIT media",
+   "decision": "leave-in-drive",
+   "why": "A second take of Long Lunge, which the library already plays as Hips / Power / level 5 (1jOY9YNYPEPo7kd6iVT__zxPWOqAlIFW_). Renamed in Drive on 2026-11-21 from its camera file name; the name is the one spoken in the clip itself, transcribed in-session.",
+   "on": "2026-11-21",
+   "by": "owner"
+  },
+  {
+   "id": "16Qv9kIRJoBYFzEdzLzhAlJ_Q8A1K43xj",
+   "name": "Eccentric Internal Rotation",
+   "folder": "1 Exercise Library",
+   "decision": "placed-in-library",
+   "why": "Shoulders / Rehab / level 2 / any, matching the existing Rotator Cuff and Abducted rotation entries. Renamed in Drive on 2026-11-21 from its camera file name; the name is the one spoken in the clip itself, transcribed in-session.",
+   "on": "2026-11-21",
+   "by": "owner"
+  },
+  {
+   "id": "1cVa58JSDL4QTDAy1jF1cvr2u4zgFaiVl",
+   "name": "Eccentric External Rotation",
+   "folder": "1 Exercise Library",
+   "decision": "placed-in-library",
+   "why": "Shoulders / Rehab / level 2 / any, matching the existing Rotator Cuff and Abducted rotation entries. Renamed in Drive on 2026-11-21 from its camera file name; the name is the one spoken in the clip itself, transcribed in-session.",
+   "on": "2026-11-21",
+   "by": "owner"
+  },
+  {
+   "id": "15aKiHQai9gfUIOxj4HAd_2osyDC-eLDw",
+   "name": "Supraspinatus Stretch",
+   "folder": "1 Exercise Library",
+   "decision": "placed-in-library",
+   "why": "Shoulders / Mobility / level 2 / any. A banded stretch, so Mobility rather than Rehab. Renamed in Drive on 2026-11-21 from its camera file name; the name is the one spoken in the clip itself, transcribed in-session.",
+   "on": "2026-11-21",
+   "by": "owner"
+  },
+  {
+   "id": "1k4PgifeXn3fv1BfEHMTDYl59YrOAN_CB",
+   "name": "Kneeling Wall Spiral",
+   "folder": "1 Exercise Library",
+   "decision": "placed-in-library",
+   "why": "Spine / Mobility / level 2 / any. The owner chose Spine over Shoulders: the movement is thoracic rotation driven by the lat. Renamed in Drive on 2026-11-21 from its camera file name; the name is the one spoken in the clip itself, transcribed in-session.",
+   "on": "2026-11-21",
+   "by": "owner"
+  },
+  {
    "id": "1BWGsE8Yi24WsKkdgJdg0F4-KW20mYxcS",
    "name": "Intro - Video Library",
    "folder": "4 Intros, Testimonials & Lectures",
@@ -466,6 +511,42 @@
    "why": "the owner expressed no preference on where it belongs, so it is parked rather than placed on a guess. Not open work; raise it only if the owner asks.",
    "on": "2026-11-20",
    "by": "claude (no preference given)"
+  },
+  {
+   "id": "1Nt9xSmpIwLncxJbvGgrmUxIa8Bw442yh",
+   "name": "Running Mechanics 1 - Core Brace",
+   "folder": "1 Exercise Library",
+   "decision": "parked",
+   "why": "One of a numbered four-part running-mechanics series. Coaching, not a movement: no reps, no dosage, and clip 4 refers back to the first three. Whether it becomes a guide series or library entries under Full body / Lifestyle is the owner's call, not yet made. Renamed in Drive on 2026-11-21 from its camera file name; the name is the one spoken in the clip itself, transcribed in-session.",
+   "on": "2026-11-21",
+   "by": "claude (held pending the owner)"
+  },
+  {
+   "id": "1KqXJNPLDC6_JsXzK7m2E8ezrOoqVlaKN",
+   "name": "Running Mechanics 2 - Glutes",
+   "folder": "1 Exercise Library",
+   "decision": "parked",
+   "why": "One of a numbered four-part running-mechanics series. Coaching, not a movement: no reps, no dosage, and clip 4 refers back to the first three. Whether it becomes a guide series or library entries under Full body / Lifestyle is the owner's call, not yet made. Renamed in Drive on 2026-11-21 from its camera file name; the name is the one spoken in the clip itself, transcribed in-session.",
+   "on": "2026-11-21",
+   "by": "claude (held pending the owner)"
+  },
+  {
+   "id": "1dB7Pw480YzHFMCWmulJBvTKX3waMGxK4",
+   "name": "Running Mechanics 3 - Shoulders Down",
+   "folder": "1 Exercise Library",
+   "decision": "parked",
+   "why": "One of a numbered four-part running-mechanics series. Coaching, not a movement: no reps, no dosage, and clip 4 refers back to the first three. Whether it becomes a guide series or library entries under Full body / Lifestyle is the owner's call, not yet made. Renamed in Drive on 2026-11-21 from its camera file name; the name is the one spoken in the clip itself, transcribed in-session.",
+   "on": "2026-11-21",
+   "by": "claude (held pending the owner)"
+  },
+  {
+   "id": "1Shm8i1o4A_2cBjI9o9BgYWa7B17SK1W_",
+   "name": "Running Mechanics 4 - Torso Rotation",
+   "folder": "1 Exercise Library",
+   "decision": "parked",
+   "why": "One of a numbered four-part running-mechanics series. Coaching, not a movement: no reps, no dosage, and clip 4 refers back to the first three. Whether it becomes a guide series or library entries under Full body / Lifestyle is the owner's call, not yet made. Renamed in Drive on 2026-11-21 from its camera file name; the name is the one spoken in the clip itself, transcribed in-session.",
+   "on": "2026-11-21",
+   "by": "claude (held pending the owner)"
   }
  ],
  "open": [
