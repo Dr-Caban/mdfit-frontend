@@ -279,6 +279,10 @@
 .mp-fine { margin: 8px 0 0; }
 .save-plan { margin-top: 10px; width: auto; }
 .save-plan.on { background: #e3f4ea; color: #2e7d32; border-color: #bfe3cc; }
+/* Share a library program or a pain-tool protocol (a public preview link with the member's referral code) */
+.share-lib { margin-top: 10px; width: auto; display: inline-flex; align-items: center; gap: 6px; }
+.share-lib svg { width: 16px; height: 16px; flex: none; }
+.save-plan + .share-lib { margin-left: 6px; }
 
 /* ==== Healthy habits: Today's points (Home) + qualifying-day calendar (Progress) — account-habits.js ==== */
 .hb-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 10px; }

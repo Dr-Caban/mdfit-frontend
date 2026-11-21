@@ -1,4 +1,9 @@
 // /shared?s=<key>: one saved program or saved workout a member shared by link.
+// /shared?p=<program id> and /shared?m=<muscle id>: one of Dr. Jared's library programs or pain-tool protocols that a
+//   member shared from the app (see "Share a library program" in account.js). These are the practice's own catalog,
+//   already public (/api/content, /data/protocols, musclereports.js), so no key is needed: the page shows a preview
+//   (what it is for, the weeks or phases, each exercise and its dose; no videos) and a way into the app. The link
+//   carries the sharer's ?ref= code, which common.js keeps on this device so the sign-up that follows is credited.
 //
 // - Anyone with the link may read it: no account, no token, no membership. The page asks the public route
 //   GET /api/shares/:key and shows the name, who shared it and the exercises with their sets and reps.
@@ -141,7 +146,86 @@
     }
   }
 
+  // ---- Library programs and pain-tool protocols (?p= / ?m=)
+  const Q = new URLSearchParams(location.search);
+  const PROG = (Q.get("p") || "").trim(), MUSC = (Q.get("m") || "").trim();
+  const ID_RE = /^[a-z0-9][a-z0-9-]{0,63}$/;
+  const loadScript = (src) => new Promise((ok, no) => { const t = document.createElement("script"); t.src = src; t.onload = ok; t.onerror = no; document.head.appendChild(t); });
+  const getJson = async (url) => { const r = await fetch(url, { cache: "no-cache" }); if (!r.ok) throw Object.assign(new Error("Not found"), { status: r.status }); return r.json(); };
+  const doseOf = (d = {}) => [d.sets && `${d.sets} sets`, d.reps, d.hold && `hold ${d.hold}`].filter(Boolean).join(" × ").slice(0, 60);
+  const exList = (items) => `<ul class="ex">${items.map((x, i) => `<li><span class="n" aria-hidden="true">${i + 1}</span><div><b>${esc(x.name)}</b>${x.dose ? `<span>${esc(x.dose)}</span>` : ""}</div></li>`).join("")}</ul>`;
+  const LEVEL = { beginner: "Beginner", intermediate: "Intermediate", advanced: "Advanced" };
+
+  // Into the app: a member goes straight there; anyone else signs up (or logs in) and lands on it after.
+  // The login page only follows a "next" it recognises: /account with a #route made of a-z, 0-9, "/" and "-".
+  function renderOpen(route, what) {
+    const act = $("#act"), sess = session(), dest = "/account#" + route;
+    const login = (signup) => "/login?" + (signup ? "signup=1&" : "") + "next=" + encodeURIComponent(dest);
+    let invited = ""; try { invited = M.refCode ? M.refCode() : ""; } catch {}
+    if (sess && sess.token) {
+      act.innerHTML = `<h2 id="act-h">Do it in MD Fit</h2>
+        <p>Open it in the app to follow along with Dr. Jared's videos and track your progress.</p>
+        <div class="row"><a class="btn" href="${esc(dest)}">Open in MD Fit ${OPEN_IC}</a></div>`;
+    } else {
+      act.innerHTML = `<h2 id="act-h">Start this ${esc(what)}</h2>
+        <p>Join MD Fit to follow it with Dr. Jared's videos, guided sessions and progress tracking. You land right on it after you sign up.</p>
+        ${invited ? `<p class="note">You were invited by a friend: their code <b>${esc(invited)}</b> is applied when you sign up.</p>` : ""}
+        <div class="row"><a class="btn" href="${esc(login(true))}">Join MD Fit</a><a class="btn ghost" href="${esc(login(false))}">I already have an account</a></div>`;
+    }
+    act.hidden = false;
+  }
+
+  async function startProgram() {
+    const d = await getJson(API + "/api/content");
+    const p = ((d && d.programs) || []).find((x) => x && x.id === PROG);
+    if (!p) throw new Error("This program isn't available anymore.");
+    document.title = `${p.title} | MD Fit`;
+    let pr = null;
+    try { const ix = await getJson("/data/protocols/index.json"); if ((ix.ids || []).includes(p.id)) pr = await getJson(`/data/protocols/${encodeURIComponent(p.id)}.json`); } catch {}
+    const weeks = pr && Array.isArray(pr.weeks) ? pr.weeks : [];
+    const fx = [p.category, LEVEL[p.level], weeks.length ? `${weeks.length} ${weeks.length === 1 ? "part" : "parts"}, week by week` : p.weeks ? `${p.weeks} weeks` : "", p.location === "home" ? "At home" : p.location === "gym" ? "In the gym" : ""].filter(Boolean);
+    const body = weeks.length
+      ? weeks.map((w) => `<h2 class="block">${esc(w.label || "")}</h2>${w.focus ? `<p class="note">${esc(w.focus)}</p>` : ""}${exList((w.exercises || []).filter((x) => x && x.name).map((x) => ({ name: x.name, dose: doseOf(x.dosage) })))}`).join("")
+      : (p.days || []).length ? `<h2 class="block">Sessions</h2>${exList(p.days.map((x) => ({ name: x.name, dose: x.length ? `about ${x.length} min` : "" })))}` : "";
+    $("#state").innerHTML = `<section class="card">
+      <p class="kicker">Dr. Jared's program</p>
+      ${p.image && /^assets\/[\w\/.-]+$/.test(p.image) ? `<img class="poster" src="/${esc(p.image)}" alt="" loading="lazy">` : ""}
+      <h1>${esc(p.title)}</h1>
+      ${p.summary ? `<p class="by">${esc(p.summary)}</p>` : ""}
+      ${fx.length ? `<ul class="facts">${fx.map((f) => `<li>${esc(f)}</li>`).join("")}</ul>` : ""}
+      ${pr && pr.goal ? `<p class="note"><b>The goal:</b> ${esc(pr.goal)}</p>` : ""}
+      ${body}
+    </section>`;
+    renderOpen("programs/" + p.id, "program");
+  }
+
+  const PHASES = [["calm", "Phase 1 · Calm it down", "Days 1 to 7"], ["restore", "Phase 2 · Restore", "Weeks 2 to 3"], ["strengthen", "Phase 3 · Strengthen", "Weeks 3 to 6"]];
+  async function startMuscle() {
+    await loadScript("/painmuscles.js"); await loadScript("/musclereports.js");
+    const m = window.MDFitMuscles && window.MDFitMuscles.MUSCLES[MUSC], r = (window.MDFIT_MUSCLE_REPORTS || {})[MUSC];
+    if (!m || !r || !r.protocol) throw new Error("This protocol isn't available anymore.");
+    document.title = `${m.name} protocol | MD Fit`;
+    const phases = PHASES.filter(([k]) => (r.protocol[k] || []).length);
+    $("#state").innerHTML = `<section class="card">
+      <p class="kicker">Dr. Jared's pain protocol</p>
+      <h1>${esc(m.name)}</h1>
+      ${m.refers ? `<p class="by"><b>Where it sends pain:</b> ${esc(m.refers)}</p>` : ""}
+      <ul class="facts"><li>3 phases</li><li>About 6 weeks</li><li>At home</li></ul>
+      ${phases.map(([k, t, when]) => `<h2 class="block">${esc(t)} <small>${esc(when)}</small></h2>${exList(r.protocol[k].filter((x) => x && x.name).map((x) => ({ name: x.name, dose: x.dose || "" })))}`).join("")}
+      ${r.expect ? `<p class="note"><b>What to expect:</b> ${esc(r.expect)}</p>` : ""}
+      <p class="note">Educational, not a diagnosis. If pain is severe, getting worse or comes with numbness or weakness, book an evaluation.</p>
+    </section>`;
+    renderOpen("pain/muscle/" + MUSC, "protocol");
+  }
+
   async function start() {
+    if (PROG || MUSC) {
+      const id = PROG || MUSC;
+      if (!ID_RE.test(id)) { gone("This link is incomplete. Ask for it again."); return; }
+      try { await (PROG ? startProgram() : startMuscle()); }
+      catch (e) { gone(e && e.status ? "Couldn't load this right now. Please try again." : (e && e.message) || "Couldn't load this right now. Please try again."); }
+      return;
+    }
     if (!KEY) { gone("This link is incomplete. Ask for it again."); return; }
     try {
       const d = await call("GET", "/api/shares/" + encodeURIComponent(KEY));
