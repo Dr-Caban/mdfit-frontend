@@ -229,6 +229,7 @@
     fitness: '<path d="M6 7v10M18 7v10M3 10v4M21 10v4M6 12h12"/>',
     payments: '<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/>',
     affiliates: '<circle cx="8" cy="8" r="3"/><circle cx="17" cy="17" r="3"/><path d="M10.5 10.5l4 4M17 3v6M14 6h6"/>',
+    pros: '<circle cx="9" cy="7" r="3"/><path d="M3 20v-1a6 6 0 0 1 12 0v1"/><path d="m16 11 2 2 4-4"/>',
     revshare: '<path d="M12 3v18"/><path d="M12 12 4.5 7.5M12 12l7.5-4.5"/><circle cx="12" cy="12" r="9"/>',
     newsletter: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
     insights: '<path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/>',
@@ -267,7 +268,7 @@
   const NAV_PERM = {
     dashboard: "", calendar: "scheduling", clients: "clients", chart: [PHI, "clients"], leads: "clients", messages: "messages",
     telehealth: [PHI, "scheduling"], notes: [PHI, "clients"], forms: [PHI, "clients"], programs: "content", nutrition: "content", fitness: "content",
-    payments: "billing", affiliates: "payouts", revshare: "owner", newsletter: "messages", team: "staff", feedback: "reviews", security: "security", compliance: "security", import: "owner",
+    payments: "billing", affiliates: "payouts", pros: "owner", revshare: "owner", newsletter: "messages", team: "staff", feedback: "reviews", security: "security", compliance: "security", import: "owner",
     settings: "settings", insights: "insights", economics: ["insights", "billing"], guide: ["insights", "content"], portal: "", booking: "scheduling"
   };
   const navOk = (id) => [].concat(NAV_PERM[id]).every(can);
@@ -276,7 +277,7 @@
   const NAV = [
     { g: "Practice", items: [["dashboard", "Dashboard"], ["calendar", "Calendar"], ["clients", "Clients"], ["chart", "Client chart"], ["leads", "Leads"], ["messages", "Messages"], ["telehealth", "Telehealth"]] },
     { g: "Clinical", items: [["notes", "Notes & AI scribe"], ["forms", "Forms & intake"], ["programs", "Programs"], ["nutrition", "Nutrition"], ["fitness", "Fitness"]] },
-    { g: "Business", items: [["payments", "Payments"], ["affiliates", "Affiliates"], ["revshare", "Revenue share"], ["newsletter", "Newsletter"]] },
+    { g: "Business", items: [["payments", "Payments"], ["affiliates", "Affiliates"], ["pros", "Trainers & clinicians"], ["revshare", "Revenue share"], ["newsletter", "Newsletter"]] },
     { g: "Admin", items: [["team", "Team & roles"], ["feedback", "Reviews & feedback"], ["security", "Security & audit"], ["compliance", "Compliance"], ["import", "Import records"], ["settings", "Modules & settings"], ["insights", "Insights"], ["economics", "System economics"], ["guide", "Solomon"]] },
     { g: "Client-facing", items: [["portal", "Client app"], ["booking", "Booking page"]] }
   ];
@@ -3449,6 +3450,34 @@
     const password = await askOwnerPassword(on ? "Switch the affiliate programme on." : "Switch the affiliate programme off."); if (!password) { toast("Nothing was changed."); return; }
     await api("PUT", "/api/admin/affiliates/settings", { enabled: on, password });
     await render(); toast(on ? "The affiliate programme is open." : "The affiliate programme is closed. Nothing new is earned; what's owed is still paid.");
+  };
+  // ---- Trainers & clinicians (owner): who may coach members in the app (lib/pros.js). They are members with an
+  // approved pro profile, never staff: they get no workspace and nothing from the EMR. Clinicians accepted the business
+  // associate agreement when they applied; trainers accepted the trainer terms.
+  V.pros = async () => {
+    const d = await load("/pros");
+    if (!d) return `<div class="view-head"><div><h1>Trainers &amp; clinicians</h1></div></div>${none("Couldn't load the applications.")}`;
+    const pill = (s) => `<span class="pill ${s === "approved" ? "ok" : s === "pending" ? "warn" : "bad"}">${esc({ approved: "Approved", pending: "Waiting for you", rejected: "Declined", suspended: "Suspended" }[s] || s)}</span>`;
+    const act = (p, s, label, cls = "") => `<button type="button" class="btn sm ${cls}" data-act="proDecide" data-id="${esc(p.id)}" data-s="${s}" data-name="${esc(p.displayName)}">${label}</button>`;
+    const rows = (d.pros || []).map((p) => `<tr><td><b>${esc(p.displayName)}</b><div class="muted" style="font-size:12px">${p.account ? `${esc(p.account.name)} · ${esc(p.account.email)}` : "account removed"}</div></td>
+      <td>${p.type === "clinician" ? "Clinician" : "Trainer"}${p.specialty ? `<div class="muted" style="font-size:12px">${esc(p.specialty)}</div>` : ""}</td>
+      <td>${p.type === "clinician" ? `${esc(p.license)} (${esc(p.licenseState)})<div class="muted" style="font-size:12px">BAA accepted ${esc((p.baaAt || "").slice(0, 10))}</div>` : `<span class="muted" style="font-size:12px">Terms accepted ${esc((p.termsAt || "").slice(0, 10))}</span>`}</td>
+      <td class="num">${p.members}</td><td>${pill(p.status)}${p.reason ? `<div class="muted" style="font-size:12px">${esc(p.reason)}</div>` : ""}</td>
+      <td class="row" style="gap:6px">${p.status !== "approved" ? act(p, "approved", "Approve", "primary") : ""}${p.status === "pending" ? act(p, "rejected", "Decline") : ""}${p.status === "approved" ? act(p, "suspended", "Suspend") : ""}</td></tr>`).join("");
+    const waiting = (d.pros || []).filter((p) => p.status === "pending").length;
+    return `<div class="view-head"><div><h1>Trainers &amp; clinicians</h1><p class="muted">Who members can choose to train with. Approve each one before they're listed. Clinicians: check the license before approving.</p></div></div>
+      ${waiting ? `<div class="card" style="margin-bottom:16px"><b>${waiting} waiting for you</b></div>` : ""}
+      <div class="card" style="padding:0"><div class="table-wrap"><table><thead><tr><th>Name</th><th>Type</th><th>License / terms</th><th class="num">Members</th><th>Status</th><th></th></tr></thead>
+      <tbody>${rows || noneRow(6, "No applications yet. Trainers and clinicians apply from their own account at /pro.")}</tbody></table></div></div>
+      <p class="muted" style="font-size:12.5px;margin-top:12px">Trainers see only what they assigned and whether it was done. Clinicians also see a member's pain check-ins, only while that member has said yes; each viewing is recorded in the audit ledger. Neither ever sees the chart, intake, notes or billing.</p>`;
+  };
+  ACT.proDecide = async (el) => {
+    const s = el.dataset.s, name = el.dataset.name;
+    const why = s === "approved" ? "" : prompt(`${s === "rejected" ? "Decline" : "Suspend"} ${name}? Optional: a short reason (they'll see it).`, "");
+    if (why === null) return;
+    if (s === "approved" && !confirm(`Approve ${name}? They'll be listed for members to choose.`)) return;
+    await api("POST", `/api/admin/pros/${encodeURIComponent(el.dataset.id)}/decision`, { status: s, reason: why || "" });
+    await render(); toast("Saved.");
   };
   ACT.affStatus = async (el) => {
     const s = el.dataset.s, msg = { paused: "Pause this affiliate? No new commissions and no payouts until you resume.", removed: "Remove this affiliate? No new commissions, and what is payout ready is not paid out.", active: "Resume this affiliate?" }[s];

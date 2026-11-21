@@ -675,3 +675,34 @@
 .sh-link-list .btn-ghost svg { width: 17px; height: 17px; }
 .sh-stop { min-height: 44px; border: 0; background: none; cursor: pointer; color: var(--err); font-weight: 600; }
 .sh-stop:disabled { opacity: .45; cursor: not-allowed; }
+
+/* Sign-up: "How do you want to train?" (on my own, with a trainer, with a clinician) */
+.coach-pick { border: 0; padding: 0; margin: 4px 0 10px; display: grid; gap: 8px; }
+.coach-pick legend { font-weight: 700; margin-bottom: 6px; padding: 0; }
+.coach-pick label { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border: 1px solid var(--line, #d8dee8); border-radius: 12px; cursor: pointer; font-weight: 400; }
+.coach-pick label:has(input:checked) { border-color: var(--accent, #c9a45c); background: var(--accent-soft, #faf5ea); }
+.coach-pick input { width: auto; margin: 3px 0 0; flex: none; }
+.coach-pick span { display: grid; gap: 2px; }
+.coach-pick small { color: var(--muted); font-size: 12.5px; }
+.coach-pick .fine { margin: 0; }
+
+/* Training with a trainer or clinician (account-coach.js) */
+.coach-modes { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.coach-modes .btn-ghost { width: auto; }
+.coach-who { display: grid; gap: 2px; margin: 4px 0 10px; }
+.coach-who span { color: var(--muted); font-size: 13px; }
+.coach-list, .coach-dir { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.coach-list li, .coach-dir li { display: flex; gap: 12px; align-items: center; justify-content: space-between; padding: 10px 12px; border: 1px solid var(--line, #d8dee8); border-radius: 12px; }
+.coach-list li > div, .coach-dir li > div { display: grid; gap: 2px; min-width: 0; }
+.coach-dir li span { font-size: 13px; }
+.coach-list .btn-blue, .coach-dir .btn-blue { width: auto; flex: none; display: inline-flex; align-items: center; gap: 6px; }
+.coach-list .btn-blue svg { width: 14px; height: 14px; fill: currentColor; }
+.coach-kind { font-size: 11px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; color: var(--accent-text, #9a7b3c); }
+.coach-note { margin: 2px 0; font-size: 13px; font-style: italic; }
+.coach-share { display: flex; gap: 10px; align-items: flex-start; margin: 10px 0; font-size: 14px; }
+.coach-share input { width: auto; margin-top: 3px; flex: none; }
+.coach-share span { display: grid; gap: 2px; }
+.coach-share small { color: var(--muted); font-size: 12px; }
+.coach-now { margin: 4px 0; }
+.coach-pro-link { margin: 10px 0 0; }
+.coach-sheet .coach-dir { max-height: 55vh; overflow: auto; }

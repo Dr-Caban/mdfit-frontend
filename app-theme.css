@@ -1219,6 +1219,15 @@ html[data-theme="black"] {
 :where(html[data-theme=black]) .sh-links { border: 0; background: none; color: var(--accent-text); }
 :where(html[data-theme=black]) .sh-link-list li { border: 1px solid var(--line); background: var(--card); }
 :where(html[data-theme=black]) .sh-stop { border: 0; background: none; color: var(--err); }
+:where(html[data-theme=black]) .coach-pick { border: 0; }
+:where(html[data-theme=black]) .coach-pick label { border: 1px solid var(--line, var(--line)); }
+:where(html[data-theme=black]) .coach-pick label:has(input:checked) { border-color: var(--accent, #c9a45c); background: var(--accent-soft, #362c17); }
+:where(html[data-theme=black]) .coach-pick small { color: var(--muted); }
+:where(html[data-theme=black]) .coach-who span { color: var(--muted); }
+:where(html[data-theme=black]) .coach-list li, :where(html[data-theme=black]) .coach-dir li { border: 1px solid var(--line, var(--line)); }
+:where(html[data-theme=black]) .coach-list .btn-blue svg { fill: currentColor; }
+:where(html[data-theme=black]) .coach-kind { color: var(--accent-text, #d4c19b); }
+:where(html[data-theme=black]) .coach-share small { color: var(--muted); }
 :where(html[data-theme=black]) .gd-dialog { border: 0; background: var(--bg); color: var(--text); }
 :where(html[data-theme=black]) .gd-dialog::backdrop { background: rgba(10, 26, 46, .75); }
 :where(html[data-theme=black]) .gd-close { border: 0; background: rgba(255,255,255,.12); color: #fff; }
@@ -2652,6 +2661,29 @@ html[data-theme="black"] { --aff-earned: #4a94dc; --aff-pend: #b98522; }
 :where(html[data-layout=compact]) .sh-links { gap: 6px; margin-top: 8px; }
 :where(html[data-layout=compact]) .sh-link-list { margin: 0 0 8.5px; padding: 0; gap: 8px; }
 :where(html[data-layout=compact]) .sh-link-list li { gap: 6px; padding: 8.5px; }
+:where(html[data-layout=compact]) .coach-pick { padding: 0; margin: 4px 0 8px; gap: 6px; }
+:where(html[data-layout=compact]) .coach-pick legend { margin-bottom: 6px; padding: 0; }
+:where(html[data-layout=compact]) .coach-pick label { gap: 8px; padding: 10px 12px; }
+:where(html[data-layout=compact]) .coach-pick input { margin: 3px 0 0; }
+:where(html[data-layout=compact]) .coach-pick span { gap: 2px; }
+:where(html[data-layout=compact]) .coach-pick small { font-size: 12.5px; }
+:where(html[data-layout=compact]) .coach-pick .fine { margin: 0; }
+:where(html[data-layout=compact]) .coach-modes { gap: 6px; margin-top: 6px; }
+:where(html[data-layout=compact]) .coach-who { gap: 2px; margin: 4px 0 8px; }
+:where(html[data-layout=compact]) .coach-who span { font-size: 13px; }
+:where(html[data-layout=compact]) .coach-list, :where(html[data-layout=compact]) .coach-dir { margin: 0; padding: 0; gap: 8px; }
+:where(html[data-layout=compact]) .coach-list li, :where(html[data-layout=compact]) .coach-dir li { gap: 8.5px; padding: 8px 8.5px; }
+:where(html[data-layout=compact]) .coach-list li > div, :where(html[data-layout=compact]) .coach-dir li > div { gap: 2px; }
+:where(html[data-layout=compact]) .coach-dir li span { font-size: 13px; }
+:where(html[data-layout=compact]) .coach-list .btn-blue, :where(html[data-layout=compact]) .coach-dir .btn-blue { gap: 6px; }
+:where(html[data-layout=compact]) .coach-kind { font-size: 11px; }
+:where(html[data-layout=compact]) .coach-note { margin: 2px 0; font-size: 13px; }
+:where(html[data-layout=compact]) .coach-share { gap: 8px; margin: 8px 0; font-size: 14px; }
+:where(html[data-layout=compact]) .coach-share input { margin-top: 3px; }
+:where(html[data-layout=compact]) .coach-share span { gap: 2px; }
+:where(html[data-layout=compact]) .coach-share small { font-size: 12px; }
+:where(html[data-layout=compact]) .coach-now { margin: 4px 0; }
+:where(html[data-layout=compact]) .coach-pro-link { margin: 8px 0 0; }
 :where(html[data-layout=compact]) .gd-dialog { padding: 0; }
 :where(html[data-layout=compact]) .gd-close { font-size: 23.5px; }
 :where(html[data-layout=compact]) .gd-hero { gap: 11.5px; padding: 15.5px 64px 15.5px 15.5px; }

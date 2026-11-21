@@ -22,7 +22,7 @@
   </style>
   <link rel="apple-touch-icon" href="assets/app-icon-192.png">
   <link rel="stylesheet" href="styles.css?v=ec75b4b1">
-  <link rel="stylesheet" href="account.css?v=4d3f1ba2">
+  <link rel="stylesheet" href="account.css?v=125206ac">
   <link rel="stylesheet" href="/site-header.css?v=f429a526">
   <script src="/site-header.js?v=312f6631" defer></script>
   <script type="application/ld+json" data-mdfit-app>{"@context":"https://schema.org","@type":"WebApplication","@id":"https://www.mymdfit.com/mdfit-app#app","name":"MD Fit","url":"https://www.mymdfit.com/mdfit-app","applicationCategory":"HealthApplication","operatingSystem":"Any web browser (iPhone, Android, computer)","browserRequirements":"Requires JavaScript","description":"Dr. Jared Caban's free app: tap where it hurts, then follow the exercise videos and the program built for it.","provider":{"@id":"https://www.mymdfit.com/#clinic"},"featureList":["Pain tool: tap where it hurts to see the muscles that usually cause it","Exercise video library","Programs designated for each problem"],"offers":[{"@type":"Offer","name":"Free","price":"0","priceCurrency":"USD"}],"isAccessibleForFree":true}</script>
@@ -71,6 +71,13 @@
       <form id="signup-form" class="form auth-form" data-panel="signup" novalidate hidden>
         <h1>Create your account</h1>
         <p class="muted">See your appointments, your plan from Dr. Jared, and track your progress.</p>
+        <fieldset class="coach-pick">
+          <legend>How do you want to train?</legend>
+          <label><input type="radio" name="coachMode" value="independent" checked><span><b>On my own</b><small>Dr. Jared's programs, at your pace</small></span></label>
+          <label><input type="radio" name="coachMode" value="trainer"><span><b>With a trainer</b><small>A personal trainer sends you MD Fit workouts</small></span></label>
+          <label><input type="radio" name="coachMode" value="clinician"><span><b>With a clinician</b><small>A pain and rehab clinician guides your plan</small></span></label>
+          <p class="fine">You pick who after you sign up, and you can change it any time in Profile.</p>
+        </fieldset>
         <div class="sso-wrap" id="sso-signup" hidden><button type="button" class="apple-btn" data-apple hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.37 12.77c.03 2.86 2.5 3.81 2.53 3.82-.02.07-.4 1.36-1.3 2.7-.79 1.15-1.6 2.3-2.89 2.33-1.26.02-1.67-.75-3.11-.75s-1.9.72-3.09.77c-1.24.05-2.19-1.25-2.98-2.4C3.9 16.9 2.66 12.6 4.33 9.68c.83-1.45 2.31-2.37 3.92-2.4 1.22-.02 2.37.83 3.11.83.74 0 2.14-1.02 3.61-.87.62.03 2.34.25 3.45 1.88-.09.06-2.06 1.2-2.05 3.65zM14 5.7c.66-.8 1.1-1.9.98-3-.95.04-2.09.63-2.77 1.43-.61.7-1.14 1.83-1 2.91 1.06.08 2.13-.54 2.79-1.34z"/></svg>Continue with Apple</button><div id="google-btn-signup" class="google-signin-wrap" hidden></div></div>
         <div class="auth-divider" id="auth-divider-signup" hidden><span>or</span></div>
         <label>Full name<input name="name" required minlength="2" maxlength="100" autocomplete="name"></label>
@@ -182,7 +189,7 @@
               try {
                 const refInput = $("#signup-form [name=referralCode]");
                 const body = { credential: resp.credential };
-                if (refInput && refInput.value) body.referralCode = refInput.value;
+                if (refInput && refInput.value) body.referralCode = refInput.value; { const cm = $("#signup-form [name=coachMode]:checked"); if (cm && !$("#signup-form").hidden) body.coachMode = cm.value; }
                 done(await api("/api/clients/google", body));
               } catch (e) {
                 const msg = $("[data-panel]:not([hidden]) .form-msg");
@@ -215,7 +222,7 @@
               const name = (r.user && r.user.name) || {};
               const refInput = $("#signup-form [name=referralCode]");
               const body = { identityToken: r.authorization.id_token, firstName: name.firstName || "", lastName: name.lastName || "" };
-              if (refInput && refInput.value) body.referralCode = refInput.value;
+              if (refInput && refInput.value) body.referralCode = refInput.value; { const cm = $("#signup-form [name=coachMode]:checked"); if (cm && !$("#signup-form").hidden) body.coachMode = cm.value; }
               if (msg) { msg.className = "form-msg"; msg.textContent = "Signing in…"; }
               done(await api("/api/clients/apple", body));
             } catch (e) {

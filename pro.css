@@ -1,0 +1,31 @@
+/* /pro: the trainer and clinician portal. Builds on shared.css (the same light page as a shared link). */
+.top-in { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.top-link { color: #fff; font-size: 13px; font-weight: 600; text-decoration: none; border: 1px solid rgba(255, 255, 255, .35); border-radius: 999px; padding: 6px 12px; }
+main { max-width: 720px; }
+.form { display: grid; gap: 12px; margin-top: 14px; }
+.form label { display: grid; gap: 4px; font-size: 13px; font-weight: 600; }
+.form input:not([type=radio]):not([type=checkbox]), .form select, .form textarea { font: inherit; font-weight: 400; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: #fff; color: var(--navy); width: 100%; }
+.form .check { display: flex; gap: 10px; align-items: flex-start; font-weight: 400; font-size: 13.5px; }
+.form .check input { margin-top: 3px; flex: none; }
+.seg { border: 0; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.seg legend { font-size: 13px; font-weight: 700; margin-bottom: 6px; padding: 0; }
+.seg label { display: flex; gap: 8px; align-items: center; padding: 8px 12px; border: 1px solid var(--line); border-radius: 999px; font-weight: 600; cursor: pointer; }
+.seg label:has(input:checked) { border-color: var(--accent-text); background: var(--accent-soft); }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.form-msg { color: var(--err); font-size: 13px; margin: 0; min-height: 1em; }
+.btn.sm { min-height: 36px; padding: 8px 14px; font-size: 13.5px; }
+.link { background: none; border: 0; padding: 0; color: var(--accent-text); font-weight: 600; font-size: 13px; text-decoration: underline; text-underline-offset: 3px; justify-self: start; }
+.mem-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.mem-head > div { display: grid; gap: 2px; }
+.asg { list-style: none; margin: 14px 0; padding: 0; display: grid; gap: 8px; }
+.asg li { display: flex; justify-content: space-between; align-items: center; gap: 10px; background: var(--card-2); border-radius: 12px; padding: 10px 12px; }
+.asg li > div { display: grid; gap: 2px; min-width: 0; }
+.kind { font-size: 11px; font-weight: 700; letter-spacing: .6px; text-transform: uppercase; color: var(--accent-text); }
+.lib, .picked { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.lib li { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 10px; }
+.picked li { display: grid; gap: 6px; padding: 10px 12px; background: var(--card-2); border-radius: 12px; }
+.picked .sets { display: grid; grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 6px; }
+.pain, .assign { margin-top: 12px; }
+.ptab { width: 100%; border-collapse: collapse; font-size: 13px; }
+.ptab th, .ptab td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+@media (max-width: 420px) { .two { grid-template-columns: 1fr; } .asg li { display: grid; } }

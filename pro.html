@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="The MD Fit portal for approved trainers and clinicians.">
+  <meta name="referrer" content="no-referrer">
+  <title>Coach portal | MD Fit</title>
+  <link rel="icon" href="assets/icon-64.png" type="image/png">
+  <link rel="apple-touch-icon" href="assets/logo.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css?v=7f2365b7">
+  <link rel="stylesheet" href="pro.css?v=1f4a587d">
+</head>
+<body>
+<!-- /pro: the trainer and clinician portal (mdfit-backend lib/pros.js). Pros are MD Fit members with an approved pro
+     profile; they sign in with their own member account. Nothing here touches the practice's EMR. -->
+<header class="top">
+  <div class="top-in"><div class="brand">MD Fit<small>Trainer &amp; clinician portal</small></div><a class="top-link" href="/account">Open my app</a></div>
+</header>
+
+<main>
+  <div id="state" aria-live="polite"><p class="empty">Loading…</p></div>
+  <p class="foot">MD Fit · Sarasota, FL · <a href="tel:+19413130562">941-313-0562</a> · <a href="/privacy-policy">Privacy</a></p>
+</main>
+
+<div class="toast" id="toast" role="status" hidden></div>
+<noscript><p class="foot">This page needs JavaScript turned on.</p></noscript>
+<script src="config.js?v=aac711e3"></script>
+<script src="common.js?v=d06cd7da"></script>
+<script src="app/exercises.js?v=d121be98"></script>
+<script src="pro.js?v=f2f9f4d6"></script>
+</body>
+</html>
