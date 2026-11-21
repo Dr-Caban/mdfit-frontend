@@ -65,6 +65,8 @@
   // An entry carries sets and either a rep count (My workouts) or sets already written out (the generator's programs)
   function detail(x) {
     const reps = Number(x && x.reps) > 0 ? Number(x.reps) : 0, sets = x && x.sets;
+    const each = x && Array.isArray(x.repsBySet) && x.repsBySet.length === Number(sets) ? x.repsBySet.map(Number).filter((r) => r > 0) : [];
+    if (each.length && each.length === Number(sets)) return `${each.length} sets: ${each.join(", ")} reps`;   // a rep count for each set
     if (reps && Number(sets) > 0) return `${Number(sets)} × ${reps} reps`;
     if (reps) return `${reps} reps`;
     if (typeof sets === "string" && sets.trim()) return sets.trim();
