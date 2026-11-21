@@ -58,3 +58,6 @@ h1 { font:700 23px/1.25 var(--head); margin:6px 0 6px; overflow-wrap:anywhere; }
 .toast small { display:block; font-weight:400; color:#c9d1dc; overflow-wrap:anywhere; user-select:all; }
 @media (prefers-reduced-motion:reduce) { * { scroll-behavior:auto !important; transition:none !important; animation:none !important; } }
 [hidden] { display:none !important; }
+/* Library programs and pain-tool protocols (?p= / ?m=) */
+.poster { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 12px; margin: 0 0 14px; background: #eef1f5; }
+.block small { font-weight: 500; font-size: .8em; opacity: .7; margin-left: 6px; }

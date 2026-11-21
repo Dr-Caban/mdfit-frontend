@@ -1137,7 +1137,7 @@
           ${r.tests && r.tests.length ? `<section class="card"><span class="label accent">Quick self-tests</span>${r.tests.map((t) => `<div class="rtest"><b>${esc(t.name)}</b><p>${esc(t.how)}</p><p class="pos"><b>Positive if:</b> ${esc(t.positive)}</p></div>`).join("")}</section>` : ""}
           ${r.protocol ? `<section class="card protocol"><span class="label accent">Dr. Jared's protocol</span>
             ${PHASES.map(([k, t, when]) => (r.protocol[k] || []).length ? `<div class="phase"><div class="phase-head"><b>${t}</b><span>${when}</span><button type="button" class="ev-act" data-phase="${k}">Start</button></div><ol class="psteps">${r.protocol[k].map(stepLi).join("")}</ol></div>` : "").join("")}
-            <div class="row"><button type="button" class="btn-gold sm" data-save-protocol>Save to My Programs</button><a class="btn-blue sm" href="/book">Book with Dr. Jared</a></div>
+            <div class="row"><button type="button" class="btn-gold sm" data-save-protocol>Save to My Programs</button><button type="button" class="btn-ghost sm share-lib" data-share-lib="muscle" data-share-id="${esc(id)}" data-share-title="${esc(m.name)} protocol"><svg viewBox="0 0 24 24" aria-hidden="true" class="ic-line"><path d="M12 15V3"/><path d="m7 8 5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg> Share</button><a class="btn-blue sm" href="/book">Book with Dr. Jared</a></div>
             ${r.expect ? `<p class="expect"><b>What to expect:</b> ${esc(r.expect)}</p>` : ""}</section>` : ""}
         </div>
         <div class="col-side">
@@ -3140,7 +3140,8 @@
       <div class="card prog-head prog-head-img">${progPoster(p, "ph-img", "(max-width: 520px) 100vw, 480px")}<span class="pc-cat">${esc(p.category)}</span>${p.locked ? lockBadge : ""}<h2>${esc(p.title)}</h2><p>${esc(p.summary)}</p>
         <p class="muted small">${PROTO.ids.has(p.id) ? `${partsLabel((PROTO.weekCounts || {})[p.id] || p.weeks, p)} · week-by-week plan` : paced ? `${p.weeks} weeks · ${perWeekPlan(p)}` : `${p.weeks} weeks · ${p.days.length} session${p.days.length === 1 ? "" : "s"} a week`} · ${esc(lvlName(p.level))} · ${esc((Gen.LOCATIONS.find((l) => l.id === p.location) || {}).label || "")}</p>
         ${p.notes ? `<p class="prog-notes">${esc(p.notes)}</p>` : ""}
-        <button type="button" class="btn-ghost sm save-plan${isSaved(p.id) ? " on" : ""}" data-save-plan="${esc(p.id)}">${isSaved(p.id) ? "Saved to my dashboard ✓" : "Save to my dashboard"}</button></div>
+        <button type="button" class="btn-ghost sm save-plan${isSaved(p.id) ? " on" : ""}" data-save-plan="${esc(p.id)}">${isSaved(p.id) ? "Saved to my dashboard ✓" : "Save to my dashboard"}</button>
+        <button type="button" class="btn-ghost sm share-lib" data-share-lib="program" data-share-id="${esc(p.id)}" data-share-title="${esc(p.title)}"><svg viewBox="0 0 24 24" aria-hidden="true" class="ic-line"><path d="M12 15V3"/><path d="m7 8 5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg> Share</button></div>
       ${progResources(p)}
       <div class="prog-body">${p.days.map((d, i) => { const w = progDayWorkout(p, i); return `<div class="card prog-day">
         <div class="pd-top"><div><span class="label accent">${paced ? (pos.complete ? `All ${perWeekTotal(p)} sessions done · Week ${p.weeks} of ${p.weeks}` : `Week ${pos.week} of ${p.weeks} · session ${pos.session} of ${pos.of} this week`) : `Day ${i + 1} · Week ${wk(i)} of ${p.weeks}`}</span><h3>${esc(d.name)}</h3>
@@ -4226,6 +4227,22 @@
     try { await introSettled(); } catch {} // the first descent's "pick your road" stop is credited before Solomon names the next
     try { document.dispatchEvent(new CustomEvent("mdfit:journey")); } catch {}
   }
+  // ---- Share a library program or a pain-tool protocol. The link opens a public preview (/shared?p= or ?m=) that
+  // anyone can read; it carries this member's referral code, so a friend who joins from it is credited to them.
+  // Always the live site, never a preview host, so the link works for whoever it is sent to.
+  document.addEventListener("click", async (e) => {
+    const b = e.target.closest("[data-share-lib]"); if (!b) return;
+    const kind = b.dataset.shareLib === "muscle" ? "m" : "p", id = b.dataset.shareId, title = b.dataset.shareTitle || "MD Fit";
+    if (!id) return;
+    const code = client && client.referralCode ? String(client.referralCode) : "";
+    const url = `https://www.mymdfit.com/shared?${kind}=${encodeURIComponent(id)}${code ? `&ref=${encodeURIComponent(code)}` : ""}`;
+    if (navigator.share) {
+      try { await navigator.share({ title: `MD Fit: ${title}`, text: `${title}, from Dr. Jared on MD Fit`, url }); return; }
+      catch (err) { if (err && err.name === "AbortError") return; }
+    }
+    try { await navigator.clipboard.writeText(url); toast("Link copied. Paste it anywhere to share."); }
+    catch { toast(url); }
+  });
   document.addEventListener("click", async (e) => {
     const b = e.target.closest("[data-save-plan]"); if (!b) return;
     const pid = b.dataset.savePlan, on = isSaved(pid);
