@@ -38,6 +38,10 @@
   nothing ever publishes; keep Token Authentication OFF until a client signs URLs. Never print or copy a key. Its **"Ask before you
   commit"** section is the owner's standing rule: never guess a clip's placement or usage, and never commit, push
   or deploy on one that is unconfirmed — ask.
+  From 22 Nov 2026, every new clip is **identified by listening to it**: Dr. Jared says the movement's name in
+  the first seconds, so `scripts/video-stt.py` transcribes it in-container (never an outside service) rather
+  than anyone naming it from a thumbnail. And a library placement wires a clip into **no** protocol or
+  programme: those reference movements by name, and that is a separate, separately confirmed edit.
 - **DO NOT TOUCH after compliancy is set.** This is a live patient EMR. The compliance safeguards are locked: read the
   "DO NOT TOUCH" section of `README.md` here and in `mdfit-backend` before editing anything near sign-in, sessions,
   roles and permissions, the audit ledger, encryption, the chart, patient-rights records, the Compliance screen, or the

@@ -30,10 +30,16 @@ section is the owner's standing rule, and the short version is: **if a placement
 2. **Fetch the published map:** `GET https://www.mymdfit.com/api/videos` with a browser user-agent (the edge
    refuses `curl`'s own). Save it; it is what tells *published* from *still encoding*.
 3. **Run the intake:** `node scripts/video-intake.js --drive <files.json> --api <videos.json>`
-4. **Report what it says**, in its own terms: published, still encoding, already decided, not for publishing,
+4. **Listen to anything unnamed.** A camera-named clip is not an unknown: Dr. Jared says the
+   movement's name in the first seconds. Follow *Identifying an unnamed clip* in the runbook —
+   thumbnail, size check, then `pip install faster-whisper` and
+   `python3 -I scripts/video-stt.py clip.mp4 --head 12`, which transcribes in this container.
+   Never send a clip or a link to one to an outside service. Delete the video once the audio is out.
+   This is the owner's standing instruction for every clip from 22 Nov 2026 onward.
+5. **Report what it says**, in its own terms: published, still encoding, already decided, not for publishing,
    needs renaming in Drive, waiting on a decision. For anything waiting, give the owner the clip name, its
    Drive folder and its id, and say plainly what you need from them for each one — usage and placement.
-5. **Stop there.** No catalog edit, no manifest rebuild, no commit, no push, no deploy, no "sync now".
+6. **Stop there.** No catalog edit, no manifest rebuild, no commit, no push, no deploy, no "sync now".
 
 ## Checking the hosts while you are here
 

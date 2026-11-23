@@ -122,6 +122,44 @@ What the report tells you, and why each line is there:
 The same name on several candidate files is the same story one level down: `Standing Hip Abduction and
 Adduction` filmed for three tracks is three Drive files and one movement.
 
+### Identifying an unnamed clip (owner, 22 Nov 2026 — standing, for every clip from here on)
+
+**Dr. Jared says the name of the movement out loud in the first seconds of the clip.** So a camera
+file called `20261119_121523.mp4` is not an unknown: it is a clip that has not been listened to. The
+owner asked, on 22 Nov 2026, that this be the workflow for every new clip from that date onward.
+
+Never name a clip from a thumbnail. A first frame shows the setup, not the movement, and the first
+run of this proved it: a frame read as "tandem stance on a line" turned out to be running-form
+coaching, and `20261105_205728.mp4` looked like a man walking past a wall and was the long lunge.
+
+1. **Look**, cheaply, before downloading anything: `https://drive.google.com/thumbnail?id=<id>&sz=w420`
+   returns the first frame as a JPEG for a file shared "anyone with the link".
+2. **Check the size first** (`fileSize` from `get_file_metadata`). Over `MEDIA_MAX_MB` (500) it can
+   never upload however it is named, and zero bytes is useless. Deal with that before anything else.
+3. **Listen.** Download the clip, then:
+   ```
+   pip install faster-whisper                       # once per session
+   python3 -I scripts/video-stt.py clip.mp4         # --head 12 is usually enough for the name
+   ```
+   It decodes with ffmpeg and transcribes **inside this container**. Use `-I` — these are downloaded,
+   untrusted files, and it stops Python importing anything from their directory.
+4. **Delete the video once the audio and frames are out.** Writable disk is a fixed per-session
+   allowance and these clips run 50–150 MB each, the long ones a gigabyte.
+5. **Never send a clip, or a link to one, to an outside transcription service.** The sandbox refuses
+   it, correctly: a Drive download URL hands a third party a private patient-practice file. The local
+   route above exists because of that refusal, and it is the better answer anyway.
+6. **Propose, with the evidence.** Quote the line that names it, give the nearest existing catalog
+   entries as precedent for region / category / level, and say which call is genuinely the owner's.
+   `Kneeling Wall Spiral` came back Spine rather than Shoulders on exactly that question.
+7. **On the owner's word:** rename the file in Drive to the spoken name (ids never change, so this
+   breaks nothing and unblocks intake), then place it, rebuild, record it in
+   `data/video-placements.json`, commit, and ask before the deploy.
+8. **Verify what was actually achieved, not what was intended.** Catalog entry, manifest entry, then
+   `bunny.map` once it is live — and say plainly that **a library placement puts a clip in no
+   protocol or programme**. Those reference movements by name, and nothing is wired up by placing it.
+   If the clip is meant to appear inside a protocol week, that is a separate edit, with its own
+   confirmation.
+
 ### Placing a confirmed clip
 
 Only the owner's confirmation puts a clip in the catalog (see *Ask before you commit*):

@@ -56,6 +56,14 @@ whose placement you worked out yourself is not confirmed. **Ask, with the list, 
    entries in `bunny.res`, and real playback URLs returning video bytes (send the referrer, or you will get a
    403 from the pull zone's referrer protection and read it as a broken upload).
 
+## A placement is not a programme
+
+Putting a clip in `app/exercises.js` makes it a library movement and nothing else. Protocols and
+programmes in `data/protocols/` reference movements **by name**, and placing a clip wires it into
+none of them. When the owner expects a clip to appear inside a protocol or a programme, that is a
+separate edit to that file, needing its own confirmation of which protocol and which week. Say so
+rather than letting "it is in the library" stand in for "members will meet it in their programme".
+
 ## Stop and ask instead of writing when
 
 - a clip is over `MEDIA_MAX_MB` (500 MB) or zero bytes — it will never upload, and another run will not fix it;
