@@ -139,6 +139,59 @@
   const CLD = (kind, t, pid, ver, ext) => `https://res.cloudinary.com/${cdn.cloud}/${kind}/upload/${t}/${ver ? "v" + ver + "/" : ""}${pid.split("/").map(encodeURIComponent).join("/")}${ext ? "." + ext : ""}`;
   const BUN = (id, file) => `https://${cdn.bunny.host}/${encodeURIComponent(guid(id))}/${file}`;
   const DRIVE = (id) => `https://drive.usercontent.google.com/download?id=${encodeURIComponent(id)}&export=download&authuser=jaredcaban0nopills@gmail.com`;
+  // Images live in the Vercel Blob store "mdfit-images" (23 Nov 2026), not Cloudinary. The map is baked in rather
+  // than fetched because thumb() is synchronous and pain patterns draw on first paint: a map that arrives later
+  // would show a slow Drive thumbnail first and swap it, which reads as a flicker on a clinical page.
+  // Generated - do not edit by hand. Source of truth is data/blob-images.json; rebuild with
+  //   node scripts/build-blob-images.js
+  // BLOB_IMG_START
+  const BLOB_IMG = {
+    "10gahcMzIomx7Rp7fagxo11aIBjlP2kjb": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/pain-patterns/Glutes/gluteus-maximus-to-back-of-hip-and-sacrum/pattern-1.jpg",
+    "12kl9knm0YKPDd0aslIajAQnkSPpQdoHn": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/pain-patterns/Abdomen/external-oblique-to-abdominal-wall/pattern-1.jpg",
+    "19ujMGdnSPDUAC8wmp-r3zLj8rZvfRvD1": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/pain-patterns/Knee/knee-to-referred-knee-pain/pattern-1.jpg",
+    "1BZ84fWOqZwtX1wv5jWOBl_lcgj_GlCY7": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/pain-patterns/Shoulder/anterior-deltoid-to-front-of-the-shoulder/pattern-1.jpg",
+    "1CQsDKAfWOsxAiSEGY4pHjioS-6dwZhdv": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/pain-patterns/Glutes/gluteus-minimus-to-side-of-hip-and-si-region/pattern-1.jpg",
+    "1DggFIeEsXbHUbLBzHdFgrucDcJ8mMDJ7": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/protocols/tennis-elbow/week-4.png",
+    "1HJaGBVvZ2Qn-v1W_DNYtjHgFY7wqXC7p": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/pain-patterns/Forearm/pronator-medial-forearm-to-inner-forearm-and-elbow/pattern-1.jpg",
+    "1IZaBDcE3bsZ1Cr5omouqCNk-uUK07jhT": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/pain-patterns/Neck-and-shoulder/scalenes-to-neck-shoulder-blade-and-deltoid/pattern-1.jpg",
+    "1Ia6fB7njW2bDOXALjKrgGQ21rvHd9uq_": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/protocols/tennis-elbow/week-2.png",
+    "1JoDy7UxTsTPyGpLmmZFCjylxo2Sc1Bof": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/pain-patterns/Foot/foot-to-sole-heel-and-arch/pattern-1.jpg",
+    "1LGYSRJ4X0GsWKnCltS0TPCv4IlLNfu2A": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/pain-patterns/Hip-and-groin/groin-to-adductor-rotational-referral/pattern-1.jpg",
+    "1OHrrDGSkM2gU2Kkjx3SipDiWyhmVs-BJ": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/protocols/tennis-elbow/week-3.png",
+    "1OnuhaVxtcsI5ezGo9JW_PoNWXNB5JH9Z": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/pain-patterns/Chest/pec-minor-third-rib-to-upper-chest-and-front-of-shoulder/pattern-2.jpg",
+    "1PQoS9C1svIXtAzanj7asL4Cq3T9yeyyy": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/pain-patterns/Low-back-and-hip/psoas-to-front-of-hip-and-deep-low-back/pattern-1.jpg",
+    "1PgaeS2Mcg38-a2MTrwIS_xQFbIs9StBg": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/protocols/golfers-elbow/week-4.png",
+    "1Rd1LaMS35P55itlxJorIe-7ZVzObPX2n": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/protocols/golfers-elbow/week-3.png",
+    "1U5tJyzcoC8NgJNmRR1jJIF1mA7WGKs11": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/pain-patterns/Upper-arm/triceps-to-back-of-the-arm/pattern-1.jpg",
+    "1X7SrjWBCtcEKjLT94YNXRWywXfrpgUPz": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/pain-patterns/Chest/pec-major-to-chest-and-front-of-shoulder/pattern-1.jpg",
+    "1XLzk-h7UYzntYSHhHbCCFnjrt9s2pylR": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/pain-patterns/Forearm/extensor-carpi-radialis-to-outer-forearm-and-elbow/pattern-1.jpg",
+    "1bnlCk7ieGzoGgUAzjYbbTo3UtKMzJgNj": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/protocols/golfers-elbow/week-2.png",
+    "1cQwlSkNdYAWl6z7sk3j4K2oEBqIwxHeT": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/pain-patterns/Neck-and-shoulder/levator-scapulae-to-upper-shoulder-blade/pattern-1.jpg",
+    "1dpzHCPtcB6WUoeptfm1N7RoyTv3Cy1Z-": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/protocols/tennis-elbow/week-1.png",
+    "1eV5bOKQ1fu4UNw6cthEmSKtyLc6Y8Asv": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/pain-patterns/Hip-and-groin/pectineus-to-front-of-groin-and-upper-inner-thigh/pattern-1.png",
+    "1g4N68t3XNKS4gthdr0gLCese8gwAZyGa": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/pain-patterns/Ribs/serratus-anterior-to-side-ribs-and-shoulder-blade/pattern-1.jpg",
+    "1kesOEfU52_Fd0b-V3kR6FUO5pMXLg2_a": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/protocols/golfers-elbow/week-1.png",
+    "1liPiQa2tmVtvbqkIyzWML-8D4dBbo4jm": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/pain-patterns/Chest/scalenes-to-front-of-the-chest/pattern-1.jpg",
+    "1mRzeHVmGgCQcvPHJaqJ0vezET3lyHQVX": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/pain-patterns/Chest/pec-major-to-chest-and-front-of-shoulder/pattern-2.jpg",
+    "1mo03ODHKvHy72rXOQqbCE4kSnJgfyIbK": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/pain-patterns/Shoulder/infraspinatus-to-back-and-deep-front-of-the-shoulder/pattern-1.jpg",
+    "1mzjXHIRwz0P7hkaRafQPZt2mHnawvtN5": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/pain-patterns/Shoulder/subscapularis-to-front-of-shoulder-and-deep-cuff/pattern-1.jpg",
+    "1ne4GkTthmSOfAlNekIj17Yq0yVbG14u5": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/pain-patterns/Low-back/quadratus-lumborum-to-low-back-and-back-of-pelvis/pattern-1.jpg",
+    "1slaBN00ey3Tme9zZfBDTyvXKZfgi-Zyg": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/pain-patterns/Chest/pec-minor-third-rib-to-upper-chest-and-front-of-shoulder/pattern-1.jpg",
+    "1soRjOhX0dHpCKtiNtNWKlzOv-yRzt6S0": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/pain-patterns/Hip/general-hip-pain-front-side-or-back/pattern-1.png",
+    "1sstSo8An8Yz0dPVGV4LQWa46HJcB8GJC": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/pain-patterns/Shoulder/supraspinatus-to-top-and-outside-of-the-shoulder/pattern-1.jpg",
+    "1w7AzJ5t0pAsSnp5H8t71twTG0Jxo4jjr": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/pain-patterns/Calf/calf-soleus-to-calf-heel-and-plantar-complex/pattern-1.jpg",
+    "1xA19_C6FTAdx66HE9QrfV9WKPuiALgT7": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/pain-patterns/Forearm/general-radialis-brachioradialis-to-forearm-and-thumb-side/pattern-1.jpg",
+    "1z4Gc3rF8voqiDQL6qf6JZlYX54trwTrV": "https://qufhrmimvfywdyt6.public.blob.vercel-storage.com/images/pain-patterns/Hip-and-groin/iliacus-to-front-of-hip-and-pelvis/pattern-1.jpg"
+  };
+  // BLOB_IMG_END
+  const blobImg = (id) => BLOB_IMG[id] || null;
+  // Vercel's optimizer resizes and re-encodes, standing in for Cloudinary's f_auto,q_auto,w_N,c_limit. The width
+  // has to be one vercel.json declares under images.sizes, so snap to the nearest rather than trusting the caller.
+  const IMG_SIZES = [240, 300, 480, 600, 800, 900, 1200];
+  const IMG = (url, w) => {
+    const size = IMG_SIZES.find((s) => s >= w) || IMG_SIZES[IMG_SIZES.length - 1];
+    return `/_vercel/image?url=${encodeURIComponent(url)}&w=${size}&q=75`;
+  };
   // Readiness: the backend only publishes a key into a map once the host has confirmed a playable file exists,
   // so "this key is in a map" is the one trustworthy answer to "can this video play right now". `playable` is
   // that answer and the single source of truth for whether a video may be offered to a member at all.
@@ -154,6 +207,7 @@
     // their own Drive-iframe fallback (see playVideo in account.js) for anything that will not load.
     mp4: (id) => { if (guid(id)) return BUN(id, "play_720p.mp4"); const h = hit(id); return h && h[1] === "v" ? CLD("video", "q_auto,vc_h264", h[0], h[2], "mp4") : DRIVE(id); },
     thumb: (id, w = 480) => { if (guid(id)) return BUN(id, "thumbnail.jpg"); // Bunny's still has no width knob
+      const b = blobImg(id); if (b) return IMG(b, w);   // pain patterns and protocol sheets: Blob, via the optimizer
       const h = hit(id); if (h) return h[1] === "v" ? CLD("video", `so_1,w_${w},c_limit,q_auto`, h[0], h[2], "jpg") : CLD("image", `f_auto,q_auto,w_${w},c_limit`, h[0], h[2]);
       return `https://drive.google.com/thumbnail?id=${encodeURIComponent(id)}&sz=w${w}`; },
     preview: (id) => `https://drive.google.com/file/d/${encodeURIComponent(id)}/preview`,

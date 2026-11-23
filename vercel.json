@@ -1,5 +1,16 @@
 {
   "cleanUrls": true,
+  "images": {
+    "sizes": [240, 300, 480, 600, 800, 900, 1200],
+    "formats": ["image/webp"],
+    "minimumCacheTTL": 31536000,
+    "remotePatterns": [
+      {
+        "protocol": "https",
+        "hostname": "qufhrmimvfywdyt6.public.blob.vercel-storage.com"
+      }
+    ]
+  },
   "headers": [
     {
       "source": "/data/(.*)\\.json",
