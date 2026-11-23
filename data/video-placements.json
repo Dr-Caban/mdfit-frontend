@@ -1,574 +1,665 @@
 {
- "note": "Placement decisions already taken, so a later session inherits them instead of asking again. A clip listed here is NOT open work. Anything not listed here and not yet in the catalog is still waiting on the owner (see the \"Ask before you commit\" section of docs/VIDEO-UPLOAD.md).",
- "excludedFolders": [
-  {
-   "folder": "99 Duplicates",
-   "decision": "never-publish",
-   "why": "second takes, set aside on purpose",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "folder": "7 Full Session Recordings",
-   "decision": "never-publish",
-   "why": "long-form session footage, not library clips",
-   "on": "2026-11-20",
-   "by": "owner"
-  }
- ],
- "settled": [
-  {
-   "id": "1yIWx9INL_jean04x-IK2M4REgxlF_myy",
-   "name": "Long Lunge (take 2)",
-   "folder": "MDFIT media",
-   "decision": "leave-in-drive",
-   "why": "A second take of Long Lunge, which the library already plays as Hips / Power / level 5 (1jOY9YNYPEPo7kd6iVT__zxPWOqAlIFW_). Renamed in Drive on 2026-11-21 from its camera file name; the name is the one spoken in the clip itself, transcribed in-session.",
-   "on": "2026-11-21",
-   "by": "owner"
-  },
-  {
-   "id": "16Qv9kIRJoBYFzEdzLzhAlJ_Q8A1K43xj",
-   "name": "Eccentric Internal Rotation",
-   "folder": "1 Exercise Library",
-   "decision": "placed-in-library",
-   "why": "Shoulders / Rehab / level 2 / any, matching the existing Rotator Cuff and Abducted rotation entries. Renamed in Drive on 2026-11-21 from its camera file name; the name is the one spoken in the clip itself, transcribed in-session.",
-   "on": "2026-11-21",
-   "by": "owner"
-  },
-  {
-   "id": "1cVa58JSDL4QTDAy1jF1cvr2u4zgFaiVl",
-   "name": "Eccentric External Rotation",
-   "folder": "1 Exercise Library",
-   "decision": "placed-in-library",
-   "why": "Shoulders / Rehab / level 2 / any, matching the existing Rotator Cuff and Abducted rotation entries. Renamed in Drive on 2026-11-21 from its camera file name; the name is the one spoken in the clip itself, transcribed in-session.",
-   "on": "2026-11-21",
-   "by": "owner"
-  },
-  {
-   "id": "15aKiHQai9gfUIOxj4HAd_2osyDC-eLDw",
-   "name": "Supraspinatus Stretch",
-   "folder": "1 Exercise Library",
-   "decision": "placed-in-library",
-   "why": "Shoulders / Mobility / level 2 / any. A banded stretch, so Mobility rather than Rehab. Renamed in Drive on 2026-11-21 from its camera file name; the name is the one spoken in the clip itself, transcribed in-session.",
-   "on": "2026-11-21",
-   "by": "owner"
-  },
-  {
-   "id": "1k4PgifeXn3fv1BfEHMTDYl59YrOAN_CB",
-   "name": "Kneeling Wall Spiral",
-   "folder": "1 Exercise Library",
-   "decision": "placed-in-library",
-   "why": "Spine / Mobility / level 2 / any. The owner chose Spine over Shoulders: the movement is thoracic rotation driven by the lat. Renamed in Drive on 2026-11-21 from its camera file name; the name is the one spoken in the clip itself, transcribed in-session.",
-   "on": "2026-11-21",
-   "by": "owner"
-  },
-  {
-   "id": "1BWGsE8Yi24WsKkdgJdg0F4-KW20mYxcS",
-   "name": "Intro - Video Library",
-   "folder": "4 Intros, Testimonials & Lectures",
-   "decision": "replaces-app-intro-library",
-   "why": "a newer take of the Library intro. MDFIT_INTROS.library and the app-intro manifest asset (public_id mdfit/videos/app-intros/library-intro) now carry this id instead of 1vqoCi5UQg6i_uYbV6GbVZXs6_Nzxcr4I. The old file stays in Drive and its Bunny copy keeps playing for anything that still names it.",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1xMCGxf7hv6_6b_00jwNxd2waOMCePWCQ",
-   "name": "Bear Crawl",
-   "folder": "3 Programs / PSG Hypertrophy Program",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1o9ez-fSei1eyVWlutaOWCIilajuytWFd (Spine / Activation / level 6)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1d6LCjzQRCjNsiMtEE0bHzTCdCmbyMoib",
-   "name": "90-90 Breathing",
-   "folder": "3 Programs / Dream Lean 12 / Daily Movement Reset",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1HtvHVw4p1BIrP_oiUAW7oqcNzdBznAkR (Neck / Mobility / level 2)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1xQvxJIghjFJ-3QwPCmIU7myowQhziS4w",
-   "name": "Bench Press",
-   "folder": "3 Programs / PSG Hypertrophy Program",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1zvU-eTyotEg95UxpYwM4bQNTgpFybkJZ (Shoulders / Strength / level 5)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1wtU687uecKgZFZwi0hyV1MsaqRnHSydQ",
-   "name": "Lat Pulldown",
-   "folder": "3 Programs / PSG Hypertrophy Program",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1fE5L5Zd3hKG0RePkvtkAUW4ra5AhXTOd (Shoulders / Strength / level 3)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1Xdpoysncgv37RWR-A4l-fgOJmTb_bkUM",
-   "name": "Cossack Squat",
-   "folder": "3 Programs / PSG Hypertrophy Program",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1SRAIfIye1YwXXIXhkN3PcsOc4Qee2jg5 (Hips / Mobility / level 6)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1Ke7eFEG8WMgQS_X1wKpvFrNK4fyXp8Qs",
-   "name": "Bulgarian Split Squat",
-   "folder": "3 Programs / PSG Hypertrophy Program",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1JWjUm5ORuh7L7ZHEkHziHfumpDZQ-DEX (Hips / Mobility / level 7)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1LiaLLayFMKk1mWa73xYTNu6lppsk2MTr",
-   "name": "Romanian Deadlift",
-   "folder": "3 Programs / PSG Hypertrophy Program",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1TQu2Ago9G05ol517v4TRP5M0X2aPoHY- (Hips / Strength / level 5)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1rmmahpsKEqOGRjRedSS0XxMo4z4a44ik",
-   "name": "Straight Leg Deadlift",
-   "folder": "6 Protocols - by Condition / 12 Week Full Mobility System / Track A",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1yjdG45vCmK2ze5y6zZ2IWs5Put-z8yju (Hips / Strength / level 4)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1kRpBxT2luZ7txshPnqL78Lp0ELX5WDEr",
-   "name": "Baseball Cable Stretch",
-   "folder": "6 Protocols - by Condition / 12 Week Full Mobility System / Track A",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1r3ULS0YJqaUR828aEdkg8kNdp33hG4ln (Spine / Mobility / level 2)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1MHowEhZlzRuJP5MXpMjeK8zG1hYDNb4z",
-   "name": "Overhead Straight Arm Pulldown",
-   "folder": "6 Protocols - by Condition / 12 Week Full Mobility System / Track A",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1v7GfrK_uRjGpFDtD9K61UerTpyLQeFN1 (Shoulders / Mobility / level 6)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1MNItjaywwJtwjIKVIPsZZoazvj_WfkGB",
-   "name": "Cossack Squat",
-   "folder": "6 Protocols - by Condition / 12 Week Full Mobility System / Track B",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1SRAIfIye1YwXXIXhkN3PcsOc4Qee2jg5 (Hips / Mobility / level 6)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1Na_dF_z1tYFcSeRu46W8GkPsFfupyqhJ",
-   "name": "Romanian Deadlift",
-   "folder": "6 Protocols - by Condition / 12 Week Full Mobility System / Track A",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1TQu2Ago9G05ol517v4TRP5M0X2aPoHY- (Hips / Strength / level 5)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1sAJUSdXRoIdBMsfFHVjnfQZO1bA9HdpO",
-   "name": "Cossack Squat",
-   "folder": "3 Programs / Dream Lean 12 / Day 3 (Friday) - Recovery & Mobility",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1SRAIfIye1YwXXIXhkN3PcsOc4Qee2jg5 (Hips / Mobility / level 6)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1KNBVsdhH9zv32_02_clisMJd0DT5a-co",
-   "name": "Long Jump",
-   "folder": "3 Programs / Dream Lean 12 / Day 3 (Friday) - Recovery & Mobility",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1WIWWfIsQTsi1lD78ZIhP7Ug9PKpH3a5n (Legs / Power / level 5)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1RhdeFOiTLFi9YTUSLOeadnx5U3o4eXMG",
-   "name": "Landmine Press Twist",
-   "folder": "3 Programs / Dream Lean 12 / Day 5 (Sunday)",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1hXOnRcaPUMVmLuEluR_TjTtZfIT536Y9 (Core / Power / level 6)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1h0MzUQNycNdl6Hdxr7bO_1fx94aqw_BT",
-   "name": "Bulgarian Split Squat",
-   "folder": "3 Programs / Dream Lean 12 / Day 1 (Wednesday)",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1JWjUm5ORuh7L7ZHEkHziHfumpDZQ-DEX (Hips / Mobility / level 7)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1apzkiqs0kHDVOw6j9LAVyEQ2Vyqs5bgH",
-   "name": "Dynamic Childs Pose",
-   "folder": "3 Programs / Dream Lean 12 / Daily Movement Reset",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1IB5mT971nE2tz29yaFykphZKWIZU2O49 (Hips / Mobility / level 2)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1X_hcQv9xbgZnVZTexe0awMO28C2pMKnW",
-   "name": "Lat Pulldown",
-   "folder": "3 Programs / Dream Lean 12 / Day 2 (Thursday)",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1fE5L5Zd3hKG0RePkvtkAUW4ra5AhXTOd (Shoulders / Strength / level 3)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1S36unwi_4WtlZoo5heH4WTzstsmW3kVS",
-   "name": "Bulgarian Split Squat Hold",
-   "folder": "3 Programs / Dream Lean 12 / Daily Movement Reset",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1Sz5jQ_H8ADUP7wb2hEoKYINu_vg3pjwp (Hips / Strength / level 6)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1LvZLliJBvuBfD-RH03iEe3TMErgwU543",
-   "name": "Couch Stretch",
-   "folder": "3 Programs / Dream Lean 12 / Daily Movement Reset",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1im_FR35YWIGxXKEfPqbgS-84WhTc3ppU (Hips / Mobility / level 2)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1QtjHHIiCcDgjcBqsNVEX0Daaxfk-KZM7",
-   "name": "Sled Push Pull",
-   "folder": "3 Programs / Dream Lean 12 / Day 6 (Monday)",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1_4W_hJD5Y545_oPTV9RacTg7jC0ogXu_ (Legs / Activation / level 6)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1JXth5kJF7VFPmoLuBaBeiyOgXi42TCX2",
-   "name": "Romanian Deadlift",
-   "folder": "3 Programs / Dream Lean 12 / Day 1 (Wednesday)",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1TQu2Ago9G05ol517v4TRP5M0X2aPoHY- (Hips / Strength / level 5)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1Ig0kC9larQ8uFDSRL5q_ElAK1Jqh6phC",
-   "name": "Eccentric Wrist Drops",
-   "folder": "2 Pain Tool - Tracks by Body Region / Forearm & Wrist - Referred Pain",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1fYKZLA3dFhK40a5b5Xuiqt_NaVadZUA3 (Wrists / Rehab / level 2)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1kxbiCfgcmQCurZ-o8IP39w8gR5N9GeG3",
-   "name": "Straight Leg Deadlift",
-   "folder": "2 Pain Tool - Tracks by Body Region / Foot - Referred Pain",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1yjdG45vCmK2ze5y6zZ2IWs5Put-z8yju (Hips / Strength / level 4)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1y01EG9XKC1jNS7gVLIh8EkypFoJA6Iu8",
-   "name": "Baseball Cable Stretch",
-   "folder": "2 Pain Tool - Tracks by Body Region / Groin - Referred Pain",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1r3ULS0YJqaUR828aEdkg8kNdp33hG4ln (Spine / Mobility / level 2)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1yQacS1EyLIqqRoDUOkJJX-lgscXabalv",
-   "name": "Rotator Cuff External Rotation",
-   "folder": "2 Pain Tool - Tracks by Body Region / Shoulder - Referred Pain",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1NVYfNcI7cIgn4lGvyobTWh_JhkxuabDj (Shoulders / Rehab / level 2)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1g-CBwtkHtdp_0hGMVOstp7QO1Quhlkln",
-   "name": "Abducted Internal Rotation",
-   "folder": "2 Pain Tool - Tracks by Body Region / Shoulder - Referred Pain",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1QCcJpOkj-ttsbyrn0hhOuJvv5VYaSYiH (Shoulders / Rehab / level 2)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1f10A1zvEM29pJCEC4TMCvP1Due0XoAku",
-   "name": "Abducted External Rotation",
-   "folder": "2 Pain Tool - Tracks by Body Region / Shoulder - Referred Pain",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1n_c2-HmUCyuu3GY92N48at0StbCxrkyQ (Shoulders / Rehab / level 2)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1nmAC4yGtZTWvYmhsJXUpX9zBFt2SHm5S",
-   "name": "Sissy Squat",
-   "folder": "2 Pain Tool - Tracks by Body Region / Knee - Referred Pain",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1H_fz8cHNrRacdxuZmDkqsIeBckj9lCLj (Knees / Strength / level 8)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1U4nA-nA154wGLUH7WWGpAgcVIQqmh4Tl",
-   "name": "Cossack Squat",
-   "folder": "2 Pain Tool - Tracks by Body Region / Groin - Referred Pain",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1SRAIfIye1YwXXIXhkN3PcsOc4Qee2jg5 (Hips / Mobility / level 6)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1YqgdTYaBBoGWCRsl1Gct7A5qkI38i60P",
-   "name": "Baseball Cable Stretch",
-   "folder": "2 Pain Tool - Tracks by Body Region / Abdominal - Referred Pain",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1r3ULS0YJqaUR828aEdkg8kNdp33hG4ln (Spine / Mobility / level 2)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1pAVpJYx-AedrqH_fpZooq3SwL0r2TNJ_",
-   "name": "Romanian Deadlift",
-   "folder": "2 Pain Tool - Tracks by Body Region / Glute - Referred Pain",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1TQu2Ago9G05ol517v4TRP5M0X2aPoHY- (Hips / Strength / level 5)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1YZZzz-zsRpMOjHn0MmVx87pRfUGp7Ji6",
-   "name": "Romanian Deadlift",
-   "folder": "2 Pain Tool - Tracks by Body Region / Knee - Referred Pain",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1TQu2Ago9G05ol517v4TRP5M0X2aPoHY- (Hips / Strength / level 5)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1V5742-n_CjX3x9EdxSpUXWCcGtoyfpGh",
-   "name": "Romanian Deadlift",
-   "folder": "2 Pain Tool - Tracks by Body Region / Upper Thigh - Referred Pain",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1TQu2Ago9G05ol517v4TRP5M0X2aPoHY- (Hips / Strength / level 5)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1Pny2FTa0ydUg7y6VyIdvP8NpSgWy0W5y",
-   "name": "Standing Hip ER Liftoff",
-   "folder": "2 Pain Tool - Tracks by Body Region / Upper Thigh - Referred Pain",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1aVTDOZGdN6dFEGBrmiLVh1NJdUDLDb6H (Hips / Mobility / level 2)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1qF4P_iTFQtikIZuKbBMJwj0f8jlsSHnn",
-   "name": "Scapular CARs",
-   "folder": "2 Pain Tool - Tracks by Body Region / Chest - Referred Pain",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1niYXOpWrO-yPl0lidw68VSh8AS6qjNkg (Shoulders / Mobility / level 2)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1LxUF-UEPJwlM7ZBMFXjbuE77Q1fqtYYh",
-   "name": "90-90 Hip Switch",
-   "folder": "2 Pain Tool - Tracks by Body Region / Glute - Referred Pain",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1uJGcsQRsgn3wnDX2AZJ5CXGxUVRPhmyr (Hips / Mobility / level 2)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1djRC0UH_Bm-dDKWIARPJ-2CCNJDyXzfi",
-   "name": "Pike Bear Walk",
-   "folder": "2 Pain Tool - Tracks by Body Region / Hamstring - Referred Pain",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1kXJWqVHpN9gVLFfKzSGgYrv_1wuDErpa (Spine / Mobility / level 6)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1l-3tqo6vNm8UZCxa9CFr2wF_LAY-C2_8",
-   "name": "Knee Circles",
-   "folder": "2 Pain Tool - Tracks by Body Region / Knee - Referred Pain",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1sBdYElz_ZcdydTdhHbaTLBYjRj9Su4Y9 (Knees / Rehab / level 2)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1jDnILDOl-QfWn8eC4pMxpA4eszM9B_eT",
-   "name": "Standing Hip ER Liftoff",
-   "folder": "2 Pain Tool - Tracks by Body Region / Hip - Referred Pain",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1aVTDOZGdN6dFEGBrmiLVh1NJdUDLDb6H (Hips / Mobility / level 2)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1mWrTFjP-ksvoFCeZdA_2hyN9RNJxMv97",
-   "name": "90-90 Hip Switch",
-   "folder": "2 Pain Tool - Tracks by Body Region / Low Back - Referred Pain",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1uJGcsQRsgn3wnDX2AZJ5CXGxUVRPhmyr (Hips / Mobility / level 2)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "1WQlwHMIhuqlh0FrOLT-SUIUoKJGpiyvK",
-   "name": "90-90 Hip Switch",
-   "folder": "2 Pain Tool - Tracks by Body Region / Hip - Referred Pain",
-   "decision": "leave-in-drive",
-   "why": "a second take of a movement the library already plays as 1uJGcsQRsgn3wnDX2AZJ5CXGxUVRPhmyr (Hips / Mobility / level 2)",
-   "on": "2026-11-20",
-   "by": "owner"
-  },
-  {
-   "id": "16kjrvS8LJBYlGu_RpfX9srhDzTrLHAzs",
-   "name": "GOSD Restrained",
-   "folder": "4 Intros, Testimonials & Lectures",
-   "decision": "parked",
-   "why": "the owner expressed no preference on where it belongs, so it is parked rather than placed on a guess. Not open work; raise it only if the owner asks.",
-   "on": "2026-11-20",
-   "by": "claude (no preference given)"
-  },
-  {
-   "id": "1-3H0fcFOFpn3QbwUhYyqDESymwoRrDix",
-   "name": "GOSD Animated",
-   "folder": "4 Intros, Testimonials & Lectures",
-   "decision": "parked",
-   "why": "the owner expressed no preference on where it belongs, so it is parked rather than placed on a guess. Not open work; raise it only if the owner asks.",
-   "on": "2026-11-20",
-   "by": "claude (no preference given)"
-  },
-  {
-   "id": "1fsAZCT7UsdsenoCpIT9C-Ut-KP7GgNqD",
-   "name": "Progression vs Pain",
-   "folder": "4 Intros, Testimonials & Lectures",
-   "decision": "parked",
-   "why": "the owner expressed no preference on where it belongs, so it is parked rather than placed on a guess. Not open work; raise it only if the owner asks.",
-   "on": "2026-11-20",
-   "by": "claude (no preference given)"
-  },
-  {
-   "id": "1dUk4ZADvhX4k2Nm57LAyT4Fgky-nA8wZ",
-   "name": "Me MD Fit (intro)",
-   "folder": "4 Intros, Testimonials & Lectures",
-   "decision": "parked",
-   "why": "the owner expressed no preference on where it belongs, so it is parked rather than placed on a guess. Not open work; raise it only if the owner asks.",
-   "on": "2026-11-20",
-   "by": "claude (no preference given)"
-  },
-  {
-   "id": "1A0GspefQGiD74q99gnNuNLUi_On9NZwi",
-   "name": "Shelly Testimonial",
-   "folder": "4 Intros, Testimonials & Lectures / Video Testimonials",
-   "decision": "parked",
-   "why": "the owner expressed no preference on where it belongs, so it is parked rather than placed on a guess. Not open work; raise it only if the owner asks.",
-   "on": "2026-11-20",
-   "by": "claude (no preference given)"
-  },
-  {
-   "id": "1N_kkvSv_hgAeekjsCCUSDFecnHmmD6Ip",
-   "name": "Anna Testimonial",
-   "folder": "4 Intros, Testimonials & Lectures / Video Testimonials",
-   "decision": "parked",
-   "why": "the owner expressed no preference on where it belongs, so it is parked rather than placed on a guess. Not open work; raise it only if the owner asks.",
-   "on": "2026-11-20",
-   "by": "claude (no preference given)"
-  },
-  {
-   "id": "1SyxkTHgKIzEAJTTYR_EMeBeeudY8N34S",
-   "name": "James Testimonial",
-   "folder": "4 Intros, Testimonials & Lectures / Video Testimonials",
-   "decision": "parked",
-   "why": "the owner expressed no preference on where it belongs, so it is parked rather than placed on a guess. Not open work; raise it only if the owner asks.",
-   "on": "2026-11-20",
-   "by": "claude (no preference given)"
-  },
-  {
-   "id": "1Nt9xSmpIwLncxJbvGgrmUxIa8Bw442yh",
-   "name": "Running Mechanics 1 - Core Brace",
-   "folder": "1 Exercise Library",
-   "decision": "parked",
-   "why": "One of a numbered four-part running-mechanics series. Coaching, not a movement: no reps, no dosage, and clip 4 refers back to the first three. Whether it becomes a guide series or library entries under Full body / Lifestyle is the owner's call, not yet made. Renamed in Drive on 2026-11-21 from its camera file name; the name is the one spoken in the clip itself, transcribed in-session.",
-   "on": "2026-11-21",
-   "by": "claude (held pending the owner)"
-  },
-  {
-   "id": "1KqXJNPLDC6_JsXzK7m2E8ezrOoqVlaKN",
-   "name": "Running Mechanics 2 - Glutes",
-   "folder": "1 Exercise Library",
-   "decision": "parked",
-   "why": "One of a numbered four-part running-mechanics series. Coaching, not a movement: no reps, no dosage, and clip 4 refers back to the first three. Whether it becomes a guide series or library entries under Full body / Lifestyle is the owner's call, not yet made. Renamed in Drive on 2026-11-21 from its camera file name; the name is the one spoken in the clip itself, transcribed in-session.",
-   "on": "2026-11-21",
-   "by": "claude (held pending the owner)"
-  },
-  {
-   "id": "1dB7Pw480YzHFMCWmulJBvTKX3waMGxK4",
-   "name": "Running Mechanics 3 - Shoulders Down",
-   "folder": "1 Exercise Library",
-   "decision": "parked",
-   "why": "One of a numbered four-part running-mechanics series. Coaching, not a movement: no reps, no dosage, and clip 4 refers back to the first three. Whether it becomes a guide series or library entries under Full body / Lifestyle is the owner's call, not yet made. Renamed in Drive on 2026-11-21 from its camera file name; the name is the one spoken in the clip itself, transcribed in-session.",
-   "on": "2026-11-21",
-   "by": "claude (held pending the owner)"
-  },
-  {
-   "id": "1Shm8i1o4A_2cBjI9o9BgYWa7B17SK1W_",
-   "name": "Running Mechanics 4 - Torso Rotation",
-   "folder": "1 Exercise Library",
-   "decision": "parked",
-   "why": "One of a numbered four-part running-mechanics series. Coaching, not a movement: no reps, no dosage, and clip 4 refers back to the first three. Whether it becomes a guide series or library entries under Full body / Lifestyle is the owner's call, not yet made. Renamed in Drive on 2026-11-21 from its camera file name; the name is the one spoken in the clip itself, transcribed in-session.",
-   "on": "2026-11-21",
-   "by": "claude (held pending the owner)"
-  }
- ],
- "open": [
-  {
-   "note": "Still waiting on the owner: these two need region, category, level, location and seated, plus which of the duplicate Drive files to use. The others stay in Drive.",
-   "clips": [
+  "note": "Placement decisions already taken, so a later session inherits them instead of asking again. A clip listed here is NOT open work. Anything not listed here and not yet in the catalog is still waiting on the owner (see the \"Ask before you commit\" section of docs/VIDEO-UPLOAD.md).",
+  "excludedFolders": [
     {
-     "name": "Seated Plantar Fascia Stretch",
-     "files": [
-      "1Qp71sob8QYxlSol8tT_dhQYBrgg2NGaX (Foot - Referred Pain)",
-      "13F4xML5kvfC-SeXumGUWhV_FzIOD_646 (1 Exercise Library)"
-     ]
+      "folder": "99 Duplicates",
+      "decision": "never-publish",
+      "why": "second takes, set aside on purpose",
+      "on": "2026-11-20",
+      "by": "owner"
     },
     {
-     "name": "Standing Hip Abduction and Adduction",
-     "files": [
-      "1OnM1d2NP8OibYI7EopbC0TuBSh_s4OA- (Upper Thigh - Referred Pain)",
-      "1YMMJXf04zGbNOL5m6XPEaX-rzD1p1wvJ (Glute - Referred Pain)",
-      "1xtIPf3r0PExfK_ME6wKt8qmErwZn-WaR (Hip - Referred Pain)"
-     ]
+      "folder": "7 Full Session Recordings",
+      "decision": "never-publish",
+      "why": "long-form session footage, not library clips",
+      "on": "2026-11-20",
+      "by": "owner"
+    },
+    {
+      "folder": "99 Duplicates",
+      "decision": "holds-the-filed-copies",
+      "why": "On 2026-11-23 the owner had the loose duplicate copies filed here: 45 files that were byte-identical AND name-identical to another copy, none of them referenced by the catalog, the manifest or Bunny. Drive ids do not change on a move, so nothing stopped playing.",
+      "on": "2026-11-23",
+      "by": "owner"
     }
-   ]
-  }
- ]
+  ],
+  "settled": [
+    {
+      "id": "1yIWx9INL_jean04x-IK2M4REgxlF_myy",
+      "name": "Long Lunge (take 2)",
+      "folder": "MDFIT media",
+      "decision": "leave-in-drive",
+      "why": "A second take of Long Lunge, which the library already plays as Hips / Power / level 5 (1jOY9YNYPEPo7kd6iVT__zxPWOqAlIFW_). Renamed in Drive on 2026-11-21 from its camera file name; the name is the one spoken in the clip itself, transcribed in-session.",
+      "on": "2026-11-21",
+      "by": "owner"
+    },
+    {
+      "id": "16Qv9kIRJoBYFzEdzLzhAlJ_Q8A1K43xj",
+      "name": "Eccentric Internal Rotation",
+      "folder": "1 Exercise Library",
+      "decision": "placed-in-library",
+      "why": "Shoulders / Rehab / level 2 / any, matching the existing Rotator Cuff and Abducted rotation entries. Renamed in Drive on 2026-11-21 from its camera file name; the name is the one spoken in the clip itself, transcribed in-session.",
+      "on": "2026-11-21",
+      "by": "owner"
+    },
+    {
+      "id": "1cVa58JSDL4QTDAy1jF1cvr2u4zgFaiVl",
+      "name": "Eccentric External Rotation",
+      "folder": "1 Exercise Library",
+      "decision": "placed-in-library",
+      "why": "Shoulders / Rehab / level 2 / any, matching the existing Rotator Cuff and Abducted rotation entries. Renamed in Drive on 2026-11-21 from its camera file name; the name is the one spoken in the clip itself, transcribed in-session.",
+      "on": "2026-11-21",
+      "by": "owner"
+    },
+    {
+      "id": "15aKiHQai9gfUIOxj4HAd_2osyDC-eLDw",
+      "name": "Supraspinatus Stretch",
+      "folder": "1 Exercise Library",
+      "decision": "placed-in-library",
+      "why": "Shoulders / Mobility / level 2 / any. A banded stretch, so Mobility rather than Rehab. Renamed in Drive on 2026-11-21 from its camera file name; the name is the one spoken in the clip itself, transcribed in-session.",
+      "on": "2026-11-21",
+      "by": "owner"
+    },
+    {
+      "id": "1k4PgifeXn3fv1BfEHMTDYl59YrOAN_CB",
+      "name": "Kneeling Wall Spiral",
+      "folder": "1 Exercise Library",
+      "decision": "placed-in-library",
+      "why": "Spine / Mobility / level 2 / any. The owner chose Spine over Shoulders: the movement is thoracic rotation driven by the lat. Renamed in Drive on 2026-11-21 from its camera file name; the name is the one spoken in the clip itself, transcribed in-session.",
+      "on": "2026-11-21",
+      "by": "owner"
+    },
+    {
+      "id": "1BWGsE8Yi24WsKkdgJdg0F4-KW20mYxcS",
+      "name": "Intro - Video Library",
+      "folder": "4 Intros, Testimonials & Lectures",
+      "decision": "replaces-app-intro-library",
+      "why": "a newer take of the Library intro. MDFIT_INTROS.library and the app-intro manifest asset (public_id mdfit/videos/app-intros/library-intro) now carry this id instead of 1vqoCi5UQg6i_uYbV6GbVZXs6_Nzxcr4I. The old file stays in Drive and its Bunny copy keeps playing for anything that still names it.",
+      "on": "2026-11-20",
+      "by": "owner"
+    },
+    {
+      "id": "1xMCGxf7hv6_6b_00jwNxd2waOMCePWCQ",
+      "name": "Bear Crawl",
+      "folder": "3 Programs / PSG Hypertrophy Program",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1o9ez-fSei1eyVWlutaOWCIilajuytWFd (Spine / Activation / level 6)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1d6LCjzQRCjNsiMtEE0bHzTCdCmbyMoib",
+      "name": "90-90 Breathing",
+      "folder": "3 Programs / Dream Lean 12 / Daily Movement Reset",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1HtvHVw4p1BIrP_oiUAW7oqcNzdBznAkR (Neck / Mobility / level 2)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1xQvxJIghjFJ-3QwPCmIU7myowQhziS4w",
+      "name": "Bench Press",
+      "folder": "3 Programs / PSG Hypertrophy Program",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1zvU-eTyotEg95UxpYwM4bQNTgpFybkJZ (Shoulders / Strength / level 5)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1wtU687uecKgZFZwi0hyV1MsaqRnHSydQ",
+      "name": "Lat Pulldown",
+      "folder": "3 Programs / PSG Hypertrophy Program",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1fE5L5Zd3hKG0RePkvtkAUW4ra5AhXTOd (Shoulders / Strength / level 3)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1Xdpoysncgv37RWR-A4l-fgOJmTb_bkUM",
+      "name": "Cossack Squat",
+      "folder": "3 Programs / PSG Hypertrophy Program",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1SRAIfIye1YwXXIXhkN3PcsOc4Qee2jg5 (Hips / Mobility / level 6)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1Ke7eFEG8WMgQS_X1wKpvFrNK4fyXp8Qs",
+      "name": "Bulgarian Split Squat",
+      "folder": "3 Programs / PSG Hypertrophy Program",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1JWjUm5ORuh7L7ZHEkHziHfumpDZQ-DEX (Hips / Mobility / level 7)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1LiaLLayFMKk1mWa73xYTNu6lppsk2MTr",
+      "name": "Romanian Deadlift",
+      "folder": "3 Programs / PSG Hypertrophy Program",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1TQu2Ago9G05ol517v4TRP5M0X2aPoHY- (Hips / Strength / level 5)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1rmmahpsKEqOGRjRedSS0XxMo4z4a44ik",
+      "name": "Straight Leg Deadlift",
+      "folder": "6 Protocols - by Condition / 12 Week Full Mobility System / Track A",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1yjdG45vCmK2ze5y6zZ2IWs5Put-z8yju (Hips / Strength / level 4)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1kRpBxT2luZ7txshPnqL78Lp0ELX5WDEr",
+      "name": "Baseball Cable Stretch",
+      "folder": "6 Protocols - by Condition / 12 Week Full Mobility System / Track A",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1r3ULS0YJqaUR828aEdkg8kNdp33hG4ln (Spine / Mobility / level 2)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1MHowEhZlzRuJP5MXpMjeK8zG1hYDNb4z",
+      "name": "Overhead Straight Arm Pulldown",
+      "folder": "6 Protocols - by Condition / 12 Week Full Mobility System / Track A",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1v7GfrK_uRjGpFDtD9K61UerTpyLQeFN1 (Shoulders / Mobility / level 6)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1MNItjaywwJtwjIKVIPsZZoazvj_WfkGB",
+      "name": "Cossack Squat",
+      "folder": "6 Protocols - by Condition / 12 Week Full Mobility System / Track B",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1SRAIfIye1YwXXIXhkN3PcsOc4Qee2jg5 (Hips / Mobility / level 6)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1Na_dF_z1tYFcSeRu46W8GkPsFfupyqhJ",
+      "name": "Romanian Deadlift",
+      "folder": "6 Protocols - by Condition / 12 Week Full Mobility System / Track A",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1TQu2Ago9G05ol517v4TRP5M0X2aPoHY- (Hips / Strength / level 5)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1sAJUSdXRoIdBMsfFHVjnfQZO1bA9HdpO",
+      "name": "Cossack Squat",
+      "folder": "3 Programs / Dream Lean 12 / Day 3 (Friday) - Recovery & Mobility",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1SRAIfIye1YwXXIXhkN3PcsOc4Qee2jg5 (Hips / Mobility / level 6)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1KNBVsdhH9zv32_02_clisMJd0DT5a-co",
+      "name": "Long Jump",
+      "folder": "3 Programs / Dream Lean 12 / Day 3 (Friday) - Recovery & Mobility",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1WIWWfIsQTsi1lD78ZIhP7Ug9PKpH3a5n (Legs / Power / level 5)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1RhdeFOiTLFi9YTUSLOeadnx5U3o4eXMG",
+      "name": "Landmine Press Twist",
+      "folder": "3 Programs / Dream Lean 12 / Day 5 (Sunday)",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1hXOnRcaPUMVmLuEluR_TjTtZfIT536Y9 (Core / Power / level 6)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1h0MzUQNycNdl6Hdxr7bO_1fx94aqw_BT",
+      "name": "Bulgarian Split Squat",
+      "folder": "3 Programs / Dream Lean 12 / Day 1 (Wednesday)",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1JWjUm5ORuh7L7ZHEkHziHfumpDZQ-DEX (Hips / Mobility / level 7)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1apzkiqs0kHDVOw6j9LAVyEQ2Vyqs5bgH",
+      "name": "Dynamic Childs Pose",
+      "folder": "3 Programs / Dream Lean 12 / Daily Movement Reset",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1IB5mT971nE2tz29yaFykphZKWIZU2O49 (Hips / Mobility / level 2)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1X_hcQv9xbgZnVZTexe0awMO28C2pMKnW",
+      "name": "Lat Pulldown",
+      "folder": "3 Programs / Dream Lean 12 / Day 2 (Thursday)",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1fE5L5Zd3hKG0RePkvtkAUW4ra5AhXTOd (Shoulders / Strength / level 3)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1S36unwi_4WtlZoo5heH4WTzstsmW3kVS",
+      "name": "Bulgarian Split Squat Hold",
+      "folder": "3 Programs / Dream Lean 12 / Daily Movement Reset",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1Sz5jQ_H8ADUP7wb2hEoKYINu_vg3pjwp (Hips / Strength / level 6)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1LvZLliJBvuBfD-RH03iEe3TMErgwU543",
+      "name": "Couch Stretch",
+      "folder": "3 Programs / Dream Lean 12 / Daily Movement Reset",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1im_FR35YWIGxXKEfPqbgS-84WhTc3ppU (Hips / Mobility / level 2)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1QtjHHIiCcDgjcBqsNVEX0Daaxfk-KZM7",
+      "name": "Sled Push Pull",
+      "folder": "3 Programs / Dream Lean 12 / Day 6 (Monday)",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1_4W_hJD5Y545_oPTV9RacTg7jC0ogXu_ (Legs / Activation / level 6)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1JXth5kJF7VFPmoLuBaBeiyOgXi42TCX2",
+      "name": "Romanian Deadlift",
+      "folder": "3 Programs / Dream Lean 12 / Day 1 (Wednesday)",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1TQu2Ago9G05ol517v4TRP5M0X2aPoHY- (Hips / Strength / level 5)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1Ig0kC9larQ8uFDSRL5q_ElAK1Jqh6phC",
+      "name": "Eccentric Wrist Drops",
+      "folder": "2 Pain Tool - Tracks by Body Region / Forearm & Wrist - Referred Pain",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1fYKZLA3dFhK40a5b5Xuiqt_NaVadZUA3 (Wrists / Rehab / level 2)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1kxbiCfgcmQCurZ-o8IP39w8gR5N9GeG3",
+      "name": "Straight Leg Deadlift",
+      "folder": "2 Pain Tool - Tracks by Body Region / Foot - Referred Pain",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1yjdG45vCmK2ze5y6zZ2IWs5Put-z8yju (Hips / Strength / level 4)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1y01EG9XKC1jNS7gVLIh8EkypFoJA6Iu8",
+      "name": "Baseball Cable Stretch",
+      "folder": "2 Pain Tool - Tracks by Body Region / Groin - Referred Pain",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1r3ULS0YJqaUR828aEdkg8kNdp33hG4ln (Spine / Mobility / level 2)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1yQacS1EyLIqqRoDUOkJJX-lgscXabalv",
+      "name": "Rotator Cuff External Rotation",
+      "folder": "2 Pain Tool - Tracks by Body Region / Shoulder - Referred Pain",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1NVYfNcI7cIgn4lGvyobTWh_JhkxuabDj (Shoulders / Rehab / level 2)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1g-CBwtkHtdp_0hGMVOstp7QO1Quhlkln",
+      "name": "Abducted Internal Rotation",
+      "folder": "2 Pain Tool - Tracks by Body Region / Shoulder - Referred Pain",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1QCcJpOkj-ttsbyrn0hhOuJvv5VYaSYiH (Shoulders / Rehab / level 2)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1f10A1zvEM29pJCEC4TMCvP1Due0XoAku",
+      "name": "Abducted External Rotation",
+      "folder": "2 Pain Tool - Tracks by Body Region / Shoulder - Referred Pain",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1n_c2-HmUCyuu3GY92N48at0StbCxrkyQ (Shoulders / Rehab / level 2)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1nmAC4yGtZTWvYmhsJXUpX9zBFt2SHm5S",
+      "name": "Sissy Squat",
+      "folder": "2 Pain Tool - Tracks by Body Region / Knee - Referred Pain",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1H_fz8cHNrRacdxuZmDkqsIeBckj9lCLj (Knees / Strength / level 8)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1U4nA-nA154wGLUH7WWGpAgcVIQqmh4Tl",
+      "name": "Cossack Squat",
+      "folder": "2 Pain Tool - Tracks by Body Region / Groin - Referred Pain",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1SRAIfIye1YwXXIXhkN3PcsOc4Qee2jg5 (Hips / Mobility / level 6)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1YqgdTYaBBoGWCRsl1Gct7A5qkI38i60P",
+      "name": "Baseball Cable Stretch",
+      "folder": "2 Pain Tool - Tracks by Body Region / Abdominal - Referred Pain",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1r3ULS0YJqaUR828aEdkg8kNdp33hG4ln (Spine / Mobility / level 2)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1pAVpJYx-AedrqH_fpZooq3SwL0r2TNJ_",
+      "name": "Romanian Deadlift",
+      "folder": "2 Pain Tool - Tracks by Body Region / Glute - Referred Pain",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1TQu2Ago9G05ol517v4TRP5M0X2aPoHY- (Hips / Strength / level 5)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1YZZzz-zsRpMOjHn0MmVx87pRfUGp7Ji6",
+      "name": "Romanian Deadlift",
+      "folder": "2 Pain Tool - Tracks by Body Region / Knee - Referred Pain",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1TQu2Ago9G05ol517v4TRP5M0X2aPoHY- (Hips / Strength / level 5)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1V5742-n_CjX3x9EdxSpUXWCcGtoyfpGh",
+      "name": "Romanian Deadlift",
+      "folder": "2 Pain Tool - Tracks by Body Region / Upper Thigh - Referred Pain",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1TQu2Ago9G05ol517v4TRP5M0X2aPoHY- (Hips / Strength / level 5)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1Pny2FTa0ydUg7y6VyIdvP8NpSgWy0W5y",
+      "name": "Standing Hip ER Liftoff",
+      "folder": "2 Pain Tool - Tracks by Body Region / Upper Thigh - Referred Pain",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1aVTDOZGdN6dFEGBrmiLVh1NJdUDLDb6H (Hips / Mobility / level 2)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1qF4P_iTFQtikIZuKbBMJwj0f8jlsSHnn",
+      "name": "Scapular CARs",
+      "folder": "2 Pain Tool - Tracks by Body Region / Chest - Referred Pain",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1niYXOpWrO-yPl0lidw68VSh8AS6qjNkg (Shoulders / Mobility / level 2)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1LxUF-UEPJwlM7ZBMFXjbuE77Q1fqtYYh",
+      "name": "90-90 Hip Switch",
+      "folder": "2 Pain Tool - Tracks by Body Region / Glute - Referred Pain",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1uJGcsQRsgn3wnDX2AZJ5CXGxUVRPhmyr (Hips / Mobility / level 2)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1djRC0UH_Bm-dDKWIARPJ-2CCNJDyXzfi",
+      "name": "Pike Bear Walk",
+      "folder": "2 Pain Tool - Tracks by Body Region / Hamstring - Referred Pain",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1kXJWqVHpN9gVLFfKzSGgYrv_1wuDErpa (Spine / Mobility / level 6)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1l-3tqo6vNm8UZCxa9CFr2wF_LAY-C2_8",
+      "name": "Knee Circles",
+      "folder": "2 Pain Tool - Tracks by Body Region / Knee - Referred Pain",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1sBdYElz_ZcdydTdhHbaTLBYjRj9Su4Y9 (Knees / Rehab / level 2)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1jDnILDOl-QfWn8eC4pMxpA4eszM9B_eT",
+      "name": "Standing Hip ER Liftoff",
+      "folder": "2 Pain Tool - Tracks by Body Region / Hip - Referred Pain",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1aVTDOZGdN6dFEGBrmiLVh1NJdUDLDb6H (Hips / Mobility / level 2)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1mWrTFjP-ksvoFCeZdA_2hyN9RNJxMv97",
+      "name": "90-90 Hip Switch",
+      "folder": "2 Pain Tool - Tracks by Body Region / Low Back - Referred Pain",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1uJGcsQRsgn3wnDX2AZJ5CXGxUVRPhmyr (Hips / Mobility / level 2)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "1WQlwHMIhuqlh0FrOLT-SUIUoKJGpiyvK",
+      "name": "90-90 Hip Switch",
+      "folder": "2 Pain Tool - Tracks by Body Region / Hip - Referred Pain",
+      "decision": "leave-in-drive",
+      "why": "a second take of a movement the library already plays as 1uJGcsQRsgn3wnDX2AZJ5CXGxUVRPhmyr (Hips / Mobility / level 2)",
+      "on": "2026-11-20",
+      "by": "owner",
+      "filedUnder": "99 Duplicates",
+      "filedOn": "2026-11-23"
+    },
+    {
+      "id": "16kjrvS8LJBYlGu_RpfX9srhDzTrLHAzs",
+      "name": "GOSD Restrained",
+      "folder": "4 Intros, Testimonials & Lectures",
+      "decision": "parked",
+      "why": "the owner expressed no preference on where it belongs, so it is parked rather than placed on a guess. Not open work; raise it only if the owner asks.",
+      "on": "2026-11-20",
+      "by": "claude (no preference given)"
+    },
+    {
+      "id": "1-3H0fcFOFpn3QbwUhYyqDESymwoRrDix",
+      "name": "GOSD Animated",
+      "folder": "4 Intros, Testimonials & Lectures",
+      "decision": "parked",
+      "why": "the owner expressed no preference on where it belongs, so it is parked rather than placed on a guess. Not open work; raise it only if the owner asks.",
+      "on": "2026-11-20",
+      "by": "claude (no preference given)"
+    },
+    {
+      "id": "1fsAZCT7UsdsenoCpIT9C-Ut-KP7GgNqD",
+      "name": "Progression vs Pain",
+      "folder": "4 Intros, Testimonials & Lectures",
+      "decision": "parked",
+      "why": "the owner expressed no preference on where it belongs, so it is parked rather than placed on a guess. Not open work; raise it only if the owner asks.",
+      "on": "2026-11-20",
+      "by": "claude (no preference given)"
+    },
+    {
+      "id": "1dUk4ZADvhX4k2Nm57LAyT4Fgky-nA8wZ",
+      "name": "Me MD Fit (intro)",
+      "folder": "4 Intros, Testimonials & Lectures",
+      "decision": "parked",
+      "why": "the owner expressed no preference on where it belongs, so it is parked rather than placed on a guess. Not open work; raise it only if the owner asks.",
+      "on": "2026-11-20",
+      "by": "claude (no preference given)"
+    },
+    {
+      "id": "1A0GspefQGiD74q99gnNuNLUi_On9NZwi",
+      "name": "Shelly Testimonial",
+      "folder": "4 Intros, Testimonials & Lectures / Video Testimonials",
+      "decision": "parked",
+      "why": "the owner expressed no preference on where it belongs, so it is parked rather than placed on a guess. Not open work; raise it only if the owner asks.",
+      "on": "2026-11-20",
+      "by": "claude (no preference given)"
+    },
+    {
+      "id": "1N_kkvSv_hgAeekjsCCUSDFecnHmmD6Ip",
+      "name": "Anna Testimonial",
+      "folder": "4 Intros, Testimonials & Lectures / Video Testimonials",
+      "decision": "parked",
+      "why": "the owner expressed no preference on where it belongs, so it is parked rather than placed on a guess. Not open work; raise it only if the owner asks.",
+      "on": "2026-11-20",
+      "by": "claude (no preference given)"
+    },
+    {
+      "id": "1SyxkTHgKIzEAJTTYR_EMeBeeudY8N34S",
+      "name": "James Testimonial",
+      "folder": "4 Intros, Testimonials & Lectures / Video Testimonials",
+      "decision": "parked",
+      "why": "the owner expressed no preference on where it belongs, so it is parked rather than placed on a guess. Not open work; raise it only if the owner asks.",
+      "on": "2026-11-20",
+      "by": "claude (no preference given)"
+    },
+    {
+      "id": "1Nt9xSmpIwLncxJbvGgrmUxIa8Bw442yh",
+      "name": "Running Mechanics 1 - Core Brace",
+      "folder": "1 Exercise Library",
+      "decision": "parked",
+      "why": "One of a numbered four-part running-mechanics series. Coaching, not a movement: no reps, no dosage, and clip 4 refers back to the first three. Whether it becomes a guide series or library entries under Full body / Lifestyle is the owner's call, not yet made. Renamed in Drive on 2026-11-21 from its camera file name; the name is the one spoken in the clip itself, transcribed in-session.",
+      "on": "2026-11-21",
+      "by": "claude (held pending the owner)"
+    },
+    {
+      "id": "1KqXJNPLDC6_JsXzK7m2E8ezrOoqVlaKN",
+      "name": "Running Mechanics 2 - Glutes",
+      "folder": "1 Exercise Library",
+      "decision": "parked",
+      "why": "One of a numbered four-part running-mechanics series. Coaching, not a movement: no reps, no dosage, and clip 4 refers back to the first three. Whether it becomes a guide series or library entries under Full body / Lifestyle is the owner's call, not yet made. Renamed in Drive on 2026-11-21 from its camera file name; the name is the one spoken in the clip itself, transcribed in-session.",
+      "on": "2026-11-21",
+      "by": "claude (held pending the owner)"
+    },
+    {
+      "id": "1dB7Pw480YzHFMCWmulJBvTKX3waMGxK4",
+      "name": "Running Mechanics 3 - Shoulders Down",
+      "folder": "1 Exercise Library",
+      "decision": "parked",
+      "why": "One of a numbered four-part running-mechanics series. Coaching, not a movement: no reps, no dosage, and clip 4 refers back to the first three. Whether it becomes a guide series or library entries under Full body / Lifestyle is the owner's call, not yet made. Renamed in Drive on 2026-11-21 from its camera file name; the name is the one spoken in the clip itself, transcribed in-session.",
+      "on": "2026-11-21",
+      "by": "claude (held pending the owner)"
+    },
+    {
+      "id": "1Shm8i1o4A_2cBjI9o9BgYWa7B17SK1W_",
+      "name": "Running Mechanics 4 - Torso Rotation",
+      "folder": "1 Exercise Library",
+      "decision": "parked",
+      "why": "One of a numbered four-part running-mechanics series. Coaching, not a movement: no reps, no dosage, and clip 4 refers back to the first three. Whether it becomes a guide series or library entries under Full body / Lifestyle is the owner's call, not yet made. Renamed in Drive on 2026-11-21 from its camera file name; the name is the one spoken in the clip itself, transcribed in-session.",
+      "on": "2026-11-21",
+      "by": "claude (held pending the owner)"
+    }
+  ],
+  "open": [
+    {
+      "note": "Still waiting on the owner: these two need region, category, level, location and seated, plus which of the duplicate Drive files to use. The others stay in Drive.",
+      "clips": [
+        {
+          "name": "Seated Plantar Fascia Stretch",
+          "files": [
+            "1Qp71sob8QYxlSol8tT_dhQYBrgg2NGaX (Foot - Referred Pain)",
+            "13F4xML5kvfC-SeXumGUWhV_FzIOD_646 (1 Exercise Library)"
+          ]
+        },
+        {
+          "name": "Standing Hip Abduction and Adduction",
+          "files": [
+            "1OnM1d2NP8OibYI7EopbC0TuBSh_s4OA- (Upper Thigh - Referred Pain)",
+            "1YMMJXf04zGbNOL5m6XPEaX-rzD1p1wvJ (Glute - Referred Pain)",
+            "1xtIPf3r0PExfK_ME6wKt8qmErwZn-WaR (Hip - Referred Pain)"
+          ]
+        }
+      ]
+    }
+  ]
 }
