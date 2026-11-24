@@ -24,6 +24,10 @@
   let open = false;
   const setOpen = (v) => { open = v; $(".hb-toggle", card).setAttribute("aria-expanded", String(v)); $(".hb-body", card).hidden = !v; card.classList.toggle("open", v); };
   document.addEventListener("mdfit:habits-open", () => setOpen(true));
+  // Full <-> Simple was switched (app-theme.js): the same card, redrawn in the other wording
+  const plainSub = () => { if (document.documentElement.dataset.homeView === "simple" && /XP/.test($("#hb-sub", card).textContent)) $("#hb-sub", card).textContent = "Small things, each once a day"; };
+  plainSub();
+  document.addEventListener("mdfit:theme", () => { try { plainSub(); render(); } catch {} });
   if (home) { const after = $("#challenges-card", home) || $("#gem-card", home); after ? after.after(card) : home.prepend(card); }
 
   const FIRST = 8; // on a phone the list starts short; "Show all" opens the rest (done ones always show)
@@ -36,15 +40,18 @@
     const streakTxt = `<span class="hb-streak" title="Days in a row with ${d.goal}+ XP from activities and workouts">${s.current ? `${s.current}-day streak` : "Start a streak today"}</span>` +
       (rep.available ? `<span class="hb-rep" title="A repair covers one missed day in your streak. Earn one every 3 days in a row.">${rep.available} repair${rep.available === 1 ? "" : "s"}</span>` : "");
     const doneN = manual.filter((h) => h.done).length;
-    $("#hb-sub", card).textContent = `${doneN} of ${manual.length} done · +${d.points} XP today`;
+    // Simple view (Profile > Make it yours > Home screen): the same card in plain words, no XP
+    const P = document.documentElement.dataset.homeView === "simple", pct = d.goal ? Math.min(100, Math.round(((d.total || d.points || 0) / d.goal) * 100)) : 0;
+    $("#hb-sub", card).textContent = P ? `${doneN} of ${manual.length} done today` : `${doneN} of ${manual.length} done · +${d.points} XP today`;
     document.dispatchEvent(new CustomEvent("mdfit:habits", { detail: d }));
     renderProfileGoal();
     $(".hb-body", card).innerHTML = `
-      ${d.goalLevels ? `<div class="hb-norm" role="radiogroup" aria-label="My daily XP goal">${goalButtons(d)}</div>` : ""}
-      <div class="hb-sumrow"><p class="hb-today"><b>+${d.points}</b> XP from activities today</p><p class="hb-meta">${d.qualifying ? `<b class="hb-ok">Goal met (${d.goal} XP).</b>` : `${d.remaining} XP to today's goal of ${d.goal}`} · ${streakTxt}</p></div>
+      ${d.goalLevels && !P ? `<div class="hb-norm" role="radiogroup" aria-label="My daily XP goal">${goalButtons(d)}</div>` : ""}
+      ${P ? `<div class="hb-sumrow"><p class="hb-today"><b>${doneN}</b> of ${manual.length} activities done today</p><p class="hb-meta">${d.qualifying ? `<b class="hb-ok">Daily goal reached.</b>` : `Daily goal: ${pct}%`} · ${s.current ? `${s.current} days in a row` : "Start today"}</p></div>`
+        : `<div class="hb-sumrow"><p class="hb-today"><b>+${d.points}</b> XP from activities today</p><p class="hb-meta">${d.qualifying ? `<b class="hb-ok">Goal met (${d.goal} XP).</b>` : `${d.remaining} XP to today's goal of ${d.goal}`} · ${streakTxt}</p></div>`}
       <div class="hb-list">${shown.map(item).join("")}</div>
       ${short ? `<button type="button" class="link-sm hb-more" data-hb-all>Show all ${manual.length} activities</button>` : ""}
-      <p class="hb-foot muted">Workouts: <b>${wr.normal || 30} XP</b> a day · <b>${wr.custom || 35}</b> when you built it yourself · <b>${wr.program || 50}</b> for a Dr. Jared program or pain track · challenges: <b>+${wr.challengeSent || 5}</b> for sending, <b>+${wr.challengeBonus || 10}</b> for doing one. <button type="button" class="link-sm" data-build-workout>Build a workout</button></p>`;
+      <p class="hb-foot muted"${P ? " hidden" : ""}>Workouts: <b>${wr.normal || 30} XP</b> a day · <b>${wr.custom || 35}</b> when you built it yourself · <b>${wr.program || 50}</b> for a Dr. Jared program or pain track · challenges: <b>+${wr.challengeSent || 5}</b> for sending, <b>+${wr.challengeBonus || 10}</b> for doing one. <button type="button" class="link-sm" data-build-workout>Build a workout</button></p>`;
   }
   function item(h) {
     const sub = h.how;

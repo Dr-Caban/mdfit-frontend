@@ -1,16 +1,20 @@
-// How the member app looks: White or Black, Comfortable or Compact. The member picks; nothing follows the device's
-// dark mode by itself, and White / Comfortable stays the look until they choose otherwise.
+// How the member app looks: White or Black, Comfortable or Compact, and Home as the Full game (road, gems, points) or
+// Simple (a plain daily plan: account-cave.js). The member picks; nothing follows the device's dark mode by itself,
+// and White / Comfortable / Full stays the look until they choose otherwise. Simple changes only what Home shows and
+// the words it uses: XP, streaks and badges are earned exactly the same.
 //
 // This file is loaded in the <head>, after the stylesheets and before the page is drawn, so the saved look is on
-// the <html> element before the first paint (no white flash for someone who chose Black). app-theme.css holds the
-// colours and spacing for html[data-theme="black"] and html[data-layout="compact"].
+// the <html> element before the first paint (no white flash for someone who chose Black, no gem mine flashing by for
+// someone who chose Simple). app-theme.css holds the colours and spacing for html[data-theme="black"] and
+// html[data-layout="compact"]; account-cave.css holds html[data-home-view="simple"].
 //
 // The choice is kept on this device and on the account (PUT /api/me/prefs), so it follows the member to another
 // device. Signing out clears it from the device with everything else the app kept there (common.js, auth.clear).
 (function () {
   "use strict";
   var KEY = "mdfit_looks";
-  var THEMES = ["white", "black"], LAYOUTS = ["comfortable", "compact"];
+  var THEMES = ["white", "black"], LAYOUTS = ["comfortable", "compact"], VIEWS = ["full", "simple"];
+  var same = function (a, b) { return a.theme === b.theme && a.layout === b.layout && a.view === b.view; };
   var BAR = { white: null, black: "#0B0D11" }; // the phone's status bar colour; null = what the page asked for
   var root = document.documentElement;
   var meta = document.querySelector('meta[name="theme-color"]');
@@ -18,10 +22,10 @@
 
   function clean(v) {
     v = v || {};
-    return { theme: THEMES.indexOf(v.theme) >= 0 ? v.theme : "white", layout: LAYOUTS.indexOf(v.layout) >= 0 ? v.layout : "comfortable" };
+    return { theme: THEMES.indexOf(v.theme) >= 0 ? v.theme : "white", layout: LAYOUTS.indexOf(v.layout) >= 0 ? v.layout : "comfortable", view: VIEWS.indexOf(v.view) >= 0 ? v.view : "full" };
   }
   function readSaved() { try { return JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) { return null; } }
-  function writeSaved(synced) { try { localStorage.setItem(KEY, JSON.stringify({ theme: cur.theme, layout: cur.layout, synced: !!synced })); } catch (e) {} }
+  function writeSaved(synced) { try { localStorage.setItem(KEY, JSON.stringify({ theme: cur.theme, layout: cur.layout, view: cur.view, synced: !!synced })); } catch (e) {} }
 
   var saved = readSaved();
   var cur = clean(saved);
@@ -31,33 +35,35 @@
   function apply() {
     root.dataset.theme = cur.theme;
     root.dataset.layout = cur.layout;
+    root.dataset.homeView = cur.view; // (not data-view: the app shows and hides its screens by [data-view])
     if (meta) meta.setAttribute("content", BAR[cur.theme] || metaWas || "");
   }
   apply();
 
   function signedIn() { try { return !!(window.MDFit && window.MDFit.auth && window.MDFit.auth.get()); } catch (e) { return false; } }
-  function announce() { try { document.dispatchEvent(new CustomEvent("mdfit:theme", { detail: { theme: cur.theme, layout: cur.layout } })); } catch (e) {} }
+  function announce() { try { document.dispatchEvent(new CustomEvent("mdfit:theme", { detail: { theme: cur.theme, layout: cur.layout, view: cur.view } })); } catch (e) {} }
   // Tell the account. A failure (offline, or a server that does not know the route yet) never undoes the choice:
   // it stays on this device and is sent again the next time the app opens.
   function send() {
     if (!signedIn()) return;
-    var sent = { theme: cur.theme, layout: cur.layout };
+    var sent = { theme: cur.theme, layout: cur.layout, view: cur.view };
     try {
       window.MDFit.apiAuth("PUT", "/api/me/prefs", sent).then(function () {
         // still signed in (signing out wipes the device, and must stay wiped) and still the current choice
-        if (signedIn() && sent.theme === cur.theme && sent.layout === cur.layout) { unsent = false; writeSaved(true); }
+        if (signedIn() && same(sent, cur)) { unsent = false; writeSaved(true); }
       }).catch(function () {});
     } catch (e) {}
   }
 
-  function get() { return { theme: cur.theme, layout: cur.layout }; }
+  function get() { return { theme: cur.theme, layout: cur.layout, view: cur.view }; }
   function set(next) {
     next = next || {};
-    var want = clean({ theme: next.theme === undefined ? cur.theme : next.theme, layout: next.layout === undefined ? cur.layout : next.layout });
+    var want = clean({ theme: next.theme === undefined ? cur.theme : next.theme, layout: next.layout === undefined ? cur.layout : next.layout, view: next.view === undefined ? cur.view : next.view });
     // an unknown value is ignored, not turned into the default
     if (next.theme !== undefined && THEMES.indexOf(next.theme) < 0) want.theme = cur.theme;
     if (next.layout !== undefined && LAYOUTS.indexOf(next.layout) < 0) want.layout = cur.layout;
-    if (want.theme === cur.theme && want.layout === cur.layout) { if (unsent) send(); return get(); } // nothing to change
+    if (next.view !== undefined && VIEWS.indexOf(next.view) < 0) want.view = cur.view;
+    if (same(want, cur)) { if (unsent) send(); return get(); } // nothing to change
     cur = want; chosenHere = true; unsent = true;
     apply(); writeSaved(false);
     announce();
@@ -75,8 +81,9 @@
       window.MDFit.apiAuth("GET", "/api/me/guide").then(function (g) {
         var p = g && g.prefs; if (!p || unsent) return;
         var theirs = clean(p);
-        if (THEMES.indexOf(p.theme) < 0 && LAYOUTS.indexOf(p.layout) < 0) return; // the account holds no choice yet
-        var changed = theirs.theme !== cur.theme || theirs.layout !== cur.layout;
+        if (THEMES.indexOf(p.theme) < 0 && LAYOUTS.indexOf(p.layout) < 0 && VIEWS.indexOf(p.view) < 0) return; // the account holds no choice yet
+        if (VIEWS.indexOf(p.view) < 0) theirs.view = cur.view; // a server that doesn't know Home view yet: this device keeps its own
+        var changed = !same(theirs, cur);
         cur = theirs; chosenHere = true; apply(); writeSaved(true);
         if (changed) announce();
       }).catch(function () {});
@@ -85,6 +92,7 @@
 
   // ---- "Make it yours" on the Profile tab
   var PICKS = [
+    { key: "view", name: "Home screen", options: [["full", "Full", "Road, gems and points"], ["simple", "Simple", "A plain daily plan"]] },
     { key: "theme", name: "Theme", options: [["white", "White", "Light and bright"], ["black", "Black", "Easy on the eyes at night"]] },
     { key: "layout", name: "Layout", options: [["comfortable", "Comfortable", "More room"], ["compact", "Compact", "More on each screen"]] }
   ];
@@ -129,7 +137,7 @@
   window.addEventListener("storage", function (e) {
     if (e.key !== KEY || !e.newValue) return;
     var theirs = clean(readSaved());
-    if (theirs.theme === cur.theme && theirs.layout === cur.layout) return;
+    if (same(theirs, cur)) return;
     cur = theirs; apply(); announce();
   });
 

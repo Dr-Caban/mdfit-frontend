@@ -146,3 +146,43 @@
 .cv-skipnow { position: absolute; top: 50px; left: 0; transform: translateX(-50%); white-space: nowrap; min-height: 34px; padding: 0 12px; border-radius: 999px; border: 1px dashed #56606f; background: rgba(11, 13, 18, .88); color: #cfd5de; font: 700 12px Montserrat, system-ui, sans-serif; cursor: pointer; }
 .cv-skipnow.in { position: static; transform: none; min-height: 30px; letter-spacing: 0; text-transform: none; font-size: 11.5px; }
 @media (prefers-reduced-motion: reduce) { .cv-ring .fg { transition: none; } }
+
+/* ================= Simple view (html[data-home-view="simple"]): Home as a plain daily plan =================
+   The card is an ordinary .card, so White / Black and Comfortable / Compact come from the app's own theme; everything
+   inside takes its colour from the text colour (currentColor), so it needs no theme rules of its own. */
+.sv-switch { display: inline-flex; margin: 2px 0 10px; border: 1px solid color-mix(in srgb, currentColor 22%, transparent); border-radius: 999px; padding: 2px; }
+.sv-switch button { border: 0; background: none; color: inherit; font: 600 12.5px/1 inherit; padding: 7px 14px; border-radius: 999px; cursor: pointer; min-height: 30px; opacity: .7; }
+.sv-switch button[aria-checked="true"] { background: #c9a45c; color: #0c1b30; opacity: 1; }
+.sv-switch button:focus-visible { outline: 2px solid #c9a45c; outline-offset: 2px; }
+.vh { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+html[data-home-view="simple"] #xp-chip, html[data-home-view="simple"] #t3-rank, html[data-home-view="simple"] #gem-card,
+html[data-home-view="simple"] #repair-chip, html[data-home-view="simple"] #repair-note { display: none !important; }
+.sv-card { padding: 0; background: none; border: 0; box-shadow: none; display: grid; gap: 12px; }
+.sv-card .sv { border: 1px solid color-mix(in srgb, currentColor 14%, transparent); border-radius: 16px; padding: 14px 16px; background: color-mix(in srgb, currentColor 3%, transparent); }
+.sv-today { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 4px 0 10px; }
+.sv-today b { display: block; font-size: 17px; line-height: 1.25; }
+.sv-today small, .sv-name small { display: block; font-size: 12.5px; opacity: .7; font-weight: 400; }
+.sv-line { margin: 4px 0; }
+.sv-note { margin: 2px 0 6px; }
+.sv-btn { width: auto; flex: none; }
+.sv-list { list-style: none; margin: 0; padding: 0; }
+.sv-list li { border-top: 1px solid color-mix(in srgb, currentColor 12%, transparent); display: flex; align-items: center; gap: 10px; min-height: 46px; }
+.sv-list li:has(> .sv-row) { display: block; }
+.sv-row { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 46px; padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.sv-row:focus-visible, .sv-link:focus-visible { outline: 2px solid #c9a45c; outline-offset: 2px; border-radius: 6px; }
+.sv-name { flex: 1; min-width: 0; font-size: 15px; }
+.sv-list em { font-style: normal; font-size: 13px; opacity: .7; flex: none; }
+.sv-ck { width: 22px; height: 22px; border-radius: 50%; border: 2px solid color-mix(in srgb, currentColor 30%, transparent); flex: none; display: grid; place-items: center; }
+.sv-ck.on { background: #2e7d4f; border-color: #2e7d4f; }
+.sv-ck.on::after { content: ""; width: 9px; height: 5px; border-left: 2px solid #fff; border-bottom: 2px solid #fff; transform: rotate(-45deg) translateY(-1px); }
+.sv-bar { width: 64px; height: 6px; border-radius: 6px; background: color-mix(in srgb, currentColor 14%, transparent); overflow: hidden; flex: none; }
+.sv-bar i { display: block; height: 100%; background: #7aafd7; border-radius: 6px; }
+.sv-link { border: 0; background: none; padding: 6px 0; color: inherit; font: 600 13.5px/1.2 inherit; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; text-align: left; flex: none; }
+.sv-foot { margin: 8px 0 0; display: flex; flex-wrap: wrap; gap: 4px 18px; }
+.sv-days li { min-height: 40px; }
+.sv-wd { width: 38px; font-weight: 700; opacity: .65; flex: none; font-size: 14px; }
+.sv-days li.now .sv-name, .sv-days li.now .sv-wd { font-weight: 700; opacity: 1; }
+.sv-moves .sv-link { padding: 2px 0; }
+html[data-layout="compact"] .sv-card .sv { padding: 10px 12px; }
+html[data-layout="compact"] .sv-list li, html[data-layout="compact"] .sv-row { min-height: 40px; }
+html[data-home-view="simple"] .hb-pts { display: none; }
