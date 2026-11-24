@@ -4141,7 +4141,16 @@
         <span class="mp-body">${tag || ""}<b>${esc(p.title)}</b>${note ? `<span class="mp-note">${esc(note)}</span>` : ""}<span class="muted small">${esc(lvlName(p.level))} · ${st.isProto ? partsLabel(st.nWeeks, p) : `${p.weeks} weeks`}${st.done ? ` · ${st.done} of ${st.sessions} ${st.isProto ? "started" : "done"}` : note !== undefined ? " · not started yet" : ""}</span></span>
         <span class="mp-go">Open ›</span></button></li>`; };
     // The headings say who it's from, so the cards carry no "Recommended" / "Suggested" tag of their own
-    $("#mp-assigned").innerHTML = assigned.length ? `<span class="label accent">Recommended by Dr. Jared</span><ul class="mp-list">${assigned.map((x) => row(pById.get(x.id), x.note)).join("")}</ul>` : "";
+    // Pain tracks and Pain Tool protocols Dr. Jared prescribed from the chart (client.assignedPain): a track opens its
+    // levels, a protocol opens its muscle report; both sit beside his programs
+    const TKS = (window.MDFitTracks && window.MDFitTracks.TRACKS) || [], MUS0 = (window.MDFitMuscles || {}).MUSCLES || {};
+    const pain = (client.assignedPain || []).map((x) => {
+      if (x.kind === "track") { const t = TKS.find((y) => y.id === x.id); return t && { x, title: t.title, sub: `Pain track · ${t.levels.length} level${t.levels.length === 1 ? "" : "s"}`, attr: `data-track="${esc(t.id)}"` }; }
+      const m = MUS0[x.id]; return m && { x, title: `${m.name} protocol`, sub: "Pain Tool protocol · 3 phases", attr: `data-goto="pain/muscle/${esc(x.id)}"` };
+    }).filter(Boolean);
+    const painRow = (r) => `<li><button type="button" class="mp-item" ${r.attr}><span class="fp-ic pp-blank"></span>
+        <span class="mp-body"><b>${esc(r.title)}</b>${r.x.note ? `<span class="mp-note">${esc(r.x.note)}</span>` : ""}<span class="muted small">${esc(r.sub)}</span></span><span class="mp-go">Open ›</span></button></li>`;
+    $("#mp-assigned").innerHTML = assigned.length || pain.length ? `<span class="label accent">Recommended by Dr. Jared</span><ul class="mp-list">${assigned.map((x) => row(pById.get(x.id), x.note)).join("")}${pain.map(painRow).join("")}</ul>` : "";
     $("#mp-saved").innerHTML = saved.length ? `<span class="label">My saved plans</span><ul class="mp-list">${saved.map((id) => row(pById.get(id))).join("")}</ul>` : "";
     // Suggested for you: only items the app really has; a members-only program shows a lock and opens the membership page
     const sg = (client && client.suggested) || {};

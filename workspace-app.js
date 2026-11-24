@@ -548,7 +548,12 @@
           <form class="stack" data-form="protocol"><div class="field"><label for="prName">Protocol</label><input id="prName" name="name" class="input" maxlength="80" required placeholder="e.g. ACL phase 1, weeks 0 to 2" list="prNames" autocomplete="off"><datalist id="prNames"></datalist></div>
           <div class="field"><div class="row" style="justify-content:space-between"><label for="prDetail">What to do</label><button type="button" class="btn sm mic" data-act="dictate" data-for="prDetail" aria-pressed="false">${ui("mic", 14)}<span>Dictate</span></button></div><textarea id="prDetail" name="detail" class="input" rows="4" maxlength="1000" placeholder="Steps, sets and reps, how often, what to avoid"></textarea></div>
           <div class="row"><button class="btn primary">Add to ${first}'s program</button></div></form>
-          ${(plan.exercises || []).map((x, i) => `<div class="list-item" style="align-items:flex-start"><span style="flex:1;min-width:0"><b>${esc(x.name)}</b>${x.detail ? `<div class="muted note-text" style="font-size:12.5px">${esc(x.detail)}</div>` : ""}</span><button class="btn sm danger" data-act="prRemove" data-i="${i}">Remove</button></div>`).join("") || none(`Nothing in ${first}'s program yet.`)}</div></div>
+          ${(plan.exercises || []).map((x, i) => `<div class="list-item" style="align-items:flex-start"><span style="flex:1;min-width:0"><b>${esc(x.name)}</b>${x.detail ? `<div class="muted note-text" style="font-size:12.5px">${esc(x.detail)}</div>` : ""}</span><button class="btn sm danger" data-act="prRemove" data-i="${i}">Remove</button></div>`).join("") || none(`Nothing written in ${first}'s program yet.`)}
+          <h3 style="margin:14px 0 4px">Pain rehab on ${first}'s dashboard</h3><p class="muted" style="font-size:12px;margin:0 0 6px">Pain tracks and Pain Tool protocols: what you prescribed, what ${first} put on their road, and what they've done</p>
+          <div id="painOn">${none("Loading…")}</div></div></div>
+      <div class="card stack" style="margin-top:16px"><div class="card-head"><h2>Pain tracks &amp; Pain Tool protocols</h2><span class="muted" style="font-size:12px">Everything in the MD Fit app. Adding one puts it on ${first}'s dashboard (a track goes on their road too)</span></div>
+        <input class="input" id="ptSearch" type="search" placeholder="Search tracks and protocols (e.g. levator, shoulder blade, plantar)" aria-label="Search pain tracks and protocols" autocomplete="off">
+        <div id="ptList">${none("Loading…")}</div></div>
       <div class="grid g2" style="margin-top:16px"><div class="card"><div class="card-head"><h2>All protocols</h2><span class="muted" style="font-size:12px">Everything you have written, most used first</span></div><div id="prPool">${none("Loading…")}</div></div>
         <div class="card" id="chartPrograms"><div class="card-head"><h2>All programs</h2><span class="muted" style="font-size:12px">${plural(progs.length, "program")} in the library</span></div>
           ${progs.map((p) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(p.title)}</b><div class="muted" style="font-size:12px">${[p.category, p.level, p.weeks ? p.weeks + " weeks" : ""].filter(Boolean).map(esc).join(" · ")}</div></span>${mine.has(p.id) ? `<span class="pill ok">Assigned</span><button class="btn sm danger" data-act="prUnassign" data-id="${esc(p.id)}">Remove</button>` : `<button class="btn sm" data-act="prAssign" data-id="${esc(p.id)}">Add to ${first}'s program</button>`}</div>`).join("") || none("No programs in the library.")}</div></div>
@@ -634,13 +639,62 @@
   }
   // What a tab needs once it is on screen
   function chartAfter() {
-    if (state.chartTab === "plans") { loadPool(); loadProtocols(); }
+    if (state.chartTab === "plans") { loadPool(); loadProtocols(); loadPainRehab(); }
     if (state.chartTab === "billing") loadBilling();
     if (state.chartTab === "progress" && $("#wsProgress") && window.MDFitProgress) {
       const id = state.chartClient;
       window.MDFitProgress.mount($("#wsProgress"), { admin: true, load: (days) => api("GET", `/api/admin/clients/${encodeURIComponent(id)}/progress?days=${days}`) });
     }
   }
+  // ---- Pain tracks and Pain Tool protocols (the member app's own: paintracks.js, painmuscles.js + musclereports.js),
+  // loaded once on demand. The chart shows what is on the client's dashboard (server: painWork) and prescribes more
+  // (PUT /api/admin/clients/:id/pain-plan).
+  let painCat = null;
+  const addScript = (src) => new Promise((ok, no) => { if (document.querySelector(`script[data-src="${src}"]`)) return ok(); const s = document.createElement("script"); s.src = src; s.dataset.src = src; s.onload = ok; s.onerror = no; document.head.appendChild(s); });
+  async function painCatalog() {
+    if (painCat) return painCat;
+    await Promise.all([addScript("/paintracks.js"), addScript("/painmuscles.js"), addScript("/musclereports.js")]);
+    try { await window.MDFitTracks.ready; } catch {}
+    const T = (window.MDFitTracks && window.MDFitTracks.TRACKS) || [], MU = (window.MDFitMuscles || {}).MUSCLES || {}, R = window.MDFIT_MUSCLE_REPORTS || {};
+    const tracks = T.map((t) => ({ kind: "track", id: t.id, title: t.title, sub: `Pain track · ${t.region} · ${t.levels.length} level${t.levels.length === 1 ? "" : "s"}` }));
+    const protocols = Object.keys(R).filter((id) => R[id] && R[id].protocol && MU[id]).map((id) => ({ kind: "protocol", id, title: `${MU[id].name} protocol`, sub: "Pain Tool protocol · 3 phases" }));
+    painCat = { all: [...tracks.sort((a, b) => a.title.localeCompare(b.title)), ...protocols.sort((a, b) => a.title.localeCompare(b.title))] };
+    painCat.by = new Map(painCat.all.map((x) => [`${x.kind}:${x.id}`, x]));
+    return painCat;
+  }
+  async function loadPainRehab() {
+    const id = state.chartClient, box = $("#painOn"); if (!box) return;
+    let cat; try { cat = await painCatalog(); } catch { box.innerHTML = none("Couldn't load the pain tracks."); return; }
+    if (state.chartClient !== id || !$("#painOn")) return;
+    const c = cache.chart.c, first = esc(String(cache.chart.d.name).split(" ")[0]), pw = c.painWork || { items: [], savedProtocols: [] };
+    const name = (x) => (cat.by.get(`${x.kind}:${x.id}`) || { title: x.id }).title;
+    const tags = (x) => [x.prescribed ? `<span class="pill ok">Prescribed${x.assignedAt ? " " + esc(fmtDate(x.assignedAt.slice(0, 10))) : ""}</span>` : "", x.onRoad ? `<span class="pill">On their road</span>` : "", !x.prescribed && !x.onRoad ? `<span class="pill">Done before · not on their dashboard</span>` : "",
+      `<span class="pill ${x.sessions ? "" : "warn"}">${x.sessions ? `${plural(x.sessions, "session")}${x.last ? " · last " + esc(fmtDate(x.last)) : ""}` : "Not started"}</span>`].join(" ");
+    box.innerHTML = (pw.items || []).map((x) => `<div class="list-item" style="align-items:flex-start"><span style="flex:1;min-width:0"><b>${esc(name(x))}</b> <span class="muted" style="font-size:12px">${x.kind === "track" ? "Pain track" : "Pain Tool protocol"}</span>
+        <div class="row" style="gap:6px;margin-top:4px">${tags(x)}</div>${x.note ? `<div class="muted note-text" style="font-size:12.5px">${esc(x.note)}</div>` : ""}</span>
+        <span class="row" style="gap:6px;flex-wrap:nowrap">${x.prescribed ? "" : `<button class="btn sm" data-act="painAdd" data-kind="${x.kind}" data-id="${esc(x.id)}">Prescribe</button>`}
+        ${x.prescribed || x.onRoad ? `<button class="btn sm danger" data-act="painRm" data-kind="${x.kind}" data-id="${esc(x.id)}" data-pres="${x.prescribed ? 1 : ""}" data-road="${x.onRoad ? 1 : ""}">Remove</button>` : ""}</span></div>`).join("")
+      + ((pw.savedProtocols || []).length ? `<div class="muted" style="font-size:12px;margin-top:6px">Saved to their My Programs: ${pw.savedProtocols.map((p) => esc(p.name)).join(", ")}</div>` : "")
+      || none(`No pain tracks or protocols on ${first}'s dashboard yet.`);
+    drawPainList();
+  }
+  function drawPainList() {
+    const list = $("#ptList"); if (!list || !painCat) return;
+    const q = String(($("#ptSearch") || {}).value || "").trim().toLowerCase(), c = cache.chart.c, first = esc(String(cache.chart.d.name).split(" ")[0]);
+    const on = new Set((c.assignedPain || []).map((x) => `${x.kind}:${x.id}`));
+    const hits = painCat.all.filter((x) => !q || `${x.title} ${x.sub}`.toLowerCase().includes(q));
+    list.innerHTML = hits.slice(0, 40).map((x) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(x.title)}</b><div class="muted" style="font-size:12px">${esc(x.sub)}</div></span>
+      ${on.has(`${x.kind}:${x.id}`) ? `<span class="pill ok">Prescribed</span>` : `<button class="btn sm" data-act="painAdd" data-kind="${x.kind}" data-id="${esc(x.id)}">Add to ${first}'s program</button>`}</div>`).join("")
+      + (hits.length > 40 ? `<p class="muted" style="font-size:12px">${hits.length - 40} more. Search to narrow the list.</p>` : "") || none("Nothing matches. Try another word.");
+  }
+  async function savePain(items) {
+    const id = state.chartClient;
+    const r = await api("PUT", `/api/admin/clients/${encodeURIComponent(id)}/pain-plan`, { items });
+    if (state.chartClient !== id) return;
+    cache.chart.c = { ...cache.chart.c, assignedPain: r.assignedPain, painWork: r.painWork };
+    await loadPainRehab();
+  }
+  document.addEventListener("input", (e) => { if (e.target && e.target.id === "ptSearch") drawPainList(); });
   async function loadProtocols() {
     const r = await load("/emr/protocols").catch(() => ({ protocols: [] })), box = $("#prPool"); if (!box) return;
     cache.protocols = r.protocols || [];
@@ -1565,6 +1619,26 @@
   const reChart = async () => { const id = state.chartClient; const [d, c] = await Promise.all([get(`/emr/${id}`), get(`/clients/${id}`)]); cache.chart = { ...cache.chart, d, c }; const box = $("#chartBody"); if (box) box.innerHTML = chartTab(); };
   const showDocs = (d) => (d.docs || []).map((doc) => `<div class="card" style="box-shadow:none;margin-top:10px"><h3 style="margin:0 0 2px">${esc(doc.title)}</h3><p class="muted" style="margin:0 0 8px;font-size:12px">Completed ${when(doc.createdAt)}</p><dl class="doc-qa">${(doc.fields || []).map((f) => `<div><dt>${esc(f.label)}</dt><dd>${esc(Array.isArray(f.value) ? f.value.join(", ") : f.value === true ? "Yes" : f.value === false ? "No" : f.value == null || f.value === "" ? "—" : f.value)}</dd></div>`).join("")}</dl></div>`).join("") || none("No documents received yet.");
   const ACT = {
+    painAdd: async (el) => {
+      const c = cache.chart.c, first = String(cache.chart.d.name).split(" ")[0], x = (painCat && painCat.by.get(`${el.dataset.kind}:${el.dataset.id}`)) || { title: el.dataset.id };
+      const note = prompt(`Add "${x.title}" to ${first}'s program. Optional note for ${first}:`, "");
+      if (note === null) return;
+      const items = (c.assignedPain || []).filter((y) => !(y.kind === el.dataset.kind && y.id === el.dataset.id)).map(({ kind, id, note: n }) => ({ kind, id, note: n }));
+      await savePain([...items, { kind: el.dataset.kind, id: el.dataset.id, note }]); toast(`Added to ${first}'s program.`);
+    },
+    // Remove from the client's dashboard: the prescription (if any) and, for a track, its place on their road.
+    // Sessions they already did stay in their history.
+    painRm: async (el) => {
+      const c = cache.chart.c, first = String(cache.chart.d.name).split(" ")[0], k = el.dataset.kind, tid = el.dataset.id;
+      const x = (painCat && painCat.by.get(`${k}:${tid}`)) || { title: tid };
+      if (!confirm(`Remove "${x.title}" from ${first}'s dashboard? Sessions ${first} already did stay in their history.`)) return;
+      if (el.dataset.pres) await savePain((c.assignedPain || []).filter((y) => !(y.kind === k && y.id === tid)).map(({ kind, id, note }) => ({ kind, id, note })));
+      if (k === "track" && el.dataset.road) {
+        try { const r = await api("DELETE", `/api/admin/clients/${encodeURIComponent(state.chartClient)}/road-tracks/${encodeURIComponent(tid)}`); cache.chart.c = { ...cache.chart.c, assignedPain: r.assignedPain, painWork: r.painWork }; await loadPainRehab(); }
+        catch (e) { if (!/isn't on their road/.test(e.message)) throw e; }
+      }
+      toast("Removed.");
+    },
     chart: (el) => openChart(el.dataset.id),
     chartClose: (el, e) => { e.preventDefault(); state.chartClient = null; render(); },
     chartTab: (el) => { state.chartTab = el.dataset.tab; document.querySelectorAll(".tabs .tab").forEach((b) => b.classList.toggle("active", b === el)); $("#chartBody").innerHTML = chartTab(); chartAfter(); },
