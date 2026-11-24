@@ -41,7 +41,7 @@
   // Simple view (Profile > Make it yours > Home screen): the same things happen and the same XP is earned, but the
   // words are plain: no XP, gems or lamps in a message. One place, so every toast follows it.
   const plainView = () => document.documentElement.dataset.homeView === "simple";
-  const plainMsg = (m) => (!plainView() ? m : String(m)
+  const plainMsg = (m) => (!plainView() || typeof m !== "string" ? m : m
     .replace(/^\+\d+ XP for showing up$/, "Good to see you")
     .replace(/^\+\d+ XP$/, "Saved")
     .replace(/^New gem!.*$/, "")

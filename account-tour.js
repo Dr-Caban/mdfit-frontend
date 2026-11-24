@@ -21,6 +21,7 @@
   // for when they are done there. when: a beat shown only if that holds.
   // A beat whose target is not on the screen is passed over.
   const optTap = (e) => !!(e.target.closest && e.target.closest(".mg-opt"));
+  const simple = () => { try { return document.documentElement.dataset.homeView === "simple"; } catch { return false; } };
   function beats(name) {
     return [
       { say: `Hi${name ? " " + name : ""}, I’m Solomon, your guide. Tap me to start.`, find: () => $("#mg-btn"), pad: 10, round: 40,
@@ -45,7 +46,11 @@
       { snd: "11", free: true, say: "Becoming a patient? Your documents live here. Start them now, or tap Next.", find: () => first("#view-profile #p-patient"), pad: 4, round: 18, used: () => true },
       { snd: "12", free: true, before: shutDialogs, say: "Make the app yours here: light or dark, roomy or compact. Tap it to look, or tap Next. Refer a friend sits just below.",
         find: () => { const h = [...document.querySelectorAll("#view-profile .card-head")].find((x) => seen(x) && /^make it yours/i.test(x.textContent.trim())); return h && (h.closest(".card") || h); }, pad: 2, round: 16 },
-      { snd: "13", say: "This is your road. One stone a day. Tap the stone and we begin.", before: () => { shutDialogs(); location.hash = "#home"; },
+      // Simple view (Profile > Make it yours > Home screen) has no road or stones: the last beat lights the plain plan's
+      // Start (or the first Getting started step) and says so in text only, since the recording speaks of the stone.
+      simple() ? { say: "This is your plan for today. Tap Start and we begin.", before: () => { shutDialogs(); location.hash = "#home"; },
+        find: () => first("#cave-card.sv-card .btn-blue") || first("#cave-card.sv-card [data-cave-today]") || first("#cave-card.sv-card"), pad: 8, round: 16, last: true }
+      : { snd: "13", say: "This is your road. One stone a day. Tap the stone and we begin.", before: () => { shutDialogs(); location.hash = "#home"; },
         find: () => first("#cave-card .cv-stop.now .cv-ore") || first("#cave-card .cv-stop.today .cv-ore"), pad: 12, round: 60, last: true },
     ];
   }

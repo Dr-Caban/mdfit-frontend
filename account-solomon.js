@@ -53,6 +53,11 @@
   let verseOn = (() => { try { return localStorage.getItem(VERSE_KEY) !== "off"; } catch { return true; } })();
   const verseToday = () => VERSES[Math.floor(Date.now() / 864e5) % VERSES.length];
   const verseLine = () => { const v = verseToday(); return `“${v[0]}” ${v[1]}`; };
+  // The day a verse was last shown on this device: a member who already had today's greeting before the verse existed
+  // (or before they turned it on) still gets today's verse the next time the app opens, once.
+  const VERSE_SEEN = "mdfit_verse_seen", dayNow = () => (A.today ? A.today() : new Date().toISOString().slice(0, 10));
+  const verseSeen = () => { try { return localStorage.getItem(VERSE_SEEN) === dayNow(); } catch { return true; } };
+  const verseShown = () => { try { localStorage.setItem(VERSE_SEEN, dayNow()); } catch {} };
   const VERSE_IC = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h11a2 2 0 0 1 2 2v16a1 1 0 0 1-1 1H7a3 3 0 0 1-3-3V4a2 2 0 0 1 2-2zm0 15a1 1 0 0 0 0 2h11v-2zM11 5v2H9v2h2v5h2V9h2V7h-2V5z"/></svg>';
   function verseRow() {
     const list = document.getElementById("more-list"); if (!list) return;
@@ -62,17 +67,27 @@
     b.setAttribute("aria-checked", String(verseOn));
     b.innerHTML = `${VERSE_IC}<span>Daily Bible verse</span><em class="more-onoff">${verseOn ? "On" : "Off"}</em>`;
   }
+  // A choice the account has not been told yet (offline, or the request failed) is kept and sent on the next open,
+  // and the account's older answer never overwrites it meanwhile (the same rule as the looks in app-theme.js).
+  const VERSE_UNSENT = "mdfit_verse_unsent";
+  let versePicks = 0;
+  const verseUnsent = () => { try { return localStorage.getItem(VERSE_UNSENT) === "1"; } catch { return false; } };
+  function sendVerse() {
+    const want = verseOn; try { localStorage.setItem(VERSE_UNSENT, "1"); } catch {}
+    try { window.MDFit.apiAuth("PUT", "/api/me/prefs", { verse: want ? "on" : "off" }).then(() => { if (want === verseOn) { try { localStorage.removeItem(VERSE_UNSENT); } catch {} } }).catch(() => {}); } catch {}
+  }
   function setVerse(on, fromAccount) {
     verseOn = !!on; try { localStorage.setItem(VERSE_KEY, verseOn ? "on" : "off"); } catch {}
     verseRow();
     if (fromAccount) return;
-    try { window.MDFit.apiAuth("PUT", "/api/me/prefs", { verse: verseOn ? "on" : "off" }).catch(() => {}); } catch {}
+    versePicks++; sendVerse();
     A.toast(verseOn ? "Daily Bible verse is on. Solomon greets you with one each day." : "Daily Bible verse is off.");
-    if (verseOn) { const ms = document.getElementById("more-sheet"); if (ms && ms.open) ms.close(); const t = `Today's verse: ${verseLine()}`; setTimeout(() => G.say(t, { ms: Math.min(18000, 3500 + t.length * 55) }), 400); }
+    if (verseOn) { const ms = document.getElementById("more-sheet"); if (ms && ms.open) ms.close(); const t = `Today's verse: ${verseLine()}`; setTimeout(() => { if (G.say(t, { ms: Math.min(18000, 3500 + t.length * 55) })) verseShown(); }, 400); }
   }
   verseRow();
   // another device may have changed it: the account's choice wins when this device has none of its own to send
-  try { window.MDFit.apiAuth("GET", "/api/me/guide").then((g) => { const v = g && g.prefs && g.prefs.verse; if ((v === "on" || v === "off") && (v === "on") !== verseOn) setVerse(v === "on", true); }).catch(() => {}); } catch {}
+  if (verseUnsent()) sendVerse();
+  else try { const asked = versePicks; window.MDFit.apiAuth("GET", "/api/me/guide").then((g) => { if (verseUnsent() || versePicks !== asked) return; /* a tap made while this was on its way is newer */ const v = g && g.prefs && g.prefs.verse; if ((v === "on" || v === "off") && (v === "on") !== verseOn) setVerse(v === "on", true); }).catch(() => {}); } catch {}
   // Solomon's own sayings (written for the app, in the manner of old proverbs; none is a quotation)
   const SAYINGS = ["The patient miner finds the brighter stone.", "Small steps, well kept, move mountains.", "What you build daily, no one can take.",
     "Strength is gathered, not found.", "A steady hand outlasts a strong one.", "The lamp you tend lights the whole road.", "Dig a little each day and the mountain yields."];
@@ -202,7 +217,7 @@
     if (cheer) { const c = cheer; cheer = ""; if (G.say(c, { ms: 7000 })) { timer = setTimeout(() => speakFor(view), 9500); return; } }
     // The day's welcome comes first, then what this screen has to say
     if (hello) { const h = hello; hello = ""; const ms = Math.min(18000, Math.max(8000, 3500 + h.length * 55)); // a verse takes longer to read than a hello
-      if (G.say(h, { ms })) { timer = setTimeout(() => speakFor(view), ms + 2500); return; } }
+      if (G.say(h, { ms })) { if (h.includes("“")) verseShown(); timer = setTimeout(() => speakFor(view), ms + 2500); return; } }
     // The first opening of a new week: last week's numbers are ready, once, for anyone who has a week to hear about
     if (weekDue && view === "home") { weekDue = false;
       try { const f = A.weekFacts(), mon = f.weeks[3].from, worth = f.any && (f.weeks[2].sessions || f.weeks[2].checkins || f.weeks[1].sessions);
@@ -224,6 +239,8 @@
   // The first opening of the day (account.js welcomeBack): he greets them above the cloud, and the chat opens with the same words
   document.addEventListener("mdfit:arrive", (e) => { try { hello = greetingFor(e.detail || {}); } catch { hello = ""; } if (G.greeting) G.greeting(hello); weekDue = true; arrive(A.view(), 4000); });
   // First words: once the app has its data and the welcome toast has had its moment
+  // No verse yet today (the day's greeting already went by without one): he gives it now, ahead of his other lines
+  if (verseOn && !verseSeen() && !hello) hello = `Today's verse: ${verseLine()}`;
   arrive(A.view(), 4200);
 
   // Profile → Reminders from Solomon: speaks up, or quiet until tapped
