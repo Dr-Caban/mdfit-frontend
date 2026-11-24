@@ -25,6 +25,83 @@
   ],
   "settled": [
     {
+      "id": "1x1BBHXMtgTK0sOIFyXmRX-fB4IL92qlv",
+      "name": "Seated Needle Thread Glute Squeeze",
+      "folder": "MD Fit Library",
+      "decision": "placed-in-library",
+      "driveFileName": "20261119_121716.mp4",
+      "renameOwed": "20261119_121716.mp4 -> Seated Needle Thread Glute Squeeze.mp4",
+      "why": "Hips / Rehab / 3 / home / seated. Named in the clip: \"This is the Seated Needle Thread Glute Squeeze for opening up stubborn hip flexors\". Identified by listening to the clip (scripts/video-stt.py, in-container). The file in Drive is still named with its camera timestamp: the connector is read-only as of 24 Nov, so the rename is owed, not done.",
+      "on": "2026-11-24",
+      "by": "owner"
+    },
+    {
+      "id": "1mF__s_iohgmRD-nzhq7rMYIZEliiRVFX",
+      "name": "Kneeling Glute Engagement",
+      "folder": "MD Fit Library",
+      "decision": "placed-in-library",
+      "driveFileName": "20261119_121128.mp4",
+      "renameOwed": "20261119_121128.mp4 -> Kneeling Glute Engagement.mp4",
+      "why": "Hips / Rehab / 2 / home. No name stated; the owner named it. Kneeling, butt to ankles, core braced, hips driven forward. Identified by listening to the clip (scripts/video-stt.py, in-container). The file in Drive is still named with its camera timestamp: the connector is read-only as of 24 Nov, so the rename is owed, not done.",
+      "on": "2026-11-24",
+      "by": "owner"
+    },
+    {
+      "id": "1crBepUW4mq4SoRuoWNVsVcuPEpdJm3yT",
+      "name": "Glute Engage Cramp",
+      "folder": "MD Fit Library",
+      "decision": "placed-in-library",
+      "driveFileName": "20261119_120703.mp4",
+      "renameOwed": "20261119_120703.mp4 -> Glute Engage Cramp.mp4",
+      "why": "Hips / Rehab / 3 / home. No name stated; the owner named it from the clip's content (glutes engaged to cramp, shutting the hip flexors off during a back-pain flare). Identified by listening to the clip (scripts/video-stt.py, in-container). The file in Drive is still named with its camera timestamp: the connector is read-only as of 24 Nov, so the rename is owed, not done.",
+      "on": "2026-11-24",
+      "by": "owner"
+    },
+    {
+      "id": "11IHmyWe_Kx9LfC6roT-jgaHtpTct82HF",
+      "name": "Scalene Active Stretch",
+      "folder": "MD Fit Library",
+      "decision": "placed-in-library",
+      "driveFileName": "20261119_121523.mp4",
+      "renameOwed": "20261119_121523.mp4 -> Scalene Active Stretch.mp4",
+      "why": "Neck / Rehab / 1 / home. The clip never states a name; the owner named it. Region: the owner said \"neck or shoulder\" and Neck was taken, the scalenes being neck muscles — flip it if that is wrong. Identified by listening to the clip (scripts/video-stt.py, in-container). The file in Drive is still named with its camera timestamp: the connector is read-only as of 24 Nov, so the rename is owed, not done.",
+      "on": "2026-11-24",
+      "by": "owner"
+    },
+    {
+      "id": "1OsK2xSsbMSf21MDKIStu6-gC49rRj0st",
+      "name": "Scapular Floor Angel",
+      "folder": "MD Fit Library",
+      "decision": "placed-in-library",
+      "driveFileName": "20261119_121337.mp4",
+      "renameOwed": "20261119_121337.mp4 -> Scapular Floor Angel.mp4",
+      "why": "Shoulders / Rehab / 3 / home. Named in the clip: \"The scapular floor angel\". Identified by listening to the clip (scripts/video-stt.py, in-container). The file in Drive is still named with its camera timestamp: the connector is read-only as of 24 Nov, so the rename is owed, not done.",
+      "on": "2026-11-24",
+      "by": "owner"
+    },
+    {
+      "id": "1QvQY_ZQ57RDbFuVIdlqWvqUruaGVmTKA",
+      "name": "Glute Table Drop-Off",
+      "folder": "MD Fit Library",
+      "decision": "placed-in-library",
+      "driveFileName": "20261119_122436.mp4",
+      "renameOwed": "20261119_122436.mp4 -> Glute Table Drop-Off.mp4",
+      "why": "Hips / Rehab / 2 / home. Named in the clip: \"one of the best starting movements is the glute table drop-off\". Identified by listening to the clip (scripts/video-stt.py, in-container). The file in Drive is still named with its camera timestamp: the connector is read-only as of 24 Nov, so the rename is owed, not done.",
+      "on": "2026-11-24",
+      "by": "owner"
+    },
+    {
+      "id": "1TJGdhknIwV-iuRraUPrgpOvWY-dT-7KT",
+      "name": "Seated Hip Swivel",
+      "folder": "MD Fit Library",
+      "decision": "placed-in-library",
+      "driveFileName": "20261119_121943.mp4",
+      "renameOwed": "20261119_121943.mp4 -> Seated Hip Swivel.mp4",
+      "why": "Hips / Rehab / 3 / home / seated. The clip says its own name: \"This is the seated hip swivel\". Identified by listening to the clip (scripts/video-stt.py, in-container). The file in Drive is still named with its camera timestamp: the connector is read-only as of 24 Nov, so the rename is owed, not done.",
+      "on": "2026-11-24",
+      "by": "owner"
+    },
+    {
       "id": "1yIWx9INL_jean04x-IK2M4REgxlF_myy",
       "name": "Long Lunge (take 2)",
       "folder": "MDFIT media",
@@ -642,24 +719,22 @@
   ],
   "open": [
     {
-      "note": "Still waiting on the owner: these two need region, category, level, location and seated, plus which of the duplicate Drive files to use. The others stay in Drive.",
-      "clips": [
-        {
-          "name": "Seated Plantar Fascia Stretch",
-          "files": [
-            "1Qp71sob8QYxlSol8tT_dhQYBrgg2NGaX (Foot - Referred Pain)",
-            "13F4xML5kvfC-SeXumGUWhV_FzIOD_646 (1 Exercise Library)"
-          ]
-        },
-        {
-          "name": "Standing Hip Abduction and Adduction",
-          "files": [
-            "1OnM1d2NP8OibYI7EopbC0TuBSh_s4OA- (Upper Thigh - Referred Pain)",
-            "1YMMJXf04zGbNOL5m6XPEaX-rzD1p1wvJ (Glute - Referred Pain)",
-            "1xtIPf3r0PExfK_ME6wKt8qmErwZn-WaR (Hip - Referred Pain)"
-          ]
-        }
-      ]
+      "note": "Owed, not done. The Drive connector is authenticated as jaredcaban0nopills@gmail.com and went read-only on 24 Nov (canEdit, canMoveItemWithinDrive and canTrash all false), so none of this can run until it is reconnected as jaredcabanmdfit@gmail.com, which owns MDFIT media.",
+      "driveRenames": [
+        "20261119_121943.mp4 -> Seated Hip Swivel.mp4",
+        "20261119_122436.mp4 -> Glute Table Drop-Off.mp4",
+        "20261119_121337.mp4 -> Scapular Floor Angel.mp4",
+        "20261119_121523.mp4 -> Scalene Active Stretch.mp4",
+        "20261119_120703.mp4 -> Glute Engage Cramp.mp4",
+        "20261119_121128.mp4 -> Kneeling Glute Engagement.mp4",
+        "20261119_121716.mp4 -> Seated Needle Thread Glute Squeeze.mp4"
+      ],
+      "duplicateDeletion": "134 exact copies, 13.44 GB. Every one is byte-identical AND identically named to a file that survives; the keeper is never on the list; none of the 346 Drive ids the app references is touched. Verified 134/134.",
+      "zeroByteFiles": [
+        "Seated Plantar Fascia Stretch.mp4 (two copies) — HTTP 200, no bytes",
+        "Kneeling Plantar Fascia Stretch (take 2).mp4 — HTTP 200, no bytes"
+      ],
+      "stillUnplaced": "Seated Plantar Fascia Stretch: both copies are empty files, so there is nothing to place."
     }
   ]
 }

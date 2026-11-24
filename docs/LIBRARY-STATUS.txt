@@ -2,19 +2,33 @@ MD Fit exercise library — every movement and whether it plays
 Generated 2026-11-24 by scripts/library-status.js
 from app/exercises.js against GET /api/videos (bunny.map).
 
-200 movements, 195 playable, 5 not yet.
+207 movements, 195 playable, 12 not yet.
 
 Not yet playable:
+  Seated Needle Thread Glute Squeeze (Hips / Rehab)
+  Kneeling Glute Engagement (Hips / Rehab)
+  Glute Engage Cramp (Hips / Rehab)
+  Glute Table Drop-Off (Hips / Rehab)
+  Seated Hip Swivel (Hips / Rehab)
+  Scalene Active Stretch (Neck / Rehab)
   Floor Slide Scapular Retract (Shoulders / Activation)
   Eccentric Internal Rotation (Shoulders / Rehab)
   Eccentric External Rotation (Shoulders / Rehab)
   Supraspinatus Stretch (Shoulders / Mobility)
+  Scapular Floor Angel (Shoulders / Rehab)
   Kneeling Wall Spiral (Spine / Mobility)
 
+NO     Hips           Rehab          L2  Glute Table Drop-Off
+NO     Hips           Rehab          L2  Kneeling Glute Engagement
+NO     Hips           Rehab          L3  Glute Engage Cramp
+NO     Hips           Rehab          L3  Seated Hip Swivel
+NO     Hips           Rehab          L3  Seated Needle Thread Glute Squeeze
+NO     Neck           Rehab          L1  Scalene Active Stretch
 NO     Shoulders      Activation     L2  Floor Slide Scapular Retract
 NO     Shoulders      Mobility       L2  Supraspinatus Stretch
 NO     Shoulders      Rehab          L2  Eccentric External Rotation
 NO     Shoulders      Rehab          L2  Eccentric Internal Rotation
+NO     Shoulders      Rehab          L3  Scapular Floor Angel
 NO     Spine          Mobility       L2  Kneeling Wall Spiral
 video  Ankles         Mobility       L1  Ankle Circles
 video  Ankles         Mobility       L2  Ankle Neuroglide
