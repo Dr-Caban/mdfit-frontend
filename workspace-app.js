@@ -544,8 +544,9 @@
           <form class="stack" data-form="planNotes"><div class="row" style="justify-content:flex-end"><button type="button" class="btn sm mic" data-act="dictate" data-for="planText" aria-pressed="false">${ui("mic", 14)}<span>Dictate</span></button></div>
           <textarea id="planText" name="notes" class="input" rows="6" maxlength="3000" placeholder="Goals, how often, and when you will review" aria-label="Treatment plan">${esc(plan.notes || "")}</textarea>
           <div class="row"><button class="btn primary">Save treatment plan</button>${plan.updatedAt ? `<span class="muted" style="font-size:12px">Updated ${when(plan.updatedAt)}</span>` : ""}</div></form></div>
-        <div class="card stack"><div class="card-head"><h2>Protocols for ${first}</h2><span class="muted" style="font-size:12px">Type one, or pick from the lists below</span></div>
-          <form class="stack" data-form="protocol"><div class="field"><label for="prName">Protocol</label><input id="prName" name="name" class="input" maxlength="80" required placeholder="e.g. ACL phase 1, weeks 0 to 2" list="prNames" autocomplete="off"><datalist id="prNames"></datalist></div>
+        <div class="card stack"><div class="card-head"><h2>Protocols for ${first}</h2><span class="muted" style="font-size:12px">Search and add, or type a new one</span></div>
+          <form class="stack" data-form="protocol"><div class="field"><label for="prName">Protocol</label><input id="prName" name="name" class="input" type="search" maxlength="80" required placeholder="Search every protocol, pain track and program, or type a new one" autocomplete="off" aria-controls="prFound">
+            <div id="prFound" hidden></div></div>
           <div class="field"><div class="row" style="justify-content:space-between"><label for="prDetail">What to do</label><button type="button" class="btn sm mic" data-act="dictate" data-for="prDetail" aria-pressed="false">${ui("mic", 14)}<span>Dictate</span></button></div><textarea id="prDetail" name="detail" class="input" rows="4" maxlength="1000" placeholder="Steps, sets and reps, how often, what to avoid"></textarea></div>
           <div class="row"><button class="btn primary">Add to ${first}'s program</button></div></form>
           ${(plan.exercises || []).map((x, i) => `<div class="list-item" style="align-items:flex-start"><span style="flex:1;min-width:0"><b>${esc(x.name)}</b>${x.detail ? `<div class="muted note-text" style="font-size:12.5px">${esc(x.detail)}</div>` : ""}</span><button class="btn sm danger" data-act="prRemove" data-i="${i}">Remove</button></div>`).join("") || none(`Nothing written in ${first}'s program yet.`)}
@@ -676,7 +677,7 @@
         ${x.prescribed || x.onRoad ? `<button class="btn sm danger" data-act="painRm" data-kind="${x.kind}" data-id="${esc(x.id)}" data-pres="${x.prescribed ? 1 : ""}" data-road="${x.onRoad ? 1 : ""}">Remove</button>` : ""}</span></div>`).join("")
       + ((pw.savedProtocols || []).length ? `<div class="muted" style="font-size:12px;margin-top:6px">Saved to their My Programs: ${pw.savedProtocols.map((p) => esc(p.name)).join(", ")}</div>` : "")
       || none(`No pain tracks or protocols on ${first}'s dashboard yet.`);
-    drawPainList();
+    drawPainList(); drawProtoSearch();
   }
   function drawPainList() {
     const list = $("#ptList"); if (!list || !painCat) return;
@@ -700,8 +701,31 @@
     cache.protocols = r.protocols || [];
     const mine = new Set(((cache.chart.c.plan || {}).exercises || []).map((x) => String(x.name).toLowerCase())), first = esc(String(cache.chart.d.name).split(" ")[0]);
     box.innerHTML = cache.protocols.map((p, i) => `<div class="list-item" style="align-items:flex-start"><span style="flex:1;min-width:0"><b>${esc(p.name)}</b> <span class="muted" style="font-size:12px">used ${p.uses}×</span>${p.detail ? `<div class="muted note-text" style="font-size:12.5px">${esc(p.detail)}</div>` : ""}</span>${mine.has(p.name.toLowerCase()) ? `<span class="pill ok">In program</span>` : `<button class="btn sm" data-act="prPick" data-i="${i}">Add to ${first}'s program</button>`}</div>`).join("") || none("Nothing written yet. Type the first one above.");
-    const dl = $("#prNames"); if (dl) dl.innerHTML = cache.protocols.map((p) => `<option value="${esc(p.name)}">`).join("");
+    drawProtoSearch();
   }
+  // The Protocol box is a search over everything that can go in a client's program: the protocols already written,
+  // every pain track and Pain Tool protocol in the app, and the library programs. Each match has its own Add button
+  // (the same actions as the lists below); a name that matches nothing is a new protocol, written in "What to do".
+  function drawProtoSearch() {
+    const box = $("#prFound"), inp = $("#prName"); if (!box || !inp) return;
+    const q = inp.value.trim().toLowerCase();
+    if (!q) { box.hidden = true; box.innerHTML = ""; return; }
+    const c = cache.chart.c, first = esc(String(cache.chart.d.name).split(" ")[0]), words = q.split(/\s+/);
+    const hit = (t) => { const s = String(t || "").toLowerCase(); return words.every((w) => s.includes(w)); };
+    const inPlan = new Set(((c.plan || {}).exercises || []).map((x) => String(x.name).toLowerCase()));
+    const pres = new Set((c.assignedPain || []).map((x) => `${x.kind}:${x.id}`)), mineP = new Set((c.assignedPrograms || []).map((x) => x.id));
+    const row = (title, sub, on, btn) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(title)}</b><div class="muted" style="font-size:12px">${esc(sub)}</div></span>${on ? `<span class="pill ok">${on}</span>` : btn}</div>`;
+    const add = (attrs) => `<button type="button" class="btn sm" ${attrs}>Add to ${first}'s program</button>`;
+    const rows = [
+      ...(cache.protocols || []).map((p, i) => hit(`${p.name} ${p.detail || ""}`) && row(p.name, `Written protocol · used ${p.uses}×`, inPlan.has(p.name.toLowerCase()) && "In program", add(`data-act="prPick" data-i="${i}"`))),
+      ...((painCat && painCat.all) || []).map((x) => hit(`${x.title} ${x.sub}`) && row(x.title, x.sub, pres.has(`${x.kind}:${x.id}`) && "Prescribed", add(`data-act="painAdd" data-kind="${x.kind}" data-id="${esc(x.id)}"`))),
+      ...((cache.content && cache.content.programs) || []).map((p) => hit(`${p.title} ${p.category}`) && row(p.title, `Program · ${[p.category, p.weeks ? p.weeks + " weeks" : ""].filter(Boolean).join(" · ")}`, mineP.has(p.id) && "Assigned", add(`data-act="prAssign" data-id="${esc(p.id)}"`)))
+    ].filter(Boolean);
+    box.hidden = false;
+    box.innerHTML = rows.slice(0, 12).join("") + (rows.length > 12 ? `<p class="muted" style="font-size:12px;margin:6px 0 0">${rows.length - 12} more. Keep typing to narrow it.</p>` : "")
+      + `<p class="muted" style="font-size:12px;margin:6px 0 0">${rows.length ? "Not what you want?" : "No match."} Write it in "What to do" below to add "${esc(inp.value.trim())}" as a new protocol.</p>`;
+  }
+  document.addEventListener("input", (e) => { if (e.target && e.target.id === "prName") drawProtoSearch(); });
   const STATUS = { paid: "ok", unpaid: "warn", void: "", failed: "bad", refunded: "", pending: "warn" };
   async function loadBilling() {
     const id = state.chartClient, b = await load(`/emr/${id}/billing`).catch((e) => ({ error: e.message, invoices: [] }));
