@@ -38,8 +38,23 @@
   let calMoney = [], calSyncAt = 0, calSyncing = null; // the Progress calendar's invoices, payments and membership dates, and its sync state
   let lib = { favorites: [], programs: [] };
 
+  // Simple view (Profile > Make it yours > Home screen): the same things happen and the same XP is earned, but the
+  // words are plain: no XP, gems or lamps in a message. One place, so every toast follows it.
+  const plainView = () => document.documentElement.dataset.homeView === "simple";
+  const plainMsg = (m) => (!plainView() ? m : String(m)
+    .replace(/^\+\d+ XP for showing up$/, "Good to see you")
+    .replace(/^\+\d+ XP$/, "Saved")
+    .replace(/^New gem!.*$/, "")
+    .replace(/^First descent complete!$/, "Getting started is complete!")
+    .replace(/^Daily goal: \d+ XP\.$/, "Daily goal saved.")
+    .replace(/\s*Finish it for \d+ XP\./, "")
+    .replace(/\s*\+\d+ XP/, "")
+    .replace("No XP, and it's waiting", "It's waiting")
+    .replace("Session skipped. Every other lamp is lit today.", "Session skipped. Everything else is done today.")
+    .replace("Every lamp is lit today.", "Everything is done for today."));
   function toast(msg) {
     const t = $("#toast");
+    msg = plainMsg(msg);
     t.textContent = msg; t.hidden = false; t.classList.remove("celebrate");
     clearTimeout(toast.t); toast.t = setTimeout(() => (t.hidden = true), 3200);
   }
@@ -82,16 +97,17 @@
   }
   // Milestones: spinning coin + bonus XP, then (on level-ups and every 3rd badge) a Duolingo-style leaderboard pop-up
   const msQueue = []; let msBusy = false, msShowBoard = false;
-  function milestone(m) { msQueue.push(m); if (!msBusy) nextMilestone(); }
+  // (Simple view: no level-up or gem overlay, and a badge is shown without its bonus XP)
+  function milestone(m) { if (plainView() && /gem/i.test(m.kicker || "")) return; msQueue.push(m); if (!msBusy) nextMilestone(); }
   function nextMilestone() {
     const m = msQueue.shift();
-    if (!m) { msBusy = false; if (msShowBoard) { msShowBoard = false; showBoardPopup(); } return; }
+    if (!m) { msBusy = false; if (msShowBoard) { msShowBoard = false; if (!plainView()) showBoardPopup(); } return; }
     msBusy = true;
     $("#ms-face").innerHTML = m.icon;
     $("#ms-kicker").textContent = m.kicker;
     $("#ms-title").textContent = m.title;
     $("#ms-desc").textContent = m.desc || "";
-    $("#ms-xp").innerHTML = m.xp ? `<span>+${m.xp}</span> XP` : "";
+    $("#ms-xp").innerHTML = m.xp && !plainView() ? `<span>+${m.xp}</span> XP` : "";
     const ov = $("#ms"); ov.hidden = false; ov.classList.remove("play"); void ov.offsetWidth; ov.classList.add("play");
     try { navigator.vibrate && navigator.vibrate([30, 40, 60]); } catch {}
   }
@@ -122,7 +138,7 @@
       milestone({ icon: `<span class="ms-lv">${r.level}</span>`, kicker: "New gem!", title: r.title, desc: r.level === (r.olympicLevel || 4) ? "Welcome to the Olympic League." : `You reached ${r.title}, gem level ${r.level} of 8.`, xp: 0 });
       msShowBoard = true;
     }
-    if (msShowBoard && !msBusy && !msQueue.length) { msShowBoard = false; showBoardPopup(); }
+    if (msShowBoard && !msBusy && !msQueue.length) { msShowBoard = false; if (!plainView()) showBoardPopup(); }
     seenStore.set("ms-count", badgeCount); seenStore.set("badges", earned); seenStore.set("level", r.level);
   }
   function notifyVisits() {
@@ -2194,7 +2210,7 @@
       numbersForm($("#done-form"), r.workout, "How hard was that?");
     }
     renderStats(); renderActivity(); renderNotes(); renderCalendar(); renderPerf(); renderMyPlans();
-    loadRewards(true);
+    loadRewards(true, "Workout saved");
     document.dispatchEvent(new CustomEvent("mdfit:workout", { detail: r.workout }));
   }
   $("#p-body").addEventListener("click", (e) => { if (e.target.closest("#done-retry")) saveFinished(P.fin); });
@@ -3899,7 +3915,8 @@
       </li>`).join("");
   }
   // celebrate = compare with the previous totals and announce XP and new badges
-  async function loadRewards(celebrate = false) {
+  // what: said in place of "+N XP" in Simple view ("Workout saved")
+  async function loadRewards(celebrate = false, what = "") {
     try {
       const prev = reward, next = await apiAuth("GET", "/api/me/rewards");
       reward = next; loadBoard(); notifyRewards(next); renderRewards();
@@ -3907,7 +3924,7 @@
       if (!celebrate || !prev) return;
       const gained = next.xp - prev.xp, newBadges = next.badges.filter((b) => b.earned && !prev.badges.find((x) => x.id === b.id).earned);
       const msgs = [];
-      if (gained > 0) msgs.push(`+${gained} XP`);
+      if (gained > 0) msgs.push(plainView() && what ? what : `+${gained} XP`);
       if (next.level > prev.level) msgs.push(`New gem! You're now ${next.title}`);
       newBadges.forEach((b) => msgs.push(`Badge unlocked: ${b.title}`));
       if (prev.todayXp < prev.dailyGoal && next.todayXp >= next.dailyGoal) msgs.push("Daily goal reached!");
@@ -3955,6 +3972,7 @@
   document.addEventListener("visibilitychange", () => { if (!document.hidden) welcomeBack(); });
   function celebrateToast(msgs) {
     const t = $("#toast");
+    msgs = msgs.map(plainMsg).filter(Boolean); if (!msgs.length) return;
     t.innerHTML = msgs.map((m, i) => `<div class="${i ? "" : "xp-gain"}">${esc(m)}</div>`).join("");
     t.hidden = false; t.classList.add("celebrate");
     clearTimeout(toast.t); toast.t = setTimeout(() => { t.hidden = true; t.classList.remove("celebrate"); }, 4200);
