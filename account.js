@@ -152,6 +152,7 @@
     if (!TABS.includes(tab)) tab = "home";
     if (tab === "pain" && sub === "muscle" && arg) setTimeout(() => openReport(arg, false), 0);
     else if (tab === "pain" && sub === "track" && arg) setTimeout(() => openTrack(arg), 0);
+    else if (tab === "videos" && sub === "watch" && arg) setTimeout(() => { const x = byId.get(arg); if (x) playVideo(x.id, x.name, exMeta(x)); history.replaceState(null, "", "#videos"); }, 0); // a video someone sent or shared
     else if (tab === "pain" && !$("#muscle-report").hidden) setMode(reportFrom);
     $$("[data-view]").forEach((v) => (v.hidden = v.dataset.view !== tab));
     $$(".tabbar [data-tab]").forEach((b) => (b.dataset.tab === tab ? b.setAttribute("aria-current", "page") : b.removeAttribute("aria-current")));
@@ -261,6 +262,7 @@
     // Nothing unconfirmed ever reaches the player: a line of text beats a dialog that spins and then fails.
     if (!offered(id)) return toast("That video isn't available yet. Dr. Jared is still uploading it.");
     earn("video", id);
+    vd.dataset.vid = byId.get(id) ? id : ""; { const sb = $("#vd-share"); if (sb) { sb.hidden = !byId.get(id); sb.dataset.shareId = id; sb.dataset.shareTitle = title; } }
     $("#vd-title").textContent = title;
     $("#vd-meta").textContent = meta;
     const box = $("#vd-box"), f = $("#vd-frame"), v = warmVideo(id, "auto");
@@ -998,7 +1000,7 @@
           : `<p>How strong is it right now? <span class="muted">0 is none, 10 is the worst.</span></p><div class="tk-nums">${Array.from({ length: 11 }, (_, n) => `<button type="button" data-track-pain="${n}">${n}</button>`).join("")}</div>`}</div>
       </section>`;
     TK.open(t.id, { autoplay: false, startLabel: done ? "Start today's session" : `Start ${step} 1`, onStart: () => startPlayer(trackWorkout(t)), lead,
-      extra: `<button type="button" class="tk-add${mine ? " on" : ""}" data-track-add="${esc(t.id)}"${done ? " disabled" : ""}>${mine ? "On my road ✓" : "Add to my road"}</button>` });
+      extra: `<button type="button" class="tk-add${mine ? " on" : ""}" data-track-add="${esc(t.id)}"${done ? " disabled" : ""}>${mine ? "On my road ✓" : "Add to my road"}</button><button type="button" class="tk-add share-lib" data-share-lib="track" data-share-id="${esc(t.id)}" data-share-title="${esc(t.title)}">Share</button>` });
     const dlg = document.querySelector("dialog.tk-dialog");
     if (dlg && !dlg.dataset.app) { dlg.dataset.app = "1"; dlg.addEventListener("close", () => { if (/^#pain\/track\//.test(location.hash)) history.replaceState(null, "", "#pain"); }); }
   }
@@ -3753,7 +3755,8 @@
     $("#tip-article").innerHTML = `
       <a class="ta-back" href="#tips"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.4 7.4 14 6l-6 6 6 6 1.4-1.4L10.8 12z"/></svg>All health tips</a>
       <article class="ta">
-        <header class="ta-head">${hero}<div class="ta-head-text"><span class="ta-area">${esc(r.area)}</span><h1>${esc(r.title)}</h1><p>${esc(r.body)}</p></div></header>
+        <header class="ta-head">${hero}<div class="ta-head-text"><span class="ta-area">${esc(r.area)}</span><h1>${esc(r.title)}</h1><p>${esc(r.body)}</p>
+          <button type="button" class="btn-ghost sm share-lib" data-share-lib="page" data-share-id="${esc(r.id)}" data-share-title="${esc(r.title)}"><svg viewBox="0 0 24 24" aria-hidden="true" class="ic-line"><path d="M12 15V3"/><path d="m7 8 5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg> Share</button></div></header>
         <div class="ta-body">${(r.sections || []).map(tipBlock).join("")}</div>
         <footer class="ta-foot">
           ${r.image ? `<a class="ta-poster-link" href="${driveImg(r.image, 2400)}" target="_blank" rel="noopener" data-tipimg="${esc(r.image)}" data-tipcap="${esc(r.title)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm0 16H5V5h14zm-5-7-3 4-2-3-3 4h12z"/></svg>View original poster</a>` : ""}
@@ -4243,6 +4246,7 @@
   // Always the live site, never a preview host, so the link works for whoever it is sent to.
   document.addEventListener("click", async (e) => {
     const b = e.target.closest("[data-share-lib]"); if (!b) return;
+    if (window.MDFitSend) return; // account-send.js: one sheet for "send to a member" and "share a link"
     const kind = b.dataset.shareLib === "muscle" ? "m" : "p", id = b.dataset.shareId, title = b.dataset.shareTitle || "MD Fit";
     if (!id) return;
     const code = client && client.referralCode ? String(client.referralCode) : "";

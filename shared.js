@@ -151,6 +151,7 @@
   // ---- Library programs and pain-tool protocols (?p= / ?m=)
   const Q = new URLSearchParams(location.search);
   const PROG = (Q.get("p") || "").trim(), MUSC = (Q.get("m") || "").trim();
+  const VID = (Q.get("v") || "").trim(), TIP = (Q.get("t") || "").trim(), TRK = (Q.get("k") || "").trim();
   const ID_RE = /^[a-z0-9][a-z0-9-]{0,63}$/;
   const loadScript = (src) => new Promise((ok, no) => { const t = document.createElement("script"); t.src = src; t.onload = ok; t.onerror = no; document.head.appendChild(t); });
   const getJson = async (url) => { const r = await fetch(url, { cache: "no-cache" }); if (!r.ok) throw Object.assign(new Error("Not found"), { status: r.status }); return r.json(); };
@@ -220,7 +221,49 @@
     renderOpen("pain/muscle/" + MUSC, "protocol");
   }
 
+  // ---- A video, a health or nutrition guide, a pain track (?v= / ?t= / ?k=): the same kind of preview
+  function startVideo() {
+    const e = (window.MDFIT_EXERCISES || []).find((x) => x.id === VID);
+    if (!e) throw new Error("This video isn't available anymore.");
+    document.title = `${e.name} | MD Fit`;
+    $("#state").innerHTML = `<section class="card"><p class="kicker">Dr. Jared's video</p><h1>${esc(e.name)}</h1>
+      <ul class="facts">${[e.region, e.cat, e.level ? `Level ${e.level}` : ""].filter(Boolean).map((f) => `<li>${esc(f)}</li>`).join("")}</ul>
+      <p class="note">Dr. Jared shows the movement step by step. Watch it free in the MD Fit app.</p></section>`;
+    renderOpen("videos/watch/" + e.id, "video");
+  }
+  async function startTip() {
+    const d = await getJson(API + "/api/content");
+    const r = ((d && d.recommendations) || []).find((x) => x && x.id === TIP);
+    if (!r) throw new Error("This guide isn't available anymore.");
+    document.title = `${r.title} | MD Fit`;
+    const heads = (r.sections || []).map((s) => s && (s.title || s.heading)).filter(Boolean).slice(0, 12);
+    $("#state").innerHTML = `<section class="card"><p class="kicker">Dr. Jared's guide${r.area ? " · " + esc(r.area) : ""}</p><h1>${esc(r.title)}</h1>
+      ${r.body ? `<p class="by">${esc(r.body)}</p>` : ""}
+      ${heads.length ? `<h2 class="block">Inside</h2>${exList(heads.map((h) => ({ name: h, dose: "" })))}` : ""}
+      <p class="note">General guidance, not personal medical advice.</p></section>`;
+    renderOpen("tips/" + r.id, "guide");
+  }
+  async function startTrack() {
+    await loadScript("/paintracks.js");
+    try { await window.MDFitTracks.ready; } catch {}
+    const t = ((window.MDFitTracks || {}).TRACKS || []).find((x) => x.id === TRK);
+    if (!t) throw new Error("This pain track isn't available anymore.");
+    document.title = `${t.title} | MD Fit`;
+    $("#state").innerHTML = `<section class="card"><p class="kicker">Dr. Jared's pain track · ${esc(t.region)}</p><h1>${esc(t.title)}</h1>
+      ${t.note ? `<p class="by">${esc(t.note)}</p>` : ""}
+      <ul class="facts"><li>${t.levels.length} level${t.levels.length === 1 ? "" : "s"}</li><li>About 15 minutes a session</li></ul>
+      ${t.levels.map((l) => `<h2 class="block">${esc(l.title)}</h2>${exList(l.videos.filter((v) => v && v.name).map((v) => ({ name: v.name, dose: "" })))}`).join("")}
+      <p class="note">Educational, not a diagnosis. If pain is severe, getting worse or comes with numbness or weakness, book an evaluation.</p></section>`;
+    renderOpen("pain/track/" + t.id, "pain track");
+  }
+
   async function start() {
+    if (VID || TIP || TRK) {
+      if (!(VID ? /^[A-Za-z0-9_-]{6,64}$/.test(VID) : ID_RE.test(TIP || TRK))) { gone("This link is incomplete. Ask for it again."); return; }
+      try { await (VID ? startVideo() : TIP ? startTip() : startTrack()); }
+      catch (e) { gone(e && e.status ? "Couldn't load this right now. Please try again." : (e && e.message) || "Couldn't load this right now. Please try again."); }
+      return;
+    }
     if (PROG || MUSC) {
       const id = PROG || MUSC;
       if (!ID_RE.test(id)) { gone("This link is incomplete. Ask for it again."); return; }
