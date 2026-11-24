@@ -675,3 +675,17 @@
 .sh-link-list .btn-ghost svg { width: 17px; height: 17px; }
 .sh-stop { min-height: 44px; border: 0; background: none; cursor: pointer; color: var(--err); font-weight: 600; }
 .sh-stop:disabled { opacity: .45; cursor: not-allowed; }
+
+/* Send or share anything (account-send.js) */
+.send-what { display: grid; gap: 2px; margin: 0 0 6px; }
+.send-h { font-size: 13px; font-weight: 700; margin: 12px 0 6px; }
+.send-sheet input[type=search] { width: 100%; }
+.send-members { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 6px; max-height: 34vh; overflow: auto; }
+.send-members li { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 10px; border: 1px solid var(--line, #d8dee8); border-radius: 10px; }
+.send-members li span { display: inline-flex; align-items: center; gap: 6px; min-width: 0; }
+.send-members .btn-blue, .send-link .btn-ghost, .send-acts .btn-blue { width: auto; flex: none; }
+.send-acts { display: inline-flex; align-items: center; gap: 4px; flex: none; }
+.send-sent { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 14px; }
+.send-sent li { display: flex; justify-content: space-between; gap: 10px; }
+.send-st { color: var(--muted); flex: none; }
+.send-st.started, .send-st.opened { color: #2e7d4f; font-weight: 600; }
