@@ -10,7 +10,8 @@
 // Profile → Reminders from Solomon has the switch that keeps him quiet until tapped (kept on the device).
 //
 // The daily Bible verse (owner, Nov 2026): his first greeting of the day carries one verse, quoted exactly from the
-// World English Bible (public domain), the same verse for everyone that day. It is on unless the member turns it off
+// World English Bible, British Edition (public domain; the edition that prints "the LORD" where the standard one prints
+// "Yahweh": owner's choice), the same verse for everyone that day. It is on unless the member turns it off
 // in the More menu ("Daily Bible verse"); the choice is kept on the device and on the account (prefs.verse).
 // His own sayings below are still his own and quote nothing.
 (() => {
@@ -18,36 +19,35 @@
   const QUIET = "mdfit-solomon-quiet", AGAIN = 10 * 60 * 1000;
   const quiet = () => { try { return localStorage.getItem(QUIET) === "1"; } catch { return false; } };
   const s = (n) => (n === 1 ? "" : "s");
-  // ---- The daily Bible verse. Text exactly as the World English Bible has it; [text, reference].
+  // ---- The daily Bible verse. Text exactly as the World English Bible (British Edition) has it; [text, reference].
   const VERSES = [
-    ["But those who wait for Yahweh will renew their strength. They will mount up with wings like eagles. They will run, and not be weary. They will walk, and not faint.", "Isaiah 40:31"],
-    ["I can do all things through Christ, who strengthens me.", "Philippians 4:13"],
-    ["Trust in Yahweh with all your heart, and don’t lean on your own understanding. In all your ways acknowledge him, and he will make your paths straight.", "Proverbs 3:5-6"],
+    ["but those who wait for the LORD will renew their strength. They will mount up with wings like eagles. They will run, and not be weary. They will walk, and not faint.", "Isaiah 40:31"],
+    ["I can do all things through Christ who strengthens me.", "Philippians 4:13"],
+    ["Trust in the LORD with all your heart, and don’t lean on your own understanding. In all your ways acknowledge him, and he will make your paths straight.", "Proverbs 3:5-6"],
     ["God is our refuge and strength, a very present help in trouble.", "Psalm 46:1"],
     ["Don’t you be afraid, for I am with you. Don’t be dismayed, for I am your God. I will strengthen you. Yes, I will help you. Yes, I will uphold you with the right hand of my righteousness.", "Isaiah 41:10"],
     ["For God didn’t give us a spirit of fear, but of power, love, and self-control.", "2 Timothy 1:7"],
-    ["Yahweh is my strength and my shield. My heart has trusted in him, and I am helped. Therefore my heart greatly rejoices. With my song I will thank him.", "Psalm 28:7"],
-    ["Let us not be weary in doing good, for we will reap in due season, if we don’t give up.", "Galatians 6:9"],
+    ["The LORD is my strength and my shield. My heart has trusted in him, and I am helped. Therefore my heart greatly rejoices. With my song I will thank him.", "Psalm 28:7"],
+    ["Let’s not be weary in doing good, for we will reap in due season if we don’t give up.", "Galatians 6:9"],
     ["A cheerful heart makes good medicine, but a crushed spirit dries up the bones.", "Proverbs 17:22"],
-    ["This is the day that Yahweh has made. We will rejoice and be glad in it!", "Psalm 118:24"],
-    ["I will lift up my eyes to the hills. Where does my help come from? My help comes from Yahweh, who made heaven and earth.", "Psalm 121:1-2"],
-    ["Commit your deeds to Yahweh, and your plans shall succeed.", "Proverbs 16:3"],
+    ["This is the day that the LORD has made. We will rejoice and be glad in it!", "Psalm 118:24"],
+    ["I will lift up my eyes to the hills. Where does my help come from? My help comes from the LORD, who made heaven and earth.", "Psalm 121:1-2"],
+    ["Commit your deeds to the LORD, and your plans shall succeed.", "Proverbs 16:3"],
     ["He heals the broken in heart, and binds up their wounds.", "Psalm 147:3"],
-    ["We know that all things work together for good for those who love God, to those who are called according to his purpose.", "Romans 8:28"],
-    ["Yahweh is near to those who have a broken heart, and saves those who have a crushed spirit.", "Psalm 34:18"],
-    ["It is because of Yahweh’s loving kindnesses that we are not consumed, because his compassion doesn’t fail. They are new every morning. Great is your faithfulness.", "Lamentations 3:22-23"],
-    ["Blessed is the man who endures temptation, for when he has been approved, he will receive the crown of life, which the Lord promised to those who love him.", "James 1:12"],
+    ["We know that all things work together for good for those who love God, for those who are called according to his purpose.", "Romans 8:28"],
+    ["The LORD is near to those who have a broken heart, and saves those who have a crushed spirit.", "Psalm 34:18"],
+    ["Blessed is a person who endures temptation, for when he has been approved, he will receive the crown of life which the Lord promised to those who love him.", "James 1:12"],
     ["My flesh and my heart fails, but God is the strength of my heart and my portion forever.", "Psalm 73:26"],
     ["He gives power to the weak. He increases the strength of him who has no might.", "Isaiah 40:29"],
     ["Beloved, I pray that you may prosper in all things and be healthy, even as your soul prospers.", "3 John 1:2"],
     ["Keep your heart with all diligence, for out of it is the wellspring of life.", "Proverbs 4:23"],
-    ["Cast your burden on Yahweh, and he will sustain you. He will never allow the righteous to be moved.", "Psalm 55:22"],
+    ["Cast your burden on the LORD and he will sustain you. He will never allow the righteous to be moved.", "Psalm 55:22"],
     ["He has said to me, “My grace is sufficient for you, for my power is made perfect in weakness.” Most gladly therefore I will rather glory in my weaknesses, that the power of Christ may rest on me.", "2 Corinthians 12:9"],
-    ["I have set Yahweh always before me. Because he is at my right hand, I shall not be moved.", "Psalm 16:8"],
-    ["Don’t you know that those who run in a race all run, but one receives the prize? Run like that, that you may win.", "1 Corinthians 9:24"],
-    ["Yahweh is my light and my salvation. Whom shall I fear? Yahweh is the strength of my life. Of whom shall I be afraid?", "Psalm 27:1"],
-    ["Now may the God of hope fill you with all joy and peace in believing, that you may abound in hope, in the power of the Holy Spirit.", "Romans 15:13"],
-    ["Yahweh my God, I cried to you, and you have healed me.", "Psalm 30:2"]
+    ["I have set the LORD always before me. Because he is at my right hand, I shall not be moved.", "Psalm 16:8"],
+    ["Don’t you know that those who run in a race all run, but one receives the prize? Run like that, so that you may win.", "1 Corinthians 9:24"],
+    ["The LORD is my light and my salvation. Whom shall I fear? The LORD is the strength of my life. Of whom shall I be afraid?", "Psalm 27:1"],
+    ["Now may the God of hope fill you with all joy and peace in believing, that you may abound in hope in the power of the Holy Spirit.", "Romans 15:13"],
+    ["LORD my God, I cried to you, and you have healed me.", "Psalm 30:2"]
   ];
   const VERSE_KEY = "mdfit_verse";
   let verseOn = (() => { try { return localStorage.getItem(VERSE_KEY) !== "off"; } catch { return true; } })();
