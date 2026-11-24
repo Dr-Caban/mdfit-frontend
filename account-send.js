@@ -20,6 +20,10 @@
   const refCode = () => { try { const c = (M.auth.get() || {}).client; return (c && c.referralCode) || ""; } catch { return ""; } };
   const linkFor = (it) => `${SITE}/shared?${PARAM[it.kind]}=${encodeURIComponent(it.ref)}${refCode() ? `&ref=${encodeURIComponent(refCode())}` : ""}`;
   let members = null, box = { inbox: [], sent: [] }, cur = null;
+  // The server names videos, programs and guides itself; a pain track or protocol is named here from its id, so no
+  // words of the sender's ever reach another member.
+  const nameOf = (s) => s.title || (s.kind === "track" ? (((window.MDFitTracks || {}).TRACKS || []).find((t) => t.id === s.ref) || {}).title
+    : s.kind === "protocol" ? ((((window.MDFitMuscles || {}).MUSCLES || {})[s.ref] || {}).name ? `${window.MDFitMuscles.MUSCLES[s.ref].name} protocol` : "") : "") || KIND[s.kind] || "From MD Fit";
 
   // ---- The sheet ------------------------------------------------------------------------------------------------
   const dlg = document.createElement("dialog");
@@ -56,7 +60,7 @@
     const to = e.target.closest("[data-send-to]");
     if (to && cur) {
       to.disabled = true;
-      try { await apiAuth("POST", "/api/me/sends", { toId: to.dataset.sendTo, kind: cur.kind, ref: cur.ref, title: cur.title }); to.textContent = "Sent ✓"; A.toast(`Sent to ${to.dataset.name}.`); load(); }
+      try { await apiAuth("POST", "/api/me/sends", { toId: to.dataset.sendTo, kind: cur.kind, ref: cur.ref }); to.textContent = "Sent ✓"; A.toast(`Sent to ${to.dataset.name}.`); load(); }
       catch (err) { to.disabled = false; msg.textContent = err.message; }
       return;
     }
@@ -85,10 +89,10 @@
     card.hidden = !(inbox.length || sent.length);
     if (card.hidden) return;
     card.innerHTML = (inbox.length ? `<div class="card-head"><span class="label accent">Sent to you</span></div>
-      <ul class="coach-list">${inbox.map((s) => `<li data-send="${esc(s.id)}"><div><span class="coach-kind">${esc(KIND[s.kind] || "")}</span><b>${esc(s.title)}</b><span class="muted small">From ${esc(s.from)}${s.status === "started" ? " · started ✓" : ""}</span></div>
-        <span class="send-acts"><button type="button" class="btn-blue sm" data-send-open>Open</button><button type="button" class="icon-btn" data-send-x aria-label="Remove ${esc(s.title)}"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></button></span></li>`).join("")}</ul>` : "")
+      <ul class="coach-list">${inbox.map((s) => `<li data-send="${esc(s.id)}"><div><span class="coach-kind">${esc(KIND[s.kind] || "")}</span><b>${esc(nameOf(s))}</b><span class="muted small">From ${esc(s.from)}${s.status === "started" ? " · started ✓" : ""}</span></div>
+        <span class="send-acts"><button type="button" class="btn-blue sm" data-send-open>Open</button><button type="button" class="icon-btn" data-send-x aria-label="Remove ${esc(nameOf(s))}"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></button></span></li>`).join("")}</ul>` : "")
       + (sent.length ? `<div class="card-head"${inbox.length ? ' style="margin-top:12px"' : ""}><span class="label">You sent</span></div>
-      <ul class="send-sent">${sent.map((s) => `<li><span><b>${esc(s.title)}</b> → ${esc(s.to)}</span><span class="send-st ${esc(s.status)}">${esc(STATUS[s.status] || s.status)}</span></li>`).join("")}</ul>` : "");
+      <ul class="send-sent">${sent.map((s) => `<li><span><b>${esc(nameOf(s))}</b> → ${esc(s.to)}</span><span class="send-st ${esc(s.status)}">${esc(STATUS[s.status] || s.status)}</span></li>`).join("")}</ul>` : "");
   }
   card.addEventListener("click", async (e) => {
     const li = e.target.closest("[data-send]"); if (!li) return;
