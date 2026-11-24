@@ -1624,7 +1624,8 @@
       const note = prompt(`Add "${x.title}" to ${first}'s program. Optional note for ${first}:`, "");
       if (note === null) return;
       const items = (c.assignedPain || []).filter((y) => !(y.kind === el.dataset.kind && y.id === el.dataset.id)).map(({ kind, id, note: n }) => ({ kind, id, note: n }));
-      await savePain([...items, { kind: el.dataset.kind, id: el.dataset.id, note }]); toast(`Added to ${first}'s program.`);
+      // The name goes with it: the server puts it in the email and the push the client gets
+      await savePain([...items, { kind: el.dataset.kind, id: el.dataset.id, note, title: x.title }]); toast(`Added to ${first}'s program. ${first} gets an email.`);
     },
     // Remove from the client's dashboard: the prescription (if any) and, for a track, its place on their road.
     // Sessions they already did stay in their history.
