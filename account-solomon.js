@@ -8,11 +8,86 @@
 // On the first opening of a day he welcomes them first: by how long they were away and whether it is earlier or later
 // than they usually train (two numbers the server works out from dates and hours; nothing from their record).
 // Profile → Reminders from Solomon has the switch that keeps him quiet until tapped (kept on the device).
+//
+// The daily Bible verse (owner, Nov 2026): his first greeting of the day carries one verse, quoted exactly from the
+// World English Bible (public domain), the same verse for everyone that day. It is on unless the member turns it off
+// in the More menu ("Daily Bible verse"); the choice is kept on the device and on the account (prefs.verse).
+// His own sayings below are still his own and quote nothing.
 (() => {
   const A = window.MDFitApp, G = window.MDFitGuide; if (!A || !G || !G.say || !A.nextUp) return;
   const QUIET = "mdfit-solomon-quiet", AGAIN = 10 * 60 * 1000;
   const quiet = () => { try { return localStorage.getItem(QUIET) === "1"; } catch { return false; } };
   const s = (n) => (n === 1 ? "" : "s");
+  // ---- The daily Bible verse. Text exactly as the World English Bible has it; [text, reference].
+  const VERSES = [
+    ["But those who wait for Yahweh will renew their strength. They will mount up with wings like eagles. They will run, and not be weary. They will walk, and not faint.", "Isaiah 40:31"],
+    ["I can do all things through Christ, who strengthens me.", "Philippians 4:13"],
+    ["Trust in Yahweh with all your heart, and don’t lean on your own understanding. In all your ways acknowledge him, and he will make your paths straight.", "Proverbs 3:5-6"],
+    ["God is our refuge and strength, a very present help in trouble.", "Psalm 46:1"],
+    ["Don’t you be afraid, for I am with you. Don’t be dismayed, for I am your God. I will strengthen you. Yes, I will help you. Yes, I will uphold you with the right hand of my righteousness.", "Isaiah 41:10"],
+    ["For God didn’t give us a spirit of fear, but of power, love, and self-control.", "2 Timothy 1:7"],
+    ["Yahweh is my strength and my shield. My heart has trusted in him, and I am helped. Therefore my heart greatly rejoices. With my song I will thank him.", "Psalm 28:7"],
+    ["Let us not be weary in doing good, for we will reap in due season, if we don’t give up.", "Galatians 6:9"],
+    ["A cheerful heart makes good medicine, but a crushed spirit dries up the bones.", "Proverbs 17:22"],
+    ["This is the day that Yahweh has made. We will rejoice and be glad in it!", "Psalm 118:24"],
+    ["I will lift up my eyes to the hills. Where does my help come from? My help comes from Yahweh, who made heaven and earth.", "Psalm 121:1-2"],
+    ["Commit your deeds to Yahweh, and your plans shall succeed.", "Proverbs 16:3"],
+    ["He heals the broken in heart, and binds up their wounds.", "Psalm 147:3"],
+    ["We know that all things work together for good for those who love God, to those who are called according to his purpose.", "Romans 8:28"],
+    ["Yahweh is near to those who have a broken heart, and saves those who have a crushed spirit.", "Psalm 34:18"],
+    ["It is because of Yahweh’s loving kindnesses that we are not consumed, because his compassion doesn’t fail. They are new every morning. Great is your faithfulness.", "Lamentations 3:22-23"],
+    ["Blessed is the man who endures temptation, for when he has been approved, he will receive the crown of life, which the Lord promised to those who love him.", "James 1:12"],
+    ["My flesh and my heart fails, but God is the strength of my heart and my portion forever.", "Psalm 73:26"],
+    ["He gives power to the weak. He increases the strength of him who has no might.", "Isaiah 40:29"],
+    ["Beloved, I pray that you may prosper in all things and be healthy, even as your soul prospers.", "3 John 1:2"],
+    ["Keep your heart with all diligence, for out of it is the wellspring of life.", "Proverbs 4:23"],
+    ["Cast your burden on Yahweh, and he will sustain you. He will never allow the righteous to be moved.", "Psalm 55:22"],
+    ["He has said to me, “My grace is sufficient for you, for my power is made perfect in weakness.” Most gladly therefore I will rather glory in my weaknesses, that the power of Christ may rest on me.", "2 Corinthians 12:9"],
+    ["I have set Yahweh always before me. Because he is at my right hand, I shall not be moved.", "Psalm 16:8"],
+    ["Don’t you know that those who run in a race all run, but one receives the prize? Run like that, that you may win.", "1 Corinthians 9:24"],
+    ["Yahweh is my light and my salvation. Whom shall I fear? Yahweh is the strength of my life. Of whom shall I be afraid?", "Psalm 27:1"],
+    ["Now may the God of hope fill you with all joy and peace in believing, that you may abound in hope, in the power of the Holy Spirit.", "Romans 15:13"],
+    ["Yahweh my God, I cried to you, and you have healed me.", "Psalm 30:2"]
+  ];
+  const VERSE_KEY = "mdfit_verse";
+  let verseOn = (() => { try { return localStorage.getItem(VERSE_KEY) !== "off"; } catch { return true; } })();
+  const verseToday = () => VERSES[Math.floor(Date.now() / 864e5) % VERSES.length];
+  const verseLine = () => { const v = verseToday(); return `“${v[0]}” ${v[1]}`; };
+  // The day a verse was last shown on this device: a member who already had today's greeting before the verse existed
+  // (or before they turned it on) still gets today's verse the next time the app opens, once.
+  const VERSE_SEEN = "mdfit_verse_seen", dayNow = () => (A.today ? A.today() : new Date().toISOString().slice(0, 10));
+  const verseSeen = () => { try { return localStorage.getItem(VERSE_SEEN) === dayNow(); } catch { return true; } };
+  const verseShown = () => { try { localStorage.setItem(VERSE_SEEN, dayNow()); } catch {} };
+  const VERSE_IC = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h11a2 2 0 0 1 2 2v16a1 1 0 0 1-1 1H7a3 3 0 0 1-3-3V4a2 2 0 0 1 2-2zm0 15a1 1 0 0 0 0 2h11v-2zM11 5v2H9v2h2v5h2V9h2V7h-2V5z"/></svg>';
+  function verseRow() {
+    const list = document.getElementById("more-list"); if (!list) return;
+    let b = document.getElementById("more-verse");
+    if (!b) { b = document.createElement("button"); b.type = "button"; b.id = "more-verse"; b.setAttribute("role", "switch"); (list.querySelector(".more-sep:last-of-type") || list.lastElementChild || list).before(b);
+      b.addEventListener("click", () => setVerse(!verseOn)); }
+    b.setAttribute("aria-checked", String(verseOn));
+    b.innerHTML = `${VERSE_IC}<span>Daily Bible verse</span><em class="more-onoff">${verseOn ? "On" : "Off"}</em>`;
+  }
+  // A choice the account has not been told yet (offline, or the request failed) is kept and sent on the next open,
+  // and the account's older answer never overwrites it meanwhile (the same rule as the looks in app-theme.js).
+  const VERSE_UNSENT = "mdfit_verse_unsent";
+  let versePicks = 0;
+  const verseUnsent = () => { try { return localStorage.getItem(VERSE_UNSENT) === "1"; } catch { return false; } };
+  function sendVerse() {
+    const want = verseOn; try { localStorage.setItem(VERSE_UNSENT, "1"); } catch {}
+    try { window.MDFit.apiAuth("PUT", "/api/me/prefs", { verse: want ? "on" : "off" }).then(() => { if (want === verseOn) { try { localStorage.removeItem(VERSE_UNSENT); } catch {} } }).catch(() => {}); } catch {}
+  }
+  function setVerse(on, fromAccount) {
+    verseOn = !!on; try { localStorage.setItem(VERSE_KEY, verseOn ? "on" : "off"); } catch {}
+    verseRow();
+    if (fromAccount) return;
+    versePicks++; sendVerse();
+    A.toast(verseOn ? "Daily Bible verse is on. Solomon greets you with one each day." : "Daily Bible verse is off.");
+    if (verseOn) { const ms = document.getElementById("more-sheet"); if (ms && ms.open) ms.close(); const t = `Today's verse: ${verseLine()}`; setTimeout(() => { if (G.say(t, { ms: Math.min(18000, 3500 + t.length * 55) })) verseShown(); }, 400); }
+  }
+  verseRow();
+  // another device may have changed it: the account's choice wins when this device has none of its own to send
+  if (verseUnsent()) sendVerse();
+  else try { const asked = versePicks; window.MDFit.apiAuth("GET", "/api/me/guide").then((g) => { if (verseUnsent() || versePicks !== asked) return; /* a tap made while this was on its way is newer */ const v = g && g.prefs && g.prefs.verse; if ((v === "on" || v === "off") && (v === "on") !== verseOn) setVerse(v === "on", true); }).catch(() => {}); } catch {}
   // Solomon's own sayings (written for the app, in the manner of old proverbs; none is a quotation)
   const SAYINGS = ["The patient miner finds the brighter stone.", "Small steps, well kept, move mountains.", "What you build daily, no one can take.",
     "Strength is gathered, not found.", "A steady hand outlasts a strong one.", "The lamp you tend lights the whole road.", "Dig a little each day and the mountain yields."];
@@ -70,7 +145,10 @@
     const k = d.firstEver ? "first" : away >= 30 ? "back30" : away >= 14 ? "back14" : away >= 7 ? "back7" : away >= 3 ? "back3" : away === 2 ? "missed"
       : u !== null && h !== null && h <= u - 2 ? "early" : u !== null && h !== null && h >= u + 3 ? "late" : "daily";
     const set = (plain() && HELLO_PLAIN[k]) || HELLO[k], first = A.guideFacts().first || "friend";
-    return set[Math.floor(Date.now() / 864e5) % set.length].replace(/\{first\}/g, first).replace(/\{n\}/g, String(away));
+    const hi = set[Math.floor(Date.now() / 864e5) % set.length].replace(/\{first\}/g, first).replace(/\{n\}/g, String(away));
+    // With the daily verse on, the greeting is short and the verse follows it (the first-ever welcome stays whole)
+    if (!verseOn) return hi;
+    return `${d.firstEver ? hi : `Welcome back, ${first} 🤗`} ${verseLine()}`;
   }
 
   // The lines for one screen, most useful first. Each is { t: what he says, act: what a tap on it does }.
@@ -138,7 +216,8 @@
     // Praise that was earned comes before anything else
     if (cheer) { const c = cheer; cheer = ""; if (G.say(c, { ms: 7000 })) { timer = setTimeout(() => speakFor(view), 9500); return; } }
     // The day's welcome comes first, then what this screen has to say
-    if (hello) { const h = hello; hello = ""; if (G.say(h, { ms: 8000 })) { timer = setTimeout(() => speakFor(view), 10500); return; } }
+    if (hello) { const h = hello; hello = ""; const ms = Math.min(18000, Math.max(8000, 3500 + h.length * 55)); // a verse takes longer to read than a hello
+      if (G.say(h, { ms })) { if (h.includes("“")) verseShown(); timer = setTimeout(() => speakFor(view), ms + 2500); return; } }
     // The first opening of a new week: last week's numbers are ready, once, for anyone who has a week to hear about
     if (weekDue && view === "home") { weekDue = false;
       try { const f = A.weekFacts(), mon = f.weeks[3].from, worth = f.any && (f.weeks[2].sessions || f.weeks[2].checkins || f.weeks[1].sessions);
@@ -160,6 +239,8 @@
   // The first opening of the day (account.js welcomeBack): he greets them above the cloud, and the chat opens with the same words
   document.addEventListener("mdfit:arrive", (e) => { try { hello = greetingFor(e.detail || {}); } catch { hello = ""; } if (G.greeting) G.greeting(hello); weekDue = true; arrive(A.view(), 4000); });
   // First words: once the app has its data and the welcome toast has had its moment
+  // No verse yet today (the day's greeting already went by without one): he gives it now, ahead of his other lines
+  if (verseOn && !verseSeen() && !hello) hello = `Today's verse: ${verseLine()}`;
   arrive(A.view(), 4200);
 
   // Profile → Reminders from Solomon: speaks up, or quiet until tapped

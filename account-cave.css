@@ -186,3 +186,6 @@ html[data-home-view="simple"] #repair-chip, html[data-home-view="simple"] #repai
 html[data-layout="compact"] .sv-card .sv { padding: 10px 12px; }
 html[data-layout="compact"] .sv-list li, html[data-layout="compact"] .sv-row { min-height: 40px; }
 html[data-home-view="simple"] .hb-pts { display: none; }
+/* More menu: the Daily Bible verse switch (account-solomon.js) */
+.more-list .more-onoff { margin-left: auto; font-style: normal; font-size: 13px; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: color-mix(in srgb, currentColor 12%, transparent); }
+.more-list [aria-checked="true"] .more-onoff { background: #2e7d4f; color: #fff; }

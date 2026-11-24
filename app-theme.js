@@ -31,6 +31,7 @@
   var cur = clean(saved);
   var chosenHere = !!saved;                    // this device already holds a choice
   var unsent = !!(saved && saved.synced === false); // ...that the account has not been told about yet
+  var picks = 0;                               // choices made in this page: an answer asked for before one is out of date
 
   function apply() {
     root.dataset.theme = cur.theme;
@@ -64,7 +65,7 @@
     if (next.layout !== undefined && LAYOUTS.indexOf(next.layout) < 0) want.layout = cur.layout;
     if (next.view !== undefined && VIEWS.indexOf(next.view) < 0) want.view = cur.view;
     if (same(want, cur)) { if (unsent) send(); return get(); } // nothing to change
-    cur = want; chosenHere = true; unsent = true;
+    cur = want; chosenHere = true; unsent = true; picks++;
     apply(); writeSaved(false);
     announce();
     send();
@@ -77,9 +78,11 @@
   function meetAccount() {
     if (!signedIn()) return;
     if (chosenHere && unsent) { send(); return; }
+    var asked = picks;
     try {
       window.MDFit.apiAuth("GET", "/api/me/guide").then(function (g) {
-        var p = g && g.prefs; if (!p || unsent) return;
+        // (a choice made while this was on its way, even one already sent and saved, is newer than this answer)
+        var p = g && g.prefs; if (!p || unsent || picks !== asked) return;
         var theirs = clean(p);
         if (THEMES.indexOf(p.theme) < 0 && LAYOUTS.indexOf(p.layout) < 0 && VIEWS.indexOf(p.view) < 0) return; // the account holds no choice yet
         if (VIEWS.indexOf(p.view) < 0) theirs.view = cur.view; // a server that doesn't know Home view yet: this device keeps its own
