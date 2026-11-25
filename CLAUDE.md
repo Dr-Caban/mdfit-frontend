@@ -16,6 +16,12 @@
   `/admin` (a rewrite in `vercel.json`) and `/workspace`. The earlier admin is `admin-classic.html` + `admin.js` at
   `/admin-classic`; it stays until every setting it holds has a screen in the workspace. Patients join video visits at
   `/visit` (`visit.html` + `visit.js`). Icons in the workspace are inline SVG only: no emoji or text glyphs.
+- **Monitoring: every member app (CMP) change follows `docs/MONITORING.md`** (owner, Nov 25, 2026). A shipped change
+  to the member app, in this repo or in `mdfit-backend`, is a "change" there: it restarts the 72-hour clock and puts the
+  scheduled review back in Phase A (every 6 hours). Right after the deploy, run that file's five review steps once
+  (Railway deployments, server log, request log, Vercel deployment, live check) and tell the owner what they showed.
+  Use its tables for what counts as a failure, and its "Do not" list: never sign in to production, never print a key
+  or a patient detail, never lower a safeguard to look at something.
 - Work on a branch → pull request → Vercel preview → merge. One session merges at a time. All keys live in
   Vercel/Railway. A session may set or change Railway/Vercel variables (CLI or MCP) only when the user asks for that
   change in the session: set exactly what was asked, never print, copy or log a key's value, take a secret's value only
