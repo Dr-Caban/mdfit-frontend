@@ -4,6 +4,10 @@
 - **SEO pages are generated.** Read `docs/SEO-PLAN.md` before touching anything under `/muscles`, `/pain`, `/activities`,
   the newer `/conditions/*` and `/blog/*`, or the six `*-sarasota.html` landing pages. Edit the data, run
   `node scripts/seo/build.js`, then `node scripts/seo/check.js`.
+- **Every SEO change is monitored.** Follow `docs/MONITORING.md`, "SEO changes": run its five-check gate before the
+  merge, and its post-deploy checks after. An SEO change that reaches production is a change under that protocol, so
+  the endpoint review returns to Phase A (every 6 hours) with the 72-hour clock restarted. An app, workspace, visit or
+  account screen that loses `noindex` is urgent, not an SEO problem.
 - Shared header: `node scripts/site-header.js`. After CSS/JS edits: `node scripts/version-assets.js`.
 - **Member app looks.** `app-theme.css` (black theme, compact layout) is generated: after changing `app/app.css`,
   `account.css` or `guides.css`, run `node scripts/theme/build.js`, then `version-assets.js`. Never edit it by hand;

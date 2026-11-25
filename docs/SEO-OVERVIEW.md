@@ -1,6 +1,6 @@
 # MD Fit — SEO overview of every public page
 
-Generated 2026-11-21 by `node scripts/seo/overview.js` from the files in this repo. 403 public pages, 403 in the sitemap.
+Generated 2026-11-25 by `node scripts/seo/overview.js` from the files in this repo. 403 public pages, 403 in the sitemap.
 
 ## By group
 

@@ -17,7 +17,10 @@
    every pain page; nothing clinical goes live without Dr. Jared's OK; work on a branch, open a PR, verify the Vercel
    preview, then merge; one Claude session merges at a time.
 5. Review count: change `data/google-reviews.json`, then `node scripts/seo/sync-review-count.js` (rewrites all pages).
-6. **The build must be idempotent.** Running `node scripts/seo/build.js` with no data change must produce no diff.
+6. **The build must be idempotent.** Running `node scripts/seo/build.js` with no data change must produce no diff in
+   any of the 423 generated pages. Three outputs still carry the build date and are the known exception:
+   `docs/SEO-OVERVIEW.md` (a dated report, fine), `data/search-index.json` (`version`, harmless) and `sitemap.xml`,
+   which rewrites all 359 `<lastmod>` values and should be changed to keep a page's date when its HTML has not changed.
    Nothing in a page may be derived from the date the build ran. In particular `lastReviewed` is published only when
    the data records a real sign-off date (`reviewedOn` on a page's JSON, or `{"approved":true,"on":"YYYY-MM-DD"}` in
    `data/seo/approved.json`); with no date on record a page carries `reviewedBy` and no `lastReviewed`. It previously
