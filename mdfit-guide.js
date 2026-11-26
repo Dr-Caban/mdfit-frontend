@@ -178,9 +178,12 @@
   // feelings (sleepy late at night); "" is his three dots. Nothing shows while the chat is open or he is put away.
   let emoT = 0, resting = "";
   const paintEmo = (name) => { [...btn.classList].forEach((c) => { if (c.startsWith("mg-emo")) btn.classList.remove(c); }); if (name && FACE[name]) { void btn.offsetWidth; btn.classList.add("mg-emo", "mg-emo-" + name); } };
-  function feel(name, ms) { if (!FACE[name] || !box.hidden || btn.classList.contains("mg-away")) return false; clearTimeout(emoT); paintEmo(name); emoT = setTimeout(() => paintEmo(resting), ms || 2100); return true; }
+  // (Full view only: in the Simple view he stays his three dots, with no faces, sounds or vibration)
+  const plainHome = () => document.documentElement.dataset.homeView === "simple";
+  document.addEventListener("mdfit:theme", () => { clearTimeout(emoT); paintEmo(plainHome() || !box.hidden ? "" : resting); });
+  function feel(name, ms) { if (!FACE[name] || plainHome() || !box.hidden || btn.classList.contains("mg-away")) return false; clearTimeout(emoT); paintEmo(name); emoT = setTimeout(() => paintEmo(resting), ms || 2100); return true; }
   const feeling = () => { const c = [...btn.classList].find((x) => x.startsWith("mg-emo-")); return c ? c.slice(7) : ""; };
-  function rest(name) { const was = resting; resting = FACE[name] ? name : ""; if (feeling() === was) { clearTimeout(emoT); paintEmo(box.hidden ? resting : ""); } }
+  function rest(name) { const was = resting; resting = FACE[name] ? name : ""; if (feeling() === was) { clearTimeout(emoT); paintEmo(box.hidden && !plainHome() ? resting : ""); } }
   function hush() { clearTimeout(sayT); tag.hidden = true; sayAct = null; btn.classList.remove("mg-talk"); }
   function speak(text, o) {
     o = o || {}; text = String(text || "").trim();
@@ -189,7 +192,7 @@
     tag.textContent = text; tag.setAttribute("aria-label", "Solomon says: " + text); tag.hidden = false;
     tag.classList.remove("mg-in"); void tag.offsetWidth; tag.classList.add("mg-in"); btn.classList.add("mg-talk");
     if (o.ms !== 0) sayT = setTimeout(hush, o.ms || Math.min(9500, 3600 + text.length * 60));
-    if (text.includes("“")) feel("peace", Math.min(9000, o.ms || 6000)); // a verse is said with his eyes closed
+    if (text.includes("“")) { const ms = Math.min(9000, o.ms || 6000); if (window.MDFitFx && window.MDFitFx.mood) window.MDFitFx.mood("peace", ms); else feel("peace", ms); } // a verse is said with his eyes closed
     return true;
   }
   tag.addEventListener("click", () => { const act = sayAct; hush(); if (act) { try { act(); } catch {} } else open(true); });
@@ -850,7 +853,7 @@
     load(); end(); fitKeyboard();
     if (byHand && !phone()) setTimeout(() => input.focus({ preventScroll: true }), 60); // on a phone the keyboard waits for a tap on the box
   }
-  function shut() { paintEmo(resting); box.hidden = true; scrim.hidden = true; box.style.bottom = ""; box.style.height = ""; btn.setAttribute("aria-expanded", "false"); document.documentElement.classList.remove("mg-open"); }
+  function shut() { paintEmo(plainHome() ? "" : resting); box.hidden = true; scrim.hidden = true; box.style.bottom = ""; box.style.height = ""; btn.setAttribute("aria-expanded", "false"); document.documentElement.classList.remove("mg-open"); }
   btn.addEventListener("click", () => (box.hidden ? open(true) : shut()));
   box.querySelector("#mg-x").addEventListener("click", () => { shut(); btn.focus({ preventScroll: true }); });
   scrim.addEventListener("click", shut);

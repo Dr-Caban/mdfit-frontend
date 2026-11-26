@@ -7,7 +7,7 @@
 //   strike  a stone lit today (not the last: all four is the chest, account-chest.js) or the daily goal reached
 //   combo   a second thing logged within two minutes of the last: "Combo x2", x3 ... rising in pitch
 //
-// Not in the Simple view, not during the tour; with reduced motion the words fade in and out and nothing flies.
+// Full view only: nothing here plays in the Simple view (no moments, faces, sounds or vibration). Not during the tour; with reduced motion the words fade in and out and nothing flies.
 // Sounds follow the app's own switch (localStorage "mdfit-sounds" = "off").
 (() => {
   "use strict";
@@ -20,7 +20,10 @@
 
   // ---- Sounds: a few short figures on sine and triangle waves; `step` raises the whole figure (combos climb)
   const TUNES = { pop: [[[784, 0], [1175, 0.08]], [[880, 0], [1319, 0.07], [1760, 0.14]], [[659, 0], [988, 0.09]], [[1047, 0], [1319, 0.06], [1568, 0.12]]],
-    strike: [[[196, 0], [392, 0.05], [1568, 0.16]], [[220, 0], [440, 0.05], [1760, 0.15]]], combo: [[[988, 0], [1319, 0.07]]], chest: [[[523, 0], [659, 0.1], [784, 0.2], [1047, 0.3], [1568, 0.46]]] };
+    strike: [[[196, 0], [392, 0.05], [1568, 0.16]], [[220, 0], [440, 0.05], [1760, 0.15]]], combo: [[[988, 0], [1319, 0.07]]],
+    // his moods, when no moment is sounding for him: glad (two warm notes up), proud (a major chord), worried (a
+    // minor step down, then relief is the glad one), at peace (one low soft note). Sleepy and curious are silent.
+    "m-happy": [[[587, 0], [880, 0.11]]], "m-proud": [[[523, 0], [659, 0.02], [784, 0.04], [1047, 0.22]]], "m-worried": [[[466, 0], [440, 0.16], [392, 0.32]]], "m-peace": [[[262, 0], [392, 0.25]]], chest: [[[523, 0], [659, 0.1], [784, 0.2], [1047, 0.3], [1568, 0.46]]] };
   function sound(kind, step = 0) {
     try {
       if (localStorage.getItem("mdfit-sounds") === "off") return;
@@ -40,8 +43,11 @@
   const HUES = [["#f6dc8c", "#b98a2e"], ["#8fc2ff", "#2f6fd6"], ["#8fe3b4", "#1f8a57"], ["#cdb4ff", "#7446d8"]]; // gold, sapphire, emerald, amethyst
   const GEMS = ["#d8213c", "#3f7fe0", "#2fa06a", "#8b5cf6", "#f2a900", "#9ac85a", "#c6edff"];
   // Solomon feels each one (mdfit-guide.js feel): glad at a little, proud at more, thrilled at a lot, cheering a combo
-  const G = window.MDFitGuide || {}, feel = (name, ms) => { try { if (G.feel) G.feel(name, ms); } catch {} };
+  const G = window.MDFitGuide || {}, feel = (name, ms) => { try { return !!(G.feel && G.feel(name, ms)); } catch { return false; } };
   const buzz = (p) => { try { navigator.vibrate && navigator.vibrate(p); } catch {} };
+  // A mood by itself (nothing popping with it) has its own sound and its own feel in the hand
+  const BUZZ = { happy: [12, 40, 12], proud: [30, 50, 60], worried: [8, 60, 8, 60, 8], peace: [40] };
+  const mood = (name, ms) => { if (!feel(name, ms)) return; if (TUNES["m-" + name]) sound("m-" + name); if (BUZZ[name]) buzz(BUZZ[name]); }; // no face shown (Simple view, chat open): no sound, no buzz
   function words(big, small, hue, cls = "") {
     const el = document.createElement("div"); el.className = "fx-words " + cls; el.style.setProperty("--a", hue[0]); el.style.setProperty("--b", hue[1]); el.style.setProperty("--tilt", `${rnd(-5, 5).toFixed(1)}deg`);
     el.innerHTML = `<b></b>${small ? "<span></span>" : ""}`; el.firstChild.textContent = big; if (small) el.lastChild.textContent = small;
@@ -102,7 +108,7 @@
   const sleepyNow = () => { const h = new Date().getHours(); return h >= 22 || h < 5; };
   const settle = () => { try { if (G.rest) G.rest(sleepyNow() ? "sleepy" : ""); } catch {} };
   settle(); setInterval(settle, 5 * 60 * 1000);
-  document.addEventListener("mdfit:arrive", (e) => { const away = Number((e.detail || {}).away); if (away >= 3) { feel("worried", 2200); setTimeout(() => feel("happy", 2400), 2300); } else feel("happy", 2400); });
+  document.addEventListener("mdfit:arrive", (e) => { const away = Number((e.detail || {}).away); if (away >= 3) { mood("worried", 2200); setTimeout(() => mood("happy", 2400), 2300); } else feel("happy", 2400); }); // (an ordinary return already has its own chime, account.js ding)
   (function peek() { setTimeout(() => { try { if (!document.hidden && !still() && G.feeling && !G.feeling() && !(G.speaking && G.speaking())) feel("curious", 2800); } catch {} peek(); }, rnd(35000, 70000)); })();
-  window.MDFitFx = { pop, combo, strike, sound, on: () => !quiet() };
+  window.MDFitFx = { pop, combo, strike, sound, mood, on: () => !quiet() };
 })();
