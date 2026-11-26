@@ -717,20 +717,46 @@
     const u = understand(text);
     // An emergency is answered at once: never counted, never behind the limit
     if (u.urgent) { emergency(); return true; }
+    // Talk (owner, Nov 2026): things said to him, not asked of the app: a hello, thanks, "give me a verse",
+    // "I'm tired", "tell me a joke", "who are you". Answered here on the device, never counted and never sent
+    // anywhere, before anything else is tried. The lines are his (account-solomon.js registers them with talk()).
+    const told = !u.pained && !u.area ? talkFor(text) : null;
+    if (told) { busy = true; const dt = thinking(); await wait(650); dt.remove(); reply(told); busy = false; end(); return true; }
     const plan = decide(u, text);
     busy = true; const d = thinking(), t0 = Date.now();
     // With the assistant on, a question the device does not answer itself is read on MD Fit's server; anything else
     // (and any failure there) is understood here and only counted.
     let ai = null, asked = false; if (G.ai && !plan.local) { ai = await askServer(text); asked = !!ai; }
     if (ai && ai.ok !== false && !ai.urgent && /\bcan only help with\b/i.test(String(ai.say || "")) && (u.places.length || u.area)) ai = null;
+    // Off his subject and nothing here answers it: he says so in his own voice and offers what he can do, in place
+    // of the assistant's flat "I can only help with..."
+    const aside = ai && ai.ok !== false && !ai.urgent && /\bcan only help with\b/i.test(String(ai.say || "")) ? talkFor("", true) : null;
     const ok = ai || asked || plan.free ? true : await count(plan.kind); // a hello is never counted (nor a question the server already counted)
     const rest = 750 - (Date.now() - t0); if (rest > 0) await wait(rest);
     d.remove();
     lastTopic = ""; // a follow-up belongs to the answer just given; the answer below sets it again if it has one
-    try { if (ai) await aiAnswer(ai); else if (!ok) limit(); else await plan.run(); } catch { say("Something went wrong on my side. You can still get anywhere from the menu, or call the clinic."); offer([opt("call")]); }
+    try { if (aside) reply(aside); else if (ai) await aiAnswer(ai); else if (!ok) limit(); else await plan.run(); } catch { say("Something went wrong on my side. You can still get anywhere from the menu, or call the clinic."); offer([opt("call")]); }
     busy = false; end();
     return true;
   }
+  // talk(fn): a way for his lines to be added from outside. fn(text, lost) gives null or { say, opts, feel }:
+  // say is one line or several; opts are buttons, each { label, more } (does something and may answer again by
+  // returning another such object), { place: "generate" } (one of the app's places) or { road: true } (what is next
+  // on the member's road). lost = nothing answered what was typed.
+  const talkers = [];
+  function talkFor(text, lost) { for (const f of talkers) { try { const r = f(String(text || ""), !!lost); if (r && r.say) return r; } catch {} } return null; }
+  function reply(r) {
+    [].concat(r.say).filter(Boolean).forEach((line) => say(String(line)));
+    const rd = road(), list = [];
+    for (const o of r.opts || []) {
+      if (o.road) { if (rd && rd.opt && !["done", "ask"].includes(rd.kind)) list.push({ ...rd.opt, gold: true }); }
+      else if (o.place) { if (PLACES.some((x) => x.id === o.place)) list.push(opt(o.place)); }
+      else if (o.label && typeof o.more === "function") list.push({ label: o.label, again: true, more: () => beat(() => { const nx = o.more(); if (nx && nx.say) reply(nx); }) });
+    }
+    if (list.length) offer(list);
+    if (r.feel) faceAfter = r.feel;
+  }
+  let faceAfter = ""; // the face he wears when the chat is next closed (he shows none while it is open)
   const emergency = () => { say("If this is an emergency, call 911 now. For anything else urgent, call the clinic."); offer([{ label: "Call 911", tel: "911", gold: true }, opt("call")]); };
   // null = the assistant is off or did not answer: fall back to the device, never an error on screen
   async function askServer(text) {
@@ -853,7 +879,7 @@
     load(); end(); fitKeyboard();
     if (byHand && !phone()) setTimeout(() => input.focus({ preventScroll: true }), 60); // on a phone the keyboard waits for a tap on the box
   }
-  function shut() { paintEmo(plainHome() ? "" : resting); box.hidden = true; scrim.hidden = true; box.style.bottom = ""; box.style.height = ""; btn.setAttribute("aria-expanded", "false"); document.documentElement.classList.remove("mg-open"); }
+  function shut() { paintEmo(plainHome() ? "" : resting); if (faceAfter) { const f = faceAfter; faceAfter = ""; setTimeout(() => feel(f, 2600), 250); } box.hidden = true; scrim.hidden = true; box.style.bottom = ""; box.style.height = ""; btn.setAttribute("aria-expanded", "false"); document.documentElement.classList.remove("mg-open"); }
   btn.addEventListener("click", () => (box.hidden ? open(true) : shut()));
   box.querySelector("#mg-x").addEventListener("click", () => { shut(); btn.focus({ preventScroll: true }); });
   scrim.addEventListener("click", shut);
@@ -882,5 +908,5 @@
   lift();
 
   load();
-  window.MDFitGuide = { day: dayRows, understand, open: () => open(false), lesson, shut, say: speak, hush, recap: (which) => { open(false, true); beat(() => recap(which)); }, speaking: () => !tag.hidden, feel, rest, feeling, question: (text, opts) => { hush(); open(false, true); beat(() => { say(text); offer(opts); }); }, greeting: (t) => { dayHello = String(t || "").trim(); }, reminders: () => G.reminders.slice() };
+  window.MDFitGuide = { day: dayRows, understand, open: () => open(false), lesson, shut, say: speak, hush, recap: (which) => { open(false, true); beat(() => recap(which)); }, speaking: () => !tag.hidden, feel, rest, feeling, talk: (fn) => { if (typeof fn === "function") talkers.push(fn); }, question: (text, opts) => { hush(); open(false, true); beat(() => { say(text); offer(opts); }); }, greeting: (t) => { dayHello = String(t || "").trim(); }, reminders: () => G.reminders.slice() };
 })();

@@ -24,15 +24,35 @@
     // his moods, when no moment is sounding for him: glad (two warm notes up), proud (a major chord), worried (a
     // minor step down, then relief is the glad one), at peace (one low soft note). Sleepy and curious are silent.
     "m-happy": [[[587, 0], [880, 0.11]]], "m-proud": [[[523, 0], [659, 0.02], [784, 0.04], [1047, 0.22]]], "m-worried": [[[466, 0], [440, 0.16], [392, 0.32]]], "m-peace": [[[262, 0], [392, 0.25]]], chest: [[[523, 0], [659, 0.1], [784, 0.2], [1047, 0.3], [1568, 0.46]]] };
-  function sound(kind, step = 0) {
+  // Real recorded sounds (assets/sounds, made for MD Fit) are fetched when the app opens and decoded ahead of time,
+  // so each plays the instant it is asked for. Until one has arrived (or if it never does: offline, an old browser)
+  // the short synthesized figure above plays in its place. Phones only let a page make sound after a first touch,
+  // so the first touch anywhere wakes the audio; from then on everything sounds without one.
+  const FILES = { pop: ["pop1", "pop2", "pop3"], combo: ["combo"], strike: ["strike"], chest: ["chest"], "m-happy": ["happy"], "m-proud": ["proud"], "m-worried": ["worried"], "m-peace": ["peace"] };
+  const BUF = {}, VOL = { strike: 0.8, chest: 0.9, "m-peace": 0.6, "m-worried": 0.6, "m-happy": 0.7, "m-proud": 0.7 };
+  const audio = () => { const AC = window.AudioContext || window.webkitAudioContext; return AC ? sound.ac || (sound.ac = new AC()) : null; };
+  function preload() {
+    if (preload.done) return; preload.done = true;
+    try { const ac = audio(); if (!ac || localStorage.getItem("mdfit-sounds") === "off") return;
+      [...new Set(Object.values(FILES).flat())].forEach((n) => { fetch(`/assets/sounds/${n}.mp3`).then((r) => (r.ok ? r.arrayBuffer() : null)).then((raw) => raw && new Promise((ok, no) => ac.decodeAudioData(raw, ok, no))).then((b) => { if (b) BUF[n] = b; }).catch(() => {}); });
+    } catch {}
+  }
+  const wake = () => { try { const ac = audio(); if (ac && ac.state === "suspended") ac.resume().catch(() => {}); } catch {} preload(); };
+  ["pointerdown", "touchend", "keydown"].forEach((ev) => document.addEventListener(ev, wake, { once: true, passive: true, capture: true }));
+  if ("requestIdleCallback" in window) requestIdleCallback(preload, { timeout: 4000 }); else setTimeout(preload, 2500);
+  // sound(kind, step, which): step raises the pitch (combos climb); which picks a file when a kind has several
+  function sound(kind, step = 0, which) {
     try {
       if (localStorage.getItem("mdfit-sounds") === "off") return;
-      const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
-      const ac = sound.ac || (sound.ac = new AC()), notes = pick(TUNES[kind] || TUNES.pop, "t" + kind), up = Math.pow(2, Math.min(step, 12) / 12);
-      const play = () => { const t = ac.currentTime; notes.forEach(([f, d], i) => { const o = ac.createOscillator(), g = ac.createGain();
-        o.type = kind === "strike" && i < 2 ? "triangle" : "sine"; o.frequency.value = f * up;
-        g.gain.setValueAtTime(0.0001, t + d); g.gain.exponentialRampToValueAtTime(0.16, t + d + 0.015); g.gain.exponentialRampToValueAtTime(0.0001, t + d + 0.55);
-        o.connect(g); g.connect(ac.destination); o.start(t + d); o.stop(t + d + 0.6); }); };
+      const ac = audio(); if (!ac) return;
+      const up = Math.pow(2, Math.min(step, 12) / 12), names = FILES[kind] || [], name = names.length ? names[Math.min(names.length - 1, which === undefined ? Math.floor(Math.random() * names.length) : which)] : "", buf = BUF[name];
+      const notes = pick(TUNES[kind] || TUNES.pop, "t" + kind);
+      const play = () => { const t = ac.currentTime;
+        if (buf) { const src = ac.createBufferSource(), g = ac.createGain(); src.buffer = buf; src.playbackRate.value = up; g.gain.value = VOL[kind] || 0.75; src.connect(g); g.connect(ac.destination); src.start(t); return; }
+        notes.forEach(([f, d], i) => { const o = ac.createOscillator(), g = ac.createGain();
+          o.type = kind === "strike" && i < 2 ? "triangle" : "sine"; o.frequency.value = f * up;
+          g.gain.setValueAtTime(0.0001, t + d); g.gain.exponentialRampToValueAtTime(0.16, t + d + 0.015); g.gain.exponentialRampToValueAtTime(0.0001, t + d + 0.55);
+          o.connect(g); g.connect(ac.destination); o.start(t + d); o.stop(t + d + 0.6); }); };
       if (ac.state === "suspended") ac.resume().then(play).catch(() => {}); else play();
     } catch {}
   }
@@ -91,7 +111,7 @@
   function run() { const f = queue.shift(); if (!f) { running = false; return; } running = true; f(); setTimeout(run, still() ? 900 : 1250); }
   const later = (f) => { if (queue.length < 3) queue.push(f); if (!running) run(); };
 
-  const pop = (xp) => later(() => { const tier = xp >= 40 ? "big" : xp >= 15 ? "mid" : "small"; words(pick(SAY[tier], "w" + tier), `+${xp} XP`, pick(HUES, "h")); shards(tier === "big" ? 18 : tier === "mid" ? 12 : 7); if (!APP) sound("pop"); feel(tier === "big" ? "excited" : tier === "mid" ? "proud" : "happy"); buzz(15, ""); });
+  const pop = (xp) => later(() => { const tier = xp >= 40 ? "big" : xp >= 15 ? "mid" : "small"; words(pick(SAY[tier], "w" + tier), `+${xp} XP`, pick(HUES, "h")); shards(tier === "big" ? 18 : tier === "mid" ? 12 : 7); if (!APP) sound("pop", 0, tier === "big" ? 2 : tier === "mid" ? 1 : 0); feel(tier === "big" ? "excited" : tier === "mid" ? "proud" : "happy"); buzz(15, ""); });
   const combo = (n) => later(() => { words(`Combo x${n}`, "", HUES[1], "fx-combo"); shards(6 + n * 2); sound("combo", (n - 1) * 2); feel("cheer"); buzz([10, 30, 10], n > 2 ? "heavy" : "medium"); });
   const strike = (big, small, goal) => later(() => { bolt(); words(big, small, HUES[0], "fx-strike"); if (!(APP && goal)) sound("strike"); feel("excited", 2400); buzz([20, 30, 40], goal ? "" : "heavy"); });
 

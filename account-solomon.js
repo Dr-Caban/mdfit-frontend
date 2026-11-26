@@ -105,6 +105,42 @@
   else try { const asked = versePicks; window.MDFit.apiAuth("GET", "/api/me/guide").then((g) => { if (verseUnsent() || versePicks !== asked) return; /* a tap made while this was on its way is newer */ const v = g && g.prefs && g.prefs.verse; if ((v === "on" || v === "off") && (v === "on") !== verseOn) setVerse(v === "on", true);
     // Answered on another device: not asked again here. Never answered and no tour on its way: he asks now.
     if (g && g.verseAsked) askedNow(); else if (g && g.verseAsked === false) setTimeout(askVerse, 6000); }).catch(() => {}); } catch {}
+  // ---- Talk: what he says back when he is spoken to (mdfit-guide.js talk). Understood here on the device from the
+  // words below; nothing typed is sent anywhere for these. A verse is always quoted exactly from the list above.
+  let lastVerse = -1;
+  const anotherVerse = () => { let i = Math.floor(Math.random() * VERSES.length); if (i === lastVerse) i = (i + 1) % VERSES.length; lastVerse = i; return `“${VERSES[i][0]}” ${VERSES[i][1]}`; };
+  const firstName = () => (A.guideFacts().first || "friend");
+  const oneOf = (list, key) => { let i = Math.floor(Math.random() * list.length); if (list.length > 1 && i === oneOf[key]) i = (i + 1) % list.length; oneOf[key] = i; return list[i]; };
+  const verseReply = (lead) => ({ say: [lead, anotherVerse()].filter(Boolean), feel: "peace",
+    opts: [{ label: "Another verse", more: () => verseReply("") }, ...(verseOn ? [] : [{ label: "Send me one every day", more: () => { setVerse(true); return { say: "Done. I'll greet you with one each day." }; } }]), { road: true }] });
+  const JOKES = ["Why did the dumbbell go to therapy? It had too much weight on its shoulders.", "I tried a rest day once. As a cloud, I mostly drifted.", "What's a skeleton's least favourite workout? Anything with a spotter. Nobody has his back.",
+    "Why don't hamstrings ever win arguments? They always get tight under pressure.", "I asked the foam roller for advice. It said: just roll with it."];
+  const LIFT = ["You showed up to say so, which already counts. Start with the smallest thing on your road and stop there if you need to.", "Tired is allowed. Five easy minutes is still a lamp lit.",
+    "You don't have to feel like it. You only have to begin; the feeling usually catches up.", "Hard days are when the small things matter most. One stone is enough for today."];
+  const talk = (text, lost) => {
+    const t = text.toLowerCase().replace(/[’‘]/g, "'").replace(/\s+/g, " ").trim();
+    const day = new Date().getHours(), when = day < 5 ? "night" : day < 12 ? "morning" : day < 18 ? "afternoon" : "evening";
+    if (lost) return { say: `That one is past my lamp's reach, ${firstName()}. I'm best with your training, your pain and finding things in MD Fit. I can also give you a verse, a word of encouragement or a laugh.`,
+      opts: [{ road: true }, { label: "Give me a verse", more: () => verseReply("") }, { label: "Encourage me", more: () => ({ say: oneOf(LIFT, "l"), opts: [{ road: true }] }) }, { place: "generate" }] };
+    if (!t) return null;
+    if (/\b(bible|verse|verses|scripture|scriptures|psalm|psalms|proverb|proverbs|gospel|pray|prayer|bless|blessing|word of god|jesus|christ|lord|god|faith|devotion|devotional)\b/.test(t)) return verseReply(/\bpray|prayer|bless/.test(t) ? `Gladly, ${firstName()}. Here is one to carry with you:` : oneOf(["Here is one for you:", "Gladly:", `For you, ${firstName()}:`], "v"));
+    if (/\b(quote|saying|wisdom|wise words?|inspire|inspiration)\b/.test(t)) return { say: [oneOf(SAYINGS, "s")], feel: "proud", opts: [{ label: "Another saying", more: () => ({ say: oneOf(SAYINGS, "s") }) }, { label: "A Bible verse", more: () => verseReply("") }, { road: true }] };
+    if (/\b(joke|make me laugh|funny|laugh)\b/.test(t)) return { say: oneOf(JOKES, "j"), feel: "cheer", opts: [{ label: "Another one", more: () => ({ say: oneOf(JOKES, "j") }) }, { road: true }] };
+    if (/\b(motivat\w*|encourag\w*|pep talk|i'?m (so )?(tired|exhausted|lazy|unmotivated|sore|busy|stressed|overwhelmed|down)|don'?t feel like|can'?t be bothered|no energy|rough day|hard day|bad day|long day|i give up|want to quit|feel like quitting|struggling)\b/.test(t))
+      return { say: oneOf(LIFT, "l"), feel: "happy", opts: [{ road: true }, { label: "A verse for today", more: () => verseReply("") }, { place: "messages" }] };
+    if (/\b(i did it|i finished|all done|crushed it|nailed it|smashed it|killed it|new pr|personal (best|record)|hit my goal|proud of (me|myself))\b/.test(t)) return { say: oneOf([`That is how it is done, ${firstName()}!`, "Well earned. I saw that.", `Proud of you, ${firstName()}. Truly.`], "w"), feel: "excited", opts: [{ place: "progress" }, { road: true }] };
+    if (/\b(thank you|thanks|thank u|thx|ty|appreciate (it|you))\b/.test(t)) return { say: oneOf(["Always. That's what I'm here for.", `Any time, ${firstName()}.`, "Glad to. Come find me whenever you like."], "th"), feel: "proud", opts: [{ road: true }] };
+    if (/\b(love (you|u)|you'?re (the best|great|awesome|amazing|cute|funny|sweet)|good (job|bot|cloud)|i like you)\b/.test(t)) return { say: oneOf([`You'll make a cloud blush, ${firstName()}.`, "That lights my lamp. Thank you.", "Kind of you. I like our walks down the road too."], "lv"), feel: "proud" };
+    if (/\b(good ?night|going to (bed|sleep)|off to bed|sleep well|nighty)\b/.test(t)) return { say: oneOf([`Sleep well, ${firstName()}. Rest is part of the work.`, "Good night. The road will keep until morning."], "gn"), feel: "sleepy" };
+    if (/\b(how are you|how'?re you|how'?s it going|how you doing|what'?s up|whats up|sup|you ok(ay)?|how do you feel)\b/.test(t)) return { say: oneOf([`Better now that you're here, ${firstName()}. How about you: what are we doing today?`, `Floating along nicely. Good ${when} to you. What do you need?`, "Lamp lit, spirits high. What can I do for you?"], "h"), feel: "happy",
+      opts: [{ road: true }, { label: "Encourage me", more: () => ({ say: oneOf(LIFT, "l"), opts: [{ road: true }] }) }, { label: "Give me a verse", more: () => verseReply("") }] };
+    if (/\b(who are you|what are you|your name|are you (real|human|a (person|robot|bot)|an? ai|alive)|what can you do|what do you do|how do you work|what can i ask)\b|^help( me)?[.!?]*$/.test(t)) return { say: ["I'm Solomon: a cloud with a lamp, and MD Fit's guide. I'm not a person, and I don't give medical advice.", "I can show you where anything is, tell you what is next on your road, find the rehab for what hurts, build a workout, set a reminder, and hand you a verse, a kind word or a joke when you want one."], feel: "happy",
+      opts: [{ road: true }, { place: "pain" }, { place: "generate" }, { label: "Give me a verse", more: () => verseReply("") }] };
+    if (/^(give me|show me|tell me|i want|i need|can you|could you|please)\.?$/.test(t)) return { say: `Give you what, ${firstName()}? Here is what I have ready:`, opts: [{ road: true }, { label: "A Bible verse", more: () => verseReply("") }, { label: "A word of encouragement", more: () => ({ say: oneOf(LIFT, "l"), opts: [{ road: true }] }) }, { label: "A joke", more: () => ({ say: oneOf(JOKES, "j") }) }, { place: "generate" }] };
+    return null;
+  };
+  try { if (G.talk) G.talk(talk); } catch {}
+
   // Solomon's own sayings (written for the app, in the manner of old proverbs; none is a quotation)
   const SAYINGS = ["The patient miner finds the brighter stone.", "Small steps, well kept, move mountains.", "What you build daily, no one can take.",
     "Strength is gathered, not found.", "A steady hand outlasts a strong one.", "The lamp you tend lights the whole road.", "Dig a little each day and the mountain yields."];
