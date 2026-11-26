@@ -3924,7 +3924,8 @@
       if (!celebrate || !prev) return;
       const gained = next.xp - prev.xp, newBadges = next.badges.filter((b) => b.earned && !prev.badges.find((x) => x.id === b.id).earned);
       const msgs = [];
-      if (gained > 0) msgs.push(plainView() && what ? what : `+${gained} XP`);
+      // (in the Full view the XP itself is said by a moment, account-fx.js; the toast keeps the rest)
+      if (gained > 0 && !(window.MDFitFx && window.MDFitFx.on())) msgs.push(plainView() && what ? what : `+${gained} XP`);
       if (next.level > prev.level) msgs.push(`New gem! You're now ${next.title}`);
       newBadges.forEach((b) => msgs.push(`Badge unlocked: ${b.title}`));
       if (prev.todayXp < prev.dailyGoal && next.todayXp >= next.dailyGoal) msgs.push("Daily goal reached!");
