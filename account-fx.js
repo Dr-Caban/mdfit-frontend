@@ -44,7 +44,16 @@
   const GEMS = ["#d8213c", "#3f7fe0", "#2fa06a", "#8b5cf6", "#f2a900", "#9ac85a", "#c6edff"];
   // Solomon feels each one (mdfit-guide.js feel): glad at a little, proud at more, thrilled at a lot, cheering a combo
   const G = window.MDFitGuide || {}, feel = (name, ms) => { try { return !!(G.feel && G.feel(name, ms)); } catch { return false; } };
-  const buzz = (p) => { try { navigator.vibrate && navigator.vibrate(p); } catch {} };
+  // Vibration. Android browsers have navigator.vibrate. iPhone browsers do not, but from iOS 18 a switch control gives
+  // one small tap when it flips, so there a hidden switch is flipped once for each pulse in the pattern (the best a
+  // web page can do on an iPhone: the taps are all one strength, and older iPhones stay still). A pattern is
+  // [on, off, on, ...] in milliseconds, or one number.
+  let hap = null;
+  function tap() { try { if (!hap) { hap = document.createElement("label"); hap.setAttribute("aria-hidden", "true"); hap.style.cssText = "position:fixed;left:-200px;top:0;opacity:0;pointer-events:none"; hap.innerHTML = '<input type="checkbox" switch tabindex="-1">'; document.body.appendChild(hap); } hap.click(); } catch {} }
+  const buzz = (p) => { try {
+    if (navigator.vibrate) return void navigator.vibrate(p);
+    let at = 0; [].concat(p).forEach((ms, i) => { if (i % 2 === 0) { const t = at; t ? setTimeout(tap, t) : tap(); if (ms >= 50) setTimeout(tap, t + 45); /* a long pulse is two taps */ } at += ms; });
+  } catch {} };
   // A mood by itself (nothing popping with it) has its own sound and its own feel in the hand
   const BUZZ = { happy: [12, 40, 12], proud: [30, 50, 60], worried: [8, 60, 8, 60, 8], peace: [40] };
   const mood = (name, ms) => { if (!feel(name, ms)) return; if (TUNES["m-" + name]) sound("m-" + name); if (BUZZ[name]) buzz(BUZZ[name]); }; // no face shown (Simple view, chat open): no sound, no buzz
@@ -110,5 +119,5 @@
   settle(); setInterval(settle, 5 * 60 * 1000);
   document.addEventListener("mdfit:arrive", (e) => { const away = Number((e.detail || {}).away); if (away >= 3) { mood("worried", 2200); setTimeout(() => mood("happy", 2400), 2300); } else feel("happy", 2400); }); // (an ordinary return already has its own chime, account.js ding)
   (function peek() { setTimeout(() => { try { if (!document.hidden && !still() && G.feeling && !G.feeling() && !(G.speaking && G.speaking())) feel("curious", 2800); } catch {} peek(); }, rnd(35000, 70000)); })();
-  window.MDFitFx = { pop, combo, strike, sound, mood, on: () => !quiet() };
+  window.MDFitFx = { pop, combo, strike, sound, mood, buzz, on: () => !quiet() };
 })();
