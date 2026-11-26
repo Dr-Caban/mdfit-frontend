@@ -123,6 +123,7 @@
     if (lost) return { say: `That one is past my lamp's reach, ${firstName()}. I'm best with your training, your pain and finding things in MD Fit. I can also give you a verse, a word of encouragement or a laugh.`,
       opts: [{ road: true }, { label: "Give me a verse", more: () => verseReply("") }, { label: "Encourage me", more: () => ({ say: oneOf(LIFT, "l"), opts: [{ road: true }] }) }, { place: "generate" }] };
     if (!t) return null;
+    if (t === "__verse") return verseReply(""); // asked for by the assistant's answer (mdfit-guide.js aiAnswer)
     if (/\b(bible|verse|verses|scripture|scriptures|psalm|psalms|proverb|proverbs|gospel|pray|prayer|bless|blessing|word of god|jesus|christ|lord|god|faith|devotion|devotional)\b/.test(t)) return verseReply(/\bpray|prayer|bless/.test(t) ? `Gladly, ${firstName()}. Here is one to carry with you:` : oneOf(["Here is one for you:", "Gladly:", `For you, ${firstName()}:`], "v"));
     if (/\b(quote|saying|wisdom|wise words?|inspire|inspiration)\b/.test(t)) return { say: [oneOf(SAYINGS, "s")], feel: "proud", opts: [{ label: "Another saying", more: () => ({ say: oneOf(SAYINGS, "s") }) }, { label: "A Bible verse", more: () => verseReply("") }, { road: true }] };
     if (/\b(joke|make me laugh|funny|laugh)\b/.test(t)) return { say: oneOf(JOKES, "j"), feel: "cheer", opts: [{ label: "Another one", more: () => ({ say: oneOf(JOKES, "j") }) }, { road: true }] };

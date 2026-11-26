@@ -704,7 +704,7 @@
     if (u.places.length) return { kind: u.places[0].kind, run: () => { say(u.places.length === 1 ? "Got it. This is the place for that:" : "Got it. These look like what you're after:"); offer([...u.places.slice(0, 4).map((p) => opt(p.id)), ...(u.places.some((p) => p.id === "call") ? [] : [opt("call")])]); } };
     // Short and unplaceable ("everything", "ok", "what now"): answered from where they are on their road, on the device
     { const rd = road(), words = t.trim().split(/\s+/).filter(Boolean).length;
-      if (rd && words <= 4) return { kind: "other", local: true, free: true, run: () => { lastRoad = rd.sig; say(rd.say); offer([...(rd.opt ? [rd.opt] : []), opt("generate"), opt("programs"), opt("call")]); } }; }
+      if (rd && words <= 4) return { kind: "other", local: true, free: true, soft: true, run: () => { lastRoad = rd.sig; say(rd.say); offer([...(rd.opt ? [rd.opt] : []), opt("generate"), opt("programs"), opt("call")]); } }; }
     return { kind: "other", run: async () => {
       const m = await mine(), theirs = own3(m);
       say(theirs.length ? "I didn't quite get that one. Try telling me what you're working on, like a sore knee, getting stronger, or booking a visit. Here's what you have going:" : "I didn't quite get that one. Try telling me what you're working on, like a sore knee, getting stronger, or booking a visit. Or start here:");
@@ -720,13 +720,18 @@
     // Talk (owner, Nov 2026): things said to him, not asked of the app: a hello, thanks, "give me a verse",
     // "I'm tired", "tell me a joke", "who are you". Answered here on the device, never counted and never sent
     // anywhere, before anything else is tried. The lines are his (account-solomon.js registers them with talk()).
+    // With the assistant on, he answers these himself through the language model (so every reply is his own and
+    // fits what was said); the lines kept on the device are what he falls back on when the assistant is off, slow
+    // or has nothing.
     const told = !u.pained && !u.area ? talkFor(text) : null;
-    if (told) { busy = true; const dt = thinking(); await wait(650); dt.remove(); reply(told); busy = false; end(); return true; }
+    if (told && !G.ai) { busy = true; const dt = thinking(); await wait(650); dt.remove(); reply(told); busy = false; end(); return true; }
     const plan = decide(u, text);
     busy = true; const d = thinking(), t0 = Date.now();
     // With the assistant on, a question the device does not answer itself is read on MD Fit's server; anything else
     // (and any failure there) is understood here and only counted.
-    let ai = null, asked = false; if (G.ai && !plan.local) { ai = await askServer(text); asked = !!ai; }
+    // (something said to him, or a few words the device cannot place, is his to answer when the assistant is on:
+    // the device's own line for it is only the fallback)
+    let ai = null, asked = false; if (G.ai && (!plan.local || told || plan.soft)) { ai = await askServer(text); asked = !!ai; }
     if (ai && ai.ok !== false && !ai.urgent && /\bcan only help with\b/i.test(String(ai.say || "")) && (u.places.length || u.area)) ai = null;
     // Off his subject and nothing here answers it: he says so in his own voice and offers what he can do, in place
     // of the assistant's flat "I can only help with..."
@@ -735,7 +740,7 @@
     const rest = 750 - (Date.now() - t0); if (rest > 0) await wait(rest);
     d.remove();
     lastTopic = ""; // a follow-up belongs to the answer just given; the answer below sets it again if it has one
-    try { if (aside) reply(aside); else if (ai) await aiAnswer(ai); else if (!ok) limit(); else await plan.run(); } catch { say("Something went wrong on my side. You can still get anywhere from the menu, or call the clinic."); offer([opt("call")]); }
+    try { if (aside) reply(told || aside); else if (ai) await aiAnswer(ai); else if (!ok) limit(); else if (told) reply(told); else await plan.run(); } catch { say("Something went wrong on my side. You can still get anywhere from the menu, or call the clinic."); offer([opt("call")]); }
     busy = false; end();
     return true;
   }
@@ -776,6 +781,9 @@
     const area = AREAS[r.area] ? r.area : ""; if (area) ctx.area = area;
     const ids = [...new Set((Array.isArray(r.places) ? r.places : []).map((x) => FROM_SERVER[x] || x))].filter((id) => id !== "call" && PLACES.some((p) => p.id === id)).slice(0, 5);
     say(String(r.say || "").trim().slice(0, 600) || "Here's where I can take you:");
+    if (FACE[r.mood]) faceAfter = r.mood; // the face he wears once the chat is closed
+    // A verse was asked for: the model leads into it, and the verse itself comes from his own list, word for word
+    if (r.verse) { const v = talkFor("__verse"); if (v) { reply(v); return; } }
     const rd = road();
     offer([...(rd && rd.opt && !["done", "ask"].includes(rd.kind) ? [{ ...rd.opt, label: rd.opt.label === "Do my check-in here" ? "Next on your road: my check-in" : `Next on your road: ${rd.opt.label.replace(/^(Open|Start|Pick|Build) /, (m) => m.toLowerCase())}` }] : []), ...(area ? [{ label: `Programs for your ${area}`, again: true, more: () => beat(() => showArea(area)) }] : []), ...ids.map(opt), opt("call")]);
     let C = null; try { C = await App.content(); } catch {}
