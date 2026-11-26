@@ -238,11 +238,9 @@ html[data-home-view="simple"] .hb-pts { display: none; }
 .fx-bolt path{fill:none;stroke:#fff3c4;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;animation:fx-bolt .9s ease-out both}
 .fx-bolt path.g{stroke:#f2a900;stroke-width:13;opacity:.55;filter:blur(7px)}
 .fx-bolt path.br{stroke-width:2.2;animation-delay:.12s}
-#mg-btn.fx-hop{animation:fx-hop .8s cubic-bezier(.3,1.6,.5,1)}
 @keyframes fx-pop{0%{opacity:0;transform:translate(-50%,-30%) rotate(var(--tilt)) scale(.4)}16%{opacity:1;transform:translate(-50%,-50%) rotate(var(--tilt)) scale(1.12)}26%{transform:translate(-50%,-50%) rotate(var(--tilt)) scale(1)}78%{opacity:1;transform:translate(-50%,-56%) rotate(var(--tilt)) scale(1)}100%{opacity:0;transform:translate(-50%,-80%) rotate(var(--tilt)) scale(.96)}}
 @keyframes fx-shard{0%{opacity:0;transform:translate(0,0) scale(.3) rotate(0)}15%{opacity:1}100%{opacity:0;transform:translate(var(--x),calc(var(--y) + 60px)) scale(1) rotate(var(--r))}}
 @keyframes fx-bolt{0%{stroke-dashoffset:1;opacity:1}32%{stroke-dashoffset:0;opacity:1}55%{opacity:1}100%{stroke-dashoffset:0;opacity:0}}
 @keyframes fx-flash{0%{opacity:0}18%{opacity:1}100%{opacity:0}}
-@keyframes fx-hop{0%,100%{transform:translateY(0)}30%{transform:translateY(-14px) rotate(-6deg)}55%{transform:translateY(0) rotate(4deg)}75%{transform:translateY(-5px)}}
-@media (prefers-reduced-motion:reduce){.fx-words{animation:fx-fade 1.4s ease both;transform:translate(-50%,-50%)}#mg-btn.fx-hop,#fx.flash::before{animation:none}}
+@media (prefers-reduced-motion:reduce){.fx-words{animation:fx-fade 1.4s ease both;transform:translate(-50%,-50%)}#fx.flash::before{animation:none}}
 @keyframes fx-fade{0%,100%{opacity:0}20%,75%{opacity:1}}

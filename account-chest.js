@@ -62,7 +62,7 @@
     go.addEventListener("click", close);
     if (still()) open();
   }
-  function close() { ov.hidden = true; ov.classList.remove("in", "open"); ov.innerHTML = ""; }
+  function close() { try { if (!ov.hidden && window.MDFitGuide && window.MDFitGuide.feel) setTimeout(() => window.MDFitGuide.feel("proud", 3000), 300); } catch {} ov.hidden = true; ov.classList.remove("in", "open"); ov.innerHTML = ""; }
   document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !ov.hidden) close(); });
 
   let waitT = 0, tries = 0;

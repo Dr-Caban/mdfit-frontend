@@ -1,6 +1,6 @@
 // MD Fit member app: moments (owner, Nov 2026). Small celebrations that change every time so the app never feels
 // still: a word that pops with the XP just earned, a gold vein that strikes up the screen when one of today's stones
-// lights, a combo count when things are logged back to back, each with its own short sound and a hop from Solomon.
+// lights, a combo count when things are logged back to back, each with its own short sound and a face from Solomon.
 // All drawn here in the mine's own colours. They sit on top without blocking a tap and are gone in about a second.
 //
 //   pop     XP was earned: one of a dozen words, in gold, sapphire, emerald or amethyst, with gem shards
@@ -39,7 +39,8 @@
   const live = document.createElement("p"); live.style.cssText = "position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap"; live.setAttribute("role", "status"); document.body.appendChild(live);
   const HUES = [["#f6dc8c", "#b98a2e"], ["#8fc2ff", "#2f6fd6"], ["#8fe3b4", "#1f8a57"], ["#cdb4ff", "#7446d8"]]; // gold, sapphire, emerald, amethyst
   const GEMS = ["#d8213c", "#3f7fe0", "#2fa06a", "#8b5cf6", "#f2a900", "#9ac85a", "#c6edff"];
-  const hop = () => { const b = document.getElementById("mg-btn"); if (!b) return; b.classList.remove("fx-hop"); void b.offsetWidth; b.classList.add("fx-hop"); setTimeout(() => b.classList.remove("fx-hop"), 900); };
+  // Solomon feels each one (mdfit-guide.js feel): glad at a little, proud at more, thrilled at a lot, cheering a combo
+  const G = window.MDFitGuide || {}, feel = (name, ms) => { try { if (G.feel) G.feel(name, ms); } catch {} };
   const buzz = (p) => { try { navigator.vibrate && navigator.vibrate(p); } catch {} };
   function words(big, small, hue, cls = "") {
     const el = document.createElement("div"); el.className = "fx-words " + cls; el.style.setProperty("--a", hue[0]); el.style.setProperty("--b", hue[1]); el.style.setProperty("--tilt", `${rnd(-5, 5).toFixed(1)}deg`);
@@ -70,9 +71,9 @@
   function run() { const f = queue.shift(); if (!f) { running = false; return; } running = true; f(); setTimeout(run, still() ? 900 : 1250); }
   const later = (f) => { if (queue.length < 3) queue.push(f); if (!running) run(); };
 
-  const pop = (xp) => later(() => { const tier = xp >= 40 ? "big" : xp >= 15 ? "mid" : "small"; words(pick(SAY[tier], "w" + tier), `+${xp} XP`, pick(HUES, "h")); shards(tier === "big" ? 18 : tier === "mid" ? 12 : 7); sound("pop"); hop(); buzz(15); });
-  const combo = (n) => later(() => { words(`Combo x${n}`, "", HUES[1], "fx-combo"); shards(6 + n * 2); sound("combo", (n - 1) * 2); hop(); buzz([10, 30, 10]); });
-  const strike = (big, small, kind) => later(() => { bolt(); words(big, small, HUES[0], "fx-strike"); sound("strike"); hop(); buzz([20, 30, 40]); });
+  const pop = (xp) => later(() => { const tier = xp >= 40 ? "big" : xp >= 15 ? "mid" : "small"; words(pick(SAY[tier], "w" + tier), `+${xp} XP`, pick(HUES, "h")); shards(tier === "big" ? 18 : tier === "mid" ? 12 : 7); sound("pop"); feel(tier === "big" ? "excited" : tier === "mid" ? "proud" : "happy"); buzz(15); });
+  const combo = (n) => later(() => { words(`Combo x${n}`, "", HUES[1], "fx-combo"); shards(6 + n * 2); sound("combo", (n - 1) * 2); feel("cheer"); buzz([10, 30, 10]); });
+  const strike = (big, small, kind) => later(() => { bolt(); words(big, small, HUES[0], "fx-strike"); sound("strike"); feel("excited", 2400); buzz([20, 30, 40]); });
 
   // ---- When: read what changed from the app's own events
   let prev = null, lit = null, lastGain = 0, chain = 1;
@@ -94,5 +95,14 @@
     strike(pick(SAY.stone, "ws"), `${now.lit} of ${now.of} today`);
   });
   lit = litNow();
+
+  // ---- How he is when nothing is happening
+  // Late at night he dozes (10 PM to 5 AM); back after three days or more he is worried for a breath, then glad;
+  // and now and then he simply looks around.
+  const sleepyNow = () => { const h = new Date().getHours(); return h >= 22 || h < 5; };
+  const settle = () => { try { if (G.rest) G.rest(sleepyNow() ? "sleepy" : ""); } catch {} };
+  settle(); setInterval(settle, 5 * 60 * 1000);
+  document.addEventListener("mdfit:arrive", (e) => { const away = Number((e.detail || {}).away); if (away >= 3) { feel("worried", 2200); setTimeout(() => feel("happy", 2400), 2300); } else feel("happy", 2400); });
+  (function peek() { setTimeout(() => { try { if (!document.hidden && !still() && G.feeling && !G.feeling() && !(G.speaking && G.speaking())) feel("curious", 2800); } catch {} peek(); }, rnd(35000, 70000)); })();
   window.MDFitFx = { pop, combo, strike, sound, on: () => !quiet() };
 })();
