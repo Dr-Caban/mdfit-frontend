@@ -23,3 +23,6 @@ reading into writing without the owner's confirmation in hand.
 The rule that outranks everything else here is the runbook's **"Ask before you commit"** section:
 **if a placement was not asked for, you ask.** Never guess where a clip goes or what it is for, and never
 commit, push or deploy on one that is unconfirmed.
+
+Monitoring is part of the run, not an afterthought: every video change goes to the scheduled review under
+`docs/MONITORING.md`, as Phase 7 of the runbook sets out.

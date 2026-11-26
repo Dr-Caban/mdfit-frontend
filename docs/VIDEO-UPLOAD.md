@@ -281,6 +281,35 @@ Do not report success off the job counters alone.
    the MP4 **and** the HLS manifest.
 3. Confirm the count members see moved: the library header and the Home card both read from the gated list.
 
+## Phase 7 — monitoring (owner, 25 Nov 2026 — standing, for every video change)
+
+**A video change is a change, and every video change is monitored under `docs/MONITORING.md`.** Read that file
+and follow it; the rules below are only what it means for a video run, not a second protocol.
+
+A video change is anything that alters what a member can play: a manifest rebuild that publishes or
+withdraws an asset, a catalog edit in `app/exercises.js`, a protocol or programme sheet that now points at a
+different clip, a Bunny library or pull-zone setting, a "sync now" or "retry failed", a Drive file replaced
+through *Manage versions*. Renaming a Drive file is **not** one — the id is the key, so playback does not
+move.
+
+1. **The clock restarts.** A deployed video change sends the scheduled review
+   ("MD Fit endpoint failure review") back to **Phase A — every 6 hours** with its 72-hour clock restarted
+   from the deploy. Do not leave it in Phase B after shipping video: say in the run's report that the change
+   restarts the clock, and if the task is on the daily schedule, set it back to `0 */6 * * *` with
+   `mcp__claude-code-remote__update_trigger`.
+2. **The video-specific failures count.** `media upload failed` and `media sync failed` are failures, not
+   noise, and a clip that stays unpublished after a run is one of the known traps below — most often the
+   "never retries a failed clip" one, not a slow encode.
+3. **Phase 6 is not monitoring.** Verifying the guids proves the upload worked at that moment. The review is
+   what catches an asset that falls out of `bunny.map`, a sync job that starts failing every 6 hours, or a
+   pull-zone change that 403s a native player. Finish Phase 6, then hand the change to the review.
+4. **Carry the known-bad list forward.** The three clips that cannot sync (one with no source, two lectures
+   over `MEDIA_MAX_MB`) are listed in `docs/MONITORING.md` so they are not re-reported as new failures every
+   6 hours. If a run fixes or adds one, update that list in the same commit.
+5. **Monitoring reads; it does not place.** A review may read Drive, Bunny, Railway and the catalog freely,
+   and may fix a bug in MD Fit's own code the usual way. It never places a clip, renames, deletes or deploys
+   video on its own — those still need the owner's confirmation under "Ask before you commit" above.
+
 ## Known traps
 
 - **Zero-byte Drive files** upload "successfully" and are useless. Check `size` first.

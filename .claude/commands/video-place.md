@@ -71,3 +71,11 @@ rather than letting "it is in the library" stand in for "members will meet it in
   owner's call;
 - the clip is an unnamed camera file or a `(take 2)` — it needs renaming in Drive first;
 - the owner confirmed some clips and not others — place the confirmed ones, and name the rest as still open.
+
+## After a placement goes live
+
+A video change is monitored. Follow Phase 7 of `docs/VIDEO-UPLOAD.md` and `docs/MONITORING.md`: the deploy
+restarts the scheduled review's 72-hour clock and puts it back on the 6-hourly schedule, `media upload
+failed` and `media sync failed` count as failures, and any clip that still cannot sync is added to the
+known-bad list in `docs/MONITORING.md` in the same commit. Say in the run's report that the change restarts
+the clock.

@@ -42,6 +42,9 @@
   the first seconds, so `scripts/video-stt.py` transcribes it in-container (never an outside service) rather
   than anyone naming it from a thumbnail. And a library placement wires a clip into **no** protocol or
   programme: those reference movements by name, and that is a separate, separately confirmed edit.
+  From 25 Nov 2026, **every video change is monitored** under `docs/MONITORING.md` — a deployed video change
+  restarts the review's 72-hour clock and puts it back on the 6-hourly schedule. See Phase 7 of
+  `docs/VIDEO-UPLOAD.md` for what counts as a video change and what the run owes the review.
 - **DO NOT TOUCH after compliancy is set.** This is a live patient EMR. The compliance safeguards are locked: read the
   "DO NOT TOUCH" section of `README.md` here and in `mdfit-backend` before editing anything near sign-in, sessions,
   roles and permissions, the audit ledger, encryption, the chart, patient-rights records, the Compliance screen, or the
