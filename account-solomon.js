@@ -11,8 +11,9 @@
 //
 // The daily Bible verse (owner, Nov 2026): his first greeting of the day carries one verse, quoted exactly from the
 // World English Bible, British Edition (public domain; the edition that prints "the LORD" where the standard one prints
-// "Yahweh": owner's choice), the same verse for everyone that day. It is on unless the member turns it off
-// in the More menu ("Daily Bible verse"); the choice is kept on the device and on the account (prefs.verse).
+// "Yahweh": owner's choice), the same verse for everyone that day. It is off until the member says yes: Solomon
+// asks once, after the tour (or on the next open for someone who had the tour before the question existed), and the
+// switch is in the More menu ("Daily Bible verse"). The choice is kept on the device and on the account (prefs.verse).
 // His own sayings below are still his own and quote nothing.
 (() => {
   const A = window.MDFitApp, G = window.MDFitGuide; if (!A || !G || !G.say || !A.nextUp) return;
@@ -50,7 +51,7 @@
     ["LORD my God, I cried to you, and you have healed me.", "Psalm 30:2"]
   ];
   const VERSE_KEY = "mdfit_verse";
-  let verseOn = (() => { try { return localStorage.getItem(VERSE_KEY) !== "off"; } catch { return true; } })();
+  let verseOn = (() => { try { return localStorage.getItem(VERSE_KEY) === "on"; } catch { return false; } })();
   const verseToday = () => VERSES[Math.floor(Date.now() / 864e5) % VERSES.length];
   const verseLine = () => { const v = verseToday(); return `“${v[0]}” ${v[1]}`; };
   // The day a verse was last shown on this device: a member who already had today's greeting before the verse existed
@@ -69,6 +70,19 @@
   }
   // A choice the account has not been told yet (offline, or the request failed) is kept and sent on the next open,
   // and the account's older answer never overwrites it meanwhile (the same rule as the looks in app-theme.js).
+  // Solomon's question, once: "Would you like a Bible verse from me each day?" Asked in his chat with two buttons.
+  const VERSE_ASKED = "mdfit_verse_asked";
+  const wasAsked = () => { try { return localStorage.getItem(VERSE_ASKED) === "1"; } catch { return true; } };
+  const askedNow = () => { try { localStorage.setItem(VERSE_ASKED, "1"); } catch {} };
+  function askVerse() {
+    if (wasAsked() || verseOn || !G.question || (window.MDFitTour && window.MDFitTour.running())) return;
+    if (document.querySelector("dialog[open]")) return void setTimeout(askVerse, 8000); // not over something they are in the middle of
+    askedNow();
+    G.question("One more thing. Would you like a Bible verse from me each day? I'd greet you with one.", [
+      { label: "Yes, a daily verse", more: () => setVerse(true) },
+      { label: "No thanks", more: () => setVerse(false) }]);
+  }
+  document.addEventListener("mdfit:tour-end", () => setTimeout(askVerse, 4500)); // after his "That's the tour" line
   const VERSE_UNSENT = "mdfit_verse_unsent";
   let versePicks = 0;
   const verseUnsent = () => { try { return localStorage.getItem(VERSE_UNSENT) === "1"; } catch { return false; } };
@@ -77,17 +91,20 @@
     try { window.MDFit.apiAuth("PUT", "/api/me/prefs", { verse: want ? "on" : "off" }).then(() => { if (want === verseOn) { try { localStorage.removeItem(VERSE_UNSENT); } catch {} } }).catch(() => {}); } catch {}
   }
   function setVerse(on, fromAccount) {
+    if (!fromAccount) askedNow(); // using the switch is an answer
     verseOn = !!on; try { localStorage.setItem(VERSE_KEY, verseOn ? "on" : "off"); } catch {}
     verseRow();
     if (fromAccount) return;
     versePicks++; sendVerse();
-    A.toast(verseOn ? "Daily Bible verse is on. Solomon greets you with one each day." : "Daily Bible verse is off.");
+    A.toast(verseOn ? "Daily Bible verse is on. Solomon greets you with one each day." : "Daily Bible verse is off. The switch is in More if you change your mind.");
     if (verseOn) { const ms = document.getElementById("more-sheet"); if (ms && ms.open) ms.close(); const t = `Today's verse: ${verseLine()}`; setTimeout(() => { if (G.say(t, { ms: Math.min(18000, 3500 + t.length * 55) })) verseShown(); }, 400); }
   }
   verseRow();
   // another device may have changed it: the account's choice wins when this device has none of its own to send
   if (verseUnsent()) sendVerse();
-  else try { const asked = versePicks; window.MDFit.apiAuth("GET", "/api/me/guide").then((g) => { if (verseUnsent() || versePicks !== asked) return; /* a tap made while this was on its way is newer */ const v = g && g.prefs && g.prefs.verse; if ((v === "on" || v === "off") && (v === "on") !== verseOn) setVerse(v === "on", true); }).catch(() => {}); } catch {}
+  else try { const asked = versePicks; window.MDFit.apiAuth("GET", "/api/me/guide").then((g) => { if (verseUnsent() || versePicks !== asked) return; /* a tap made while this was on its way is newer */ const v = g && g.prefs && g.prefs.verse; if ((v === "on" || v === "off") && (v === "on") !== verseOn) setVerse(v === "on", true);
+    // Answered on another device: not asked again here. Never answered and no tour on its way: he asks now.
+    if (g && g.verseAsked) askedNow(); else if (g && g.verseAsked === false) setTimeout(askVerse, 6000); }).catch(() => {}); } catch {}
   // Solomon's own sayings (written for the app, in the manner of old proverbs; none is a quotation)
   const SAYINGS = ["The patient miner finds the brighter stone.", "Small steps, well kept, move mountains.", "What you build daily, no one can take.",
     "Strength is gathered, not found.", "A steady hand outlasts a strong one.", "The lamp you tend lights the whole road.", "Dig a little each day and the mountain yields."];

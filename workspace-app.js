@@ -1036,6 +1036,37 @@
     return `<div class="card" style="margin-bottom:16px;padding-bottom:6px"><div class="card-head"><h2>${esc(title)} <span class="muted" style="font-weight:500">(${rows.length})</span></h2><button type="button" class="btn sm ghost" data-act="insList" data-key="${esc(state.insList)}" aria-label="Close this list">${ui("x", 14)}</button></div>
       <div style="max-height:440px;overflow:auto">${rows.map((c) => `<div class="list-item">${avatar(c.name, 28)}<span style="flex:1;min-width:0"><b>${esc(c.name)}</b><div class="muted" style="font-size:12px;overflow-wrap:anywhere">${esc(c.email)} · joined ${when(c.createdAt)}${c.membership ? ` · ${esc(tierName(c.membership.tier))}${c.membership.until ? ", paid through " + esc(c.membership.until) : ""}` : ""}</div></span><button type="button" class="btn sm" data-act="chart" data-id="${esc(c.id)}">Chart</button></div>`).join("") || none("Nobody in this group.")}</div></div>`;
   }
+  // Which app settings members chose (server: GET /analytics/looks). Counts only, most changed first.
+  const LOOK_WORDS = { full: "Full", simple: "Simple", white: "White", black: "Black", comfortable: "Comfortable", compact: "Compact", on: "On", off: "Off", all: "All", streaks: "Streaks only" };
+  // What members do once inside the app (server: GET /analytics/members). Counts only.
+  function insideCard(mi) {
+    if (!mi) return "";
+    const n = mi.members || 0, pct = (a, b) => (b ? Math.round((a / b) * 100) : 0), of = (a, b) => `${a} of ${b}`;
+    const a = mi.active, cb = mi.cameBack, dr = mi.dropOff, pd = mi.paid, ac = mi.actions, top = (mi.screens || [])[0];
+    const line = (label, x) => `<div class="list-item"><span style="flex:1">${label}</span><span class="num"><b>${x.count}</b> <span class="muted" style="font-size:12px">by ${x.people} ${x.people === 1 ? "member" : "members"}</span></span></div>`;
+    return `<div class="view-head" style="margin:8px 0 10px"><div><h2 style="margin:0">Inside the app</h2><p class="muted" style="margin:2px 0 0">What members do after they sign in. Counts only, from the app itself.</p></div></div>
+    <div class="grid g4" style="margin-bottom:16px">${kpi("Active today", a.today, `${pct(a.today, n)}% of ${n} accounts`)}${kpi("Active this week", a.week, `${pct(a.week, n)}% of accounts`)}${kpi("Active this month", a.month, `${pct(a.month, n)}% of accounts`)}${kpi("Came back after week one", cb.eligible ? pct(cb.returned, cb.eligible) + "%" : "–", cb.eligible ? of(cb.returned, cb.eligible) + " accounts a week old or more" : "no account is a week old yet")}</div>
+    <div class="grid g2" style="margin-bottom:16px">
+      <div class="card"><div class="card-head"><h2>What gets used (${mi.days}d)</h2><span class="muted" style="font-size:12px">${top ? `Most opened: ${esc(top.label)}` : ""}</span></div>
+        ${(mi.screens || []).map((x) => `<div style="margin-bottom:10px"><div class="row" style="justify-content:space-between"><span>${esc(x.label)}</span><span class="num muted">${x.people} ${x.people === 1 ? "member" : "members"} · ${x.minutes} min</span></div><div class="bar"><i style="width:${Math.max(2, pct(x.people, (top || {}).people || 1))}%"></i></div></div>`).join("") || none("Nobody has opened the app in this period.")}</div>
+      <div>
+        <div class="card" style="margin-bottom:16px"><h2 style="margin-bottom:6px">What gets done (${mi.days}d)</h2>${line("Workouts logged", ac.workouts)}${line("Pain check-ins", ac.pain)}${line("Daily habit checks", ac.checks)}${line("Things sent to another member", ac.sends)}</div>
+        <div class="card" style="margin-bottom:16px"><h2 style="margin-bottom:6px">Free to paid</h2>
+          <div class="list-item"><span style="flex:1">Sign-ups in the last ${mi.days} days now paying by card</span><span class="num"><b>${pd.signups ? pct(pd.paying, pd.signups) + "%" : "–"}</b> <span class="muted" style="font-size:12px">${of(pd.paying, pd.signups)}</span></span></div>
+          <p class="muted" style="font-size:12px;margin:8px 0 0">${(pd.before || []).length ? `Before paying, the ${pd.payingAll} paying ${pd.payingAll === 1 ? "member" : "members"} had opened: ${pd.before.map((x) => `${esc(x.label)} (${x.people})`).join(", ")}.` : "Once someone pays by card, the screens they opened beforehand are listed here."}</p></div>
+        <div class="card"><h2 style="margin-bottom:6px">Drop-off</h2>
+          <div class="list-item"><span style="flex:1">Never came back after the day they joined</span><span class="num"><b>${dr.eligible ? pct(dr.neverReturned, dr.eligible) + "%" : "–"}</b> <span class="muted" style="font-size:12px">${of(dr.neverReturned, dr.eligible)}</span></span></div>
+          <div class="list-item"><span style="flex:1">Used the app, then quiet for 14 days</span><span class="num"><b>${dr.eligible ? pct(dr.wentQuiet, dr.eligible) + "%" : "–"}</b> <span class="muted" style="font-size:12px">${of(dr.wentQuiet, dr.eligible)}</span></span></div></div>
+      </div>
+    </div>`;
+  }
+  function looksCard(lk) {
+    if (!lk || !(lk.looks || []).length) return "";
+    const total = lk.members || 0, top = lk.looks[0];
+    return `<div class="card" style="margin-bottom:16px"><div class="card-head"><h2>App settings members chose</h2><span class="muted" style="font-size:12px">${top.changed ? `Most changed: ${esc(top.label)}` : "Nobody has changed a setting yet"}</span></div>
+      ${lk.looks.map((l) => { const pct = total ? Math.round((l.changed / total) * 100) : 0; return `<div style="margin-bottom:12px"><div class="row" style="justify-content:space-between;gap:10px;flex-wrap:wrap"><span><b>${esc(l.label)}</b> <span class="muted" style="font-size:12px">${Object.entries(l.counts).map(([k, n]) => `${esc(LOOK_WORDS[k] || k)} ${n}`).join(" · ")}</span></span><span class="num muted">${pct}% changed it · moved ${l.moves} ${l.moves === 1 ? "time" : "times"}</span></div><div class="bar"><i style="width:${Math.max(2, pct)}%"></i></div></div>`; }).join("")}
+      <p class="muted" style="font-size:12px;margin:0">Out of ${total} ${total === 1 ? "account" : "accounts"}. "Changed it" means the setting is off its starting choice now; "moved" counts every switch from today on.</p></div>`;
+  }
   V.insights = async () => {
     const tabs = `<div class="tabs" role="tablist">${[["analytics", "Analytics"], ["audit", "Audit"]].filter(([t]) => t !== "audit" || can("security")).map(([t, l]) => `<button class="tab ${(state.insTab === "audit" && can("security") ? "audit" : "analytics") === t ? "active" : ""}" role="tab" data-act="insTab" data-tab="${t}">${l}</button>`).join("")}</div>`;
     if (state.insTab === "audit" && can("security")) {
@@ -1044,8 +1075,8 @@
       <div class="card" style="margin-bottom:16px"><h2 style="margin-bottom:10px">Ledger check</h2><div id="auditResult">${none("Not checked in this session. Press Verify.")}</div></div>${ledgerTable(a)}`;
     }
     const days = state.insDays;
-    const [d, sa, mail, people0, , rf, lg] = await Promise.all([load(`/analytics?days=${days}`), load(`/search-analytics?days=${days}`).catch(() => null), load("/email-log").catch(() => null), partClients(), content(),
-      load(`/referrals?days=${days}`).catch(() => null), load(`/logs/summary?days=${Math.min(days, 90)}`).catch(() => null)]);
+    const [d, sa, mail, people0, , rf, lg, lk, mi] = await Promise.all([load(`/analytics?days=${days}`), load(`/search-analytics?days=${days}`).catch(() => null), load("/email-log").catch(() => null), partClients(), content(),
+      load(`/referrals?days=${days}`).catch(() => null), load(`/logs/summary?days=${Math.min(days, 90)}`).catch(() => null), load("/analytics/looks").catch(() => null), load(`/analytics/members?days=${days}`).catch(() => null)]);
     // Sign-ups and members, counted from the accounts themselves. "Paying" means a card subscription is running;
     // a membership set by hand (no card on a schedule) is counted separately so the two are never confused.
     const people = people0 || [], since = Date.now() - days * 864e5, fresh = people.filter((c) => c.createdAt && Date.parse(c.createdAt) >= since).length;
@@ -1065,6 +1096,7 @@
     <div id="insPeople">${insPeople()}</div>
     <div class="card" style="margin-bottom:16px"><div class="card-head"><h2>Members by type</h2><span class="muted" style="font-size:12px">${paying.length ? `About ${money(Math.round(monthly))} a month from card subscriptions, before discounts` : "No card subscriptions running"}</span></div>
       ${tierRows.map((r) => `<div class="list-item"><span style="flex:1"><b>${esc(r.name)}</b></span><button type="button" class="pill pill-btn ${r.pay ? "ok" : ""}" data-act="insList" data-key="paying:${esc(r.id)}"${r.pay ? "" : " disabled"}>${r.pay} paying</button>${r.hand ? `<button type="button" class="pill pill-btn" data-act="insList" data-key="hand:${esc(r.id)}">${r.hand} set by hand</button>` : ""}</div>`).join("") || none("Nobody has a membership yet.")}</div>`}
+    ${insideCard(mi)}${looksCard(lk)}
     <div class="grid g4" style="margin-bottom:16px">${kpi("Views today", s.todayViews, "page views")}${kpi("Visitors today", s.todayUnique, "people")}${kpi(`Views (${d.rangeDays || days}d)`, s.totalViews, "page views")}${kpi(`Visitors (${d.rangeDays || days}d)`, s.totalUnique, "people")}</div>
     <div class="grid g2">
       <div class="card" style="padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>By day</h2></div><div class="table-wrap"><table><thead><tr><th>Date</th><th class="num">Views</th><th class="num">Visitors</th></tr></thead><tbody>${(d.days || []).slice().reverse().slice(0, 31).map((r) => `<tr><td>${fmtDate(r.date)}</td><td class="num">${r.views}</td><td class="num">${r.unique}</td></tr>`).join("") || noneRow(3, "No data yet.")}</tbody></table></div></div>

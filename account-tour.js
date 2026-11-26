@@ -104,6 +104,7 @@
       quietNow(); clearInterval(tick); clearInterval(typing); document.removeEventListener("click", onTap, true); document.removeEventListener("keydown", onKey, true); document.removeEventListener("mdfit:guide-asked", onAsked);
       root.remove(); document.body.classList.remove("gt-on", "gt-nocloud"); keep(null);
       if (typeof o.onEnd === "function") { try { o.onEnd(!!done); } catch {} }
+      try { document.dispatchEvent(new CustomEvent("mdfit:tour-end", { detail: { done: !!done } })); } catch {} // Solomon's verse question waits for this
     }
     const targets = () => { let t = null; try { t = step.find(); } catch {} return (Array.isArray(t) ? t : [t]).filter(seen); };
     // Dialogs opened with showModal sit above the page and make the rest of it inert, so the tour moves inside the open one
