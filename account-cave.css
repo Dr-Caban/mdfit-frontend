@@ -189,3 +189,58 @@ html[data-home-view="simple"] .hb-pts { display: none; }
 /* More menu: the Daily Bible verse switch (account-solomon.js) */
 .more-list .more-onoff { margin-left: auto; font-style: normal; font-size: 13px; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: color-mix(in srgb, currentColor 12%, transparent); }
 .more-list [aria-checked="true"] .more-onoff { background: #2e7d4f; color: #fff; }
+
+/* The overflowing chest (account-chest.js): all four of today's stones lit */
+#chest-ov{position:fixed;inset:0;z-index:1200;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;padding:24px 20px calc(28px + env(safe-area-inset-bottom));background:radial-gradient(120% 80% at 50% 46%,#2a1c0e 0,#120c08 55%,#070504 100%);color:#fff;opacity:0;transition:opacity .35s ease;overflow:hidden}
+#chest-ov[hidden]{display:none}
+#chest-ov.in{opacity:1}
+.ch-glow{position:absolute;left:50%;top:46%;width:520px;height:520px;margin:-260px 0 0 -260px;border-radius:50%;background:radial-gradient(circle,rgba(246,220,140,.34) 0,rgba(226,169,58,.12) 38%,transparent 68%);opacity:.35;transform:scale(.7);transition:opacity .8s ease,transform 1.1s cubic-bezier(.2,.9,.3,1.2);pointer-events:none}
+#chest-ov.open .ch-glow{opacity:1;transform:scale(1.15);animation:ch-breathe 3.2s ease-in-out 1.2s infinite alternate}
+.ch-chest{position:relative;width:200px;height:170px;padding:0;border:0;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent;animation:ch-nudge 1.6s ease-in-out infinite}
+.ch-chest:focus-visible{outline:2px solid #f6dc8c;outline-offset:10px;border-radius:14px}
+.ch-chest:disabled{cursor:default}
+#chest-ov.open .ch-chest{animation:none}
+.ch-art{position:absolute;inset:0;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 14px 18px rgba(0,0,0,.55))}
+.ch-mouth{opacity:0;transition:opacity .3s ease .15s}
+#chest-ov.open .ch-mouth{opacity:1}
+.ch-lid{transform-box:view-box;transform-origin:18px 88px;transition:transform .55s cubic-bezier(.3,1.5,.5,1)}
+#chest-ov.open .ch-lid{transform:translate(-6px,-14px) rotate(-38deg)}
+.ch-gems{position:absolute;left:50%;top:88px;width:0;height:0;z-index:2}
+.ch-gems i{position:absolute;left:-13px;top:-13px;width:26px;height:26px;opacity:0;transform:translate(0,10px) scale(.3)}
+.ch-gems i:nth-child(n+8){z-index:3}
+.ch-gem{width:100%;height:100%;display:block;filter:drop-shadow(0 0 6px var(--c)) drop-shadow(0 2px 2px rgba(0,0,0,.5))}
+#chest-ov.open .ch-gems i{animation:ch-spill .95s cubic-bezier(.2,.8,.3,1) both;animation-delay:calc(.28s + var(--d))}
+#chest-ov.open .ch-gems i .ch-gem{animation:ch-twinkle 2.4s ease-in-out infinite;animation-delay:calc(1.4s + var(--d) * 3)}
+.ch-words{position:relative;text-align:center;max-width:320px}
+.ch-kicker{margin:0 0 6px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#f6dc8c;font-weight:700}
+.ch-words h2{margin:0;font-size:26px;line-height:1.15;color:#fff}
+.ch-sub{margin:8px 0 0;font-size:15px;color:rgba(255,255,255,.78)}
+.ch-go{position:relative;min-width:220px;padding:14px 28px;border:0;border-radius:999px;background:linear-gradient(#f6dc8c,#c99a3a);color:#1b1206;font:inherit;font-weight:800;font-size:16px;cursor:pointer;animation:ch-rise .4s ease both}
+.ch-go[hidden]{display:none}
+@keyframes ch-nudge{0%,100%{transform:translateY(0) rotate(0)}45%{transform:translateY(-5px) rotate(-1.5deg)}60%{transform:translateY(0) rotate(1.5deg)}75%{transform:rotate(0)}}
+@keyframes ch-spill{0%{opacity:0;transform:translate(0,10px) scale(.3)}18%{opacity:1}55%{transform:translate(calc(var(--x) * .6),calc(min(var(--y),0px) - 70px)) scale(1.05) rotate(calc(var(--r) * -1))}100%{opacity:1;transform:translate(var(--x),var(--y)) scale(1) rotate(var(--r))}}
+@keyframes ch-twinkle{0%,100%{filter:drop-shadow(0 0 6px var(--c)) drop-shadow(0 2px 2px rgba(0,0,0,.5))}50%{filter:drop-shadow(0 0 13px var(--c)) drop-shadow(0 2px 2px rgba(0,0,0,.5)) brightness(1.25)}}
+@keyframes ch-breathe{from{transform:scale(1.08)}to{transform:scale(1.22)}}
+@keyframes ch-rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){#chest-ov,.ch-glow,.ch-lid,.ch-mouth{transition:none}.ch-chest,#chest-ov.open .ch-glow,#chest-ov.open .ch-gems i .ch-gem,.ch-go{animation:none}#chest-ov.open .ch-gems i{animation:none;opacity:1;transform:translate(var(--x),var(--y)) rotate(var(--r))}}
+
+/* Moments (account-fx.js): words that pop, gem shards, the vein that strikes up the screen */
+#fx{position:fixed;inset:0;z-index:1150;pointer-events:none;overflow:hidden}
+#fx.flash::before{content:"";position:absolute;inset:0;background:radial-gradient(90% 60% at 50% 100%,rgba(246,220,140,.28),transparent 70%);animation:fx-flash .7s ease-out both}
+.fx-words{position:absolute;left:50%;top:42%;display:flex;flex-direction:column;align-items:center;gap:2px;width:max-content;max-width:92vw;text-align:center;transform:translate(-50%,-50%) rotate(var(--tilt));animation:fx-pop 1.6s cubic-bezier(.2,1.4,.4,1) both}
+.fx-words b,.fx-words span{font-weight:900;font-style:italic;letter-spacing:.01em;color:#fff;paint-order:stroke fill;-webkit-text-stroke:9px var(--b);text-shadow:0 5px 0 var(--b),0 0 26px var(--a);line-height:1.05}
+.fx-words b{font-size:clamp(34px,11vw,54px);text-transform:uppercase}
+.fx-words span{font-size:clamp(24px,8vw,38px);-webkit-text-stroke-width:7px}
+.fx-combo b{font-size:clamp(38px,12.5vw,60px)}
+.fx-strike{top:34%}
+.fx-shard{position:absolute;left:50%;top:42%;width:var(--s);height:var(--s);margin:calc(var(--s) / -2) 0 0 calc(var(--s) / -2);background:var(--c);clip-path:polygon(50% 0,100% 38%,50% 100%,0 38%);filter:drop-shadow(0 0 5px var(--c));animation:fx-shard 1.1s cubic-bezier(.15,.7,.3,1) var(--d) both}
+.fx-bolt{position:absolute;inset:0;width:100%;height:100%}
+.fx-bolt path{fill:none;stroke:#fff3c4;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;animation:fx-bolt .9s ease-out both}
+.fx-bolt path.g{stroke:#f2a900;stroke-width:13;opacity:.55;filter:blur(7px)}
+.fx-bolt path.br{stroke-width:2.2;animation-delay:.12s}
+@keyframes fx-pop{0%{opacity:0;transform:translate(-50%,-30%) rotate(var(--tilt)) scale(.4)}16%{opacity:1;transform:translate(-50%,-50%) rotate(var(--tilt)) scale(1.12)}26%{transform:translate(-50%,-50%) rotate(var(--tilt)) scale(1)}78%{opacity:1;transform:translate(-50%,-56%) rotate(var(--tilt)) scale(1)}100%{opacity:0;transform:translate(-50%,-80%) rotate(var(--tilt)) scale(.96)}}
+@keyframes fx-shard{0%{opacity:0;transform:translate(0,0) scale(.3) rotate(0)}15%{opacity:1}100%{opacity:0;transform:translate(var(--x),calc(var(--y) + 60px)) scale(1) rotate(var(--r))}}
+@keyframes fx-bolt{0%{stroke-dashoffset:1;opacity:1}32%{stroke-dashoffset:0;opacity:1}55%{opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+@keyframes fx-flash{0%{opacity:0}18%{opacity:1}100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.fx-words{animation:fx-fade 1.4s ease both;transform:translate(-50%,-50%)}#fx.flash::before{animation:none}}
+@keyframes fx-fade{0%,100%{opacity:0}20%,75%{opacity:1}}

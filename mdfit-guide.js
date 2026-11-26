@@ -147,7 +147,22 @@
 
   // ---------- the cloud and the chat ----------
   const CP = "M17 38a11 11 0 0 1-2.2-21.8A13 13 0 0 1 39.5 11.2 10 10 0 0 1 53 20.5 9 9 0 0 1 50 38z";
-  const cloud = (cls) => `<svg viewBox="0 0 64 44" class="${cls}" aria-hidden="true"><path class="mg-echo" d="${CP}"/><path class="mg-body" d="${CP}"/><g class="mg-dots"><circle cx="23.5" cy="27" r="2.6"/><circle cx="32" cy="27" r="2.6"/><circle cx="40.5" cy="27" r="2.6"/></g></svg>`;
+  // Solomon's faces (owner, Nov 2026). His three dots are how he rests; when he feels something they give way to a
+  // face for a moment: eyes (e), a mouth (m) and whatever goes with it (x: blush, stars, a bead of sweat, z's).
+  // feel(name) below shows one; the body moves with it (mdfit-guide.css, "mg-emo-...").
+  const EYES = '<circle class="e" cx="25" cy="24" r="2.5"/><circle class="e" cx="39" cy="24" r="2.5"/>';
+  const FACE = {
+    happy: EYES + '<path class="m" d="M27 29.5q5 4.5 10 0"/>',
+    proud: '<path class="m" d="M21.5 25q3.5-4.5 7 0M35.5 25q3.5-4.5 7 0"/><path class="m" d="M26 29.5q6 5.5 12 0"/><circle class="x blush" cx="19.5" cy="29.5" r="2.6"/><circle class="x blush" cx="44.5" cy="29.5" r="2.6"/>',
+    excited: '<circle class="e" cx="25" cy="23.5" r="3.2"/><circle class="e" cx="39" cy="23.5" r="3.2"/><circle class="x glint" cx="26.2" cy="22.3" r="1"/><circle class="x glint" cx="40.2" cy="22.3" r="1"/><path class="m open" d="M27 28.5h10a5 5 0 0 1-10 0z"/><path class="x star s1" d="M6 6l1.2 3 3 1.2-3 1.2L6 14.4 4.8 11.4 1.8 10.2l3-1.2z"/><path class="x star s2" d="M58 2l1 2.5 2.5 1-2.5 1L58 9l-1-2.5-2.5-1 2.5-1z"/><path class="x star s3" d="M60 30l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>',
+    cheer: '<path class="m" d="M22 21l5.5 3-5.5 3M42 21l-5.5 3 5.5 3"/><path class="m open" d="M27.5 29h9a4.5 4.5 0 0 1-9 0z"/><path class="x star s1" d="M4 20l1 2.5 2.5 1-2.5 1L4 27l-1-2.5-2.5-1 2.5-1z"/><path class="x star s2" d="M60 14l1 2.5 2.5 1-2.5 1L60 21l-1-2.5-2.5-1 2.5-1z"/>',
+    sleepy: '<path class="m" d="M21.5 24q3.5 3 7 0M35.5 24q3.5 3 7 0"/><circle class="m o" cx="32" cy="30.5" r="1.6"/><text class="x z z1" x="50" y="10">z</text><text class="x z z2" x="55" y="4">z</text>',
+    worried: '<circle class="e" cx="25" cy="25" r="2.2"/><circle class="e" cx="39" cy="25" r="2.2"/><path class="m" d="M21 21.5l6-2.5M43 21.5l-6-2.5"/><path class="m" d="M27 31.5q2.5-2.5 5 0t5 0"/><path class="x drop" d="M49 10q2.5 3.5 0 5-2.5-1.5 0-5z"/>',
+    peace: '<path class="m" d="M21.5 24.5q3.5 2.5 7 0M35.5 24.5q3.5 2.5 7 0"/><path class="m" d="M28 29.5q4 3 8 0"/>',
+    curious: '<g class="look">' + EYES + '</g><path class="m" d="M29.5 30.5h5"/>'
+  };
+  const FACES = Object.entries(FACE).map(([k, v]) => `<g class="mg-face mg-f-${k}">${v}</g>`).join("");
+  const cloud = (cls) => `<svg viewBox="0 0 64 44" class="${cls}" aria-hidden="true"><path class="mg-echo" d="${CP}"/><path class="mg-body" d="${CP}"/><g class="mg-dots"><circle cx="23.5" cy="27" r="2.6"/><circle cx="32" cy="27" r="2.6"/><circle cx="40.5" cy="27" r="2.6"/></g>${FACES}</svg>`;
   const ICON = {
     cal: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2zm12 8v10H5V10z"/></svg>',
     send: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20.5 21 12 3 3.5v6.6l11 1.9-11 1.9z"/></svg>',
@@ -159,6 +174,16 @@
   // What he says without being asked rises above the cloud and fades by itself. Tapping it does what it offers (or opens the chat).
   const tag = document.createElement("button"); tag.id = "mg-tag"; tag.type = "button"; tag.hidden = true;
   let sayT = 0, sayAct = null, dayHello = "";
+  // feel(name, ms): show one of his faces for ms (about two seconds unless told). rest(name) is how he is between
+  // feelings (sleepy late at night); "" is his three dots. Nothing shows while the chat is open or he is put away.
+  let emoT = 0, resting = "";
+  const paintEmo = (name) => { [...btn.classList].forEach((c) => { if (c.startsWith("mg-emo")) btn.classList.remove(c); }); if (name && FACE[name]) { void btn.offsetWidth; btn.classList.add("mg-emo", "mg-emo-" + name); } };
+  // (Full view only: in the Simple view he stays his three dots, with no faces, sounds or vibration)
+  const plainHome = () => document.documentElement.dataset.homeView === "simple";
+  document.addEventListener("mdfit:theme", () => { clearTimeout(emoT); paintEmo(plainHome() || !box.hidden ? "" : resting); });
+  function feel(name, ms) { if (!FACE[name] || plainHome() || !box.hidden || btn.classList.contains("mg-away")) return false; clearTimeout(emoT); paintEmo(name); emoT = setTimeout(() => paintEmo(resting), ms || 2100); return true; }
+  const feeling = () => { const c = [...btn.classList].find((x) => x.startsWith("mg-emo-")); return c ? c.slice(7) : ""; };
+  function rest(name) { const was = resting; resting = FACE[name] ? name : ""; if (feeling() === was) { clearTimeout(emoT); paintEmo(box.hidden && !plainHome() ? resting : ""); } }
   function hush() { clearTimeout(sayT); tag.hidden = true; sayAct = null; btn.classList.remove("mg-talk"); }
   function speak(text, o) {
     o = o || {}; text = String(text || "").trim();
@@ -167,6 +192,7 @@
     tag.textContent = text; tag.setAttribute("aria-label", "Solomon says: " + text); tag.hidden = false;
     tag.classList.remove("mg-in"); void tag.offsetWidth; tag.classList.add("mg-in"); btn.classList.add("mg-talk");
     if (o.ms !== 0) sayT = setTimeout(hush, o.ms || Math.min(9500, 3600 + text.length * 60));
+    if (text.includes("“")) { const ms = Math.min(9000, o.ms || 6000); if (window.MDFitFx && window.MDFitFx.mood) window.MDFitFx.mood("peace", ms); else feel("peace", ms); } // a verse is said with his eyes closed
     return true;
   }
   tag.addEventListener("click", () => { const act = sayAct; hush(); if (act) { try { act(); } catch {} } else open(true); });
@@ -820,14 +846,14 @@
   }
   function open(byHand, quiet) {
     if (!box.hidden) return;
-    hush(); box.hidden = false; scrim.hidden = !phone(); dot.hidden = true; btn.setAttribute("aria-expanded", "true"); document.documentElement.classList.add("mg-open");
+    hush(); clearTimeout(emoT); paintEmo(""); box.hidden = false; scrim.hidden = !phone(); dot.hidden = true; btn.setAttribute("aria-expanded", "true"); document.documentElement.classList.add("mg-open");
     try { localStorage.setItem("mdfit-guide-met", "1"); } catch {}
     if (quiet) greeted = true; else if (!greeted) greet(); else news();
     if (!saidOpen) { saidOpen = true; tell("open"); }
     load(); end(); fitKeyboard();
     if (byHand && !phone()) setTimeout(() => input.focus({ preventScroll: true }), 60); // on a phone the keyboard waits for a tap on the box
   }
-  function shut() { box.hidden = true; scrim.hidden = true; box.style.bottom = ""; box.style.height = ""; btn.setAttribute("aria-expanded", "false"); document.documentElement.classList.remove("mg-open"); }
+  function shut() { paintEmo(plainHome() ? "" : resting); box.hidden = true; scrim.hidden = true; box.style.bottom = ""; box.style.height = ""; btn.setAttribute("aria-expanded", "false"); document.documentElement.classList.remove("mg-open"); }
   btn.addEventListener("click", () => (box.hidden ? open(true) : shut()));
   box.querySelector("#mg-x").addEventListener("click", () => { shut(); btn.focus({ preventScroll: true }); });
   scrim.addEventListener("click", shut);
@@ -856,5 +882,5 @@
   lift();
 
   load();
-  window.MDFitGuide = { day: dayRows, understand, open: () => open(false), lesson, shut, say: speak, hush, recap: (which) => { open(false, true); beat(() => recap(which)); }, speaking: () => !tag.hidden, question: (text, opts) => { hush(); open(false, true); beat(() => { say(text); offer(opts); }); }, greeting: (t) => { dayHello = String(t || "").trim(); }, reminders: () => G.reminders.slice() };
+  window.MDFitGuide = { day: dayRows, understand, open: () => open(false), lesson, shut, say: speak, hush, recap: (which) => { open(false, true); beat(() => recap(which)); }, speaking: () => !tag.hidden, feel, rest, feeling, question: (text, opts) => { hush(); open(false, true); beat(() => { say(text); offer(opts); }); }, greeting: (t) => { dayHello = String(t || "").trim(); }, reminders: () => G.reminders.slice() };
 })();
