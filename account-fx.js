@@ -50,13 +50,18 @@
   // [on, off, on, ...] in milliseconds, or one number.
   let hap = null;
   function tap() { try { if (!hap) { hap = document.createElement("label"); hap.setAttribute("aria-hidden", "true"); hap.style.cssText = "position:fixed;left:-200px;top:0;opacity:0;pointer-events:none"; hap.innerHTML = '<input type="checkbox" switch tabindex="-1">'; document.body.appendChild(hap); } hap.click(); } catch {} }
-  const buzz = (p) => { try {
+  // Inside the MD Fit phone app (a shell around this site) the real thing is on hand: the app's own haptics, by
+  // name (light, medium, heavy, selection, success, warning). The app already taps and plays its own sound when XP
+  // is earned or the daily goal is reached, so those two are left to it there ("" = nothing more from here).
+  const APP = window.MDFitNative && typeof window.MDFitNative.haptic === "function" ? window.MDFitNative : null;
+  const buzz = (p, style) => { try {
+    if (APP) { if (style) APP.haptic(style); return; }
     if (navigator.vibrate) return void navigator.vibrate(p);
     let at = 0; [].concat(p).forEach((ms, i) => { if (i % 2 === 0) { const t = at; t ? setTimeout(tap, t) : tap(); if (ms >= 50) setTimeout(tap, t + 45); /* a long pulse is two taps */ } at += ms; });
   } catch {} };
   // A mood by itself (nothing popping with it) has its own sound and its own feel in the hand
-  const BUZZ = { happy: [12, 40, 12], proud: [30, 50, 60], worried: [8, 60, 8, 60, 8], peace: [40] };
-  const mood = (name, ms) => { if (!feel(name, ms)) return; if (TUNES["m-" + name]) sound("m-" + name); if (BUZZ[name]) buzz(BUZZ[name]); }; // no face shown (Simple view, chat open): no sound, no buzz
+  const BUZZ = { happy: [12, 40, 12], proud: [30, 50, 60], worried: [8, 60, 8, 60, 8], peace: [40] }, FEEL = { happy: "light", proud: "success", worried: "warning", peace: "selection" };
+  const mood = (name, ms) => { if (!feel(name, ms)) return; if (TUNES["m-" + name]) sound("m-" + name); if (BUZZ[name]) buzz(BUZZ[name], FEEL[name]); }; // no face shown (Simple view, chat open): no sound, no buzz
   function words(big, small, hue, cls = "") {
     const el = document.createElement("div"); el.className = "fx-words " + cls; el.style.setProperty("--a", hue[0]); el.style.setProperty("--b", hue[1]); el.style.setProperty("--tilt", `${rnd(-5, 5).toFixed(1)}deg`);
     el.innerHTML = `<b></b>${small ? "<span></span>" : ""}`; el.firstChild.textContent = big; if (small) el.lastChild.textContent = small;
@@ -86,9 +91,9 @@
   function run() { const f = queue.shift(); if (!f) { running = false; return; } running = true; f(); setTimeout(run, still() ? 900 : 1250); }
   const later = (f) => { if (queue.length < 3) queue.push(f); if (!running) run(); };
 
-  const pop = (xp) => later(() => { const tier = xp >= 40 ? "big" : xp >= 15 ? "mid" : "small"; words(pick(SAY[tier], "w" + tier), `+${xp} XP`, pick(HUES, "h")); shards(tier === "big" ? 18 : tier === "mid" ? 12 : 7); sound("pop"); feel(tier === "big" ? "excited" : tier === "mid" ? "proud" : "happy"); buzz(15); });
-  const combo = (n) => later(() => { words(`Combo x${n}`, "", HUES[1], "fx-combo"); shards(6 + n * 2); sound("combo", (n - 1) * 2); feel("cheer"); buzz([10, 30, 10]); });
-  const strike = (big, small, kind) => later(() => { bolt(); words(big, small, HUES[0], "fx-strike"); sound("strike"); feel("excited", 2400); buzz([20, 30, 40]); });
+  const pop = (xp) => later(() => { const tier = xp >= 40 ? "big" : xp >= 15 ? "mid" : "small"; words(pick(SAY[tier], "w" + tier), `+${xp} XP`, pick(HUES, "h")); shards(tier === "big" ? 18 : tier === "mid" ? 12 : 7); if (!APP) sound("pop"); feel(tier === "big" ? "excited" : tier === "mid" ? "proud" : "happy"); buzz(15, ""); });
+  const combo = (n) => later(() => { words(`Combo x${n}`, "", HUES[1], "fx-combo"); shards(6 + n * 2); sound("combo", (n - 1) * 2); feel("cheer"); buzz([10, 30, 10], n > 2 ? "heavy" : "medium"); });
+  const strike = (big, small, goal) => later(() => { bolt(); words(big, small, HUES[0], "fx-strike"); if (!(APP && goal)) sound("strike"); feel("excited", 2400); buzz([20, 30, 40], goal ? "" : "heavy"); });
 
   // ---- When: read what changed from the app's own events
   let prev = null, lit = null, lastGain = 0, chain = 1;
@@ -101,7 +106,7 @@
     if (gained > 0) {
       chain = Date.now() - lastGain < 120000 ? chain + 1 : 1; lastGain = Date.now();
       pop(gained); if (chain > 1) combo(chain);
-      if (was.todayXp < was.dailyGoal && next.todayXp >= next.dailyGoal) strike(pick(SAY.goal, "wg"), `${next.todayXp} XP today`);
+      if (was.todayXp < was.dailyGoal && next.todayXp >= next.dailyGoal) strike(pick(SAY.goal, "wg"), `${next.todayXp} XP today`, true);
     }
   });
   document.addEventListener("mdfit:journey", () => {

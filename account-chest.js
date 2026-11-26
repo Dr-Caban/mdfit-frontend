@@ -54,7 +54,7 @@
       const day = Math.floor(Date.now() / 864e5), T = ["Your chest is overflowing", "A full haul", "The chest runs over", "Every stone, every gem", "Today's treasure"], S = ["See you tomorrow.", "The mine keeps it safe.", "Rest well; the road will keep.", "Tomorrow there is more.", "That is a whole day."];
       ov.querySelector("#ch-title").textContent = T[day % T.length];
       ov.querySelector("#ch-sub").textContent = `${what ? `${what} done, and every stone lit.` : "Every stone lit today."} ${S[day % S.length]}`;
-      if (window.MDFitFx) { window.MDFitFx.buzz([20, 40, 30, 40, 80]); window.MDFitFx.sound("chest"); }
+      if (window.MDFitFx) { window.MDFitFx.buzz([20, 40, 30, 40, 80], "success"); window.MDFitFx.sound("chest"); }
       setTimeout(() => { go.hidden = false; go.focus({ preventScroll: true }); }, still() ? 0 : 1300);
     };
     chest.addEventListener("click", open);
