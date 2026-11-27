@@ -4,7 +4,7 @@
 // All drawn here in the mine's own colours. They sit on top without blocking a tap and are gone in about a second.
 //
 //   pop     XP was earned: one of a dozen words, in gold, sapphire, emerald or amethyst, with gem shards
-//   strike  a stone lit today (not the last: all four is the chest, account-chest.js) or the daily goal reached
+//   strike  a stone the member lit just now (not the last: all four is the chest, account-chest.js) or the daily goal reached
 //   combo   a second thing logged within two minutes of the last: "Combo x2", x3 ... rising in pitch
 //
 // Full view only: nothing here plays in the Simple view (no moments, faces, sounds or vibration). Not during the tour; with reduced motion the words fade in and out and nothing flies.
@@ -14,7 +14,8 @@
   const M = window.MDFit; if (!M || !M.auth.get()) return;
   const A = window.MDFitApp; if (!A) return;
   const still = () => { try { return matchMedia("(prefers-reduced-motion: reduce)").matches; } catch { return false; } };
-  const quiet = () => document.documentElement.dataset.homeView === "simple" || (window.MDFitTour && window.MDFitTour.running()) || !!document.getElementById("chest-ov") && !document.getElementById("chest-ov").hidden;
+  const simple = () => document.documentElement.dataset.homeView === "simple";
+  const quiet = () => simple() || (window.MDFitTour && window.MDFitTour.running()) || !!document.getElementById("chest-ov") && !document.getElementById("chest-ov").hidden;
   const pick = (list, memo) => { let i = Math.floor(Math.random() * list.length); if (list.length > 1 && i === pick[memo]) i = (i + 1) % list.length; pick[memo] = i; return list[i]; }; // never the same twice running
   const rnd = (a, b) => a + Math.random() * (b - a);
 
@@ -24,27 +25,55 @@
     // his moods, when no moment is sounding for him: glad (two warm notes up), proud (a major chord), worried (a
     // minor step down, then relief is the glad one), at peace (one low soft note). Sleepy and curious are silent.
     "m-happy": [[[587, 0], [880, 0.11]]], "m-proud": [[[523, 0], [659, 0.02], [784, 0.04], [1047, 0.22]]], "m-worried": [[[466, 0], [440, 0.16], [392, 0.32]]], "m-peace": [[[262, 0], [392, 0.25]]], chest: [[[523, 0], [659, 0.1], [784, 0.2], [1047, 0.3], [1568, 0.46]]] };
-  // Real recorded sounds (assets/sounds, made for MD Fit) are fetched when the app opens and decoded ahead of time,
-  // so each plays the instant it is asked for. Until one has arrived (or if it never does: offline, an old browser)
-  // the short synthesized figure above plays in its place. Phones only let a page make sound after a first touch,
-  // so the first touch anywhere wakes the audio; from then on everything sounds without one.
+  // Real recorded sounds (assets/sounds, made for MD Fit) are fetched once the app is open and decoded as soon as
+  // the audio is awake, so each plays the instant it is asked for. Until one is ready (or if it never is: an old
+  // browser) the short synthesized figure above plays in its place. Nothing is fetched where it would never play: in
+  // the Simple view, with sounds switched off, or (the three pops) inside the phone app, which plays its own. They are
+  // fetched when that changes, and a file that could not be fetched (offline) is tried again when the connection is back.
+  // Phones let a page make sound only from a tap or a key press, so the audio is made and woken by the member's own
+  // touch, never before. The listeners stay until it really is awake (on an iPhone the touch that ends a scroll does
+  // not count), then go. A sound asked for while it is still asleep is dropped: saved up, it would play late, on the
+  // first tap, for something long gone from the screen.
   const FILES = { pop: ["pop1", "pop2", "pop3"], combo: ["combo"], strike: ["strike"], chest: ["chest"], "m-happy": ["happy"], "m-proud": ["proud"], "m-worried": ["worried"], "m-peace": ["peace"] };
-  const BUF = {}, VOL = { strike: 0.8, chest: 0.9, "m-peace": 0.6, "m-worried": 0.6, "m-happy": 0.7, "m-proud": 0.7 };
-  const audio = () => { const AC = window.AudioContext || window.webkitAudioContext; return AC ? sound.ac || (sound.ac = new AC()) : null; };
-  function preload() {
-    if (preload.done) return; preload.done = true;
-    try { const ac = audio(); if (!ac || localStorage.getItem("mdfit-sounds") === "off") return;
-      [...new Set(Object.values(FILES).flat())].forEach((n) => { fetch(`/assets/sounds/${n}.mp3`).then((r) => (r.ok ? r.arrayBuffer() : null)).then((raw) => raw && new Promise((ok, no) => ac.decodeAudioData(raw, ok, no))).then((b) => { if (b) BUF[n] = b; }).catch(() => {}); });
+  const BUF = {}, RAW = {}, GET = {}, VOL = { strike: 0.8, chest: 0.9, "m-peace": 0.6, "m-worried": 0.6, "m-happy": 0.7, "m-proud": 0.7 }; // BUF: ready (null: would not decode); RAW: fetched, waiting for the audio; GET: on its way
+  const AC = window.AudioContext || window.webkitAudioContext;
+  const hush = () => { try { return !AC || simple() || localStorage.getItem("mdfit-sounds") === "off"; } catch { return true; } };
+  function load() {
+    if (hush()) return;
+    Object.entries(FILES).forEach(([kind, names]) => { if (kind === "pop" && APP) return; names.forEach((n) => {
+      if (n in BUF || RAW[n] || GET[n]) return; GET[n] = true;
+      fetch(`/assets/sounds/${n}.mp3`).then((r) => (r.ok ? r.arrayBuffer() : null)).then((raw) => { if (raw) { RAW[n] = raw; decode(); } })
+        .catch(() => {}).finally(() => { GET[n] = false; }); }); });
+  }
+  function decode() {
+    const ac = sound.ac; if (!ac) return;
+    Object.keys(RAW).forEach((n) => { const raw = RAW[n]; delete RAW[n];
+      new Promise((ok, no) => ac.decodeAudioData(raw, ok, no)).then((b) => { BUF[n] = b; }, () => { BUF[n] = null; }); });
+  }
+  // (in a tap or key press right now; a browser that cannot tell counts the second after a touch)
+  const inTap = () => (navigator.userActivation ? navigator.userActivation.isActive : Date.now() - (wake.at || 0) < 1000);
+  const WAKE = ["pointerdown", "pointerup", "touchend", "click", "keydown"];
+  const listen = (on) => WAKE.forEach((ev) => document[on ? "addEventListener" : "removeEventListener"](ev, wake, { capture: true, passive: true }));
+  function wake(e) {
+    try {
+      if (!e.isTrusted) return; wake.at = Date.now();
+      if (hush() || !inTap()) return; // (a finger going down or ending a scroll may not start sound: the next tap will)
+      let ac = sound.ac;
+      if (!ac) { ac = sound.ac = new AC(); ac.onstatechange = () => listen(ac.state !== "running"); } // (put to sleep again by the phone: listen again)
+      if (ac.state === "running") listen(false); else ac.resume().then(() => listen(ac.state !== "running")).catch(() => {});
+      load(); decode();
     } catch {}
   }
-  const wake = () => { try { const ac = audio(); if (ac && ac.state === "suspended") ac.resume().catch(() => {}); } catch {} preload(); };
-  ["pointerdown", "touchend", "keydown"].forEach((ev) => document.addEventListener(ev, wake, { once: true, passive: true, capture: true }));
-  if ("requestIdleCallback" in window) requestIdleCallback(preload, { timeout: 4000 }); else setTimeout(preload, 2500);
+  listen(true);
+  if ("requestIdleCallback" in window) requestIdleCallback(load, { timeout: 4000 }); else setTimeout(load, 2500);
+  document.addEventListener("mdfit:theme", load); // (Simple to Full)
+  window.addEventListener("online", load);
+  window.addEventListener("storage", (e) => { if (!e.key || e.key === "mdfit-sounds") load(); }); // (switched on in another tab)
   // sound(kind, step, which): step raises the pitch (combos climb); which picks a file when a kind has several
   function sound(kind, step = 0, which) {
     try {
-      if (localStorage.getItem("mdfit-sounds") === "off") return;
-      const ac = audio(); if (!ac) return;
+      const ac = sound.ac; if (!ac || hush()) return; // no touch yet: dropped
+      if (ac.state !== "running" && !inTap()) return; // asleep: dropped (asked for in a tap, that tap wakes it now)
       const up = Math.pow(2, Math.min(step, 12) / 12), names = FILES[kind] || [], name = names.length ? names[Math.min(names.length - 1, which === undefined ? Math.floor(Math.random() * names.length) : which)] : "", buf = BUF[name];
       const notes = pick(TUNES[kind] || TUNES.pop, "t" + kind);
       const play = () => { const t = ac.currentTime;
@@ -53,7 +82,7 @@
           o.type = kind === "strike" && i < 2 ? "triangle" : "sine"; o.frequency.value = f * up;
           g.gain.setValueAtTime(0.0001, t + d); g.gain.exponentialRampToValueAtTime(0.16, t + d + 0.015); g.gain.exponentialRampToValueAtTime(0.0001, t + d + 0.55);
           o.connect(g); g.connect(ac.destination); o.start(t + d); o.stop(t + d + 0.6); }); };
-      if (ac.state === "suspended") ac.resume().then(play).catch(() => {}); else play();
+      if (ac.state === "running") play(); else ac.resume().then(play).catch(() => {});
     } catch {}
   }
 
@@ -129,10 +158,25 @@
       if (was.todayXp < was.dailyGoal && next.todayXp >= next.dailyGoal) strike(pick(SAY.goal, "wg"), `${next.todayXp} XP today`, true);
     }
   });
+  // A stone is celebrated only when the member lit it here. The count also rises by itself: every open reads 0 of 4
+  // until the day's records arrive (then 2 of 4, say), and the app catches up with another device or the practice.
+  // So a rise counts only within 30 seconds of the member's own tap or key press, or of a workout they finished here
+  // (the player can end by itself). Taps made before the day's records were in do not count, and leaving the app
+  // forgets the last one. The day's records are in once the rewards (read after the workouts and check-ins) and the
+  // daily activities have loaded, or after 15 seconds, so a list that never loads cannot silence the stones.
+  let acted = 0, dayIn = false, habitsIn = false;
+  const settled = (force) => { if (!dayIn && (force || (A.rewards && A.rewards() && (habitsIn || !document.getElementById("habits-card"))))) { dayIn = true; lit = litNow(); } return dayIn; };
+  const mine = () => acted > 0 && Date.now() - acted < 30000;
+  ["pointerdown", "keydown"].forEach((ev) => document.addEventListener(ev, (e) => { if (e.isTrusted && settled()) acted = Date.now(); }, { capture: true, passive: true }));
+  document.addEventListener("mdfit:workout", () => { settled(); acted = Date.now(); });
+  document.addEventListener("mdfit:habits", () => { habitsIn = true; settled(); });
+  document.addEventListener("visibilitychange", () => { if (document.hidden) acted = 0; });
+  setTimeout(() => settled(true), 15000);
   document.addEventListener("mdfit:journey", () => {
     const now = litNow(), was = lit; lit = now;
-    if (!was || !now || quiet() || now.lit <= was.lit || now.lit >= now.of) return; // the last stone is the chest's
-    strike(pick(SAY.stone, "ws"), `${now.lit} of ${now.of} today`);
+    if (!was || !now || now.lit <= was.lit || now.lit >= now.of) return; // the last stone is the chest's
+    // (looked at a moment later: a finished workout is announced just after the redraw that lit its stone)
+    setTimeout(() => { if (mine() && !quiet()) strike(pick(SAY.stone, "ws"), `${now.lit} of ${now.of} today`); });
   });
   lit = litNow();
 
