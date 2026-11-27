@@ -378,10 +378,10 @@
       wrap.appendChild(b);
     }
     log.appendChild(wrap); end();
-    // What "yes" means for this row (ask()): its one "Yes, ..." button, else its "Another ..." button. A row with
-    // neither leaves "yes" to be understood as usual. Pressed as a tap would, without saying the label again.
-    const can = items.filter((o) => typeof o.more === "function" && !o.tel && !o.sms), yesOnes = can.filter((o) => /^Yes\b/i.test(o.label));
-    const pick = yesOnes.length === 1 ? yesOnes[0] : can.find((o) => /^Another\b/.test(o.label));
+    // What "yes" means for this row (ask()): its "Another ..." button (one more joke, saying or verse), and nothing
+    // else: a "yes" never presses a choice that saves something (the daily verse, an answer about them), which stays a
+    // tap. A row without one leaves "yes" to be understood as usual. Pressed as a tap would, without the label again.
+    const pick = items.find((o) => typeof o.more === "function" && o.again && /^Another\b/.test(o.label));
     again = pick ? () => { const b = [...wrap.children].find((x) => x.dataset.label === pick.label); if (b && b.disabled) return;
       if (!pick.again && b) { b.classList.add("mg-picked"); wrap.querySelectorAll("button[data-once]").forEach((x) => { x.disabled = true; }); } return pick.more(); } : null;
   }
@@ -894,7 +894,7 @@
     lastAsked = text;
     if (u.urgent) { emergency(text); return true; }
     // "Yes" to the button his last line offered: answered here, as the button is, never sent and never counted
-    if (yes) { busy = true; const d = thinking(); try { await wait(500); d.remove(); yes(); } catch {} finally { d.remove(); busy = false; end(); } return true; }
+    if (yes) { busy = true; try { await yes(); } catch {} finally { busy = false; end(); } return true; } // (the answer brings its own dots)
     busy = true; const d = thinking(), t0 = Date.now();
     try {
       // What the device must do itself is worked out first: a reminder, a look, the member's own account, the way to a
@@ -950,7 +950,7 @@
     for (const o of r.opts || []) {
       if (o.road) { if (rd && rd.opt && !["done", "ask"].includes(rd.kind)) list.push({ ...rd.opt, gold: true }); }
       else if (o.place) { if (PLACES.some((x) => x.id === o.place)) list.push(opt(o.place)); }
-      else if (o.label && typeof o.more === "function") list.push({ label: o.label, again: true, more: () => beat(() => { const nx = o.more(); if (nx && nx.say) reply(nx.opts || !/^Another\b/.test(o.label) ? nx : { ...nx, opts: [o] }); }) }); // "Another one" stays under the next one too
+      else if (o.label && typeof o.more === "function") list.push({ label: o.label, again: true, more: () => beat(() => { const nx = o.more(); if (nx && nx.say) reply(nx.opts || !/^Another\b/.test(o.label) ? nx : { ...nx, opts: [o, { road: true }] }); }) }); // "Another one" stays under the next one too
     }
     if (list.length) offer(list);
     if (r.feel) faceAfter = r.feel;
@@ -1004,9 +1004,10 @@
     // A verse was asked for: the model leads into it, and the verse itself comes from his own list, word for word
     // (not on a health message: there the answer's own buttons, Call the clinic among them, stay)
     if (r.verse && !care) { const v = talkFor("__verse"); if (v) { reply(v); return; } }
-    // The clinic's number goes with an answer about pain or the body, or one that points somewhere; not with small talk
-    // (a joke, a thank-you, "how are you"), unless the assistant put the clinic among its places
-    const clinic = care || !!area || ids.length > 0 || (Array.isArray(r.places) && r.places.includes("call"));
+    // The clinic's number goes with an answer about pain or the body, or one that points to care (the pain tool, a
+    // visit, a message to Dr. Jared, the clinic itself); not with small talk (a joke, a thank-you, "how are you"), even
+    // when the assistant offers a workout or the programs with it
+    const clinic = care || !!area || (Array.isArray(r.places) ? r.places : []).some((x) => ["call", "pain", "book", "messages", "visit"].includes(x));
     const rd = road(), next = plainHome() ? "Next" : "Next on your road"; // the Simple view has no road, as in his plain lines (account-solomon.js)
     offer([...(rd && rd.opt && !["done", "ask"].includes(rd.kind) ? [{ ...rd.opt, label: rd.opt.label === "Do my check-in here" ? `${next}: my check-in` : `${next}: ${rd.opt.label.replace(/^(Open|Start|Pick|Build) /, (m) => m.toLowerCase())}` }] : []), ...(area ? [{ label: `Programs for your ${area}`, again: true, more: () => beat(() => showArea(area)) }] : []), ...ids.map(opt), ...(clinic ? [opt("call")] : [])]);
     let C = null; try { C = await App.content(); } catch {}
