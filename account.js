@@ -281,6 +281,7 @@
     vd.dataset.vid = byId.get(id) ? id : ""; { const sb = $("#vd-share"); if (sb) { sb.hidden = !byId.get(id); sb.dataset.shareId = id; sb.dataset.shareTitle = title; } }
     $("#vd-title").textContent = title;
     $("#vd-meta").textContent = meta;
+    pregNote($("#vd-preg"), !!(window.MDFitLib && MDFitLib.isPregnancy(byId.get(id))));
     const box = $("#vd-box"), f = $("#vd-frame"), v = warmVideo(id, "auto");
     if (!v) { f.hidden = false; f.src = MDFitVideo.preview(id); vd.showModal(); return; }
     v.controls = true; v.muted = false; v.autoplay = true; // opened by a tap, so sound is allowed
@@ -739,7 +740,7 @@
   const vf = { q: "", cat: "All", region: "", loc: "", by: "joint", kind: "Exercise" };
   // The library offers exactly the videos that are ready. Counts, chips, jump list and groups all read this list,
   // so none of them can advertise a video the member cannot open (or a count that disagrees with the grid).
-  const liveEX = () => EX.filter((e) => offered(e.id));
+  const liveEX = () => EX.filter((e) => offered(e.id) && !e.dup); // e.dup: the same file as another entry, kept so pain tracks and reports that point at it still play
   EX.forEach((e) => { e.kind = LIB.kind(e); });
   const catsFor = () => ["All", "♥ Favorites", ...(vf.kind === "All" ? LIB.CATEGORIES : LIB.CAT_BY_KIND[vf.kind])];
   function renderCats() {
@@ -754,7 +755,9 @@
     vf.kind = b.dataset.kind; vf.cat = "All"; $$("#vid-kind button").forEach((x) => x.setAttribute("aria-selected", x === b));
     $("#vid-kind-note").textContent = KIND_NOTE[vf.kind]; renderCats(); renderVideos();
   });
-  const KIND_NOTE = { Exercise: "Strength training and specialty movements for building fitness.", Rehab: "Dr. Jared's corrective work: rehabilitation, stretching and mobility. Keep pain at 3/10 or lower.", All: "Every video in the library." };
+  const KIND_NOTE = { Exercise: "Strength training and specialty movements for building fitness.", Rehab: "Dr. Jared's corrective work: rehabilitation, stretching and mobility. Keep pain at 3/10 or lower.", Pregnancy: "Partner-assisted releases and relief for common pregnancy aches, for educational purposes.", All: "Every video in the library." };
+  // The pregnancy notice: in the grid whenever a pregnancy clip is listed, and in the player for every one of them.
+  const pregNote = (el, on) => { if (!el) return; el.hidden = !on; if (on) el.innerHTML = `<b>Educational use only</b>${esc(LIB.PREGNANCY_NOTICE)}`; };
   function renderLocs() {
     const ready = liveEX();
     const locs = LOCS.filter((l) => !l.id || ready.some((e) => locIds[l.id].has(e.id)));
@@ -825,9 +828,14 @@
   });
   function renderVideos() {
     const key = vf.by;
-    let list = liveEX().filter((e) => (vf.kind === "All" || e.kind === vf.kind) && (vf.cat === "All" || (vf.cat === "♥ Favorites" ? isFav(e.id) : e.libCat === vf.cat)) && (!vf.region || e[key] === vf.region)
+    const pick = (kind, cat) => liveEX().filter((e) => (kind === "All" || e.kind === kind) && (cat === "All" || (cat === "♥ Favorites" ? isFav(e.id) : e.libCat === cat)) && (!vf.region || e[key] === vf.region)
       && (!vf.loc || locIds[vf.loc].has(e.id))
       && (!vf.q || (vqRank ? vqRank.has(e.id) || (!inIndex(e) && titleHit(e, vf.q)) : [e.name, e.region, e.cat, e.libCat, e.joint, e.muscle].join(" ").toLowerCase().includes(vf.q))));
+    let list = pick(vf.kind, vf.cat), widened = false;
+    // A search that finds nothing on this tab looks on every tab (owner, 27 Nov 2026): the library opens on Exercise, so a
+    // rehab movement typed there used to read as "not in the library". Favorites stay as they are: that list is the member's own.
+    if (vf.q && !list.length && (vf.kind !== "All" || (vf.cat !== "All" && vf.cat !== "♥ Favorites")) && vf.cat !== "♥ Favorites") { list = pick("All", "All"); widened = list.length > 0; }
+    $("#vid-kind-note").textContent = widened ? "Nothing matched on this tab, so these come from every tab." : KIND_NOTE[vf.kind];
     // Ranked results come back ordered by relevance; otherwise sort by level then name as before.
     list.sort(vqRank ? (a, b) => (vqRank.get(a.id) ?? 999) - (vqRank.get(b.id) ?? 999) : (a, b) => a.level - b.level || a.name.localeCompare(b.name));
     $("#vgrid").innerHTML = groupsFor().map((g) => {
@@ -836,6 +844,7 @@
     }).join("");
     observeCards($("#vgrid"));
     $("#vid-empty").hidden = list.length > 0;
+    pregNote($("#vid-preg"), list.some((e) => LIB.isPregnancy(e)));
     $("#vid-empty").textContent = vf.cat === "♥ Favorites" && !lib.favorites.length ? "Tap the heart on any video to save it here." : "No exercises match. Try another filter.";
   }
 
@@ -2855,7 +2864,7 @@
     "Cable Pull-Throughs": "Cable Pull Through", "Glute Kickbacks": "Quadruped Glute Kick", "Landmine Press": "Landmine Press Twist",
     "Seated Cable Row": "Cable Row", "Banded Row": "Dumbbell Row", // "Row" is the rowing machine
     "Lateral Raises": "Lateral Raise", "Plank Variation": "Dynamic Plank", "Sled Push": "Sled Push Pull",
-    "Kettlebell Swings": "Kettlebell Swing", "Farmer Carries": "Farmer Carry", "Med Ball Slams": "Med Ball Slam", "Scalene Release": "Standing Scalene Stretch",
+    "Kettlebell Swings": "Kettlebell Swing", "Farmer Carries": "Farmer Carry", "Med Ball Slams": "Med Ball Slam", "Scalene Release": "Standing Scalene Stretch", "Eccentric Dumbbell Shrug Drop": "Eccentric Scalene Drop", "Scalene Stretch — Three Part": "Scalene Stretch",
     "Rotator Cuff Int/Ext Rotation": "Rotator Cuff External Rotation", "Repeated Shoulder Drop Stretch": "Shoulder Drop Hold",
     "Shoulder Packing Drill": "Floor Slide Scapular Retract", "Scapular Retraction": "Floor Slide Scapular Retract",
     "Hip Dip (Eccentric Control)": "Hip Dips", "Standing Hip Dip": "Hip Dips", "Bridge Holds": "Single Leg Glute Bridge",

@@ -180,7 +180,7 @@
   function renderResults() {
     const q = $("#bw-q").value.trim().toLowerCase(), rg = $("#bw-region").value, ct = $("#bw-cat").value;
     const inList = new Set(B.items.map((x) => x.id));
-    const hits = EX.filter((e) => (!rg || e.region === rg) && (!ct || e.cat === ct) && (!q || `${e.name} ${e.region} ${e.cat}`.toLowerCase().includes(q))).slice(0, 60);
+    const hits = EX.filter((e) => !e.dup && (!rg || e.region === rg) && (!ct || e.cat === ct) && (!q || `${e.name} ${e.region} ${e.cat}`.toLowerCase().includes(q))).slice(0, 60);
     $("#bw-results").innerHTML = hits.length ? hits.map((e) => `<li><div><b>${esc(e.name)}</b><small>${esc(A.exMeta(e))}</small></div>
       <button type="button" class="bw-add${inList.has(e.id) ? " on" : ""}" data-add="${esc(e.id)}" aria-label="Add ${esc(e.name)}">${inList.has(e.id) ? "Added" : "+ Add"}</button></li>`).join("")
       : `<li class="muted small">No exercises match. Try another word or clear the filters.</li>`;

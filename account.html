@@ -19,10 +19,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="app/app.css?v=9f298ac5">
+  <link rel="stylesheet" href="app/app.css?v=76eb8edb">
   <link rel="stylesheet" href="account.css?v=fd3988f7">
   <link rel="stylesheet" href="guides.css?v=ecdb9053">
-  <link rel="stylesheet" href="app-theme.css?v=5cadfcc6">
+  <link rel="stylesheet" href="app-theme.css?v=283719b7">
   <link rel="stylesheet" href="mdfit-guide.css?v=9f74434c">
   <link rel="stylesheet" href="account-cave.css?v=bbc72889">
   <link rel="stylesheet" href="account-tour.css?v=dc65c1cd">
@@ -219,9 +219,10 @@
       </header>
       <button type="button" class="intro-btn" data-intro="library"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> Start here: how to use the library</button>
       <div class="vid-filters">
-      <div class="seg kind-seg" id="vid-kind" role="tablist" aria-label="Exercise or rehab">
+      <div class="seg kind-seg" id="vid-kind" role="tablist" aria-label="Exercise, rehab or pregnancy">
         <button type="button" data-kind="Exercise" aria-selected="true">Exercise</button>
         <button type="button" data-kind="Rehab" aria-selected="false">Rehab</button>
+        <button type="button" data-kind="Pregnancy" aria-selected="false">Pregnancy</button>
         <button type="button" data-kind="All" aria-selected="false">All</button>
       </div>
       <p class="muted small kind-note" id="vid-kind-note">Strength training and specialty movements for building fitness.</p>
@@ -236,6 +237,7 @@
         <select id="vid-region" class="select" aria-label="Jump to"></select>
       </div>
       </div>
+      <div class="preg-note" id="vid-preg" role="note" hidden></div>
       <div class="vgrid" id="vgrid"></div>
       <p class="muted small center" id="vid-empty" hidden>No exercises match. Try another filter.</p>
     </section>
@@ -855,6 +857,7 @@
     <div class="sheet-head"><b id="vd-title"></b><button type="button" class="icon-btn" data-close aria-label="Close"><svg viewBox="0 0 24 24"><path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/></svg></button></div>
     <div class="frame" id="vd-box"><iframe id="vd-frame" title="Exercise video" allow="autoplay; fullscreen" allowfullscreen hidden></iframe></div>
     <p class="muted small" id="vd-meta"></p>
+    <div class="preg-note" id="vd-preg" role="note" hidden></div>
     <button type="button" class="btn-ghost sm share-lib" id="vd-share" data-share-lib="video" hidden><svg viewBox="0 0 24 24" aria-hidden="true" class="ic-line"><path d="M12 15V3"/><path d="m7 8 5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg> Share this video</button>
   </dialog>
 
@@ -898,21 +901,21 @@
   <script src="config.js?v=aac711e3"></script>
   <script src="analytics.js?v=f3f61f9e" defer></script>
   <script src="realtime.js?v=2de68c9b"></script>
-  <script src="common.js?v=d06cd7da"></script>
+  <script src="common.js?v=113efac9"></script>
   <script src="search.js?v=4e413820" defer></script>
-  <script src="app/exercises.js?v=d121be98"></script>
-  <script src="app/library.js?v=4e053a85"></script>
-  <script src="app/generator.js?v=488e449e"></script>
+  <script src="app/exercises.js?v=4aecd212"></script>
+  <script src="app/library.js?v=1805c456"></script>
+  <script src="app/generator.js?v=afcb3a27"></script>
   <script src="painmuscles.js?v=29827557"></script>
   <script src="painpatterns.js?v=eefa906e"></script>
-  <script src="paintracks.js?v=9580e77d"></script>
+  <script src="paintracks.js?v=a4c39d85"></script>
   <script src="painmap.js?v=52dd4372"></script>
   <script src="musclereports.js?v=721e50ec"></script>
   <script src="guides.js?v=27ce217c"></script>
   <script src="stripe-checkout.js?v=fa90d042"></script>
   <script src="progress-charts.js?v=df3a2256"></script>
-  <script src="account.js?v=ee667824"></script>
-  <script src="account-xp.js?v=79d3fdd6"></script>
+  <script src="account.js?v=b1e0e0f5"></script>
+  <script src="account-xp.js?v=e957514d"></script>
   <script src="account-share.js?v=551d3280"></script>
   <script src="account-send.js?v=d671131f"></script>
   <script src="account-habits.js?v=c10af22e"></script>

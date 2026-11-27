@@ -21,7 +21,10 @@
   change in the session: set exactly what was asked, never print, copy or log a key's value, take a secret's value only
   from the user (never invent or reuse one), and say afterwards which names changed. Never change GitHub, Railway,
   Vercel or Stripe account permissions or API-key scopes from here.
-- **Video uploads — `/video-upload`.** When asked to `/video-upload`, to upload or migrate videos, to get footage
+- **Video uploads — `/video-check` (reads) and `/video-place` (writes).** Two commands, and which one you are in
+  is stated in every reply during a run: `/video-check` searches Drive and reports, writing nothing; `/video-place`
+  places clips the owner has confirmed, commits, and asks before the deploy. `/video-upload` is the whole run.
+  When asked for any of them, to upload or migrate videos, to get footage
   from Drive onto Bunny, or to publish video for the web/Android/Apple apps: **read `docs/VIDEO-UPLOAD.md` first
   and follow its phases in order.** Treat that file as the command; do not improvise a run, and do not start at the
   upload step — every failed run so far failed at preflight or on a known trap, not in the upload.
@@ -32,7 +35,16 @@
   and never change on rename or move, so reorganizing Drive cannot break playback. Start at
   `GET /api/admin/videos/status` and read its `mirror` block. Before blaming a quota, check the logs: the believed
   Cloudinary cap was three ordinary bugs and zero quota errors. MP4 Fallback must be ON in the Bunny library or
-  nothing ever publishes; keep Token Authentication OFF until a client signs URLs. Never print or copy a key.
+  nothing ever publishes; keep Token Authentication OFF until a client signs URLs. Never print or copy a key. Its **"Ask before you
+  commit"** section is the owner's standing rule: never guess a clip's placement or usage, and never commit, push
+  or deploy on one that is unconfirmed — ask.
+  From 22 Nov 2026, every new clip is **identified by listening to it**: Dr. Jared says the movement's name in
+  the first seconds, so `scripts/video-stt.py` transcribes it in-container (never an outside service) rather
+  than anyone naming it from a thumbnail. And a library placement wires a clip into **no** protocol or
+  programme: those reference movements by name, and that is a separate, separately confirmed edit.
+  From 25 Nov 2026, **every video change is monitored** under `docs/MONITORING.md` — a deployed video change
+  restarts the review's 72-hour clock and puts it back on the 6-hourly schedule. See Phase 7 of
+  `docs/VIDEO-UPLOAD.md` for what counts as a video change and what the run owes the review.
 - **DO NOT TOUCH after compliancy is set.** This is a live patient EMR. The compliance safeguards are locked: read the
   "DO NOT TOUCH" section of `README.md` here and in `mdfit-backend` before editing anything near sign-in, sessions,
   roles and permissions, the audit ledger, encryption, the chart, patient-rights records, the Compliance screen, or the

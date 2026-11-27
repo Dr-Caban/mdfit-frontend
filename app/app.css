@@ -995,8 +995,11 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
 .stars-pick input { position: absolute; opacity: 0; width: 1px; height: 1px; }
 .stars-pick label { font-size: 34px; line-height: 1; color: #d8d2c4; cursor: pointer; }
 .stars-pick label:hover, .stars-pick label:hover ~ label, .stars-pick input:checked ~ label { color: var(--gold); }
-.kind-seg { grid-template-columns: repeat(3, 1fr); margin-bottom: 6px; }
-.kind-seg button { font-size: 15px; padding: 11px 6px; }
+.kind-seg { grid-template-columns: repeat(4, 1fr); margin-bottom: 6px; }
+.kind-seg button { font-size: 14px; padding: 11px 4px; }
+/* Pregnancy notice: shown above the Pregnancy grid and under every pregnancy clip in the player */
+.preg-note { border: 1px solid var(--line); border-left: 4px solid var(--accent); background: var(--accent-soft); color: var(--ink, inherit); border-radius: 10px; padding: 10px 12px; margin: 0 0 12px; font-size: 13px; line-height: 1.45; }
+.preg-note b { display: block; margin-bottom: 2px; }
 .kind-note { margin: 0 0 12px; }
 .in-track { font-style: normal; color: var(--accent-text); font-weight: 700; }
 @media (min-width: 1000px) { .kind-seg { max-width: 480px !important; } }

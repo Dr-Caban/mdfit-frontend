@@ -1,0 +1,257 @@
+MD Fit exercise library — every movement and whether it plays
+Generated 2026-11-27 by scripts/library-status.js
+from app/exercises.js against GET /api/videos (bunny.map).
+
+222 movements, 195 playable, 27 not yet.
+
+Not yet playable:
+  Seated Needle Thread Glute Squeeze (Hips / Rehab)
+  Kneeling Glute Engagement (Hips / Rehab)
+  Glute Engage Cramp (Hips / Rehab)
+  Glute Table Drop-Off (Hips / Rehab)
+  Seated Hip Swivel (Hips / Rehab)
+  Scalene Active Stretch (Neck / Rehab)
+  Floor Slide Scapular Retract (Shoulders / Activation)
+  Eccentric Internal Rotation (Shoulders / Rehab)
+  Eccentric External Rotation (Shoulders / Rehab)
+  Supraspinatus Stretch (Shoulders / Mobility)
+  Scapular Floor Angel (Shoulders / Rehab)
+  Kneeling Wall Spiral (Spine / Mobility)
+  Single Leg Balance With Reach (Hips / Activation)
+  Single Leg Balance With Reach (Foot Up) (Hips / Activation)
+  Single Leg Skateboard Balance (Hips / Activation)
+  Palm Press and Retract (Shoulders / Activation)
+  Banded Shoulder Traction (Shoulders / Mobility)
+  Banded Hip Traction (Hips / Mobility)
+  Seated Slider Scapular Pull (Shoulders / Activation)
+  Eccentric Romanian Deadlift (Hips / Strength)
+  Round Ligament Release (Core / Pregnancy)
+  Broad Ligament Release (Core / Pregnancy)
+  Diaphragm Release for Reflux (Core / Pregnancy)
+  QL Release (Spine / Pregnancy)
+  Iliacus Release (Hips / Pregnancy)
+  Lateral Femoral Cutaneous Nerve Release (Hips / Pregnancy)
+  Pregnancy Glute Cramp for Low Back (Spine / Pregnancy)
+
+NO     Core           Pregnancy      L1  Broad Ligament Release
+NO     Core           Pregnancy      L1  Diaphragm Release for Reflux
+NO     Core           Pregnancy      L1  Round Ligament Release
+NO     Hips           Activation     L3  Single Leg Balance With Reach
+NO     Hips           Activation     L3  Single Leg Skateboard Balance
+NO     Hips           Activation     L4  Single Leg Balance With Reach (Foot Up)
+NO     Hips           Mobility       L1  Banded Hip Traction
+NO     Hips           Pregnancy      L1  Iliacus Release
+NO     Hips           Pregnancy      L1  Lateral Femoral Cutaneous Nerve Release
+NO     Hips           Rehab          L2  Glute Table Drop-Off
+NO     Hips           Rehab          L2  Kneeling Glute Engagement
+NO     Hips           Rehab          L3  Glute Engage Cramp
+NO     Hips           Rehab          L3  Seated Hip Swivel
+NO     Hips           Rehab          L3  Seated Needle Thread Glute Squeeze
+NO     Hips           Strength       L4  Eccentric Romanian Deadlift
+NO     Neck           Rehab          L1  Scalene Active Stretch
+NO     Shoulders      Activation     L2  Floor Slide Scapular Retract
+NO     Shoulders      Activation     L2  Palm Press and Retract
+NO     Shoulders      Activation     L3  Seated Slider Scapular Pull
+NO     Shoulders      Mobility       L1  Banded Shoulder Traction
+NO     Shoulders      Mobility       L2  Supraspinatus Stretch
+NO     Shoulders      Rehab          L2  Eccentric External Rotation
+NO     Shoulders      Rehab          L2  Eccentric Internal Rotation
+NO     Shoulders      Rehab          L3  Scapular Floor Angel
+NO     Spine          Mobility       L2  Kneeling Wall Spiral
+NO     Spine          Pregnancy      L1  Pregnancy Glute Cramp for Low Back
+NO     Spine          Pregnancy      L1  QL Release
+video  Ankles         Mobility       L1  Ankle Circles
+video  Ankles         Mobility       L2  Ankle Neuroglide
+video  Ankles         Mobility       L2  Kneeling Plantar Fascia Stretch
+video  Ankles         Rehab          L2  Eccentric Calf Drops
+video  Arms           Strength       L2  Bicep Curl
+video  Arms           Strength       L2  Hammer Curl
+video  Arms           Strength       L3  Tricep Extension
+video  Arms           Strength       L4  Tricep Kickback
+video  Arms           Strength       L5  Overhead Tricep Extension
+video  Core           Activation     L1  Wall Posture Stand Up
+video  Core           Power          L4  Blaster Deadlift Press
+video  Core           Power          L5  Med Ball Slam
+video  Core           Power          L5  Rotational Medicine Ball Throw
+video  Core           Power          L6  Landmine Press Twist
+video  Core           Strength       L1  Dead Bug
+video  Core           Strength       L3  Dynamic Plank
+video  Core           Strength       L3  Pallof Press
+video  Core           Strength       L4  Pallof Press With Rotation
+video  Core           Strength       L5  Golf Switch Row
+video  Desk & posture Desk & posture L1  Desk Setup Tutorial
+video  Desk & posture Lifestyle      L1  Walk Break Protocol Seated
+video  Desk & posture Lifestyle      L1  Water Habit Cue
+video  Full body      Activation     L3  Row
+video  Full body      Mobility       L4  Burpee
+video  Full body      Mobility       L4  Front Crab Walk
+video  Full body      Mobility       L5  Side Crab Walk
+video  Full body      Mobility       L5  Sprawl Half Burpee
+video  Full body      Mobility       L5  Wall Ball
+video  Full body      Mobility       L6  Spider Kick
+video  Full body      Mobility       L7  Turkish Get Up
+video  Full body      Mobility       L8  DB Snatch
+video  Full body      Mobility       L8  Wall Burpee
+video  Full body      Neuroglide     L2  Full Neuroglide Flow Seated
+video  Full body      Power          L5  DB Clean
+video  Full body      Power          L5  Jump Switch Lunge
+video  Full body      Power          L5  Med Ball Over Shoulder
+video  Full body      Power          L6  Power Clean
+video  Full body      Power          L7  DB Lunge Clean
+video  Full body      Power          L7  DB Lunge Thruster
+video  Full body      Strength       L5  Cable Rotational Lunge
+video  Full body      Strength       L6  Thruster
+video  Full body      Strength       L9  Single Arm DB Pistol Squat
+video  Hips           Activation     L1  Glute Walk
+video  Hips           Activation     L1  Quadruped Glute Kick
+video  Hips           Activation     L2  Constant Glute Engagement
+video  Hips           Activation     L2  Quadruped Glute Kickback
+video  Hips           Activation     L4  Single Leg Glute Bridge
+video  Hips           Mobility       L1  Figure Four Stretch
+video  Hips           Mobility       L1  Pelvic Circles
+video  Hips           Mobility       L2  90/90 Hip Switch
+video  Hips           Mobility       L2  Couch Stretch
+video  Hips           Mobility       L2  Deep Squat Hold
+video  Hips           Mobility       L2  Dynamic Childs Pose
+video  Hips           Mobility       L2  Hip Neuroglide
+video  Hips           Mobility       L2  Standing Clamshell
+video  Hips           Mobility       L2  Standing Hip Abduction/Adduction
+video  Hips           Mobility       L2  Standing Hip CARs
+video  Hips           Mobility       L2  Standing Hip ER Liftoff
+video  Hips           Mobility       L2  Standing Hip IR Liftoff
+video  Hips           Mobility       L3  Hip Thrust
+video  Hips           Mobility       L3  TRX Squat
+video  Hips           Mobility       L5  Kettlebell Swing
+video  Hips           Mobility       L6  Cossack Squat
+video  Hips           Mobility       L6  Surrender
+video  Hips           Mobility       L7  Bulgarian Split Squat
+video  Hips           Mobility       L7  DB Overhead Surrender
+video  Hips           Mobility       L7  High Kick Heavy Bag
+video  Hips           Mobility       L7  Pistol Squat
+video  Hips           Mobility       L7  Pole Squat
+video  Hips           Mobility       L8  Front Split Ballistic
+video  Hips           Power          L5  Long Lunge
+video  Hips           Rehab          L2  Adductor Lean
+video  Hips           Rehab          L2  Hip Dips
+video  Hips           Rehab          L2  Pillow Belt Reset
+video  Hips           Rehab          L2  Table Eccentric Hip Drop
+video  Hips           Rehab          L3  Eccentric Toe Reach
+video  Hips           Rehab          L4  Eccentric Toe Reach With Rotation
+video  Hips           Strength       L3  Lunges
+video  Hips           Strength       L3  Reverse Lunge
+video  Hips           Strength       L3  Short Lunge
+video  Hips           Strength       L3  Step Up
+video  Hips           Strength       L3  Walking Lunge
+video  Hips           Strength       L4  Bodyweight Squat
+video  Hips           Strength       L4  Cable Pull Through
+video  Hips           Strength       L4  Curtsy Lunge
+video  Hips           Strength       L4  Dowel Hip Hinge
+video  Hips           Strength       L4  Goblet Squat
+video  Hips           Strength       L4  Reverse Lunge Knee Drive
+video  Hips           Strength       L4  Straight Leg Deadlift
+video  Hips           Strength       L5  Rack Pull
+video  Hips           Strength       L5  Romanian Deadlift
+video  Hips           Strength       L6  Bulgarian Split Squat Hold
+video  Hips           Strength       L6  Deadlift
+video  Hips           Strength       L6  Glute RDL
+video  Hips           Strength       L6  Goblet Sumo Squat
+video  Hips           Strength       L6  Skater Squat
+video  Hips           Strength       L6  Sumo Deadlift
+video  Hips           Strength       L7  Front Squat
+video  Knees          Mobility       L2  Knee Neuroglide
+video  Knees          Rehab          L2  Knee Circles
+video  Knees          Rehab          L2  Slider Knee Rotations
+video  Knees          Strength       L6  Kneeling Sissy Squat
+video  Knees          Strength       L8  Sissy Squat
+video  Legs           Activation     L1  Heel Walk
+video  Legs           Activation     L1  Toe Walk
+video  Legs           Activation     L2  Assault Bike
+video  Legs           Activation     L2  March Balance
+video  Legs           Activation     L2  Single Leg Balance
+video  Legs           Activation     L3  Jump Rope
+video  Legs           Activation     L6  Sled Push Pull
+video  Legs           Mobility       L5  40m Dash
+video  Legs           Mobility       L7  Box Jump
+video  Legs           Power          L5  Long Jump
+video  Legs           Power          L5  Single Leg Farmer Hop
+video  Neck           Activation     L1  Chin Nod
+video  Neck           Activation     L2  Chin Glide Seated
+video  Neck           Activation     L2  Core Brace Intro Seated
+video  Neck           Activation     L2  Deep Cervical Flexor Nods Seated
+video  Neck           Mobility       L1  Levator Scap Stretch Standing
+video  Neck           Mobility       L1  Scalene Stretch
+video  Neck           Mobility       L2  90/90 Breathing
+video  Neck           Mobility       L2  Box Breathing
+video  Neck           Mobility       L2  Levator Scap Stretch Seated
+video  Neck           Mobility       L2  Upper Trap Stretch Seated
+video  Neck           Neuroglide     L2  Neck Neuroglide Seated
+video  Neck           Posture        L1  Seated Desk Posture Reset
+video  Neck           Posture        L1  Standing Posture Reset
+video  Neck           Rehab          L1  Scalene Release
+video  Neck           Rehab          L2  Eccentric Scalene Drop
+video  Neck           Rehab          L2  SCM Release Seated
+video  Neck           Rehab          L2  Standing Scalene Stretch
+video  Neck           Rehab          L2  Towel Neck Stretch Eccentric
+video  Shoulders      Activation     L1  Arm Circles
+video  Shoulders      Activation     L2  Rotator Cuff 90 Band Vibration
+video  Shoulders      Activation     L2  Scapular Clavicle Articulation Posterior
+video  Shoulders      Activation     L5  Face Pull
+video  Shoulders      Activation     L5  Lat To Front Raise
+video  Shoulders      Activation     L5  Push Press
+video  Shoulders      Mobility       L1  Wall Pec Stretch
+video  Shoulders      Mobility       L2  Scapular CARs
+video  Shoulders      Mobility       L2  Serratus Stretch Breathing
+video  Shoulders      Mobility       L2  Wall Angels
+video  Shoulders      Mobility       L6  Overhead Straight Arm Pulldown
+video  Shoulders      Mobility       L8  Assisted Muscle Up
+video  Shoulders      Mobility       L8  Handstand Push Up
+video  Shoulders      Mobility       L9  Pegboard Climb
+video  Shoulders      Rehab          L2  Abducted External Rotation
+video  Shoulders      Rehab          L2  Abducted Internal Rotation
+video  Shoulders      Rehab          L2  Rotator Cuff External Rotation
+video  Shoulders      Rehab          L2  Rotator Cuff Internal Rotation
+video  Shoulders      Rehab          L2  Shoulder Drop Hold
+video  Shoulders      Strength       L1  Wall Push Up
+video  Shoulders      Strength       L2  Strict Press
+video  Shoulders      Strength       L3  Adult M&M
+video  Shoulders      Strength       L3  Cable Row
+video  Shoulders      Strength       L3  Dips
+video  Shoulders      Strength       L3  Eccentric Push Up
+video  Shoulders      Strength       L3  Lat Pulldown
+video  Shoulders      Strength       L3  Lateral Raise
+video  Shoulders      Strength       L3  Scap Push Ups
+video  Shoulders      Strength       L4  Dumbbell Row
+video  Shoulders      Strength       L5  Bench Press
+video  Shoulders      Strength       L5  Push Up
+video  Shoulders      Strength       L5  Strict Dip
+video  Shoulders      Strength       L6  Incline Bench Press
+video  Shoulders      Strength       L7  Pike Push Up
+video  Shoulders      Strength       L7  Pull Up
+video  Shoulders      Strength       L7  Sots Curl To Press
+video  Shoulders      Strength       L7  Sots Press
+video  Shoulders      Strength       L9  Strict Handstand Push Up
+video  Spine          Activation     L3  Farmer Carry
+video  Spine          Activation     L6  Bear Crawl
+video  Spine          Mobility       L2  Baseball Cable Stretch
+video  Spine          Mobility       L2  Cat Cow Desk Variation
+video  Spine          Mobility       L2  Lying Open Book
+video  Spine          Mobility       L2  Pike Forward Fold
+video  Spine          Mobility       L2  Quadruped T-Spine Rotation
+video  Spine          Mobility       L2  Seated Mobility Flow Beginner
+video  Spine          Mobility       L2  Seated Mobility Flow Intermediate
+video  Spine          Mobility       L2  Sit Turn Lean
+video  Spine          Mobility       L2  Thoracic Extension Over Chair
+video  Spine          Mobility       L2  Thoracic Open Book
+video  Spine          Mobility       L2  Thoracic Rotation Seated
+video  Spine          Mobility       L2  Thread The Needle
+video  Spine          Mobility       L5  Walk Out
+video  Spine          Mobility       L6  GHD Sit Up
+video  Spine          Mobility       L6  Pike Bear Walk
+video  Spine          Mobility       L8  Wall Ball Sit Up
+video  Upper body     Strength       L3  Curl To Press
+video  Upper body     Strength       L4  Cable Fly
+video  Wrists         Activation     L2  Weighted Wrist Circles
+video  Wrists         Mobility       L1  Forearm Extensor Stretch
+video  Wrists         Mobility       L1  Forearm Flexor Stretch
+video  Wrists         Rehab          L2  Eccentric Wrist Drops
+video  Wrists         Rehab          L2  Eccentric Wrist Pronator
