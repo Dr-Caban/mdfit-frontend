@@ -105,8 +105,17 @@
   else try { const asked = versePicks; window.MDFit.apiAuth("GET", "/api/me/guide").then((g) => { if (verseUnsent() || versePicks !== asked) return; /* a tap made while this was on its way is newer */ const v = g && g.prefs && g.prefs.verse; if ((v === "on" || v === "off") && (v === "on") !== verseOn) setVerse(v === "on", true);
     // Answered on another device: not asked again here. Never answered and no tour on its way: he asks now.
     if (g && g.verseAsked) askedNow(); else if (g && g.verseAsked === false) setTimeout(askVerse, 6000); }).catch(() => {}); } catch {}
-  // ---- Talk: what he says back when he is spoken to (mdfit-guide.js talk). Understood here on the device from the
-  // words below; nothing typed is sent anywhere for these. A verse is always quoted exactly from the list above.
+  // ---- Talk: what he says back when he is spoken to (mdfit-guide.js ask and talk). These lines are kept here, on the
+  // device, and chosen from the words below. With the assistant off they are his answer and nothing typed is sent
+  // anywhere for them. With it on, the same message is read on MD Fit's server like any other question (the small
+  // print under the box says so), and these lines are what he falls back on when the assistant is slow, fails, or a
+  // free member has no answers left today. A verse is always quoted exactly from the list above.
+  //
+  // A line is given only for a message that is nothing but small talk: the words that say it, with at most a polite
+  // word or a "can you give me" around them. "Can I get a quote for a massage", "how can I sleep well" and "what's up
+  // with my invoice" are real questions and get nothing here, and "oh my god" on its own asks for no verse.
+  // mdfit-guide.js asks for a line only once it has found nothing it must do itself (a reminder, the member's own
+  // account, a place, a program, anything about pain or the body).
   let lastVerse = -1;
   const anotherVerse = () => { let i = Math.floor(Math.random() * VERSES.length); if (i === lastVerse) i = (i + 1) % VERSES.length; lastVerse = i; return `“${VERSES[i][0]}” ${VERSES[i][1]}`; };
   const firstName = () => (A.guideFacts().first || "friend");
@@ -115,29 +124,66 @@
     opts: [{ label: "Another verse", more: () => verseReply("") }, ...(verseOn ? [] : [{ label: "Send me one every day", more: () => { setVerse(true); return { say: "Done. I'll greet you with one each day." }; } }]), { road: true }] });
   const JOKES = ["Why did the dumbbell go to therapy? It had too much weight on its shoulders.", "I tried a rest day once. As a cloud, I mostly drifted.", "What's a skeleton's least favourite workout? Anything with a spotter. Nobody has his back.",
     "Why don't hamstrings ever win arguments? They always get tight under pressure.", "I asked the foam roller for advice. It said: just roll with it."];
+  // His kind words, and beside them the same four for the Simple view (plain(), below): no road, lamp or stone
   const LIFT = ["You showed up to say so, which already counts. Start with the smallest thing on your road and stop there if you need to.", "Tired is allowed. Five easy minutes is still a lamp lit.",
     "You don't have to feel like it. You only have to begin; the feeling usually catches up.", "Hard days are when the small things matter most. One stone is enough for today."];
+  const LIFT_PLAIN = ["You showed up to say so, which already counts. Start with the smallest thing in your plan and stop there if you need to.", "Tired is allowed. Five easy minutes still counts.",
+    LIFT[2], "Hard days are when the small things matter most. One small thing is enough for today."];
+  const lift = () => oneOf(plain() ? LIFT_PLAIN : LIFT, "l");
+  // Asked for a saying: one of his own (SAYINGS, below). The Simple view has no sayings, so there it is a kind word.
+  const wise = () => (plain() ? lift() : oneOf(SAYINGS, "s"));
+  // Words that ask for nothing wherever they sit ("please", his name, "for me", "today"), and the small sounds people
+  // start with ("oh", "ok", "hey"). They are taken out before a message is tested.
+  const POLITE = /\b(for (me|now|today|tonight)|right now|please|pls|solomon|sunny|today(?!')|tonight|again|now)\b/g;
+  const OPENER = /^((hey|hi|hello|yo|oh|ok|okay|well|so|and|um|hmm|wow|haha|lol|yes|yeah|yay) )+/;
+  // The ways of asking him for one of his lines: "can you give me a", "I need another", "got any", "tell me some"
+  const WANT = "(?:(?:can|could|will|would) you |(?:can|could|may) i |i'?d (?:like|love) |i would (?:like|love) |i (?:want|need|could use|could do with) |do you (?:have|know) |(?:have you )?got |let'?s (?:hear|have) |how about )?"
+    + "(?:(?:to )?(?:give|tell|show|read|send|share|say|hear|have|get|find)(?: me| us)? )?(?:(?:a|an|another|one more|some|any|more|the|your|a few) )?";
+  // only: the whole message is this and nothing else. wants: the same, with one of those ways of asking in front.
+  const only = (b, core) => new RegExp(`^(?:${core})$`).test(b);
+  const wants = (b, core) => new RegExp(`^${WANT}(?:${core})$`).test(b);
+  const VERY = "(?:(?:so|really|very|just|too|a bit|a little|kind of|kinda|pretty|quite|super|still) )*";
+  const LOW = "tired|exhausted|lazy|unmotivated|busy|stressed(?: out)?|overwhelmed|down|worn out|wiped(?: out)?|drained|fed up|not feeling it|not in the mood";
   const talk = (text, lost) => {
     const t = text.toLowerCase().replace(/[’‘]/g, "'").replace(/\s+/g, " ").trim();
-    const day = new Date().getHours(), when = day < 5 ? "night" : day < 12 ? "morning" : day < 18 ? "afternoon" : "evening";
-    if (lost) return { say: `That one is past my lamp's reach, ${firstName()}. I'm best with your training, your pain and finding things in MD Fit. I can also give you a verse, a word of encouragement or a laugh.`,
-      opts: [{ road: true }, { label: "Give me a verse", more: () => verseReply("") }, { label: "Encourage me", more: () => ({ say: oneOf(LIFT, "l"), opts: [{ road: true }] }) }, { place: "generate" }] };
+    const day = new Date().getHours(), when = day < 5 ? "night" : day < 12 ? "morning" : day < 18 ? "afternoon" : "evening", P = plain();
+    if (lost) return { say: `${P ? "That one is beyond me" : "That one is past my lamp's reach"}, ${firstName()}. I'm best with your training, your pain and finding things in MD Fit. I can also give you a verse, a word of encouragement or a laugh.`,
+      opts: [{ road: true }, { label: "Give me a verse", more: () => verseReply("") }, { label: "Encourage me", more: () => ({ say: lift(), opts: [{ road: true }] }) }, { place: "generate" }] };
     if (!t) return null;
     if (t === "__verse") return verseReply(""); // asked for by the assistant's answer (mdfit-guide.js aiAnswer)
-    if (/\b(bible|verse|verses|scripture|scriptures|psalm|psalms|proverb|proverbs|gospel|pray|prayer|bless|blessing|word of god|jesus|christ|lord|god|faith|devotion|devotional)\b/.test(t)) return verseReply(/\bpray|prayer|bless/.test(t) ? `Gladly, ${firstName()}. Here is one to carry with you:` : oneOf(["Here is one for you:", "Gladly:", `For you, ${firstName()}:`], "v"));
-    if (/\b(quote|saying|wisdom|wise words?|inspire|inspiration)\b/.test(t)) return { say: [oneOf(SAYINGS, "s")], feel: "proud", opts: [{ label: "Another saying", more: () => ({ say: oneOf(SAYINGS, "s") }) }, { label: "A Bible verse", more: () => verseReply("") }, { road: true }] };
-    if (/\b(joke|make me laugh|funny|laugh)\b/.test(t)) return { say: oneOf(JOKES, "j"), feel: "cheer", opts: [{ label: "Another one", more: () => ({ say: oneOf(JOKES, "j") }) }, { road: true }] };
-    if (/\b(motivat\w*|encourag\w*|pep talk|i'?m (so )?(tired|exhausted|lazy|unmotivated|sore|busy|stressed|overwhelmed|down)|don'?t feel like|can'?t be bothered|no energy|rough day|hard day|bad day|long day|i give up|want to quit|feel like quitting|struggling)\b/.test(t))
-      return { say: oneOf(LIFT, "l"), feel: "happy", opts: [{ road: true }, { label: "A verse for today", more: () => verseReply("") }, { place: "messages" }] };
-    if (/\b(i did it|i finished|all done|crushed it|nailed it|smashed it|killed it|new pr|personal (best|record)|hit my goal|proud of (me|myself))\b/.test(t)) return { say: oneOf([`That is how it is done, ${firstName()}!`, "Well earned. I saw that.", `Proud of you, ${firstName()}. Truly.`], "w"), feel: "excited", opts: [{ place: "progress" }, { road: true }] };
-    if (/\b(thank you|thanks|thank u|thx|ty|appreciate (it|you))\b/.test(t)) return { say: oneOf(["Always. That's what I'm here for.", `Any time, ${firstName()}.`, "Glad to. Come find me whenever you like."], "th"), feel: "proud", opts: [{ road: true }] };
-    if (/\b(love (you|u)|you'?re (the best|great|awesome|amazing|cute|funny|sweet)|good (job|bot|cloud)|i like you)\b/.test(t)) return { say: oneOf([`You'll make a cloud blush, ${firstName()}.`, "That lights my lamp. Thank you.", "Kind of you. I like our walks down the road too."], "lv"), feel: "proud" };
-    if (/\b(good ?night|going to (bed|sleep)|off to bed|sleep well|nighty)\b/.test(t)) return { say: oneOf([`Sleep well, ${firstName()}. Rest is part of the work.`, "Good night. The road will keep until morning."], "gn"), feel: "sleepy" };
-    if (/\b(how are you|how'?re you|how'?s it going|how you doing|what'?s up|whats up|sup|you ok(ay)?|how do you feel)\b/.test(t)) return { say: oneOf([`Better now that you're here, ${firstName()}. How about you: what are we doing today?`, `Floating along nicely. Good ${when} to you. What do you need?`, "Lamp lit, spirits high. What can I do for you?"], "h"), feel: "happy",
-      opts: [{ road: true }, { label: "Encourage me", more: () => ({ say: oneOf(LIFT, "l"), opts: [{ road: true }] }) }, { label: "Give me a verse", more: () => verseReply("") }] };
-    if (/\b(who are you|what are you|your name|are you (real|human|a (person|robot|bot)|an? ai|alive)|what can you do|what do you do|how do you work|what can i ask)\b|^help( me)?[.!?]*$/.test(t)) return { say: ["I'm Solomon: a cloud with a lamp, and MD Fit's guide. I'm not a person, and I don't give medical advice.", "I can show you where anything is, tell you what is next on your road, find the rehab for what hurts, build a workout, set a reminder, and hand you a verse, a kind word or a joke when you want one."], feel: "happy",
-      opts: [{ road: true }, { place: "pain" }, { place: "generate" }, { label: "Give me a verse", more: () => verseReply("") }] };
-    if (/^(give me|show me|tell me|i want|i need|can you|could you|please)\.?$/.test(t)) return { say: `Give you what, ${firstName()}? Here is what I have ready:`, opts: [{ road: true }, { label: "A Bible verse", more: () => verseReply("") }, { label: "A word of encouragement", more: () => ({ say: oneOf(LIFT, "l"), opts: [{ road: true }] }) }, { label: "A joke", more: () => ({ say: oneOf(JOKES, "j") }) }, { place: "generate" }] };
+    // b = the message without punctuation, polite words or an opening "oh". Each test below has to match all of it.
+    const b = t.replace(/[^a-z0-9' ]+/g, " ").replace(POLITE, " ").replace(/\s+/g, " ").trim().replace(OPENER, "");
+    // A verse, a prayer, a blessing. (God's name on its own is an exclamation as often as a request, so it asks for nothing.)
+    if (wants(b, "(?:(?:bible|daily|short|good|favou?rite|encouraging|comforting|new|different) )*(?:bible|verses?|scriptures?|psalms?|proverbs?|gospel|prayers?|blessings?|devotion(?:al)?s?|word (?:of|from) (?:god|the lord|the bible)|something from (?:the bible|scripture))(?: (?:of|for) the day)?(?: from the bible)?")
+      || only(b, "(?:what'?s |what is )?(?:today'?s|the daily|my daily|my|the) (?:bible )?verse|(?:(?:can|could|will|would) you )?pray(?: with me)?|bless me|god bless(?: you| me| us)?|(?:tell|talk to|teach) me (?:more )?about (?:god|jesus|christ|the lord|faith|the bible|scripture)"))
+      return verseReply(/\bpray|bless/.test(b) ? `Gladly, ${firstName()}. Here is one to carry with you:` : oneOf(["Here is one for you:", "Gladly:", `For you, ${firstName()}:`], "v"));
+    // One of his sayings. ("Can I get a quote" is as likely to be about a price, so it is left alone.)
+    if (!/\bget\b/.test(b) && (wants(b, "(?:(?:good|wise|daily|short|inspiring|inspirational|motivational|favou?rite) )*(?:quotes?|sayings?|wisdom|wise words?|words? of wisdom|inspiration|something (?:wise|inspiring))(?: (?:of|for) the day)?") || only(b, "inspire me")))
+      return { say: [wise()], feel: "proud", opts: [{ label: P ? "Another one" : "Another saying", more: () => ({ say: wise() }) }, { label: "A Bible verse", more: () => verseReply("") }, { road: true }] };
+    if (wants(b, "(?:(?:good|funny|quick|short|bad|dad|new|different) )*(?:jokes?|laugh|something (?:funny|to laugh at))") || only(b, "(?:(?:can|could|will|would) you )?(?:make me (?:laugh|smile)|be funny)|i need to laugh|joke time"))
+      return { say: oneOf(JOKES, "j"), feel: "cheer", opts: [{ label: "Another one", more: () => ({ say: oneOf(JOKES, "j") }) }, { road: true }] };
+    if (wants(b, "(?:(?:little|bit of|quick) )?(?:motivation|encouragement|pep talk|kind word|word of encouragement|boost|push|pick me up)")
+      || only(b, `(?:(?:can|could|will|would) you )?(?:motivate|encourage) me|cheer me up|(?:i'?m|i am|i feel|i'?m feeling|i am feeling|feeling) ${VERY}(?:${LOW})|${VERY}(?:tired|exhausted|unmotivated|stressed(?: out)?|overwhelmed)`
+        + "|i (?:don'?t|do not) feel like (?:it|doing (?:it|this|anything|much)|working out|exercising|moving|going)|(?:i )?(?:can'?t|cannot) be bothered|(?:i have |i'?ve got |i got |got )?(?:no|zero) (?:energy|motivation)"
+        + "|(?:i'?ve had |i have had |i had |i'?m having |having |what |(?:it ?)?(?:was |is |has been |'?s been ))?(?:a |such a |quite a |a really |a very |a pretty )?(?:rough|hard|bad|long|tough|terrible|awful|horrible|stressful) (?:day|week|morning|night|one)(?: at work)?"
+        + `|i give up|i (?:want to|wanna) (?:quit|give up)|i feel like (?:quitting|giving up)|(?:i'?m |i am )?${VERY}struggling(?: to (?:get going|get started|keep going|stay motivated))?`))
+      return { say: lift(), feel: "happy", opts: [{ road: true }, { label: "A verse for today", more: () => verseReply("") }, { place: "messages" }] };
+    if (only(b, "(?:(?:i|we)(?: just| finally)? |just |finally )?(?:did it|finished(?: it)?|crushed it|nailed it|smashed it|killed it)|all done|(?:(?:i )?(?:just )?(?:got|hit|set) )?(?:a )?new (?:pr|pb|personal (?:best|record))|(?:i )?(?:just )?(?:hit|reached|made|met) my goal|(?:i'?m |i am )?(?:so |really )?proud of (?:me|myself)"))
+      return { say: oneOf([`That is how it is done, ${firstName()}!`, "Well earned. I saw that.", `Proud of you, ${firstName()}. Truly.`], "w"), feel: "excited", opts: [{ place: "progress" }, { road: true }] };
+    if (only(b, "(?:thank you|thanks|thank u|thx|ty|cheers|many thanks)(?: (?:so much|very much|a lot|a ton|a bunch|a million))?(?: for (?:that|this|it|everything|the help|your help|all your help|all the help|helping(?: me)?))?(?: (?:that helps|that helped|that'?s all|that is all|i appreciate (?:it|you|that)))?|(?:i )?(?:really )?appreciate (?:it|you|that|this)|much appreciated"))
+      return { say: oneOf(["Always. That's what I'm here for.", `Any time, ${firstName()}.`, "Glad to. Come find me whenever you like."], "th"), feel: "proud", opts: [{ road: true }] };
+    if (only(b, "(?:i )?(?:really )?(?:love|like|adore) (?:you|u|ya)(?: so much| a lot)?|(?:you'?re|you are|ur|u r) (?:so |really |very |too |just )?(?:the best|great|awesome|amazing|cute|funny|sweet|kind|wonderful|helpful)|(?:good|great|nice) (?:job|work|bot|cloud)"))
+      return { say: oneOf([`You'll make a cloud blush, ${firstName()}.`, P ? "That made my day. Thank you." : "That lights my lamp. Thank you.", P ? "Kind of you. I like our chats too." : "Kind of you. I like our walks down the road too."], "lv"), feel: "proud" };
+    if (only(b, "good ?night|night night|nighty(?: night)?|sleep well|sweet dreams|(?:(?:i'?m|i am) )?(?:going|off|heading) to (?:bed|sleep)|off to bed|time for bed"))
+      return { say: oneOf([`Sleep well, ${firstName()}. Rest is part of the work.`, P ? "Good night. It will all keep until morning." : "Good night. The road will keep until morning."], "gn"), feel: "sleepy" };
+    if (only(b, "how are (?:you|u|ya)(?: doing| feeling)?|how'?re you(?: doing)?|how (?:you|u) doing|how do you feel|how'?s it going|how is it going|how are things|how'?s your (?:day|morning|evening|night)(?: going)?|what'?s up|wass?up|sup|(?:are )?you (?:ok|okay|good|alright|all right)"))
+      return { say: oneOf([`Better now that you're here, ${firstName()}. How about you: what are we doing today?`, `Floating along nicely. Good ${when} to you. What do you need?`, P ? "In good spirits. What can I do for you?" : "Lamp lit, spirits high. What can I do for you?"], "h"), feel: "happy",
+        opts: [{ road: true }, { label: "Encourage me", more: () => ({ say: lift(), opts: [{ road: true }] }) }, { label: "Give me a verse", more: () => verseReply("") }] };
+    if (only(b, "(?:who|what) are you(?: exactly| really)?|what'?s your name|what is your name|are you (?:real|human|alive|a (?:real )?(?:person|human|robot|bot)|an? ai)|what can you do|what do you do|how do you work|what can i ask(?: you)?|help(?: me)?"))
+      return { say: [P ? "I'm Solomon, MD Fit's guide. I'm not a person, and I don't give medical advice." : "I'm Solomon: a cloud with a lamp, and MD Fit's guide. I'm not a person, and I don't give medical advice.",
+        `I can show you where anything is, tell you what is next ${P ? "for you today" : "on your road"}, find the rehab for what hurts, build a workout, set a reminder, and hand you a verse, a kind word or a joke when you want one.`], feel: "happy",
+        opts: [{ road: true }, { place: "pain" }, { place: "generate" }, { label: "Give me a verse", more: () => verseReply("") }] };
+    if (/^(give me|show me|tell me|i want|i need|can you|could you|please)\.?$/.test(t)) return { say: `Give you what, ${firstName()}? Here is what I have ready:`, opts: [{ road: true }, { label: "A Bible verse", more: () => verseReply("") }, { label: "A word of encouragement", more: () => ({ say: lift(), opts: [{ road: true }] }) }, { label: "A joke", more: () => ({ say: oneOf(JOKES, "j") }) }, { place: "generate" }] };
     return null;
   };
   try { if (G.talk) G.talk(talk); } catch {}
