@@ -865,8 +865,20 @@
       say(theirs.length ? "I didn't quite get that one. Try telling me what you're working on, like a sore knee, getting stronger, or booking a visit. Here's what you have going:" : "I didn't quite get that one. Try telling me what you're working on, like a sore knee, getting stronger, or booking a visit. Or start here:");
       offer([...theirs, opt("pain"), opt("programs"), opt("generate"), opt("book"), opt("messages"), opt("call")]); } };
   }
+  // The last lines of this chat that went to MD Fit's server, with his answers to them: sent with the next question
+  // so "yes" or "another one" is understood and a joke is not told twice. Only lines that were already sent go in
+  // (nothing typed while the assistant is off, nothing answered here alone), they are kept in memory for 10 minutes
+  // at most, and an emergency empties them: it is never sent, then or later.
+  const CONVO_MS = 10 * 60 * 1000, CONVO_MAX = 6;
+  let convo = [];
+  const history = () => { const now = Date.now(); convo = convo.filter((l) => now - l.at < CONVO_MS).slice(-CONVO_MAX); return convo.map(({ who, text }) => ({ who, text })); };
+  const remember = (asked, said) => { const at = Date.now(); convo.push({ who: "me", text: String(asked).slice(0, 300), at }, { who: "solomon", text: String(said).slice(0, 600), at }); history(); };
+  // "Yes" to the "Another one" (joke, saying) or "Another verse" button his last line offered: that button, pressed
+  const YES = /^\s*(yes|yeah|yea|yep|yup|ya|sure|please|yes please|sure thing|go on|go ahead|another|another one|one more|more|again|do it|why not|absolutely|definitely|of course|hit me|keep (them|'em) coming)( please| pls)?[\s!.]*$/i;
+  let again = null;
   async function ask(raw) {
     const text = String(raw || "").trim(); if (!text || busy) return false;
+    const yes = again && YES.test(text) ? again : null; again = null;
     say(text, true);
     const u = understand(text);
     // the first descent's "Meet Solomon" stop (account.js) and the tour are told once the answer is known (below), and
@@ -875,6 +887,8 @@
     // An emergency is answered at once: never counted, never behind the limit
     lastAsked = text;
     if (u.urgent) { emergency(text); return true; }
+    // "Yes" to the button his last line offered: answered here, as the button is, never sent and never counted
+    if (yes) { busy = true; const d = thinking(); try { await wait(500); d.remove(); yes(); } catch {} finally { d.remove(); busy = false; end(); } return true; }
     busy = true; const d = thinking(), t0 = Date.now();
     try {
       // What the device must do itself is worked out first: a reminder, a look, the member's own account, the way to a
@@ -912,7 +926,7 @@
       lastTopic = ""; // a follow-up belongs to the answer just given; the answer below sets it again if it has one
       const care = !!(u.health || u.pained || u.area); // about pain or the body: the limit message keeps the pain tool and the clinic
       if (!(ai && ai.ok !== false && ai.urgent)) asked1();
-      if (aside) reply(told || aside); else if (ai) await aiAnswer(ai, care); else if (!ok) limit(care); else if (told) reply(told); else await plan.run();
+      if (aside) reply(told || aside); else if (ai) { await aiAnswer(ai, care); if (ai.ok !== false && !ai.urgent && typeof ai.say === "string" && ai.say.trim()) remember(text, ai.say.trim()); } else if (!ok) limit(care); else if (told) reply(told); else await plan.run();
     } catch { d.remove(); say("Something went wrong on my side. You can still get anywhere from the menu, or call the clinic."); offer([opt("call")]); }
     // Whatever happened above, the dots go and the box takes the next message
     finally { d.remove(); busy = false; end(); }
@@ -925,6 +939,8 @@
   const talkers = [];
   function talkFor(text, lost) { for (const f of talkers) { try { const r = f(String(text || ""), !!lost); if (r && r.say) return r; } catch {} } return null; }
   function reply(r) {
+    const next = (r.opts || []).find((o) => o.label && typeof o.more === "function" && /^Another\b/.test(o.label));
+    again = next ? () => { const nx = next.more(); if (nx && nx.say) reply(nx); } : null;
     [].concat(r.say).filter(Boolean).forEach((line) => say(String(line)));
     const rd = road(), list = [];
     for (const o of r.opts || []) {
@@ -942,6 +958,7 @@
   // on its own is often an injury, so that answer also offers the pain tool.
   let lastAsked = "";
   const emergency = (text = lastAsked) => {
+    convo = []; again = null; // never sent with a later question
     // The rest of the app goes quiet: no moments, sounds or vibration for a while, and the first-open tour ends
     try { document.dispatchEvent(new CustomEvent("mdfit:urgent")); } catch {}
     const t = String(text || ""), crisis = CRISIS_WORDS.isCrisis(t), medical = !crisis && CRISIS_WORDS.isUrgent(t);
@@ -957,7 +974,7 @@
   // null = the assistant is off or did not answer: fall back to the device, never an error on screen
   async function askServer(text) {
     try {
-      const r = await Promise.race([post("/api/me/guide/ask", { text: text.slice(0, 300) }), wait(12000).then(() => null)]);
+      const r = await Promise.race([post("/api/me/guide/ask", { text: text.slice(0, 300), history: history() }), wait(12000).then(() => null)]);
       if (!r || typeof r !== "object") return null;
       if (r.ok === true && (r.urgent || typeof r.say === "string")) { apply(r); return r; }
       if (r.ok === false && r.limited) { apply(r); return r; }
@@ -983,8 +1000,11 @@
     // A verse was asked for: the model leads into it, and the verse itself comes from his own list, word for word
     // (not on a health message: there the answer's own buttons, Call the clinic among them, stay)
     if (r.verse && !care) { const v = talkFor("__verse"); if (v) { reply(v); return; } }
+    // The clinic's number goes with an answer about pain or the body, or one that points somewhere; not with small talk
+    // (a joke, a thank-you, "how are you"), unless the assistant put the clinic among its places
+    const clinic = care || !!area || ids.length > 0 || (Array.isArray(r.places) && r.places.includes("call"));
     const rd = road(), next = plainHome() ? "Next" : "Next on your road"; // the Simple view has no road, as in his plain lines (account-solomon.js)
-    offer([...(rd && rd.opt && !["done", "ask"].includes(rd.kind) ? [{ ...rd.opt, label: rd.opt.label === "Do my check-in here" ? `${next}: my check-in` : `${next}: ${rd.opt.label.replace(/^(Open|Start|Pick|Build) /, (m) => m.toLowerCase())}` }] : []), ...(area ? [{ label: `Programs for your ${area}`, again: true, more: () => beat(() => showArea(area)) }] : []), ...ids.map(opt), opt("call")]);
+    offer([...(rd && rd.opt && !["done", "ask"].includes(rd.kind) ? [{ ...rd.opt, label: rd.opt.label === "Do my check-in here" ? `${next}: my check-in` : `${next}: ${rd.opt.label.replace(/^(Open|Start|Pick|Build) /, (m) => m.toLowerCase())}` }] : []), ...(area ? [{ label: `Programs for your ${area}`, again: true, more: () => beat(() => showArea(area)) }] : []), ...ids.map(opt), ...(clinic ? [opt("call")] : [])]);
     let C = null; try { C = await App.content(); } catch {}
     suggest(r.suggested, new Map(((C && C.programs) || []).map((p) => [p.id, p])));
   }
