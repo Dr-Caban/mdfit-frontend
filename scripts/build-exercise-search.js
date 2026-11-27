@@ -21,7 +21,8 @@ const EXTRA = {
   // The shoulder program and pain tracks call the clip filed as "Eccentric Scalene Drop" this (it says "the eccentric dumbbell drop").
   "1mLoiufsNDNa-4V4c-6f0DP6b9DBbE3_B": ["Eccentric Dumbbell Shrug Drop", "dumbbell shrug drop", "shrug drop", "shoulder drop"],
   // The program's weeks 5 and 6 step: tilt, rotate, tuck.
-  "1Asjbv7VTBS7h4GhOEoDXqM1UnxprIDpR": ["Scalene Stretch Three Part", "three part", "tilt rotate tuck", "shoulder program"]
+  // Also the old "Standing Scalene Stretch" entry, which was this same file (see `dup` in app/exercises.js).
+  "1Asjbv7VTBS7h4GhOEoDXqM1UnxprIDpR": ["Standing Scalene Stretch", "standing", "Scalene Stretch Three Part", "three part", "tilt rotate tuck", "shoulder program"]
 };
 
 const sb = { window: {} };
@@ -46,8 +47,10 @@ const item = (e) => {
 
 const have = new Set(idx.items.map((i) => i.id));
 const redo = new Set(Object.keys(EXTRA).map((id) => `ex:${id}`));
-const fresh = EX.filter((e) => e.id && (!have.has(`ex:${e.id}`) || redo.has(`ex:${e.id}`)));
-const items = [...idx.items.filter((i) => !fresh.some((e) => i.id === `ex:${e.id}`)), ...fresh.map(item)];
+// An entry flagged `dup` is the same file as another movement: one card in the library, so one entry in search.
+const dups = new Set(EX.filter((e) => e.dup).map((e) => `ex:${e.id}`));
+const fresh = EX.filter((e) => e.id && !e.dup && (!have.has(`ex:${e.id}`) || redo.has(`ex:${e.id}`)));
+const items = [...idx.items.filter((i) => !dups.has(i.id) && !fresh.some((e) => i.id === `ex:${e.id}`)), ...fresh.map(item)];
 
 const df = {};
 for (const it of items) for (const t of Object.keys(it.tf)) df[t] = (df[t] || 0) + 1;

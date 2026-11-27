@@ -4,7 +4,7 @@
 // "do this for 60 seconds"; holds and stretches are written as slow reps with a short pause.
 (() => {
   // Pregnancy clips are partner-only and educational (owner, 27 Nov 2026): never drawn into a generated workout.
-  const EX = (window.MDFIT_EXERCISES || []).filter((e) => e.cc !== "PRG");
+  const EX = (window.MDFIT_EXERCISES || []).filter((e) => e.cc !== "PRG" && !e.dup);
 
   const GOALS = [
     { id: "upper", label: "Upper Body", icon: "upper", regions: ["SH", "UB", "EL", "WR", "NK"] },

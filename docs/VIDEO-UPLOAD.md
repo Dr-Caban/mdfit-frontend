@@ -185,6 +185,11 @@ finds a movement by its title on its own, but the site-wide search reads `data/s
 adds exercises to it (63 of 222 were missing on 27 Nov 2026). Do not run `scripts/seo/build.js` just for this: it
 re-stamps `lastReviewed` on every generated page.
 
+**The same file under two names (owner, 27 Nov 2026).** Two entries whose Drive files are byte-identical cannot be
+told apart by relabelling, so do not relabel one to hide the other. Pick the main entry and put `"dup":"<main id>"` on
+the other in `app/exercises.js`: the library, the builder, the generator and site search list one card, and the copy
+stays in the catalog so a pain track (by id) or a muscle report (by name) that points at it still plays. Nothing is
+deleted. Check with a checksum, not a file size: `Scalene Stretch` and `Standing Scalene Stretch` matched on both.
 **Pregnancy clips (owner, 27 Nov 2026).** They have their own tab in the library: `cat: "Pregnancy"`,
 `cc: "PRG"`, with the region set per clip so they group by joint. Whatever carries that category gets three things
 automatically, from `app/library.js` and `account.js`: it stays out of the Exercise and Rehab tabs, it is never

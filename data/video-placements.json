@@ -25,6 +25,17 @@
   ],
   "settled": [
     {
+      "id": "1STKjx-kHQ4rDcNBAiaLiqTqvBPYNl9mD",
+      "name": "Standing Scalene Stretch",
+      "folder": "1 Exercise Library",
+      "decision": "duplicate-of-library-entry",
+      "duplicateOf": "1Asjbv7VTBS7h4GhOEoDXqM1UnxprIDpR",
+      "driveFileName": "Standing Scalene Stretch.mp4",
+      "why": "Byte-identical to Scalene Stretch.mp4 (same size 91123861 and same checksum, checked 27 Nov 2026) under a different name, so the library showed one video twice. The owner asked for one to be the main and the others relabelled; relabelling cannot tell two identical files apart, so Scalene Stretch is the main clip and this entry is flagged dup in app/exercises.js: one card in the library and in search, nothing deleted, and the pain tracks (by id) and muscle reports (by name) that point at it still play. Drive file is not deleted: the connector is read-only.",
+      "on": "2026-11-27",
+      "by": "owner"
+    },
+    {
       "id": "1JhbgGEtPV0sAGWwt_jKi7b02g_WciwA6",
       "name": null,
       "folder": "MD Fit Library",
@@ -924,7 +935,8 @@
         "Seated Plantar Fascia Stretch.mp4 (two copies) — HTTP 200, no bytes",
         "Kneeling Plantar Fascia Stretch (take 2).mp4 — HTTP 200, no bytes"
       ],
-      "stillUnplaced": "Seated Plantar Fascia Stretch: both copies are empty files, so there is nothing to place."
+      "stillUnplaced": "Seated Plantar Fascia Stretch: both copies are empty files, so there is nothing to place.",
+      "duplicateDeletion2": "Standing Scalene Stretch.mp4 (1STKjx...) is byte-identical to Scalene Stretch.mp4 (1Asjbv...). It was not in the 134 because the names differ. Delete it in Drive once the owner account is connected, and point paintracks.js at the main id first."
     }
   ]
 }

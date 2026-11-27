@@ -740,7 +740,7 @@
   const vf = { q: "", cat: "All", region: "", loc: "", by: "joint", kind: "Exercise" };
   // The library offers exactly the videos that are ready. Counts, chips, jump list and groups all read this list,
   // so none of them can advertise a video the member cannot open (or a count that disagrees with the grid).
-  const liveEX = () => EX.filter((e) => offered(e.id));
+  const liveEX = () => EX.filter((e) => offered(e.id) && !e.dup); // e.dup: the same file as another entry, kept so pain tracks and reports that point at it still play
   EX.forEach((e) => { e.kind = LIB.kind(e); });
   const catsFor = () => ["All", "♥ Favorites", ...(vf.kind === "All" ? LIB.CATEGORIES : LIB.CAT_BY_KIND[vf.kind])];
   function renderCats() {
