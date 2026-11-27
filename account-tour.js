@@ -85,6 +85,8 @@
     const hole = $(".gt-hole", root), blocks = [...root.querySelectorAll(".gt-b")], sayBox = $(".gt-say", root), sayP = $("p", sayBox), bar = $(".gt-bar i", root);
     const told = { asked: false }; // what the member has done during the tour (a question sent to Solomon)
     const onAsked = () => { if (at >= 1) told.asked = true; };
+    // A crisis or emergency answer ends the tour at once, without a word: the member's message comes first
+    const onUrgent = () => end(false);
     let at = -1, step = null, tick = null, typing = null, missing = 0, tapped = false, moving = false, lifted = false, ended = false, paused = false, audio = null, primed = "";
     const sndBtn = $(".gt-snd", root), paintSnd = () => { sndBtn.innerHTML = soundOn() ? ICON.on : ICON.off; sndBtn.setAttribute("aria-pressed", String(soundOn())); sndBtn.title = soundOn() ? "Voice on" : "Voice off"; };
     const quietNow = () => { if (audio) { try { audio.pause(); } catch {} } };
@@ -101,7 +103,7 @@
     function end(done, say) {
       if (ended) return; ended = true; run = null;
       if (say) setTimeout(() => speakLine(say.snd), 0); // after quietNow below; the player outlives the overlay
-      quietNow(); clearInterval(tick); clearInterval(typing); document.removeEventListener("click", onTap, true); document.removeEventListener("keydown", onKey, true); document.removeEventListener("mdfit:guide-asked", onAsked);
+      quietNow(); clearInterval(tick); clearInterval(typing); document.removeEventListener("click", onTap, true); document.removeEventListener("keydown", onKey, true); document.removeEventListener("mdfit:guide-asked", onAsked); document.removeEventListener("mdfit:urgent", onUrgent);
       root.remove(); document.body.classList.remove("gt-on", "gt-nocloud"); keep(null);
       if (typeof o.onEnd === "function") { try { o.onEnd(!!done); } catch {} }
       try { document.dispatchEvent(new CustomEvent("mdfit:tour-end", { detail: { done: !!done } })); } catch {} // Solomon's verse question waits for this
@@ -182,7 +184,7 @@
     function onKey(e) { if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); end(false); } }
 
     run = { end }; document.body.appendChild(root); document.body.classList.add("gt-on");
-    document.addEventListener("click", onTap, true); document.addEventListener("keydown", onKey, true); document.addEventListener("mdfit:guide-asked", onAsked);
+    document.addEventListener("click", onTap, true); document.addEventListener("keydown", onKey, true); document.addEventListener("mdfit:guide-asked", onAsked); document.addEventListener("mdfit:urgent", onUrgent);
     tick = setInterval(place, 110);
     // Coming back to the app after a lit thing took them out of it: the tour waits, stepped aside, where they left it
     const from = Number(o.from); if (Number.isInteger(from) && from >= 0 && from < steps.length - 1) { at = from; step = steps[at]; pause(true); } else next();

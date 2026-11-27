@@ -15,7 +15,10 @@
   const A = window.MDFitApp; if (!A) return;
   const still = () => { try { return matchMedia("(prefers-reduced-motion: reduce)").matches; } catch { return false; } };
   const simple = () => document.documentElement.dataset.homeView === "simple";
-  const quiet = () => simple() || (window.MDFitTour && window.MDFitTour.running()) || !!document.getElementById("chest-ov") && !document.getElementById("chest-ov").hidden;
+  // After a crisis or emergency answer (mdfit:urgent) nothing celebrates for a quarter of an hour
+  let urgentUntil = 0;
+  document.addEventListener("mdfit:urgent", () => { urgentUntil = Date.now() + 15 * 60e3; });
+  const quiet = () => simple() || Date.now() < urgentUntil || (window.MDFitTour && window.MDFitTour.running()) || !!document.getElementById("chest-ov") && !document.getElementById("chest-ov").hidden;
   const pick = (list, memo) => { let i = Math.floor(Math.random() * list.length); if (list.length > 1 && i === pick[memo]) i = (i + 1) % list.length; pick[memo] = i; return list[i]; }; // never the same twice running
   const rnd = (a, b) => a + Math.random() * (b - a);
 

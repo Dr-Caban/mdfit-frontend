@@ -1233,7 +1233,10 @@
     const f = $("#profile-form");
     f.name.value = client.name; f.email.value = client.email; f.phone.value = client.phone || "";
     if (f.dob) {
-      f.dob.value = client.dob || ""; // empty when none is kept, or when the server does not send it
+      // A server from before birthdays could be edited sends no dob at all: the field stays hidden rather than take a
+      // date it would quietly drop
+      const lab = f.dob.closest("label"); if (lab) lab.hidden = !("dob" in client);
+      f.dob.value = client.dob || ""; // empty when none is kept
       // A date of birth on file with the clinic (from the practice's records) is shown but not changed here: greyed like
       // the email above it, and, being disabled, never checked or sent, so an old or unusual date can never block or
       // wipe a save.
