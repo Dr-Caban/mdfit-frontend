@@ -1232,7 +1232,14 @@
     $("#p-email").textContent = client.email;
     const f = $("#profile-form");
     f.name.value = client.name; f.email.value = client.email; f.phone.value = client.phone || "";
-    if (f.dob) f.dob.value = client.dob || ""; // empty when none is kept, or when the server does not send it
+    if (f.dob) {
+      f.dob.value = client.dob || ""; // empty when none is kept, or when the server does not send it
+      // A date of birth on file with the clinic (from the practice's records) is shown but not changed here; read-only,
+      // it is also never checked or sent, so an old or unusual date can never block or wipe a save.
+      const locked = !!client.dobLocked; f.dob.readOnly = locked;
+      const note = $("#p-dob-note");
+      if (note) note.textContent = locked ? "On file with the clinic. Call us at 941-313-0562 if it needs changing." : "Only used to wish you a happy birthday. Leave it empty if you would rather not.";
+    }
     renderReferral();
     renderProfileMembership();
   }
@@ -1251,7 +1258,7 @@
     // The birthday goes with the save only when the form has the field and the member changed it ("" removes it). Left
     // out, the server keeps what it has, so an older copy of this page or of the account kept on the phone can never
     // wipe one out.
-    const dobChanged = d.dob !== undefined && d.dob !== (client.dob || "");
+    const dobChanged = d.dob !== undefined && !client.dobLocked && d.dob !== (client.dob || "");
     const r = await apiAuth("PUT", "/api/me", { name: d.name, phone: d.phone, ...(dobChanged ? { dob: d.dob } : {}) }); earn("profile");
     client = r.client; auth.set({ ...auth.get(), client }); renderProfile();
     return { message: "Saved." };
