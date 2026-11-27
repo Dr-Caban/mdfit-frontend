@@ -12,9 +12,17 @@
 //
 // When the practice has switched on its assistant (GET /api/me/guide says ai: true), a typed question that the device
 // does not answer itself goes to MD Fit's own server (/api/me/guide/ask) to be read there. Still kept on the device in
-// that mode: anything that sounds like an emergency, reminders, theme and layout, and every question about the
-// member's own account (visits, invoices, forms, messages, streak). If the assistant is off or does not answer, the
-// device understands the message itself, exactly as in the default mode. The line under the box says which is true.
+// that mode, whatever polite or exclamatory words come with them: anything that sounds like an emergency, reminders,
+// theme and layout, the way to a place in the app, and every question about the member's own account (visits,
+// invoices, forms, messages, streak). If the assistant is off or does not answer, the device understands the message
+// itself, exactly as in the default mode. One answer that fails does not switch the assistant off; only the practice
+// switching it off does. The line under the box says which is true.
+//
+// Things said to him rather than asked of the app (thanks, "tell me a joke", "give me a verse", "I'm tired", "who are
+// you") have lines of his own, kept on the device (account-solomon.js). One is used only when the device has nothing
+// it must do itself and the message names no body part or symptom. With the assistant off it is the answer: never
+// sent, never counted. With it on, the message goes to the server like any other question, and his own line is what
+// he falls back on when the assistant is slow, fails, or a free member has no answers left today.
 //
 // In that mode the server also reads the member's activity in the app (programs, check-ins, workouts) to personalize
 // what it suggests; the member's name and contact details are never sent, and what is typed is not saved.
@@ -109,7 +117,16 @@
     leg: { w: ["hamstring", "hamstrings", "quad", "quads", "thigh", "thighs"], f: ["hamstring", "thigh", "quad"] },
     jaw: { w: ["jaw", "tmj", "headache", "headaches"], f: ["jaw", "head"] }
   };
-  const URGENT = /\b(911|emergency|can'?t breathe|cannot breathe|chest pain|heart attack|stroke|passed out|fainted|suicid|kill myself|numb(ness)? in my (face|arm)|severe bleeding|overdos)/i;
+  // Words that mean an emergency or a crisis. The server checks a list of its own (lib/guide-ai.js) with the same crisis
+  // words; a change to one belongs in the other. Every entry ends on a whole word, so "want to die" is not "I want to
+  // diet", and the apostrophe a phone types (’) counts like the plain one. Figures of speech ("my back is killing me",
+  // "dying to try it") are left out on purpose, and so is a bare "I hurt myself", which in a rehab app is usually about
+  // an injury. (The server's list still counts that one, so with the assistant on it gets the emergency answer there.)
+  const URGENT = /\b(911|emergency|can['’]?t breathe|cannot breathe|(struggling|hard|trouble|difficulty) (to breathe|breathing)|chest pains?|heart attacks?|strokes?|passed out|fainted|suicid\w*|kill myself|(want|wanna|going|gonna|plan|planning|about|try|trying) to (hurt|harm|kill) myself|(hurt|harm) myself on purpose|end my life|end it all|(want to|wanna) die|better off dead|(don['’]?t|do not) want to (live|be here|be alive)|numb(ness)? in my (face|arms?)|severe bleeding|overdos\w*)\b/i;
+  // A body part or a symptom the lists above do not hold. A message with one of these is about someone's health, so it
+  // never gets small talk (a verse, a joke, a kind word) or the road alone: it goes the normal way, to the assistant
+  // when that is on and otherwise to the "didn't quite get that" answer with the pain tool, booking and the clinic.
+  const HEALTH = /\b(legs?|arms?|head|stomach|tummy|belly|abdomen|gut|heart|lungs?|throat|eyes?|ears?|tooth|teeth|fingers?|toes?|thumbs?|skin|bones?|joints?|muscles?|nerves?|body|numb\w*|dizz\w*|light ?headed|tingl\w*|pins and needles|pounding|throbbing|stabbing|burning|swell\w*|bleed\w*|blood|bruis\w*|faint\w*|nause\w*|vomit\w*|threw up|throwing up|fever\w*|cramp\w*|spasm\w*|itch\w*|rash|cough\w*|migraines?|concussion|breath\w*|weak|weakness|shaky|shaking|sick|ill|unwell|symptoms?|surgery|dying|die|killing me|(feel|feels|feeling|felt) (funny|weird|strange|odd|off|wrong))\b/;
   const rx = (p) => p.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const has = (text, phrase) => new RegExp(`(^|[^a-z])${rx(phrase)}([^a-z]|$)`).test(text);
   const norm = (s) => " " + String(s || "").toLowerCase().replace(/[^a-z0-9'&: ]+/g, " ") + " ";
@@ -119,7 +136,7 @@
     const pained = scored.some((p) => p.id === "pain");
     let area = Object.keys(AREAS).find((a) => AREAS[a].w.some((w) => has(text, w))) || "";
     if (!area && pained && has(text, "back")) area = "back";
-    return { text, area, places: scored, pained, urgent: URGENT.test(raw || "") };
+    return { text, area, places: scored, pained, urgent: URGENT.test(String(raw || "").replace(/\s+/g, " ")), health: HEALTH.test(text) };
   }
 
   // ---------- what the app already knows is waiting for this member (read fresh each time; never sent anywhere) ----------
@@ -254,6 +271,8 @@
   const unlimited = () => G.known && (G.plan === "member" || G.left === null);
   // Roughly how many answers are left, in the member's terms (tokens stay a server matter)
   const answersLeft = () => (typeof G.left !== "number" ? null : G.unit === "tokens" ? Math.floor(G.left / PER_ANSWER) : G.left);
+  // The server has already said a free member has nothing left today (read on open and with every answer)
+  const spent = () => G.known && !unlimited() && typeof G.left === "number" && G.left <= 0;
   function meter() {
     const n = answersLeft(), free = G.known && !unlimited() && typeof n === "number";
     // Quiet until few are left: with plenty remaining it should feel unlimited. Members never see a counter.
@@ -274,13 +293,15 @@
     return true;
   }
   const tell = (type) => { post("/api/me/guide/event", { type }).catch(() => {}); };
-  function limit() {
+  // care = the message was about pain or the body: the pain tool, booking and the clinic are offered every time then,
+  // not only with the first refusal of the day
+  function limit(care) {
     const again = limited; limited = true;
     say(again ? "You're out of free Solomon answers for today. Members get unlimited Solomon for $19.95/mo, or come back tomorrow."
       : `You've used today's free Solomon answers, ${first()}. Members get unlimited Solomon for $19.95/mo. You can upgrade now, or I'll be right here tomorrow.`);
     offer([{ label: "Get unlimited Solomon", sub: "$19.95/mo", gold: true, run: () => { tell("upgrade"); if (App.showTier) App.showTier("member"); else App.go("premium"); }, name: "Membership" },
       { label: "Come back tomorrow", more: () => { tell("tomorrow"); say(`See you tomorrow, ${first()}.`); setTimeout(() => { shut(); speak("New answers tomorrow", { ms: 6000 }); dot.hidden = true; }, 1500); } }]);
-    if (!again) { sys("Always open, limit or not"); offer([opt("pain"), opt("book"), opt("call")]); }
+    if (!again || care) { sys("Always open, limit or not"); offer([opt("pain"), opt("book"), opt("call")]); }
   }
 
   // ---------- answers ----------
@@ -330,8 +351,9 @@
     return out;
   }
   const own3 = (m) => [m.rec, m.track].filter(Boolean);
-  // A hello: answered here by first name, never sent, never counted
-  const HELLO = /^\s*(hi+|hey+|heya|hello+|helo|yo+|hiya|howdy|sup|what'?s up|wass?up|greetings|good (morning|afternoon|evening|day)|morning|afternoon|evening|hola|hi there|hey there|hello there|anyone there|you there|are you there)(\s+(sunny|there|doc|dr\.?|guide|md ?fit))?[\s!?.,]*$/i;
+  // A hello: answered here by first name, never sent, never counted. It may use his name ("hey Solomon", "hi, Solomon")
+  // and the apostrophe a phone types (what’s up).
+  const HELLO = /^\s*(hi+|hey+|heya|hello+|helo|yo+|hiya|howdy|sup|what['’]?s up|wass?up|greetings|good (morning|afternoon|evening|day)|morning|afternoon|evening|hola|hi there|hey there|hello there|anyone there|you there|are you there)([\s,]+(solomon|sunny|there|doc|dr\.?|guide|md ?fit))?[\s!?.,]*$/i;
   async function hello() {
     const m = await mine();
     say(`Hey ${first()}, I'm Solomon. What are we working on today?`);
@@ -475,7 +497,9 @@
   }
   // When a reminder is for: a day and a time worked out from the words, on this device
   function whenFrom(raw) {
-    const t = raw.toLowerCase(), today = M.todayInTz(), now = new Date(), nowHM = String(now.getHours()).padStart(2, "0") + ":" + String(now.getMinutes()).padStart(2, "0");
+    // Today and whether a time has passed are both read in the practice's time zone, as the server checks them, not by
+    // the phone's clock: on a phone set to another zone "6pm" could otherwise land on an evening already gone there.
+    const t = raw.toLowerCase(), today = M.todayInTz(), passed = (d, hm) => M.zonedToUtc(d, hm).getTime() <= Date.now();
     let time = "", m;
     if ((m = t.match(/\b(\d{1,2}):(\d\d)\s*(am|pm|a\.m\.|p\.m\.)?/)) || (m = t.match(/\b(\d{1,2})()\s*(am|pm|a\.m\.|p\.m\.)(?![a-z])/)) || (m = t.match(/\bat\s+(\d{1,2})()()\b/))) {
       let h = +m[1]; const min = m[2] || "00", ap = (m[3] || "").replace(/\./g, "");
@@ -491,9 +515,9 @@
     else if (/\btomorrow\b/.test(t)) date = M.addDays(today, 1);
     else if (wd >= 0) { const cur = new Date(today + "T12:00:00Z").getUTCDay(); date = M.addDays(today, ((wd - cur + 7) % 7) || 7); }
     else if (inN) date = M.addDays(today, Math.min(60, +inN[1]));
-    else date = time && time > nowHM ? today : M.addDays(today, 1);
+    else date = time && !passed(today, time) ? today : M.addDays(today, 1);
     if (!time) time = "07:00";
-    if (date === today && time <= nowHM) date = M.addDays(today, 1); // that time has passed today
+    if (date === today && passed(today, time)) date = M.addDays(today, 1); // that time has passed today
     return { date, time };
   }
   // What the reminder is called: the app's own names only (never the typed sentence)
@@ -604,13 +628,14 @@
       const p = await priceOf();
       say(`The app is free: the pain tool, the exercise videos and I are all included. Membership${p ? ` is ${p} a month and` : ""} adds every program, the lecture library, the live Q&A and unlimited time with me.`);
       offer([opt("premium"), opt("programs"), opt("pain")]); } },
-    { re: /\b(who are you|what are you|are you (a )?(real|human|person|bot|robot|ai)|what can you do|what do you do|how (do|can) you help)\b|^\s*help( me)?( please)?[\s!?.]*$/, run: async () => {
+    // (chat: said to him rather than asked of the app; his own talk line for it, when he has one, answers instead: see ask)
+    { re: /\b(who are you|what are you|are you (a )?(real|human|person|bot|robot|ai)|what can you do|what do you do|how (do|can) you help)\b|^\s*help( me)?( please)?[\s!?.]*$/, chat: true, run: async () => {
       say("I'm Solomon, the assistant in your MD Fit app. I can pick a program for you, find the right video, take you to the pain tool, book a visit, set a reminder, and tell you what's waiting on your account. For a question about your own body, Dr. Jared is the one to ask.");
       offer([{ label: "Pick a program for me", again: true, more: () => beat(() => recommend({ text: " ", area: "" })) }, opt("pain"), opt("book")]); } },
     { re: /\b(who is|who'?s|about) (dr\.? ?jared|dr\.? ?caban|the doctor|the doc)\b/, run: async () => {
       say("Dr. Jared Caban leads MD Fit in Sarasota. He's a Certified Clinical Exercise Physiologist and Licensed Massage Therapist with medical training, and he built every program and video in this app.");
       offer([opt("book"), opt("messages"), opt("learn")]); } },
-    { re: /^\s*(thanks|thank you|thx|ty|cheers|appreciate it|great|awesome|perfect|cool|ok|okay|got it|nice)[\s!.]*$/, run: async () => { say("Anytime. I'm here whenever you need me."); } }
+    { re: /^\s*(thanks|thank you|thx|ty|cheers|appreciate it|great|awesome|perfect|cool|ok|okay|got it|nice)[\s!.]*$/, chat: true, run: async () => { say("Anytime. I'm here whenever you need me."); } }
   ];
   const faqFor = (raw, t) => FAQ.find((f) => f.re.test(t) || f.re.test(String(raw || "").toLowerCase()));
 
@@ -650,6 +675,8 @@
   }
   // Work out what was asked: which kind (one word, for the count) and what to answer
   // local: true = the device answers this itself in every mode (the member's own data, reminders, how the app looks)
+  // chat: true = nothing here the device must do itself (a courtesy, or a message it could not place): only then may
+  // one of his talk lines answer in its place (ask)
   // the best match is the longest phrase found, so "customize home" beats "home"
   function wayFor(t) { let best = null, len = 0; for (const w of WAYS) for (const k of w.w) if (k.length > len && has(t, k)) { best = w; len = k.length; } return best; }
   function showWay(w) {
@@ -695,7 +722,7 @@
     if (RECOMMEND.test(t) && !u.pained) return { kind: "programs", run: () => recommend(u) };
     // A goal said plainly ("I want to get stronger", "lose weight", "better at golf") is asking for a pick too
     if (!u.pained && GOALS.some((g) => g.w.some((w) => has(t, w))) && !u.places.some((p) => ["book", "messages", "profile", "premium", "call", "visit", "generate", "videos"].includes(p.id))) return { kind: "programs", run: () => recommend(u) };
-    if (!u.pained && !/\b(appointment|appointments|visit|visits|invoice|invoices|bill|owe|reminder)\b/.test(t)) { const f = faqFor(raw, t); if (f) return { kind: "other", run: f.run }; }
+    if (!u.pained && !/\b(appointment|appointments|visit|visits|invoice|invoices|bill|owe|reminder)\b/.test(t)) { const f = faqFor(raw, t); if (f) return { kind: "other", chat: !!f.chat, run: f.run }; }
     if (FOLLOW.test(String(raw || "")) && lastTopic === "programs") return { kind: "programs", run: FAQ[0].run };
     if (u.pained) return { kind: "pain", run: () => hurting(u.area, u.places.filter((p) => !["pain", "book", "call"].includes(p.id)).slice(0, 1).map((p) => opt(p.id))) };
     if (u.area) return { kind: (u.places[0] || {}).kind || "programs", run: () => showArea(u.area) };
@@ -703,9 +730,10 @@
       say(`${AT[p.id][phone() ? 0 : 1]} I can take you there now.`); offer([{ ...opt(p.id), gold: true }, ...u.places.slice(1, 3).map((x) => opt(x.id))]); } };
     if (u.places.length) return { kind: u.places[0].kind, run: () => { say(u.places.length === 1 ? "Got it. This is the place for that:" : "Got it. These look like what you're after:"); offer([...u.places.slice(0, 4).map((p) => opt(p.id)), ...(u.places.some((p) => p.id === "call") ? [] : [opt("call")])]); } };
     // Short and unplaceable ("everything", "ok", "what now"): answered from where they are on their road, on the device
+    // (not when it names a body part or a symptom: "my leg feels funny" gets the answer below, with the pain tool)
     { const rd = road(), words = t.trim().split(/\s+/).filter(Boolean).length;
-      if (rd && words <= 4) return { kind: "other", local: true, free: true, soft: true, run: () => { lastRoad = rd.sig; say(rd.say); offer([...(rd.opt ? [rd.opt] : []), opt("generate"), opt("programs"), opt("call")]); } }; }
-    return { kind: "other", run: async () => {
+      if (rd && words <= 4 && !u.health) return { kind: "other", local: true, free: true, soft: true, chat: true, run: () => { lastRoad = rd.sig; say(rd.say); offer([...(rd.opt ? [rd.opt] : []), opt("generate"), opt("programs"), opt("call")]); } }; }
+    return { kind: "other", chat: true, run: async () => {
       const m = await mine(), theirs = own3(m);
       say(theirs.length ? "I didn't quite get that one. Try telling me what you're working on, like a sore knee, getting stronger, or booking a visit. Here's what you have going:" : "I didn't quite get that one. Try telling me what you're working on, like a sore knee, getting stronger, or booking a visit. Or start here:");
       offer([...theirs, opt("pain"), opt("programs"), opt("generate"), opt("book"), opt("messages"), opt("call")]); } };
@@ -717,31 +745,46 @@
     const u = understand(text);
     // An emergency is answered at once: never counted, never behind the limit
     if (u.urgent) { emergency(); return true; }
-    // Talk (owner, Nov 2026): things said to him, not asked of the app: a hello, thanks, "give me a verse",
-    // "I'm tired", "tell me a joke", "who are you". Answered here on the device, never counted and never sent
-    // anywhere, before anything else is tried. The lines are his (account-solomon.js registers them with talk()).
-    // With the assistant on, he answers these himself through the language model (so every reply is his own and
-    // fits what was said); the lines kept on the device are what he falls back on when the assistant is off, slow
-    // or has nothing.
-    const told = !u.pained && !u.area ? talkFor(text) : null;
-    if (told && !G.ai) { busy = true; const dt = thinking(); await wait(650); dt.remove(); reply(told); busy = false; end(); return true; }
-    const plan = decide(u, text);
     busy = true; const d = thinking(), t0 = Date.now();
-    // With the assistant on, a question the device does not answer itself is read on MD Fit's server; anything else
-    // (and any failure there) is understood here and only counted.
-    // (something said to him, or a few words the device cannot place, is his to answer when the assistant is on:
-    // the device's own line for it is only the fallback)
-    let ai = null, asked = false; if (G.ai && (!plan.local || told || plan.soft)) { ai = await askServer(text); asked = !!ai; }
-    if (ai && ai.ok !== false && !ai.urgent && /\bcan only help with\b/i.test(String(ai.say || "")) && (u.places.length || u.area)) ai = null;
-    // Off his subject and nothing here answers it: he says so in his own voice and offers what he can do, in place
-    // of the assistant's flat "I can only help with..."
-    const aside = ai && ai.ok !== false && !ai.urgent && /\bcan only help with\b/i.test(String(ai.say || "")) ? talkFor("", true) : null;
-    const ok = ai || asked || plan.free ? true : await count(plan.kind); // a hello is never counted (nor a question the server already counted)
-    const rest = 750 - (Date.now() - t0); if (rest > 0) await wait(rest);
-    d.remove();
-    lastTopic = ""; // a follow-up belongs to the answer just given; the answer below sets it again if it has one
-    try { if (aside) reply(told || aside); else if (ai) await aiAnswer(ai); else if (!ok) limit(); else if (told) reply(told); else await plan.run(); } catch { say("Something went wrong on my side. You can still get anywhere from the menu, or call the clinic."); offer([opt("call")]); }
-    busy = false; end();
+    try {
+      // What the device must do itself is worked out first: a reminder, a look, the member's own account, the way to a
+      // place, a program, anything about pain or the body. Polite or exclamatory words around it change none of that.
+      const plan = decide(u, text);
+      // Talk (owner, Nov 2026): things said to him, not asked of the app: thanks, "give me a verse", "I'm tired",
+      // "tell me a joke", "who are you". His lines for these are kept on the device (account-solomon.js registers
+      // them with talk()). One is used only when the plan has nothing the device must do (plan.chat) and the message
+      // names no body part or symptom. With the assistant off it is the answer: never counted, never sent anywhere.
+      // With the assistant on he answers through the language model (so the reply fits what was said), and the line
+      // kept here is what he falls back on when the assistant is slow, fails, or today's free answers are used up.
+      const told = plan.chat && !u.health && !u.pained && !u.area ? talkFor(text) : null;
+      const free = !!told || !!plan.free; // answered on the device without being counted
+      // With the assistant on, a question the device does not answer itself is read on MD Fit's server; anything else
+      // (and any failure there) is understood here and only counted. A few words the device cannot place are his to
+      // answer there too (plan.soft). Something the device answers for free is not sent once the app knows a free
+      // member has nothing left today: the server could only refuse it.
+      let ai = null, asked = false;
+      if (G.ai && (!plan.local || plan.soft)) {
+        if (!(free && spent())) { ai = await askServer(text); asked = !!ai; }
+        // Not sent. The account is read again instead (nothing typed goes with it), so the line under the box and the
+        // counter catch up if the practice has switched the assistant off or changed the allowance since the app last heard.
+        else await Promise.race([load(), wait(2500)]);
+      }
+      // Today's free answers are used up, but the device has its own free answer for this: that, not the upgrade message
+      if (ai && ai.ok === false && free) ai = null;
+      // The assistant judged the message outside what he helps with. If the device found a place, a body area, pain or
+      // a symptom in it, the device answers. Otherwise he says so in his own voice and offers what he can do.
+      const off = !!ai && ai.ok !== false && !ai.urgent && outside(ai);
+      if (off && (u.places.length || u.area || u.pained || u.health)) ai = null;
+      const aside = off && ai ? talkFor("", true) : null;
+      const ok = ai || asked || free ? true : await count(plan.kind); // talk and a hello are never counted (nor a question the server already counted)
+      const rest = 750 - (Date.now() - t0); if (rest > 0) await wait(rest);
+      d.remove();
+      lastTopic = ""; // a follow-up belongs to the answer just given; the answer below sets it again if it has one
+      const care = !!(u.health || u.pained || u.area); // about pain or the body: the limit message keeps the pain tool and the clinic
+      if (aside) reply(told || aside); else if (ai) await aiAnswer(ai, care); else if (!ok) limit(care); else if (told) reply(told); else await plan.run();
+    } catch { d.remove(); say("Something went wrong on my side. You can still get anywhere from the menu, or call the clinic."); offer([opt("call")]); }
+    // Whatever happened above, the dots go and the box takes the next message
+    finally { d.remove(); busy = false; end(); }
     return true;
   }
   // talk(fn): a way for his lines to be added from outside. fn(text, lost) gives null or { say, opts, feel }:
@@ -763,6 +806,9 @@
   }
   let faceAfter = ""; // the face he wears when the chat is next closed (he shows none while it is open)
   const emergency = () => { say("If this is an emergency, call 911 now. For anything else urgent, call the clinic."); offer([{ label: "Call 911", tel: "911", gold: true }, opt("call")]); };
+  // Outside what he helps with: the server says so itself (outside: true or false). An older server sends no such word,
+  // and there the assistant's flat "I can only help with" is the only sign, so that is looked for instead.
+  const outside = (r) => (typeof r.outside === "boolean" ? r.outside : /\bcan only help with\b/i.test(String(r.say || "")));
   // null = the assistant is off or did not answer: fall back to the device, never an error on screen
   async function askServer(text) {
     try {
@@ -770,13 +816,20 @@
       if (!r || typeof r !== "object") return null;
       if (r.ok === true && (r.urgent || typeof r.say === "string")) { apply(r); return r; }
       if (r.ok === false && r.limited) { apply(r); return r; }
-      if (r.ok === false && r.ai === false) { G.ai = false; fine(); }
+      // One answer that failed ({ ai: true, failed: true }) leaves the assistant on: the device answers this message and
+      // the next one is sent as usual. Only { ai: false } with no "failed" can mean the practice switched it off, and
+      // an older server says the same when the model fails once, so the account is asked which it is. The small print
+      // changes only if the assistant really is off (or the account cannot be reached, when nothing more is sent).
+      if (r.ok === false && r.ai === false && !r.failed) {
+        const g = await Promise.race([M.apiAuth("GET", "/api/me/guide").catch(() => null), wait(4000).then(() => null)]);
+        if (g && typeof g === "object" && "ai" in g) apply(g); else { G.ai = false; fine(); }
+      }
     } catch {}
     return null;
   }
   const FROM_SERVER = { workout: "generate", membership: "premium" };
-  async function aiAnswer(r) {
-    if (r.ok === false) return limit();
+  async function aiAnswer(r, care) {
+    if (r.ok === false) return limit(care);
     if (r.urgent) return emergency();
     const area = AREAS[r.area] ? r.area : ""; if (area) ctx.area = area;
     const ids = [...new Set((Array.isArray(r.places) ? r.places : []).map((x) => FROM_SERVER[x] || x))].filter((id) => id !== "call" && PLACES.some((p) => p.id === id)).slice(0, 5);
@@ -784,8 +837,8 @@
     if (FACE[r.mood]) faceAfter = r.mood; // the face he wears once the chat is closed
     // A verse was asked for: the model leads into it, and the verse itself comes from his own list, word for word
     if (r.verse) { const v = talkFor("__verse"); if (v) { reply(v); return; } }
-    const rd = road();
-    offer([...(rd && rd.opt && !["done", "ask"].includes(rd.kind) ? [{ ...rd.opt, label: rd.opt.label === "Do my check-in here" ? "Next on your road: my check-in" : `Next on your road: ${rd.opt.label.replace(/^(Open|Start|Pick|Build) /, (m) => m.toLowerCase())}` }] : []), ...(area ? [{ label: `Programs for your ${area}`, again: true, more: () => beat(() => showArea(area)) }] : []), ...ids.map(opt), opt("call")]);
+    const rd = road(), next = plainHome() ? "Next" : "Next on your road"; // the Simple view has no road, as in his plain lines (account-solomon.js)
+    offer([...(rd && rd.opt && !["done", "ask"].includes(rd.kind) ? [{ ...rd.opt, label: rd.opt.label === "Do my check-in here" ? `${next}: my check-in` : `${next}: ${rd.opt.label.replace(/^(Open|Start|Pick|Build) /, (m) => m.toLowerCase())}` }] : []), ...(area ? [{ label: `Programs for your ${area}`, again: true, more: () => beat(() => showArea(area)) }] : []), ...ids.map(opt), opt("call")]);
     let C = null; try { C = await App.content(); } catch {}
     suggest(r.suggested, new Map(((C && C.programs) || []).map((p) => [p.id, p])));
   }
