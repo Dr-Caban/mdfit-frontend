@@ -123,7 +123,19 @@
   let lastVerse = -1;
   const anotherVerse = () => { let i = Math.floor(Math.random() * VERSES.length); if (i === lastVerse) i = (i + 1) % VERSES.length; lastVerse = i; return `“${VERSES[i][0]}” ${VERSES[i][1]}`; };
   const firstName = () => (A.guideFacts().first || "friend");
-  const oneOf = (list, key) => { let i = Math.floor(Math.random() * list.length); if (list.length > 1 && i === oneOf[key]) i = (i + 1) % list.length; oneOf[key] = i; return list[i]; };
+  // One of a list, in a shuffled order: none comes again until every one has been said (per list, while the page is
+  // open), and the first of a new round is never the last of the one before
+  const bags = {};
+  const oneOf = (list, key) => {
+    let b = bags[key];
+    if (!b || !b.length || b.n !== list.length) {
+      b = list.map((_, i) => i);
+      for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; }
+      if (b.length > 1 && b[0] === oneOf[key]) b.push(b.shift());
+      b.n = list.length; bags[key] = b;
+    }
+    const i = b.shift(); oneOf[key] = i; return list[i];
+  };
   const verseReply = (lead) => ({ say: [lead, anotherVerse()].filter(Boolean), feel: "peace",
     opts: [{ label: "Another verse", more: () => verseReply("") }, ...(verseOn ? [] : [{ label: "Send me one every day", more: () => { setVerse(true); return { say: "Done. I'll greet you with one each day." }; } }]), { road: true }] });
   const JOKES = ["Why did the dumbbell go to therapy? It had too much weight on its shoulders.", "I tried a rest day once. As a cloud, I mostly drifted.", "What's a skeleton's least favourite workout? Anything with a spotter. Nobody has his back.",
