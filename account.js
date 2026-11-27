@@ -3952,7 +3952,12 @@
   // when it is the first, so only one device celebrates). A short two-note chime, the gold glow on the gem card and a
   // toast. Phones only play sound after a first tap in some cases (iPhone browsers); then it is the toast and glow alone.
   // Sounds can be switched off on the device (localStorage "mdfit-sounds" = "off").
+  // After a crisis or emergency answer in Solomon's chat (mdfit:urgent) nothing celebrates for a quarter of an hour:
+  // XP is still credited, without the toast or the chime
+  let urgentQuietUntil = 0;
+  document.addEventListener("mdfit:urgent", () => { urgentQuietUntil = Date.now() + 15 * 60e3; });
   function ding() {
+    if (Date.now() < urgentQuietUntil) return;
     try {
       if (localStorage.getItem("mdfit-sounds") === "off") return;
       const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
@@ -3988,6 +3993,7 @@
   }
   document.addEventListener("visibilitychange", () => { if (!document.hidden) welcomeBack(); });
   function celebrateToast(msgs) {
+    if (Date.now() < urgentQuietUntil) return;
     const t = $("#toast");
     msgs = msgs.map(plainMsg).filter(Boolean); if (!msgs.length) return;
     t.innerHTML = msgs.map((m, i) => `<div class="${i ? "" : "xp-gain"}">${esc(m)}</div>`).join("");

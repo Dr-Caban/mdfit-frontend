@@ -74,7 +74,11 @@
   const VERSE_ASKED = "mdfit_verse_asked";
   const wasAsked = () => { try { return localStorage.getItem(VERSE_ASKED) === "1"; } catch { return true; } };
   const askedNow = () => { try { localStorage.setItem(VERSE_ASKED, "1"); } catch {} };
+  // Not within a quarter of an hour of a crisis or emergency answer (mdfit:urgent): it waits for another visit
+  let urgentAt = 0;
+  document.addEventListener("mdfit:urgent", () => { urgentAt = Date.now(); });
   function askVerse() {
+    if (Date.now() - urgentAt < 15 * 60e3) return;
     if (wasAsked() || verseOn || !G.question || (window.MDFitTour && window.MDFitTour.running())) return;
     if (document.querySelector("dialog[open]")) return void setTimeout(askVerse, 8000); // not over something they are in the middle of
     askedNow();
