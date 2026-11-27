@@ -181,6 +181,14 @@ Regions and categories are read back out of `app/exercises.js`, so a new entry c
 already knows how to file. Run it without `--write` first: it prints what it would add and changes nothing.
 Afterwards: `node scripts/build-media-manifest.js`, then `node scripts/version-assets.js`, then commit.
 
+**Pregnancy clips (owner, 27 Nov 2026).** They have their own tab in the library: `cat: "Pregnancy"`,
+`cc: "PRG"`, with the region set per clip so they group by joint. Whatever carries that category gets three things
+automatically, from `app/library.js` and `account.js`: it stays out of the Exercise and Rehab tabs, it is never
+drawn into a generated workout, and `MDFitLib.PREGNANCY_NOTICE` is shown above the grid and under the video
+every time it plays. That notice is the owner's disclaimer (educational only, partner only, with the clinician's
+approval, MD Fit accepts no liability). Change its wording only on the owner's word, and never place a pregnancy
+clip under any other category to get it into a workout.
+
 Still true, and still worth checking:
 
 - A movement with `id: null` in the catalog is a deliberate "coming soon" marker for footage not yet filmed.

@@ -1,8 +1,8 @@
 MD Fit exercise library — every movement and whether it plays
-Generated 2026-11-24 by scripts/library-status.js
+Generated 2026-11-27 by scripts/library-status.js
 from app/exercises.js against GET /api/videos (bunny.map).
 
-207 movements, 195 playable, 12 not yet.
+222 movements, 195 playable, 27 not yet.
 
 Not yet playable:
   Seated Needle Thread Glute Squeeze (Hips / Rehab)
@@ -17,19 +17,49 @@ Not yet playable:
   Supraspinatus Stretch (Shoulders / Mobility)
   Scapular Floor Angel (Shoulders / Rehab)
   Kneeling Wall Spiral (Spine / Mobility)
+  Single Leg Balance With Reach (Hips / Activation)
+  Single Leg Balance With Reach (Foot Up) (Hips / Activation)
+  Single Leg Skateboard Balance (Hips / Activation)
+  Palm Press and Retract (Shoulders / Activation)
+  Banded Shoulder Traction (Shoulders / Mobility)
+  Banded Hip Traction (Hips / Mobility)
+  Seated Slider Scapular Pull (Shoulders / Activation)
+  Eccentric Romanian Deadlift (Hips / Strength)
+  Round Ligament Release (Core / Pregnancy)
+  Broad Ligament Release (Core / Pregnancy)
+  Diaphragm Release for Reflux (Core / Pregnancy)
+  QL Release (Spine / Pregnancy)
+  Iliacus Release (Hips / Pregnancy)
+  Lateral Femoral Cutaneous Nerve Release (Hips / Pregnancy)
+  Pregnancy Glute Cramp for Low Back (Spine / Pregnancy)
 
+NO     Core           Pregnancy      L1  Broad Ligament Release
+NO     Core           Pregnancy      L1  Diaphragm Release for Reflux
+NO     Core           Pregnancy      L1  Round Ligament Release
+NO     Hips           Activation     L3  Single Leg Balance With Reach
+NO     Hips           Activation     L3  Single Leg Skateboard Balance
+NO     Hips           Activation     L4  Single Leg Balance With Reach (Foot Up)
+NO     Hips           Mobility       L1  Banded Hip Traction
+NO     Hips           Pregnancy      L1  Iliacus Release
+NO     Hips           Pregnancy      L1  Lateral Femoral Cutaneous Nerve Release
 NO     Hips           Rehab          L2  Glute Table Drop-Off
 NO     Hips           Rehab          L2  Kneeling Glute Engagement
 NO     Hips           Rehab          L3  Glute Engage Cramp
 NO     Hips           Rehab          L3  Seated Hip Swivel
 NO     Hips           Rehab          L3  Seated Needle Thread Glute Squeeze
+NO     Hips           Strength       L4  Eccentric Romanian Deadlift
 NO     Neck           Rehab          L1  Scalene Active Stretch
 NO     Shoulders      Activation     L2  Floor Slide Scapular Retract
+NO     Shoulders      Activation     L2  Palm Press and Retract
+NO     Shoulders      Activation     L3  Seated Slider Scapular Pull
+NO     Shoulders      Mobility       L1  Banded Shoulder Traction
 NO     Shoulders      Mobility       L2  Supraspinatus Stretch
 NO     Shoulders      Rehab          L2  Eccentric External Rotation
 NO     Shoulders      Rehab          L2  Eccentric Internal Rotation
 NO     Shoulders      Rehab          L3  Scapular Floor Angel
 NO     Spine          Mobility       L2  Kneeling Wall Spiral
+NO     Spine          Pregnancy      L1  Pregnancy Glute Cramp for Low Back
+NO     Spine          Pregnancy      L1  QL Release
 video  Ankles         Mobility       L1  Ankle Circles
 video  Ankles         Mobility       L2  Ankle Neuroglide
 video  Ankles         Mobility       L2  Kneeling Plantar Fascia Stretch

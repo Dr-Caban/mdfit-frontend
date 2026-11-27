@@ -3,7 +3,8 @@
 // Reps live in PRESCRIBE so they can be tuned in one place. Owner (Nov 2026): every movement is a rep count, never
 // "do this for 60 seconds"; holds and stretches are written as slow reps with a short pause.
 (() => {
-  const EX = window.MDFIT_EXERCISES || [];
+  // Pregnancy clips are partner-only and educational (owner, 27 Nov 2026): never drawn into a generated workout.
+  const EX = (window.MDFIT_EXERCISES || []).filter((e) => e.cc !== "PRG");
 
   const GOALS = [
     { id: "upper", label: "Upper Body", icon: "upper", regions: ["SH", "UB", "EL", "WR", "NK"] },

@@ -263,6 +263,7 @@
     earn("video", id);
     $("#vd-title").textContent = title;
     $("#vd-meta").textContent = meta;
+    pregNote($("#vd-preg"), !!(window.MDFitLib && MDFitLib.isPregnancy(byId.get(id))));
     const box = $("#vd-box"), f = $("#vd-frame"), v = warmVideo(id, "auto");
     if (!v) { f.hidden = false; f.src = MDFitVideo.preview(id); vd.showModal(); return; }
     v.controls = true; v.muted = false; v.autoplay = true; // opened by a tap, so sound is allowed
@@ -736,7 +737,9 @@
     vf.kind = b.dataset.kind; vf.cat = "All"; $$("#vid-kind button").forEach((x) => x.setAttribute("aria-selected", x === b));
     $("#vid-kind-note").textContent = KIND_NOTE[vf.kind]; renderCats(); renderVideos();
   });
-  const KIND_NOTE = { Exercise: "Strength training and specialty movements for building fitness.", Rehab: "Dr. Jared's corrective work: rehabilitation, stretching and mobility. Keep pain at 3/10 or lower.", All: "Every video in the library." };
+  const KIND_NOTE = { Exercise: "Strength training and specialty movements for building fitness.", Rehab: "Dr. Jared's corrective work: rehabilitation, stretching and mobility. Keep pain at 3/10 or lower.", Pregnancy: "Partner-assisted releases and relief for common pregnancy aches, for educational purposes.", All: "Every video in the library." };
+  // The pregnancy notice: in the grid whenever a pregnancy clip is listed, and in the player for every one of them.
+  const pregNote = (el, on) => { if (!el) return; el.hidden = !on; if (on) el.innerHTML = `<b>Educational use only</b>${esc(LIB.PREGNANCY_NOTICE)}`; };
   function renderLocs() {
     const ready = liveEX();
     const locs = LOCS.filter((l) => !l.id || ready.some((e) => locIds[l.id].has(e.id)));
@@ -818,6 +821,7 @@
     }).join("");
     observeCards($("#vgrid"));
     $("#vid-empty").hidden = list.length > 0;
+    pregNote($("#vid-preg"), list.some((e) => LIB.isPregnancy(e)));
     $("#vid-empty").textContent = vf.cat === "♥ Favorites" && !lib.favorites.length ? "Tap the heart on any video to save it here." : "No exercises match. Try another filter.";
   }
 
