@@ -117,10 +117,11 @@
     leg: { w: ["hamstring", "hamstrings", "quad", "quads", "thigh", "thighs"], f: ["hamstring", "thigh", "quad"] },
     jaw: { w: ["jaw", "tmj", "headache", "headaches"], f: ["jaw", "head"] }
   };
-  // Words that mean an emergency or a crisis. The server keeps the same list (lib/guide-ai.js). Every entry ends on a
-  // whole word, so "want to die" is not "I want to diet", and the apostrophe a phone types (’) counts like the plain
-  // one. Figures of speech ("my back is killing me", "dying to try it") are left out on purpose, and so is a bare "I
-  // hurt myself", which in a rehab app is usually about an injury.
+  // Words that mean an emergency or a crisis. The server checks a list of its own (lib/guide-ai.js) with the same crisis
+  // words; a change to one belongs in the other. Every entry ends on a whole word, so "want to die" is not "I want to
+  // diet", and the apostrophe a phone types (’) counts like the plain one. Figures of speech ("my back is killing me",
+  // "dying to try it") are left out on purpose, and so is a bare "I hurt myself", which in a rehab app is usually about
+  // an injury. (The server's list still counts that one, so with the assistant on it gets the emergency answer there.)
   const URGENT = /\b(911|emergency|can['’]?t breathe|cannot breathe|(struggling|hard|trouble|difficulty) (to breathe|breathing)|chest pains?|heart attacks?|strokes?|passed out|fainted|suicid\w*|kill myself|(want|wanna|going|gonna|plan|planning|about|try|trying) to (hurt|harm|kill) myself|(hurt|harm) myself on purpose|end my life|end it all|(want to|wanna) die|better off dead|(don['’]?t|do not) want to (live|be here|be alive)|numb(ness)? in my (face|arms?)|severe bleeding|overdos\w*)\b/i;
   // A body part or a symptom the lists above do not hold. A message with one of these is about someone's health, so it
   // never gets small talk (a verse, a joke, a kind word) or the road alone: it goes the normal way, to the assistant
@@ -292,13 +293,15 @@
     return true;
   }
   const tell = (type) => { post("/api/me/guide/event", { type }).catch(() => {}); };
-  function limit() {
+  // care = the message was about pain or the body: the pain tool, booking and the clinic are offered every time then,
+  // not only with the first refusal of the day
+  function limit(care) {
     const again = limited; limited = true;
     say(again ? "You're out of free Solomon answers for today. Members get unlimited Solomon for $19.95/mo, or come back tomorrow."
       : `You've used today's free Solomon answers, ${first()}. Members get unlimited Solomon for $19.95/mo. You can upgrade now, or I'll be right here tomorrow.`);
     offer([{ label: "Get unlimited Solomon", sub: "$19.95/mo", gold: true, run: () => { tell("upgrade"); if (App.showTier) App.showTier("member"); else App.go("premium"); }, name: "Membership" },
       { label: "Come back tomorrow", more: () => { tell("tomorrow"); say(`See you tomorrow, ${first()}.`); setTimeout(() => { shut(); speak("New answers tomorrow", { ms: 6000 }); dot.hidden = true; }, 1500); } }]);
-    if (!again) { sys("Always open, limit or not"); offer([opt("pain"), opt("book"), opt("call")]); }
+    if (!again || care) { sys("Always open, limit or not"); offer([opt("pain"), opt("book"), opt("call")]); }
   }
 
   // ---------- answers ----------
@@ -348,8 +351,9 @@
     return out;
   }
   const own3 = (m) => [m.rec, m.track].filter(Boolean);
-  // A hello: answered here by first name, never sent, never counted
-  const HELLO = /^\s*(hi+|hey+|heya|hello+|helo|yo+|hiya|howdy|sup|what'?s up|wass?up|greetings|good (morning|afternoon|evening|day)|morning|afternoon|evening|hola|hi there|hey there|hello there|anyone there|you there|are you there)(\s+(sunny|there|doc|dr\.?|guide|md ?fit))?[\s!?.,]*$/i;
+  // A hello: answered here by first name, never sent, never counted. It may use his name ("hey Solomon", "hi, Solomon")
+  // and the apostrophe a phone types (what’s up).
+  const HELLO = /^\s*(hi+|hey+|heya|hello+|helo|yo+|hiya|howdy|sup|what['’]?s up|wass?up|greetings|good (morning|afternoon|evening|day)|morning|afternoon|evening|hola|hi there|hey there|hello there|anyone there|you there|are you there)([\s,]+(solomon|sunny|there|doc|dr\.?|guide|md ?fit))?[\s!?.,]*$/i;
   async function hello() {
     const m = await mine();
     say(`Hey ${first()}, I'm Solomon. What are we working on today?`);
@@ -493,7 +497,9 @@
   }
   // When a reminder is for: a day and a time worked out from the words, on this device
   function whenFrom(raw) {
-    const t = raw.toLowerCase(), today = M.todayInTz(), now = new Date(), nowHM = String(now.getHours()).padStart(2, "0") + ":" + String(now.getMinutes()).padStart(2, "0");
+    // Today and whether a time has passed are both read in the practice's time zone, as the server checks them, not by
+    // the phone's clock: on a phone set to another zone "6pm" could otherwise land on an evening already gone there.
+    const t = raw.toLowerCase(), today = M.todayInTz(), passed = (d, hm) => M.zonedToUtc(d, hm).getTime() <= Date.now();
     let time = "", m;
     if ((m = t.match(/\b(\d{1,2}):(\d\d)\s*(am|pm|a\.m\.|p\.m\.)?/)) || (m = t.match(/\b(\d{1,2})()\s*(am|pm|a\.m\.|p\.m\.)(?![a-z])/)) || (m = t.match(/\bat\s+(\d{1,2})()()\b/))) {
       let h = +m[1]; const min = m[2] || "00", ap = (m[3] || "").replace(/\./g, "");
@@ -509,9 +515,9 @@
     else if (/\btomorrow\b/.test(t)) date = M.addDays(today, 1);
     else if (wd >= 0) { const cur = new Date(today + "T12:00:00Z").getUTCDay(); date = M.addDays(today, ((wd - cur + 7) % 7) || 7); }
     else if (inN) date = M.addDays(today, Math.min(60, +inN[1]));
-    else date = time && time > nowHM ? today : M.addDays(today, 1);
+    else date = time && !passed(today, time) ? today : M.addDays(today, 1);
     if (!time) time = "07:00";
-    if (date === today && time <= nowHM) date = M.addDays(today, 1); // that time has passed today
+    if (date === today && passed(today, time)) date = M.addDays(today, 1); // that time has passed today
     return { date, time };
   }
   // What the reminder is called: the app's own names only (never the typed sentence)
@@ -756,7 +762,13 @@
       // (and any failure there) is understood here and only counted. A few words the device cannot place are his to
       // answer there too (plan.soft). Something the device answers for free is not sent once the app knows a free
       // member has nothing left today: the server could only refuse it.
-      let ai = null, asked = false; if (G.ai && (!plan.local || plan.soft) && !(free && spent())) { ai = await askServer(text); asked = !!ai; }
+      let ai = null, asked = false;
+      if (G.ai && (!plan.local || plan.soft)) {
+        if (!(free && spent())) { ai = await askServer(text); asked = !!ai; }
+        // Not sent. The account is read again instead (nothing typed goes with it), so the line under the box and the
+        // counter catch up if the practice has switched the assistant off or changed the allowance since the app last heard.
+        else await Promise.race([load(), wait(2500)]);
+      }
       // Today's free answers are used up, but the device has its own free answer for this: that, not the upgrade message
       if (ai && ai.ok === false && free) ai = null;
       // The assistant judged the message outside what he helps with. If the device found a place, a body area, pain or
@@ -768,7 +780,8 @@
       const rest = 750 - (Date.now() - t0); if (rest > 0) await wait(rest);
       d.remove();
       lastTopic = ""; // a follow-up belongs to the answer just given; the answer below sets it again if it has one
-      if (aside) reply(told || aside); else if (ai) await aiAnswer(ai); else if (!ok) limit(); else if (told) reply(told); else await plan.run();
+      const care = !!(u.health || u.pained || u.area); // about pain or the body: the limit message keeps the pain tool and the clinic
+      if (aside) reply(told || aside); else if (ai) await aiAnswer(ai, care); else if (!ok) limit(care); else if (told) reply(told); else await plan.run();
     } catch { d.remove(); say("Something went wrong on my side. You can still get anywhere from the menu, or call the clinic."); offer([opt("call")]); }
     // Whatever happened above, the dots go and the box takes the next message
     finally { d.remove(); busy = false; end(); }
@@ -815,8 +828,8 @@
     return null;
   }
   const FROM_SERVER = { workout: "generate", membership: "premium" };
-  async function aiAnswer(r) {
-    if (r.ok === false) return limit();
+  async function aiAnswer(r, care) {
+    if (r.ok === false) return limit(care);
     if (r.urgent) return emergency();
     const area = AREAS[r.area] ? r.area : ""; if (area) ctx.area = area;
     const ids = [...new Set((Array.isArray(r.places) ? r.places : []).map((x) => FROM_SERVER[x] || x))].filter((id) => id !== "call" && PLACES.some((p) => p.id === id)).slice(0, 5);
@@ -824,8 +837,8 @@
     if (FACE[r.mood]) faceAfter = r.mood; // the face he wears once the chat is closed
     // A verse was asked for: the model leads into it, and the verse itself comes from his own list, word for word
     if (r.verse) { const v = talkFor("__verse"); if (v) { reply(v); return; } }
-    const rd = road();
-    offer([...(rd && rd.opt && !["done", "ask"].includes(rd.kind) ? [{ ...rd.opt, label: rd.opt.label === "Do my check-in here" ? "Next on your road: my check-in" : `Next on your road: ${rd.opt.label.replace(/^(Open|Start|Pick|Build) /, (m) => m.toLowerCase())}` }] : []), ...(area ? [{ label: `Programs for your ${area}`, again: true, more: () => beat(() => showArea(area)) }] : []), ...ids.map(opt), opt("call")]);
+    const rd = road(), next = plainHome() ? "Next" : "Next on your road"; // the Simple view has no road, as in his plain lines (account-solomon.js)
+    offer([...(rd && rd.opt && !["done", "ask"].includes(rd.kind) ? [{ ...rd.opt, label: rd.opt.label === "Do my check-in here" ? `${next}: my check-in` : `${next}: ${rd.opt.label.replace(/^(Open|Start|Pick|Build) /, (m) => m.toLowerCase())}` }] : []), ...(area ? [{ label: `Programs for your ${area}`, again: true, more: () => beat(() => showArea(area)) }] : []), ...ids.map(opt), opt("call")]);
     let C = null; try { C = await App.content(); } catch {}
     suggest(r.suggested, new Map(((C && C.programs) || []).map((p) => [p.id, p])));
   }
