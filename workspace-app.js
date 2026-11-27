@@ -482,7 +482,13 @@
   // that holds names only, so it is marked partial and nothing that saves the content is ever built from it
   // (editable()). When the list could not be loaded just now (a dropped connection), the full copy already here is kept.
   const publicTiers = () => api("GET", "/api/content").then((d) => (d && Array.isArray(d.tiers) ? d.tiers.filter((t) => t && t.id).map((t) => ({ id: String(t.id), name: String(t.name || t.id) })) : [])).catch(() => []);
-  const content = async () => (cache.content = await load("/content").catch(async (err) => (!(err && err.need) && cache.content && !cache.content.partial ? cache.content : { programs: [], tiers: await publicTiers(), partial: true })));
+  // (looked at again after the wait: a full copy another screen loaded meanwhile is kept, never replaced by names)
+  const content = async () => (cache.content = await load("/content").catch(async (err) => {
+    const kept = () => !(err && err.need) && cache.content && !cache.content.partial;
+    if (kept()) return cache.content;
+    const tiers = await publicTiers();
+    return cache.content && !cache.content.partial ? cache.content : { programs: [], tiers, partial: true };
+  }));
   const editable = () => { if (!cache.content || cache.content.partial) throw new Error("Nothing was saved: the full list could not be loaded just now. Reload the page and try again."); return cache.content; };
   const chartPills = () => { const { d } = cache.chart; return `${d.patient ? `<span class="pill ok">Active patient${d.since ? " since " + when(d.since) : ""}</span>` : `<span class="pill warn">Not yet a patient</span>`}${(d.allergies || []).map((a) => `<span class="pill bad" title="${esc(a.reaction || "Allergy or alert")}">${ui("alert", 12)} ${esc(a.name)}</span>`).join("")}${(d.tags || []).map((t) => `<span class="pill">${esc(t)}</span>`).join("")}`; };
   // A small line chart for one measure over time (oldest on the left)
@@ -2473,7 +2479,6 @@
         if (raw === "" || !Number.isInteger(shown) || shown < 0 || shown > 20) { formMsg(f, "Suggestions shown: 0 to 20."); f.suggestions.focus(); return; }
         body.suggestions = shown;
       }
-      try { editable(); } catch (err) { formMsg(f, err.message); return; }
       formMsg(f, "");
       let c; try { c = await api("PUT", "/api/admin/content", { [w]: body }); } catch (err) { formMsg(f, err.message); return; } // the draft stays as arranged
       cache.content = c; delete state.layDraft[w]; await render(); toast(`${w === "home" ? "Home" : "Profile"} saved. Members see it the next time the app loads.`);
