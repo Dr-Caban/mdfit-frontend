@@ -475,8 +475,12 @@
   const sizeOf = (n) => (n < 1024 ? n + " B" : n < 1048576 ? Math.round(n / 1024) + " KB" : (n / 1048576).toFixed(1) + " MB");
   const tiers = () => (cache.content && cache.content.tiers) || [];
   const tierName = (id) => (tiers().find((x) => x.id === id) || {}).name || id || "";
-  const tierOptions = (cur) => `<option value="">No membership</option>${tiers().map((t) => `<option value="${esc(t.id)}"${cur === t.id ? " selected" : ""}>${esc(t.name)}</option>`).join("")}`;
-  const content = async () => (cache.content = await load("/content").catch(() => ({ programs: [], tiers: [] })));
+  // A membership the list does not hold (a tier since removed) still shows as itself, never as "No membership"
+  const tierOptions = (cur) => `<option value="">No membership</option>${tiers().map((t) => `<option value="${esc(t.id)}"${cur === t.id ? " selected" : ""}>${esc(t.name)}</option>`).join("")}${cur && !tiers().some((t) => t.id === cur) ? `<option value="${esc(cur)}" selected>${esc(tierName(cur))}</option>` : ""}`;
+  // Without the Content permission (the front desk), the membership names come from what the app itself shows
+  // members (/api/content, public), so the Clients screen still names each membership and can change it
+  const publicTiers = () => api("GET", "/api/content").then((d) => (d && Array.isArray(d.tiers) ? d.tiers.filter((t) => t && t.id).map((t) => ({ id: String(t.id), name: String(t.name || t.id) })) : [])).catch(() => []);
+  const content = async () => (cache.content = await load("/content").catch(async () => ({ programs: [], tiers: await publicTiers() })));
   const chartPills = () => { const { d } = cache.chart; return `${d.patient ? `<span class="pill ok">Active patient${d.since ? " since " + when(d.since) : ""}</span>` : `<span class="pill warn">Not yet a patient</span>`}${(d.allergies || []).map((a) => `<span class="pill bad" title="${esc(a.reaction || "Allergy or alert")}">${ui("alert", 12)} ${esc(a.name)}</span>`).join("")}${(d.tags || []).map((t) => `<span class="pill">${esc(t)}</span>`).join("")}`; };
   // A small line chart for one measure over time (oldest on the left)
   function trend(points, unit) {
@@ -1381,8 +1385,9 @@
         <form class="row" data-form="guideLimit" style="align-items:flex-end"><div class="field" style="margin:0;width:230px;max-width:100%"><label for="guideFree">Tokens a day on the free plan</label><input id="guideFree" name="freeTokensPerDay" class="input num" type="number" min="1000" max="1000000" step="1000" required value="${esc(S.freeTokensPerDay ?? 50000)}"></div><button class="btn primary">Save</button></form>
         <p class="muted" style="margin:0;font-size:12.5px">One AI answer uses about 3,000 tokens; an answer found on the device uses 300. The default, 50,000, is about 15 AI answers a day.</p>
         <p class="muted" style="margin:0;font-size:12.5px">Any whole number from 1,000 to 1,000,000. Opening the pain tool, booking and calling the clinic never use tokens.</p></div>
-      ${hasAi ? `<div class="card stack" id="guideAiCard"><div class="card-head"><h2>AI answers</h2><button type="button" class="switch" id="guideAi" role="switch" aria-checked="${ai}" aria-label="AI answers" data-act="guideAi"${!ai && !canAi ? " disabled" : ""}></button></div>
+      ${hasAi ? `<div class="card stack" id="guideAiCard"><div class="card-head"><h2>AI answers</h2><button type="button" class="switch" id="guideAi" role="switch" aria-checked="${ai}" aria-label="AI answers" data-act="guideAi"${!ai && (!canAi || !iAmOwner()) ? " disabled" : ""}></button></div>
         <p style="margin:0" id="guideAiState">${ai ? `<b>On:</b> members' messages are read by ${esc(S.aiModel || "the AI model")} at ${esc(S.aiHost || "the AI service")} to find the right place and suggest programs, videos, your guides and general tips, which are added to the member's Home. Their activity in the app (programs, check-ins, workouts) is read to personalize it; their name and contact details are never sent, and nothing typed is saved.` : `<b>Off:</b> Solomon understands messages on the member's own device, nothing they type leaves it, and Solomon suggests nothing.`}</p>
+        ${!ai && canAi && !iAmOwner() ? `<p class="muted" style="margin:0;font-size:12.5px" id="guideAiOwner">Only the practice owner can turn AI answers on. Anyone with the Content permission can turn them off.</p>` : ""}
         ${!canAi ? `<p class="muted" style="margin:0;font-size:12.5px" id="guideAiWhy">${ai ? "The AI service is not ready" : "It cannot be turned on"}: ${esc(S.aiWhy || "no AI service is connected on the server.")}</p>` : ""}
         ${state.guideAiErr ? `<p style="margin:0;color:var(--bad)" id="guideAiErr" role="alert">Not changed: ${esc(state.guideAiErr)}</p>` : ""}</div>` : ""}
     </div>
