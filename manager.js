@@ -148,7 +148,7 @@
           ${d.stripe.payoutsEnabled ? "" : `<p class="msg" style="margin-top:8px">Your Stripe payouts account isn't ready yet. <a href="#payouts" data-goto="payouts">Set it up</a>.</p>`}</div>
         <div class="card"><div class="card-head"><h2>Payment notices</h2><span class="muted small">${open.length ? `${open.length} to accept` : "all accepted"}</span></div>
           ${d.notices.length ? d.notices.map((n) => `<div class="notice ${n.acceptedAt ? "" : "new"}"><div class="row" style="justify-content:space-between"><b>${usd(n.cents)} · ${esc(day(n.ts))}</b>${n.acceptedAt ? `<span class="pill ok">Accepted ${esc(day(n.acceptedAt))}</span>` : '<span class="pill warn">To accept</span>'}</div>
-            <p>${esc(n.text)}</p><div class="row"><span class="muted small">Transfer <span class="code">${esc(n.transferId)}</span></span>${n.acceptedAt ? "" : `<button class="btn sm primary" data-accept="${esc(n.id)}">Accept</button>`}</div></div>`).join("") : '<p class="empty">No payouts yet. A notice appears here with each one.</p>'}</div>
+            <p>${esc(n.text)}</p><div class="row"><span class="muted small">Transfer <span class="code">${esc(n.transferId)}</span></span>${n.acceptedAt ? "" : state.share && state.share.viewOnly ? `<span class="pill">Waiting for the manager</span>` : `<button class="btn sm primary" data-accept="${esc(n.id)}">Accept</button>`}</div></div>`).join("") : '<p class="empty">No payouts yet. A notice appears here with each one.</p>'}</div>
         <div class="card" style="padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>Every share</h2><span class="muted small">Products and amounts only</span></div><div class="table-wrap"><table><thead><tr><th>Date</th><th>Product</th><th>Category</th><th class="num">Paid</th><th class="num">Tax</th><th class="num">Stripe fee</th><th class="num">Refunded</th><th class="num">Net</th><th class="num">%</th><th class="num">Share</th><th>Status</th></tr></thead><tbody>
           ${d.ledger.map((r) => `<tr><td>${esc(day(r.ts))}</td><td>${esc(r.kind === "clawback" ? r.product + " (refund)" : r.product)}${r.viaPartner ? `<div class="muted small">via ${esc(r.viaPartner)}</div>` : ""}</td><td>${esc(r.category === "online" ? "MD Fit Online" : r.category)}</td><td class="num">${usd(r.grossCents)}</td><td class="num">${usd(r.taxCents)}</td><td class="num">${r.feeCents == null ? '<span class="muted">waiting</span>' : usd(r.feeCents)}</td><td class="num">${usd(r.refundedCents)}</td><td class="num">${usd(r.netCents)}</td><td class="num">${esc(r.pct)}</td><td class="num"><b>${usd(r.cents)}</b></td><td>${statusPill(r.status)}</td></tr>`).join("") || '<tr><td colspan="11" class="empty">No MD Fit Online payments yet.</td></tr>'}
         </tbody></table></div></div>`;
@@ -172,18 +172,29 @@
         <div class="card" style="padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>Partners</h2><span class="muted small">Commission is a share of Net Revenue from their customers' memberships, within the 15% Partner Allowance</span></div><div class="table-wrap"><table><thead><tr><th>Partner</th><th>Code and link</th><th class="num">Rate</th><th class="num">Clicks</th><th class="num">Sign-ups</th><th class="num">Paying</th><th class="num">Revenue</th><th class="num">Commission due</th><th>Registration</th></tr></thead><tbody>
           ${p.partners.map((r) => `<tr><td><b>${esc(r.name)}</b><div class="muted small">${esc(r.type)}${r.originatedByManager ? " · originated by you" : ""}</div></td><td><span class="code">${esc(r.code)}</span> <button class="btn sm" data-copy="${esc(r.link)}">Copy link</button></td><td class="num">${esc(r.ratePct)}%</td><td class="num">${r.clicks}</td><td class="num">${r.signups}</td><td class="num">${r.payingNow}</td><td class="num">${usd(r.revenueCents)}</td><td class="num"><b>${usd(r.commissionDueCents)}</b></td><td>${state2(r.state)}<div class="muted small">${r.state === "awaiting acknowledgment" ? `owner by ${esc(day(r.ackDueAt))}` : r.disputeReason ? esc(r.disputeReason) : `non-circumvention to ${esc(day(r.nonCircumventionUntil))}`}</div></td></tr>`).join("") || '<tr><td colspan="9" class="empty">No partners yet. Register one below.</td></tr>'}
         </tbody></table></div></div>
-        <form class="card" id="regForm" novalidate><div class="card-head"><h2>Register a partner (Section 7.2)</h2></div>
+        ${state.share && state.share.viewOnly ? `<div class="card" id="regViewOnly"><div class="card-head"><h2>Register a partner (Section 7.2)</h2></div><p class="muted">Only the manager named in the agreement registers a partner, signed in as themselves. Partners they register show in the list above.</p></div>` : `<form class="card" id="regForm" novalidate><div class="card-head"><h2>Register a partner (Section 7.2)</h2></div>
           <p class="muted small" style="margin-top:-6px">The owner is notified and acknowledges within five business days or disputes it in writing; undisputed, it is deemed acknowledged. Partners you register count as originated by you (Section 4.4).</p>
           <div class="grid g2"><div class="field"><label for="rgName">Partner name</label><input id="rgName" name="name" class="input" maxlength="120" required></div>
             <div class="field"><label for="rgType">Type</label><select id="rgType" name="type"><option value="gym">Participating gym</option><option value="affiliate">Affiliate</option><option value="referral">Referral partner</option><option value="api">API</option><option value="other">Other</option></select></div>
             <div class="field"><label for="rgContact">Contact</label><input id="rgContact" name="contact" class="input" maxlength="200" placeholder="Name, email or phone"></div>
             <div class="field"><label for="rgRate">Commission (% of Net Revenue, 0 to 15)</label><input id="rgRate" name="ratePct" class="input" type="number" min="0" max="15" step="0.01" value="10" required></div></div>
           <div class="field"><label for="rgNotes">Notes</label><input id="rgNotes" name="notes" class="input" maxlength="1000"></div>
-          <button class="btn primary">Register partner</button><p class="msg" id="rgMsg" role="status"></p></form>`;
+          <button class="btn primary">Register partner</button><p class="msg" id="rgMsg" role="status"></p></form>`}`;
     },
     // ---------- Payouts account: Stripe Express, embedded
     async payouts() {
       const d = state.share = await api("GET", "/api/admin/partner/share"), st = d.stripe;
+      // Only the manager named in the agreement sets up and uses this account, signed in as themselves (the server
+      // refuses anyone else). The owner and staff with the Manager role see where it stands; nothing of Stripe's loads.
+      if (d.viewOnly) {
+        const where = st.payoutsEnabled ? "Payouts are on: Stripe pays the manager's share to their own bank account."
+          : st.connected ? (st.detailsSubmitted ? "Set up: Stripe is checking the manager's details before payouts can start." : "Started, not finished: the manager has more to fill in on Stripe.")
+          : "Not set up yet.";
+        return `<h1>Payouts account</h1><p class="muted">The manager's own Stripe Express account. Stripe verifies their identity and holds their bank details; MD Fit never sees them.</p>
+        <div class="card"><div class="card-head"><h2>Payouts</h2>${st.payoutsEnabled ? '<span class="pill ok">Payouts on</span>' : st.connected ? '<span class="pill warn">Not finished</span>' : '<span class="pill">Not set up</span>'}</div>
+          <p id="payoutsWhere">${where}</p>
+          <p class="muted small" id="payoutsWho">Only the manager named in the agreement sets this up and uses it, signed in as themselves. You can see where it stands here; their bank details stay theirs.</p></div>`;
+      }
       return `<h1>Payouts account</h1><p class="muted">Your own Stripe Express account. Stripe verifies your identity and holds your bank details; MD Fit never sees them.</p>
         <div class="card"><div class="card-head"><h2>${st.payoutsEnabled ? "Payouts" : "Set up payouts"}</h2>${st.payoutsEnabled ? '<span class="pill ok">Payouts on</span>' : st.connected ? '<span class="pill warn">Stripe is checking your details</span>' : '<span class="pill">Not set up</span>'}</div>
           <div id="stripeBanner"></div><div id="stripeMount" class="stripe-mount"><p class="muted">Loading Stripe…</p></div>
@@ -196,10 +207,11 @@
   let connectP = null;
   const looks = () => { const css = getComputedStyle(document.documentElement), v = (n, d) => css.getPropertyValue(n).trim() || d;
     return { overlays: "dialog", variables: { colorPrimary: v("--ink", "#0A1A2E"), colorBackground: v("--surface", "#FFFFFF"), colorText: v("--ink", "#0A1A2E"), colorSecondaryText: v("--muted", "#5B6B7C"), colorBorder: v("--line", "#DCE8F2"), borderRadius: "12px", fontFamily: "Montserrat, system-ui, sans-serif" } }; };
+  let whyNot = ""; // why the server would not open Stripe, if it said
   function stripeConnect() {
     if (!connectP) {
       connectP = import("/vendor/stripe-connect-js-3.5.0.esm.js").then(({ loadConnectAndInitialize }) => loadConnectAndInitialize({ publishableKey: state.share.stripe.publishableKey,
-        fetchClientSecret: async () => (await api("POST", "/api/admin/partner/stripe/session")).clientSecret, appearance: looks() }));
+        fetchClientSecret: async () => { try { whyNot = ""; return (await api("POST", "/api/admin/partner/stripe/session")).clientSecret; } catch (e) { whyNot = e.message; throw e; } }, appearance: looks() }));
       connectP.catch(() => { connectP = null; });
     }
     return connectP;
@@ -231,7 +243,7 @@
     partners() {
       $("#pMonth").addEventListener("change", (e) => { state.month = e.target.value || thisMonth(); render(); });
       $$("[data-copy]").forEach((b) => b.addEventListener("click", () => navigator.clipboard.writeText(b.dataset.copy).then(() => toast("Partner link copied.")).catch(() => toast("Couldn't copy the link."))));
-      $("#regForm").addEventListener("submit", async (e) => {
+      if ($("#regForm")) $("#regForm").addEventListener("submit", async (e) => {
         e.preventDefault();
         const f = e.target, msg = $("#rgMsg"); msg.className = "msg";
         try {
@@ -241,19 +253,24 @@
       });
     },
     async payouts() {
+      if (state.share.viewOnly) return; // nothing of Stripe's is loaded for someone who can only look
       const st = state.share.stripe, mount = $("#stripeMount");
       if (!st.embedded) { mount.innerHTML = `<p>Embedded payouts aren't available on this server. Use Stripe's own page instead.</p><button class="btn primary" id="hostedBtn">${st.connected ? "Continue on Stripe" : "Set up on Stripe"}</button>`; $("#hostedBtn").addEventListener("click", hosted); return; }
       let sc;
       try { sc = await stripeConnect(); } catch { mount.innerHTML = `<p class="msg err">Stripe couldn't load here.</p><button class="btn primary" id="hostedBtn">Use Stripe's own page</button>`; $("#hostedBtn").addEventListener("click", hosted); return; }
-      const failed = () => { mount.innerHTML = `<p class="msg err">Stripe couldn't load here.</p><button class="btn primary" id="hostedBtn">Use Stripe's own page</button>`; $("#hostedBtn").addEventListener("click", hosted); };
+      // The server's own reason when it refused to open Stripe, else the plain one
+      const failed = () => { mount.innerHTML = `<p class="msg err"></p><button class="btn primary" id="hostedBtn">Use Stripe's own page</button>`; mount.querySelector(".msg").textContent = whyNot || "Stripe couldn't load here."; $("#hostedBtn").addEventListener("click", hosted); };
       mount.innerHTML = "";
+      // Stripe's own script loads inside the component: if it never starts (blocked, offline), the card would stay
+      // blank. Twenty seconds with no start shows the way to Stripe's own page instead.
+      const watch = (el) => { let started = false; try { el.setOnLoaderStart(() => { started = true; }); } catch { return; } setTimeout(() => { if (!started && mount.contains(el)) failed(); }, 20000); };
       if (!st.payoutsEnabled) {
         const el = sc.create("account-onboarding");
         el.setOnExit(async () => { try { await api("GET", "/api/admin/partner/stripe/status"); } catch {} toast("Saved. Stripe will confirm your details shortly."); render(); });
-        el.setOnLoadError(failed); mount.appendChild(el);
+        el.setOnLoadError(failed); mount.appendChild(el); watch(el);
       } else {
         $("#stripeBanner").appendChild(sc.create("notification-banner"));
-        const po = sc.create("payouts"); po.setOnLoadError(failed); mount.appendChild(po);
+        const po = sc.create("payouts"); po.setOnLoadError(failed); mount.appendChild(po); watch(po);
         const box = $("#stripeAccount"); if (box) box.appendChild(sc.create("account-management"));
       }
     }

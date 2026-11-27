@@ -1004,6 +1004,36 @@
     <div class="card"><div class="card-head"><h2>Library by body region</h2></div>${Object.entries(by).sort((a, b) => b[1] - a[1]).map(([r, n]) => `<div class="list-item"><span style="flex:1">${esc(r)}</span><b class="num">${n}</b></div>`).join("") || none("No videos.")}</div></div>`;
   };
 
+  // Subscriptions at a glance (Payments): every membership paid by card and every care plan paid in instalments, from
+  // GET /api/admin/payments. Who is behind on a payment, who ends at the close of this period, what renews when, and
+  // memberships that ended lately. Inline SVG icons only.
+  function subsCard(p) {
+    const day = (d) => (d ? new Date(/T/.test(d) ? d : d + "T12:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "—");
+    const priceOf = (id) => { const t = tiers().find((x) => x.id === id); return t && Number.isFinite(Number(t.price)) ? Math.round(Number(t.price) * 100) : null; };
+    const people = p.clients || [], rows = [];
+    for (const c of people) {
+      const m = c.membership;
+      if (m && m.stripeSubscriptionId) {
+        const st = m.status === "past_due" ? "due" : m.cancelAtPeriodEnd ? "canceling" : m.status === "trialing" ? "trial" : "active";
+        rows.push({ c, kind: "member", sort: st === "due" ? 0 : st === "canceling" ? 1 : 2, st, what: tierName(m.tier) || "Membership", when: m.until, fail: m.lastFailure, cents: priceOf(m.tier) });
+      }
+      for (const x of c.protocols || []) if (x.subscriptionId && x.status === "active" && (x.paid || 0) < (x.payments || 0))
+        rows.push({ c, kind: "plan", sort: x.pastDue ? 0 : 3, st: x.pastDue ? "due" : "plan", what: `${x.serviceName || "Care plan"} · ${x.paid || 0} of ${x.payments} paid`, fail: x.lastFailure, cents: Math.round((Number(x.total) || 0) * 100 / Math.max(1, x.payments || 1)), refunded: x.refunded });
+    }
+    rows.sort((a, b) => a.sort - b.sort || String(a.c.name).localeCompare(String(b.c.name)));
+    const members = rows.filter((r) => r.kind === "member"), running = members.filter((r) => r.st !== "due");
+    const monthly = members.filter((r) => r.st === "active" || r.st === "trial").reduce((n, r) => n + (r.cents || 0), 0);
+    const ended = people.flatMap((c) => (c.ended || []).map((h) => ({ c, h }))).filter(({ h }) => h.endedAt && Date.now() - new Date(h.endedAt + "T12:00:00").getTime() < 60 * 864e5)
+      .sort((a, b) => (a.h.endedAt < b.h.endedAt ? 1 : -1));
+    const pill = (r) => r.st === "due" ? `<span class="pill bad">Payment failed</span>` : r.st === "canceling" ? `<span class="pill warn">Ends ${esc(day(r.when))}</span>` : r.st === "trial" ? `<span class="pill">Trial</span>` : r.st === "plan" ? `<span class="pill ok">On schedule</span>` : `<span class="pill ok">Active</span>`;
+    const note = (r) => [r.fail ? `${usd(r.fail.amountDue)} failed ${esc(day(r.fail.at))}${r.fail.nextAttempt ? `; Stripe tries again ${esc(day(r.fail.nextAttempt))}` : ""}` : "",
+      r.kind === "member" && r.st !== "canceling" && r.when ? `Renews ${esc(day(r.when))}` : "", r.refunded ? `${usd(r.refunded)} refunded` : ""].filter(Boolean).join(" · ");
+    return `<div class="card" style="margin-bottom:16px" id="subsCard"><div class="card-head"><div><h2>Subscriptions</h2><p class="muted" style="margin:2px 0 0;font-size:12.5px">Memberships paid by card and care plans paid in instalments. Stripe charges them; this is where each one stands.</p></div></div>
+      <div class="grid g4" style="margin-bottom:12px" id="subsKpis">${kpi("Memberships running", running.length, members.length - running.length ? `${members.length - running.length} behind on a payment` : "none behind", members.length - running.length ? "bad" : "ok")}${kpi("Ending this period", members.filter((r) => r.st === "canceling").length, "canceled, still active until then")}${kpi("Monthly, at list price", usd(monthly), "memberships still renewing")}${kpi("Care plans in instalments", rows.filter((r) => r.kind === "plan").length, rows.some((r) => r.kind === "plan" && r.st === "due") ? "one or more behind" : "all on schedule", rows.some((r) => r.kind === "plan" && r.st === "due") ? "bad" : "")}</div>
+      ${rows.length ? `<div class="table-wrap"><table id="subsTable"><thead><tr><th>Person</th><th>Subscription</th><th>Status</th><th>Next</th><th></th></tr></thead><tbody>${rows.map((r) => `<tr data-sub="${esc(r.st)}"><td><b>${esc(r.c.name || r.c.email || "")}</b></td><td>${esc(r.what)}${r.cents ? `<div class="muted" style="font-size:12px">${usd(r.cents)} a month</div>` : ""}</td><td>${pill(r)}</td><td class="muted" style="font-size:12.5px">${note(r) || "—"}</td><td><button class="btn sm" data-act="chartBilling" data-id="${esc(r.c.id)}">Billing</button></td></tr>`).join("")}</tbody></table></div>` : none("No subscriptions yet: a membership or an instalment plan paid by card shows here.")}
+      ${ended.length ? `<h3 style="margin:14px 0 6px;font-size:14px">Ended in the last 60 days</h3>${ended.map(({ c, h }) => `<div class="list-item" data-ended="1"><span style="flex:1"><b>${esc(c.name || c.email || "")}</b> <span class="muted">${esc(tierName(h.tier) || "Membership")}${h.since ? `, since ${esc(day(h.since))}` : ""}</span></span><span class="muted" style="font-size:12.5px">Ended ${esc(day(h.endedAt))}${h.status && h.status !== "canceled" ? ` (${esc(h.status.replace(/_/g, " "))})` : ""}</span></div>`).join("")}` : ""}</div>`;
+  }
+
   V.payments = async () => {
     const [p, members, s, c, , gen] = await Promise.all([load("/payments"), part("/members", "clients"), part("/settings", "settings"), part("/content", "content"), partClients(), load("/invoices").catch(() => null)]);
     if (c) cache.content = c; if (s) cache.settings = s; cache.gen = gen;
@@ -1016,6 +1046,7 @@
       <td><div class="row" style="gap:6px;justify-content:flex-end">${x.status === "unpaid" ? `<button type="button" class="btn sm primary" data-act="igSend" data-id="${esc(x.id)}">${x.emailedAt ? "Send again" : "Send"}</button><button type="button" class="btn sm" data-act="igCopy" data-id="${esc(x.id)}">${ui("copy", 13)}Link</button><button type="button" class="btn sm" data-act="igPaid" data-id="${esc(x.id)}">Mark paid</button><button type="button" class="btn sm ghost" data-act="igVoid" data-id="${esc(x.id)}" aria-label="Void invoice ${esc(x.number)}">${ui("x", 13)}</button>` : ""}${refundBtn(x, "link")}${(x.extra || []).filter((e) => e.amount > (e.refunded || 0)).map((e) => `<button type="button" class="btn sm danger" data-act="refundAsk" data-kind="extra" data-id="${esc(x.id)}" data-session="${esc(e.sessionId)}" data-left="${e.amount - (e.refunded || 0)}" data-what="the second payment on ${esc(x.number)}">Refund the second payment</button>`).join("")}${x.clientId ? `<button type="button" class="btn sm" data-act="chartBilling" data-id="${esc(x.clientId)}">Billing</button>` : ""}</div></td></tr>`;
     return `<div class="view-head"><div><h1>Payments</h1><p class="muted">Self-pay only · card payments through Stripe · send an invoice from here, or write one on a client's chart</p></div>${navOk("settings") ? `<a class="btn" href="#settings">Services &amp; fees</a>` : ""}</div>
     <div class="grid g3" style="margin-bottom:16px">${kpi("Card payments", p.enabled ? "On" : "Off", p.enabled ? "Stripe connected" : "Stripe not set up", p.enabled ? "ok" : "warn")}${kpi("Payment confirmations", p.webhook ? "On" : "Off", "from Stripe", p.webhook ? "ok" : "warn")}${members ? kpi("Members and requests", members.length, "people") : ""}</div>
+    ${subsCard(p)}
     <div class="card" style="margin-bottom:16px" id="genCard"><div class="card-head"><div><h2>Invoices</h2><p class="muted" style="margin:2px 0 0;font-size:12.5px">Draft one invoice, send it to one person or many. Each gets their own, with a link to pay by card.${unpaid.length ? ` <b>${plural(unpaid.length, "invoice")} unpaid: ${usd(unpaid.reduce((n, x) => n + x.amount, 0))}.</b>` : ""}</p></div>
         <button type="button" class="btn primary" data-act="igNew">${ui("plus", 14)} New invoice</button></div>
       ${!gen ? none("Invoices could not be loaded.") : sent.length ? `<div class="table-wrap"><table><thead><tr><th>Invoice</th><th>To</th><th>For</th><th style="text-align:right">Amount</th><th>Status</th><th></th></tr></thead><tbody>${sent.slice(0, state.genAll ? 300 : 12).map(genRow).join("")}</tbody></table></div>${sent.length > 12 && !state.genAll ? `<p style="margin:10px 0 0"><button type="button" class="btn sm" data-act="igAll">Show all ${sent.length}</button></p>` : ""}` : none("No invoices sent from here yet.")}
@@ -1196,7 +1227,8 @@
           <p class="muted" style="margin:0;font-size:12.5px">System cost is what you pay each month for the software: the server, the website, video, email, the AI scribe. Expense is anything else the practice pays monthly, such as rent or insurance. These bills cannot be read from here, so the amounts are yours to enter. Clear a name to remove a line. Stripe's fees are read from Stripe and do not belong here.</p>
           <div class="row"><button class="btn primary">Save</button></div></form></div>
       <div class="card"><div class="card-head"><h2>Per member</h2><span class="muted" style="font-size:12px">${plural(e.people.total, "account")} · ${M.paying} paying · ${M.byHand} set by hand</span></div>
-        ${line("Memberships, per month", usd(M.listMonthly), `${plural(M.paying, "card membership")} running, at list price before discounts`)}
+        ${line("Memberships, per month", usd(M.listMonthly), `${plural(M.paying, "card membership")} running, at list price before discounts${M.pastDue ? `; ${M.pastDue} behind on a payment` : ""}${M.canceling ? `; ${M.canceling} ending this period` : ""}`)}
+        ${M.carePlans && M.carePlans.count ? line("Care plans in instalments, per month", usd(M.carePlans.monthlyCents), `${plural(M.carePlans.count, "plan")} still being paid`) : ""}
         ${line("Average membership", M.paying ? usd(avg) + " a month" : "—", M.paying ? "" : "no card memberships running")}
         ${line("System cost per paying member", M.paying && e.systemMonthly ? usd(e.systemMonthly / M.paying) + " a month" : "—", e.systemMonthly ? "" : "enter the system cost to see this")}
         ${line("System cost per account", e.people.total && e.systemMonthly ? usd(e.systemMonthly / e.people.total) + " a month" : "—", "every sign-up, paying or not")}
