@@ -810,9 +810,14 @@
   });
   function renderVideos() {
     const key = vf.by;
-    let list = liveEX().filter((e) => (vf.kind === "All" || e.kind === vf.kind) && (vf.cat === "All" || (vf.cat === "♥ Favorites" ? isFav(e.id) : e.libCat === vf.cat)) && (!vf.region || e[key] === vf.region)
+    const pick = (kind, cat) => liveEX().filter((e) => (kind === "All" || e.kind === kind) && (cat === "All" || (cat === "♥ Favorites" ? isFav(e.id) : e.libCat === cat)) && (!vf.region || e[key] === vf.region)
       && (!vf.loc || locIds[vf.loc].has(e.id))
       && (!vf.q || (vqRank ? vqRank.has(e.id) || (!inIndex(e) && titleHit(e, vf.q)) : [e.name, e.region, e.cat, e.libCat, e.joint, e.muscle].join(" ").toLowerCase().includes(vf.q))));
+    let list = pick(vf.kind, vf.cat), widened = false;
+    // A search that finds nothing on this tab looks on every tab (owner, 27 Nov 2026): the library opens on Exercise, so a
+    // rehab movement typed there used to read as "not in the library". Favorites stay as they are: that list is the member's own.
+    if (vf.q && !list.length && (vf.kind !== "All" || (vf.cat !== "All" && vf.cat !== "♥ Favorites")) && vf.cat !== "♥ Favorites") { list = pick("All", "All"); widened = list.length > 0; }
+    $("#vid-kind-note").textContent = widened ? "Nothing matched on this tab, so these come from every tab." : KIND_NOTE[vf.kind];
     // Ranked results come back ordered by relevance; otherwise sort by level then name as before.
     list.sort(vqRank ? (a, b) => (vqRank.get(a.id) ?? 999) - (vqRank.get(b.id) ?? 999) : (a, b) => a.level - b.level || a.name.localeCompare(b.name));
     $("#vgrid").innerHTML = groupsFor().map((g) => {
@@ -2804,7 +2809,7 @@
     "Cable Pull-Throughs": "Cable Pull Through", "Glute Kickbacks": "Quadruped Glute Kick", "Landmine Press": "Landmine Press Twist",
     "Seated Cable Row": "Cable Row", "Banded Row": "Dumbbell Row", // "Row" is the rowing machine
     "Lateral Raises": "Lateral Raise", "Plank Variation": "Dynamic Plank", "Sled Push": "Sled Push Pull",
-    "Kettlebell Swings": "Kettlebell Swing", "Farmer Carries": "Farmer Carry", "Med Ball Slams": "Med Ball Slam", "Scalene Release": "Standing Scalene Stretch",
+    "Kettlebell Swings": "Kettlebell Swing", "Farmer Carries": "Farmer Carry", "Med Ball Slams": "Med Ball Slam", "Scalene Release": "Standing Scalene Stretch", "Eccentric Dumbbell Shrug Drop": "Eccentric Scalene Drop",
     "Rotator Cuff Int/Ext Rotation": "Rotator Cuff External Rotation", "Repeated Shoulder Drop Stretch": "Shoulder Drop Hold",
     "Shoulder Packing Drill": "Floor Slide Scapular Retract", "Scapular Retraction": "Floor Slide Scapular Retract",
     "Hip Dip (Eccentric Control)": "Hip Dips", "Standing Hip Dip": "Hip Dips", "Bridge Holds": "Single Leg Glute Bridge",
