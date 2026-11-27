@@ -179,7 +179,11 @@ already in the catalog: each is refused by name and nothing is written.
 
 Regions and categories are read back out of `app/exercises.js`, so a new entry can only use ones the app
 already knows how to file. Run it without `--write` first: it prints what it would add and changes nothing.
-Afterwards: `node scripts/build-media-manifest.js`, then `node scripts/version-assets.js`, then commit.
+Afterwards: `node scripts/build-media-manifest.js`, then `node scripts/build-exercise-search.js`, then
+`node scripts/version-assets.js`, then commit. The middle one puts the movement in site search: the member library
+finds a movement by its title on its own, but the site-wide search reads `data/search-index.json`, and nothing else
+adds exercises to it (63 of 222 were missing on 27 Nov 2026). Do not run `scripts/seo/build.js` just for this: it
+re-stamps `lastReviewed` on every generated page.
 
 **Pregnancy clips (owner, 27 Nov 2026).** They have their own tab in the library: `cat: "Pregnancy"`,
 `cc: "PRG"`, with the region set per clip so they group by joint. Whatever carries that category gets three things

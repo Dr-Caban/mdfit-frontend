@@ -2864,7 +2864,7 @@
     "Cable Pull-Throughs": "Cable Pull Through", "Glute Kickbacks": "Quadruped Glute Kick", "Landmine Press": "Landmine Press Twist",
     "Seated Cable Row": "Cable Row", "Banded Row": "Dumbbell Row", // "Row" is the rowing machine
     "Lateral Raises": "Lateral Raise", "Plank Variation": "Dynamic Plank", "Sled Push": "Sled Push Pull",
-    "Kettlebell Swings": "Kettlebell Swing", "Farmer Carries": "Farmer Carry", "Med Ball Slams": "Med Ball Slam", "Scalene Release": "Standing Scalene Stretch", "Eccentric Dumbbell Shrug Drop": "Eccentric Scalene Drop",
+    "Kettlebell Swings": "Kettlebell Swing", "Farmer Carries": "Farmer Carry", "Med Ball Slams": "Med Ball Slam", "Scalene Release": "Standing Scalene Stretch", "Eccentric Dumbbell Shrug Drop": "Eccentric Scalene Drop", "Scalene Stretch — Three Part": "Scalene Stretch",
     "Rotator Cuff Int/Ext Rotation": "Rotator Cuff External Rotation", "Repeated Shoulder Drop Stretch": "Shoulder Drop Hold",
     "Shoulder Packing Drill": "Floor Slide Scapular Retract", "Scapular Retraction": "Floor Slide Scapular Retract",
     "Hip Dip (Eccentric Control)": "Hip Dips", "Standing Hip Dip": "Hip Dips", "Bridge Holds": "Single Leg Glute Bridge",

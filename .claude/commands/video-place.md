@@ -43,6 +43,7 @@ whose placement you worked out yourself is not confirmed. **Ask, with the list, 
 5. **Then, in order:**
    ```
    node scripts/build-media-manifest.js
+   node scripts/build-exercise-search.js   # adds the new movements to site search; without it they play but cannot be found
    node scripts/version-assets.js
    ```
 6. **Record the decision** in `data/video-placements.json`, so the next session inherits it instead of asking
