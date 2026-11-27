@@ -242,7 +242,7 @@
   // A body part or a symptom the lists above do not hold. A message with one of these is about someone's health, so it
   // never gets small talk (a verse, a joke, a kind word) or the road alone: it goes the normal way, to the assistant
   // when that is on and otherwise to the "didn't quite get that" answer with the pain tool, booking and the clinic.
-  const HEALTH = /\b(legs?|arms?|head|stomach|tummy|belly|abdomen|gut|heart|lungs?|throat|eyes?|ears?|tooth|teeth|fingers?|toes?|thumbs?|skin|bones?|joints?|muscles?|nerves?|body|numb\w*|dizz\w*|light ?headed|tingl\w*|pins and needles|pounding|throbbing|stabbing|burning|swell\w*|bleed\w*|blood|bruis\w*|faint\w*|nause\w*|vomit\w*|threw up|throwing up|fever\w*|cramp\w*|spasm\w*|itch\w*|rash|cough\w*|migraines?|concussion|breath\w*|weak|weakness|shaky|shaking|sick|ill|unwell|symptoms?|surgery|dying|die|killing me|(feel|feels|feeling|felt) (funny|weird|strange|odd|off|wrong))\b/;
+  const HEALTH = /\b(legs?|arms?|head|stomach|tummy|belly|abdomen|gut|heart|lungs?|throat|eyes?|ears?|tooth|teeth|fingers?|toes?|thumbs?|skin|bones?|joints?|muscles?|nerves?|body|numb\w*|dizz\w*|light ?headed|tingl\w*|pins and needles|pounding|throbbing|stabbing|burning|swell\w*|bleed\w*|blood|bruis\w*|faint\w*|nause\w*|vomit\w*|threw up|throwing up|fever\w*|cramp\w*|spasm\w*|itch\w*|rash|cough\w*|migraines?|concussion|breath\w*|weak|weakness|shaky|shaking|sick|ill|unwell|symptoms?|surgery|dying|die|killing me|(feel|feels|feeling|felt) (funny|weird|strange|odd|off|wrong)|face|lips?|mouth|tongue|jaw|vision|blurr\w*|seeing double|seizures?|slurr\w*|confus\w*|hives|allerg\w*|wheez\w*|chest)\b/;
   const rx = (p) => p.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const has = (text, phrase) => new RegExp(`(^|[^a-z])${rx(phrase)}([^a-z]|$)`).test(text);
   const norm = (s) => " " + String(s || "").toLowerCase().replace(/[^a-z0-9'&: ]+/g, " ") + " ";
@@ -966,7 +966,8 @@
     say(String(r.say || "").trim().slice(0, 600) || "Here's where I can take you:");
     if (FACE[r.mood]) faceAfter = r.mood; // the face he wears once the chat is closed
     // A verse was asked for: the model leads into it, and the verse itself comes from his own list, word for word
-    if (r.verse) { const v = talkFor("__verse"); if (v) { reply(v); return; } }
+    // (not on a health message: there the answer's own buttons, Call the clinic among them, stay)
+    if (r.verse && !care) { const v = talkFor("__verse"); if (v) { reply(v); return; } }
     const rd = road(), next = plainHome() ? "Next" : "Next on your road"; // the Simple view has no road, as in his plain lines (account-solomon.js)
     offer([...(rd && rd.opt && !["done", "ask"].includes(rd.kind) ? [{ ...rd.opt, label: rd.opt.label === "Do my check-in here" ? `${next}: my check-in` : `${next}: ${rd.opt.label.replace(/^(Open|Start|Pick|Build) /, (m) => m.toLowerCase())}` }] : []), ...(area ? [{ label: `Programs for your ${area}`, again: true, more: () => beat(() => showArea(area)) }] : []), ...ids.map(opt), opt("call")]);
     let C = null; try { C = await App.content(); } catch {}
