@@ -1232,6 +1232,18 @@
     $("#p-email").textContent = client.email;
     const f = $("#profile-form");
     f.name.value = client.name; f.email.value = client.email; f.phone.value = client.phone || "";
+    if (f.dob) {
+      // A server from before birthdays could be edited sends no dob at all: the field stays hidden rather than take a
+      // date it would quietly drop
+      const lab = f.dob.closest("label"); if (lab) lab.hidden = !("dob" in client);
+      f.dob.value = client.dob || ""; // empty when none is kept
+      // A date of birth on file with the clinic (from the practice's records) is shown but not changed here: greyed like
+      // the email above it, and, being disabled, never checked or sent, so an old or unusual date can never block or
+      // wipe a save.
+      const locked = !!client.dobLocked; f.dob.disabled = locked;
+      const note = $("#p-dob-note");
+      if (note) note.textContent = locked ? "On file with the clinic. Call us at 941-313-0562 if it needs changing." : "Only used to wish you a happy birthday. Leave it empty if you would rather not.";
+    }
     renderReferral();
     renderProfileMembership();
   }
@@ -1247,7 +1259,11 @@
     $("#p-mem-go").textContent = paid ? (cur.meetings ? "Manage membership" : "Upgrade membership") : "Upgrade membership";
   }
   wire($("#profile-form"), async (d) => {
-    const r = await apiAuth("PUT", "/api/me", { name: d.name, phone: d.phone }); earn("profile");
+    // The birthday goes with the save only when the form has the field and the member changed it ("" removes it). Left
+    // out, the server keeps what it has, so an older copy of this page or of the account kept on the phone can never
+    // wipe one out.
+    const dobChanged = d.dob !== undefined && !client.dobLocked && d.dob !== (client.dob || "");
+    const r = await apiAuth("PUT", "/api/me", { name: d.name, phone: d.phone, ...(dobChanged ? { dob: d.dob } : {}) }); earn("profile");
     client = r.client; auth.set({ ...auth.get(), client }); renderProfile();
     return { message: "Saved." };
   }, { reset: false });
@@ -3936,7 +3952,12 @@
   // when it is the first, so only one device celebrates). A short two-note chime, the gold glow on the gem card and a
   // toast. Phones only play sound after a first tap in some cases (iPhone browsers); then it is the toast and glow alone.
   // Sounds can be switched off on the device (localStorage "mdfit-sounds" = "off").
+  // After a crisis or emergency answer in Solomon's chat (mdfit:urgent) nothing celebrates for a quarter of an hour:
+  // XP is still credited, without the toast or the chime
+  let urgentQuietUntil = 0;
+  document.addEventListener("mdfit:urgent", () => { urgentQuietUntil = Date.now() + 15 * 60e3; });
   function ding() {
+    if (Date.now() < urgentQuietUntil) return;
     try {
       if (localStorage.getItem("mdfit-sounds") === "off") return;
       const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
@@ -3972,6 +3993,7 @@
   }
   document.addEventListener("visibilitychange", () => { if (!document.hidden) welcomeBack(); });
   function celebrateToast(msgs) {
+    if (Date.now() < urgentQuietUntil) return;
     const t = $("#toast");
     msgs = msgs.map(plainMsg).filter(Boolean); if (!msgs.length) return;
     t.innerHTML = msgs.map((m, i) => `<div class="${i ? "" : "xp-gain"}">${esc(m)}</div>`).join("");

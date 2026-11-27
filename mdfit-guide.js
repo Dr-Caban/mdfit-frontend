@@ -12,9 +12,17 @@
 //
 // When the practice has switched on its assistant (GET /api/me/guide says ai: true), a typed question that the device
 // does not answer itself goes to MD Fit's own server (/api/me/guide/ask) to be read there. Still kept on the device in
-// that mode: anything that sounds like an emergency, reminders, theme and layout, and every question about the
-// member's own account (visits, invoices, forms, messages, streak). If the assistant is off or does not answer, the
-// device understands the message itself, exactly as in the default mode. The line under the box says which is true.
+// that mode, whatever polite or exclamatory words come with them: anything that sounds like an emergency, reminders,
+// theme and layout, the way to a place in the app, and every question about the member's own account (visits,
+// invoices, forms, messages, streak). If the assistant is off or does not answer, the device understands the message
+// itself, exactly as in the default mode. One answer that fails does not switch the assistant off; only the practice
+// switching it off does. The line under the box says which is true.
+//
+// Things said to him rather than asked of the app (thanks, "tell me a joke", "give me a verse", "I'm tired", "who are
+// you") have lines of his own, kept on the device (account-solomon.js). One is used only when the device has nothing
+// it must do itself and the message names no body part or symptom. With the assistant off it is the answer: never
+// sent, never counted. With it on, the message goes to the server like any other question, and his own line is what
+// he falls back on when the assistant is slow, fails, or a free member has no answers left today.
 //
 // In that mode the server also reads the member's activity in the app (programs, check-ins, workouts) to personalize
 // what it suggests; the member's name and contact details are never sent, and what is typed is not saved.
@@ -109,7 +117,141 @@
     leg: { w: ["hamstring", "hamstrings", "quad", "quads", "thigh", "thighs"], f: ["hamstring", "thigh", "quad"] },
     jaw: { w: ["jaw", "tmj", "headache", "headaches"], f: ["jaw", "head"] }
   };
-  const URGENT = /\b(911|emergency|can'?t breathe|cannot breathe|chest pain|heart attack|stroke|passed out|fainted|suicid|kill myself|numb(ness)? in my (face|arm)|severe bleeding|overdos)/i;
+  // Words that mean an emergency or a crisis: the same words the server checks (mdfit-backend lib/crisis.js), copied
+  // here so a message is answered at once on the device, also with AI answers off. When in doubt a message counts.
+  // ---- crisis words (start of the copy of mdfit-backend lib/crisis.js: change both together) ----
+  const CRISIS_WORDS = (() => {
+    const A = "['’]?"; // the apostrophe a phone types counts like the plain one, and leaving it out too
+    const EMERGENCY = new RegExp("\\b(911|emergency(?! contacts?\\b)|ca?n" + A + "t breathe?|cannot breathe?|can not breathe?|(struggling|hard|trouble|difficulty) (to breathe?|breathing)|hard time breathing|chest pains?|numb(ness)? in my (face|arms?)|my face is (numb|drooping)|face (is )?drooping|passed out|fainted|(?!(knees?|arch(es)?|ankles?|legs?|hips?|foot|feet|disc|disk)\\b)\\w+ collapsed(?! (arch|arches|disc|disk))|^collapsed|overdos\\w*|od(['’]e?d|ed)|severe bleeding|bleeding (a lot|heavily|badly)|won" + A + "t stop bleeding|(turning|turned) blue|lips are blue)\\b", "i");
+    const EMERGENCY2 = new RegExp("\\b(" + [
+      "(isn" + A + "t|is not|not|stopped|barely|quit) breathing\\b", "barely breathe", "can" + A + "t get (any )?air", "gasping for (air|breath)",
+      "(pain|pressure|squeezing|crushing|heaviness) in (my|his|her) chest", "crushing chest", "chest (pressure|hurts|is hurting)",
+      "chest\\b.{0,40}\\b(can" + A + "t (catch (my|his|her) )?breath|short(ness)? of breath)", "(short(ness)? of breath|can" + A + "t catch my breath)\\b.{0,40}\\bchest",
+      "unconscious", "unresponsive", "(lost|losing) consciousness", "blacked out", "(going|about|gonna) to pass out", "passing out",
+      "faint(ing|ed)\\b", "feel(ing)? faint", "(going|about|gonna) to faint",
+      "won" + A + "t wake up", "not waking up", "can" + A + "t wake (him|her|them|my)", "going limp", "(turning|turned) (purple|grey|gray)",
+      "(fell|collapsed|on the floor|on the ground) and (isn" + A + "t|is not|won" + A + "t|not) (moving|responding|respond|waking up|breathing)",
+      "no pulse", "cardiac arrest", "needs? cpr", "doing cpr", "heart (stopped|has stopped|isn" + A + "t beating)",
+      "(having|had|is having|in) an? seizure\\b(?! (last|in \\d|\\d|years?|months?|a (year|month|while)))", "seizures? (right now|now)", "seizing\\b(?! up)", "convuls\\w*", "anaphyla\\w*", "(having|having an?|bad|severe|serious) allergic reaction", "allergic reaction (help|now|right now)", "(use|used|using|give|need to use) (my |an |the |her |his )?epi ?pens?",
+      "throat (is )?(closing|swelling)", "(tongue|lips|face|throat) (is |are )?(swelling|swollen)", "(stung|sting|bee|peanuts?|hives)\\b.{0,50}\\b(throat|tongue|breathe?|swallow)",
+      "choking\\b(?! up)", "bleed(ing)? out", "blood everywhere", "gushing blood", "(coughing|throwing|vomiting|spitting) (up )?blood",
+      "can" + A + "t stop (the )?bleeding", "bleeding (won" + A + "t|wont|will not|doesn" + A + "t|does not) stop", "bleeding and (it )?(won" + A + "t|wont|will not) stop", "keeps bleeding", "blood is (pouring|gushing|spurting)", "bleeding (through|out of) (the|my|his|her) (bandage|dressing|stitches|incision)", "bleeding from (my|his|her|the) head",
+      "(chest (feels? |is |gets )?(getting )?(really |so |very )?(tightness|tight)\\b|tightness in (my|his|her) chest\\b)(?!,? (today |now )?((after|from|since) (push|bench|chest day|workouts?|lifting|training|the gym|stretch\\w*|running|a run|my run|cardio|sprints?|swimming|flyes|dips)|in a good way)\\b)",
+      "tight chest\\b[^.?!]{0,30}\\b(dizz\\w*|sweat\\w*|short of breath|can" + A + "t breathe?|arm|jaw|nause\\w*|faint\\w*)", "chest (feels |is )?(so |really |very )?heavy\\b(?!,? (after|from|since|during|when)\\b)",
+      "(drink|drank|drinking|swallow\\w*|ate|eat|eating|got into) (some |the |a bottle of |a cup of )?(bleach|poison|antifreeze|lye|drain cleaner|rat poison|cleaning products|cleaner|detergent pods?)", "mixed bleach (and|with) ammonia", "drinking (a bottle of|some|the) (bleach|poison|antifreeze|drain cleaner)", "(pills|meds) and bleach", "bleeding (really |so |very )?(bad|badly|everywhere)",
+      "worst headache", "sudden (severe|bad|terrible|horrible) headache", "slurr(ed|ing)", "can" + A + "t (talk|speak) (right|properly|clearly)",
+      "words (are )?coming out wrong", "(numb|weak|drooping|paralyzed) on one side", "(face|left arm|right arm) (is |went |just went |suddenly went |has gone )numb",
+      "can" + A + "t feel (the |my )?(left|right) side", "can" + A + "t move (my|his|her) (legs|arms|body)\\b(?! after)",
+      "hit (my|his|her|their) head\\b.{0,40}\\b(confused|making sense|throwing up|vomiting|passed out|blacked out)",
+      "(blood sugar|sugar|glucose)\\b.{0,40}\\b(confused|can" + A + "t think|pass(ing)? out)",
+      "narcan", "naloxone", "(gonna|going to|want to|wanna|about to|might|will|i" + A + "ll) od\\b",
+      "i (think|feel like) i" + A + "m dying\\b(?! (laughing|after|from|of))", "(having|having an|in the middle of an?) asthma attack", "inhaler (isn" + A + "t|is not|not) (working|helping)",
+      "(bottle|fifth) of (vodka|wine|whiskey|tequila|rum|gin|alcohol|liquor) and (took|swallowed|take)",
+    ].join("|") + ")", "i");
+    // a stroke or a heart attack, unless it is plainly a sports stroke or something that happened before
+    const STROKE = /\b(stroke?|heart ?at+a?c?ks?|an? tia|mini ?stroke)\b/i;
+    const STROKE_PAST = /\b(golf|swim|swimming|tennis|paddle|rowing|back|breast|free|freestyle|butterfly|kayak|putting|brush|pen) stroke\b|\b(after|history of|recovering from|recovery from|since|survived|survivor of)( a| my| his| her| the| two| 2)? (strokes?|heart attacks?)\b|\b(had|has had|have had)( a| my| his| her| the| two| 2)? (strokes?|heart attacks?|tias?|mini ?strokes?)\b(?=[^.?!]{0,60}\b(last (year|month|spring|summer|fall|winter)|years? ago|months? ago|in (19|20)\d\d|back in|rehab\w*|recover\w*|wants? to (exercise|start|get|work|do)|is doing (better|well)|now (is|he|she)|since then)\b)|\b(gave|give|giving|gives) me a heart attack\b|\bpost[- ]?stroke\b|\b(stroke|heart attack) (survivors?|patients?|rehab\w*|recovery|rate|count|length|technique|risks?|prevention|unit|ward|center|clinic|team|support group)\b|\bmy (last |first )?stroke (was|happened)\b|\b(cause|causes|prevent|prevents|risk of)( a)? (stroke|heart attack)\b/i;
+    const STROKE_NOW = /\b(having|signs? of|symptoms? of|is having|might be having|think (i|it)( am|'m|’m| is|'s|’s)?|could be)( a)? (stroke|heart attack)\b|\bjust (had|having|suffered)( a)? (stroke|heart attack)\b|\b(stroke|heart attack) (just now|right now|\d+ ?(min\w*|hours?|hrs?) ago|an? (few )?(min\w*|hour) ago|symptoms)\b|\b(think|maybe|might|may|could|probably|pretty sure)\b[^.?!]{0,30}\b(had|have had)( a)? (stroke|heart attack)\b|\b(had|having)( a)? (stroke|heart attack)\b[^.?!]{0,40}\b(help|what (do|should) (i|we) do|can['’]?t (talk|speak|move|breathe)|isn['’]?t moving|not (moving|breathing|responding)|today|tonight|this (morning|afternoon|evening))\b|\b(stroke|heart attack),? i think\b|\b(stroke|heart attack)\b[^.?!]{0,40}\b(again|today|tonight|right now|just now|went numb|is numb|going numb|numbness|can['’]?t (talk|speak|move|feel)|now (she|he|i|they) (can['’]?t|cannot) (talk|speak|move|feel))\b|\b(stroke|heart attack)\b[^.?!]{0,50}\b(help|ambulance|911|called|collapsed|unconscious|not responding|isn['’]?t (moving|responding|breathing))\b|\b(stroke|heart attack)\b[^.?!]{0,30}\b(while|during|at) (cardiac )?(rehab|recovering|recovery|pt|physical therapy|class|practice|the gym|a workout|the workout)\b|\b(stroke|heart attack) in the kitchen\b/i;
+    const CRISIS = new RegExp("\\b(su[ie]?[cs]id\\w*|sucid\\w*|kil+(ing)?,? ?(my|mi) ?s(el|le)f|self[- ]?harm\\w*|unalive|end my life|end(ing)? it all|" +
+      "(want(ed)?|wanna|going|gonna|feel like|about|ready|thinking (about|of)) (to )?end(ing)? it(?=\\s*($|[.!?,;]|tonight\\b|now\\b|forever\\b|already\\b|fr\\b|rn\\b|lol\\b|tbh\\b|for good\\b))|" +
+      "(want to|wanna|want 2)( just)? d ?i ?e\\b(?! (my|your|her|his|the) hair)|wish i (was|were|had) (dead|never been born)|wish i (wasn" + A + "t|was not|weren" + A + "t) alive|never (been )?born|" +
+      "better off (dead|without me|if i (was|were) (dead|gone))|(i" + A + "d|i would) rather be dead|" +
+      "(don" + A + "t|do not|dont) (want to|wanna) (live|be here|be alive|exist|wake up(?! (sore|stiff|early|late|tired|at \\d|before)))|no reason to live|(isn" + A + "t|not|is not) worth living|can" + A + "t go on|" +
+      "(sleep and |to )?never wake up(?! (rested|refreshed|before|early|on time|without|feeling))|(stop|end) forever|nobody would miss me|no one would miss me|disappear forever|" +
+      "jump off (a|the|that) (bridge|building|roof|cliff)|take all (my|the|of my) pills|took (too many|all (my|the|of my)|a (whole )?bottle of|a bunch of) pills)\\b", "i");
+    const PRON = "(my|me|mi|him|her|them) ?-?s(el|le)(f+|ves)";
+    const DRUG = "(pills|meds|medications?|tablets|tylenol|advil|ibuprofen|aleve|xanax|valium|oxy\\w*|percocet|vicodin|hydrocodone|fentanyl|painkillers|sleeping pills|insulin)";
+    const CRISIS2 = new RegExp("\\b(" + [
+      "un ?aliv\\w*", "sewer ?slides?", "su[ie1!]?d?[cs]id\\w*", "suici?al\\w*", "k[i1!]l+(ing|in" + A + ")?,? ?" + PRON + "\\b", "baker ?act\\w*",
+      "(wa?n[at]?t?(s|ed)? (to|too|ta|2)|wan+a)( just| really| so bad to)? d ?(i ?e+|ei)\\b(?! (my|your|her|his|the) hair)",
+      "(deserve to|should( just)?|hope i|wish i (could|would)( just)?|let me( just)?|ready to|might as well|i" + A + "d rather|i would rather) die\\b(?! (than|laughing|of laughter))",
+      "(want|wanna|wish) (to )?be dead", "(i" + A + "d|i would|i" + A + "m|im|i am) (be )?better (off )?(dead|gone)", "feel like dying\\b(?! (after|from|of|laughing))",
+      "(don" + A + "t|do not|dont) (even |really |actually |honestly )?(want to|wanna|wish to|feel like|deserve to) (live|living|be here|be alive|exist|do life)",
+      "(don" + A + "t|do not|dont) (even |really |actually |honestly )(want to|wanna) wake up",
+      "(tired|sick) of (being alive|living|life)\\b(?! with| in)", "(done|finished) (with (life|living|being alive)|living)\\b(?! (on|in|with|like a|off))",
+      "nothing (left )?to live for", "no (point|reason) (in |to |of )?(living|live|life|being alive|going on)",
+      "(what" + A + "s|whats|what is) the point (of|in) (living|life|being alive|going on|anything)",
+      "life (isn" + A + "t|is not|ain" + A + "t|isnt) worth (it|anything)", "(i" + A + "m|im|i am) not worth (saving|anything|living)",
+      "(nobody|no one) wants me (alive|around|here|to live)", "(want to|wanna|just) (stop|not) exist(ing)?", "wish i (didn" + A + "t|did not) exist",
+      "(want to|wanna|wish i could) disappear(\\s*$|\\s*[.!?]| and never| for good| forever)", "disappear and never come back", "(going|go) away forever",
+      "(want(ed)?|wanna|going|gonna|feel like|about|ready|thinking (about|of)) (to )?end(ing)? (things|everything)(?=\\s*($|[.!?,;]|tonight\\b|now\\b|forever\\b|already\\b|for good\\b))",
+      "end(ing)? (my|her|his|their)s(el|le)(f|ves)", "end(ing)? (my|her|his|their) (own )?life", "tried to end it\\b(?! with)",
+      "take (my|her|his|their) own life", "(try(ing)?|tried|going|gonna|want(ed)?|wanna|thinking (about|of)|plan(ning)?|about) to take (my|her|his|their) life\\b(?! back)",
+      "(want|need|wish)( for)? (it all|everything|my life) to (end|be over|stop)", "want(ed)? it (all )?to be over",
+      "can" + A + "t (keep )?(living|live|go on living) like this", "(give|gave|given|giving) up on (life|living)\\b",
+      "(to|gonna|wanna|going to|about to|might|will|i" + A + "ll|thinking (about|of)) off " + PRON, "offing " + PRON,
+      "(hang|hung|hanging|hanged|shoot|shot|shooting|drown|drowning|poison|poisoning|suffocate|electrocute|stab|gas)(ed)? " + PRON + "\\b", "noose", "(holding|have|got|has|grabbed) (a|my|the|his|her|my dad" + A + "s|a loaded) gun\\b[^.?!]{0,30}\\b(in (my|his|her) hand|right now|loaded|ready|use it|using it|on (me|myself|him|her)|myself)", "gun is loaded", "loaded gun",
+      "((want|wanna|going|gonna|about|ready|plan(ning)?|might|will|could|should|i" + A + "ll|feel like|maybe i should)( to)?( just)?|thinking (about|of)( how)?) (drink|drinking|swallow\\w*|eat|eating) (some |the |a bottle of |a cup of )?(bleach|poison|antifreeze|lye|drain cleaner|rat poison)",
+      "soo?ci?de|sewer ?cide", "(have|got|holding|bought|has) a gun\\b.{0,40}\\b(use it|want|myself|end|on me|sorry|be done|it over)",
+      "(going to|gonna|want to|wanna|about to|ready to) jump(?=\\s*($|[.!?,;]|off\\b|tonight\\b|now\\b))", "jump (out|from) (of )?(the|a|my|this) (window|balcony|roof|building|\\d+\\w* floor)", "(standing|sitting|i" + A + "m|i am|im) on (the|a|this) (bridge|ledge|roof|edge)\\b(?! (of|for) (the |my |a |this )?(pool|bed|couch|seat|chair|box|bench|step|stairs|mat|tub|sofa|table)\\b)",
+      "(want|wanna|going|gonna|ready) to stop (living|being alive)", "wanna stop (living|being alive)", "stop (living|being alive)(?=\\s*($|[.!?,;]|forever\\b|now\\b))", "hate (my|this) life\\b.{0,40}\\bwant (out|to (go|leave|disappear|die))",
+      "su[ie]?c[ie]?d(e|al)\\b", "bought a rope\\b(?! (for|to (climb|train)|attachment))", "(jaw|left arm)\\b.{0,30}\\b(hurts?|pain|numb)\\b.{0,30}\\bsweat\\w*", "(passive|active) si\\b(?! joints?)", "si (thoughts|ideation)",
+      "(slit|slitting|slash|slashing|cut|cutting|open) (my|his|her) (wrists?|throat)", "(knife|blade|razor) (to|on|against) my (wrists?|throat|neck|arms?|skin)",
+      "gun (to|in) (my|his|her) (head|mouth)", "blow (my|his|her) brains", "use it on " + PRON, "(load|loading|loaded) (my|a|the) gun",
+      "jump(ing)? (off|from|in front of) (a|the|that|my) ?(bridge|building|roof|cliff|balcony|overpass|parking garage|train|car|bus|truck)", "jump off something",
+      "(on|at) (the|a) (bridge|roof|ledge)\\b.{0,40}\\bjump\\b", "(throw|throwing) " + PRON + " (off|in front of|from|under)", "step(ping)? in front of (a|the) (bus|train|car|truck)",
+      "(drive|driving|crash|crashing|run) (my|the) car (into|off) (a|the) (tree|wall|bridge|cliff|river|lake|ocean|pole|truck|traffic|water)", "crash(ing)? (my|the) car on purpose",
+      "(drive|driving) off (a|the) (bridge|cliff|road|overpass)", "(hope|wish|want to|wanna)( that)? (a (car|truck|bus|train) hits me|i get hit by|to get hit by|get hit by)",
+      "(took|swallowed|downed|(going to|gonna|want to|wanna|about to|plan(ning)? to) (take|swallow|down)) (all|every( one)?|my whole|the whole|a (whole |full )?(bottle|handful|bunch|pack|box|lot|ton)|too (many|much)|way too (many|much)|\\d{2,})( (of|in))?( (my|her|his|the|their))?( \\w+" + A + "s?){0,2} " + DRUG,
+      "(took|take|taking|swallowed)\\b.{0,30}\\b" + DRUG + "\\b.{0,30}\\bon purpose", "everything in (my|the) medicine cabinet", "plan(ning)? (is )?to take (my|all my|the) " + DRUG,
+      "(friend|roommate|brother|sister|son|daughter|mom|dad|mother|father|wife|husband|boyfriend|girlfriend|partner|kid|child|toddler|baby|grandson|granddaughter|grandma|grandpa|niece|nephew|uncle|aunt|cousin|neighbor) (just )?(took|swallowed|ate|got into) ((some |a lot of |a bunch of |\\w+ of |all (of )?)?((my|her|his|their|the) )?([\\w'’]+ ){0,2})?" + DRUG,
+      "(saving|saved|stockpil\\w*|hoard\\w*) (up )?(my |the |her |his )?" + DRUG, "have (the|my) " + DRUG + " ready", "(going to|gonna|want to|wanna|about to|plan(ning)? to) mix (my )?" + DRUG + " with (alcohol|vodka|wine|whiskey|booze)",
+      "how many " + DRUG + " (would|will|to|does it take to|it takes|does it take)", "lethal dose", "painless way to (go|die)",
+      "(i" + A + "m|im|i am|i feel like) (just |such |only |nothing but )?a (burden|waste of (space|air))",
+      "(better|happier|easier) (off )?without me", "(better|happier|easier) (off )?if i (was|were|wasn" + A + "t|weren" + A + "t) (dead|gone|here|around|alive)",
+      "(nobody|no one) (would|will) (even )?(care|notice|miss me) if i (died|was gone|were gone|disappeared|wasn" + A + "t (here|around|alive))", "if i died (tomorrow|tonight|today)?,? (nobody|no one)",
+      "(gave|giving|given) away (all )?(of )?my (stuff|things|belongings|possessions|dog|cat|pets?)",
+      "this is (my )?goodbye", "goodbye (forever|world|everyone|cruel world)", "saying (my )?goodbyes", "texted (me )?goodbye", "goodbye (notes?|letters?)",
+      "(wrote|writing|left|leaving) (a |my )?(suicide |goodbye )?(notes?|letters?) (for|to) (my )?(family|kids|wife|husband|mom|dad|parents|everyone)",
+      "(won" + A + "t|will not|not going to|not gonna) be (here|around|alive) (much longer|for long|after tonight)\\b(?! (at|in|on) )",
+      "(won" + A + "t|will not|not going to|not gonna) (make it through (the night|tonight)|be alive (tomorrow|by))", "don" + A + "t think i" + A + "ll (be alive|make it|be here) (tomorrow|through)",
+      "if i" + A + "m still (alive|around|here)\\b(?! (in|at|for|by|on|after|when))", "won" + A + "t need (it|this|them) after tonight", "planning my (exit|death|suicide)",
+      "(see|have) (a|any) future for (my|me)s(el|le)f", "no way out (except|but) ",
+      "(after|since) my (suicide )?attempt (last|in) (year|month|week|spring|summer|fall|winter|\\d{4})", "psych(iatric)? (ward|hospital)",
+      "(want to|wanna|wish i could|i) (go to sleep|fall asleep|sleep) forever", "(sleep|fall asleep|go to sleep) and (never|not) wake", "not wake up (tomorrow|again|ever)",
+      "(hope|wish|pray) i (don" + A + "t|do not|never) wake up",
+      "(punish(ing|ed)?|starv(e|ing|ed)) (my|me|him|her) ?s(el|le)f\\b", "(make|making|made) (my|me)s(el|le)f (throw up|sick|puke|vomit|bleed|purge)",
+      "(bang|banging|hit|hitting|slam|slamming) my head (against|on|into) (the |a )?wall", "(until|till|til) (it|i|they|my (skin|arms?|wrists?|knuckles|thighs)) (bleeds?|bled)\\b", "bled (my|me)self",
+      "self[- ]?(injur|inflict|mutilat)\\w*", "(cut|cutting|slic(e|ing)|carv(e|ing|ed)( into)?) (my|her|his) (wrists?|arms?|thighs?|skin)\\b(?! on (the|a|my) )",
+      "relaps\\w* (and |on |into )?(cut|cutting|self)", "(started|start|been|keep|kept|back to) cutting again\\b(?! (for|to|before|after|weight|carbs|calories|season|phase|cycle))",
+      "(so|and) i hurt my body", "deserve (pain|to (hurt|suffer|be in pain|be punished))", "stop eating (forever|for good|completely)", "(haven" + A + "t|not) eat(en)?\\b.{0,30}\\bon purpose",
+    ].join("|") + ")", "i");
+    const KMS = /(^\s*kms\s*[.!?]*\s*$|(['’]ll|\b(will|wanna|gonna|going to|want to|might|need to|should|about to)) kms\b)/i;
+    const KMS_ANY = /\bkms\b/i;
+    const KM_DIST = /(\d|\b(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|fifteen|twenty|thirty|forty|fifty|hundred|half|few|many|more|less|extra|couple|several|those|these|the|of|total|daily))\s*kms\b|\bkms\s*(or|per|vs|is|are|an hour|a (day|week)|\/)/i;
+    const VERB = "(hurt(s|ed|ing)?|cut(s|ting)?|harm(s|ed|ing)?|burn(s|ed|t|ing)?|hit(s|ting)?|punch(es|ed|ing)?|scratch(es|ed|ing)?)";
+    const SELF = new RegExp("\\b" + VERB + " " + PRON + "\\b", "i");
+    const ON_PURPOSE = new RegExp("\\b(on purpose|intentional(ly)?|deliberate(ly)?|urges?|again and again|punish\\w*|feel something|feel pain|(no ?one|nobody) (knows|sees|finds out|notices|will (know|see|notice|find out))|so (no ?one|nobody)|hate (my|me)s(el|le)f|hate my body|i deserve|can" + A + "t stop|cant stop|to cope|(until|till) (it|i) (bleed|bled)|felt (good|better|nice|right|like relief)|(it|that) (helped|helps)|helps me|calm (me )?down|relief|release|numb the pain|to feel (the |some )?pain|wanted it to hurt|(liked|like|love|enjoy\\w*) (it|the pain|how it)|do it again|every night|when (i" + A + "m|im|i am|i feel|i get) (sad|upset|angry|mad|low|depressed|alone|lonely|anxious|stressed|overwhelmed|empty)|can" + A + "t tell (anyone|anybody|my)|cant tell (anyone|anybody|my)|(no ?one|nobody) (noticed|can know|knows)|(so|to) (i|we) (could|can) feel (it|something|anything)|again (last night|tonight)|(that )?i (saved|stashed|hid)( (it|them|away))?|(keep|kept|been) (cutting|burning|scratching) (my|me) ?s(el|le)f)\\b", "i");
+    // intent close before the words (up to four words between)
+    const INTENT = new RegExp("\\b(want(ed)?|wanna|gonna|going to|imma|i" + A + "ll|will|might|could|need(ed)? to|feel like|thinking (about|of)|thought (about|of)|plan(ning|ned)?|try(ing)?|tried|scared|afraid|worried|about to|how (can|do|could|would) i)\\b(\\W+\\w+){0,4}?\\W+" + VERB + " " + PRON + "\\b", "i");
+    // an accident: the activity comes right after the words
+    const ACCIDENT = new RegExp("\\b" + VERB + " " + PRON + "( in the (face|head|eye|nose|mouth|shin|knee))?( again| today| yesterday| this (morning|week|weekend)| last (night|week))?( badly)? (lifting|squatting|deadlifting|benching|pressing|running|jogging|sprinting|playing|skiing|snowboarding|hiking|gardening|pulling weeds|walking|moving|picking|carrying|bending|reaching|stretching|twisting|jumping|climbing|cycling|biking|riding|swimming|surfing|skating|dancing|rowing|throwing|training|golfing|shoveling|cleaning|working out|exercising|shaving|cooking|chopping|slicing|opening|chasing|mowing|vacuuming|sneezing|coughing|getting (in|out|up|off|into|on)|doing (squats|deadlifts|lunges|burpees|push-?ups|pull-?ups|sit-?ups|crunches|planks?|yoga|pilates|that|this|it|the|my|an?|some)\\b|at (the gym|pilates|yoga|practice|work|crossfit|the park)\\b|on (the|a|my|some) (paper|(squat |barbell |power )?rack|box(?! ?cutter)|cardboard|treadmill|stairs|bike|court|field|ice|trail|track|machine|elliptical|rower|bench|glass|knife|can|edge|lid|blade|bottle|fence|nail|stove|oven|pan|grill|iron)\\b|in the (gym|pool|yard|garden)\\b|with (a|the|my) (kettlebell|barbell|bar|dumbbell|weight|plate|band|door|ball)\\b|during (practice|my workout|the workout|a workout|the game|a game|training|class|the run)\\b|while (lifting|running|playing|training|working out|exercising|walking|moving|cleaning|cooking|shaving|making)\\b|with (a|the) (knife|razor|glass|scissors) while (cooking|making|shaving|chopping|slicing|cutting|opening|cleaning|washing)\\b|falling|slipping|tripping|in (a|an|the) (car |bike )?(accident|crash|fall)\\b|by (falling|slipping|tripping|accident)\\b|on (paper|cardboard)\\b|accidentally)", "i");
+    const SAFE_Q = new RegExp("^\\s*(did i " + VERB + " " + PRON + "\\b|(will|would|could|can|do|does|should|might) i " + VERB + " " + PRON + "\\b(.*\\b(if|when) i (run|lift|squat|do|try|keep|train|work out|exercise|stretch|jump|play|go|use|bend|carry|swim|bike|walk|hold|push|pull|press)\\b|.*\\b(by (doing|lifting|running|squatting|stretching|training|exercising|working out|overdoing|pushing)|doing|lifting|running|squatting|exercis\\w*|working out)\\b| (with|on) (this|that|the|a|my) (?!pills?\\b|meds?\\b|medications?\\b|knife|knives|razor|blade|gun|rope|lighter)\\w+))", "i");
+    const SAFE_NEG = new RegExp("\\b(don['’]?t|do not|didn['’]?t|did not) want to " + VERB + " " + PRON + " (doing|lifting|running|squatting|(while|when) (i['’]?m |i )?(lifting|running|squatting|training|working out|exercising|doing|lift|run|squat|train|work out|exercise|do|play|playing|stretch|stretching)|on (the|a)|at (the|a)|in (the|a)|during)\\b|\\b(how (do|can|could|should) i|how to|ways to|tips to) (avoid|prevent) (hurt|harm|cut|injur)(ing|ting)? " + PRON + "\\b(?! ?(tonight|again|anymore|when i['’]?m (sad|upset|alone|angry|depressed|low)))|\\b(squat|lift|run|train|exercis|work out|stretch|play|jump|bend|carry|do (this|that|it|them|these))\\w*( \\w+){0,3} without (hurting|injuring|harming) " + PRON + "\\b", "i");
+    // an accident told the other way round: "I fell and hurt myself"
+    const ACCIDENT_BEFORE = new RegExp("\\b(fell|slipped|tripped|crashed|stumbled)( down| over| off \\w+)? and (hurt|cut) " + PRON + "\\b", "i");
+    const self = (t) => SELF.test(t) && (ON_PURPOSE.test(t) || (!SAFE_Q.test(t) && !SAFE_NEG.test(t) && (INTENT.test(t) || !(ACCIDENT.test(t) || ACCIDENT_BEFORE.test(t)))));
+    const kms = (t) => KMS.test(t) || (KMS_ANY.test(t) && !KM_DIST.test(t));
+    const isCrisis1 = (t) => { t = t.replace(SPORT, " "); return CRISIS.test(t) || CRISIS2.test(t) || kms(t) || self(t); };
+    const SPORT = /\bsuicides? (sprints?|drills?|runs?|shuttles?)\b/gi; // a coach's word for a running drill
+    const NOT_EMERGENCY = /\b(not|isn['’]?t|non)[- ](an? )?emergency\b/gi;
+    const isEmergency1 = (t) => { const u = t.replace(SPORT, " ").replace(NOT_EMERGENCY, " "); return EMERGENCY.test(u) || EMERGENCY2.test(u) || (STROKE.test(u) && (STROKE_NOW.test(u) || !STROKE_PAST.test(u))); };
+    const clean = (t) => String(t || "").replace(/[‘`´ʼʹ′]/g, "'").replace(/[​‌⁠﻿]/g, " ").replace(/­/g, "").normalize("NFKC").replace(/\s+/g, " ");
+    const SPACED = /\b(?:[a-z][ .]){2,}[a-z]\b/gi;
+    const GLUED = /kms|kil+mys|suicid|unaliv|wan(t|na)(to)?d(ie|ei)(?!t)|endmylife|hurtmys|cutmys/i;
+    const collapse = (s) => s.replace(SPACED, (m) => m.replace(/[ .]/g, ""));
+    const spaced = (s) => (s.match(SPACED) || []).some((m) => GLUED.test(m.replace(/[ .]/g, "")));
+    const both = (f, glued) => (t) => { const s = clean(t); if (f(s)) return true; const c = collapse(s); return (c !== s && f(c)) || (glued && spaced(s)); };
+    const isCrisis = both(isCrisis1, true);
+    const isEmergency = both(isEmergency1, false);
+    const isUrgent = (t) => isEmergency(t) || isCrisis(t);
+    return { isUrgent, isCrisis };
+  })();
+  // ---- crisis words (end of the copy) ----
+  // A body part or a symptom the lists above do not hold. A message with one of these is about someone's health, so it
+  // never gets small talk (a verse, a joke, a kind word) or the road alone: it goes the normal way, to the assistant
+  // when that is on and otherwise to the "didn't quite get that" answer with the pain tool, booking and the clinic.
+  const HEALTH = /\b(legs?|arms?|head|stomach|tummy|belly|abdomen|gut|heart|lungs?|throat|eyes?|ears?|tooth|teeth|fingers?|toes?|thumbs?|skin|bones?|joints?|muscles?|nerves?|body|numb\w*|dizz\w*|light ?headed|tingl\w*|pins and needles|pounding|throbbing|stabbing|burning|swell\w*|bleed\w*|blood|bruis\w*|faint\w*|cuts?|scrap\w*|sprain\w*|injur\w*|burn(ed|t)\b(?! out)|nause\w*|vomit\w*|threw up|throwing up|fever\w*|cramp\w*|spasm\w*|itch\w*|rash|cough\w*|migraines?|concussion|breath\w*|weak|weakness|shaky|shaking|sick|ill|unwell|symptoms?|surgery|dying|die|killing me|(feel|feels|feeling|felt) (funny|weird|strange|odd|off|wrong)|face|lips?|mouth|tongue|jaw|vision|blurr\w*|seeing double|seizures?|slurr\w*|confus\w*|hives|allerg\w*|wheez\w*|chest)\b/;
   const rx = (p) => p.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const has = (text, phrase) => new RegExp(`(^|[^a-z])${rx(phrase)}([^a-z]|$)`).test(text);
   const norm = (s) => " " + String(s || "").toLowerCase().replace(/[^a-z0-9'&: ]+/g, " ") + " ";
@@ -119,7 +261,7 @@
     const pained = scored.some((p) => p.id === "pain");
     let area = Object.keys(AREAS).find((a) => AREAS[a].w.some((w) => has(text, w))) || "";
     if (!area && pained && has(text, "back")) area = "back";
-    return { text, area, places: scored, pained, urgent: URGENT.test(raw || "") };
+    return { text, area, places: scored, pained, urgent: CRISIS_WORDS.isUrgent(raw), crisis: CRISIS_WORDS.isCrisis(raw), health: HEALTH.test(text) };
   }
 
   // ---------- what the app already knows is waiting for this member (read fresh each time; never sent anywhere) ----------
@@ -222,14 +364,15 @@
   function offer(items) {
     const wrap = document.createElement("div"); wrap.className = "mg-opts";
     for (const o of items) {
-      const b = document.createElement(o.tel ? "a" : "button"); if (o.tel) b.href = "tel:" + o.tel; else b.type = "button";
+      const link = o.tel ? "tel:" + o.tel : o.sms ? "sms:" + o.sms : ""; // a call or a text message opens the phone's own app
+      const b = document.createElement(link ? "a" : "button"); if (link) b.href = link; else b.type = "button";
       b.className = "mg-opt" + (o.gold ? " mg-gold" : "") + (o.lock ? " mg-lock" : ""); b.textContent = o.label; b.dataset.label = o.label;
       if (o.lock) b.insertAdjacentHTML("afterbegin", ICON.lock);
       if (o.sub) { const s = document.createElement("small"); s.textContent = o.sub; b.appendChild(s); }
       // An answer (something done here in the chat) is given once: its row is spent, so an old row or a second tap
       // cannot save twice or start the same thing again. Buttons that only lead somewhere, or only show a list, stay.
       if (o.more && !o.again) b.dataset.once = "1";
-      if (!o.tel) b.addEventListener("click", () => { if (b.disabled) return;
+      if (!link) b.addEventListener("click", () => { if (b.disabled) return;
         if (o.more) { if (!o.again) { b.classList.add("mg-picked"); wrap.querySelectorAll("button[data-once]").forEach((x) => { x.disabled = true; }); } say(o.label, true); return o.more(); } travel(o); });
       wrap.appendChild(b);
     }
@@ -254,6 +397,8 @@
   const unlimited = () => G.known && (G.plan === "member" || G.left === null);
   // Roughly how many answers are left, in the member's terms (tokens stay a server matter)
   const answersLeft = () => (typeof G.left !== "number" ? null : G.unit === "tokens" ? Math.floor(G.left / PER_ANSWER) : G.left);
+  // The server has already said a free member has nothing left today (read on open and with every answer)
+  const spent = () => G.known && !unlimited() && typeof G.left === "number" && G.left <= 0;
   function meter() {
     const n = answersLeft(), free = G.known && !unlimited() && typeof n === "number";
     // Quiet until few are left: with plenty remaining it should feel unlimited. Members never see a counter.
@@ -274,13 +419,15 @@
     return true;
   }
   const tell = (type) => { post("/api/me/guide/event", { type }).catch(() => {}); };
-  function limit() {
+  // care = the message was about pain or the body: the pain tool, booking and the clinic are offered every time then,
+  // not only with the first refusal of the day
+  function limit(care) {
     const again = limited; limited = true;
     say(again ? "You're out of free Solomon answers for today. Members get unlimited Solomon for $19.95/mo, or come back tomorrow."
       : `You've used today's free Solomon answers, ${first()}. Members get unlimited Solomon for $19.95/mo. You can upgrade now, or I'll be right here tomorrow.`);
     offer([{ label: "Get unlimited Solomon", sub: "$19.95/mo", gold: true, run: () => { tell("upgrade"); if (App.showTier) App.showTier("member"); else App.go("premium"); }, name: "Membership" },
       { label: "Come back tomorrow", more: () => { tell("tomorrow"); say(`See you tomorrow, ${first()}.`); setTimeout(() => { shut(); speak("New answers tomorrow", { ms: 6000 }); dot.hidden = true; }, 1500); } }]);
-    if (!again) { sys("Always open, limit or not"); offer([opt("pain"), opt("book"), opt("call")]); }
+    if (!again || care) { sys("Always open, limit or not"); offer([opt("pain"), opt("book"), opt("call")]); }
   }
 
   // ---------- answers ----------
@@ -330,8 +477,9 @@
     return out;
   }
   const own3 = (m) => [m.rec, m.track].filter(Boolean);
-  // A hello: answered here by first name, never sent, never counted
-  const HELLO = /^\s*(hi+|hey+|heya|hello+|helo|yo+|hiya|howdy|sup|what'?s up|wass?up|greetings|good (morning|afternoon|evening|day)|morning|afternoon|evening|hola|hi there|hey there|hello there|anyone there|you there|are you there)(\s+(sunny|there|doc|dr\.?|guide|md ?fit))?[\s!?.,]*$/i;
+  // A hello: answered here by first name, never sent, never counted. It may use his name ("hey Solomon", "hi, Solomon")
+  // and the apostrophe a phone types (what’s up).
+  const HELLO = /^\s*(hi+|hey+|heya|hello+|helo|yo+|hiya|howdy|sup|what['’]?s up|wass?up|greetings|good (morning|afternoon|evening|day)|morning|afternoon|evening|hola|hi there|hey there|hello there|anyone there|you there|are you there)([\s,]+(solomon|sunny|there|doc|dr\.?|guide|md ?fit))?[\s!?.,]*$/i;
   async function hello() {
     const m = await mine();
     say(`Hey ${first()}, I'm Solomon. What are we working on today?`);
@@ -432,7 +580,7 @@
         say(`${window.MDFitHype ? window.MDFitHype("program") + " " : ""}${pr.title} starts ${when.toLowerCase()}. Watch your calendar fill in, then I'll bring you back to your road.`);
         end(); setTimeout(() => { shut(); if (App.showPlanOnCalendar) App.showPlanOnCalendar(); }, 1500);
       } catch { d.remove(); say("I couldn't save that just now. You can save it from the program's page."); offer([{ label: `Open ${pr.title}`, hash: "programs/" + pr.id, name: pr.title, gold: true }]); end(); } saving = false; };
-    const show = (pr) => { say(`${pr.title}. ${String(pr.summary || "").split(/(?<=[.!?])\s/)[0] || `${pr.weeks} weeks, ${pr.level || "all levels"}.`}`);
+    const show = (pr) => { say(`${pr.title}. ${(String(pr.summary || "").match(/^[\s\S]*?[.!?](?=\s)/) || [String(pr.summary || "")])[0] || `${pr.weeks} weeks, ${pr.level || "all levels"}.`}`);
       offer([{ label: "Make this my road", gold: true, more: () => choose(pr) }, { label: "See it first", hash: "programs/" + pr.id, name: pr.title }, { label: "Show me others", more: () => beat(() => pickRoad("What are you here for?")) }]); };
     const me = (App.about && App.about()) || {};
     const fitFor = (id, cats) => { let fit = all.filter((x) => cats.includes(x.category));
@@ -475,7 +623,9 @@
   }
   // When a reminder is for: a day and a time worked out from the words, on this device
   function whenFrom(raw) {
-    const t = raw.toLowerCase(), today = M.todayInTz(), now = new Date(), nowHM = String(now.getHours()).padStart(2, "0") + ":" + String(now.getMinutes()).padStart(2, "0");
+    // Today and whether a time has passed are both read in the practice's time zone, as the server checks them, not by
+    // the phone's clock: on a phone set to another zone "6pm" could otherwise land on an evening already gone there.
+    const t = raw.toLowerCase(), today = M.todayInTz(), passed = (d, hm) => M.zonedToUtc(d, hm).getTime() <= Date.now();
     let time = "", m;
     if ((m = t.match(/\b(\d{1,2}):(\d\d)\s*(am|pm|a\.m\.|p\.m\.)?/)) || (m = t.match(/\b(\d{1,2})()\s*(am|pm|a\.m\.|p\.m\.)(?![a-z])/)) || (m = t.match(/\bat\s+(\d{1,2})()()\b/))) {
       let h = +m[1]; const min = m[2] || "00", ap = (m[3] || "").replace(/\./g, "");
@@ -491,9 +641,9 @@
     else if (/\btomorrow\b/.test(t)) date = M.addDays(today, 1);
     else if (wd >= 0) { const cur = new Date(today + "T12:00:00Z").getUTCDay(); date = M.addDays(today, ((wd - cur + 7) % 7) || 7); }
     else if (inN) date = M.addDays(today, Math.min(60, +inN[1]));
-    else date = time && time > nowHM ? today : M.addDays(today, 1);
+    else date = time && !passed(today, time) ? today : M.addDays(today, 1);
     if (!time) time = "07:00";
-    if (date === today && time <= nowHM) date = M.addDays(today, 1); // that time has passed today
+    if (date === today && passed(today, time)) date = M.addDays(today, 1); // that time has passed today
     return { date, time };
   }
   // What the reminder is called: the app's own names only (never the typed sentence)
@@ -505,7 +655,8 @@
     if (/\b(appointment|visit)\b/.test(t)) return "Appointment";
     if (/\b(program|rehab|protocol|exercises?)\b/.test(t)) return area ? `${cap(area)} program` : "Program";
     if (/\b(workout|work out|train|gym|lift)/.test(t)) return "Workout";
-    return area ? `${cap(area)} exercises` : "MD Fit reminder";
+    // only an area named in the reminder itself: "remind me to pray at 7" after talk of a knee is not "Knee exercises"
+    return u.area ? `${cap(u.area)} exercises` : "MD Fit reminder";
   }
   const whenSay = (r) => { const t = M.todayInTz(); return `${r.date === t ? "Today" : r.date === M.addDays(t, 1) ? "Tomorrow" : M.fmtDate(r.date, { weekday: "long", month: "short", day: "numeric" })} at ${M.fmtTime(r.time)}`; };
   const showDay = (date) => () => { const b = document.querySelector(`#cal [data-day="${date}"]`); if (b) b.click(); };
@@ -604,13 +755,14 @@
       const p = await priceOf();
       say(`The app is free: the pain tool, the exercise videos and I are all included. Membership${p ? ` is ${p} a month and` : ""} adds every program, the lecture library, the live Q&A and unlimited time with me.`);
       offer([opt("premium"), opt("programs"), opt("pain")]); } },
-    { re: /\b(who are you|what are you|are you (a )?(real|human|person|bot|robot|ai)|what can you do|what do you do|how (do|can) you help)\b|^\s*help( me)?( please)?[\s!?.]*$/, run: async () => {
+    // (chat: said to him rather than asked of the app; his own talk line for it, when he has one, answers instead: see ask)
+    { re: /\b(who are you|what are you|are you (a )?(real|human|person|bot|robot|ai)|what can you do|what do you do|how (do|can) you help)\b|^\s*help( me)?( please)?[\s!?.]*$/, chat: true, run: async () => {
       say("I'm Solomon, the assistant in your MD Fit app. I can pick a program for you, find the right video, take you to the pain tool, book a visit, set a reminder, and tell you what's waiting on your account. For a question about your own body, Dr. Jared is the one to ask.");
       offer([{ label: "Pick a program for me", again: true, more: () => beat(() => recommend({ text: " ", area: "" })) }, opt("pain"), opt("book")]); } },
     { re: /\b(who is|who'?s|about) (dr\.? ?jared|dr\.? ?caban|the doctor|the doc)\b/, run: async () => {
       say("Dr. Jared Caban leads MD Fit in Sarasota. He's a Certified Clinical Exercise Physiologist and Licensed Massage Therapist with medical training, and he built every program and video in this app.");
       offer([opt("book"), opt("messages"), opt("learn")]); } },
-    { re: /^\s*(thanks|thank you|thx|ty|cheers|appreciate it|great|awesome|perfect|cool|ok|okay|got it|nice)[\s!.]*$/, run: async () => { say("Anytime. I'm here whenever you need me."); } }
+    { re: /^\s*(thanks|thank you|thx|ty|cheers|appreciate it|great|awesome|perfect|cool|ok|okay|got it|nice)[\s!.]*$/, chat: true, run: async () => { say("Anytime. I'm here whenever you need me."); } }
   ];
   const faqFor = (raw, t) => FAQ.find((f) => f.re.test(t) || f.re.test(String(raw || "").toLowerCase()));
 
@@ -650,6 +802,8 @@
   }
   // Work out what was asked: which kind (one word, for the count) and what to answer
   // local: true = the device answers this itself in every mode (the member's own data, reminders, how the app looks)
+  // chat: true = nothing here the device must do itself (a courtesy, or a message it could not place): only then may
+  // one of his talk lines answer in its place (ask)
   // the best match is the longest phrase found, so "customize home" beats "home"
   function wayFor(t) { let best = null, len = 0; for (const w of WAYS) for (const k of w.w) if (k.length > len && has(t, k)) { best = w; len = k.length; } return best; }
   function showWay(w) {
@@ -695,7 +849,7 @@
     if (RECOMMEND.test(t) && !u.pained) return { kind: "programs", run: () => recommend(u) };
     // A goal said plainly ("I want to get stronger", "lose weight", "better at golf") is asking for a pick too
     if (!u.pained && GOALS.some((g) => g.w.some((w) => has(t, w))) && !u.places.some((p) => ["book", "messages", "profile", "premium", "call", "visit", "generate", "videos"].includes(p.id))) return { kind: "programs", run: () => recommend(u) };
-    if (!u.pained && !/\b(appointment|appointments|visit|visits|invoice|invoices|bill|owe|reminder)\b/.test(t)) { const f = faqFor(raw, t); if (f) return { kind: "other", run: f.run }; }
+    if (!u.pained && !/\b(appointment|appointments|visit|visits|invoice|invoices|bill|owe|reminder)\b/.test(t)) { const f = faqFor(raw, t); if (f) return { kind: "other", chat: !!f.chat, run: f.run }; }
     if (FOLLOW.test(String(raw || "")) && lastTopic === "programs") return { kind: "programs", run: FAQ[0].run };
     if (u.pained) return { kind: "pain", run: () => hurting(u.area, u.places.filter((p) => !["pain", "book", "call"].includes(p.id)).slice(0, 1).map((p) => opt(p.id))) };
     if (u.area) return { kind: (u.places[0] || {}).kind || "programs", run: () => showArea(u.area) };
@@ -703,35 +857,103 @@
       say(`${AT[p.id][phone() ? 0 : 1]} I can take you there now.`); offer([{ ...opt(p.id), gold: true }, ...u.places.slice(1, 3).map((x) => opt(x.id))]); } };
     if (u.places.length) return { kind: u.places[0].kind, run: () => { say(u.places.length === 1 ? "Got it. This is the place for that:" : "Got it. These look like what you're after:"); offer([...u.places.slice(0, 4).map((p) => opt(p.id)), ...(u.places.some((p) => p.id === "call") ? [] : [opt("call")])]); } };
     // Short and unplaceable ("everything", "ok", "what now"): answered from where they are on their road, on the device
+    // (not when it names a body part or a symptom: "my leg feels funny" gets the answer below, with the pain tool)
     { const rd = road(), words = t.trim().split(/\s+/).filter(Boolean).length;
-      if (rd && words <= 4) return { kind: "other", local: true, free: true, run: () => { lastRoad = rd.sig; say(rd.say); offer([...(rd.opt ? [rd.opt] : []), opt("generate"), opt("programs"), opt("call")]); } }; }
-    return { kind: "other", run: async () => {
+      if (rd && words <= 4 && !u.health) return { kind: "other", local: true, free: true, soft: true, chat: true, run: () => { lastRoad = rd.sig; say(rd.say); offer([...(rd.opt ? [rd.opt] : []), opt("generate"), opt("programs"), opt("call")]); } }; }
+    return { kind: "other", chat: true, run: async () => {
       const m = await mine(), theirs = own3(m);
       say(theirs.length ? "I didn't quite get that one. Try telling me what you're working on, like a sore knee, getting stronger, or booking a visit. Here's what you have going:" : "I didn't quite get that one. Try telling me what you're working on, like a sore knee, getting stronger, or booking a visit. Or start here:");
       offer([...theirs, opt("pain"), opt("programs"), opt("generate"), opt("book"), opt("messages"), opt("call")]); } };
   }
   async function ask(raw) {
     const text = String(raw || "").trim(); if (!text || busy) return false;
-    try { document.dispatchEvent(new CustomEvent("mdfit:guide-asked")); } catch {} // the first descent's "Meet Solomon" stop (account.js)
     say(text, true);
     const u = understand(text);
+    // the first descent's "Meet Solomon" stop (account.js) and the tour are told once the answer is known (below), and
+    // never for a crisis or an emergency, which is never celebrated
+    const asked1 = () => { try { document.dispatchEvent(new CustomEvent("mdfit:guide-asked")); } catch {} };
     // An emergency is answered at once: never counted, never behind the limit
-    if (u.urgent) { emergency(); return true; }
-    const plan = decide(u, text);
+    lastAsked = text;
+    if (u.urgent) { emergency(text); return true; }
     busy = true; const d = thinking(), t0 = Date.now();
-    // With the assistant on, a question the device does not answer itself is read on MD Fit's server; anything else
-    // (and any failure there) is understood here and only counted.
-    let ai = null, asked = false; if (G.ai && !plan.local) { ai = await askServer(text); asked = !!ai; }
-    if (ai && ai.ok !== false && !ai.urgent && /\bcan only help with\b/i.test(String(ai.say || "")) && (u.places.length || u.area)) ai = null;
-    const ok = ai || asked || plan.free ? true : await count(plan.kind); // a hello is never counted (nor a question the server already counted)
-    const rest = 750 - (Date.now() - t0); if (rest > 0) await wait(rest);
-    d.remove();
-    lastTopic = ""; // a follow-up belongs to the answer just given; the answer below sets it again if it has one
-    try { if (ai) await aiAnswer(ai); else if (!ok) limit(); else await plan.run(); } catch { say("Something went wrong on my side. You can still get anywhere from the menu, or call the clinic."); offer([opt("call")]); }
-    busy = false; end();
+    try {
+      // What the device must do itself is worked out first: a reminder, a look, the member's own account, the way to a
+      // place, a program, anything about pain or the body. Polite or exclamatory words around it change none of that.
+      const plan = decide(u, text);
+      // Talk (owner, Nov 2026): things said to him, not asked of the app: thanks, "give me a verse", "I'm tired",
+      // "tell me a joke", "who are you". His lines for these are kept on the device (account-solomon.js registers
+      // them with talk()). One is used only when the plan has nothing the device must do (plan.chat) and the message
+      // names no body part or symptom. With the assistant off it is the answer: never counted, never sent anywhere.
+      // With the assistant on he answers through the language model (so the reply fits what was said), and the line
+      // kept here is what he falls back on when the assistant is slow, fails, or today's free answers are used up.
+      const told = plan.chat && !u.health && !u.pained && !u.area ? talkFor(text) : null;
+      const free = !!told || !!plan.free; // answered on the device without being counted
+      // With the assistant on, a question the device does not answer itself is read on MD Fit's server; anything else
+      // (and any failure there) is understood here and only counted. A few words the device cannot place are his to
+      // answer there too (plan.soft). Something the device answers for free is not sent once the app knows a free
+      // member has nothing left today: the server could only refuse it.
+      let ai = null, asked = false;
+      if (G.ai && (!plan.local || plan.soft)) {
+        if (!(free && spent())) { ai = await askServer(text); asked = !!ai; }
+        // Not sent. The account is read again instead (nothing typed goes with it), so the line under the box and the
+        // counter catch up if the practice has switched the assistant off or changed the allowance since the app last heard.
+        else await Promise.race([load(), wait(2500)]);
+      }
+      // Today's free answers are used up, but the device has its own free answer for this: that, not the upgrade message
+      if (ai && ai.ok === false && free) ai = null;
+      // The assistant judged the message outside what he helps with. If the device found a place, a body area, pain or
+      // a symptom in it, the device answers. Otherwise he says so in his own voice and offers what he can do.
+      const off = !!ai && ai.ok !== false && !ai.urgent && outside(ai);
+      if (off && (u.places.length || u.area || u.pained || u.health)) ai = null;
+      const aside = off && ai ? talkFor("", true) : null;
+      const ok = ai || asked || free ? true : await count(plan.kind); // talk and a hello are never counted (nor a question the server already counted)
+      const rest = 750 - (Date.now() - t0); if (rest > 0) await wait(rest);
+      d.remove();
+      lastTopic = ""; // a follow-up belongs to the answer just given; the answer below sets it again if it has one
+      const care = !!(u.health || u.pained || u.area); // about pain or the body: the limit message keeps the pain tool and the clinic
+      if (!(ai && ai.ok !== false && ai.urgent)) asked1();
+      if (aside) reply(told || aside); else if (ai) await aiAnswer(ai, care); else if (!ok) limit(care); else if (told) reply(told); else await plan.run();
+    } catch { d.remove(); say("Something went wrong on my side. You can still get anywhere from the menu, or call the clinic."); offer([opt("call")]); }
+    // Whatever happened above, the dots go and the box takes the next message
+    finally { d.remove(); busy = false; end(); }
     return true;
   }
-  const emergency = () => { say("If this is an emergency, call 911 now. For anything else urgent, call the clinic."); offer([{ label: "Call 911", tel: "911", gold: true }, opt("call")]); };
+  // talk(fn): a way for his lines to be added from outside. fn(text, lost) gives null or { say, opts, feel }:
+  // say is one line or several; opts are buttons, each { label, more } (does something and may answer again by
+  // returning another such object), { place: "generate" } (one of the app's places) or { road: true } (what is next
+  // on the member's road). lost = nothing answered what was typed.
+  const talkers = [];
+  function talkFor(text, lost) { for (const f of talkers) { try { const r = f(String(text || ""), !!lost); if (r && r.say) return r; } catch {} } return null; }
+  function reply(r) {
+    [].concat(r.say).filter(Boolean).forEach((line) => say(String(line)));
+    const rd = road(), list = [];
+    for (const o of r.opts || []) {
+      if (o.road) { if (rd && rd.opt && !["done", "ask"].includes(rd.kind)) list.push({ ...rd.opt, gold: true }); }
+      else if (o.place) { if (PLACES.some((x) => x.id === o.place)) list.push(opt(o.place)); }
+      else if (o.label && typeof o.more === "function") list.push({ label: o.label, again: true, more: () => beat(() => { const nx = o.more(); if (nx && nx.say) reply(nx); }) });
+    }
+    if (list.length) offer(list);
+    if (r.feel) faceAfter = r.feel;
+  }
+  let faceAfter = ""; // the face he wears when the chat is next closed (he shows none while it is open)
+  // The urgent answer. A crisis (thoughts of dying or of self-harm, for the member or someone with them) gets the 988
+  // Suicide and Crisis Lifeline first, then 911 and the clinic; a medical emergency gets 911 and the clinic. A message the
+  // assistant flagged but the words did not catch gets the crisis answer, which carries 911 as well. "I hurt myself" said
+  // on its own is often an injury, so that answer also offers the pain tool.
+  let lastAsked = "";
+  const emergency = (text = lastAsked) => {
+    // The rest of the app goes quiet: no moments, sounds or vibration for a while, and the first-open tour ends
+    try { document.dispatchEvent(new CustomEvent("mdfit:urgent")); } catch {}
+    const t = String(text || ""), crisis = CRISIS_WORDS.isCrisis(t), medical = !crisis && CRISIS_WORDS.isUrgent(t);
+    if (medical) { say("If this is an emergency, call 911 now. For anything else urgent, call the clinic."); offer([{ label: "Call 911", tel: "911", gold: true }, opt("call")]); return; }
+    say("You don't have to go through this alone. Call or text 988 any time to talk with someone now. If you or someone with you is in danger, call 911.");
+    // only the bare words ("I hurt myself", "I think I hurt myself again"), which are often an injury; never with intent
+    const injury = /^\s*(i (think|guess) (that )?i |i (just |really )?)?hurt(ing|ed)? my ?s(el|le)f( again| today| yesterday| at home| badly| bad)?\s*[.!?]*\s*$/i.test(t);
+    offer([{ label: "Call 988", tel: "988", gold: true }, { label: "Text 988", sms: "988" }, { label: "Call 911", tel: "911" }, ...(injury ? [opt("pain")] : []), opt("call")]);
+  };
+  // Outside what he helps with: the server says so itself (outside: true or false). An older server sends no such word,
+  // and there the assistant's flat "I can only help with" is the only sign, so that is looked for instead.
+  const outside = (r) => (typeof r.outside === "boolean" ? r.outside : /\bcan only help with\b/i.test(String(r.say || "")));
   // null = the assistant is off or did not answer: fall back to the device, never an error on screen
   async function askServer(text) {
     try {
@@ -739,19 +961,30 @@
       if (!r || typeof r !== "object") return null;
       if (r.ok === true && (r.urgent || typeof r.say === "string")) { apply(r); return r; }
       if (r.ok === false && r.limited) { apply(r); return r; }
-      if (r.ok === false && r.ai === false) { G.ai = false; fine(); }
+      // One answer that failed ({ ai: true, failed: true }) leaves the assistant on: the device answers this message and
+      // the next one is sent as usual. Only { ai: false } with no "failed" can mean the practice switched it off, and
+      // an older server says the same when the model fails once, so the account is asked which it is. The small print
+      // changes only if the assistant really is off (or the account cannot be reached, when nothing more is sent).
+      if (r.ok === false && r.ai === false && !r.failed) {
+        const g = await Promise.race([M.apiAuth("GET", "/api/me/guide").catch(() => null), wait(4000).then(() => null)]);
+        if (g && typeof g === "object" && "ai" in g) apply(g); else { G.ai = false; fine(); }
+      }
     } catch {}
     return null;
   }
   const FROM_SERVER = { workout: "generate", membership: "premium" };
-  async function aiAnswer(r) {
-    if (r.ok === false) return limit();
+  async function aiAnswer(r, care) {
+    if (r.ok === false) return limit(care);
     if (r.urgent) return emergency();
     const area = AREAS[r.area] ? r.area : ""; if (area) ctx.area = area;
     const ids = [...new Set((Array.isArray(r.places) ? r.places : []).map((x) => FROM_SERVER[x] || x))].filter((id) => id !== "call" && PLACES.some((p) => p.id === id)).slice(0, 5);
     say(String(r.say || "").trim().slice(0, 600) || "Here's where I can take you:");
-    const rd = road();
-    offer([...(rd && rd.opt && !["done", "ask"].includes(rd.kind) ? [{ ...rd.opt, label: rd.opt.label === "Do my check-in here" ? "Next on your road: my check-in" : `Next on your road: ${rd.opt.label.replace(/^(Open|Start|Pick|Build) /, (m) => m.toLowerCase())}` }] : []), ...(area ? [{ label: `Programs for your ${area}`, again: true, more: () => beat(() => showArea(area)) }] : []), ...ids.map(opt), opt("call")]);
+    if (FACE[r.mood]) faceAfter = r.mood; // the face he wears once the chat is closed
+    // A verse was asked for: the model leads into it, and the verse itself comes from his own list, word for word
+    // (not on a health message: there the answer's own buttons, Call the clinic among them, stay)
+    if (r.verse && !care) { const v = talkFor("__verse"); if (v) { reply(v); return; } }
+    const rd = road(), next = plainHome() ? "Next" : "Next on your road"; // the Simple view has no road, as in his plain lines (account-solomon.js)
+    offer([...(rd && rd.opt && !["done", "ask"].includes(rd.kind) ? [{ ...rd.opt, label: rd.opt.label === "Do my check-in here" ? `${next}: my check-in` : `${next}: ${rd.opt.label.replace(/^(Open|Start|Pick|Build) /, (m) => m.toLowerCase())}` }] : []), ...(area ? [{ label: `Programs for your ${area}`, again: true, more: () => beat(() => showArea(area)) }] : []), ...ids.map(opt), opt("call")]);
     let C = null; try { C = await App.content(); } catch {}
     suggest(r.suggested, new Map(((C && C.programs) || []).map((p) => [p.id, p])));
   }
@@ -853,7 +1086,7 @@
     load(); end(); fitKeyboard();
     if (byHand && !phone()) setTimeout(() => input.focus({ preventScroll: true }), 60); // on a phone the keyboard waits for a tap on the box
   }
-  function shut() { paintEmo(plainHome() ? "" : resting); box.hidden = true; scrim.hidden = true; box.style.bottom = ""; box.style.height = ""; btn.setAttribute("aria-expanded", "false"); document.documentElement.classList.remove("mg-open"); }
+  function shut() { paintEmo(plainHome() ? "" : resting); if (faceAfter) { const f = faceAfter; faceAfter = ""; setTimeout(() => feel(f, 2600), 250); } box.hidden = true; scrim.hidden = true; box.style.bottom = ""; box.style.height = ""; btn.setAttribute("aria-expanded", "false"); document.documentElement.classList.remove("mg-open"); }
   btn.addEventListener("click", () => (box.hidden ? open(true) : shut()));
   box.querySelector("#mg-x").addEventListener("click", () => { shut(); btn.focus({ preventScroll: true }); });
   scrim.addEventListener("click", shut);
@@ -882,5 +1115,5 @@
   lift();
 
   load();
-  window.MDFitGuide = { day: dayRows, understand, open: () => open(false), lesson, shut, say: speak, hush, recap: (which) => { open(false, true); beat(() => recap(which)); }, speaking: () => !tag.hidden, feel, rest, feeling, question: (text, opts) => { hush(); open(false, true); beat(() => { say(text); offer(opts); }); }, greeting: (t) => { dayHello = String(t || "").trim(); }, reminders: () => G.reminders.slice() };
+  window.MDFitGuide = { day: dayRows, understand, open: () => open(false), lesson, shut, say: speak, hush, recap: (which) => { open(false, true); beat(() => recap(which)); }, speaking: () => !tag.hidden, feel, rest, feeling, talk: (fn) => { if (typeof fn === "function") talkers.push(fn); }, question: (text, opts) => { hush(); open(false, true); beat(() => { say(text); offer(opts); }); }, greeting: (t) => { dayHello = String(t || "").trim(); }, reminders: () => G.reminders.slice() };
 })();

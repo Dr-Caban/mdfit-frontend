@@ -64,16 +64,24 @@ async function startApi(dataDir) {
 // A client whose name, notes and workout carry HTML and unbreakable words: none of it may run as HTML or push past
 // a card (user text is escaped and long words wrap)
 async function seedClient() {
-  const post = async (url, body, token) => (await fetch(API + url, { method: "POST", body: JSON.stringify(body),
-    headers: { "content-type": "application/json", "user-agent": "Mozilla/5.0 Safari", ...(token ? { authorization: "Bearer " + token } : {}) } })).json();
-  // Sign up, or sign in when the account is already there. Signing in never creates an account.
+  // Every seed request must be taken (or be one of the refusals named for it). A refused one used to pass unnoticed:
+  // the workout name was over the API's 80 characters for weeks, so the check measured a member who had none of it.
+  const post = async (url, body, token, allowed = []) => {
+    const r = await fetch(API + url, { method: "POST", body: JSON.stringify(body),
+      headers: { "content-type": "application/json", "user-agent": "Mozilla/5.0 Safari", ...(token ? { authorization: "Bearer " + token } : {}) } });
+    const out = await r.json().catch(() => ({}));
+    if (!r.ok && !allowed.includes(r.status)) throw new Error(`seed request refused: POST ${url} -> ${r.status} ${JSON.stringify(out)}`);
+    return out;
+  };
+  // Sign up, or sign in when the account is already there (409). Signing in never creates an account.
   const who = { name: "<img src=x onerror=window.__pwn=1><b>Bold</b>\"> Supercalifragilisticexpialidocious_Wellington_Smith", email: "layout-check@example.com", password: "layout-check-123" };
-  let sess = await post("/api/clients/signup", who);
+  let sess = await post("/api/clients/signup", who, null, [409]);
   if (!sess.token) sess = await post("/api/clients/login", who);
   if (!sess.token) throw new Error("couldn't log in a test client: " + JSON.stringify(sess));
   await post("/api/me/pain", { area: "Lower back", level: 6, note: "</textarea><script>window.__pwn=1</script><img src=x onerror=window.__pwn=1> Sharp pain after sitting through a long drive; better after the mobility routine. https://example.com/a-very-long-link-without-spaces-to-check-wrapping" }, sess.token);
   await post("/api/me/pain", { area: "Elbow / wrist / hand", level: 3, note: "" }, sess.token);
-  await post("/api/me/workouts", { title: "<img src=x onerror=window.__pwn=1>Workout_with_a_very_long_name_and_no_spaces_at_all_anywhere", goal: "Strength", minutes: 47, exercises: 8 }, sess.token);
+  // (a workout name may be 80 characters at most: this one is 77, the markup and then one 43-character word)
+  await post("/api/me/workouts", { title: "<img src=x onerror=window.__pwn=1>Workout_with_a_very_long_name_and_no_spaces", goal: "Strength", minutes: 47, exercises: 8 }, sess.token);
   return sess;
 }
 
