@@ -478,9 +478,18 @@
   // A membership the list does not hold (a tier since removed) still shows as itself, never as "No membership"
   const tierOptions = (cur) => `<option value="">No membership</option>${tiers().map((t) => `<option value="${esc(t.id)}"${cur === t.id ? " selected" : ""}>${esc(t.name)}</option>`).join("")}${cur && !tiers().some((t) => t.id === cur) ? `<option value="${esc(cur)}" selected>${esc(tierName(cur))}</option>` : ""}`;
   // Without the Content permission (the front desk), the membership names come from what the app itself shows
-  // members (/api/content, public), so the Clients screen still names each membership and can change it
+  // members (/api/content, public), so the Clients screen still names each membership and can change it. A copy like
+  // that holds names only, so it is marked partial and nothing that saves the content is ever built from it
+  // (editable()). When the list could not be loaded just now (a dropped connection), the full copy already here is kept.
   const publicTiers = () => api("GET", "/api/content").then((d) => (d && Array.isArray(d.tiers) ? d.tiers.filter((t) => t && t.id).map((t) => ({ id: String(t.id), name: String(t.name || t.id) })) : [])).catch(() => []);
-  const content = async () => (cache.content = await load("/content").catch(async () => ({ programs: [], tiers: await publicTiers() })));
+  // (looked at again after the wait: a full copy another screen loaded meanwhile is kept, never replaced by names)
+  const content = async () => (cache.content = await load("/content").catch(async (err) => {
+    const kept = () => !(err && err.need) && cache.content && !cache.content.partial;
+    if (kept()) return cache.content;
+    const tiers = await publicTiers();
+    return cache.content && !cache.content.partial ? cache.content : { programs: [], tiers, partial: true };
+  }));
+  const editable = () => { if (!cache.content || cache.content.partial) throw new Error("Nothing was saved: the full list could not be loaded just now. Reload the page and try again."); return cache.content; };
   const chartPills = () => { const { d } = cache.chart; return `${d.patient ? `<span class="pill ok">Active patient${d.since ? " since " + when(d.since) : ""}</span>` : `<span class="pill warn">Not yet a patient</span>`}${(d.allergies || []).map((a) => `<span class="pill bad" title="${esc(a.reaction || "Allergy or alert")}">${ui("alert", 12)} ${esc(a.name)}</span>`).join("")}${(d.tags || []).map((t) => `<span class="pill">${esc(t)}</span>`).join("")}`; };
   // A small line chart for one measure over time (oldest on the left)
   function trend(points, unit) {
@@ -1378,16 +1387,18 @@
         <div class="seg" role="group" aria-label="Show as"><button type="button" data-act="guideView" data-v="chart" aria-pressed="${!table}">Chart</button><button type="button" data-act="guideView" data-v="table" aria-pressed="${table}">Table</button></div></div>
       ${table ? `<div class="table-wrap" id="guideTable" style="max-height:420px;overflow-y:auto"><table><thead><tr><th>${byWeek ? "Week" : "Day"}</th><th ${right}>Opens</th><th ${right}>Answers given</th><th ${right}>Reached the limit</th><th ${right}>Upgrade taps</th></tr></thead><tbody>
         ${[...rows].reverse().map((r) => `<tr><td>${esc(r.long)}</td><td class="num" ${right}>${r.opens}</td><td class="num" ${right}>${r.answers}</td><td class="num" ${right}>${r.limitHits}</td><td class="num" ${right}>${r.upgradeTaps}</td></tr>`).join("")}</tbody></table></div>` : guideChart(rows, byWeek)}</div>`;
-    const ai = !!S.ai, canAi = !!S.aiReady, hasAi = "ai" in S || "aiReady" in S;
+    // Only someone the page knows is not the owner is held back from turning AI answers on: until /me has answered,
+    // nothing is held back (the server checks)
+    const ai = !!S.ai, canAi = !!S.aiReady, hasAi = "ai" in S || "aiReady" in S, notOwner = !!cache.me && !iAmOwner();
     return `${head}${numbers}
     <div class="grid g2">
       <div class="card stack"><div class="card-head"><h2>Free tokens a day</h2><span class="muted" style="font-size:12px">members are unlimited</span></div>
         <form class="row" data-form="guideLimit" style="align-items:flex-end"><div class="field" style="margin:0;width:230px;max-width:100%"><label for="guideFree">Tokens a day on the free plan</label><input id="guideFree" name="freeTokensPerDay" class="input num" type="number" min="1000" max="1000000" step="1000" required value="${esc(S.freeTokensPerDay ?? 50000)}"></div><button class="btn primary">Save</button></form>
         <p class="muted" style="margin:0;font-size:12.5px">One AI answer uses about 3,000 tokens; an answer found on the device uses 300. The default, 50,000, is about 15 AI answers a day.</p>
         <p class="muted" style="margin:0;font-size:12.5px">Any whole number from 1,000 to 1,000,000. Opening the pain tool, booking and calling the clinic never use tokens.</p></div>
-      ${hasAi ? `<div class="card stack" id="guideAiCard"><div class="card-head"><h2>AI answers</h2><button type="button" class="switch" id="guideAi" role="switch" aria-checked="${ai}" aria-label="AI answers" data-act="guideAi"${!ai && (!canAi || !iAmOwner()) ? " disabled" : ""}></button></div>
+      ${hasAi ? `<div class="card stack" id="guideAiCard"><div class="card-head"><h2>AI answers</h2><button type="button" class="switch" id="guideAi" role="switch" aria-checked="${ai}" aria-label="AI answers" data-act="guideAi"${!ai && (!canAi || notOwner) ? " disabled" : ""}></button></div>
         <p style="margin:0" id="guideAiState">${ai ? `<b>On:</b> members' messages are read by ${esc(S.aiModel || "the AI model")} at ${esc(S.aiHost || "the AI service")} to find the right place and suggest programs, videos, your guides and general tips, which are added to the member's Home. Their activity in the app (programs, check-ins, workouts) is read to personalize it; their name and contact details are never sent, and nothing typed is saved.` : `<b>Off:</b> Solomon understands messages on the member's own device, nothing they type leaves it, and Solomon suggests nothing.`}</p>
-        ${!ai && canAi && !iAmOwner() ? `<p class="muted" style="margin:0;font-size:12.5px" id="guideAiOwner">Only the practice owner can turn AI answers on. Anyone with the Content permission can turn them off.</p>` : ""}
+        ${!ai && canAi && notOwner ? `<p class="muted" style="margin:0;font-size:12.5px" id="guideAiOwner">Only the practice owner can turn AI answers on. Anyone with the Content permission can turn them off.</p>` : ""}
         ${!canAi ? `<p class="muted" style="margin:0;font-size:12.5px" id="guideAiWhy">${ai ? "The AI service is not ready" : "It cannot be turned on"}: ${esc(S.aiWhy || "no AI service is connected on the server.")}</p>` : ""}
         ${state.guideAiErr ? `<p style="margin:0;color:var(--bad)" id="guideAiErr" role="alert">Not changed: ${esc(state.guideAiErr)}</p>` : ""}</div>` : ""}
     </div>
@@ -2403,7 +2414,7 @@
 
   // ---- Editing the practice's own settings and content, all from the workspace
   const putSettings = async (patch, said) => { cache.settings = await api("PUT", "/api/admin/settings", patch); await render(); toast(said); };
-  const putContent = async (patch, said) => { cache.content = await api("PUT", "/api/admin/content", patch); closeModal(); await render(); toast(said); };
+  const putContent = async (patch, said) => { editable(); cache.content = await api("PUT", "/api/admin/content", patch); closeModal(); await render(); toast(said); };
   const optsOf = () => (cache.content && cache.content.options) || {};
   const rowsOf = (f, keys) => { const out = []; for (let i = 0; f["name" + i]; i++) { const r = { i }; for (const k of keys) { const el = f[k + i]; r[k] = el ? (el.type === "checkbox" ? el.checked : el.value.trim()) : ""; } out.push(r); } return out; };
   function progForm(p, isNew) {
@@ -2426,18 +2437,18 @@
     homeReset: () => { if (state.layDraft) delete state.layDraft[layTab()]; render(); },
     progEdit: (el) => { const p = (cache.content.programs || []).find((x) => x.id === el.dataset.id); if (p) progForm(p, false); },
     progCopy: (el) => { const p = (cache.content.programs || []).find((x) => x.id === el.dataset.id); if (p) progForm({ ...p, id: p.id, title: p.title + " (copy)" }, true); },
-    progDelete: async (el) => { const p = (cache.content.programs || []).find((x) => x.id === el.dataset.id); if (!p || !confirm(`Delete "${p.title}"? Members who were assigned it will no longer see it.`)) return; await putContent({ programs: cache.content.programs.filter((x) => x.id !== p.id) }, "Program deleted."); },
+    progDelete: async (el) => { const p = (editable().programs || []).find((x) => x.id === el.dataset.id); if (!p || !confirm(`Delete "${p.title}"? Members who were assigned it will no longer see it.`)) return; await putContent({ programs: editable().programs.filter((x) => x.id !== p.id) }, "Program deleted."); },
     lectureEdit: (el) => { const l = (cache.content.lectures || []).find((x) => x.id === el.dataset.id) || { id: "", title: "", topic: (optsOf().topics || ["Health"])[0], minutes: 10, access: "free" }, o = optsOf();
       modal(`<div class="card-head"><h2>${l.id ? "Edit lecture" : "New lecture"}</h2>${xBtn}</div><form class="stack" data-form="lectureSave" data-id="${esc(l.id)}">${fld("lcTitle", "title", "Title", l.title, { max: 120, attrs: "required" })}
         <div class="grid g3">${sel("lcTopic", "topic", "Topic", o.topics || [l.topic], l.topic)}${fld("lcMin", "minutes", "Minutes", l.minutes, { type: "number", attrs: 'min="0" max="600"' })}${sel("lcAccess", "access", "Who can open it", o.access || [l.access], l.access)}</div>
         ${fld("lcUrl", "url", "Video link", l.url, { type: "url", max: 500 })}${fld("lcDl", "downloadUrl", "Download link (optional)", l.downloadUrl, { type: "url", max: 500 })}${fld("lcSum", "summary", "Summary", l.summary, { area: true, rows: 3, max: 500 })}
         <div class="row"><button class="btn primary">Save lecture</button></div></form>`); },
-    lectureDelete: async (el) => { if (!confirm("Delete this lecture?")) return; await putContent({ lectures: cache.content.lectures.filter((x) => x.id !== el.dataset.id) }, "Lecture deleted."); },
+    lectureDelete: async (el) => { if (!confirm("Delete this lecture?")) return; await putContent({ lectures: editable().lectures.filter((x) => x.id !== el.dataset.id) }, "Lecture deleted."); },
     recEdit: (el) => { const r = (cache.content.recommendations || []).find((x) => x.id === el.dataset.id) || { id: "", area: "", title: "", body: "", link: "" };
       modal(`<div class="card-head"><h2>${r.id ? "Edit recommendation" : "New recommendation"}</h2>${xBtn}</div><form class="stack" data-form="recSave" data-id="${esc(r.id)}"><div class="grid g2">${fld("rcTitle", "title", "Title", r.title, { max: 120, attrs: "required" })}${fld("rcArea", "area", "Area (e.g. Protein, Sleep)", r.area, { max: 40, attrs: "required" })}</div>
         ${fld("rcBody", "body", "What members read", r.body, { area: true, rows: 8, max: 2000, attrs: "required" })}${fld("rcLink", "link", "Link (optional)", r.link, { type: "url", max: 500 })}
         <div class="row"><button class="btn primary">Save recommendation</button></div></form>`); $("#modal").classList.add("wide"); },
-    recDelete: async (el) => { if (!confirm("Delete this recommendation?")) return; await putContent({ recommendations: cache.content.recommendations.filter((x) => x.id !== el.dataset.id) }, "Recommendation deleted."); },
+    recDelete: async (el) => { if (!confirm("Delete this recommendation?")) return; await putContent({ recommendations: editable().recommendations.filter((x) => x.id !== el.dataset.id) }, "Recommendation deleted."); },
     classEdit: (el) => { const c = (cache.classes || []).find((x) => x.id === el.dataset.id) || { id: "", title: "", day: 1, time: "09:00", durationMin: 60, capacity: 10, coach: "", location: "", description: "" };
       modal(`<div class="card-head"><h2>${c.id ? "Edit class" : "New class"}</h2>${xBtn}</div><form class="stack" data-form="classSave" data-id="${esc(c.id)}">${fld("clTitle", "title", "Class name", c.title, { max: 80, attrs: "required" })}
         <div class="grid g2">${sel("clDay", "day", "Day", DAYN.map((d, i) => [i, d]), c.day)}${fld("clTime", "time", "Start time", c.time, { type: "time", attrs: "required" })}</div>
@@ -2472,18 +2483,18 @@
       let c; try { c = await api("PUT", "/api/admin/content", { [w]: body }); } catch (err) { formMsg(f, err.message); return; } // the draft stays as arranged
       cache.content = c; delete state.layDraft[w]; await render(); toast(`${w === "home" ? "Home" : "Profile"} saved. Members see it the next time the app loads.`);
     },
-    setTiers: (f) => putContent({ tiers: (cache.content.tiers || []).map((t, i) => ({ ...t, name: f["name" + i].value.trim(), price: Number(f["price" + i].value), meetings: Number(f["meetings" + i].value), meetingMinutes: Number(f["minutes" + i].value), directMessages: !!f["direct" + i].checked, perks: f["perks" + i].value.split("\n").map((x) => x.trim()).filter(Boolean) })) }, "Membership types saved."),
+    setTiers: (f) => putContent({ tiers: (editable().tiers || []).map((t, i) => ({ ...t, name: f["name" + i].value.trim(), price: Number(f["price" + i].value), meetings: Number(f["meetings" + i].value), meetingMinutes: Number(f["minutes" + i].value), directMessages: !!f["direct" + i].checked, perks: f["perks" + i].value.split("\n").map((x) => x.trim()).filter(Boolean) })) }, "Membership types saved."),
     progSave: (f) => {
-      const all = cache.content.programs || [], src = all.find((x) => x.id === f.dataset.id) || {}, isNew = !!f.dataset.new;
+      const all = editable().programs || [], src = all.find((x) => x.id === f.dataset.id) || {}, isNew = !!f.dataset.new;
       const days = rowsOf(f, ["name", "goal", "length"]).filter((r) => r.name).map((r) => ({ ...((src.days || [])[r.i] || {}), name: r.name, goal: r.goal, length: Number(r.length) }));
       if (!days.length) throw new Error("A program needs at least one training day.");
       const p = { ...src, id: isNew ? slugOf(f.title.value) : src.id, title: f.title.value.trim(), category: f.category.value, level: f.level.value, location: f.location.value, weeks: Number(f.weeks.value), access: f.access.value, summary: f.summary.value.trim(), notes: f.notes.value.trim(), days };
       if (isNew) delete p.perWeek;
       return putContent({ programs: isNew ? [...all, p] : all.map((x) => (x.id === p.id ? p : x)) }, isNew ? "Program created." : "Program saved.");
     },
-    lectureSave: (f) => { const all = cache.content.lectures || [], id = f.dataset.id, l = { ...(all.find((x) => x.id === id) || {}), id: id || slugOf(f.title.value), title: f.title.value.trim(), topic: f.topic.value, minutes: Number(f.minutes.value), access: f.access.value, url: f.url.value.trim(), downloadUrl: f.downloadUrl.value.trim(), summary: f.summary.value.trim() };
+    lectureSave: (f) => { const all = editable().lectures || [], id = f.dataset.id, l = { ...(all.find((x) => x.id === id) || {}), id: id || slugOf(f.title.value), title: f.title.value.trim(), topic: f.topic.value, minutes: Number(f.minutes.value), access: f.access.value, url: f.url.value.trim(), downloadUrl: f.downloadUrl.value.trim(), summary: f.summary.value.trim() };
       return putContent({ lectures: id ? all.map((x) => (x.id === id ? l : x)) : [...all, l] }, "Lecture saved."); },
-    recSave: (f) => { const all = cache.content.recommendations || [], id = f.dataset.id, r = { ...(all.find((x) => x.id === id) || {}), id: id || slugOf(f.title.value), title: f.title.value.trim(), area: f.area.value.trim(), body: f.body.value.trim(), link: f.link.value.trim() };
+    recSave: (f) => { const all = editable().recommendations || [], id = f.dataset.id, r = { ...(all.find((x) => x.id === id) || {}), id: id || slugOf(f.title.value), title: f.title.value.trim(), area: f.area.value.trim(), body: f.body.value.trim(), link: f.link.value.trim() };
       return putContent({ recommendations: id ? all.map((x) => (x.id === id ? r : x)) : [...all, r] }, "Recommendation saved."); },
     classSave: async (f) => { const body = { title: f.title.value.trim(), day: Number(f.day.value), time: f.time.value, durationMin: Number(f.durationMin.value), capacity: Number(f.capacity.value), coach: f.coach.value.trim(), location: f.location.value.trim(), description: f.description.value.trim() };
       if (f.dataset.id) await api("PUT", `/api/admin/classes/${f.dataset.id}`, { ...body, ...(f.active ? { active: f.active.checked } : {}) }); else await api("POST", "/api/admin/classes", body);
