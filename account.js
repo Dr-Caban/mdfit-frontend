@@ -1232,6 +1232,7 @@
     $("#p-email").textContent = client.email;
     const f = $("#profile-form");
     f.name.value = client.name; f.email.value = client.email; f.phone.value = client.phone || "";
+    if (f.dob) f.dob.value = client.dob || ""; // empty when none is kept, or when the server does not send it
     renderReferral();
     renderProfileMembership();
   }
@@ -1247,7 +1248,11 @@
     $("#p-mem-go").textContent = paid ? (cur.meetings ? "Manage membership" : "Upgrade membership") : "Upgrade membership";
   }
   wire($("#profile-form"), async (d) => {
-    const r = await apiAuth("PUT", "/api/me", { name: d.name, phone: d.phone }); earn("profile");
+    // The birthday goes with the save only when the form has the field and the member changed it ("" removes it). Left
+    // out, the server keeps what it has, so an older copy of this page or of the account kept on the phone can never
+    // wipe one out.
+    const dobChanged = d.dob !== undefined && d.dob !== (client.dob || "");
+    const r = await apiAuth("PUT", "/api/me", { name: d.name, phone: d.phone, ...(dobChanged ? { dob: d.dob } : {}) }); earn("profile");
     client = r.client; auth.set({ ...auth.get(), client }); renderProfile();
     return { message: "Saved." };
   }, { reset: false });
