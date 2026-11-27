@@ -1234,9 +1234,10 @@
     f.name.value = client.name; f.email.value = client.email; f.phone.value = client.phone || "";
     if (f.dob) {
       f.dob.value = client.dob || ""; // empty when none is kept, or when the server does not send it
-      // A date of birth on file with the clinic (from the practice's records) is shown but not changed here; read-only,
-      // it is also never checked or sent, so an old or unusual date can never block or wipe a save.
-      const locked = !!client.dobLocked; f.dob.readOnly = locked;
+      // A date of birth on file with the clinic (from the practice's records) is shown but not changed here: greyed like
+      // the email above it, and, being disabled, never checked or sent, so an old or unusual date can never block or
+      // wipe a save.
+      const locked = !!client.dobLocked; f.dob.disabled = locked;
       const note = $("#p-dob-note");
       if (note) note.textContent = locked ? "On file with the clinic. Call us at 941-313-0562 if it needs changing." : "Only used to wish you a happy birthday. Leave it empty if you would rather not.";
     }
