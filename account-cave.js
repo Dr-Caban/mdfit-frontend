@@ -8,6 +8,11 @@
 // pain check-in, daily goal) and where the road ends (the program's finish and the next gem).
 // The data comes from account.js (MDFitApp.journey()); nothing here is stored or sent.
 //
+// Simple view (Profile > Make it yours > Home screen, html[data-home-view="simple"], app-theme.js): the same card and the
+// same journey() data drawn as a plain daily plan: today's session with Start, a four-item checklist, the week as a
+// list, and the first descent as a "Getting started" checklist. No mine, stones, gems, lamps or XP in its words.
+// What is earned does not change; only what Home shows.
+//
 // Photo art: every picture is a slot. ART below maps a slot to an image path; an empty slot is drawn here in SVG and CSS,
 // so the cave works with no images at all and each one can be dropped in on its own.
 (() => {
@@ -64,12 +69,68 @@
   const flame = `<svg viewBox="0 0 26 34" aria-hidden="true"><path d="M3 24h20l-3 7H6z" fill="#8a5a30"/><path class="cv-flame" d="M13 22q-8-8 0-19 8 11 0 19z" fill="#ffb347"/><path class="cv-flame" d="M13 21q-4-5 0-11 4 6 0 11z" fill="#fff1c2"/></svg>`;
   const pathOf = (all, rowH) => all.map((p, i) => (i ? `C ${all[i - 1][0]} ${all[i - 1][1] + rowH / 2}, ${p[0]} ${p[1] - rowH / 2}, ${p[0]} ${p[1]}` : `M ${p[0]} ${p[1]}`)).join(" ");
 
+  // ---- Simple view: the plain daily plan
+  const isSimple = () => document.documentElement.dataset.homeView === "simple";
+  const tick = (on) => `<i class="sv-ck${on ? " on" : ""}" aria-hidden="true"></i>`;
+  function renderSimple(j) {
+    const head = (label) => `<span class="label accent">${label}</span>`;
+    if (!j.stops) { card.innerHTML = `<div class="sv">${head("Today")}<p class="sv-line"><b>${j.finished ? "You finished your program" : "No program yet"}</b></p><p class="muted small">Pick a program and each day's session shows up here.</p><button type="button" class="btn-blue sm sv-btn" data-goto="programs">Choose a program</button></div>`; return; }
+    if (j.intro) {
+      const done = j.stops.filter((x) => x.state === "done").length;
+      card.innerHTML = `<div class="sv">${head("Getting started")}
+        <p class="muted small sv-note">${done} of ${j.stops.length} done. Any order.</p>
+        <ul class="sv-list">${j.stops.map((x) => `<li class="${x.state}">${tick(x.state === "done")}<span class="sv-name">${esc(x.label)}${x.sub ? `<small>${esc(x.sub)}</small>` : ""}</span>${
+          x.state === "done" ? `<em>Done</em>` : `${x.state === "passed" ? `<em>Skipped</em>` : ""}<button type="button" class="${x.state === "now" ? "btn-blue sm sv-btn" : "sv-link"}" data-intro-go="${esc(x.ref)}" aria-label="${x.state === "passed" ? "Do" : "Start"}: ${esc(x.label)}">${x.state === "passed" ? "Do it" : "Start"}</button>${
+            x.state === "passed" ? "" : `<button type="button" class="sv-link" data-intro-pass="${esc(x.ref)}" aria-label="Skip ${esc(x.label)}">Skip</button>`}`}</li>`).join("")}</ul>
+        <p class="sv-foot"><button type="button" class="sv-link" data-intro-skip>Skip getting started</button>${j.hasProgram ? `<button type="button" class="sv-link" data-mine-view="program">My program</button>` : ""}</p></div>`;
+      return;
+    }
+    const d = j.today, m = Object.fromEntries((j.meters || []).map((x) => [x.id, x]));
+    const sess = d.session ? `${short(d.session.label)}${d.session.sub ? " · " + d.session.sub : ""}` : "";
+    const title = d.rest ? "Rest day" : d.skipped ? "Session skipped" : sess || (d.workout ? "Workout done" : "No session planned");
+    const under = d.rest ? "Rest is part of the plan" : j.startsOn ? `Your program starts ${j.startsOn}` : j.program ? j.program.title : sess ? "" : d.workout ? "" : "Start any workout, or pick a program";
+    const canStart = !d.rest && !d.skipped && !d.workout;
+    const pct = m.goal ? Math.round(Math.max(0, Math.min(1, m.goal.p)) * 100) : d.goal ? 100 : 0;
+    const row = (on, name, right, attrs) => `<li><button type="button" class="sv-row" ${attrs}>${tick(on)}<span class="sv-name">${name}</span>${right}</button></li>`;
+    const waiting = !!(d.session && !d.workout && !d.skipped);
+    const dayName = (x) => (x.session ? short(x.label) : x.rest ? "Rest" : x.skipped ? "Skipped" : "");
+    card.innerHTML = `<div class="sv">${head("Today")}
+        <div class="sv-today"><div><b>${esc(title)}</b>${under ? `<small>${esc(under)}</small>` : ""}</div>${canStart ? `<button type="button" class="btn-blue sm sv-btn" data-cave-today>Start</button>` : ""}</div>
+        <ul class="sv-list">
+          ${row(d.workout, d.rest ? "Rest day" : "Workout", `<em>${d.workout ? "Done" : d.skipped ? "Skipped" : d.session ? "To do" : "Not yet"}</em>`, "data-cave-today")}
+          ${row(d.pain, "Pain check-in", `<em>${d.pain ? "Done" : "Not yet"}</em>`, `data-goto="pain"`)}
+          ${row(m.acts ? m.acts.p >= 1 : d.acts, "Daily activities", `<em>${esc(m.acts ? (/^\d+ of \d+$/.test(m.acts.text) ? m.acts.text : d.acts ? "Done" : "None yet") : d.acts ? "Done" : "None yet")}</em>`, "data-cave-acts")}
+          ${row(d.goal, "Daily goal", `<span class="sv-bar" aria-hidden="true"><i style="width:${d.goal ? 100 : pct}%"></i></span><em>${d.goal ? "Reached" : pct + "%"}</em>`, "data-cave-acts")}
+        </ul>
+        ${waiting ? `<p class="sv-foot"><button type="button" class="sv-link" data-cave-skip>Skip today's session</button></p>` : d.skipped ? `<p class="sv-foot"><button type="button" class="sv-link" data-cave-unskip>Do it after all</button></p>` : ""}
+      </div>
+      <div class="sv sv-week">${head("This week")}
+        <ul class="sv-list sv-days">${j.stops.map((x) => `<li class="${x.today ? "now" : ""}"><span class="sv-wd">${esc(x.wd)}</span><span class="sv-name">${esc(dayName(x))}${x.today ? `${dayName(x) ? " · " : ""}today` : ""}</span>${tick(x.state === "done")}<span class="vh">${x.state === "done" ? "done" : x.today ? "in progress" : "not done"}</span></li>`).join("")}</ul>
+        <p class="sv-foot">${j.program ? `<button type="button" class="sv-link" data-fp="${esc(j.program.id)}">Open my program</button>` : `<button type="button" class="sv-link" data-goto="programs">Pick a program</button>`}${j.introAlt ? `<button type="button" class="sv-link" data-mine-view="intro">Getting started</button>` : ""}</p>
+      </div>
+      ${j.movements ? `<div class="sv sv-moves"><button type="button" class="sv-link" data-goto="profile">${j.movements} movement${j.movements === 1 ? "" : "s"} from Dr. Jared to do today ›</button></div>` : ""}`;
+  }
+
+  // The Full / Simple switch at the top of Home (the same choice as Profile > Make it yours > Home screen)
+  const sw = document.createElement("div");
+  sw.className = "sv-switch"; sw.setAttribute("role", "radiogroup"); sw.setAttribute("aria-label", "Home screen");
+  sw.innerHTML = `<button type="button" role="radio" data-home-view="full">Full</button><button type="button" role="radio" data-home-view="simple">Simple</button>`;
+  { const name = $("#hello-name"); if (name && window.MDFitTheme) name.after(sw); }
+  const markSwitch = () => sw.querySelectorAll("[data-home-view]").forEach((b) => { const on = (isSimple() ? "simple" : "full") === b.dataset.homeView; b.setAttribute("aria-checked", String(on)); b.tabIndex = on ? 0 : -1; });
+  sw.addEventListener("click", (e) => { const b = e.target.closest("[data-home-view]"); if (b && window.MDFitTheme) window.MDFitTheme.set({ view: b.dataset.homeView }); });
+  sw.addEventListener("keydown", (e) => { if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(e.key)) return; e.preventDefault();
+    const to = sw.querySelector(`[data-home-view="${isSimple() ? "full" : "simple"}"]`); if (window.MDFitTheme) window.MDFitTheme.set({ view: to.dataset.homeView }); to.focus(); });
+
   let lastSig = "";
   function render() {
     const j = A.journey(); if (!j) { card.hidden = true; return; }
     card.hidden = false;
+    const simple = isSimple();
+    card.classList.toggle("cave-card", !simple); card.classList.toggle("sv-card", simple);
+    card.setAttribute("aria-label", simple ? "Today's plan" : "The gem mine");
     // Nothing changed: leave the card alone, so an animation in flight isn't restarted by a second redraw
-    const sig = JSON.stringify(j); if (sig === lastSig && card.firstChild) return; lastSig = sig;
+    const sig = (simple ? "s" : "f") + JSON.stringify(j); if (sig === lastSig && card.firstChild) return; lastSig = sig;
+    if (simple) return renderSimple(j);
     if (!j.stops) {
       card.innerHTML = `<div class="cv-mouth${ART.mouth ? " art" : ""}"${ART.mouth ? ` style="${shade(ART.mouth, 0.55, 0.9)}"` : ""}><span class="cv-kicker">The gem mine</span><b class="cv-title">${j.finished ? "You reached the vault" : "Every program is a road of gems"}</b>
         <p class="cv-sub">${j.finished ? "Every stop on your road is mined. Pick the next program to open a new mine." : "Pick a program and each session becomes a stop on the road down. Solomon walks it with you."}</p>
@@ -151,7 +212,7 @@
   }
   // The first descent has its own footer: how far along, and what finishing earns
   function decorate() {
-    const j = A.journey(); if (!j || !j.intro) return;
+    const j = A.journey(); if (!j || !j.intro || isSimple()) return;
     const seam = card.querySelector(".cv-seam"), vault = card.querySelector(".cv-vault p"), done = j.stops.filter((s) => s.state === "done").length, todo = j.stops.filter((s) => s.state === "now" || s.state === "open");
     if (seam) seam.innerHTML = `<span class="cv-kicker">Your first descent</span><p class="cv-intro-line"><b>${done} of ${j.stops.length}</b> stops done · 10 XP each · any order</p>${todo.length ? `<p class="cv-skip-row"><span>Can't do one right now? Skip it, no XP:</span>${todo.map((x) => `<button type="button" class="cv-skip" data-intro-pass="${esc(x.ref)}" aria-label="Skip ${esc(x.label)}">${esc(x.label)}</button>`).join("")}</p>` : ""}`;
     // (real actions earn their own XP too, so Amber often arrives before the last stop)
@@ -169,7 +230,7 @@
     const ps = e.target.closest("[data-intro-pass]"); if (ps) return A.introPass(ps.dataset.introPass);
     if (e.target.closest("[data-intro-skip]") && confirm("Skip the intro? You can replay it from Profile.")) A.introSkip();
   });
-  const draw = () => { try { render(); decorate(); } catch { card.hidden = true; } };
-  ["mdfit:journey", "mdfit:rewards"].forEach((ev) => document.addEventListener(ev, draw));
+  const draw = () => { markSwitch(); try { render(); decorate(); } catch { card.hidden = true; } };
+  ["mdfit:journey", "mdfit:rewards", "mdfit:theme"].forEach((ev) => document.addEventListener(ev, draw)); // (theme: Full <-> Simple was switched)
   draw();
 })();

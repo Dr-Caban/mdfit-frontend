@@ -125,6 +125,8 @@
   const repsOf = (x) => (Number(x.reps) > 0 ? Number(x.reps) : Math.max(5, Math.min(100, Math.round((Number(x.seconds) || 30) / 3))));
   function setsText(x) {
     const reps = Number(x.reps) > 0 ? Number(x.reps) : 0, sets = x.sets;
+    const each = Array.isArray(x.repsBySet) && x.repsBySet.length === Number(sets) ? x.repsBySet.map(Number).filter((r) => r > 0) : [];
+    if (each.length === Number(sets) && each.length) return `${each.length} sets: ${each.join(", ")} reps`;   // a rep count for each set
     if (reps && Number(sets) > 0) return `${Number(sets)} × ${reps} reps`;
     if (typeof sets === "string" && sets.trim()) return sets.trim();
     if (Number(sets) > 0) return `${Number(sets)} × ${repsOf(x)} reps`;

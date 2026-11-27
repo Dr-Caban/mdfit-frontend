@@ -115,3 +115,55 @@ html[data-theme="black"] #mg { box-shadow: 0 18px 50px rgba(0, 0, 0, .6); }
 /* The calendar's key gained "Reminder": let it wrap on a phone instead of breaking words */
 .cal-legend { flex-wrap: wrap; gap: 6px 14px; }
 .cal-legend li { white-space: nowrap; }
+
+/* ---- Solomon's faces (mdfit-guide.js feel). At rest he is three dots; a feeling swaps them for a face and moves him. */
+.mg-face { display: none; }
+#mg-btn .mg-face .e { fill: #1b2b44; }
+#mg-btn .mg-face .m { fill: none; stroke: #1b2b44; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+#mg-btn .mg-face .m.open { fill: #1b2b44; }
+#mg-btn .mg-face .m.o { fill: #1b2b44; stroke: none; }
+#mg-btn .mg-face .x { fill: var(--mg-gold); }
+#mg-btn .mg-face .blush { fill: #f2a3a3; opacity: .75; }
+#mg-btn .mg-face .glint { fill: #fff; }
+#mg-btn .mg-face .drop { fill: #7AAFD7; }
+#mg-btn .mg-face .z { font: 700 9px/1 system-ui, sans-serif; fill: var(--mg-gold); }
+#mg-btn.mg-emo .mg-dots { display: none; }
+#mg-btn.mg-emo-happy .mg-f-happy, #mg-btn.mg-emo-proud .mg-f-proud, #mg-btn.mg-emo-excited .mg-f-excited, #mg-btn.mg-emo-cheer .mg-f-cheer,
+#mg-btn.mg-emo-sleepy .mg-f-sleepy, #mg-btn.mg-emo-worried .mg-f-worried, #mg-btn.mg-emo-peace .mg-f-peace, #mg-btn.mg-emo-curious .mg-f-curious { display: block; }
+#mg-btn.mg-emo .mg-face * { transform-box: fill-box; transform-origin: center; }
+#mg-btn.mg-emo svg { transform-origin: 50% 90%; }
+#mg-btn.mg-emo-happy svg { animation: mg-e-happy .9s cubic-bezier(.3, 1.6, .5, 1) 2; }
+#mg-btn.mg-emo-proud svg { animation: mg-e-proud 2s ease-in-out; }
+#mg-btn.mg-emo-excited svg { animation: mg-e-excited .55s ease-in-out 4; }
+#mg-btn.mg-emo-cheer svg { animation: mg-e-cheer .5s ease-in-out 4; }
+#mg-btn.mg-emo-sleepy svg { animation: mg-e-sleepy 4.5s ease-in-out infinite; }
+#mg-btn.mg-emo-worried svg { animation: mg-e-worried .28s ease-in-out 7; }
+#mg-btn.mg-emo-peace svg { animation: mg-e-peace 4s ease-in-out infinite; }
+#mg-btn.mg-emo-curious svg { animation: mg-e-curious 2.8s ease-in-out; }
+#mg-btn.mg-emo-sleepy .mg-echo, #mg-btn.mg-emo-worried .mg-echo { animation: none; opacity: 0; }
+#mg-btn.mg-emo-happy .e, #mg-btn.mg-emo-worried .e { animation: mg-blink 2.1s ease-in-out; }
+#mg-btn.mg-emo-excited .star, #mg-btn.mg-emo-cheer .star { animation: mg-twinkle .7s ease-in-out infinite alternate; }
+#mg-btn.mg-emo .star.s2 { animation-delay: .2s; } #mg-btn.mg-emo .star.s3 { animation-delay: .4s; }
+#mg-btn.mg-emo-sleepy .z { animation: mg-z 3s ease-in-out infinite; } #mg-btn.mg-emo-sleepy .z2 { animation-delay: 1.5s; }
+#mg-btn.mg-emo-sleepy .m.o { animation: mg-snore 4.5s ease-in-out infinite; }
+#mg-btn.mg-emo-worried .drop { animation: mg-drop 1s ease-in infinite; }
+#mg-btn.mg-emo-curious .look { animation: mg-look 2.8s ease-in-out; }
+#mg-btn.mg-emo-curious .look .e { animation: mg-blink 2.8s ease-in-out; }
+@keyframes mg-e-happy { 0%, 100% { transform: translateY(0) scale(1); } 30% { transform: translateY(-11px) scale(.96, 1.06); } 55% { transform: translateY(0) scale(1.06, .94); } 75% { transform: translateY(-4px); } }
+@keyframes mg-e-proud { 0%, 100% { transform: scale(1); } 25%, 75% { transform: scale(1.16) translateY(-3px); } 50% { transform: scale(1.12) translateY(-5px) rotate(-3deg); } }
+@keyframes mg-e-excited { 0%, 100% { transform: translateY(0) rotate(0); } 25% { transform: translateY(-13px) rotate(-8deg) scale(1.06); } 60% { transform: translateY(-2px) rotate(7deg); } }
+/* On a phone he sits 10px from the right edge, and the tilt to the right already swings his top corner about 7px
+   out. So the cheer leans in: the same swing and the same tilt both ways, moved over to the left, and no part of him
+   leaves the screen. */
+@keyframes mg-e-cheer { 0%, 100% { transform: translateX(0) rotate(0); } 25% { transform: translate(-13px, -8px) rotate(-10deg); } 75% { transform: translate(1px, -8px) rotate(10deg); } }
+@keyframes mg-e-sleepy { 0%, 100% { transform: translateY(2px) rotate(3deg) scale(1, .97); } 50% { transform: translateY(5px) rotate(5deg) scale(1.03, .94); } }
+@keyframes mg-e-worried { 0%, 100% { transform: translateX(0) rotate(-3deg); } 50% { transform: translateX(2.5px) rotate(-3deg); } }
+@keyframes mg-e-peace { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+@keyframes mg-e-curious { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-5deg); } 65% { transform: rotate(5deg); } }
+@keyframes mg-blink { 0%, 44%, 52%, 100% { transform: scaleY(1); } 48% { transform: scaleY(.1); } }
+@keyframes mg-twinkle { from { opacity: .3; transform: scale(.6) rotate(0); } to { opacity: 1; transform: scale(1.15) rotate(25deg); } }
+@keyframes mg-z { 0% { opacity: 0; transform: translate(0, 4px) scale(.6); } 30% { opacity: 1; } 100% { opacity: 0; transform: translate(5px, -9px) scale(1.2); } }
+@keyframes mg-snore { 0%, 100% { transform: scale(.8); } 50% { transform: scale(1.4); } }
+@keyframes mg-drop { 0% { opacity: 0; transform: translateY(-2px); } 30% { opacity: 1; } 100% { opacity: 0; transform: translateY(8px); } }
+@keyframes mg-look { 0%, 100% { transform: translateX(0); } 20%, 38% { transform: translateX(-2.5px); } 58%, 78% { transform: translateX(2.5px); } }
+@media (prefers-reduced-motion: reduce) { #mg-btn.mg-emo svg, #mg-btn.mg-emo .mg-face * { animation: none !important; } }

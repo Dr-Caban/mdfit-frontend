@@ -38,8 +38,23 @@
   let calMoney = [], calSyncAt = 0, calSyncing = null; // the Progress calendar's invoices, payments and membership dates, and its sync state
   let lib = { favorites: [], programs: [] };
 
+  // Simple view (Profile > Make it yours > Home screen): the same things happen and the same XP is earned, but the
+  // words are plain: no XP, gems or lamps in a message. One place, so every toast follows it.
+  const plainView = () => document.documentElement.dataset.homeView === "simple";
+  const plainMsg = (m) => (!plainView() || typeof m !== "string" ? m : m
+    .replace(/^\+\d+ XP for showing up$/, "Good to see you")
+    .replace(/^\+\d+ XP$/, "Saved")
+    .replace(/^New gem!.*$/, "")
+    .replace(/^First descent complete!$/, "Getting started is complete!")
+    .replace(/^Daily goal: \d+ XP\.$/, "Daily goal saved.")
+    .replace(/\s*Finish it for \d+ XP\./, "")
+    .replace(/\s*\+\d+ XP/, "")
+    .replace("No XP, and it's waiting", "It's waiting")
+    .replace("Session skipped. Every other lamp is lit today.", "Session skipped. Everything else is done today.")
+    .replace("Every lamp is lit today.", "Everything is done for today."));
   function toast(msg) {
     const t = $("#toast");
+    msg = plainMsg(msg);
     t.textContent = msg; t.hidden = false; t.classList.remove("celebrate");
     clearTimeout(toast.t); toast.t = setTimeout(() => (t.hidden = true), 3200);
   }
@@ -82,16 +97,17 @@
   }
   // Milestones: spinning coin + bonus XP, then (on level-ups and every 3rd badge) a Duolingo-style leaderboard pop-up
   const msQueue = []; let msBusy = false, msShowBoard = false;
-  function milestone(m) { msQueue.push(m); if (!msBusy) nextMilestone(); }
+  // (Simple view: no level-up or gem overlay, and a badge is shown without its bonus XP)
+  function milestone(m) { if (plainView() && /gem/i.test(m.kicker || "")) return; msQueue.push(m); if (!msBusy) nextMilestone(); }
   function nextMilestone() {
     const m = msQueue.shift();
-    if (!m) { msBusy = false; if (msShowBoard) { msShowBoard = false; showBoardPopup(); } return; }
+    if (!m) { msBusy = false; if (msShowBoard) { msShowBoard = false; if (!plainView()) showBoardPopup(); } return; }
     msBusy = true;
     $("#ms-face").innerHTML = m.icon;
     $("#ms-kicker").textContent = m.kicker;
     $("#ms-title").textContent = m.title;
     $("#ms-desc").textContent = m.desc || "";
-    $("#ms-xp").innerHTML = m.xp ? `<span>+${m.xp}</span> XP` : "";
+    $("#ms-xp").innerHTML = m.xp && !plainView() ? `<span>+${m.xp}</span> XP` : "";
     const ov = $("#ms"); ov.hidden = false; ov.classList.remove("play"); void ov.offsetWidth; ov.classList.add("play");
     try { navigator.vibrate && navigator.vibrate([30, 40, 60]); } catch {}
   }
@@ -122,7 +138,7 @@
       milestone({ icon: `<span class="ms-lv">${r.level}</span>`, kicker: "New gem!", title: r.title, desc: r.level === (r.olympicLevel || 4) ? "Welcome to the Olympic League." : `You reached ${r.title}, gem level ${r.level} of 8.`, xp: 0 });
       msShowBoard = true;
     }
-    if (msShowBoard && !msBusy && !msQueue.length) { msShowBoard = false; showBoardPopup(); }
+    if (msShowBoard && !msBusy && !msQueue.length) { msShowBoard = false; if (!plainView()) showBoardPopup(); }
     seenStore.set("ms-count", badgeCount); seenStore.set("badges", earned); seenStore.set("level", r.level);
   }
   function notifyVisits() {
@@ -152,6 +168,7 @@
     if (!TABS.includes(tab)) tab = "home";
     if (tab === "pain" && sub === "muscle" && arg) setTimeout(() => openReport(arg, false), 0);
     else if (tab === "pain" && sub === "track" && arg) setTimeout(() => openTrack(arg), 0);
+    else if (tab === "videos" && sub === "watch" && arg) setTimeout(() => { const x = byId.get(arg); if (x) playVideo(x.id, x.name, exMeta(x)); history.replaceState(null, "", "#videos"); }, 0); // a video someone sent or shared
     else if (tab === "pain" && !$("#muscle-report").hidden) setMode(reportFrom);
     $$("[data-view]").forEach((v) => (v.hidden = v.dataset.view !== tab));
     $$(".tabbar [data-tab]").forEach((b) => (b.dataset.tab === tab ? b.setAttribute("aria-current", "page") : b.removeAttribute("aria-current")));
@@ -261,6 +278,7 @@
     // Nothing unconfirmed ever reaches the player: a line of text beats a dialog that spins and then fails.
     if (!offered(id)) return toast("That video isn't available yet. Dr. Jared is still uploading it.");
     earn("video", id);
+    vd.dataset.vid = byId.get(id) ? id : ""; { const sb = $("#vd-share"); if (sb) { sb.hidden = !byId.get(id); sb.dataset.shareId = id; sb.dataset.shareTitle = title; } }
     $("#vd-title").textContent = title;
     $("#vd-meta").textContent = meta;
     pregNote($("#vd-preg"), !!(window.MDFitLib && MDFitLib.isPregnancy(byId.get(id))));
@@ -1007,7 +1025,7 @@
           : `<p>How strong is it right now? <span class="muted">0 is none, 10 is the worst.</span></p><div class="tk-nums">${Array.from({ length: 11 }, (_, n) => `<button type="button" data-track-pain="${n}">${n}</button>`).join("")}</div>`}</div>
       </section>`;
     TK.open(t.id, { autoplay: false, startLabel: done ? "Start today's session" : `Start ${step} 1`, onStart: () => startPlayer(trackWorkout(t)), lead,
-      extra: `<button type="button" class="tk-add${mine ? " on" : ""}" data-track-add="${esc(t.id)}"${done ? " disabled" : ""}>${mine ? "On my road ✓" : "Add to my road"}</button>` });
+      extra: `<button type="button" class="tk-add${mine ? " on" : ""}" data-track-add="${esc(t.id)}"${done ? " disabled" : ""}>${mine ? "On my road ✓" : "Add to my road"}</button><button type="button" class="tk-add share-lib" data-share-lib="track" data-share-id="${esc(t.id)}" data-share-title="${esc(t.title)}">Share</button>` });
     const dlg = document.querySelector("dialog.tk-dialog");
     if (dlg && !dlg.dataset.app) { dlg.dataset.app = "1"; dlg.addEventListener("close", () => { if (/^#pain\/track\//.test(location.hash)) history.replaceState(null, "", "#pain"); }); }
   }
@@ -1146,7 +1164,7 @@
           ${r.tests && r.tests.length ? `<section class="card"><span class="label accent">Quick self-tests</span>${r.tests.map((t) => `<div class="rtest"><b>${esc(t.name)}</b><p>${esc(t.how)}</p><p class="pos"><b>Positive if:</b> ${esc(t.positive)}</p></div>`).join("")}</section>` : ""}
           ${r.protocol ? `<section class="card protocol"><span class="label accent">Dr. Jared's protocol</span>
             ${PHASES.map(([k, t, when]) => (r.protocol[k] || []).length ? `<div class="phase"><div class="phase-head"><b>${t}</b><span>${when}</span><button type="button" class="ev-act" data-phase="${k}">Start</button></div><ol class="psteps">${r.protocol[k].map(stepLi).join("")}</ol></div>` : "").join("")}
-            <div class="row"><button type="button" class="btn-gold sm" data-save-protocol>Save to My Programs</button><a class="btn-blue sm" href="/book">Book with Dr. Jared</a></div>
+            <div class="row"><button type="button" class="btn-gold sm" data-save-protocol>Save to My Programs</button><button type="button" class="btn-ghost sm share-lib" data-share-lib="muscle" data-share-id="${esc(id)}" data-share-title="${esc(m.name)} protocol"><svg viewBox="0 0 24 24" aria-hidden="true" class="ic-line"><path d="M12 15V3"/><path d="m7 8 5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg> Share</button><a class="btn-blue sm" href="/book">Book with Dr. Jared</a></div>
             ${r.expect ? `<p class="expect"><b>What to expect:</b> ${esc(r.expect)}</p>` : ""}</section>` : ""}
         </div>
         <div class="col-side">
@@ -1223,6 +1241,18 @@
     $("#p-email").textContent = client.email;
     const f = $("#profile-form");
     f.name.value = client.name; f.email.value = client.email; f.phone.value = client.phone || "";
+    if (f.dob) {
+      // A server from before birthdays could be edited sends no dob at all: the field stays hidden rather than take a
+      // date it would quietly drop
+      const lab = f.dob.closest("label"); if (lab) lab.hidden = !("dob" in client);
+      f.dob.value = client.dob || ""; // empty when none is kept
+      // A date of birth on file with the clinic (from the practice's records) is shown but not changed here: greyed like
+      // the email above it, and, being disabled, never checked or sent, so an old or unusual date can never block or
+      // wipe a save.
+      const locked = !!client.dobLocked; f.dob.disabled = locked;
+      const note = $("#p-dob-note");
+      if (note) note.textContent = locked ? "On file with the clinic. Call us at 941-313-0562 if it needs changing." : "Only used to wish you a happy birthday. Leave it empty if you would rather not.";
+    }
     renderReferral();
     renderProfileMembership();
   }
@@ -1238,7 +1268,11 @@
     $("#p-mem-go").textContent = paid ? (cur.meetings ? "Manage membership" : "Upgrade membership") : "Upgrade membership";
   }
   wire($("#profile-form"), async (d) => {
-    const r = await apiAuth("PUT", "/api/me", { name: d.name, phone: d.phone }); earn("profile");
+    // The birthday goes with the save only when the form has the field and the member changed it ("" removes it). Left
+    // out, the server keeps what it has, so an older copy of this page or of the account kept on the phone can never
+    // wipe one out.
+    const dobChanged = d.dob !== undefined && !client.dobLocked && d.dob !== (client.dob || "");
+    const r = await apiAuth("PUT", "/api/me", { name: d.name, phone: d.phone, ...(dobChanged ? { dob: d.dob } : {}) }); earn("profile");
     client = r.client; auth.set({ ...auth.get(), client }); renderProfile();
     return { message: "Saved." };
   }, { reset: false });
@@ -1292,6 +1326,26 @@
 
   // Close my account. The server decides between erasing the account outright and keeping the clinical record
   // (a practice may not destroy a chart on request), and we say which one applies before anything is confirmed.
+  // Start over from the intro (Profile): the tutorial and the road begin again; history, XP and membership stay.
+  // Confirmed with the member's password, or RESET for an account that has none (Google, Apple).
+  const soSheet = $("#start-over-sheet");
+  $("#start-over").addEventListener("click", () => {
+    const pw = !!(client && client.hasPassword), msg = $("#so-msg"); msg.textContent = ""; msg.className = "form-msg";
+    $("#so-password").value = ""; $("#so-confirm").value = ""; $("#so-pw-row").hidden = !pw; $("#so-word-row").hidden = pw;
+    soSheet.showModal(); setTimeout(() => (pw ? $("#so-password") : $("#so-confirm")).focus(), 50);
+  });
+  const soGo = async () => {
+    const b = $("#so-go"), msg = $("#so-msg"); if (b.disabled) return; b.disabled = true; msg.textContent = ""; msg.className = "form-msg";
+    try {
+      await apiAuth("POST", "/api/me/start-over", client && client.hasPassword ? { password: $("#so-password").value } : { confirm: $("#so-confirm").value });
+      // what this device remembers about the tutorial and the road goes too, so the tour and the first descent start fresh
+      try { [`mdfit-tour-${client.id}`, introKey("solomon"), introKey("friend"), startsKey()].forEach((k) => localStorage.removeItem(k)); sessionStorage.removeItem(`mdfit-tour-at-${client.id}`); } catch {}
+      msg.textContent = "Starting over…"; msg.className = "form-msg ok";
+      setTimeout(() => { location.hash = "#home"; location.reload(); }, 600);
+    } catch (e) { msg.textContent = e.message; msg.className = "form-msg err"; b.disabled = false; }
+  };
+  $("#so-go").addEventListener("click", soGo);
+  ["#so-password", "#so-confirm"].forEach((id) => $(id).addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); soGo(); } }));
   const caSheet = $("#close-account-sheet");
   $("#close-account").addEventListener("click", async () => {
     const msg = $("#ca-msg"); msg.textContent = ""; msg.className = "form-msg";
@@ -2181,7 +2235,7 @@
       numbersForm($("#done-form"), r.workout, "How hard was that?");
     }
     renderStats(); renderActivity(); renderNotes(); renderCalendar(); renderPerf(); renderMyPlans();
-    loadRewards(true);
+    loadRewards(true, "Workout saved");
     document.dispatchEvent(new CustomEvent("mdfit:workout", { detail: r.workout }));
   }
   $("#p-body").addEventListener("click", (e) => { if (e.target.closest("#done-retry")) saveFinished(P.fin); });
@@ -2801,6 +2855,7 @@
       .sort((a, b) => words.filter((w) => b.title.toLowerCase().includes(w)).length - words.filter((w) => a.title.toLowerCase().includes(w)).length); };
   // Program exercises named differently from the library -> the library video that shows the same move
   const VIDEO_ALIAS = {
+    "Ankle Circles (Dynamic)": "Ankle Circles", "Knee Circles (Dynamic)": "Knee Circles",
     "Overhead Press (DB)": "Strict Press", "Dumbbell Bench Press": "Bench Press", "Lat Pull-Down": "Lat Pulldown", "Lat Pulldowns": "Lat Pulldown",
     "GHD or BOSU Sit-Ups": "GHD Sit Up", "TRX Body Squat": "TRX Squat", "Hip Thrusts": "Hip Thrust", "RDLs": "Romanian Deadlift",
     "Bulgarian Split Squats": "Bulgarian Split Squat", "Split Squat": "Bulgarian Split Squat", "Walking Lunges": "Walking Lunge", "Forward/Backward Lunge": "Lunges",
@@ -2825,10 +2880,11 @@
     const w = Gen.generate({ fixed: true, goal: d.goal, location: p.location, level: p.level, length: d.length, ...Gen.presetFor(d.length),
       ...(d.rounds ? { rounds: d.rounds } : {}), ...(d.restEx !== undefined ? { restEx: d.restEx } : {}), ...(d.restRound !== undefined ? { restRound: d.restRound } : {}),
       addons: { warmup: !hasCircuit, cooldown: !hasCircuit }, seed: p.seed + (d.seedOffset || 0) + i * 101 });
-    // Fixed circuit: use exactly the exercises Dr. Jared specified (looked up by name)
+    // Fixed circuit: use exactly the exercises Dr. Jared specified (looked up by name). Each shows under its library
+    // name (owner: program exercises carry the same names as the library), so it can be found in Videos as well.
     if (Array.isArray(d.circuit) && d.circuit.length) {
       const byName = Object.fromEntries(EX.map((e) => [e.name, e]));
-      const chosen = d.circuit.map((x) => { const m = byName[x.ex] || byName[VIDEO_ALIAS[x.ex]]; return m ? { ...m, name: x.ex, sets: x.sets || "" } : { id: "", name: x.ex, sets: x.sets || "" }; }).filter((x) => x.name);
+      const chosen = d.circuit.map((x) => { const m = byName[x.ex] || byName[VIDEO_ALIAS[x.ex]]; return m ? { ...m, sets: x.sets || "" } : { id: "", name: x.ex, sets: x.sets || "" }; }).filter((x) => x.name);
       if (chosen.length) w.circuit = chosen;
     }
     return { ...w, title: `${p.title}: ${d.name}`, levelLabel: lvlName(p.level), key: `prog-${p.id}-d${i}`, noRest: REHAB_CATS.has(p.category) };
@@ -3129,7 +3185,8 @@
       <div class="card prog-head prog-head-img">${progPoster(p, "ph-img", "(max-width: 520px) 100vw, 480px")}<span class="pc-cat">${esc(p.category)}</span>${p.locked ? lockBadge : ""}<h2>${esc(p.title)}</h2><p>${esc(p.summary)}</p>
         <p class="muted small">${PROTO.ids.has(p.id) ? `${partsLabel((PROTO.weekCounts || {})[p.id] || p.weeks, p)} · week-by-week plan` : paced ? `${p.weeks} weeks · ${perWeekPlan(p)}` : `${p.weeks} weeks · ${p.days.length} session${p.days.length === 1 ? "" : "s"} a week`} · ${esc(lvlName(p.level))} · ${esc((Gen.LOCATIONS.find((l) => l.id === p.location) || {}).label || "")}</p>
         ${p.notes ? `<p class="prog-notes">${esc(p.notes)}</p>` : ""}
-        <button type="button" class="btn-ghost sm save-plan${isSaved(p.id) ? " on" : ""}" data-save-plan="${esc(p.id)}">${isSaved(p.id) ? "Saved to my dashboard ✓" : "Save to my dashboard"}</button></div>
+        <button type="button" class="btn-ghost sm save-plan${isSaved(p.id) ? " on" : ""}" data-save-plan="${esc(p.id)}">${isSaved(p.id) ? "Saved to my dashboard ✓" : "Save to my dashboard"}</button>
+        <button type="button" class="btn-ghost sm share-lib" data-share-lib="program" data-share-id="${esc(p.id)}" data-share-title="${esc(p.title)}"><svg viewBox="0 0 24 24" aria-hidden="true" class="ic-line"><path d="M12 15V3"/><path d="m7 8 5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg> Share</button></div>
       ${progResources(p)}
       <div class="prog-body">${p.days.map((d, i) => { const w = progDayWorkout(p, i); return `<div class="card prog-day">
         <div class="pd-top"><div><span class="label accent">${paced ? (pos.complete ? `All ${perWeekTotal(p)} sessions done · Week ${p.weeks} of ${p.weeks}` : `Week ${pos.week} of ${p.weeks} · session ${pos.session} of ${pos.of} this week`) : `Day ${i + 1} · Week ${wk(i)} of ${p.weeks}`}</span><h3>${esc(d.name)}</h3>
@@ -3739,7 +3796,8 @@
     $("#tip-article").innerHTML = `
       <a class="ta-back" href="#tips"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.4 7.4 14 6l-6 6 6 6 1.4-1.4L10.8 12z"/></svg>All health tips</a>
       <article class="ta">
-        <header class="ta-head">${hero}<div class="ta-head-text"><span class="ta-area">${esc(r.area)}</span><h1>${esc(r.title)}</h1><p>${esc(r.body)}</p></div></header>
+        <header class="ta-head">${hero}<div class="ta-head-text"><span class="ta-area">${esc(r.area)}</span><h1>${esc(r.title)}</h1><p>${esc(r.body)}</p>
+          <button type="button" class="btn-ghost sm share-lib" data-share-lib="page" data-share-id="${esc(r.id)}" data-share-title="${esc(r.title)}"><svg viewBox="0 0 24 24" aria-hidden="true" class="ic-line"><path d="M12 15V3"/><path d="m7 8 5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg> Share</button></div></header>
         <div class="ta-body">${(r.sections || []).map(tipBlock).join("")}</div>
         <footer class="ta-foot">
           ${r.image ? `<a class="ta-poster-link" href="${driveImg(r.image, 2400)}" target="_blank" rel="noopener" data-tipimg="${esc(r.image)}" data-tipcap="${esc(r.title)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm0 16H5V5h14zm-5-7-3 4-2-3-3 4h12z"/></svg>View original poster</a>` : ""}
@@ -3882,7 +3940,8 @@
       </li>`).join("");
   }
   // celebrate = compare with the previous totals and announce XP and new badges
-  async function loadRewards(celebrate = false) {
+  // what: said in place of "+N XP" in Simple view ("Workout saved")
+  async function loadRewards(celebrate = false, what = "") {
     try {
       const prev = reward, next = await apiAuth("GET", "/api/me/rewards");
       reward = next; loadBoard(); notifyRewards(next); renderRewards();
@@ -3890,7 +3949,8 @@
       if (!celebrate || !prev) return;
       const gained = next.xp - prev.xp, newBadges = next.badges.filter((b) => b.earned && !prev.badges.find((x) => x.id === b.id).earned);
       const msgs = [];
-      if (gained > 0) msgs.push(`+${gained} XP`);
+      // (in the Full view the XP itself is said by a moment, account-fx.js; the toast keeps the rest)
+      if (gained > 0 && !(window.MDFitFx && window.MDFitFx.on())) msgs.push(plainView() && what ? what : `+${gained} XP`);
       if (next.level > prev.level) msgs.push(`New gem! You're now ${next.title}`);
       newBadges.forEach((b) => msgs.push(`Badge unlocked: ${b.title}`));
       if (prev.todayXp < prev.dailyGoal && next.todayXp >= next.dailyGoal) msgs.push("Daily goal reached!");
@@ -3901,7 +3961,12 @@
   // when it is the first, so only one device celebrates). A short two-note chime, the gold glow on the gem card and a
   // toast. Phones only play sound after a first tap in some cases (iPhone browsers); then it is the toast and glow alone.
   // Sounds can be switched off on the device (localStorage "mdfit-sounds" = "off").
+  // After a crisis or emergency answer in Solomon's chat (mdfit:urgent) nothing celebrates for a quarter of an hour:
+  // XP is still credited, without the toast or the chime
+  let urgentQuietUntil = 0;
+  document.addEventListener("mdfit:urgent", () => { urgentQuietUntil = Date.now() + 15 * 60e3; });
   function ding() {
+    if (Date.now() < urgentQuietUntil) return;
     try {
       if (localStorage.getItem("mdfit-sounds") === "off") return;
       const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
@@ -3937,7 +4002,9 @@
   }
   document.addEventListener("visibilitychange", () => { if (!document.hidden) welcomeBack(); });
   function celebrateToast(msgs) {
+    if (Date.now() < urgentQuietUntil) return;
     const t = $("#toast");
+    msgs = msgs.map(plainMsg).filter(Boolean); if (!msgs.length) return;
     t.innerHTML = msgs.map((m, i) => `<div class="${i ? "" : "xp-gain"}">${esc(m)}</div>`).join("");
     t.hidden = false; t.classList.add("celebrate");
     clearTimeout(toast.t); toast.t = setTimeout(() => { t.hidden = true; t.classList.remove("celebrate"); }, 4200);
@@ -4127,7 +4194,16 @@
         <span class="mp-body">${tag || ""}<b>${esc(p.title)}</b>${note ? `<span class="mp-note">${esc(note)}</span>` : ""}<span class="muted small">${esc(lvlName(p.level))} · ${st.isProto ? partsLabel(st.nWeeks, p) : `${p.weeks} weeks`}${st.done ? ` · ${st.done} of ${st.sessions} ${st.isProto ? "started" : "done"}` : note !== undefined ? " · not started yet" : ""}</span></span>
         <span class="mp-go">Open ›</span></button></li>`; };
     // The headings say who it's from, so the cards carry no "Recommended" / "Suggested" tag of their own
-    $("#mp-assigned").innerHTML = assigned.length ? `<span class="label accent">Recommended by Dr. Jared</span><ul class="mp-list">${assigned.map((x) => row(pById.get(x.id), x.note)).join("")}</ul>` : "";
+    // Pain tracks and Pain Tool protocols Dr. Jared prescribed from the chart (client.assignedPain): a track opens its
+    // levels, a protocol opens its muscle report; both sit beside his programs
+    const TKS = (window.MDFitTracks && window.MDFitTracks.TRACKS) || [], MUS0 = (window.MDFitMuscles || {}).MUSCLES || {};
+    const pain = (client.assignedPain || []).map((x) => {
+      if (x.kind === "track") { const t = TKS.find((y) => y.id === x.id); return t && { x, title: t.title, sub: `Pain track · ${t.levels.length} level${t.levels.length === 1 ? "" : "s"}`, attr: `data-track="${esc(t.id)}"` }; }
+      const m = MUS0[x.id]; return m && { x, title: `${m.name} protocol`, sub: "Pain Tool protocol · 3 phases", attr: `data-goto="pain/muscle/${esc(x.id)}"` };
+    }).filter(Boolean);
+    const painRow = (r) => `<li><button type="button" class="mp-item" ${r.attr}><span class="fp-ic pp-blank"></span>
+        <span class="mp-body"><b>${esc(r.title)}</b>${r.x.note ? `<span class="mp-note">${esc(r.x.note)}</span>` : ""}<span class="muted small">${esc(r.sub)}</span></span><span class="mp-go">Open ›</span></button></li>`;
+    $("#mp-assigned").innerHTML = assigned.length || pain.length ? `<span class="label accent">Recommended by Dr. Jared</span><ul class="mp-list">${assigned.map((x) => row(pById.get(x.id), x.note)).join("")}${pain.map(painRow).join("")}</ul>` : "";
     $("#mp-saved").innerHTML = saved.length ? `<span class="label">My saved plans</span><ul class="mp-list">${saved.map((id) => row(pById.get(id))).join("")}</ul>` : "";
     // Suggested for you: only items the app really has; a members-only program shows a lock and opens the membership page
     const sg = (client && client.suggested) || {};
@@ -4215,6 +4291,23 @@
     try { await introSettled(); } catch {} // the first descent's "pick your road" stop is credited before Solomon names the next
     try { document.dispatchEvent(new CustomEvent("mdfit:journey")); } catch {}
   }
+  // ---- Share a library program or a pain-tool protocol. The link opens a public preview (/shared?p= or ?m=) that
+  // anyone can read; it carries this member's referral code, so a friend who joins from it is credited to them.
+  // Always the live site, never a preview host, so the link works for whoever it is sent to.
+  document.addEventListener("click", async (e) => {
+    const b = e.target.closest("[data-share-lib]"); if (!b) return;
+    if (window.MDFitSend) return; // account-send.js: one sheet for "send to a member" and "share a link"
+    const kind = b.dataset.shareLib === "muscle" ? "m" : "p", id = b.dataset.shareId, title = b.dataset.shareTitle || "MD Fit";
+    if (!id) return;
+    const code = client && client.referralCode ? String(client.referralCode) : "";
+    const url = `https://www.mymdfit.com/shared?${kind}=${encodeURIComponent(id)}${code ? `&ref=${encodeURIComponent(code)}` : ""}`;
+    if (navigator.share) {
+      try { await navigator.share({ title: `MD Fit: ${title}`, text: `${title}, from Dr. Jared on MD Fit`, url }); return; }
+      catch (err) { if (err && err.name === "AbortError") return; }
+    }
+    try { await navigator.clipboard.writeText(url); toast("Link copied. Paste it anywhere to share."); }
+    catch { toast(url); }
+  });
   document.addEventListener("click", async (e) => {
     const b = e.target.closest("[data-save-plan]"); if (!b) return;
     const pid = b.dataset.savePlan, on = isSaved(pid);
@@ -4424,7 +4517,9 @@
   const introKey = (k) => `mdfit-intro-${client ? client.id : ""}-${k}`;
   const introFlag = (k) => { try { return localStorage.getItem(introKey(k)) === "1"; } catch { return false; } };
   const introMark = (k) => { try { localStorage.setItem(introKey(k), "1"); } catch {} introSync(); };
-  const introMet = () => ({ solomon: introFlag("solomon"), know: !!(aboutMe && aboutMe.known), pain: painLog.length > 0, program: (client.pinnedPrograms || []).length + (client.assignedPrograms || []).length > 0, session: allWorkouts.length > 0, friend: introFlag("friend") });
+  const introNew = (t) => !intro || !intro.since || String(t || "") > intro.since; // after a start over, only what was done since counts
+  const introMet = () => ({ solomon: introFlag("solomon"), know: !!(aboutMe && aboutMe.known), pain: painLog.some((x) => introNew(x.createdAt)),
+    program: (client.assignedPrograms || []).length > 0 || (intro && intro.since ? !!roadPlan : (client.pinnedPrograms || []).length > 0), session: allWorkouts.some((w) => introNew(w.completedAt || w.date)), friend: introFlag("friend") });
   function loadIntro() { return apiAuth("GET", "/api/me/intro").then((r) => { intro = r; document.dispatchEvent(new CustomEvent("mdfit:journey")); setTimeout(introTour, 900); }).catch(() => {}); }
   async function introSync() {
     if (!intro || !intro.offered || introBusy || !client || Date.now() < introWait) return;
@@ -4438,7 +4533,7 @@
         // (credited means the server now says so: anything else would be asked for again on the next redraw)
         if (!r || !r.intro || r.intro.steps[k] !== true) throw new Error("not credited");
         got++;
-        if (r && r.first) { celebrateToast([`+${r.xp} XP`, intro.done ? "First descent complete!" : INTRO_STEPS.find((x) => x[0] === k)[1]]); ding(); }
+        if (r && r.first) { celebrateToast([r.xp ? `+${r.xp} XP` : "Done", intro.done ? "First descent complete!" : INTRO_STEPS.find((x) => x[0] === k)[1]]); ding(); }
       }
       introFails = 0;
       await loadRewards(false);

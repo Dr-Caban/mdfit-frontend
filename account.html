@@ -20,14 +20,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="app/app.css?v=76eb8edb">
-  <link rel="stylesheet" href="account.css?v=7e0b90a0">
+  <link rel="stylesheet" href="account.css?v=fd3988f7">
   <link rel="stylesheet" href="guides.css?v=ecdb9053">
-  <link rel="stylesheet" href="app-theme.css?v=ef1f3fa6">
-  <link rel="stylesheet" href="mdfit-guide.css?v=3052257f">
-  <link rel="stylesheet" href="account-cave.css?v=5277d58f">
+  <link rel="stylesheet" href="app-theme.css?v=283719b7">
+  <link rel="stylesheet" href="mdfit-guide.css?v=9f74434c">
+  <link rel="stylesheet" href="account-cave.css?v=bbc72889">
   <link rel="stylesheet" href="account-tour.css?v=dc65c1cd">
   <link rel="stylesheet" href="progress-charts.css?v=f0ec9711">
-  <script src="app-theme.js?v=3afc6baa"></script>
+  <script src="app-theme.js?v=37d14019"></script>
 </head>
 <body class="mdapp">
   <div class="app">
@@ -577,6 +577,7 @@
           <label>Name<input name="name" class="input" required minlength="2" maxlength="100" autocomplete="name"></label>
           <label>Email<input name="email" class="input" disabled></label>
           <label>Mobile phone<input name="phone" class="input" type="tel" maxlength="30" autocomplete="tel"></label>
+          <label><span>Birthday <span class="muted">(optional)</span></span><input name="dob" class="input" type="date" min="1900-01-01" autocomplete="bday"><span class="small muted" id="p-dob-note">Only used to wish you a happy birthday. Leave it empty if you would rather not.</span></label>
           <button class="btn-gold sm" type="submit">Save</button>
           <p class="form-msg" role="status"></p>
         </form>
@@ -692,7 +693,7 @@
       </div>
       </div>
 
-      <p class="lay-custom-row"><button type="button" class="link-sm" data-lay-custom="profile">Customize this page</button> · <button type="button" class="link-sm" data-intro-replay>Replay the intro</button></p>
+      <p class="lay-custom-row"><button type="button" class="link-sm" data-lay-custom="profile">Customize this page</button> · <button type="button" class="link-sm" data-intro-replay>Replay the intro</button> · <button type="button" class="link-sm" id="start-over">Start over</button></p>
       <div class="profile-links">
         <a href="/?site=1">mymdfit.com</a><a href="tel:+19413130562">Call 941-313-0562</a><a href="/privacy-policy">Privacy</a><a href="/terms">Terms</a>
         <button type="button" class="link" id="logout">Log out</button>
@@ -754,6 +755,17 @@
     <p class="form-msg" id="ca-msg"></p>
     <button type="button" class="btn-danger" id="ca-go">Close my account</button>
     <button type="button" class="link" data-close>Keep my account</button>
+  </dialog>
+
+  <dialog class="sheet" id="start-over-sheet" aria-label="Start over">
+    <div class="sheet-head"><b>Start over from the intro</b><button type="button" class="icon-btn" data-close aria-label="Close"><svg viewBox="0 0 24 24"><path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/></svg></button></div>
+    <p class="small">Back to the beginning: Solomon's tour, your first descent, the get-to-know-you questions, and your road (the program you picked, its start date, and pain tracks you added).</p>
+    <p class="muted small">Kept: your workout and pain history, XP, gems, streaks, badges and membership, and anything Dr. Jared set up for you.</p>
+    <label class="small ca-field" id="so-pw-row"><span>Your password</span><input type="password" id="so-password" autocomplete="current-password"></label>
+    <label class="small ca-field" id="so-word-row" hidden><span>Type <b>RESET</b> to confirm</span><input type="text" id="so-confirm" autocomplete="off" spellcheck="false" autocapitalize="characters"></label>
+    <p class="form-msg" id="so-msg" role="alert"></p>
+    <button type="button" class="btn-blue" id="so-go">Start over</button>
+    <button type="button" class="link" data-close>Keep my progress</button>
   </dialog>
 
   <dialog class="sheet paywall" id="paywall" aria-label="Become a member">
@@ -846,6 +858,7 @@
     <div class="frame" id="vd-box"><iframe id="vd-frame" title="Exercise video" allow="autoplay; fullscreen" allowfullscreen hidden></iframe></div>
     <p class="muted small" id="vd-meta"></p>
     <div class="preg-note" id="vd-preg" role="note" hidden></div>
+    <button type="button" class="btn-ghost sm share-lib" id="vd-share" data-share-lib="video" hidden><svg viewBox="0 0 24 24" aria-hidden="true" class="ic-line"><path d="M12 15V3"/><path d="m7 8 5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg> Share this video</button>
   </dialog>
 
 
@@ -888,7 +901,7 @@
   <script src="config.js?v=aac711e3"></script>
   <script src="analytics.js?v=f3f61f9e" defer></script>
   <script src="realtime.js?v=2de68c9b"></script>
-  <script src="common.js?v=ef572764"></script>
+  <script src="common.js?v=113efac9"></script>
   <script src="search.js?v=4e413820" defer></script>
   <script src="app/exercises.js?v=9eb781ce"></script>
   <script src="app/library.js?v=1805c456"></script>
@@ -898,16 +911,19 @@
   <script src="paintracks.js?v=a4c39d85"></script>
   <script src="painmap.js?v=52dd4372"></script>
   <script src="musclereports.js?v=721e50ec"></script>
-  <script src="guides.js?v=3918e89c"></script>
+  <script src="guides.js?v=27ce217c"></script>
   <script src="stripe-checkout.js?v=fa90d042"></script>
   <script src="progress-charts.js?v=df3a2256"></script>
-  <script src="account.js?v=10b4c670"></script>
-  <script src="account-xp.js?v=97c923ce"></script>
-  <script src="account-share.js?v=763ef457"></script>
-  <script src="account-habits.js?v=8bebfbfe"></script>
-  <script src="account-cave.js?v=1caee209"></script>
-  <script src="mdfit-guide.js?v=18ac60bf"></script>
-  <script src="account-solomon.js?v=5babd31b"></script>
-  <script src="account-tour.js?v=37fe3981"></script>
+  <script src="account.js?v=b7898614"></script>
+  <script src="account-xp.js?v=79d3fdd6"></script>
+  <script src="account-share.js?v=551d3280"></script>
+  <script src="account-send.js?v=d671131f"></script>
+  <script src="account-habits.js?v=c10af22e"></script>
+  <script src="account-cave.js?v=862d5c98"></script>
+  <script src="mdfit-guide.js?v=ba762f4b"></script>
+  <script src="account-fx.js?v=ceafaf4b"></script>
+  <script src="account-chest.js?v=a1bdc313"></script>
+  <script src="account-solomon.js?v=b4cafa92"></script>
+  <script src="account-tour.js?v=624f5965"></script>
 </body>
 </html>

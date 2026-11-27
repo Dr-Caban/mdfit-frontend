@@ -21,6 +21,7 @@
   // for when they are done there. when: a beat shown only if that holds.
   // A beat whose target is not on the screen is passed over.
   const optTap = (e) => !!(e.target.closest && e.target.closest(".mg-opt"));
+  const simple = () => { try { return document.documentElement.dataset.homeView === "simple"; } catch { return false; } };
   function beats(name) {
     return [
       { say: `Hi${name ? " " + name : ""}, I’m Solomon, your guide. Tap me to start.`, find: () => $("#mg-btn"), pad: 10, round: 40,
@@ -45,7 +46,11 @@
       { snd: "11", free: true, say: "Becoming a patient? Your documents live here. Start them now, or tap Next.", find: () => first("#view-profile #p-patient"), pad: 4, round: 18, used: () => true },
       { snd: "12", free: true, before: shutDialogs, say: "Make the app yours here: light or dark, roomy or compact. Tap it to look, or tap Next. Refer a friend sits just below.",
         find: () => { const h = [...document.querySelectorAll("#view-profile .card-head")].find((x) => seen(x) && /^make it yours/i.test(x.textContent.trim())); return h && (h.closest(".card") || h); }, pad: 2, round: 16 },
-      { snd: "13", say: "This is your road. One stone a day. Tap the stone and we begin.", before: () => { shutDialogs(); location.hash = "#home"; },
+      // Simple view (Profile > Make it yours > Home screen) has no road or stones: the last beat lights the plain plan's
+      // Start (or the first Getting started step) and says so in text only, since the recording speaks of the stone.
+      simple() ? { say: "This is your plan for today. Tap Start and we begin.", before: () => { shutDialogs(); location.hash = "#home"; },
+        find: () => first("#cave-card.sv-card .btn-blue") || first("#cave-card.sv-card [data-cave-today]") || first("#cave-card.sv-card"), pad: 8, round: 16, last: true }
+      : { snd: "13", say: "This is your road. One stone a day. Tap the stone and we begin.", before: () => { shutDialogs(); location.hash = "#home"; },
         find: () => first("#cave-card .cv-stop.now .cv-ore") || first("#cave-card .cv-stop.today .cv-ore"), pad: 12, round: 60, last: true },
     ];
   }
@@ -80,6 +85,8 @@
     const hole = $(".gt-hole", root), blocks = [...root.querySelectorAll(".gt-b")], sayBox = $(".gt-say", root), sayP = $("p", sayBox), bar = $(".gt-bar i", root);
     const told = { asked: false }; // what the member has done during the tour (a question sent to Solomon)
     const onAsked = () => { if (at >= 1) told.asked = true; };
+    // A crisis or emergency answer ends the tour at once, without a word: the member's message comes first
+    const onUrgent = () => end(false);
     let at = -1, step = null, tick = null, typing = null, missing = 0, tapped = false, moving = false, lifted = false, ended = false, paused = false, audio = null, primed = "";
     const sndBtn = $(".gt-snd", root), paintSnd = () => { sndBtn.innerHTML = soundOn() ? ICON.on : ICON.off; sndBtn.setAttribute("aria-pressed", String(soundOn())); sndBtn.title = soundOn() ? "Voice on" : "Voice off"; };
     const quietNow = () => { if (audio) { try { audio.pause(); } catch {} } };
@@ -96,9 +103,10 @@
     function end(done, say) {
       if (ended) return; ended = true; run = null;
       if (say) setTimeout(() => speakLine(say.snd), 0); // after quietNow below; the player outlives the overlay
-      quietNow(); clearInterval(tick); clearInterval(typing); document.removeEventListener("click", onTap, true); document.removeEventListener("keydown", onKey, true); document.removeEventListener("mdfit:guide-asked", onAsked);
+      quietNow(); clearInterval(tick); clearInterval(typing); document.removeEventListener("click", onTap, true); document.removeEventListener("keydown", onKey, true); document.removeEventListener("mdfit:guide-asked", onAsked); document.removeEventListener("mdfit:urgent", onUrgent);
       root.remove(); document.body.classList.remove("gt-on", "gt-nocloud"); keep(null);
       if (typeof o.onEnd === "function") { try { o.onEnd(!!done); } catch {} }
+      try { document.dispatchEvent(new CustomEvent("mdfit:tour-end", { detail: { done: !!done } })); } catch {} // Solomon's verse question waits for this
     }
     const targets = () => { let t = null; try { t = step.find(); } catch {} return (Array.isArray(t) ? t : [t]).filter(seen); };
     // Dialogs opened with showModal sit above the page and make the rest of it inert, so the tour moves inside the open one
@@ -176,7 +184,7 @@
     function onKey(e) { if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); end(false); } }
 
     run = { end }; document.body.appendChild(root); document.body.classList.add("gt-on");
-    document.addEventListener("click", onTap, true); document.addEventListener("keydown", onKey, true); document.addEventListener("mdfit:guide-asked", onAsked);
+    document.addEventListener("click", onTap, true); document.addEventListener("keydown", onKey, true); document.addEventListener("mdfit:guide-asked", onAsked); document.addEventListener("mdfit:urgent", onUrgent);
     tick = setInterval(place, 110);
     // Coming back to the app after a lit thing took them out of it: the tour waits, stepped aside, where they left it
     const from = Number(o.from); if (Number.isInteger(from) && from >= 0 && from < steps.length - 1) { at = from; step = steps[at]; pause(true); } else next();

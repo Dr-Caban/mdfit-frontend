@@ -789,9 +789,10 @@
       <header class="gd-hero">
         <img class="gd-logo" src="/assets/logo.webp" alt="MD Fit" width="72" height="72">
         <div><p class="gd-eyebrow">MD Fit protocol guide · ${esc(t.region)}</p><h2>${esc(t.title)}</h2>
-          <p class="gd-sub">${ms.map((id) => esc(M[id].name)).join(" · ")}</p></div>
+          <p class="gd-sub">${ms.map((id) => esc(M[id].name)).join(" · ")}</p>
+          ${window.MDFitSend ? `<button type="button" class="btn-ghost sm share-lib" data-share-lib="track" data-share-id="${esc(t.id)}" data-share-title="${esc(t.title)}">Share</button>` : ""}</div>
       </header>
-      ${t.img.length ? `<div class="gd-art tg-art">${t.img.map((i) => `<figure><img src="${driveThumb(i)}" alt="${esc(t.title)}: pain pattern" loading="lazy" referrerpolicy="no-referrer"><figcaption>Dr. Jared's pain pattern</figcaption></figure>`).join("")}</div>` : ""}
+      ${window.MDFitPatterns && window.MDFitPatterns.has(t.id) ? `<div class="gd-art tg-art"><figure>${window.MDFitPatterns.html(t.id, t.title)}<figcaption>Dr. Jared's pain pattern</figcaption></figure></div>` : t.img.length ? `<div class="gd-art tg-art">${t.img.map((i) => `<figure><img src="${driveThumb(i)}" alt="${esc(t.title)}: pain pattern" loading="lazy" referrerpolicy="no-referrer"><figcaption>Dr. Jared's pain pattern</figcaption></figure>`).join("")}</div>` : ""}
       ${t.note ? `<blockquote class="gd-quote">${esc(t.note)}</blockquote>` : ""}
 
       <section class="gd-sec"><h3>Where you'll feel it</h3><ul class="gd-ref">${ms.map((id) => `<li><b>${esc(M[id].name)}</b><p>${esc(M[id].refers || "")}${M[id].does ? `<br><span class="tg-does">What it does: ${esc(M[id].does)}</span>` : ""}</p></li>`).join("")}</ul></section>

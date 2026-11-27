@@ -100,7 +100,7 @@
     token = ""; store.set(""); if (window.MDFitRT) { if (teleIn()) MDFitRT.emit("tele_end"); MDFitRT.disconnect(); } teleDrop(); stopDictation();
     for (const k of Object.keys(cache)) cache[k] = (k === "unread" || k === "waiting") ? 0 : null; // every cached list, the open chart included
     mem.clear(); forget(); freshAsk = null; shown = ""; shownHtml = ""; visited.length = 0; clearTimeout(warmT); clearTimeout(repaintT); warmRun++;
-    qaClose(); gClose(); state.picked.clear(); state.igPeople = []; state.insList = ""; state.ecoOpen = ""; state.genAll = false; state.layDraft = null;
+    qaClose(); gClose(); try { impReset(); } catch {} state.picked.clear(); state.igPeople = []; state.insList = ""; state.ecoOpen = ""; state.genAll = false; state.layDraft = null;
     state.guideAiErr = ""; state.chartClient = null; state.thread = null; state.clientQ = ""; state.formsQ = ""; state.formsShow = ""; state.scribeText = ""; tele.transcript = ""; noteReset(null);
     mustChange = false; $("#qa").hidden = false; $("#globalSearch").disabled = false;
     $("#view").innerHTML = ""; $("#nav").innerHTML = ""; $("#nav").dataset.sig = ""; $("#whoami").textContent = ""; $("#globalSearch").value = ""; closeModal();
@@ -236,6 +236,7 @@
     feedback: '<path d="M12 2l3 6 6 .9-4.5 4.3 1 6.3L12 16.8 6.5 19.5l1-6.3L3 8.9 9 8z"/>',
     security: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
     compliance: '<path d="M9 5h6a1 1 0 0 1 1 1v1H8V6a1 1 0 0 1 1-1z"/><path d="M8 6H6a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-2"/><path d="M9 14l2 2 4-4"/>',
+    import: '<path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/>',
     settings: '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/>',
     portal: '<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>',
     economics: '<circle cx="12" cy="12" r="9"/><path d="M15 9.5c-.5-1-1.6-1.5-3-1.5-1.700 0-3 .8-3 2s1.300 1.800 3 2 3 .8 3 2-1.300 2-3 2c-1.400 0-2.500-.5-3-1.500M12 6v2M12 16v2"/>',
@@ -266,7 +267,7 @@
   const NAV_PERM = {
     dashboard: "", calendar: "scheduling", clients: "clients", chart: [PHI, "clients"], leads: "clients", messages: "messages",
     telehealth: [PHI, "scheduling"], notes: [PHI, "clients"], forms: [PHI, "clients"], programs: "content", nutrition: "content", fitness: "content",
-    payments: "billing", affiliates: "payouts", revshare: "owner", newsletter: "messages", team: "staff", feedback: "reviews", security: "security", compliance: "security",
+    payments: "billing", affiliates: "payouts", revshare: "owner", newsletter: "messages", team: "staff", feedback: "reviews", security: "security", compliance: "security", import: "owner",
     settings: "settings", insights: "insights", economics: ["insights", "billing"], guide: ["insights", "content"], portal: "", booking: "scheduling"
   };
   const navOk = (id) => [].concat(NAV_PERM[id]).every(can);
@@ -276,7 +277,7 @@
     { g: "Practice", items: [["dashboard", "Dashboard"], ["calendar", "Calendar"], ["clients", "Clients"], ["chart", "Client chart"], ["leads", "Leads"], ["messages", "Messages"], ["telehealth", "Telehealth"]] },
     { g: "Clinical", items: [["notes", "Notes & AI scribe"], ["forms", "Forms & intake"], ["programs", "Programs"], ["nutrition", "Nutrition"], ["fitness", "Fitness"]] },
     { g: "Business", items: [["payments", "Payments"], ["affiliates", "Affiliates"], ["revshare", "Revenue share"], ["newsletter", "Newsletter"]] },
-    { g: "Admin", items: [["team", "Team & roles"], ["feedback", "Reviews & feedback"], ["security", "Security & audit"], ["compliance", "Compliance"], ["settings", "Modules & settings"], ["insights", "Insights"], ["economics", "System economics"], ["guide", "Solomon"]] },
+    { g: "Admin", items: [["team", "Team & roles"], ["feedback", "Reviews & feedback"], ["security", "Security & audit"], ["compliance", "Compliance"], ["import", "Import records"], ["settings", "Modules & settings"], ["insights", "Insights"], ["economics", "System economics"], ["guide", "Solomon"]] },
     { g: "Client-facing", items: [["portal", "Client app"], ["booking", "Booking page"]] }
   ];
   function renderNav(active) {
@@ -433,7 +434,7 @@
     if (drawn === seq || !cache.clientView) cache.clientView = { rows: shown, patients, waiting };
     return `
     <div class="view-head"><div><h1>Clients</h1><p class="muted">${plural(list.length, "account")}${emr ? ` · ${plural(patients.size, "active patient")} · ${waiting.size} waiting to be converted` : ""}</p></div>
-    <div class="row"><input class="input" id="clientQ" style="width:240px" placeholder="Filter by name, email or phone" value="${esc(state.clientQ)}" aria-label="Filter clients">${can("security") ? `<button class="btn" data-act="exportAsk" id="exportBtn">${ui("download", 14)} <span id="exportLabel">${state.picked.size ? `Export ${state.picked.size} selected` : "Export all"}</span></button>` : ""}<button class="btn danger" data-act="trashPicked" id="trashPicked"${state.picked.size ? "" : " hidden"}>${ui("trash", 14)} <span id="trashPickedLabel">Delete ${state.picked.size} selected</span></button><button class="btn" data-act="trashOpen">${ui("restore", 14)} View trash</button></div></div>
+    <div class="row"><input class="input" id="clientQ" style="width:240px" placeholder="Filter by name, email or phone" value="${esc(state.clientQ)}" aria-label="Filter clients">${can("security") ? `<button class="btn" data-act="exportAsk" id="exportBtn">${ui("download", 14)} <span id="exportLabel">${state.picked.size ? `Export ${state.picked.size} selected` : "Export all"}</span></button>` : ""}<button class="btn danger" data-act="trashPicked" id="trashPicked"${state.picked.size ? "" : " hidden"}>${ui("trash", 14)} <span id="trashPickedLabel">Delete ${state.picked.size} selected</span></button><button class="btn" data-act="trashOpen">${ui("restore", 14)} View trash</button><button class="btn primary" data-act="clientAdd">${ui("plus", 14)} Add client</button></div></div>
     <div class="card" style="padding:0"><div class="table-wrap"><table>
       <thead><tr><th style="width:34px"><input type="checkbox" data-change="pickAll" aria-label="Select everyone shown"${shown.length && shown.every((c) => state.picked.has(c.id)) ? " checked" : ""}></th><th>Client</th><th>Status</th><th>Documents</th><th>Next visit</th><th>Membership</th><th>Last sign-in</th></tr></thead>
       <tbody id="clientRows">${clientRows(shown.slice(0, ROWS_FIRST), patients, waiting) || noneRow(7, list.length ? "No one matches." : "No clients yet.")}</tbody>
@@ -474,8 +475,21 @@
   const sizeOf = (n) => (n < 1024 ? n + " B" : n < 1048576 ? Math.round(n / 1024) + " KB" : (n / 1048576).toFixed(1) + " MB");
   const tiers = () => (cache.content && cache.content.tiers) || [];
   const tierName = (id) => (tiers().find((x) => x.id === id) || {}).name || id || "";
-  const tierOptions = (cur) => `<option value="">No membership</option>${tiers().map((t) => `<option value="${esc(t.id)}"${cur === t.id ? " selected" : ""}>${esc(t.name)}</option>`).join("")}`;
-  const content = async () => (cache.content = await load("/content").catch(() => ({ programs: [], tiers: [] })));
+  // A membership the list does not hold (a tier since removed) still shows as itself, never as "No membership"
+  const tierOptions = (cur) => `<option value="">No membership</option>${tiers().map((t) => `<option value="${esc(t.id)}"${cur === t.id ? " selected" : ""}>${esc(t.name)}</option>`).join("")}${cur && !tiers().some((t) => t.id === cur) ? `<option value="${esc(cur)}" selected>${esc(tierName(cur))}</option>` : ""}`;
+  // Without the Content permission (the front desk), the membership names come from what the app itself shows
+  // members (/api/content, public), so the Clients screen still names each membership and can change it. A copy like
+  // that holds names only, so it is marked partial and nothing that saves the content is ever built from it
+  // (editable()). When the list could not be loaded just now (a dropped connection), the full copy already here is kept.
+  const publicTiers = () => api("GET", "/api/content").then((d) => (d && Array.isArray(d.tiers) ? d.tiers.filter((t) => t && t.id).map((t) => ({ id: String(t.id), name: String(t.name || t.id) })) : [])).catch(() => []);
+  // (looked at again after the wait: a full copy another screen loaded meanwhile is kept, never replaced by names)
+  const content = async () => (cache.content = await load("/content").catch(async (err) => {
+    const kept = () => !(err && err.need) && cache.content && !cache.content.partial;
+    if (kept()) return cache.content;
+    const tiers = await publicTiers();
+    return cache.content && !cache.content.partial ? cache.content : { programs: [], tiers, partial: true };
+  }));
+  const editable = () => { if (!cache.content || cache.content.partial) throw new Error("Nothing was saved: the full list could not be loaded just now. Reload the page and try again."); return cache.content; };
   const chartPills = () => { const { d } = cache.chart; return `${d.patient ? `<span class="pill ok">Active patient${d.since ? " since " + when(d.since) : ""}</span>` : `<span class="pill warn">Not yet a patient</span>`}${(d.allergies || []).map((a) => `<span class="pill bad" title="${esc(a.reaction || "Allergy or alert")}">${ui("alert", 12)} ${esc(a.name)}</span>`).join("")}${(d.tags || []).map((t) => `<span class="pill">${esc(t)}</span>`).join("")}`; };
   // A small line chart for one measure over time (oldest on the left)
   function trend(points, unit) {
@@ -504,7 +518,7 @@
       <p class="muted">${esc(d.email)}${d.phone ? " · " + esc(d.phone) : ""} · Next: ${d.nextVisit ? `${fmtDate(d.nextVisit.date)} ${fmtTime(d.nextVisit.time)}` : "nothing booked"}</p>
       <div class="row" style="margin-top:6px" id="chartPills">${chartPills()}</div></div></div>
       <div class="row"><button class="btn ${d.patient ? "" : "primary"}" data-act="convert" data-on="${d.patient ? "0" : "1"}">${d.patient ? "Mark as not a patient" : "Convert to active patient"}</button>
-      <button class="btn" data-act="thread" data-id="${esc(id)}">Message</button><button class="btn" data-act="book">Book</button><button class="btn ${d.patient ? "primary" : ""}" data-act="chartNewNote">${ui("plus", 14)} Note</button><a class="btn" href="#chart" data-act="chartClose">Other client</a><button class="btn danger" data-act="clientTrash" data-id="${esc(id)}" data-name="${esc(d.name)}">${ui("trash", 14)} Delete</button></div></div>
+      <button class="btn" data-act="thread" data-id="${esc(id)}">Message</button><button class="btn" data-act="clientLoginLink" data-id="${esc(id)}" title="Email them the sign-in address">Email sign-in link</button><button class="btn" data-act="book">Book</button><button class="btn ${d.patient ? "primary" : ""}" data-act="chartNewNote">${ui("plus", 14)} Note</button><a class="btn" href="#chart" data-act="chartClose">Other client</a><button class="btn danger" data-act="clientTrash" data-id="${esc(id)}" data-name="${esc(d.name)}">${ui("trash", 14)} Delete</button></div></div>
     <div class="row chart-types"><label for="chTier">Membership</label><select id="chTier" class="input" data-change="chartTier">${tierOptions(tier)}</select>
       <label for="chType">Client type</label><select id="chType" class="input" data-change="chartType"><option value="outpatient"${d.clientType !== "inpatient" ? " selected" : ""}>Standard</option><option value="inpatient"${d.clientType === "inpatient" ? " selected" : ""}>Subscription exempt (visits not charged)</option></select>
       <span class="muted" style="font-size:12px">Subscription exempt clients get the full MD Fit app free.</span></div>
@@ -543,11 +557,17 @@
           <form class="stack" data-form="planNotes"><div class="row" style="justify-content:flex-end"><button type="button" class="btn sm mic" data-act="dictate" data-for="planText" aria-pressed="false">${ui("mic", 14)}<span>Dictate</span></button></div>
           <textarea id="planText" name="notes" class="input" rows="6" maxlength="3000" placeholder="Goals, how often, and when you will review" aria-label="Treatment plan">${esc(plan.notes || "")}</textarea>
           <div class="row"><button class="btn primary">Save treatment plan</button>${plan.updatedAt ? `<span class="muted" style="font-size:12px">Updated ${when(plan.updatedAt)}</span>` : ""}</div></form></div>
-        <div class="card stack"><div class="card-head"><h2>Protocols for ${first}</h2><span class="muted" style="font-size:12px">Type one, or pick from the lists below</span></div>
-          <form class="stack" data-form="protocol"><div class="field"><label for="prName">Protocol</label><input id="prName" name="name" class="input" maxlength="80" required placeholder="e.g. ACL phase 1, weeks 0 to 2" list="prNames" autocomplete="off"><datalist id="prNames"></datalist></div>
+        <div class="card stack"><div class="card-head"><h2>Protocols for ${first}</h2><span class="muted" style="font-size:12px">Search and add, or type a new one</span></div>
+          <form class="stack" data-form="protocol"><div class="field"><label for="prName">Protocol</label><input id="prName" name="name" class="input" type="search" maxlength="80" required placeholder="Search every protocol, pain track and program, or type a new one" autocomplete="off" aria-controls="prFound">
+            <div id="prFound" hidden></div></div>
           <div class="field"><div class="row" style="justify-content:space-between"><label for="prDetail">What to do</label><button type="button" class="btn sm mic" data-act="dictate" data-for="prDetail" aria-pressed="false">${ui("mic", 14)}<span>Dictate</span></button></div><textarea id="prDetail" name="detail" class="input" rows="4" maxlength="1000" placeholder="Steps, sets and reps, how often, what to avoid"></textarea></div>
           <div class="row"><button class="btn primary">Add to ${first}'s program</button></div></form>
-          ${(plan.exercises || []).map((x, i) => `<div class="list-item" style="align-items:flex-start"><span style="flex:1;min-width:0"><b>${esc(x.name)}</b>${x.detail ? `<div class="muted note-text" style="font-size:12.5px">${esc(x.detail)}</div>` : ""}</span><button class="btn sm danger" data-act="prRemove" data-i="${i}">Remove</button></div>`).join("") || none(`Nothing in ${first}'s program yet.`)}</div></div>
+          ${(plan.exercises || []).map((x, i) => `<div class="list-item" style="align-items:flex-start"><span style="flex:1;min-width:0"><b>${esc(x.name)}</b>${x.detail ? `<div class="muted note-text" style="font-size:12.5px">${esc(x.detail)}</div>` : ""}</span><button class="btn sm danger" data-act="prRemove" data-i="${i}">Remove</button></div>`).join("") || none(`Nothing written in ${first}'s program yet.`)}
+          <h3 style="margin:14px 0 4px">Pain rehab on ${first}'s dashboard</h3><p class="muted" style="font-size:12px;margin:0 0 6px">Pain tracks and Pain Tool protocols: what you prescribed, what ${first} put on their road, and what they've done</p>
+          <div id="painOn">${none("Loading…")}</div></div></div>
+      <div class="card stack" style="margin-top:16px"><div class="card-head"><h2>Pain tracks &amp; Pain Tool protocols</h2><span class="muted" style="font-size:12px">Everything in the MD Fit app. Adding one puts it on ${first}'s dashboard (a track goes on their road too)</span></div>
+        <input class="input" id="ptSearch" type="search" placeholder="Search tracks and protocols (e.g. levator, shoulder blade, plantar)" aria-label="Search pain tracks and protocols" autocomplete="off">
+        <div id="ptList">${none("Loading…")}</div></div>
       <div class="grid g2" style="margin-top:16px"><div class="card"><div class="card-head"><h2>All protocols</h2><span class="muted" style="font-size:12px">Everything you have written, most used first</span></div><div id="prPool">${none("Loading…")}</div></div>
         <div class="card" id="chartPrograms"><div class="card-head"><h2>All programs</h2><span class="muted" style="font-size:12px">${plural(progs.length, "program")} in the library</span></div>
           ${progs.map((p) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(p.title)}</b><div class="muted" style="font-size:12px">${[p.category, p.level, p.weeks ? p.weeks + " weeks" : ""].filter(Boolean).map(esc).join(" · ")}</div></span>${mine.has(p.id) ? `<span class="pill ok">Assigned</span><button class="btn sm danger" data-act="prUnassign" data-id="${esc(p.id)}">Remove</button>` : `<button class="btn sm" data-act="prAssign" data-id="${esc(p.id)}">Add to ${first}'s program</button>`}</div>`).join("") || none("No programs in the library.")}</div></div>
@@ -633,20 +653,92 @@
   }
   // What a tab needs once it is on screen
   function chartAfter() {
-    if (state.chartTab === "plans") { loadPool(); loadProtocols(); }
+    if (state.chartTab === "plans") { loadPool(); loadProtocols(); loadPainRehab(); }
     if (state.chartTab === "billing") loadBilling();
     if (state.chartTab === "progress" && $("#wsProgress") && window.MDFitProgress) {
       const id = state.chartClient;
       window.MDFitProgress.mount($("#wsProgress"), { admin: true, load: (days) => api("GET", `/api/admin/clients/${encodeURIComponent(id)}/progress?days=${days}`) });
     }
   }
+  // ---- Pain tracks and Pain Tool protocols (the member app's own: paintracks.js, painmuscles.js + musclereports.js),
+  // loaded once on demand. The chart shows what is on the client's dashboard (server: painWork) and prescribes more
+  // (PUT /api/admin/clients/:id/pain-plan).
+  let painCat = null;
+  const addScript = (src) => new Promise((ok, no) => { if (document.querySelector(`script[data-src="${src}"]`)) return ok(); const s = document.createElement("script"); s.src = src; s.dataset.src = src; s.onload = ok; s.onerror = no; document.head.appendChild(s); });
+  async function painCatalog() {
+    if (painCat) return painCat;
+    await Promise.all([addScript("/paintracks.js"), addScript("/painmuscles.js"), addScript("/musclereports.js")]);
+    try { await window.MDFitTracks.ready; } catch {}
+    const T = (window.MDFitTracks && window.MDFitTracks.TRACKS) || [], MU = (window.MDFitMuscles || {}).MUSCLES || {}, R = window.MDFIT_MUSCLE_REPORTS || {};
+    const tracks = T.map((t) => ({ kind: "track", id: t.id, title: t.title, sub: `Pain track · ${t.region} · ${t.levels.length} level${t.levels.length === 1 ? "" : "s"}` }));
+    const protocols = Object.keys(R).filter((id) => R[id] && R[id].protocol && MU[id]).map((id) => ({ kind: "protocol", id, title: `${MU[id].name} protocol`, sub: "Pain Tool protocol · 3 phases" }));
+    painCat = { all: [...tracks.sort((a, b) => a.title.localeCompare(b.title)), ...protocols.sort((a, b) => a.title.localeCompare(b.title))] };
+    painCat.by = new Map(painCat.all.map((x) => [`${x.kind}:${x.id}`, x]));
+    return painCat;
+  }
+  async function loadPainRehab() {
+    const id = state.chartClient, box = $("#painOn"); if (!box) return;
+    let cat; try { cat = await painCatalog(); } catch { box.innerHTML = none("Couldn't load the pain tracks."); return; }
+    if (state.chartClient !== id || !$("#painOn")) return;
+    const c = cache.chart.c, first = esc(String(cache.chart.d.name).split(" ")[0]), pw = c.painWork || { items: [], savedProtocols: [] };
+    const name = (x) => (cat.by.get(`${x.kind}:${x.id}`) || { title: x.id }).title;
+    const tags = (x) => [x.prescribed ? `<span class="pill ok">Prescribed${x.assignedAt ? " " + esc(fmtDate(x.assignedAt.slice(0, 10))) : ""}</span>` : "", x.onRoad ? `<span class="pill">On their road</span>` : "", !x.prescribed && !x.onRoad ? `<span class="pill">Done before · not on their dashboard</span>` : "",
+      `<span class="pill ${x.sessions ? "" : "warn"}">${x.sessions ? `${plural(x.sessions, "session")}${x.last ? " · last " + esc(fmtDate(x.last)) : ""}` : "Not started"}</span>`].join(" ");
+    box.innerHTML = (pw.items || []).map((x) => `<div class="list-item" style="align-items:flex-start"><span style="flex:1;min-width:0"><b>${esc(name(x))}</b> <span class="muted" style="font-size:12px">${x.kind === "track" ? "Pain track" : "Pain Tool protocol"}</span>
+        <div class="row" style="gap:6px;margin-top:4px">${tags(x)}</div>${x.note ? `<div class="muted note-text" style="font-size:12.5px">${esc(x.note)}</div>` : ""}</span>
+        <span class="row" style="gap:6px;flex-wrap:nowrap">${x.prescribed ? "" : `<button class="btn sm" data-act="painAdd" data-kind="${x.kind}" data-id="${esc(x.id)}">Prescribe</button>`}
+        ${x.prescribed || x.onRoad ? `<button class="btn sm danger" data-act="painRm" data-kind="${x.kind}" data-id="${esc(x.id)}" data-pres="${x.prescribed ? 1 : ""}" data-road="${x.onRoad ? 1 : ""}">Remove</button>` : ""}</span></div>`).join("")
+      + ((pw.savedProtocols || []).length ? `<div class="muted" style="font-size:12px;margin-top:6px">Saved to their My Programs: ${pw.savedProtocols.map((p) => esc(p.name)).join(", ")}</div>` : "")
+      || none(`No pain tracks or protocols on ${first}'s dashboard yet.`);
+    drawPainList(); drawProtoSearch();
+  }
+  function drawPainList() {
+    const list = $("#ptList"); if (!list || !painCat) return;
+    const q = String(($("#ptSearch") || {}).value || "").trim().toLowerCase(), c = cache.chart.c, first = esc(String(cache.chart.d.name).split(" ")[0]);
+    const on = new Set((c.assignedPain || []).map((x) => `${x.kind}:${x.id}`));
+    const hits = painCat.all.filter((x) => !q || `${x.title} ${x.sub}`.toLowerCase().includes(q));
+    list.innerHTML = hits.slice(0, 40).map((x) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(x.title)}</b><div class="muted" style="font-size:12px">${esc(x.sub)}</div></span>
+      ${on.has(`${x.kind}:${x.id}`) ? `<span class="pill ok">Prescribed</span>` : `<button class="btn sm" data-act="painAdd" data-kind="${x.kind}" data-id="${esc(x.id)}">Add to ${first}'s program</button>`}</div>`).join("")
+      + (hits.length > 40 ? `<p class="muted" style="font-size:12px">${hits.length - 40} more. Search to narrow the list.</p>` : "") || none("Nothing matches. Try another word.");
+  }
+  async function savePain(items) {
+    const id = state.chartClient;
+    const r = await api("PUT", `/api/admin/clients/${encodeURIComponent(id)}/pain-plan`, { items });
+    if (state.chartClient !== id) return;
+    cache.chart.c = { ...cache.chart.c, assignedPain: r.assignedPain, painWork: r.painWork };
+    await loadPainRehab();
+  }
+  document.addEventListener("input", (e) => { if (e.target && e.target.id === "ptSearch") drawPainList(); });
   async function loadProtocols() {
     const r = await load("/emr/protocols").catch(() => ({ protocols: [] })), box = $("#prPool"); if (!box) return;
     cache.protocols = r.protocols || [];
     const mine = new Set(((cache.chart.c.plan || {}).exercises || []).map((x) => String(x.name).toLowerCase())), first = esc(String(cache.chart.d.name).split(" ")[0]);
     box.innerHTML = cache.protocols.map((p, i) => `<div class="list-item" style="align-items:flex-start"><span style="flex:1;min-width:0"><b>${esc(p.name)}</b> <span class="muted" style="font-size:12px">used ${p.uses}×</span>${p.detail ? `<div class="muted note-text" style="font-size:12.5px">${esc(p.detail)}</div>` : ""}</span>${mine.has(p.name.toLowerCase()) ? `<span class="pill ok">In program</span>` : `<button class="btn sm" data-act="prPick" data-i="${i}">Add to ${first}'s program</button>`}</div>`).join("") || none("Nothing written yet. Type the first one above.");
-    const dl = $("#prNames"); if (dl) dl.innerHTML = cache.protocols.map((p) => `<option value="${esc(p.name)}">`).join("");
+    drawProtoSearch();
   }
+  // The Protocol box is a search over everything that can go in a client's program: the protocols already written,
+  // every pain track and Pain Tool protocol in the app, and the library programs. Each match has its own Add button
+  // (the same actions as the lists below); a name that matches nothing is a new protocol, written in "What to do".
+  function drawProtoSearch() {
+    const box = $("#prFound"), inp = $("#prName"); if (!box || !inp) return;
+    const q = inp.value.trim().toLowerCase();
+    if (!q) { box.hidden = true; box.innerHTML = ""; return; }
+    const c = cache.chart.c, first = esc(String(cache.chart.d.name).split(" ")[0]), words = q.split(/\s+/);
+    const hit = (t) => { const s = String(t || "").toLowerCase(); return words.every((w) => s.includes(w)); };
+    const inPlan = new Set(((c.plan || {}).exercises || []).map((x) => String(x.name).toLowerCase()));
+    const pres = new Set((c.assignedPain || []).map((x) => `${x.kind}:${x.id}`)), mineP = new Set((c.assignedPrograms || []).map((x) => x.id));
+    const row = (title, sub, on, btn) => `<div class="list-item"><span style="flex:1;min-width:0"><b>${esc(title)}</b><div class="muted" style="font-size:12px">${esc(sub)}</div></span>${on ? `<span class="pill ok">${on}</span>` : btn}</div>`;
+    const add = (attrs) => `<button type="button" class="btn sm" ${attrs}>Add to ${first}'s program</button>`;
+    const rows = [
+      ...(cache.protocols || []).map((p, i) => hit(`${p.name} ${p.detail || ""}`) && row(p.name, `Written protocol · used ${p.uses}×`, inPlan.has(p.name.toLowerCase()) && "In program", add(`data-act="prPick" data-i="${i}"`))),
+      ...((painCat && painCat.all) || []).map((x) => hit(`${x.title} ${x.sub}`) && row(x.title, x.sub, pres.has(`${x.kind}:${x.id}`) && "Prescribed", add(`data-act="painAdd" data-kind="${x.kind}" data-id="${esc(x.id)}"`))),
+      ...((cache.content && cache.content.programs) || []).map((p) => hit(`${p.title} ${p.category}`) && row(p.title, `Program · ${[p.category, p.weeks ? p.weeks + " weeks" : ""].filter(Boolean).join(" · ")}`, mineP.has(p.id) && "Assigned", add(`data-act="prAssign" data-id="${esc(p.id)}"`)))
+    ].filter(Boolean);
+    box.hidden = false;
+    box.innerHTML = rows.slice(0, 12).join("") + (rows.length > 12 ? `<p class="muted" style="font-size:12px;margin:6px 0 0">${rows.length - 12} more. Keep typing to narrow it.</p>` : "")
+      + `<p class="muted" style="font-size:12px;margin:6px 0 0">${rows.length ? "Not what you want?" : "No match."} Write it in "What to do" below to add "${esc(inp.value.trim())}" as a new protocol.</p>`;
+  }
+  document.addEventListener("input", (e) => { if (e.target && e.target.id === "prName") drawProtoSearch(); });
   const STATUS = { paid: "ok", unpaid: "warn", void: "", failed: "bad", refunded: "", pending: "warn" };
   async function loadBilling() {
     const id = state.chartClient, b = await load(`/emr/${id}/billing`).catch((e) => ({ error: e.message, invoices: [] }));
@@ -957,6 +1049,37 @@
     return `<div class="card" style="margin-bottom:16px;padding-bottom:6px"><div class="card-head"><h2>${esc(title)} <span class="muted" style="font-weight:500">(${rows.length})</span></h2><button type="button" class="btn sm ghost" data-act="insList" data-key="${esc(state.insList)}" aria-label="Close this list">${ui("x", 14)}</button></div>
       <div style="max-height:440px;overflow:auto">${rows.map((c) => `<div class="list-item">${avatar(c.name, 28)}<span style="flex:1;min-width:0"><b>${esc(c.name)}</b><div class="muted" style="font-size:12px;overflow-wrap:anywhere">${esc(c.email)} · joined ${when(c.createdAt)}${c.membership ? ` · ${esc(tierName(c.membership.tier))}${c.membership.until ? ", paid through " + esc(c.membership.until) : ""}` : ""}</div></span><button type="button" class="btn sm" data-act="chart" data-id="${esc(c.id)}">Chart</button></div>`).join("") || none("Nobody in this group.")}</div></div>`;
   }
+  // Which app settings members chose (server: GET /analytics/looks). Counts only, most changed first.
+  const LOOK_WORDS = { full: "Full", simple: "Simple", white: "White", black: "Black", comfortable: "Comfortable", compact: "Compact", on: "On", off: "Off", all: "All", streaks: "Streaks only" };
+  // What members do once inside the app (server: GET /analytics/members). Counts only.
+  function insideCard(mi) {
+    if (!mi) return "";
+    const n = mi.members || 0, pct = (a, b) => (b ? Math.round((a / b) * 100) : 0), of = (a, b) => `${a} of ${b}`;
+    const a = mi.active, cb = mi.cameBack, dr = mi.dropOff, pd = mi.paid, ac = mi.actions, top = (mi.screens || [])[0];
+    const line = (label, x) => `<div class="list-item"><span style="flex:1">${label}</span><span class="num"><b>${x.count}</b> <span class="muted" style="font-size:12px">by ${x.people} ${x.people === 1 ? "member" : "members"}</span></span></div>`;
+    return `<div class="view-head" style="margin:8px 0 10px"><div><h2 style="margin:0">Inside the app</h2><p class="muted" style="margin:2px 0 0">What members do after they sign in. Counts only, from the app itself.</p></div></div>
+    <div class="grid g4" style="margin-bottom:16px">${kpi("Active today", a.today, `${pct(a.today, n)}% of ${n} accounts`)}${kpi("Active this week", a.week, `${pct(a.week, n)}% of accounts`)}${kpi("Active this month", a.month, `${pct(a.month, n)}% of accounts`)}${kpi("Came back after week one", cb.eligible ? pct(cb.returned, cb.eligible) + "%" : "–", cb.eligible ? of(cb.returned, cb.eligible) + " accounts a week old or more" : "no account is a week old yet")}</div>
+    <div class="grid g2" style="margin-bottom:16px">
+      <div class="card"><div class="card-head"><h2>What gets used (${mi.days}d)</h2><span class="muted" style="font-size:12px">${top ? `Most opened: ${esc(top.label)}` : ""}</span></div>
+        ${(mi.screens || []).map((x) => `<div style="margin-bottom:10px"><div class="row" style="justify-content:space-between"><span>${esc(x.label)}</span><span class="num muted">${x.people} ${x.people === 1 ? "member" : "members"} · ${x.minutes} min</span></div><div class="bar"><i style="width:${Math.max(2, pct(x.people, (top || {}).people || 1))}%"></i></div></div>`).join("") || none("Nobody has opened the app in this period.")}</div>
+      <div>
+        <div class="card" style="margin-bottom:16px"><h2 style="margin-bottom:6px">What gets done (${mi.days}d)</h2>${line("Workouts logged", ac.workouts)}${line("Pain check-ins", ac.pain)}${line("Daily habit checks", ac.checks)}${line("Things sent to another member", ac.sends)}</div>
+        <div class="card" style="margin-bottom:16px"><h2 style="margin-bottom:6px">Free to paid</h2>
+          <div class="list-item"><span style="flex:1">Sign-ups in the last ${mi.days} days now paying by card</span><span class="num"><b>${pd.signups ? pct(pd.paying, pd.signups) + "%" : "–"}</b> <span class="muted" style="font-size:12px">${of(pd.paying, pd.signups)}</span></span></div>
+          <p class="muted" style="font-size:12px;margin:8px 0 0">${(pd.before || []).length ? `Before paying, the ${pd.payingAll} paying ${pd.payingAll === 1 ? "member" : "members"} had opened: ${pd.before.map((x) => `${esc(x.label)} (${x.people})`).join(", ")}.` : "Once someone pays by card, the screens they opened beforehand are listed here."}</p></div>
+        <div class="card"><h2 style="margin-bottom:6px">Drop-off</h2>
+          <div class="list-item"><span style="flex:1">Never came back after the day they joined</span><span class="num"><b>${dr.eligible ? pct(dr.neverReturned, dr.eligible) + "%" : "–"}</b> <span class="muted" style="font-size:12px">${of(dr.neverReturned, dr.eligible)}</span></span></div>
+          <div class="list-item"><span style="flex:1">Used the app, then quiet for 14 days</span><span class="num"><b>${dr.eligible ? pct(dr.wentQuiet, dr.eligible) + "%" : "–"}</b> <span class="muted" style="font-size:12px">${of(dr.wentQuiet, dr.eligible)}</span></span></div></div>
+      </div>
+    </div>`;
+  }
+  function looksCard(lk) {
+    if (!lk || !(lk.looks || []).length) return "";
+    const total = lk.members || 0, top = lk.looks[0];
+    return `<div class="card" style="margin-bottom:16px"><div class="card-head"><h2>App settings members chose</h2><span class="muted" style="font-size:12px">${top.changed ? `Most changed: ${esc(top.label)}` : "Nobody has changed a setting yet"}</span></div>
+      ${lk.looks.map((l) => { const pct = total ? Math.round((l.changed / total) * 100) : 0; return `<div style="margin-bottom:12px"><div class="row" style="justify-content:space-between;gap:10px;flex-wrap:wrap"><span><b>${esc(l.label)}</b> <span class="muted" style="font-size:12px">${Object.entries(l.counts).map(([k, n]) => `${esc(LOOK_WORDS[k] || k)} ${n}`).join(" · ")}</span></span><span class="num muted">${pct}% changed it · moved ${l.moves} ${l.moves === 1 ? "time" : "times"}</span></div><div class="bar"><i style="width:${Math.max(2, pct)}%"></i></div></div>`; }).join("")}
+      <p class="muted" style="font-size:12px;margin:0">Out of ${total} ${total === 1 ? "account" : "accounts"}. "Changed it" means the setting is off its starting choice now; "moved" counts every switch from today on.</p></div>`;
+  }
   V.insights = async () => {
     const tabs = `<div class="tabs" role="tablist">${[["analytics", "Analytics"], ["audit", "Audit"]].filter(([t]) => t !== "audit" || can("security")).map(([t, l]) => `<button class="tab ${(state.insTab === "audit" && can("security") ? "audit" : "analytics") === t ? "active" : ""}" role="tab" data-act="insTab" data-tab="${t}">${l}</button>`).join("")}</div>`;
     if (state.insTab === "audit" && can("security")) {
@@ -965,8 +1088,8 @@
       <div class="card" style="margin-bottom:16px"><h2 style="margin-bottom:10px">Ledger check</h2><div id="auditResult">${none("Not checked in this session. Press Verify.")}</div></div>${ledgerTable(a)}`;
     }
     const days = state.insDays;
-    const [d, sa, mail, people0, , rf, lg] = await Promise.all([load(`/analytics?days=${days}`), load(`/search-analytics?days=${days}`).catch(() => null), load("/email-log").catch(() => null), partClients(), content(),
-      load(`/referrals?days=${days}`).catch(() => null), load(`/logs/summary?days=${Math.min(days, 90)}`).catch(() => null)]);
+    const [d, sa, mail, people0, , rf, lg, lk, mi] = await Promise.all([load(`/analytics?days=${days}`), load(`/search-analytics?days=${days}`).catch(() => null), load("/email-log").catch(() => null), partClients(), content(),
+      load(`/referrals?days=${days}`).catch(() => null), load(`/logs/summary?days=${Math.min(days, 90)}`).catch(() => null), load("/analytics/looks").catch(() => null), load(`/analytics/members?days=${days}`).catch(() => null)]);
     // Sign-ups and members, counted from the accounts themselves. "Paying" means a card subscription is running;
     // a membership set by hand (no card on a schedule) is counted separately so the two are never confused.
     const people = people0 || [], since = Date.now() - days * 864e5, fresh = people.filter((c) => c.createdAt && Date.parse(c.createdAt) >= since).length;
@@ -986,6 +1109,7 @@
     <div id="insPeople">${insPeople()}</div>
     <div class="card" style="margin-bottom:16px"><div class="card-head"><h2>Members by type</h2><span class="muted" style="font-size:12px">${paying.length ? `About ${money(Math.round(monthly))} a month from card subscriptions, before discounts` : "No card subscriptions running"}</span></div>
       ${tierRows.map((r) => `<div class="list-item"><span style="flex:1"><b>${esc(r.name)}</b></span><button type="button" class="pill pill-btn ${r.pay ? "ok" : ""}" data-act="insList" data-key="paying:${esc(r.id)}"${r.pay ? "" : " disabled"}>${r.pay} paying</button>${r.hand ? `<button type="button" class="pill pill-btn" data-act="insList" data-key="hand:${esc(r.id)}">${r.hand} set by hand</button>` : ""}</div>`).join("") || none("Nobody has a membership yet.")}</div>`}
+    ${insideCard(mi)}${looksCard(lk)}
     <div class="grid g4" style="margin-bottom:16px">${kpi("Views today", s.todayViews, "page views")}${kpi("Visitors today", s.todayUnique, "people")}${kpi(`Views (${d.rangeDays || days}d)`, s.totalViews, "page views")}${kpi(`Visitors (${d.rangeDays || days}d)`, s.totalUnique, "people")}</div>
     <div class="grid g2">
       <div class="card" style="padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>By day</h2></div><div class="table-wrap"><table><thead><tr><th>Date</th><th class="num">Views</th><th class="num">Visitors</th></tr></thead><tbody>${(d.days || []).slice().reverse().slice(0, 31).map((r) => `<tr><td>${fmtDate(r.date)}</td><td class="num">${r.views}</td><td class="num">${r.unique}</td></tr>`).join("") || noneRow(3, "No data yet.")}</tbody></table></div></div>
@@ -1263,15 +1387,18 @@
         <div class="seg" role="group" aria-label="Show as"><button type="button" data-act="guideView" data-v="chart" aria-pressed="${!table}">Chart</button><button type="button" data-act="guideView" data-v="table" aria-pressed="${table}">Table</button></div></div>
       ${table ? `<div class="table-wrap" id="guideTable" style="max-height:420px;overflow-y:auto"><table><thead><tr><th>${byWeek ? "Week" : "Day"}</th><th ${right}>Opens</th><th ${right}>Answers given</th><th ${right}>Reached the limit</th><th ${right}>Upgrade taps</th></tr></thead><tbody>
         ${[...rows].reverse().map((r) => `<tr><td>${esc(r.long)}</td><td class="num" ${right}>${r.opens}</td><td class="num" ${right}>${r.answers}</td><td class="num" ${right}>${r.limitHits}</td><td class="num" ${right}>${r.upgradeTaps}</td></tr>`).join("")}</tbody></table></div>` : guideChart(rows, byWeek)}</div>`;
-    const ai = !!S.ai, canAi = !!S.aiReady, hasAi = "ai" in S || "aiReady" in S;
+    // Only someone the page knows is not the owner is held back from turning AI answers on: until /me has answered,
+    // nothing is held back (the server checks)
+    const ai = !!S.ai, canAi = !!S.aiReady, hasAi = "ai" in S || "aiReady" in S, notOwner = !!cache.me && !iAmOwner();
     return `${head}${numbers}
     <div class="grid g2">
       <div class="card stack"><div class="card-head"><h2>Free tokens a day</h2><span class="muted" style="font-size:12px">members are unlimited</span></div>
         <form class="row" data-form="guideLimit" style="align-items:flex-end"><div class="field" style="margin:0;width:230px;max-width:100%"><label for="guideFree">Tokens a day on the free plan</label><input id="guideFree" name="freeTokensPerDay" class="input num" type="number" min="1000" max="1000000" step="1000" required value="${esc(S.freeTokensPerDay ?? 50000)}"></div><button class="btn primary">Save</button></form>
         <p class="muted" style="margin:0;font-size:12.5px">One AI answer uses about 3,000 tokens; an answer found on the device uses 300. The default, 50,000, is about 15 AI answers a day.</p>
         <p class="muted" style="margin:0;font-size:12.5px">Any whole number from 1,000 to 1,000,000. Opening the pain tool, booking and calling the clinic never use tokens.</p></div>
-      ${hasAi ? `<div class="card stack" id="guideAiCard"><div class="card-head"><h2>AI answers</h2><button type="button" class="switch" id="guideAi" role="switch" aria-checked="${ai}" aria-label="AI answers" data-act="guideAi"${!ai && !canAi ? " disabled" : ""}></button></div>
+      ${hasAi ? `<div class="card stack" id="guideAiCard"><div class="card-head"><h2>AI answers</h2><button type="button" class="switch" id="guideAi" role="switch" aria-checked="${ai}" aria-label="AI answers" data-act="guideAi"${!ai && (!canAi || notOwner) ? " disabled" : ""}></button></div>
         <p style="margin:0" id="guideAiState">${ai ? `<b>On:</b> members' messages are read by ${esc(S.aiModel || "the AI model")} at ${esc(S.aiHost || "the AI service")} to find the right place and suggest programs, videos, your guides and general tips, which are added to the member's Home. Their activity in the app (programs, check-ins, workouts) is read to personalize it; their name and contact details are never sent, and nothing typed is saved.` : `<b>Off:</b> Solomon understands messages on the member's own device, nothing they type leaves it, and Solomon suggests nothing.`}</p>
+        ${!ai && canAi && notOwner ? `<p class="muted" style="margin:0;font-size:12.5px" id="guideAiOwner">Only the practice owner can turn AI answers on. Anyone with the Content permission can turn them off.</p>` : ""}
         ${!canAi ? `<p class="muted" style="margin:0;font-size:12.5px" id="guideAiWhy">${ai ? "The AI service is not ready" : "It cannot be turned on"}: ${esc(S.aiWhy || "no AI service is connected on the server.")}</p>` : ""}
         ${state.guideAiErr ? `<p style="margin:0;color:var(--bad)" id="guideAiErr" role="alert">Not changed: ${esc(state.guideAiErr)}</p>` : ""}</div>` : ""}
     </div>
@@ -1564,6 +1691,26 @@
   const reChart = async () => { const id = state.chartClient; const [d, c] = await Promise.all([get(`/emr/${id}`), get(`/clients/${id}`)]); cache.chart = { ...cache.chart, d, c }; const box = $("#chartBody"); if (box) box.innerHTML = chartTab(); };
   const showDocs = (d) => (d.docs || []).map((doc) => `<div class="card" style="box-shadow:none;margin-top:10px"><h3 style="margin:0 0 2px">${esc(doc.title)}</h3><p class="muted" style="margin:0 0 8px;font-size:12px">Completed ${when(doc.createdAt)}</p><dl class="doc-qa">${(doc.fields || []).map((f) => `<div><dt>${esc(f.label)}</dt><dd>${esc(Array.isArray(f.value) ? f.value.join(", ") : f.value === true ? "Yes" : f.value === false ? "No" : f.value == null || f.value === "" ? "—" : f.value)}</dd></div>`).join("")}</dl></div>`).join("") || none("No documents received yet.");
   const ACT = {
+    painAdd: async (el) => {
+      const c = cache.chart.c, first = String(cache.chart.d.name).split(" ")[0], x = (painCat && painCat.by.get(`${el.dataset.kind}:${el.dataset.id}`)) || { title: el.dataset.id };
+      const note = prompt(`Add "${x.title}" to ${first}'s program. Optional note for ${first}:`, "");
+      if (note === null) return;
+      const items = (c.assignedPain || []).filter((y) => !(y.kind === el.dataset.kind && y.id === el.dataset.id)).map(({ kind, id, note: n }) => ({ kind, id, note: n }));
+      await savePain([...items, { kind: el.dataset.kind, id: el.dataset.id, note }]); toast(`Added to ${first}'s program.`);
+    },
+    // Remove from the client's dashboard: the prescription (if any) and, for a track, its place on their road.
+    // Sessions they already did stay in their history.
+    painRm: async (el) => {
+      const c = cache.chart.c, first = String(cache.chart.d.name).split(" ")[0], k = el.dataset.kind, tid = el.dataset.id;
+      const x = (painCat && painCat.by.get(`${k}:${tid}`)) || { title: tid };
+      if (!confirm(`Remove "${x.title}" from ${first}'s dashboard? Sessions ${first} already did stay in their history.`)) return;
+      if (el.dataset.pres) await savePain((c.assignedPain || []).filter((y) => !(y.kind === k && y.id === tid)).map(({ kind, id, note }) => ({ kind, id, note })));
+      if (k === "track" && el.dataset.road) {
+        try { const r = await api("DELETE", `/api/admin/clients/${encodeURIComponent(state.chartClient)}/road-tracks/${encodeURIComponent(tid)}`); cache.chart.c = { ...cache.chart.c, assignedPain: r.assignedPain, painWork: r.painWork }; await loadPainRehab(); }
+        catch (e) { if (!/isn't on their road/.test(e.message)) throw e; }
+      }
+      toast("Removed.");
+    },
     chart: (el) => openChart(el.dataset.id),
     chartClose: (el, e) => { e.preventDefault(); state.chartClient = null; render(); },
     chartTab: (el) => { state.chartTab = el.dataset.tab; document.querySelectorAll(".tabs .tab").forEach((b) => b.classList.toggle("active", b === el)); $("#chartBody").innerHTML = chartTab(); chartAfter(); },
@@ -2267,7 +2414,7 @@
 
   // ---- Editing the practice's own settings and content, all from the workspace
   const putSettings = async (patch, said) => { cache.settings = await api("PUT", "/api/admin/settings", patch); await render(); toast(said); };
-  const putContent = async (patch, said) => { cache.content = await api("PUT", "/api/admin/content", patch); closeModal(); await render(); toast(said); };
+  const putContent = async (patch, said) => { editable(); cache.content = await api("PUT", "/api/admin/content", patch); closeModal(); await render(); toast(said); };
   const optsOf = () => (cache.content && cache.content.options) || {};
   const rowsOf = (f, keys) => { const out = []; for (let i = 0; f["name" + i]; i++) { const r = { i }; for (const k of keys) { const el = f[k + i]; r[k] = el ? (el.type === "checkbox" ? el.checked : el.value.trim()) : ""; } out.push(r); } return out; };
   function progForm(p, isNew) {
@@ -2290,18 +2437,18 @@
     homeReset: () => { if (state.layDraft) delete state.layDraft[layTab()]; render(); },
     progEdit: (el) => { const p = (cache.content.programs || []).find((x) => x.id === el.dataset.id); if (p) progForm(p, false); },
     progCopy: (el) => { const p = (cache.content.programs || []).find((x) => x.id === el.dataset.id); if (p) progForm({ ...p, id: p.id, title: p.title + " (copy)" }, true); },
-    progDelete: async (el) => { const p = (cache.content.programs || []).find((x) => x.id === el.dataset.id); if (!p || !confirm(`Delete "${p.title}"? Members who were assigned it will no longer see it.`)) return; await putContent({ programs: cache.content.programs.filter((x) => x.id !== p.id) }, "Program deleted."); },
+    progDelete: async (el) => { const p = (editable().programs || []).find((x) => x.id === el.dataset.id); if (!p || !confirm(`Delete "${p.title}"? Members who were assigned it will no longer see it.`)) return; await putContent({ programs: editable().programs.filter((x) => x.id !== p.id) }, "Program deleted."); },
     lectureEdit: (el) => { const l = (cache.content.lectures || []).find((x) => x.id === el.dataset.id) || { id: "", title: "", topic: (optsOf().topics || ["Health"])[0], minutes: 10, access: "free" }, o = optsOf();
       modal(`<div class="card-head"><h2>${l.id ? "Edit lecture" : "New lecture"}</h2>${xBtn}</div><form class="stack" data-form="lectureSave" data-id="${esc(l.id)}">${fld("lcTitle", "title", "Title", l.title, { max: 120, attrs: "required" })}
         <div class="grid g3">${sel("lcTopic", "topic", "Topic", o.topics || [l.topic], l.topic)}${fld("lcMin", "minutes", "Minutes", l.minutes, { type: "number", attrs: 'min="0" max="600"' })}${sel("lcAccess", "access", "Who can open it", o.access || [l.access], l.access)}</div>
         ${fld("lcUrl", "url", "Video link", l.url, { type: "url", max: 500 })}${fld("lcDl", "downloadUrl", "Download link (optional)", l.downloadUrl, { type: "url", max: 500 })}${fld("lcSum", "summary", "Summary", l.summary, { area: true, rows: 3, max: 500 })}
         <div class="row"><button class="btn primary">Save lecture</button></div></form>`); },
-    lectureDelete: async (el) => { if (!confirm("Delete this lecture?")) return; await putContent({ lectures: cache.content.lectures.filter((x) => x.id !== el.dataset.id) }, "Lecture deleted."); },
+    lectureDelete: async (el) => { if (!confirm("Delete this lecture?")) return; await putContent({ lectures: editable().lectures.filter((x) => x.id !== el.dataset.id) }, "Lecture deleted."); },
     recEdit: (el) => { const r = (cache.content.recommendations || []).find((x) => x.id === el.dataset.id) || { id: "", area: "", title: "", body: "", link: "" };
       modal(`<div class="card-head"><h2>${r.id ? "Edit recommendation" : "New recommendation"}</h2>${xBtn}</div><form class="stack" data-form="recSave" data-id="${esc(r.id)}"><div class="grid g2">${fld("rcTitle", "title", "Title", r.title, { max: 120, attrs: "required" })}${fld("rcArea", "area", "Area (e.g. Protein, Sleep)", r.area, { max: 40, attrs: "required" })}</div>
         ${fld("rcBody", "body", "What members read", r.body, { area: true, rows: 8, max: 2000, attrs: "required" })}${fld("rcLink", "link", "Link (optional)", r.link, { type: "url", max: 500 })}
         <div class="row"><button class="btn primary">Save recommendation</button></div></form>`); $("#modal").classList.add("wide"); },
-    recDelete: async (el) => { if (!confirm("Delete this recommendation?")) return; await putContent({ recommendations: cache.content.recommendations.filter((x) => x.id !== el.dataset.id) }, "Recommendation deleted."); },
+    recDelete: async (el) => { if (!confirm("Delete this recommendation?")) return; await putContent({ recommendations: editable().recommendations.filter((x) => x.id !== el.dataset.id) }, "Recommendation deleted."); },
     classEdit: (el) => { const c = (cache.classes || []).find((x) => x.id === el.dataset.id) || { id: "", title: "", day: 1, time: "09:00", durationMin: 60, capacity: 10, coach: "", location: "", description: "" };
       modal(`<div class="card-head"><h2>${c.id ? "Edit class" : "New class"}</h2>${xBtn}</div><form class="stack" data-form="classSave" data-id="${esc(c.id)}">${fld("clTitle", "title", "Class name", c.title, { max: 80, attrs: "required" })}
         <div class="grid g2">${sel("clDay", "day", "Day", DAYN.map((d, i) => [i, d]), c.day)}${fld("clTime", "time", "Start time", c.time, { type: "time", attrs: "required" })}</div>
@@ -2336,18 +2483,18 @@
       let c; try { c = await api("PUT", "/api/admin/content", { [w]: body }); } catch (err) { formMsg(f, err.message); return; } // the draft stays as arranged
       cache.content = c; delete state.layDraft[w]; await render(); toast(`${w === "home" ? "Home" : "Profile"} saved. Members see it the next time the app loads.`);
     },
-    setTiers: (f) => putContent({ tiers: (cache.content.tiers || []).map((t, i) => ({ ...t, name: f["name" + i].value.trim(), price: Number(f["price" + i].value), meetings: Number(f["meetings" + i].value), meetingMinutes: Number(f["minutes" + i].value), directMessages: !!f["direct" + i].checked, perks: f["perks" + i].value.split("\n").map((x) => x.trim()).filter(Boolean) })) }, "Membership types saved."),
+    setTiers: (f) => putContent({ tiers: (editable().tiers || []).map((t, i) => ({ ...t, name: f["name" + i].value.trim(), price: Number(f["price" + i].value), meetings: Number(f["meetings" + i].value), meetingMinutes: Number(f["minutes" + i].value), directMessages: !!f["direct" + i].checked, perks: f["perks" + i].value.split("\n").map((x) => x.trim()).filter(Boolean) })) }, "Membership types saved."),
     progSave: (f) => {
-      const all = cache.content.programs || [], src = all.find((x) => x.id === f.dataset.id) || {}, isNew = !!f.dataset.new;
+      const all = editable().programs || [], src = all.find((x) => x.id === f.dataset.id) || {}, isNew = !!f.dataset.new;
       const days = rowsOf(f, ["name", "goal", "length"]).filter((r) => r.name).map((r) => ({ ...((src.days || [])[r.i] || {}), name: r.name, goal: r.goal, length: Number(r.length) }));
       if (!days.length) throw new Error("A program needs at least one training day.");
       const p = { ...src, id: isNew ? slugOf(f.title.value) : src.id, title: f.title.value.trim(), category: f.category.value, level: f.level.value, location: f.location.value, weeks: Number(f.weeks.value), access: f.access.value, summary: f.summary.value.trim(), notes: f.notes.value.trim(), days };
       if (isNew) delete p.perWeek;
       return putContent({ programs: isNew ? [...all, p] : all.map((x) => (x.id === p.id ? p : x)) }, isNew ? "Program created." : "Program saved.");
     },
-    lectureSave: (f) => { const all = cache.content.lectures || [], id = f.dataset.id, l = { ...(all.find((x) => x.id === id) || {}), id: id || slugOf(f.title.value), title: f.title.value.trim(), topic: f.topic.value, minutes: Number(f.minutes.value), access: f.access.value, url: f.url.value.trim(), downloadUrl: f.downloadUrl.value.trim(), summary: f.summary.value.trim() };
+    lectureSave: (f) => { const all = editable().lectures || [], id = f.dataset.id, l = { ...(all.find((x) => x.id === id) || {}), id: id || slugOf(f.title.value), title: f.title.value.trim(), topic: f.topic.value, minutes: Number(f.minutes.value), access: f.access.value, url: f.url.value.trim(), downloadUrl: f.downloadUrl.value.trim(), summary: f.summary.value.trim() };
       return putContent({ lectures: id ? all.map((x) => (x.id === id ? l : x)) : [...all, l] }, "Lecture saved."); },
-    recSave: (f) => { const all = cache.content.recommendations || [], id = f.dataset.id, r = { ...(all.find((x) => x.id === id) || {}), id: id || slugOf(f.title.value), title: f.title.value.trim(), area: f.area.value.trim(), body: f.body.value.trim(), link: f.link.value.trim() };
+    recSave: (f) => { const all = editable().recommendations || [], id = f.dataset.id, r = { ...(all.find((x) => x.id === id) || {}), id: id || slugOf(f.title.value), title: f.title.value.trim(), area: f.area.value.trim(), body: f.body.value.trim(), link: f.link.value.trim() };
       return putContent({ recommendations: id ? all.map((x) => (x.id === id ? r : x)) : [...all, r] }, "Recommendation saved."); },
     classSave: async (f) => { const body = { title: f.title.value.trim(), day: Number(f.day.value), time: f.time.value, durationMin: Number(f.durationMin.value), capacity: Number(f.capacity.value), coach: f.coach.value.trim(), location: f.location.value.trim(), description: f.description.value.trim() };
       if (f.dataset.id) await api("PUT", `/api/admin/classes/${f.dataset.id}`, { ...body, ...(f.active ? { active: f.active.checked } : {}) }); else await api("POST", "/api/admin/classes", body);
@@ -2401,6 +2548,8 @@
     if (e.target.matches("[data-change=staffRole]")) { const f = e.target.closest("form"); load("/staff").then((d) => permRoleSync(f, d, true)).catch(() => {}); }
     if (e.target.matches("[data-change=leadStatus]")) guard(ACT.leadSave)(e.target);
     if (e.target.matches("[data-change=chartFile]")) guard(chartUpload)(e.target);
+    if (e.target.matches("[data-change=impChoice]")) ACT.impChoice(e.target);
+    if (e.target.matches("[data-change=impPick]")) ACT.impPick(e.target);
     if (e.target.matches("[data-change=pickOne], [data-change=pickAll]")) {
       // "everyone shown" is everyone the filter matches, including rows not drawn yet
       if (e.target.matches("[data-change=pickAll]")) for (const c of ((cache.clientView || {}).rows || [])) { if (e.target.checked) state.picked.add(c.id); else state.picked.delete(c.id); }
@@ -3216,6 +3365,208 @@
   FORMS.privacyDisc = async (f) => { try { await api("POST", `/api/admin/clients/${encodeURIComponent(f.dataset.id)}/disclosures`, { date: f.date.value, basis: f.basis.value.trim(), recipient: f.recipient.value.trim(), purpose: f.purpose.value.trim(), description: f.description.value.trim() }); } catch (err) { return formMsg(f, err.message); } closeModal(); toast("Disclosure recorded on their accounting."); };
   // ===================== end of Compliance =====================
 
+  // ---- Add a client by hand, and email a client the sign-in address (mymdfit.com/login)
+  ACT.clientAdd = () => modal(`<div class="card-head"><h2>Add a client</h2><button type="button" class="btn sm" data-act="closeModal">Close</button></div>
+    <form class="stack" data-form="clientAdd">${fld("caName", "name", "Full name", "", { max: 100, attrs: 'required minlength="2" autocomplete="off"' })}
+      ${fld("caEmail", "email", "Email (required: it is how they sign in)", "", { type: "email", max: 200, attrs: 'required autocomplete="off"' })}${fld("caPhone", "phone", "Phone (optional)", "", { type: "tel", max: 30, attrs: 'autocomplete="off"' })}
+      <p class="muted" data-msg style="margin:0;font-size:12.5px">When you save, they are emailed that the account was created, with the sign-in link (mymdfit.com/login) and a temporary password. It lasts 3 days and they must choose their own the first time they sign in.</p><div class="row"><button class="btn primary">Add client</button></div></form>
+    <div style="border-top:1px solid var(--line);margin-top:16px;padding-top:14px"><h3 style="margin:0 0 4px">Or just send the sign-up link</h3><p class="muted" style="margin:0 0 10px;font-size:12.5px">Emails mymdfit.com/login so they create their own account. Nothing is added to your client list until they do.</p>
+      <form class="row" data-form="clientInvite" style="gap:8px;align-items:flex-end;flex-wrap:wrap"><div class="field" style="flex:1 1 220px;margin:0"><label for="ciEmail">Their email</label><input id="ciEmail" name="email" class="input" type="email" maxlength="200" required autocomplete="off"></div><button class="btn">Send sign-up link</button></form>
+      <p class="muted" id="ciMsg" role="status" style="margin:8px 0 0;font-size:12.5px"></p></div>`);
+  FORMS.clientAdd = async (f) => {
+    const email = f.email.value.trim();
+    if (!email) return formMsg(f, "An email address is required.");
+    let r; try { r = await api("POST", "/api/admin/clients", { name: f.name.value.trim(), email, phone: f.phone.value.trim() }); } catch (err) { return formMsg(f, err.message); }
+    closeModal(); await render();
+    toast(`${r.client.name} added. ${r.emailed ? "Their account email, with a temporary password, is on its way." : "The email could not be sent, so no temporary password was made. They can set one with Forgot password? on the sign-in page."}`);
+  };
+  FORMS.clientInvite = async (f) => {
+    const m = $("#ciMsg"); m.textContent = "Sending…";
+    try { const r = await api("POST", "/api/admin/clients/invite", { email: f.email.value.trim() }); m.textContent = r.existing ? `${r.to} already has an account, so the sign-in link was sent instead.` : `Sign-up link sent to ${r.to}.`; f.reset(); }
+    catch (err) { m.textContent = err.message; }
+  };
+  ACT.clientLoginLink = async (el) => { if (!confirm("Email this client the sign-in link (mymdfit.com/login)?")) return; const r = await api("POST", `/api/admin/clients/${encodeURIComponent(el.dataset.id)}/login-link`, {}); toast(r.temporaryPassword ? `Sent to ${r.to}, with a new temporary password (they have not signed in yet).` : `Sign-in link sent to ${r.to}.`); };
+
+  // ===================== Import from SimplePractice (owner only) =====================
+  // The owner picks the zip files SimplePractice exports (Contacts, Medical Records, Billing Documents, Administrative,
+  // Secure messages). They are unpacked here in the browser: nothing is uploaded until the owner has seen the plan and
+  // pressed Import. Then each person's account is made or matched, and each document goes onto their chart one by one.
+  // What is read stays in this tab's memory only, and is dropped when the import ends or the person signs out.
+  const impPick = {}; // shared name -> the contact card the owner chose for those records
+  const imp = { stage: "pick", contacts: [], items: [], rows: [], plan: {}, choice: {}, progress: { done: 0, total: 0, errors: [] }, result: null, batches: null, msg: "" };
+  const impReset = () => { for (const k of Object.keys(impPick)) delete impPick[k]; imp.dupes = new Map(); Object.assign(imp, { stage: "pick", contacts: [], items: [], rows: [], plan: {}, choice: {}, progress: { done: 0, total: 0, errors: [] }, result: null, msg: "" }); };
+  const impNorm = (s) => String(s || "").toLowerCase().replace(/[^a-z ]/g, " ").replace(/\s+/g, " ").trim();
+  async function unzip(file) {
+    const buf = new Uint8Array(await file.arrayBuffer()), dv = new DataView(buf.buffer), td = new TextDecoder();
+    let e = buf.length - 22; while (e >= 0 && dv.getUint32(e, true) !== 0x06054b50) e--;
+    if (e < 0) throw new Error(`${file.name} is not a zip file.`);
+    const n = dv.getUint16(e + 10, true); let p = dv.getUint32(e + 16, true); const out = [];
+    for (let i = 0; i < n; i++) {
+      if (dv.getUint32(p, true) !== 0x02014b50) throw new Error(`${file.name} could not be read.`);
+      const method = dv.getUint16(p + 10, true), csize = dv.getUint32(p + 20, true), nlen = dv.getUint16(p + 28, true), elen = dv.getUint16(p + 30, true), clen = dv.getUint16(p + 32, true), lho = dv.getUint32(p + 42, true);
+      const name = td.decode(buf.subarray(p + 46, p + 46 + nlen)); p += 46 + nlen + elen + clen;
+      if (name.endsWith("/") || name.split("/").includes("..") || name.startsWith("/") || /(^|\/)(__MACOSX|\.DS_Store)/.test(name)) continue;
+      const start = lho + 30 + dv.getUint16(lho + 26, true) + dv.getUint16(lho + 28, true), raw = buf.subarray(start, start + csize);
+      out.push({ name, read: async () => method === 0 ? raw.slice() : method === 8 ? new Uint8Array(await new Response(new Blob([raw]).stream().pipeThrough(new DecompressionStream("deflate-raw"))).arrayBuffer()) : (() => { throw new Error(`${name}: unsupported compression.`); })() });
+    }
+    return out;
+  }
+  function vcards(text) {
+    const t = text.replace(/\r?\n[ \t]/g, ""), cards = [];
+    for (const block of t.split(/BEGIN:VCARD/i).slice(1)) {
+      const d = {};
+      for (const line of block.split(/\r?\n/)) { const i = line.indexOf(":"); if (i < 1) continue; const k = line.slice(0, i).split(";")[0].toUpperCase().replace(/^ITEM\d+\./, ""); if (!(k in d)) d[k] = line.slice(i + 1).replace(/\\([,;\\])/g, "$1").replace(/\\n/gi, " ").trim(); }
+      const [last = "", first = ""] = (d.N || "").split(";"), b = (d.BDAY || "").replace(/-/g, "");
+      cards.push({ name: d.FN || `${first} ${last}`.trim(), first, last, email: (d.EMAIL || "").toLowerCase(), phone: d.TEL || "", dob: /^\d{8}$/.test(b) ? `${b.slice(0, 4)}-${b.slice(4, 6)}-${b.slice(6, 8)}` : "", address: (d.ADR || "").split(";").filter(Boolean).join(", ") });
+    }
+    return cards;
+  }
+  const IMP_KIND = { "medical records": "record", "billing documents": "invoice", "administrative": "admin", "secure messages": "message" };
+  async function impRead(files) {
+    const contacts = [], items = [];
+    for (const f of files) for (const e of await unzip(f)) {
+      const parts = e.name.split("/"), top = impNorm(parts[0]), base = parts[parts.length - 1];
+      if (/\.vcf$/i.test(base)) { for (const c of vcards(new TextDecoder().decode(await e.read()))) if (c.name) contacts.push({ ...c, key: `c${contacts.length}` }); continue; }
+      const kind = IMP_KIND[top]; if (!kind) continue;
+      const holder = kind === "message" ? base.replace(/-Jared-Caban-CONV.*$/i, "").replace(/-/g, " ") : parts.length >= 3 ? parts[1] : "";
+      const type = /\.pdf$/i.test(base) ? "application/pdf" : /\.txt$/i.test(base) ? "text/plain" : /\.png$/i.test(base) ? "image/png" : /\.jpe?g$/i.test(base) ? "image/jpeg" : "";
+      if (!holder || !type) continue;
+      items.push({ kind, holder, name: base, type, date: (base.match(/(\d{4}-\d{2}-\d{2})/) || [])[1] || "", read: e.read });
+    }
+    return { contacts, items };
+  }
+  // Who each document belongs to: the contact card with that exact name; a name on two cards is left for the owner
+  function impHolders() {
+    const byName = new Map(); for (const c of imp.contacts) byName.set(impNorm(c.name), (byName.get(impNorm(c.name)) || []).concat([c]));
+    const holders = new Map();
+    for (const it of imp.items) { const k = impNorm(it.holder); if (!holders.has(k)) holders.set(k, { name: it.holder, items: [], cards: byName.get(k) || [] }); holders.get(k).items.push(it); }
+    for (const [k, h] of holders) if (h.cards.length > 1) { const pick = h.cards.find((c) => c.key === impPick[k]); if (pick) h.cards = [pick, ...h.cards.filter((c) => c !== pick)]; }
+    for (const h of holders.values()) if (!h.cards.length) { const c = { key: `h${imp.contacts.length}`, name: h.name, first: "", last: "", email: "", phone: "", dob: "", address: "", fromRecords: true }; imp.contacts.push(c); h.cards = [c]; }
+    return holders;
+  }
+  // Duplicate contact cards: SimplePractice often holds the same person twice (same name and phone, the birth date the
+  // same or missing on one). The fuller card is kept and gets the records; the other is left out by default and marked.
+  const impDigits = (p) => String(p || "").replace(/\D/g, "").slice(-10);
+  function impDupes() {
+    const groups = new Map();
+    for (const c of imp.contacts) { const k = impNorm(c.name); if (!c.fromRecords) groups.set(k, (groups.get(k) || []).concat([c])); }
+    const dupes = new Map(); // key of a left-out card -> key of the card kept
+    for (const [name, cards] of groups) {
+      if (cards.length < 2) continue;
+      const score = (c) => (c.email ? 2 : 0) + (c.dob ? 2 : 0) + (c.phone ? 1 : 0) + (c.address ? 1 : 0);
+      const kept = [...cards].sort((a, b) => score(b) - score(a))[0];
+      for (const c of cards) if (c !== kept && impDigits(c.phone) && impDigits(c.phone) === impDigits(kept.phone) && (!c.dob || !kept.dob || c.dob === kept.dob)) dupes.set(c.key, kept.key);
+      if (cards.some((c) => dupes.has(c.key)) && impPick[name] === undefined) impPick[name] = kept.key;
+    }
+    return dupes;
+  }
+  // Per contact: how many documents and invoices, and the earliest record date (when they became a patient)
+  function impRows() {
+    const holders = impHolders(), stats = new Map(imp.contacts.map((c) => [c.key, { records: 0, invoices: 0, first: "", shared: "" }]));
+    for (const [k, h] of holders) { const s = stats.get(h.cards[0].key); for (const it of h.items) { if (it.kind === "invoice") s.invoices++; else s.records++; if (it.kind === "record" && it.date && (!s.first || it.date < s.first)) s.first = it.date; } if (h.cards.length > 1) for (const x of h.cards) stats.get(x.key).shared = k; }
+    imp.rows = imp.contacts.map((c) => ({ ...c, ...stats.get(c.key) })).sort((a, b) => (b.records + b.invoices) - (a.records + a.invoices) || a.name.localeCompare(b.name));
+  }
+  V.import = async () => {
+    const head = `<div class="view-head"><div><h1>Import from SimplePractice</h1><p class="muted">Bring the old EMR's clients, records and invoices into MD Fit</p></div></div>`;
+    if (imp.batches === null) { try { imp.batches = await get("/import/sp/batches"); } catch { imp.batches = []; } }
+    const past = imp.batches.length ? `<div class="card" style="padding:0;margin-top:16px"><div class="card-head" style="padding:14px 16px 0"><h2>Earlier imports</h2></div><div class="table-wrap"><table><thead><tr><th>When</th><th>New clients</th><th>Matched</th><th>Documents</th><th>Invoices</th><th></th></tr></thead><tbody>${imp.batches.map((b) => `<tr><td>${esc(new Date(b.at).toLocaleString())}</td><td>${b.created}</td><td>${b.linked}</td><td>${b.files}</td><td>${b.invoices}</td><td>${b.undoneAt ? `<span class="pill">Undone</span>` : `<button class="btn sm" data-act="impUndo" data-id="${esc(b.id)}">Undo</button>`}</td></tr>`).join("")}</tbody></table></div></div>` : "";
+    if (imp.stage === "pick") return `${head}<div class="card"><h2 style="margin-bottom:6px">1. Choose the export files</h2>
+      <p class="muted" style="margin:0 0 12px">Pick every zip file SimplePractice gave you (Contacts, Medical Records, Billing Documents, Administrative, Secure messages). They are read here on this computer; nothing is sent until you have checked the plan and pressed Import.</p>
+      <form class="stack" data-form="impPick"><input class="input" type="file" name="files" accept=".zip,application/zip" multiple required><p class="muted" data-msg style="margin:0;font-size:12.5px">${esc(imp.msg)}</p><div class="row"><button class="btn primary">Read the files</button></div></form></div>${past}`;
+    if (imp.stage === "preview") {
+      const withRec = imp.rows.filter((r) => r.records), noEmail = imp.rows.filter((r) => !r.email && imp.choice[r.key] === "new").length;
+      const toConfirm = imp.rows.filter((r) => (imp.plan[r.key] || {}).action === "confirm" && imp.choice[r.key] === "skip").length;
+      const lbl = (m) => `Same as ${m.name}${m.email ? ` (${m.email})` : m.phone ? ` (${m.phone})` : ""}`;
+      const opt = (r) => { const p = imp.plan[r.key] || {}, cur = imp.choice[r.key], confirm = p.action === "confirm";
+        const cands = p.match ? [[`link:${p.match.id}`, lbl(p.match)]] : (p.candidates || []).map((m) => [`link:${m.id}`, lbl(m)]);
+        const o = confirm ? [["skip", "Leave out for now"], ...cands, ["new", "New client (not the same person)"]] : [["new", "New client"], ...cands, ["skip", "Leave out"]];
+        const why = confirm ? (p.candidates || []).map((m) => m.why).filter(Boolean)[0] : "";
+        return `<select class="input${confirm ? " tier-pick on" : ""}" data-change="impChoice" data-key="${esc(r.key)}" aria-label="What to do with ${esc(r.name)}">${o.map(([v, l]) => `<option value="${esc(v)}"${v === cur ? " selected" : ""}>${esc(l)}</option>`).join("")}</select>${confirm ? `<div class="muted" style="font-size:12px;color:var(--warn)">Possible match — confirm${why ? ": " + esc(why) : ""}. Left out until you choose.</div>` : ""}${p.how === "ambiguous" ? `<div class="muted" style="font-size:12px;color:var(--warn)">Two accounts have this name: pick one</div>` : ""}${imp.dupes && imp.dupes.has(r.key) ? `<div class="muted" style="font-size:12px;margin-top:4px">Duplicate card in SimplePractice (same name and phone): left out, the other card is kept</div>` : ""}${r.shared ? `<label class="row muted" style="gap:6px;font-size:12px;margin-top:4px"><input type="radio" name="pick-${esc(r.shared)}" data-change="impPick" data-name="${esc(r.shared)}" data-key="${esc(r.key)}"${r.records + r.invoices ? " checked" : ""}> Two contact cards have this name: the records belong to this one</label>` : ""}`; };
+      const count = (k) => imp.rows.filter((r) => imp.choice[r.key] === k || (k === "link" && String(imp.choice[r.key]).startsWith("link:"))).length;
+      const files = imp.rows.filter((r) => imp.choice[r.key] !== "skip").reduce((n, r) => n + r.records + r.invoices, 0);
+      return `${head}<div class="grid g3" style="margin-bottom:16px"><div class="card"><div class="muted" style="font-size:12px">New clients</div><div style="font-size:24px;font-weight:700">${count("new")}</div><div class="muted" style="font-size:12px">${noEmail} without an email address</div></div>
+        <div class="card"${toConfirm ? ' style="border-color:var(--warn)"' : ""}><div class="muted" style="font-size:12px">Matched to an MD Fit account</div><div style="font-size:24px;font-weight:700">${count("link")}</div><div class="muted" style="font-size:12px">${toConfirm ? `<b style="color:var(--warn)">${toConfirm} possible match${toConfirm === 1 ? "" : "es"} to confirm</b>` : "only empty details are filled in"}</div></div>
+        <div class="card"><div class="muted" style="font-size:12px">Documents to file</div><div style="font-size:24px;font-weight:700">${files}</div><div class="muted" style="font-size:12px">${withRec.length} people with records become patients</div></div></div>
+        <div class="card" style="padding:0"><div class="card-head" style="padding:14px 16px 0"><h2>2. Check the plan</h2><div class="row" style="gap:8px"><button class="btn" data-act="impBack">Start over</button><button class="btn primary" data-act="impGo">Import ${count("new") + count("link")} clients and ${files} documents</button></div></div>
+        <p class="muted" style="margin:0;padding:6px 16px 10px;font-size:12.5px">Nobody is emailed and no passwords are made. Clients without an email can't sign in until one is added. Paid invoices are added to revenue in the month they were issued; they are clinic revenue and never part of the revenue share.</p>
+        <div class="table-wrap" style="max-height:60vh;overflow:auto"><table><thead><tr><th>Name</th><th>Email</th><th>Records</th><th>Invoices</th><th>In MD Fit</th></tr></thead><tbody>
+        ${imp.rows.map((r) => `<tr><td><b>${esc(r.name)}</b>${r.dob ? `<div class="muted" style="font-size:12px">Born ${esc(r.dob)}</div>` : ""}</td><td>${r.email ? esc(r.email) : `<span class="muted">none</span>`}</td><td>${r.records || ""}</td><td>${r.invoices || ""}</td><td>${opt(r)}</td></tr>`).join("")}</tbody></table></div></div>`;
+    }
+    if (imp.stage === "running") { const p = imp.progress; return `${head}<div class="card"><h2 style="margin-bottom:8px">Importing…</h2><p style="margin:0 0 8px">${esc(imp.msg)}</p><div style="height:10px;border-radius:6px;background:var(--line);overflow:hidden"><div style="height:100%;width:${p.total ? Math.round((p.done / p.total) * 100) : 0}%;background:var(--accent)"></div></div><p class="muted" style="margin:8px 0 0;font-size:12.5px">${p.done} of ${p.total} documents. Keep this tab open.</p></div>`; }
+    const r = imp.result || {};
+    return `${head}<div class="card"><h2 style="margin-bottom:8px">Import finished</h2>
+      <div class="list-item"><span style="flex:1">New clients</span><b>${r.created || 0}</b></div><div class="list-item"><span style="flex:1">Matched to existing accounts</span><b>${r.linked || 0}</b></div>
+      <div class="list-item"><span style="flex:1">Made active patients</span><b>${r.patients || 0}</b></div><div class="list-item"><span style="flex:1">Documents filed on charts</span><b>${r.files || 0}</b>${r.dupes ? `<span class="muted" style="font-size:12px;margin-left:6px">(${r.dupes} already there)</span>` : ""}</div>
+      <div class="list-item"><span style="flex:1">Invoices entered in billing</span><b>${r.invoices || 0}</b><span class="muted" style="font-size:12px;margin-left:6px">${impMoney(r.paidCents || 0)} paid${r.owedCents ? `, ${impMoney(r.owedCents)} still owed` : ""}</span></div>
+      ${(r.notes || []).length ? `<p class="muted" style="font-size:12.5px;margin:10px 0 0">${r.notes.map(esc).join("<br>")}</p>` : ""}
+      ${imp.progress.errors.length ? `<p style="color:var(--bad);font-size:13px;margin:10px 0 0">${imp.progress.errors.length} document(s) could not be filed:<br>${imp.progress.errors.slice(0, 20).map(esc).join("<br>")}</p>` : ""}
+      <div class="row" style="gap:8px;margin-top:14px"><a class="btn primary" href="#clients">Open Clients</a><a class="btn" href="#economics">See revenue</a><button class="btn" data-act="impBack">Import more</button></div></div>${past}`;
+  };
+  const impMoney = (c) => `$${(c / 100).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  FORMS.impPick = async (f) => {
+    const files = [...f.files.files]; if (!files.length) return formMsg(f, "Pick the zip files first.");
+    formMsg(f, "Reading the files…");
+    try {
+      if (typeof DecompressionStream === "undefined") throw new Error("This browser can't open zip files. Use a current Chrome, Safari, Edge or Firefox.");
+      const { contacts, items } = await impRead(files);
+      if (!contacts.length && !items.length) throw new Error("No SimplePractice contacts or records were found in those files.");
+      Object.assign(imp, { contacts, items });
+      imp.dupes = impDupes();
+      impRows();
+      const plan = await api("POST", "/api/admin/import/sp/plan", { contacts: imp.contacts.map(({ key, name, first, last, email, phone, dob, address }) => ({ key, name, first, last, email, phone, dob, address })) });
+      imp.plan = Object.fromEntries(plan.rows.map((x) => [x.key, x])); imp.batches = plan.batches;
+      for (const r of imp.rows) { const p = imp.plan[r.key] || {}; imp.choice[r.key] = (imp.dupes.has(r.key) || p.action === "confirm") ? "skip" : p.action === "link" ? `link:${p.clientId}` : "new"; }
+      imp.stage = "preview"; imp.msg = ""; await render();
+    } catch (err) { formMsg(f, err.message); }
+  };
+  ACT.impChoice = (el) => { imp.choice[el.dataset.key] = el.value; render(); };
+  ACT.impPick = (el) => { impPick[el.dataset.name] = el.dataset.key; impRows(); render(); };
+  ACT.impBack = () => { impReset(); imp.batches = null; render(); };
+  ACT.impGo = async () => {
+    const rows = imp.rows.filter((r) => imp.choice[r.key] !== "skip");
+    const unsure = imp.rows.filter((r) => (imp.plan[r.key] || {}).action === "confirm" && imp.choice[r.key] === "skip").length;
+    if (!confirm(`Import ${rows.length} clients and their documents into MD Fit?${unsure ? `\n\n${unsure} possible match${unsure === 1 ? " is" : "es are"} left out because you have not confirmed ${unsure === 1 ? "it" : "them"}. Those people are not imported.` : ""}\n\nNobody is emailed. You can undo the whole import afterwards.`)) return;
+    imp.stage = "running"; imp.msg = "Creating and matching client accounts…"; await render();
+    const out = { created: 0, linked: 0, patients: 0, files: 0, dupes: 0, invoices: 0, paidCents: 0, owedCents: 0, notes: [] };
+    try {
+      const body = rows.map((r) => { const ch = String(imp.choice[r.key]); return { key: r.key, name: r.name, first: r.first, last: r.last, email: r.email, phone: r.phone, dob: r.dob, address: r.address, action: ch.startsWith("link:") ? "link" : "new", clientId: ch.startsWith("link:") ? ch.slice(5) : "", patientSince: r.records ? (r.first || new Date().toISOString().slice(0, 10)) : "" }; });
+      const made = await api("POST", "/api/admin/import/sp/clients", { rows: body });
+      Object.assign(out, { created: made.created, linked: made.linked, patients: made.patients });
+      const keyOf = new Map(); for (const h of impHolders().values()) keyOf.set(impNorm(h.name), h.cards[0].key);
+      const todo = imp.items.filter((it) => made.map[keyOf.get(impNorm(it.holder))]);
+      imp.progress = { done: 0, total: todo.length, errors: [] };
+      for (const it of todo) {
+        imp.msg = `Filing ${it.kind === "invoice" ? "invoices" : "records"}…`;
+        const q = new URLSearchParams({ batch: made.batch, client: made.map[keyOf.get(impNorm(it.holder))], kind: it.kind, date: it.date });
+        let ok = false;
+        for (let attempt = 0; attempt < 3 && !ok; attempt++) {
+          try {
+            const res = await fetch(`${API}/api/admin/import/sp/file?${q}`, { method: "POST", headers: { Authorization: "Bearer " + token, "Content-Type": it.type, "X-File-Name": encodeURIComponent(it.name), "X-Idle-Seconds": "0" }, body: new Blob([await it.read()], { type: it.type }) });
+            if (res.status === 401) { signOut(); return; }
+            const data = await res.json().catch(() => ({}));
+            if (res.status === 429) { await new Promise((go) => setTimeout(go, 3000 * (attempt + 1))); continue; }
+            if (!res.ok) { imp.progress.errors.push(`${it.holder}: ${it.name}: ${data.error || "could not be filed"}`); break; }
+            ok = true; data.duplicate ? out.dupes++ : out.files++;
+            if (data.invoice && !data.invoice.duplicate) { out.invoices++; if (data.invoice.status === "paid") out.paidCents += data.invoice.amount; else out.owedCents += data.invoice.amount; }
+            if (data.note) out.notes.push(`${it.holder}: ${data.note}`);
+          } catch (err) { if (attempt === 2) imp.progress.errors.push(`${it.holder}: ${it.name}: ${err.message}`); else await new Promise((go) => setTimeout(go, 1500)); }
+        }
+        imp.progress.done++;
+        if (imp.progress.done % 5 === 0 || imp.progress.done === imp.progress.total) { const bar = document.querySelector("#view"); if (bar && routeNow() === "import") await render(); }
+        await new Promise((go) => setTimeout(go, 120)); // gentle on the server's rate limits
+      }
+    } catch (err) { imp.progress.errors.push(err.message); }
+    const keep = { result: out, progress: imp.progress };
+    impReset(); Object.assign(imp, keep, { stage: "done", batches: null }); forget();
+    await render(); toast("Import finished.");
+  };
+  ACT.impUndo = async (el) => {
+    if (!confirm("Undo this import? The client accounts it created (unless they have signed in since), the documents it filed and the invoices it entered are removed. Anything written in MD Fit since is kept.")) return;
+    const r = await api("POST", `/api/admin/import/sp/batches/${encodeURIComponent(el.dataset.id)}/undo`, {});
+    imp.batches = null; forget(); await render(); toast(`Import undone. ${r.removedAccounts} account(s) removed.`);
+  };
+  // ===================== end of Import =====================
+
   ACT.rsEnabled = async (el) => { const on = el.getAttribute("aria-checked") !== "true"; if (!(await rsChange(on ? "Switch the revenue share on." : "Switch the revenue share off.", { enabled: on }))) return; await render(); toast(on ? "The revenue share is on." : "The revenue share is off. Nothing new is earned."); };
   ACT.rsAutoPay = async (el) => {
     const on = el.getAttribute("aria-checked") !== "true";
@@ -3292,6 +3643,7 @@
   // client is offered first), and it lands in the screen or form that already does that job. Nothing here talks to
   // the server by a route of its own, so what the client is sent is exactly what those screens send.
   const QA = [
+    ["newclient", "New client", "clients", "Add a client, or email someone the sign-up link"],
     ["invoice", "Invoice", "payments", "Emails a pay link and notifies their app"],
     ["tele", "Telehealth invite", "telehealth", "Emails the join link and notifies their app"],
     ["book", "Booking link", "booking", "Emails a link to pick a time and notifies their app"],
@@ -3300,7 +3652,7 @@
     ["program", "Program", "programs", "Add one on their chart. They are notified in the app and by email"],
     ["message", "Message", "messages", "Opens your conversation. They are notified when you send"]
   ];
-  const QA_NEED = { invoice: "payments", tele: "telehealth", book: "chart", note: "notes", forms: "forms", program: "chart", message: "messages" }; // the screen each one lands in
+  const QA_NEED = { newclient: "clients", invoice: "payments", tele: "telehealth", book: "chart", note: "notes", forms: "forms", program: "chart", message: "messages" }; // the screen each one lands in
   const qaMine = () => QA.filter(([k]) => navOk(QA_NEED[k]) && can("clients"));
   const QA_DOCK = new Set(["messages", "telehealth"]); // where a button in the corner would sit on the box to write in or the visit's controls
   const qa = { open: false, act: "", other: false, list: [], at: 0 };
@@ -3391,7 +3743,7 @@
     qaToggle: () => (qa.open ? qaClose() : qaOpen()),
     qaOther: () => { qa.other = true; qaDraw(); },
     qaBack: () => { qa.act = ""; qaDraw(); },
-    qaDo: (el) => { const who = qaWho(); if (who) return qaRun(el.dataset.k, who); qa.act = el.dataset.k; qaDraw(); },
+    qaDo: (el) => { if (el.dataset.k === "newclient") { qaClose(); return ACT.clientAdd(); } const who = qaWho(); if (who) return qaRun(el.dataset.k, who); qa.act = el.dataset.k; qaDraw(); },
     qaPick: (el) => { const c = qa.list.find((x) => x.id === el.dataset.id) || (cache.clients || []).find((x) => x.id === el.dataset.id); if (c) return qaRun(qa.act, c); }
   });
   document.addEventListener("input", (e) => { if (e.target.id === "qaFind") qaFill(); });

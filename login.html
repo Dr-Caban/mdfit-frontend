@@ -22,7 +22,7 @@
   </style>
   <link rel="apple-touch-icon" href="assets/app-icon-192.png">
   <link rel="stylesheet" href="styles.css?v=ec75b4b1">
-  <link rel="stylesheet" href="account.css?v=7e0b90a0">
+  <link rel="stylesheet" href="account.css?v=fd3988f7">
   <link rel="stylesheet" href="/site-header.css?v=f429a526">
   <script src="/site-header.js?v=312f6631" defer></script>
   <script type="application/ld+json" data-mdfit-app>{"@context":"https://schema.org","@type":"WebApplication","@id":"https://www.mymdfit.com/mdfit-app#app","name":"MD Fit","url":"https://www.mymdfit.com/mdfit-app","applicationCategory":"HealthApplication","operatingSystem":"Any web browser (iPhone, Android, computer)","browserRequirements":"Requires JavaScript","description":"Dr. Jared Caban's free app: tap where it hurts, then follow the exercise videos and the program built for it.","provider":{"@id":"https://www.mymdfit.com/#clinic"},"featureList":["Pain tool: tap where it hurts to see the muscles that usually cause it","Exercise video library","Programs designated for each problem"],"offers":[{"@type":"Offer","name":"Free","price":"0","priceCurrency":"USD"}],"isAccessibleForFree":true}</script>
@@ -77,6 +77,7 @@
         <label>Email<input name="email" type="email" required autocomplete="email"></label>
         <label>Mobile phone<input name="phone" type="tel" maxlength="30" autocomplete="tel"></label>
         <label>Password (8+ characters)<input name="password" type="password" required minlength="8" autocomplete="new-password"></label>
+        <label>Birthday <span class="muted">(optional)</span><input name="dob" type="date" min="1900-01-01" autocomplete="bday"><span class="fine" style="display:block;margin-top:4px">Add it and we'll wish you a happy birthday.</span></label>
         <label>Referral code <span class="muted">(optional)</span><input name="referralCode" maxlength="20" placeholder="e.g. JARE1A2B3C" autocomplete="off"></label>
         <input name="mdfit_hp" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
         <p class="fine">By creating an account you agree to the <a href="/terms">Terms</a> and <a href="/privacy-policy">Privacy Policy</a>.</p>
@@ -115,13 +116,13 @@
 
   <script src="config.js?v=aac711e3"></script>
   <script src="analytics.js?v=f3f61f9e" defer></script>
-  <script src="common.js?v=ef572764"></script>
+  <script src="common.js?v=113efac9"></script>
   <script>
     (() => {
       const { $, $$, api, auth, wire, API } = window.MDFit;
       const q = new URLSearchParams(location.search);
       // Same-site paths only, optionally with an app deep link like /account#pain/muscle/ql (or /intake?me=1, "Become a patient")
-      const next = /^\/[a-z]*(\?(me=1|s=[A-Za-z0-9_-]{1,64}))?(#[a-z0-9/-]*)?$/.test(q.get("next") || "") ? q.get("next") : "/account";
+      const next = /^\/[a-z]*(\?(me=1|s=[A-Za-z0-9_-]{1,64}))?(#[a-z0-9/-]*|#videos\/watch\/[A-Za-z0-9_-]{6,64})?$/.test(q.get("next") || "") ? q.get("next") : "/account";
       if (auth.get() && !q.get("reset")) { location.replace(next); return; }
 
       let resetEmail = "";
@@ -140,7 +141,13 @@
       // The link's own code first; otherwise one kept on this device from a referral link opened earlier (common.js)
       const urlRef = q.get("ref") || "";
       const ref = urlRef || (window.MDFit.refCode ? window.MDFit.refCode() : "");
-      wire($("#login-form"), async (d) => done(await api("/api/clients/login", d)), { reset: false });
+      wire($("#login-form"), async (d) => {
+        try { return done(await api("/api/clients/login", d)); }
+        catch (err) { // a temporary password from the office: it is not a way in, it leads to choosing your own
+          if (err.data && err.data.mustChangePassword && err.data.resetToken) { resetToken = err.data.resetToken; mode("reset"); const m = $("#reset-form .form-msg"); if (m) { m.className = "form-msg"; m.textContent = "That was your temporary password. Choose your own to finish signing in."; } return { message: "" }; }
+          throw err;
+        }
+      }, { reset: false });
       wire($("#signup-form"), async (d) => done(await api("/api/clients/signup", { ...d, referralCode: (d.referralCode || "").trim() || ref || undefined })), { reset: false });
       wire($("#forgot-form"), async (d) => {
         resetEmail = d.identifier;

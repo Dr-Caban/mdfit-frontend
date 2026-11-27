@@ -49,4 +49,10 @@
   "DO NOT TOUCH" section of `README.md` here and in `mdfit-backend` before editing anything near sign-in, sessions,
   roles and permissions, the audit ledger, encryption, the chart, patient-rights records, the Compliance screen, or the
   agreement locks. Change them only when the owner asks for that exact change in the session; never as a side effect.
+- **Every EMR change is monitored (owner's rule, Nov 2026).** After any change to the EMR, workspace, API or member app
+  goes live, the protocol in `docs/MONITORING.md` applies: review every 6 hours until 72 hours pass with no failure and
+  no further change, then once every 24 hours; a failure or a new change starts it again. The scheduled task
+  "MD Fit endpoint failure review" does this and restarts its own clock at every deploy. Before finishing a session
+  that shipped a change, confirm that task exists and is enabled (list scheduled tasks); if it is missing, create it
+  from `docs/MONITORING.md`. Never pause, loosen or delete it unless the owner asks in the session.
 - Only `mdfit-frontend` and `mdfit-backend` are worked on from these sessions. **Do not touch the iOS app.**
