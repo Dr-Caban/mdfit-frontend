@@ -361,6 +361,7 @@
   function sys(text) { const d = document.createElement("div"); d.className = "mg-sys"; d.textContent = text; log.appendChild(d); end(); }
   function card(title, sub) { const d = document.createElement("div"); d.className = "mg-card"; d.innerHTML = ICON.cal + "<div><b></b><span></span></div>"; d.querySelector("b").textContent = title; d.querySelector("span").textContent = sub; log.appendChild(d); end(); }
   // list: [{ label, sub, gold, hash | run | href | tel | more, name }]
+  let again = null; // what a bare "yes" presses: set by the newest row of buttons (offer), used once by ask()
   function offer(items) {
     const wrap = document.createElement("div"); wrap.className = "mg-opts";
     for (const o of items) {
@@ -377,6 +378,12 @@
       wrap.appendChild(b);
     }
     log.appendChild(wrap); end();
+    // What "yes" means for this row (ask()): its one "Yes, ..." button, else its "Another ..." button. A row with
+    // neither leaves "yes" to be understood as usual. Pressed as a tap would, without saying the label again.
+    const can = items.filter((o) => typeof o.more === "function" && !o.tel && !o.sms), yesOnes = can.filter((o) => /^Yes\b/i.test(o.label));
+    const pick = yesOnes.length === 1 ? yesOnes[0] : can.find((o) => /^Another\b/.test(o.label));
+    again = pick ? () => { const b = [...wrap.children].find((x) => x.dataset.label === pick.label); if (b && b.disabled) return;
+      if (!pick.again && b) { b.classList.add("mg-picked"); wrap.querySelectorAll("button[data-once]").forEach((x) => { x.disabled = true; }); } return pick.more(); } : null;
   }
   const opt = (id) => { const p = PLACES.find((x) => x.id === id); return id === "call" ? { label: p.label, tel: PHONE_TEL } : id === "visit" ? { label: p.label, href: "/visit" } : id === "book" ? { label: p.label, run: () => App.openBook(), name: p.name } : { label: p.label, hash: id, name: p.name }; };
   // A selection: go to that screen with the app's own navigation. On a phone the sheet steps aside; on desktop the chat stays.
@@ -875,7 +882,6 @@
   const remember = (asked, said) => { const at = Date.now(); convo.push({ who: "me", text: String(asked).slice(0, 300), at }, { who: "solomon", text: String(said).slice(0, 600), at }); history(); };
   // "Yes" to the "Another one" (joke, saying) or "Another verse" button his last line offered: that button, pressed
   const YES = /^\s*(yes|yeah|yea|yep|yup|ya|sure|please|yes please|sure thing|go on|go ahead|another|another one|one more|more|again|do it|why not|absolutely|definitely|of course|hit me|keep (them|'em) coming)( please| pls)?[\s!.]*$/i;
-  let again = null;
   async function ask(raw) {
     const text = String(raw || "").trim(); if (!text || busy) return false;
     const yes = again && YES.test(text) ? again : null; again = null;
@@ -939,14 +945,12 @@
   const talkers = [];
   function talkFor(text, lost) { for (const f of talkers) { try { const r = f(String(text || ""), !!lost); if (r && r.say) return r; } catch {} } return null; }
   function reply(r) {
-    const next = (r.opts || []).find((o) => o.label && typeof o.more === "function" && /^Another\b/.test(o.label));
-    again = next ? () => { const nx = next.more(); if (nx && nx.say) reply(nx); } : null;
     [].concat(r.say).filter(Boolean).forEach((line) => say(String(line)));
     const rd = road(), list = [];
     for (const o of r.opts || []) {
       if (o.road) { if (rd && rd.opt && !["done", "ask"].includes(rd.kind)) list.push({ ...rd.opt, gold: true }); }
       else if (o.place) { if (PLACES.some((x) => x.id === o.place)) list.push(opt(o.place)); }
-      else if (o.label && typeof o.more === "function") list.push({ label: o.label, again: true, more: () => beat(() => { const nx = o.more(); if (nx && nx.say) reply(nx); }) });
+      else if (o.label && typeof o.more === "function") list.push({ label: o.label, again: true, more: () => beat(() => { const nx = o.more(); if (nx && nx.say) reply(nx.opts || !/^Another\b/.test(o.label) ? nx : { ...nx, opts: [o] }); }) }); // "Another one" stays under the next one too
     }
     if (list.length) offer(list);
     if (r.feel) faceAfter = r.feel;
