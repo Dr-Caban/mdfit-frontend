@@ -1066,6 +1066,12 @@ dialog.sheet::backdrop { background: rgba(10, 26, 46, .7); }
 #thread .chat-list { max-height: 58vh; min-height: 260px; }
 #thread .msg-gate { margin: 12px; }
 .bubble.dr { background: var(--navy-2); color: #fff; border: 1px solid var(--navy-3); }
+/* Links Dr. Jared typed: highlighted and tappable. An address on MD Fit's own site on a line of its own is a button. */
+.bubble .msg-link { color: var(--accent-bright); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; overflow-wrap: anywhere; }
+.bubble .msg-btn { display: flex; align-items: center; justify-content: center; min-height: 44px; margin: 10px 0; padding: 10px 16px; border-radius: 12px; background: var(--accent); color: var(--navy); font-weight: 700; text-align: center; text-decoration: none; white-space: normal; overflow-wrap: anywhere; }
+.bubble .msg-btn:hover { background: var(--accent-hover); }
+.bubble .msg-btn:first-child { margin-top: 2px; }
+.bubble .msg-btn:last-child { margin-bottom: 2px; }
 .bubble.me { background: var(--accent); color: var(--navy); }
 .day-sep { text-align: center; font-size: 11.5px; color: var(--on-navy); margin: 8px 0 2px; letter-spacing: .5px; text-transform: uppercase; }
 #thread .chat-empty { color: var(--on-navy); }

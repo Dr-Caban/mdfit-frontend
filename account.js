@@ -2483,6 +2483,66 @@
     catch { toast("Couldn't add that reaction."); }
   });
   if (window.MDFitRT) MDFitRT.on("message_reaction", () => { if (inThread) loadMessages(false); });
+  // ---- Links in a message from Dr. Jared (a broadcast often carries one). A web address he typed becomes a link the
+  // member can tap. An address on MD Fit's own site that stands on its own line becomes a button, named after the short
+  // line that introduces it ("Subscribe:", "Book your session:"). Everything typed is escaped first: a message can
+  // only ever produce text, links to http(s) addresses, and line breaks.
+  const MSG_OWN = new Set(["mymdfit.com", "www.mymdfit.com", location.hostname.toLowerCase()]);
+  const MSG_URL = /https?:\/\/[^\s<>"']+|(?:www\.)?mymdfit\.com(?:\/[^\s<>"']*)?/gi;
+  // every address in a line: { at, raw (as typed, without closing punctuation), href, own, url }
+  function msgLinks(line) {
+    const found = []; let m; MSG_URL.lastIndex = 0;
+    while ((m = MSG_URL.exec(line))) {
+      const before = m.index ? line[m.index - 1] : "";
+      if (/[\w@.\-/]/.test(before)) continue; // the middle of a word or of an email address is not an address of its own
+      const raw = m[0].replace(/[.,;:!?)\]]+$/, "");
+      let url; try { url = new URL(/^https?:\/\//i.test(raw) ? raw : "https://" + raw); } catch { continue; }
+      if (!/^https?:$/.test(url.protocol) || url.username || url.password) continue;
+      const own = MSG_OWN.has(url.hostname.toLowerCase());
+      // a link to MD Fit stays on the site the member is on; the path can never start a new address ("//elsewhere")
+      const href = own ? location.origin + url.pathname.replace(/^\/+/, "/") + url.search + url.hash : url.href;
+      found.push({ at: m.index, raw, href, own, url });
+    }
+    return found;
+  }
+  function msgOwnName(url) {
+    const p = url.pathname.replace(/\/+$/, "") || "/", h = url.hash.toLowerCase();
+    if (p === "/book") return "Book a session";
+    if (p === "/account" && h === "#premium") return "See membership options";
+    if (p === "/account" && h === "#messages") return "Open messages";
+    if (p === "/account" || p === "/login") return "Open the app";
+    if (p === "/events") return "See events";
+    return "Open on MD Fit";
+  }
+  const msgA = (l, text, cls) => `<a class="${cls}" href="${esc(l.href)}"${l.own ? "" : ' target="_blank" rel="noopener noreferrer"'}>${esc(text)}</a>`;
+  function msgHtml(body) {
+    const lines = String(body ?? "").split("\n"), parts = []; // { btn: true, html } or { html }
+    const LABEL = 40;
+    for (const line of lines) {
+      const links = msgLinks(line), t = line.trim();
+      const one = links.length === 1 ? links[0] : null;
+      const tail = one ? line.slice(one.at + one.raw.length).trim() : "";
+      if (one && one.own && /^[.,;:!?)\]]*$/.test(tail)) {
+        const lead = line.slice(0, one.at).trim();
+        // "Subscribe: <address>" on one line
+        if (lead && /:$/.test(lead) && lead.length <= LABEL + 1) { parts.push({ btn: true, html: msgA(one, lead.slice(0, -1).trim(), "msg-btn") }); continue; }
+        // the address alone on its line: named after a short line ending in a colon just above it, if there is one
+        if (!lead) {
+          const prev = parts[parts.length - 1], above = prev && !prev.btn && prev.raw !== undefined ? prev.raw.trim() : "";
+          if (above && /:$/.test(above) && above.length <= LABEL + 1 && !msgLinks(above).length) { parts.pop(); parts.push({ btn: true, html: msgA(one, above.slice(0, -1).trim(), "msg-btn") }); }
+          else parts.push({ btn: true, html: msgA(one, msgOwnName(one.url), "msg-btn") });
+          continue;
+        }
+      }
+      // any other line: its text, with each address as a link
+      let html = "", at = 0;
+      for (const l of links) { html += esc(line.slice(at, l.at)) + msgA(l, l.raw, "msg-link"); at = l.at + l.raw.length; }
+      parts.push({ raw: line, html: html + esc(line.slice(at)), blank: !t });
+    }
+    // a button brings its own spacing: an empty line right before or after one is dropped
+    const kept = parts.filter((p, i) => !(p.blank && ((parts[i - 1] && parts[i - 1].btn) || (parts[i + 1] && parts[i + 1].btn))));
+    return kept.map((p, i) => p.html + (!p.btn && kept[i + 1] && !kept[i + 1].btn ? "<br>" : "")).join("");
+  }
   async function loadMessages(scroll) {
     let d; try { d = await apiAuth("GET", "/api/me/messages"); } catch { return; }
     msgData = d;
@@ -2498,7 +2558,7 @@
       const day = new Date(m.at).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
       const sep = day !== lastDay ? `<p class="day-sep">${day}</p>` : ""; lastDay = day;
       const r = m.reactions || {}, shown = [r.client, r.doctor].filter(Boolean);
-      return `${sep}<div class="bubble ${m.from === "client" ? "me" : "dr"}" data-mid="${esc(m.id)}"><p>${esc(m.body).replace(/\n/g, "<br>")}</p><span>${new Date(m.at).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}${m.from === "client" && m.read ? " · Seen" : ""}</span>${shown.length ? `<div class="reacts">${shown.map((e) => `<b>${e}</b>`).join("")}</div>` : ""}<button type="button" class="react-add" aria-label="React">☺+</button><div class="react-pick" hidden>${REACTS.map((e) => `<button type="button" data-emoji="${e}" class="${r.client === e ? "on" : ""}">${e}</button>`).join("")}</div></div>`;
+      return `${sep}<div class="bubble ${m.from === "client" ? "me" : "dr"}" data-mid="${esc(m.id)}"><p>${m.from === "client" ? esc(m.body).replace(/\n/g, "<br>") : msgHtml(m.body)}</p><span>${new Date(m.at).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}${m.from === "client" && m.read ? " · Seen" : ""}</span>${shown.length ? `<div class="reacts">${shown.map((e) => `<b>${e}</b>`).join("")}</div>` : ""}<button type="button" class="react-add" aria-label="React">☺+</button><div class="react-pick" hidden>${REACTS.map((e) => `<button type="button" data-emoji="${e}" class="${r.client === e ? "on" : ""}">${e}</button>`).join("")}</div></div>`;
     }).join("")
       : `<p class="muted small chat-empty">Start the conversation. Tell Dr. Jared what's going on, where it hurts, or what you'd like help with.</p>`;
     if (scroll || d.messages.length !== msgCount) list.scrollTop = list.scrollHeight;
