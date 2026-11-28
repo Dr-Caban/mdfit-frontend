@@ -363,6 +363,7 @@
   // list: [{ label, sub, gold, hash | run | href | tel | more, name }]
   let again = null; // what a bare "yes" presses: set by the newest row of buttons (offer), used once by ask()
   function offer(items) {
+    if (!items.length) { again = null; return; } // nothing to offer (small talk): no empty row, and no older "Another" for "yes"
     const wrap = document.createElement("div"); wrap.className = "mg-opts";
     for (const o of items) {
       const link = o.tel ? "tel:" + o.tel : o.sms ? "sms:" + o.sms : ""; // a call or a text message opens the phone's own app
@@ -932,7 +933,7 @@
       lastTopic = ""; // a follow-up belongs to the answer just given; the answer below sets it again if it has one
       const care = !!(u.health || u.pained || u.area); // about pain or the body: the limit message keeps the pain tool and the clinic
       if (!(ai && ai.ok !== false && ai.urgent)) asked1();
-      if (aside) reply(told || aside); else if (ai) { await aiAnswer(ai, care); if (ai.ok !== false && !ai.urgent && typeof ai.say === "string" && ai.say.trim()) remember(text, ai.say.trim()); } else if (!ok) limit(care); else if (told) reply(told); else await plan.run();
+      if (aside) reply(told || aside); else if (ai) { await aiAnswer(ai, care, u.area); if (ai.ok !== false && !ai.urgent && typeof ai.say === "string" && ai.say.trim()) remember(text, ai.say.trim()); } else if (!ok) limit(care); else if (told) reply(told); else await plan.run();
     } catch { d.remove(); say("Something went wrong on my side. You can still get anywhere from the menu, or call the clinic."); offer([opt("call")]); }
     // Whatever happened above, the dots go and the box takes the next message
     finally { d.remove(); busy = false; end(); }
@@ -994,11 +995,15 @@
     return null;
   }
   const FROM_SERVER = { workout: "generate", membership: "premium" };
-  async function aiAnswer(r, care) {
+  async function aiAnswer(r, care, devArea) {
     if (r.ok === false) return limit(care);
     if (r.urgent) return emergency();
-    const area = AREAS[r.area] ? r.area : ""; if (area) ctx.area = area;
-    const ids = [...new Set((Array.isArray(r.places) ? r.places : []).map((x) => FROM_SERVER[x] || x))].filter((id) => id !== "call" && PLACES.some((p) => p.id === id)).slice(0, 5);
+    // The part of the body: the assistant's, else the one the device found in the message
+    const area = AREAS[r.area] ? r.area : AREAS[devArea] ? devArea : ""; if (area) ctx.area = area;
+    // About pain or the body: the pain tool and booking are always offered, even when the assistant left them out
+    const picked = [...new Set((Array.isArray(r.places) ? r.places : []).map((x) => FROM_SERVER[x] || x))].filter((id) => id !== "call" && PLACES.some((p) => p.id === id));
+    const must = care ? ["pain", "book"].filter((id) => !picked.includes(id)) : [];
+    const ids = [...picked.slice(0, 5 - must.length), ...must];
     say(String(r.say || "").trim().slice(0, 600) || "Here's where I can take you:");
     if (FACE[r.mood]) faceAfter = r.mood; // the face he wears once the chat is closed
     // A verse was asked for: the model leads into it, and the verse itself comes from his own list, word for word

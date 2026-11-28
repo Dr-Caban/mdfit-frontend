@@ -83,8 +83,13 @@ export default async function middleware(request) {
   // once it sets one. Everything private still needs a login, and step 2 still refuses bots from every country.
   const IOS = /\b(iphone|ipad|ipod)\b/i.test(ua);
 
+  // Stripe sends its webhooks from servers in several countries (India among them), and a delivery refused here never
+  // reaches the API: a renewal, a cancellation or a refund would go unrecorded. Only that one POST passes the country
+  // lock; the API checks Stripe's signature on it and refuses anything else.
+  const STRIPE_HOOK = request.method === "POST" && url.pathname === "/api/stripe/webhook";
+
   // 1. Country lock (header is always set on Vercel; only missing in local development)
-  if (!OPEN_TO_ALL && !IOS && country && !ALLOWED.has(country)) return page(403, "Not available in your region", "MD Fit's website is only available in the United States.");
+  if (!OPEN_TO_ALL && !IOS && !STRIPE_HOOK && country && !ALLOWED.has(country)) return page(403, "Not available in your region", "MD Fit's website is only available in the United States.");
 
   // 2. Bots and scrapers. Search engines may read the public homepage only.
   if (!ua || BAD_UA.test(ua)) return page(403, "Automated access isn't allowed", "This site can only be used in a web browser or the MD Fit app.");
