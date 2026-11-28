@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Announcement Emails | MD Fit</title>
+  <meta name="description" content="Stop or restart announcement emails from MD Fit. Emails about your own visits and account are not affected.">
+  <link rel="icon" href="assets/icon-64.png" type="image/png">
+  <!-- This page stands on its own (its styles and script are in the file) so the link in an email works from
+       anywhere, even where the rest of the site is not served. It shows no personal details. -->
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;display:grid;place-items:center;padding:20px;background:#0A1A2E;color:#0A1A2E;font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+    .card{width:100%;max-width:440px;background:#fff;border-radius:14px;padding:28px 24px;text-align:center}
+    .brand{margin:0 0 6px;font-weight:700;letter-spacing:.02em;color:#2F6E9E}
+    h1{margin:0 0 10px;font:700 26px/1.2 Georgia,"Times New Roman",serif}
+    p{margin:0 0 16px}
+    button{font:inherit;font-weight:700;border-radius:10px;padding:12px 20px;cursor:pointer;border:1px solid #7AAFD7;background:#7AAFD7;color:#0A1A2E;min-width:200px}
+    button.line{background:#fff;color:#2F6E9E}
+    button:disabled{opacity:.6;cursor:default}
+    button:focus-visible,a:focus-visible{outline:3px solid #2F6E9E;outline-offset:2px}
+    [hidden]{display:none!important}
+    #msg{min-height:1.55em;margin:14px 0 0;font-weight:600}
+    #msg.ok{color:#2E7D4F}
+    #msg.err{color:#C62828}
+    .small{margin:18px 0 0;font-size:13px;color:#5B6B7C}
+    .small a{color:#2F6E9E}
+  </style>
+</head>
+<body>
+  <main class="card">
+    <p class="brand">MD Fit</p>
+    <h1>Announcement emails</h1>
+    <p id="what">Stop getting announcement emails from MD Fit? Announcements still reach you in the MD Fit app, and emails about your own visits and account will still come.</p>
+    <button type="button" id="go">Unsubscribe</button>
+    <button type="button" id="undo" class="line" hidden>Subscribe again</button>
+    <p id="msg" role="status"></p>
+    <p class="small"><a href="/">mymdfit.com</a> · 941-313-0562</p>
+  </main>
+  <script>
+    (() => {
+      const q = new URLSearchParams(location.search), c = q.get("c") || "", t = q.get("t") || "";
+      const $ = (id) => document.getElementById(id), go = $("go"), undo = $("undo"), what = $("what"), msg = $("msg");
+      const say = (text, kind) => { msg.className = kind || ""; msg.textContent = text; };
+      // Nothing happens until the button is pressed: a mail scanner that only opens the link changes nothing.
+      if (!c || !t) { go.hidden = true; what.textContent = "This link is incomplete."; say("Open the unsubscribe link at the bottom of an MD Fit email, or call 941-313-0562.", "err"); return; }
+      const url = "/api/unsubscribe?c=" + encodeURIComponent(c) + "&t=" + encodeURIComponent(t);
+      const show = (off) => {
+        go.hidden = off; undo.hidden = !off;
+        what.textContent = off ? "You are unsubscribed from MD Fit announcement emails. Announcements still reach you in the MD Fit app, and emails about your own visits and account still come."
+          : "Stop getting announcement emails from MD Fit? Announcements still reach you in the MD Fit app, and emails about your own visits and account will still come.";
+      };
+      const send = async (back) => {
+        go.disabled = undo.disabled = true; say("");
+        try {
+          const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(back ? { resubscribe: true } : {}) });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok) throw new Error(data.error || "That did not go through. Please try again, or call 941-313-0562.");
+          show(!!data.unsubscribed);
+          say(data.unsubscribed ? "Done. You will not get announcement emails." : "You are subscribed again.", "ok");
+        } catch (err) { say(err.message, "err"); }
+        go.disabled = undo.disabled = false;
+      };
+      go.addEventListener("click", () => send(false));
+      undo.addEventListener("click", () => send(true));
+      fetch(url, { headers: { Accept: "application/json" } })
+        .then((r) => r.json().catch(() => ({})).then((d) => ({ status: r.status, d })))
+        // only a link the server refuses is called not valid; if the check itself did not get through, the button stays
+        .then(({ status, d }) => { if (status === 200) show(!!d.unsubscribed); else if (status === 400) { go.hidden = true; what.textContent = "This link is not valid."; say(d.error || "Open the unsubscribe link at the bottom of an MD Fit email.", "err"); } })
+        .catch(() => {});
+    })();
+  </script>
+</body>
+</html>
