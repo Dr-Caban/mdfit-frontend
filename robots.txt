@@ -33,6 +33,7 @@ Allow: /api/feedback$
 Allow: /api/videos$
 Disallow: /login
 Disallow: /cancel
+Disallow: /unsubscribe
 Disallow: /intake
 Disallow: /data/
 Allow: /

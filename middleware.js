@@ -27,6 +27,12 @@ const PUBLIC_API = /^\/api\/(site|reviews|feedback|videos)$/;
 // unfurler, a cache) is told the page does not exist. The page holds no patient data either way: that only comes
 // from the API after sign-in. Every other page is unchanged. See README: DO NOT TOUCH.
 const STAFF_PAGE = /^\/(admin|workspace|admin-classic)(\.html)?\/?$/;
+// The unsubscribe link at the bottom of an announcement email (the page, and the one request it makes). It has to work
+// wherever the email is opened, and for the one-click request a mail provider's own servers send (RFC 8058), which
+// can come from any country: an unsubscribe that quietly fails is worse than no link. Only these two exact paths skip
+// the country lock. The bot rules below still apply, the page shows no personal details, and the request does nothing
+// without the signature that is in that person's own link.
+const UNSUBSCRIBE = /^\/(unsubscribe|api\/unsubscribe)$/;
 const STAFF_FILE = /^\/(workspace-app\.js|admin\.js|admin-habits\.js|admin\.css)$/;
 function staffRefused(request, url, ua) {
   const page = STAFF_PAGE.test(url.pathname), file = STAFF_FILE.test(url.pathname);
@@ -67,7 +73,7 @@ export default async function middleware(request) {
   // A public page is drawn from the public, read-only API calls, so a search engine that may read the page may GET
   // those from wherever it crawls too (those paths only): otherwise it indexes the placeholders.
   const publicRead = request.method === "GET" && PUBLIC_API.test(url.pathname);
-  const OPEN_TO_ALL = url.pathname === "/sitemap.xml" || url.pathname === "/robots.txt"
+  const OPEN_TO_ALL = url.pathname === "/sitemap.xml" || url.pathname === "/robots.txt" || UNSUBSCRIBE.test(url.pathname)
     || (SEARCH.test(ua) && (!PRIVATE.test(url.pathname) || publicRead));
 
   // The iOS app is used wherever the member happens to be, and App Review tests it from outside the United States:

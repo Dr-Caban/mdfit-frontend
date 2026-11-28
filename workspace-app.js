@@ -211,7 +211,9 @@
     download: '<path d="M12 4v12M7 11l5 5 5-5"/><path d="M4 20h16"/>',
     trash: '<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/>',
     restore: '<path d="M4 12a8 8 0 1 0 2.4-5.7"/><path d="M4 4v5h5"/>',
-    search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>'
+    search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+    mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
+    image: '<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="m21 16-5-5-9 9"/>'
   };
   const ui = (name, size = 16) => `<svg class="ui-ic" viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${UI[name]}</svg>`;
   const ICON = {
@@ -1831,19 +1833,49 @@
     },
     noteDiscard: async (el) => { if (!confirm("Discard this draft? This cannot be undone.")) return; await api("DELETE", `/api/admin/notes/${el.dataset.id}`); if (note.id === el.dataset.id) noteReset(note.clientId); toast("Draft discarded."); await render(); },
     dictate: (el) => dictate(el),
-    // Broadcast: one message to many people. It lands in each person's own private thread; nobody sees who else got it.
+    // Broadcast: one message to many people, in the app, by email, or both. Nobody sees who else got it.
     broadcast: async () => {
-      const [list, past] = await Promise.all([clients(), get("/messages/broadcasts").catch(() => [])]);
-      modal(`<div class="card-head"><h2 class="row" style="gap:6px">${ui("broadcast", 18)}Broadcast</h2><button type="button" class="btn sm ghost" data-act="closeModal" aria-label="Close">${ui("x", 14)}</button></div>
-        <form class="stack" data-form="broadcast">
-          <p class="muted" style="margin:0;font-size:13px">One message to many people. Each person gets it in their own private thread and cannot see who else received it.</p>
-          <div class="field"><label for="bcTo">Send to</label><select id="bcTo" name="to" class="input" data-change="bcTo"><option value="all">Everyone (${list.length})</option><option value="members">Paying members</option><option value="selected">People I pick</option></select></div>
-          <div class="field" id="bcPick" hidden><label>Pick people</label><div class="bc-list">${list.map((c) => `<label class="row" style="gap:8px"><input type="checkbox" name="who" value="${esc(c.id)}"><span>${esc(c.name)} <span class="muted" style="font-size:12px">${esc(c.email)}</span></span></label>`).join("") || none("No clients yet.")}</div></div>
-          <div class="field"><div class="row" style="justify-content:space-between"><label for="bcBody">Message</label><button type="button" class="btn sm mic" data-act="dictate" data-for="bcBody" aria-pressed="false">${ui("mic", 14)}<span>Dictate</span></button></div><textarea id="bcBody" name="body" class="input" style="min-height:140px" maxlength="4000" required placeholder="Keep health details out of a message that goes to many people"></textarea></div>
-          <label class="row" style="gap:8px"><input type="checkbox" name="email" checked><span>Also email each person that a new message is waiting (the email never contains the message)</span></label>
-          <div class="row"><button class="btn primary">Send broadcast</button><span class="muted" id="bcMsg" role="status" style="font-size:12.5px"></span></div>
+      const [list, past, ppl] = await Promise.all([clients(), get("/messages/broadcasts").catch(() => []), get("/messages/broadcast/people").catch(() => null)]);
+      bc.ppl = ppl; bc.list = list; bc.photos = []; bc.adding = false; bc.gen++; bc.key = bcKey();
+      const s = bcSets(), mailOn = !!(ppl && ppl.emailOn), lim = (ppl && ppl.limits) || {};
+      const way = (v, icons, name, text, on) => `<label class="bc-way ${v}"><input type="radio" name="delivery" value="${v}" data-change="bcWay"${v === "app" ? " checked" : ""}${on ? "" : " disabled"}><span class="bc-way-h">${icons}${name}</span><span class="bc-way-d">${text}</span></label>`;
+      modal(`<div class="card-head"><h2 class="row" style="gap:6px">${ui("broadcast", 18)}Broadcast</h2>${xBtn}</div>
+        <form class="stack bc-form" data-form="broadcast" data-way="app">
+          <p class="muted" style="margin:0;font-size:13px">One message to many people. Nobody can see who else received it.</p>
+          <div class="field"><label id="bcWayL">How it goes out</label><div class="bc-ways" role="radiogroup" aria-labelledby="bcWayL">
+            ${way("app", ui("chat", 16), "App message", "Lands in each person's private thread in the MD Fit app.", true)}
+            ${way("email", ui("mail", 16), "Email", "The message itself in each person's inbox. Photos allowed.", mailOn)}
+            ${way("both", ui("chat", 16) + ui("mail", 16), "Both", "The app message and the full email.", mailOn)}
+          </div>${mailOn ? "" : `<p class="muted" style="margin:4px 0 0;font-size:12px">${ppl ? "Email is not set up on this server, so only the app message is available." : "Email broadcasts are not available yet."}</p>`}</div>
+          <div class="field"><label for="bcTo">Send to</label><select id="bcTo" name="to" class="input" data-change="bcTo"><option value="all">Everyone (${ppl ? ppl.total : list.length})</option><option value="members">Paying members${ppl ? ` (${ppl.members.length})` : ""}</option><option value="selected">People I pick</option></select></div>
+          <div class="field" id="bcPick" hidden><label>Pick people</label><div class="bc-list">${list.map((c) => { const m = ppl ? bcMail(c.id, s) : "ok"; return `<label class="bc-person" data-mail="${m}"><input type="checkbox" name="who" value="${esc(c.id)}"><span class="bc-who">${esc(c.name)} <span class="muted" style="font-size:12px">${esc(c.email)}</span></span><span class="bc-bs">${bcAppPill()}${m === "ok" ? bcMailPill() : `<span class="pill off bc-b">${BC_OFF[m]}</span>`}</span></label>`; }).join("") || none("No clients yet.")}</div></div>
+          <div class="bc-aud" id="bcAud" role="status"></div>
+          <div class="field" id="bcSubjectF" hidden><label for="bcSubject">Email subject</label><input id="bcSubject" name="subject" class="input" maxlength="${lim.subject || 120}" placeholder="For example: Holiday hours"></div>
+          <div class="field"><div class="row" style="justify-content:space-between"><label for="bcBody">Message</label><button type="button" class="btn sm mic" data-act="dictate" data-for="bcBody" aria-pressed="false">${ui("mic", 14)}<span>Dictate</span></button></div><textarea id="bcBody" name="body" class="input" style="min-height:140px" maxlength="${lim.appBody || 2000}" required placeholder="Keep health details out of a message that goes to many people"></textarea></div>
+          <div class="field" id="bcPhotosF" hidden><label>Photos in the email</label><div class="bc-photos" id="bcPhotos"></div><div class="row"><label class="btn sm bc-add" id="bcPhotoAdd">${ui("image", 14)}Add photos<input type="file" class="bc-file" multiple accept="image/jpeg,image/png,image/webp,image/heic,image/*" data-change="bcPhoto"></label><span class="muted" id="bcPhotoN" style="font-size:12px"></span></div></div>
+          <label class="row" id="bcNoticeF" style="gap:8px;flex-wrap:nowrap;align-items:flex-start"><input type="checkbox" name="email" checked style="margin-top:4px"><span>Also email each person that a new message is waiting (this notice never contains the message)</span></label>
+          <p class="bc-warn" id="bcWarn" hidden>${ui("alert", 14)}<span>An email sits in the person's inbox, outside the app. Keep anyone's health details out of it, and use only photos of people who have agreed to that. Each person gets their own copy, with a link to unsubscribe.</span></p>
+          <div class="row"><button class="btn primary">Send broadcast</button><button type="button" class="btn" id="bcTest" data-act="bcTest" hidden>${ui("mail", 14)}Send a test to me</button><span class="muted" id="bcMsg" role="status" style="font-size:12.5px"></span></div>
         </form>
-        ${past.length ? `<h3 style="margin:14px 0 4px">Recent broadcasts</h3>${past.slice(0, 5).map((b) => `<div class="list-item"><span style="flex:1;min-width:0"><div class="muted" style="font-size:12px">${when(b.at)}${b.sending ? " · emails still going out" : ""}</div><div style="overflow-wrap:anywhere">${esc(b.preview)}${b.preview && b.preview.length >= 120 ? "…" : ""}</div></span><span class="pill">${b.read}/${b.recipients} read</span></div>`).join("")}` : ""}`);
+        ${past.length ? `<h3 style="margin:14px 0 4px">Recent broadcasts</h3>${past.slice(0, 5).map(bcPastRow).join("")}` : ""}`);
+      bcPaint();
+    },
+    // The email exactly as it will look, sent to the person composing it and to nobody else
+    bcTest: async (el) => {
+      const f = el.closest("form"), msg = $("#bcMsg"), subject = f.subject.value.trim(), body = f.body.value.trim();
+      if (!subject) { msg.textContent = "Give the email a subject first."; f.subject.focus(); return; }
+      if (!body) { msg.textContent = "Type the message first."; f.body.focus(); return; }
+      if (bc.adding) { msg.textContent = "Wait for the photos to finish adding."; return; }
+      el.disabled = true; msg.textContent = "Sending the test…";
+      try {
+        const r = await api("POST", "/api/admin/messages/broadcast/test", { delivery: f.delivery.value === "both" ? "both" : "email", subject, body, photoIds: bc.photos.map((p) => p.id) });
+        msg.textContent = r.sent ? `Test sent to ${r.to}. Nobody else received it.` : "The test could not be sent. Check the email settings.";
+      } catch (err) { msg.textContent = err.message; }
+      el.disabled = bc.adding;
+    },
+    bcPhotoDrop: async (el) => {
+      const id = el.dataset.id; bc.photos = bc.photos.filter((p) => p.id !== id); bcPaintPhotos();
+      api("DELETE", `/api/admin/messages/broadcast/photo/${encodeURIComponent(id)}`).catch(() => {});
     },
     teleRole: (el) => { const p = tele.peers.get(el.dataset.id); if (!p) return; p.byHost = el.dataset.role === "speaker" && !p.asking; MDFitRT.emit("tele_role", { clientId: p.id, role: el.dataset.role }); if (el.dataset.role === "speaker") toast(p.asking ? `${firstName(p.name)} is coming on screen.` : `${firstName(p.name)} was asked to speak. Their camera turns on once they agree.`); },
     teleKick: (el) => { const p = tele.peers.get(el.dataset.id); if (p && confirm(`Remove ${p.name} from the room? They cannot come back into this session.`)) MDFitRT.emit("tele_end", { clientId: p.id }); },
@@ -1973,14 +2005,26 @@
   const FORMS = {
     teleChat: async (f) => { const body = f.body.value.trim(); if (!body) return; if (!teleSend({ t: "chat", body })) { toast("Chat isn't connected yet."); return; } tele.chat.push({ me: true, body, at: Date.now() }); f.body.value = ""; teleMount(); }, // in a live room this goes to everyone in it
     broadcast: async (f) => {
-      const to = f.to.value, body = f.body.value.trim(), ids = [...f.querySelectorAll("[name=who]:checked")].map((x) => x.value), msg = $("#bcMsg");
+      const way = f.delivery.value, mail = way !== "app", to = f.to.value, body = f.body.value.trim(), subject = f.subject.value.trim(), ids = [...f.querySelectorAll("[name=who]:checked")].map((x) => x.value), msg = $("#bcMsg");
       if (!body) return;
+      if (bc.adding) { msg.textContent = "Wait for the photos to finish adding."; return; }
       if (to === "selected" && !ids.length) { msg.textContent = "Pick at least one person."; return; }
-      if (!confirm(to === "selected" ? `Send this to ${ids.length} ${ids.length === 1 ? "person" : "people"}?` : to === "members" ? "Send this to every paying member?" : "Send this to everyone?")) return;
+      if (mail && !subject) { msg.textContent = "Give the email a subject."; f.subject.focus(); return; }
+      const n = bcCount(f);
+      // an email to one person is a private letter, not a broadcast: that belongs in their thread in the app
+      const min = (bc.ppl && bc.ppl.limits && bc.ppl.limits.minEmail) || 2;
+      if (mail && n.email < min) { msg.textContent = n.email ? `Only ${bcPeople(n.email)} in that choice can be emailed. An email broadcast is for a group (at least ${min}); to write to one person, use their message thread.` : "Nobody in that choice can be emailed."; return; }
+      const pics = mail && bc.photos.length ? ` with ${bc.photos.length} ${bc.photos.length === 1 ? "photo" : "photos"}` : "";
+      const ask = way === "app" ? `Send this in the app to ${bcPeople(n.app)}?` : way === "email" ? `Send this email${pics} to ${bcPeople(n.email)}?` : `Send this in the app to ${bcPeople(n.app)}, and by email${pics} to ${bcPeople(n.email)}?`;
+      if (!confirm(ask)) return;
       const btn = f.querySelector("button.primary"); btn.disabled = true; msg.textContent = "Sending…";
       try {
-        const r = await api("POST", "/api/admin/messages/broadcast", { to, body, email: f.email.checked, ...(to === "selected" ? { clientIds: ids } : {}) });
-        stopDictation(); closeModal(); toast(`Broadcast sent to ${r.sent} ${r.sent === 1 ? "person" : "people"}${r.emailing ? `. Emailing ${r.emailing} a notice.` : "."}`);
+        // key: this press of Send. If the answer is lost and Send is pressed again, the server answers for the first press.
+        const who = to === "selected" ? { clientIds: ids } : {};
+        const r = await api("POST", "/api/admin/messages/broadcast", mail ? { delivery: way, to, subject, body, photoIds: bc.photos.map((p) => p.id), key: bc.key, ...who } : { to, body, email: f.email.checked, key: bc.key, ...who });
+        bc.photos = []; bc.key = "";
+        stopDictation(); closeModal();
+        toast(r.repeat ? "That was already sent the first time. It has not been sent again." : way === "app" ? `Broadcast sent to ${bcPeople(r.sent)}${r.emailing ? `. Emailing ${r.emailing} a notice.` : "."}` : way === "email" ? `Email going out to ${bcPeople(r.emailing)}.` : `In the app for ${bcPeople(r.sent)}. Email going out to ${bcPeople(r.emailing)}.`);
         if (route() === "messages") await render();
       } catch (err) { msg.textContent = err.message; btn.disabled = false; }
     },
@@ -2430,6 +2474,114 @@
     superbill: (f) => docSubmit("superbill", f),
     gfe: (f) => docSubmit("gfe", f),
   });
+  // ---- Broadcast composer. Two ways out, kept apart on screen: an app message (blue) and an email (violet).
+  // bc.ppl is what the server says about who can be emailed; bc.photos are the photos waiting to go in the email.
+  const bc = { ppl: null, list: [], photos: [], adding: false, gen: 0, key: "" };
+  const bcKey = () => (window.crypto && crypto.randomUUID ? crypto.randomUUID() : `press-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 12)}`);
+  // while photos are still being read and uploaded, nothing can be sent: the email would go without them
+  const bcBusy = () => { const f = $("[data-form=broadcast]"); if (!f) return; const b = f.querySelector("button.primary"), t = $("#bcTest"); if (b) b.disabled = bc.adding; if (t) t.disabled = bc.adding; };
+  const bcPeople = (n) => (n === null ? "every paying member" : `${n} ${n === 1 ? "person" : "people"}`);
+  const bcSets = () => { const p = bc.ppl || {}; return { members: new Set(p.members || []), noEmail: new Set(p.noEmail || []), unsubscribed: new Set(p.unsubscribed || []), restricted: new Set(p.restricted || []) }; };
+  // Why a person cannot be emailed, or "ok"
+  const bcMail = (id, s) => (s.noEmail.has(id) ? "none" : s.unsubscribed.has(id) ? "unsubscribed" : s.restricted.has(id) ? "restricted" : "ok");
+  const BC_OFF = { none: "No email on file", unsubscribed: "Unsubscribed", restricted: "Asked for another way" };
+  const bcAppPill = (label = "App") => `<span class="pill ap bc-b">${ui("chat", 12)}${label}</span>`;
+  const bcMailPill = (label = "Email") => `<span class="pill em bc-b">${ui("mail", 12)}${label}</span>`;
+  // Who the current choice reaches: in the app, by email, and who is left out of the email and why
+  function bcCount(f) {
+    const p = bc.ppl, to = f.to.value, picked = [...f.querySelectorAll("[name=who]:checked")].map((x) => x.value);
+    if (!p) return { app: to === "selected" ? picked.length : to === "members" ? null : bc.list.length, email: null, off: { none: 0, unsubscribed: 0, restricted: 0 } };
+    const s = bcSets(), off = { none: 0, unsubscribed: 0, restricted: 0 };
+    if (to === "all") {
+      off.none = s.noEmail.size; off.unsubscribed = s.unsubscribed.size; off.restricted = s.restricted.size;
+      return { app: p.total, email: Math.max(0, p.total - off.none - off.unsubscribed - off.restricted), off };
+    }
+    const ids = to === "members" ? [...s.members] : picked;
+    let email = 0;
+    ids.forEach((id) => { const m = bcMail(id, s); if (m === "ok") email++; else off[m]++; });
+    return { app: ids.length, email, off };
+  }
+  function bcPaint() {
+    const f = $("[data-form=broadcast]"); if (!f) return;
+    const way = f.delivery.value, mail = way !== "app", lim = (bc.ppl && bc.ppl.limits) || { appBody: 2000, emailBody: 5000 };
+    f.dataset.way = way;
+    $("#bcSubjectF").hidden = !mail; $("#bcPhotosF").hidden = !mail; $("#bcWarn").hidden = !mail; $("#bcTest").hidden = !mail; $("#bcNoticeF").hidden = mail;
+    f.body.maxLength = way === "email" ? lim.emailBody : lim.appBody;
+    // an email cannot go to someone who cannot be emailed, so in email-only they cannot be picked (a tick they already have is kept for the app message)
+    f.querySelectorAll(".bc-person").forEach((row) => { const cb = row.querySelector("input"), off = way === "email" && row.dataset.mail !== "ok"; cb.disabled = off; row.classList.toggle("off", off); });
+    const n = bcCount(f), left = [n.off.none && `${n.off.none} with no email on file`, n.off.unsubscribed && `${n.off.unsubscribed} unsubscribed`, n.off.restricted && `${n.off.restricted} asked to be reached another way`].filter(Boolean);
+    $("#bcAud").innerHTML = (way !== "email" ? `<div class="bc-aud-row app">${bcAppPill("App message")}<b>${bcPeople(n.app)}</b><span class="muted">in their private thread</span></div>` : "")
+      + (mail ? `<div class="bc-aud-row email">${bcMailPill()}<b>${n.email === null ? "…" : bcPeople(n.email)}</b><span class="muted">${left.length ? `Left out: ${left.join(", ")}` : "everyone in this choice can be emailed"}</span></div>` : "");
+    f.querySelector("button.primary").textContent = way === "app" ? "Send broadcast" : way === "email" ? "Send email" : "Send both";
+    bcPaintPhotos();
+  }
+  function bcPaintPhotos() {
+    const box = $("#bcPhotos"); if (!box) return;
+    const max = (bc.ppl && bc.ppl.limits && bc.ppl.limits.photos) || 4;
+    box.innerHTML = bc.photos.map((p, i) => `<div class="bc-photo"><img src="${p.src}" alt="Photo ${i + 1}: ${esc(p.name)}"><button type="button" data-act="bcPhotoDrop" data-id="${esc(p.id)}" aria-label="Remove photo ${i + 1}">${ui("x", 12)}</button></div>`).join("");
+    const add = $("#bcPhotoAdd"); if (add) add.hidden = bc.photos.length >= max;
+    const n = $("#bcPhotoN"); if (n) n.textContent = bc.photos.length ? `${bc.photos.length} of ${max}. They are made smaller before sending.` : `Up to ${max}. They are made smaller before sending.`;
+  }
+  // A picked photo is read here, turned the right way up, made smaller and saved as a JPG (which also drops the
+  // camera's hidden details, such as where it was taken). What is uploaded is that smaller copy.
+  async function bcShrink(file, limit) {
+    const draw = async () => {
+      if (window.createImageBitmap) { try { return await createImageBitmap(file, { imageOrientation: "from-image" }); } catch { try { return await createImageBitmap(file); } catch {} } }
+      const url = await new Promise((ok, no) => { const r = new FileReader(); r.onload = () => ok(r.result); r.onerror = no; r.readAsDataURL(file); });
+      return new Promise((ok, no) => { const im = new Image(); im.onload = () => ok(im); im.onerror = no; im.src = url; });
+    };
+    const src = await draw(), w0 = src.width || src.naturalWidth, h0 = src.height || src.naturalHeight;
+    if (!w0 || !h0) throw new Error("unreadable");
+    const render = (side, q) => new Promise((ok) => {
+      const k = Math.min(1, side / Math.max(w0, h0)), cv = document.createElement("canvas");
+      cv.width = Math.max(1, Math.round(w0 * k)); cv.height = Math.max(1, Math.round(h0 * k));
+      const g = cv.getContext("2d"); g.fillStyle = "#fff"; g.fillRect(0, 0, cv.width, cv.height); g.drawImage(src, 0, 0, cv.width, cv.height);
+      if (q === null) return ok(cv.toDataURL("image/jpeg", 0.7));
+      cv.toBlob((b) => ok(b), "image/jpeg", q);
+    });
+    let blob = null;
+    for (const [side, q] of [[1600, 0.82], [1400, 0.72], [1200, 0.62], [1000, 0.55]]) { blob = await render(side, q); if (blob && blob.size <= limit) break; }
+    if (!blob || blob.size > limit) throw new Error("too large");
+    const thumb = await render(180, null);
+    if (src.close) src.close();
+    return { blob, thumb };
+  }
+  async function bcAddPhotos(input) {
+    const files = [...(input.files || [])]; input.value = "";
+    const lim = (bc.ppl && bc.ppl.limits) || { photos: 4, photoBytes: 1500 * 1024 }, msg = $("#bcMsg"), gen = bc.gen;
+    if (bc.adding) { toast("Still adding the last photos. Try again in a moment."); return; }
+    bc.adding = true; bcBusy();
+    try { for (const file of files) {
+      if (gen !== bc.gen) return; // the composer was closed and opened again meanwhile
+      if (bc.photos.length >= lim.photos) { toast(`An email can carry up to ${lim.photos} photos.`); break; }
+      if (msg) msg.textContent = `Adding ${file.name}…`;
+      let small;
+      try { small = await bcShrink(file, lim.photoBytes); } catch { toast(`${file.name} could not be read as a photo. Use a JPG or PNG.`); continue; }
+      let res;
+      try { res = await fetch(`${API}/api/admin/messages/broadcast/photo`, { method: "POST", headers: { "Content-Type": "image/jpeg", Authorization: "Bearer " + token, "X-Idle-Seconds": String(Math.round(idleFor() / 1000)) }, body: small.blob }); }
+      catch { toast(`${file.name} did not upload. Check the connection and add it again.`); continue; }
+      if (res.status === 401) { signOut(); return; }
+      const data = await res.json().catch(() => null);
+      if (!res.ok) { toast((data && data.error) || (res.status === 413 ? "That photo is too large." : "The photo did not upload.")); continue; }
+      if (gen !== bc.gen) return;
+      bc.photos.push({ id: data.id, src: small.thumb, name: file.name });
+      bcPaintPhotos();
+    } } finally { if (gen === bc.gen) { bc.adding = false; bcBusy(); const m = $("#bcMsg"); if (m && /^Adding /.test(m.textContent)) m.textContent = ""; } }
+  }
+  // One row in "Recent broadcasts": the coloured label says how it went out, the numbers say how far it got
+  function bcPastRow(b) {
+    const way = b.delivery || "app", mail = way !== "app";
+    const label = way === "email" ? bcMailPill() : way === "both" ? bcAppPill() + bcMailPill() : bcAppPill("App message");
+    const left = b.skipped ? [b.skipped.noEmail && `${b.skipped.noEmail} no email`, b.skipped.unsubscribed && `${b.skipped.unsubscribed} unsubscribed`, b.skipped.restricted && `${b.skipped.restricted} other contact`].filter(Boolean) : [];
+    const stats = [];
+    if (way !== "email") stats.push(`<span class="pill ap">${b.read}/${b.recipients} read</span>`);
+    if (mail) stats.push(`<span class="pill em">${b.emailed}/${b.emailTo} emailed</span>`);
+    else if (b.emailed) stats.push(`<span class="pill">notice to ${b.emailed}</span>`);
+    if (mail && b.failed && !b.sending) stats.push(`<span class="pill bad">${b.failed} not sent</span>`);
+    const notes = [when(b.at), b.sending ? "emails still going out" : "", b.stopped ? "stopped early: the server restarted while it was going out" : "", b.photos ? `${b.photos} ${b.photos === 1 ? "photo" : "photos"}` : "", left.length ? `left out of the email: ${left.join(", ")}` : ""].filter(Boolean);
+    return `<div class="list-item bc-past"><span style="flex:1;min-width:0"><div class="row" style="gap:6px">${label}<span class="muted" style="font-size:12px">${esc(notes.join(" · "))}</span></div>${mail && b.subject ? `<div style="font-weight:600;overflow-wrap:anywhere">${esc(b.subject)}</div>` : ""}<div style="overflow-wrap:anywhere">${esc(b.preview)}${b.preview && b.preview.length >= 120 ? "…" : ""}</div></span><span class="bc-stats">${stats.join("")}</span></div>`;
+  }
+
   // Uploading a file to the chart: sent as it is, sealed by the server before it is stored
   async function chartUpload(input) {
     const file = input.files && input.files[0]; input.value = ""; if (!file) return;
@@ -2603,7 +2755,9 @@
     if (e.target.matches("[data-change=noteClient]")) noteClientSwitch(e.target.value);
     if (e.target.matches("[data-change=noteTemplate]")) { note.template = e.target.value; $("#nBodyLabel").textContent = TEMPLATES[note.template]; $("#sKind").textContent = TEMPLATES[note.template]; if (note.id || $("#nBody").value.trim()) noteTouch(); }
     if (e.target.matches("[data-change=noteTier]")) { note.tier = e.target.value; if (note.id || $("#nBody").value.trim()) noteTouch(); }
-    if (e.target.matches("[data-change=bcTo]")) { const p = $("#bcPick"); if (p) p.hidden = e.target.value !== "selected"; }
+    if (e.target.matches("[data-change=bcTo]")) { const p = $("#bcPick"); if (p) p.hidden = e.target.value !== "selected"; bcPaint(); }
+    if (e.target.matches("[data-change=bcWay]") || (e.target.name === "who" && e.target.closest("[data-form=broadcast]"))) bcPaint();
+    if (e.target.matches("[data-change=bcPhoto]")) guard(bcAddPhotos)(e.target);
     if (e.target.matches("[data-change=insDays]")) { state.insDays = Number(e.target.value) || 30; render(); }
     if (e.target.matches("[data-change=ecoMonths]")) { state.ecoMonths = Number(e.target.value) || 6; render(); }
     if (e.target.id === "gaSigned") { const go = $("#gaGo"); if (go) go.disabled = !e.target.checked; }
