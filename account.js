@@ -2483,6 +2483,8 @@
     catch { toast("Couldn't add that reaction."); }
   });
   if (window.MDFitRT) MDFitRT.on("message_reaction", () => { if (inThread) loadMessages(false); });
+  // Links and buttons in a message from the practice: msg-links.js (the same rules on the staff screens)
+  const msgHtml = (body) => (window.MDFitMsgLinks ? MDFitMsgLinks.html(body) : esc(body).replace(/\n/g, "<br>"));
   async function loadMessages(scroll) {
     let d; try { d = await apiAuth("GET", "/api/me/messages"); } catch { return; }
     msgData = d;
@@ -2498,7 +2500,7 @@
       const day = new Date(m.at).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
       const sep = day !== lastDay ? `<p class="day-sep">${day}</p>` : ""; lastDay = day;
       const r = m.reactions || {}, shown = [r.client, r.doctor].filter(Boolean);
-      return `${sep}<div class="bubble ${m.from === "client" ? "me" : "dr"}" data-mid="${esc(m.id)}"><p>${esc(m.body).replace(/\n/g, "<br>")}</p><span>${new Date(m.at).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}${m.from === "client" && m.read ? " · Seen" : ""}</span>${shown.length ? `<div class="reacts">${shown.map((e) => `<b>${e}</b>`).join("")}</div>` : ""}<button type="button" class="react-add" aria-label="React">☺+</button><div class="react-pick" hidden>${REACTS.map((e) => `<button type="button" data-emoji="${e}" class="${r.client === e ? "on" : ""}">${e}</button>`).join("")}</div></div>`;
+      return `${sep}<div class="bubble ${m.from === "client" ? "me" : "dr"}" data-mid="${esc(m.id)}"><p>${m.from === "client" ? esc(m.body).replace(/\n/g, "<br>") : msgHtml(m.body)}</p><span>${new Date(m.at).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}${m.from === "client" && m.read ? " · Seen" : ""}</span>${shown.length ? `<div class="reacts">${shown.map((e) => `<b>${e}</b>`).join("")}</div>` : ""}<button type="button" class="react-add" aria-label="React">☺+</button><div class="react-pick" hidden>${REACTS.map((e) => `<button type="button" data-emoji="${e}" class="${r.client === e ? "on" : ""}">${e}</button>`).join("")}</div></div>`;
     }).join("")
       : `<p class="muted small chat-empty">Start the conversation. Tell Dr. Jared what's going on, where it hurts, or what you'd like help with.</p>`;
     if (scroll || d.messages.length !== msgCount) list.scrollTop = list.scrollHeight;
