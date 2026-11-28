@@ -1848,7 +1848,7 @@
             ${way("both", ui("chat", 16) + ui("mail", 16), "Both", "The app message and the full email.", mailOn)}
           </div>${mailOn ? "" : `<p class="muted" style="margin:4px 0 0;font-size:12px">${ppl ? "Email is not set up on this server, so only the app message is available." : "Email broadcasts are not available yet."}</p>`}</div>
           <div class="field"><label for="bcTo">Send to</label><select id="bcTo" name="to" class="input" data-change="bcTo"><option value="all">Everyone (${ppl ? ppl.total : list.length})</option><option value="members">Paying members${ppl ? ` (${ppl.members.length})` : ""}</option><option value="selected">People I pick</option></select></div>
-          <div class="field" id="bcPick" hidden><label>Pick people</label><div class="bc-list">${list.map((c) => { const m = ppl ? bcMail(c.id, s) : "ok"; return `<label class="bc-person" data-mail="${m}"><input type="checkbox" name="who" value="${esc(c.id)}"><span class="bc-who">${esc(c.name)} <span class="muted" style="font-size:12px">${esc(c.email)}</span></span><span class="bc-bs">${bcAppPill()}${m === "ok" ? bcMailPill() : `<span class="pill off bc-b">${BC_OFF[m]}</span>`}</span></label>`; }).join("") || none("No clients yet.")}</div></div>
+          <div class="field" id="bcPick" hidden><div class="row" style="justify-content:space-between"><label for="bcFind">Pick people</label><span class="muted" id="bcPicked" style="font-size:12px"></span></div><div class="bc-find">${ui("search", 14)}<input id="bcFind" type="search" class="input" placeholder="Search by name or email" autocomplete="off" spellcheck="false" aria-controls="bcList"></div><div class="bc-list" id="bcList">${list.map((c) => { const m = ppl ? bcMail(c.id, s) : "ok"; return `<label class="bc-person" data-mail="${m}" data-q="${esc(bcNorm(`${c.name} ${c.email}`))}"><input type="checkbox" name="who" value="${esc(c.id)}"><span class="bc-who">${esc(c.name)} <span class="muted" style="font-size:12px">${esc(c.email)}</span></span><span class="bc-bs">${bcAppPill()}${m === "ok" ? bcMailPill() : `<span class="pill off bc-b">${BC_OFF[m]}</span>`}</span></label>`; }).join("") || none("No clients yet.")}<p class="muted bc-none" id="bcNone" hidden>No one matches that search.</p></div></div>
           <div class="bc-aud" id="bcAud" role="status"></div>
           <div class="field" id="bcSubjectF" hidden><label for="bcSubject">Email subject</label><input id="bcSubject" name="subject" class="input" maxlength="${lim.subject || 120}" placeholder="For example: Holiday hours"></div>
           <div class="field"><div class="row" style="justify-content:space-between"><label for="bcBody">Message</label><button type="button" class="btn sm mic" data-act="dictate" data-for="bcBody" aria-pressed="false">${ui("mic", 14)}<span>Dictate</span></button></div><textarea id="bcBody" name="body" class="input" style="min-height:140px" maxlength="${lim.appBody || 2000}" required placeholder="Keep health details out of a message that goes to many people"></textarea></div>
@@ -2482,6 +2482,17 @@
   const bcBusy = () => { const f = $("[data-form=broadcast]"); if (!f) return; const b = f.querySelector("button.primary"), t = $("#bcTest"); if (b) b.disabled = bc.adding; if (t) t.disabled = bc.adding; };
   const bcPeople = (n) => (n === null ? "every paying member" : `${n} ${n === 1 ? "person" : "people"}`);
   const bcSets = () => { const p = bc.ppl || {}; return { members: new Set(p.members || []), noEmail: new Set(p.noEmail || []), unsubscribed: new Set(p.unsubscribed || []), restricted: new Set(p.restricted || []) }; };
+  // Search in the picker: every word typed must appear in the person's name or email, ignoring case and accents.
+  // Rows that don't match are only hidden: a tick on someone hidden by the search stays.
+  const bcNorm = (s) => String(s || "").normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
+  function bcFilter() {
+    const f = $("[data-form=broadcast]"), box = $("#bcFind"); if (!f || !box) return 0;
+    const words = bcNorm(box.value).split(/\s+/).filter(Boolean);
+    let shown = 0;
+    f.querySelectorAll(".bc-person").forEach((row) => { const hit = words.every((w) => (row.dataset.q || "").includes(w)); row.hidden = !hit; if (hit) shown++; });
+    const no = $("#bcNone"); if (no) no.hidden = shown > 0 || !f.querySelector(".bc-person");
+    return shown;
+  }
   // Why a person cannot be emailed, or "ok"
   const bcMail = (id, s) => (s.noEmail.has(id) ? "none" : s.unsubscribed.has(id) ? "unsubscribed" : s.restricted.has(id) ? "restricted" : "ok");
   const BC_OFF = { none: "No email on file", unsubscribed: "Unsubscribed", restricted: "Asked for another way" };
@@ -2513,6 +2524,7 @@
     $("#bcAud").innerHTML = (way !== "email" ? `<div class="bc-aud-row app">${bcAppPill("App message")}<b>${bcPeople(n.app)}</b><span class="muted">in their private thread</span></div>` : "")
       + (mail ? `<div class="bc-aud-row email">${bcMailPill()}<b>${n.email === null ? "…" : bcPeople(n.email)}</b><span class="muted">${left.length ? `Left out: ${left.join(", ")}` : "everyone in this choice can be emailed"}</span></div>` : "");
     f.querySelector("button.primary").textContent = way === "app" ? "Send broadcast" : way === "email" ? "Send email" : "Send both";
+    { const k = f.querySelectorAll("[name=who]:checked").length, pc = $("#bcPicked"); if (pc) pc.textContent = k ? `${k} picked` : ""; }
     bcPaintPhotos();
   }
   function bcPaintPhotos() {
@@ -2762,6 +2774,7 @@
     if (e.target.matches("[data-change=ecoMonths]")) { state.ecoMonths = Number(e.target.value) || 6; render(); }
     if (e.target.id === "gaSigned") { const go = $("#gaGo"); if (go) go.disabled = !e.target.checked; }
   });
+  document.addEventListener("input", (e) => { if (e.target && e.target.id === "bcFind") bcFilter(); });
   document.addEventListener("input", (e) => {
     if (e.target.id === "mvSearch") {
       const q = e.target.value.trim().toLowerCase().split(/\s+/).filter(Boolean), box = $("#mvResults");
@@ -3351,6 +3364,14 @@
   try { if (localStorage.getItem(THEME_KEY) === "dark") document.documentElement.dataset.theme = "dark"; } catch {}
   $("#themeBtn").addEventListener("click", () => { const r = document.documentElement, next = r.dataset.theme === "dark" ? "light" : "dark"; r.dataset.theme = next; try { localStorage.setItem(THEME_KEY, next); } catch {} });
   $("#modalBack").addEventListener("click", (e) => { if (e.target.id === "modalBack") closeModal(); });
+  document.addEventListener("keydown", (e) => {
+    if (!e.target || e.target.id !== "bcFind" || e.isComposing) return;
+    if (e.key === "Escape" && e.target.value) { e.preventDefault(); e.stopPropagation(); e.target.value = ""; bcFilter(); return; }
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+    const rows = [...document.querySelectorAll("#bcList .bc-person")].filter((r) => !r.hidden && !r.querySelector("input").disabled);
+    if (rows.length === 1) { const cb = rows[0].querySelector("input"); if (!cb.checked) cb.click(); e.target.select(); }
+  }, true);
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
   // Top search: every match is listed as you type (all the people with that name, not only the first), newest
   // sign-in first among equals. Enter or a click opens the chart; the arrow keys move; Escape clears.
