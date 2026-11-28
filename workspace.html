@@ -281,6 +281,12 @@ textarea.input{min-height:120px;resize:vertical;line-height:1.55}
 .msg-list{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
 .bubble{max-width:70%;padding:9px 12px;border-radius:12px;background:var(--bg);overflow-wrap:anywhere;white-space:pre-wrap}
 .bubble.me{align-self:flex-end;background:var(--accent);color:var(--accent-ink)}
+/* links and buttons in the practice's messages (msg-links.js), as the member sees them */
+.bubble .msg-link{color:var(--accent-text);font-weight:600;text-decoration:underline;text-underline-offset:2px;overflow-wrap:anywhere}
+.bubble.me .msg-link{color:var(--accent-ink)}
+.bubble .msg-btn{display:flex;align-items:center;justify-content:center;min-height:40px;margin:8px 0;padding:8px 14px;border-radius:10px;background:var(--surface);color:var(--ink);border:1px solid var(--line);font-weight:700;text-align:center;text-decoration:none;white-space:normal;overflow-wrap:anywhere}
+.bubble .msg-btn:hover{background:var(--accent-soft)}
+.bubble .msg-btn:first-child{margin-top:2px}
 .composer{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line)}
 
 /* Telehealth */
@@ -498,6 +504,7 @@ body:has(#modalBack.open) .qa{display:none}
 <script src="realtime.js?v=2de68c9b"></script>
 <script src="app/exercises.js?v=4aecd212"></script>
 <script src="progress-charts.js?v=df3a2256"></script>
-<script src="workspace-app.js?v=5cd2de5a"></script>
+<script src="msg-links.js?v=7f37869d"></script>
+<script src="workspace-app.js?v=bf49f1a5"></script>
 </body>
 </html>

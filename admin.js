@@ -325,7 +325,7 @@
     $("#home-inbox").innerHTML = `<div class="hi-thread">
         <div class="hi-top"><button type="button" class="mini" data-hback>‹ Inbox</button><b>${esc(d.client.name)}</b>
           <span class="hi-actions"><button type="button" class="link" data-hclient="${esc(cid)}">Profile</button></span></div>
-        <div class="msg-log hi-log">${d.messages.map((m) => `<div class="mb ${m.from}"><p>${esc(m.body).replace(/\n/g, "<br>")}</p><small>${m.from === "doctor" ? "You" : first} · ${when(m.at)}</small></div>`).join("") || `<p class="muted">No messages yet.</p>`}</div>
+        <div class="msg-log hi-log">${d.messages.map((m) => `<div class="mb ${m.from}"><p>${m.from === "doctor" && window.MDFitMsgLinks ? MDFitMsgLinks.html(m.body, { newTab: true }) : esc(m.body).replace(/\n/g, "<br>")}</p><small>${m.from === "doctor" ? "You" : first} · ${when(m.at)}</small></div>`).join("") || `<p class="muted">No messages yet.</p>`}</div>
         <form class="msg-reply hi-reply"><textarea name="body" rows="2" maxlength="2000" placeholder="Reply to ${first}…"></textarea><button class="btn btn-sm" type="submit">Send</button></form>
       </div>`;
     const log = $(".hi-log"); log.scrollTop = log.scrollHeight;
@@ -1424,7 +1424,7 @@
     if (old && old.dataset.cid) drafts.set(old.dataset.cid, old.value);
     const hadFocus = old && document.activeElement === old && old.dataset.cid === cid;
     $("#msg-thread").innerHTML = `<div class="item-head"><b>${esc(d.client.name)}</b> <span class="muted">${esc(d.client.email)} ${esc(d.client.phone || "")}</span> ${d.client.member ? `<span class="pill approved">${esc(d.client.tier)}</span>` : `<span class="pill hidden">not a member</span>`}</div>
-      <div class="msg-log">${d.messages.map((m) => `<div class="mb ${m.from}" data-mid="${esc(m.id)}"><p>${esc(m.body).replace(/\n/g, "<br>")}</p><small>${m.from === "doctor" ? "You" : esc(d.client.name.split(" ")[0])} · ${when(m.at)}</small>${[m.reactions?.client, m.reactions?.doctor].filter(Boolean).length ? `<div class="reacts">${[m.reactions.client, m.reactions.doctor].filter(Boolean).map((x) => `<b>${x}</b>`).join("")}</div>` : ""}<div class="react-row">${["👍", "❤️", "😂", "🙏", "💪", "😮"].map((x) => `<button type="button" data-emoji="${x}" class="${m.reactions?.doctor === x ? "on" : ""}">${x}</button>`).join("")}</div></div>`).join("")}</div>
+      <div class="msg-log">${d.messages.map((m) => `<div class="mb ${m.from}" data-mid="${esc(m.id)}"><p>${m.from === "doctor" && window.MDFitMsgLinks ? MDFitMsgLinks.html(m.body, { newTab: true }) : esc(m.body).replace(/\n/g, "<br>")}</p><small>${m.from === "doctor" ? "You" : esc(d.client.name.split(" ")[0])} · ${when(m.at)}</small>${[m.reactions?.client, m.reactions?.doctor].filter(Boolean).length ? `<div class="reacts">${[m.reactions.client, m.reactions.doctor].filter(Boolean).map((x) => `<b>${x}</b>`).join("")}</div>` : ""}<div class="react-row">${["👍", "❤️", "😂", "🙏", "💪", "😮"].map((x) => `<button type="button" data-emoji="${x}" class="${m.reactions?.doctor === x ? "on" : ""}">${x}</button>`).join("")}</div></div>`).join("")}</div>
       <form class="msg-reply" id="msg-reply"><textarea name="body" rows="3" maxlength="2000" placeholder="Reply to ${esc(d.client.name.split(" ")[0])}…"></textarea><button class="btn btn-sm" type="submit">Send reply</button></form>`;
     const log = $(".msg-log"); log.scrollTop = log.scrollHeight;
     log.addEventListener("click", run(async (e) => {
